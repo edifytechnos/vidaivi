@@ -546,3 +546,57 @@ body {
 .server-results {
   margin-top: 14px;
 }
+
+/* --- welcome --- */
+
+.welcome {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.welcome-emoji {
+  font-size: 2.6rem;
+  margin-bottom: 8px;
+}
+
+.welcome-title {
+  font-size: 1.35rem;
+  margin: 0 0 8px;
+}
+
+.welcome-sub {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0 0 8px;
+}
+
+.welcome .google-btn-slot {
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 14px 0;
+}
+
+.welcome-divider::before,
+.welcome-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.welcome .btn-ghost {
+  width: 100%;
+}
+
+.welcome-note {
+  margin-top: 12px;
+}

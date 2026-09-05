@@ -158,7 +158,17 @@ function gotoTest(testId: string): void {
 
 function profileRow(): string {
   const p = getProfile();
-  if (!p) return "";
+  if (!p) {
+    if (!authEnabled) return "";
+    return `
+    <div class="profile-row">
+      <div class="profile-main">
+        <div class="profile-name">Browsing as guest</div>
+        <div class="profile-sub">Sign in to save scores to your profile</div>
+      </div>
+      <button id="signin-btn" class="btn-link">Sign in</button>
+    </div>`;
+  }
   return `
     <div class="profile-row">
       ${p.picture ? `<img class="profile-pic" src="${escapeHtml(p.picture)}" alt="" referrerpolicy="no-referrer">` : ""}
@@ -186,11 +196,12 @@ function showHome() {
         } else if (attempt && attempt.index > 0) {
           status = `<span class="status-chip status-progress">In progress · Q${attempt.index + 1} of ${t.questions.length}</span>`;
         }
+        const locked = requiresLogin(t);
         return `
         <button class="test-card" data-test="${t.id}">
           <div class="test-card-main">
-            <div class="test-card-title">${escapeHtml(t.title)}</div>
-            <div class="test-card-sub">${t.questions.length} questions · ${total} marks</div>
+            <div class="test-card-title">${locked ? "🔒 " : ""}${escapeHtml(t.title)}</div>
+            <div class="test-card-sub">${t.questions.length} questions · ${total} marks${locked ? " · sign in to attempt" : ""}</div>
           </div>
           ${status}
         </button>`;
@@ -202,7 +213,12 @@ function showHome() {
   document.getElementById("signout-btn")?.addEventListener("click", () => {
     track("sign_out");
     signOut();
-    showHome();
+    setGuest(false);
+    showWelcome();
+  });
+  document.getElementById("signin-btn")?.addEventListener("click", () => {
+    setGuest(false);
+    showWelcome();
   });
   void renderServerResults();
 }
@@ -234,8 +250,64 @@ async function renderServerResults(): Promise<void> {
   );
 }
 
+const GUEST_KEY = "vidaivi:guestMode";
+
+function isGuest(): boolean {
+  try {
+    return localStorage.getItem(GUEST_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function setGuest(on: boolean): void {
+  try {
+    if (on) localStorage.setItem(GUEST_KEY, "1");
+    else localStorage.removeItem(GUEST_KEY);
+  } catch {}
+}
+
 function requiresLogin(test: Test): boolean {
   return authEnabled && test.access === "login" && !isLoggedIn();
+}
+
+function showWelcome(next?: () => void) {
+  const done = next ?? showHome;
+  track("welcome_open");
+  app.innerHTML = `
+    ${topbar(false)}
+    <main class="card welcome">
+      <div class="welcome-emoji">📐</div>
+      <h2 class="welcome-title">CBSE Class 12 Maths practice, made simple</h2>
+      <p class="welcome-sub">Chapter-wise tests with instant worked solutions.
+      Sign in to save your scores to your profile — or explore as a guest.</p>
+      <div id="google-btn" class="google-btn-slot"></div>
+      <p id="login-error" class="login-error" hidden></p>
+      <div class="welcome-divider"><span>or</span></div>
+      <button id="guest-btn" class="btn btn-ghost">Continue as guest</button>
+      <p class="hint welcome-note">Guests can take the free demo test. Scores
+      stay on this device only.</p>
+    </main>`;
+  const slot = document.getElementById("google-btn")!;
+  const errEl = document.getElementById("login-error") as HTMLElement;
+  void renderGoogleButton(
+    slot,
+    (profile) => {
+      track("login_success", { from: "welcome" });
+      setGuest(false);
+      if (!profile.phone) showPhoneForm(done);
+      else done();
+    },
+    (message) => {
+      errEl.textContent = message;
+      errEl.hidden = false;
+    }
+  );
+  document.getElementById("guest-btn")!.addEventListener("click", () => {
+    track("guest_continue");
+    setGuest(true);
+    done();
+  });
 }
 
 function showLogin(test: Test) {
@@ -258,7 +330,8 @@ function showLogin(test: Test) {
     slot,
     (profile) => {
       track("login_success", { test: test.id });
-      if (!profile.phone) showPhoneForm(test);
+      setGuest(false);
+      if (!profile.phone) showPhoneForm(() => showLanding(test));
       else showLanding(test);
     },
     (message) => {
@@ -268,7 +341,7 @@ function showLogin(test: Test) {
   );
 }
 
-function showPhoneForm(test: Test) {
+function showPhoneForm(next: () => void) {
   const profile = getProfile();
   app.innerHTML = `
     ${topbar(true)}
@@ -294,8 +367,8 @@ function showPhoneForm(test: Test) {
     save.textContent = "Saving…";
     const ok = await savePhone(input.value.trim());
     if (ok) {
-      track("phone_saved", { test: test.id });
-      showLanding(test);
+      track("phone_saved");
+      next();
     } else {
       errEl.textContent = "Could not save — check your connection and try again.";
       errEl.hidden = false;
@@ -663,11 +736,15 @@ function showReview(test: Test, attempt: Attempt) {
 initAnalytics();
 if (authEnabled && isLoggedIn()) void flushPendingAttempts();
 
-const testId = new URLSearchParams(location.search).get("test");
+// Tolerate links mangled by messaging apps (trailing "?", "/", punctuation).
+const rawTestId = new URLSearchParams(location.search).get("test") ?? "";
+const testId = rawTestId.replace(/[^A-Za-z0-9-]+$/g, "");
 const test = TESTS.find((t) => t.id === testId);
 if (test) {
   track("test_open", { test: test.id });
   showLanding(test);
+} else if (authEnabled && !isLoggedIn() && !isGuest()) {
+  showWelcome();
 } else {
   showHome();
 }
