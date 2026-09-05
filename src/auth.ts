@@ -1,17 +1,24 @@
-// Google Identity Services (client-side popup) + our /api for verification
-// and storage. Auth is disabled entirely when VITE_GOOGLE_CLIENT_ID is unset
-// (local dev, forks) — the app then behaves as guest-only.
+// Two kinds of signed-in identity:
+//  - "google": teachers and parents, via Google Identity Services popup.
+//  - "student": teacher-issued username/password, via /api/student-login,
+//    kept alive by a signed session token (~30 days).
+// Auth is disabled entirely when VITE_GOOGLE_CLIENT_ID is unset (local dev).
 
 export interface Profile {
-  sub: string;
+  kind: "google" | "student";
+  sub: string; // google sub or student username
   name: string;
-  email: string;
+  email?: string;
   picture?: string;
   phone?: string;
+  role?: "teacher" | "parent" | "student";
+  school?: string;
+  grade?: string;
 }
 
 interface AuthState {
-  credential: string; // Google ID token (JWT, ~1h validity)
+  kind: "google" | "student";
+  credential: string; // Google ID token or student session token
   profile: Profile;
   savedAt: number;
 }
@@ -21,6 +28,16 @@ export interface ServerAttempt {
   score: number;
   total: number;
   completedAt: string;
+}
+
+export interface StudentRecord {
+  username: string;
+  name: string;
+  school: string;
+  grade: string;
+  parentPhone: string;
+  createdAt?: string;
+  password?: string; // only present right after create/reset
 }
 
 const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
@@ -46,6 +63,10 @@ export function getProfile(): Profile | null {
   return getAuth()?.profile ?? null;
 }
 
+export function isTeacher(): boolean {
+  return getProfile()?.role === "teacher";
+}
+
 function saveAuth(state: AuthState): void {
   try {
     localStorage.setItem(AUTH_KEY, JSON.stringify(state));
@@ -58,7 +79,12 @@ export function signOut(): void {
   } catch {}
 }
 
-// ---------- Google Identity Services ----------
+function authHeader(): Record<string, string> {
+  const auth = getAuth();
+  return auth ? { Authorization: `Bearer ${auth.credential}` } : {};
+}
+
+// ---------- Google Identity Services (teachers / parents) ----------
 
 let gisLoading: Promise<void> | null = null;
 
@@ -76,10 +102,7 @@ function loadGis(): Promise<void> {
   return gisLoading;
 }
 
-async function apiLogin(
-  credential: string,
-  phone?: string
-): Promise<Profile> {
+async function apiLogin(credential: string, phone?: string): Promise<Profile> {
   const res = await fetch("/api/login", {
     method: "POST",
     headers: {
@@ -89,7 +112,8 @@ async function apiLogin(
     body: JSON.stringify(phone ? { phone } : {}),
   });
   if (!res.ok) throw new Error(`Login failed (${res.status})`);
-  return (await res.json()) as Profile;
+  const p = await res.json();
+  return { kind: "google", ...p } as Profile;
 }
 
 export async function renderGoogleButton(
@@ -110,6 +134,7 @@ export async function renderGoogleButton(
       try {
         const profile = await apiLogin(response.credential);
         saveAuth({
+          kind: "google",
           credential: response.credential,
           profile,
           savedAt: Date.now(),
@@ -131,13 +156,98 @@ export async function renderGoogleButton(
 
 export async function savePhone(phone: string): Promise<boolean> {
   const auth = getAuth();
-  if (!auth) return false;
+  if (!auth || auth.kind !== "google") return false;
   try {
     const profile = await apiLogin(auth.credential, phone);
     saveAuth({ ...auth, profile });
     return true;
   } catch {
     return false;
+  }
+}
+
+// ---------- Student login ----------
+
+export async function studentLogin(
+  username: string,
+  password: string
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  try {
+    const res = await fetch("/api/student-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { ok: false, message: data.error || "Login failed" };
+    }
+    const data = await res.json();
+    saveAuth({
+      kind: "student",
+      credential: data.token,
+      profile: {
+        kind: "student",
+        sub: data.student.username,
+        name: data.student.name,
+        role: "student",
+        school: data.student.school,
+        grade: data.student.grade,
+      },
+      savedAt: Date.now(),
+    });
+    void flushPendingAttempts();
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Network error — check your connection." };
+  }
+}
+
+// ---------- Teacher: student roster ----------
+
+export async function listStudents(): Promise<StudentRecord[] | null> {
+  try {
+    const res = await fetch("/api/students", { headers: authHeader() });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.students as StudentRecord[];
+  } catch {
+    return null;
+  }
+}
+
+export async function createStudent(input: {
+  name: string;
+  school: string;
+  grade: string;
+  parentPhone: string;
+}): Promise<StudentRecord | null> {
+  try {
+    const res = await fetch("/api/students", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "create", ...input }),
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as StudentRecord;
+  } catch {
+    return null;
+  }
+}
+
+export async function resetStudentPassword(
+  username: string
+): Promise<{ username: string; password: string } | null> {
+  try {
+    const res = await fetch("/api/students", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "reset", username }),
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
   }
 }
 
@@ -165,15 +275,11 @@ function writePending(list: PendingAttempt[]): void {
 }
 
 async function postAttempt(a: PendingAttempt): Promise<boolean> {
-  const auth = getAuth();
-  if (!auth) return false;
+  if (!isLoggedIn()) return false;
   try {
     const res = await fetch("/api/attempts", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.credential}`,
-      },
+      headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(a),
     });
     return res.ok;
@@ -182,7 +288,7 @@ async function postAttempt(a: PendingAttempt): Promise<boolean> {
   }
 }
 
-/** Save a completed attempt to the student's profile. Never blocks the UI;
+/** Save a completed attempt to the signed-in identity. Never blocks the UI;
  *  failures are queued and retried after the next successful login. */
 export function submitAttempt(a: PendingAttempt): void {
   if (!authEnabled || !isLoggedIn()) return;
@@ -202,12 +308,9 @@ export async function flushPendingAttempts(): Promise<void> {
 }
 
 export async function fetchMyAttempts(): Promise<ServerAttempt[] | null> {
-  const auth = getAuth();
-  if (!auth) return null;
+  if (!isLoggedIn()) return null;
   try {
-    const res = await fetch("/api/attempts", {
-      headers: { Authorization: `Bearer ${auth.credential}` },
-    });
+    const res = await fetch("/api/attempts", { headers: authHeader() });
     if (!res.ok) return null;
     const data = await res.json();
     return (data.attempts as ServerAttempt[]) ?? null;

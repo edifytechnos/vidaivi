@@ -600,3 +600,60 @@ body {
 .welcome-note {
   margin-top: 12px;
 }
+
+/* --- teacher roster --- */
+
+.teacher-entry {
+  margin-bottom: 14px;
+  border-color: var(--primary);
+}
+
+.roster-card {
+  margin-top: 14px;
+}
+
+.roster-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.roster-row:last-child {
+  border-bottom: none;
+}
+
+.roster-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.roster-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.cred-card {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--green-bg);
+  border: 1.5px solid var(--green);
+}
+
+.cred-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.cred-line {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.cred-copy {
+  margin-top: 10px;
+  width: 100%;
+}

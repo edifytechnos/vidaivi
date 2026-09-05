@@ -1,8 +1,16 @@
 const { app } = require("@azure/functions");
 const { TableClient } = require("@azure/data-tables");
+const crypto = require("crypto");
 
 const STORAGE = process.env.STORAGE_CONNECTION_STRING;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const TEACHER_EMAILS = (process.env.TEACHER_EMAILS || "")
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
+const STUDENT_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 
 function tableClient(name) {
   return TableClient.fromConnectionString(STORAGE, name);
@@ -16,11 +24,13 @@ async function ensureTable(client) {
   }
 }
 
-// Verify a Google ID token. Returns { token } on success or { reason } on
-// failure — reasons are codes only, never token contents.
-async function verifyGoogleToken(request) {
-  const header = request.headers.get("authorization") || "";
-  const credential = header.startsWith("Bearer ") ? header.slice(7) : null;
+function b64url(buf) {
+  return Buffer.from(buf).toString("base64url");
+}
+
+// ---------- Google auth (teachers / parents) ----------
+
+async function verifyGoogleToken(credential) {
   if (!credential) return { reason: "no_bearer_token" };
   if (!GOOGLE_CLIENT_ID) return { reason: "no_client_id_configured" };
   let res;
@@ -44,17 +54,107 @@ async function verifyGoogleToken(request) {
   return { token };
 }
 
-function publicProfile(entity) {
+function roleForEmail(email) {
+  return TEACHER_EMAILS.includes(String(email).toLowerCase())
+    ? "teacher"
+    : "parent";
+}
+
+// ---------- Student sessions (teacher-issued username/password) ----------
+
+function signStudentToken(username) {
+  const payload = b64url(
+    JSON.stringify({ u: username, exp: Date.now() + STUDENT_TOKEN_TTL_MS })
+  );
+  const sig = b64url(
+    crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest()
+  );
+  return `vst.${payload}.${sig}`;
+}
+
+function verifyStudentToken(token) {
+  try {
+    const [prefix, payload, sig] = token.split(".");
+    if (prefix !== "vst" || !payload || !sig) return null;
+    const expected = b64url(
+      crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest()
+    );
+    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected)))
+      return null;
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString());
+    if (!data.u || data.exp < Date.now()) return null;
+    return { username: data.u };
+  } catch {
+    return null;
+  }
+}
+
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const hash = crypto.scryptSync(password, salt, 32).toString("hex");
+  return `${salt}:${hash}`;
+}
+
+function checkPassword(password, stored) {
+  const [salt, hash] = String(stored).split(":");
+  if (!salt || !hash) return false;
+  const candidate = crypto.scryptSync(password, salt, 32).toString("hex");
+  return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(candidate));
+}
+
+const PW_WORDS = [
+  "tiger", "lotus", "mango", "cobra", "delta", "gamma", "sigma", "vector",
+  "matrix", "prime", "pearl", "coral", "falcon", "comet", "orbit", "pixel",
+];
+
+function generatePassword() {
+  const w1 = PW_WORDS[crypto.randomInt(PW_WORDS.length)];
+  const w2 = PW_WORDS[crypto.randomInt(PW_WORDS.length)];
+  const n = crypto.randomInt(10, 100);
+  return `${w1}${n}${w2}`;
+}
+
+function slugify(name) {
+  return String(name)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "")
+    .slice(0, 16) || "student";
+}
+
+// ---------- Unified caller identity ----------
+
+// Resolves the Authorization header to either a Google identity or a
+// student session. Returns { kind, id, name, email? } or { reason }.
+async function identify(request) {
+  const header = request.headers.get("authorization") || "";
+  const bearer = header.startsWith("Bearer ") ? header.slice(7) : "";
+  if (!bearer) return { reason: "no_bearer_token" };
+  if (bearer.startsWith("vst.")) {
+    if (!SESSION_SECRET) return { reason: "no_session_secret_configured" };
+    const session = verifyStudentToken(bearer);
+    if (!session) return { reason: "bad_student_token" };
+    return { kind: "student", id: `stu~${session.username}`, username: session.username };
+  }
+  const { token, reason } = await verifyGoogleToken(bearer);
+  if (!token) return { reason };
   return {
-    sub: entity.rowKey,
-    name: entity.name || "",
-    email: entity.email || "",
-    picture: entity.picture || "",
-    phone: entity.phone || "",
+    kind: "google",
+    id: token.sub,
+    name: token.name || "",
+    email: token.email,
+    role: roleForEmail(token.email),
   };
 }
 
-// GET /api/health — config presence check (booleans only, never values).
+function configError() {
+  if (!STORAGE || !GOOGLE_CLIENT_ID) {
+    return { status: 500, jsonBody: { error: "API not configured" } };
+  }
+  return null;
+}
+
+// ---------- Health ----------
+
 app.http("health", {
   methods: ["GET"],
   authLevel: "anonymous",
@@ -63,20 +163,24 @@ app.http("health", {
     jsonBody: {
       hasGoogleClientId: !!GOOGLE_CLIENT_ID,
       hasStorageConnectionString: !!STORAGE,
+      hasSessionSecret: !!SESSION_SECRET,
+      teacherEmailsConfigured: TEACHER_EMAILS.length,
       node: process.version,
     },
   }),
 });
 
-// POST /api/login — verify Google token, upsert profile, optionally set phone.
+// ---------- Google login (teachers / parents) ----------
+
 app.http("login", {
   methods: ["POST"],
   authLevel: "anonymous",
-  handler: async (request, context) => {
-    if (!STORAGE || !GOOGLE_CLIENT_ID) {
-      return { status: 500, jsonBody: { error: "API not configured" } };
-    }
-    const { token, reason } = await verifyGoogleToken(request);
+  handler: async (request) => {
+    const err = configError();
+    if (err) return err;
+    const header = request.headers.get("authorization") || "";
+    const bearer = header.startsWith("Bearer ") ? header.slice(7) : "";
+    const { token, reason } = await verifyGoogleToken(bearer);
     if (!token) {
       return { status: 401, jsonBody: { error: "Invalid token", reason } };
     }
@@ -106,22 +210,171 @@ app.http("login", {
       createdAt: (entity && entity.createdAt) || new Date().toISOString(),
     };
     await profiles.upsertEntity(merged, "Merge");
-    return { status: 200, jsonBody: publicProfile(merged) };
+    return {
+      status: 200,
+      jsonBody: {
+        sub: merged.rowKey,
+        name: merged.name,
+        email: merged.email,
+        picture: merged.picture,
+        phone: merged.phone,
+        role: roleForEmail(token.email),
+      },
+    };
   },
 });
 
-// POST /api/attempts — save a completed attempt for the logged-in student.
-// GET  /api/attempts — list the logged-in student's attempts (newest first).
+// ---------- Student login ----------
+
+app.http("student-login", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  handler: async (request) => {
+    const err = configError();
+    if (err) return err;
+    if (!SESSION_SECRET) {
+      return { status: 500, jsonBody: { error: "API not configured", reason: "no_session_secret" } };
+    }
+    const body = await request.json().catch(() => null);
+    const username = String(body?.username || "").trim().toLowerCase();
+    const password = String(body?.password || "");
+    if (!username || !password) {
+      return { status: 400, jsonBody: { error: "Username and password required" } };
+    }
+    const students = tableClient("students");
+    await ensureTable(students);
+    let entity;
+    try {
+      entity = await students.getEntity("student", username);
+    } catch {
+      entity = null;
+    }
+    if (!entity || !checkPassword(password, entity.passwordHash)) {
+      return { status: 401, jsonBody: { error: "Wrong username or password" } };
+    }
+    return {
+      status: 200,
+      jsonBody: {
+        token: signStudentToken(username),
+        student: {
+          username,
+          name: entity.name,
+          school: entity.school,
+          grade: entity.grade,
+        },
+      },
+    };
+  },
+});
+
+// ---------- Teacher: manage students ----------
+
+app.http("students", {
+  methods: ["GET", "POST"],
+  authLevel: "anonymous",
+  handler: async (request) => {
+    const err = configError();
+    if (err) return err;
+    const who = await identify(request);
+    if (!who.kind) {
+      return { status: 401, jsonBody: { error: "Invalid token", reason: who.reason } };
+    }
+    if (who.kind !== "google" || who.role !== "teacher") {
+      return { status: 403, jsonBody: { error: "Teachers only" } };
+    }
+    const students = tableClient("students");
+    await ensureTable(students);
+
+    if (request.method === "POST") {
+      const body = await request.json().catch(() => null);
+      const action = body?.action || "create";
+
+      if (action === "reset") {
+        const username = String(body?.username || "").trim().toLowerCase();
+        let entity;
+        try {
+          entity = await students.getEntity("student", username);
+        } catch {
+          return { status: 404, jsonBody: { error: "Student not found" } };
+        }
+        if (entity.teacherSub !== who.id) {
+          return { status: 403, jsonBody: { error: "Not your student" } };
+        }
+        const password = generatePassword();
+        entity.passwordHash = hashPassword(password);
+        await students.upsertEntity(entity, "Merge");
+        return { status: 200, jsonBody: { username, password } };
+      }
+
+      // create
+      const name = String(body?.name || "").trim().slice(0, 60);
+      const school = String(body?.school || "").trim().slice(0, 80);
+      const grade = String(body?.grade || "").trim().slice(0, 20);
+      const parentPhone = String(body?.parentPhone || "").trim().slice(0, 20);
+      if (!name) return { status: 400, jsonBody: { error: "Name required" } };
+
+      // Unique username: name slug + 2 digits, retry on collision.
+      let username = "";
+      for (let i = 0; i < 8; i++) {
+        const candidate = `${slugify(name)}${crypto.randomInt(10, 100)}`;
+        try {
+          await students.getEntity("student", candidate);
+        } catch {
+          username = candidate;
+          break;
+        }
+      }
+      if (!username) {
+        return { status: 500, jsonBody: { error: "Could not allocate username, try again" } };
+      }
+      const password = generatePassword();
+      await students.createEntity({
+        partitionKey: "student",
+        rowKey: username,
+        name,
+        school,
+        grade,
+        parentPhone,
+        passwordHash: hashPassword(password),
+        teacherSub: who.id,
+        teacherEmail: who.email,
+        createdAt: new Date().toISOString(),
+      });
+      return { status: 201, jsonBody: { username, password, name, school, grade, parentPhone } };
+    }
+
+    // GET — list this teacher's students (never returns password hashes)
+    const list = [];
+    const iter = students.listEntities({
+      queryOptions: { filter: `PartitionKey eq 'student' and teacherSub eq '${who.id.replace(/'/g, "''")}'` },
+    });
+    for await (const e of iter) {
+      list.push({
+        username: e.rowKey,
+        name: e.name,
+        school: e.school,
+        grade: e.grade,
+        parentPhone: e.parentPhone,
+        createdAt: e.createdAt,
+      });
+      if (list.length >= 200) break;
+    }
+    list.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+    return { status: 200, jsonBody: { students: list } };
+  },
+});
+
+// ---------- Attempts (students and Google users) ----------
+
 app.http("attempts", {
   methods: ["GET", "POST"],
   authLevel: "anonymous",
-  handler: async (request, context) => {
-    if (!STORAGE || !GOOGLE_CLIENT_ID) {
-      return { status: 500, jsonBody: { error: "API not configured" } };
-    }
-    const { token, reason } = await verifyGoogleToken(request);
-    if (!token) {
-      return { status: 401, jsonBody: { error: "Invalid token", reason } };
+  handler: async (request) => {
+    const err = configError();
+    if (err) return err;
+    const who = await identify(request);
+    if (!who.kind) {
+      return { status: 401, jsonBody: { error: "Invalid token", reason: who.reason } };
     }
 
     const attempts = tableClient("attempts");
@@ -144,22 +397,23 @@ app.http("attempts", {
       // Inverted-time row key so newest attempts sort first in the table.
       const rowKey = `${String(9999999999999 - Date.now())}~${body.testId.slice(0, 80)}`;
       await attempts.createEntity({
-        partitionKey: token.sub,
+        partitionKey: who.id,
         rowKey,
         testId: body.testId.slice(0, 80),
         score: Math.max(0, Math.min(10000, Math.round(body.score))),
         total: Math.max(0, Math.min(10000, Math.round(body.total))),
         completedAt,
-        name: token.name || "",
-        email: token.email,
+        name: who.kind === "student" ? who.username : who.name,
+        email: who.kind === "google" ? who.email : "",
+        kind: who.kind,
       });
       return { status: 201, jsonBody: { ok: true } };
     }
 
-    // GET
+    // GET — own attempts
     const list = [];
     const iter = attempts.listEntities({
-      queryOptions: { filter: `PartitionKey eq '${token.sub.replace(/'/g, "''")}'` },
+      queryOptions: { filter: `PartitionKey eq '${who.id.replace(/'/g, "''")}'` },
     });
     for await (const e of iter) {
       list.push({

@@ -3,13 +3,19 @@ import { initAnalytics, track } from "./analytics";
 import {
   authEnabled,
   isLoggedIn,
+  isTeacher,
   getProfile,
   signOut,
   renderGoogleButton,
   savePhone,
+  studentLogin,
+  listStudents,
+  createStudent,
+  resetStudentPassword,
   submitAttempt,
   flushPendingAttempts,
   fetchMyAttempts,
+  type StudentRecord,
 } from "./auth";
 
 type QType = "mcq" | "numeric" | "long";
@@ -169,12 +175,16 @@ function profileRow(): string {
       <button id="signin-btn" class="btn-link">Sign in</button>
     </div>`;
   }
+  const sub =
+    p.kind === "student"
+      ? [p.sub, p.grade, p.school].filter(Boolean).join(" · ")
+      : `${p.email ?? ""}${p.role === "teacher" ? " · Teacher" : ""}`;
   return `
     <div class="profile-row">
       ${p.picture ? `<img class="profile-pic" src="${escapeHtml(p.picture)}" alt="" referrerpolicy="no-referrer">` : ""}
       <div class="profile-main">
-        <div class="profile-name">${escapeHtml(p.name || p.email)}</div>
-        <div class="profile-sub">${escapeHtml(p.email)}</div>
+        <div class="profile-name">${escapeHtml(p.name || p.email || p.sub)}</div>
+        <div class="profile-sub">${escapeHtml(sub)}</div>
       </div>
       <button id="signout-btn" class="btn-link">Sign out</button>
     </div>`;
@@ -185,6 +195,16 @@ function showHome() {
   app.innerHTML = `
     ${topbar(false)}
     ${profileRow()}
+    ${
+      isTeacher()
+        ? `<button id="teacher-btn" class="test-card teacher-entry">
+             <div class="test-card-main">
+               <div class="test-card-title">👩‍🏫 My students</div>
+               <div class="test-card-sub">Add students, share logins, reset passwords</div>
+             </div>
+           </button>`
+        : ""
+    }
     <p class="tagline">Chapter-wise practice tests. Attempt, get instant solutions, review any time — right from this link.</p>
     <div class="test-list">
       ${TESTS.map((t) => {
@@ -220,6 +240,7 @@ function showHome() {
     setGuest(false);
     showWelcome();
   });
+  document.getElementById("teacher-btn")?.addEventListener("click", showTeacher);
   void renderServerResults();
 }
 
@@ -271,6 +292,213 @@ function requiresLogin(test: Test): boolean {
   return authEnabled && test.access === "login" && !isLoggedIn();
 }
 
+function showStudentLogin(next: () => void) {
+  track("student_login_open");
+  app.innerHTML = `
+    ${topbar(true)}
+    <main class="card landing">
+      <h2 class="landing-title">Student login</h2>
+      <p class="hint">Enter the username and password your teacher shared with you.</p>
+      <input id="su-user" class="numeric-input" type="text" autocomplete="username"
+             autocapitalize="none" spellcheck="false" placeholder="Username" />
+      <input id="su-pass" class="numeric-input" type="password" autocomplete="current-password"
+             placeholder="Password" />
+      <p id="su-error" class="login-error" hidden></p>
+      <div class="actions">
+        <button id="su-submit" class="btn btn-primary" disabled>Login</button>
+        <button id="su-back" class="btn btn-ghost">Back</button>
+      </div>
+      <p class="hint">Forgot your password? Ask your teacher to reset it.</p>
+    </main>`;
+  const user = document.getElementById("su-user") as HTMLInputElement;
+  const pass = document.getElementById("su-pass") as HTMLInputElement;
+  const submit = document.getElementById("su-submit") as HTMLButtonElement;
+  const errEl = document.getElementById("su-error") as HTMLElement;
+  const update = () => {
+    submit.disabled = !user.value.trim() || !pass.value;
+  };
+  user.addEventListener("input", update);
+  pass.addEventListener("input", update);
+  pass.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !submit.disabled) submit.click();
+  });
+  submit.addEventListener("click", async () => {
+    submit.disabled = true;
+    submit.textContent = "Logging in…";
+    const result = await studentLogin(user.value.trim(), pass.value);
+    if (result.ok) {
+      track("student_login_success");
+      setGuest(false);
+      next();
+    } else {
+      errEl.textContent = result.message;
+      errEl.hidden = false;
+      submit.disabled = false;
+      submit.textContent = "Login";
+    }
+  });
+  document.getElementById("su-back")!.addEventListener("click", () => showWelcome(next));
+}
+
+// ---------- Teacher: student roster ----------
+
+function credentialMessage(s: { name: string; username: string; password: string }): string {
+  return (
+    `Hi! Here are ${s.name}'s login details for Vidaivi maths practice tests:\n\n` +
+    `Username: ${s.username}\nPassword: ${s.password}\n\n` +
+    `Open https://vidaivi.seyali.app , tap "Student login" and enter these to start.`
+  );
+}
+
+async function copyText(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function showTeacher() {
+  track("teacher_open");
+  app.innerHTML = `
+    ${topbar(true)}
+    <main>
+      <div class="card">
+        <h2 class="landing-title">My students</h2>
+        <p class="hint">Add a student to generate their username and password,
+        then share it on WhatsApp. Passwords are shown only once — use Reset if lost.</p>
+        <input id="st-name" class="numeric-input" type="text" placeholder="Student name *" />
+        <input id="st-school" class="numeric-input" type="text" placeholder="School name" />
+        <input id="st-grade" class="numeric-input" type="text" placeholder="Grade (e.g. 12-A)" />
+        <input id="st-phone" class="numeric-input" type="tel" inputmode="tel" placeholder="Parent's WhatsApp number" />
+        <p id="st-error" class="login-error" hidden></p>
+        <div class="actions">
+          <button id="st-add" class="btn btn-primary" disabled>Add student</button>
+        </div>
+        <div id="st-created"></div>
+      </div>
+      <div class="card roster-card">
+        <div class="solution-title">Students</div>
+        <div id="st-list"><p class="hint">Loading…</p></div>
+      </div>
+    </main>`;
+
+  const nameEl = document.getElementById("st-name") as HTMLInputElement;
+  const schoolEl = document.getElementById("st-school") as HTMLInputElement;
+  const gradeEl = document.getElementById("st-grade") as HTMLInputElement;
+  const phoneEl = document.getElementById("st-phone") as HTMLInputElement;
+  const addBtn = document.getElementById("st-add") as HTMLButtonElement;
+  const errEl = document.getElementById("st-error") as HTMLElement;
+  const createdEl = document.getElementById("st-created")!;
+  const listEl = document.getElementById("st-list")!;
+
+  nameEl.addEventListener("input", () => {
+    addBtn.disabled = !nameEl.value.trim();
+  });
+
+  function credentialCard(s: { name: string; username: string; password: string }): string {
+    return `
+      <div class="cred-card">
+        <div class="cred-title">Login for ${escapeHtml(s.name)}</div>
+        <div class="cred-line">Username: <strong>${escapeHtml(s.username)}</strong></div>
+        <div class="cred-line">Password: <strong>${escapeHtml(s.password)}</strong></div>
+        <button class="btn btn-primary cred-copy" data-name="${escapeHtml(s.name)}"
+                data-user="${escapeHtml(s.username)}" data-pass="${escapeHtml(s.password)}">
+          Copy WhatsApp message
+        </button>
+      </div>`;
+  }
+
+  function bindCopyButtons(root: HTMLElement) {
+    root.querySelectorAll<HTMLButtonElement>(".cred-copy").forEach((btn) =>
+      btn.addEventListener("click", async () => {
+        const ok = await copyText(
+          credentialMessage({
+            name: btn.dataset.name!,
+            username: btn.dataset.user!,
+            password: btn.dataset.pass!,
+          })
+        );
+        btn.textContent = ok ? "Copied! Paste in WhatsApp" : "Copy failed — note it down manually";
+      })
+    );
+  }
+
+  async function refreshList() {
+    const students = await listStudents();
+    if (!students) {
+      listEl.innerHTML = `<p class="login-error">Could not load students — refresh to retry.</p>`;
+      return;
+    }
+    if (!students.length) {
+      listEl.innerHTML = `<p class="hint">No students yet — add your first above.</p>`;
+      return;
+    }
+    listEl.innerHTML = students
+      .map(
+        (s) => `
+      <div class="roster-row">
+        <div class="roster-main">
+          <div class="roster-name">${escapeHtml(s.name)}</div>
+          <div class="roster-sub">${escapeHtml(s.username)}${s.grade ? ` · ${escapeHtml(s.grade)}` : ""}${s.school ? ` · ${escapeHtml(s.school)}` : ""}</div>
+        </div>
+        <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
+      </div>`
+      )
+      .join("");
+    listEl.querySelectorAll<HTMLButtonElement>(".roster-reset").forEach((btn) =>
+      btn.addEventListener("click", async () => {
+        btn.textContent = "Resetting…";
+        const result = await resetStudentPassword(btn.dataset.user!);
+        if (result) {
+          createdEl.innerHTML = credentialCard({
+            name: btn.dataset.name!,
+            username: result.username,
+            password: result.password,
+          });
+          bindCopyButtons(createdEl);
+          createdEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+        btn.textContent = "Reset password";
+      })
+    );
+  }
+
+  addBtn.addEventListener("click", async () => {
+    addBtn.disabled = true;
+    addBtn.textContent = "Adding…";
+    errEl.hidden = true;
+    const created = await createStudent({
+      name: nameEl.value.trim(),
+      school: schoolEl.value.trim(),
+      grade: gradeEl.value.trim(),
+      parentPhone: phoneEl.value.trim(),
+    });
+    addBtn.textContent = "Add student";
+    if (created?.password) {
+      track("student_created");
+      createdEl.innerHTML = credentialCard({
+        name: created.name,
+        username: created.username,
+        password: created.password,
+      });
+      bindCopyButtons(createdEl);
+      nameEl.value = "";
+      schoolEl.value = "";
+      gradeEl.value = "";
+      phoneEl.value = "";
+      void refreshList();
+    } else {
+      errEl.textContent = "Could not add student — check your connection and try again.";
+      errEl.hidden = false;
+      addBtn.disabled = false;
+    }
+  });
+
+  void refreshList();
+}
+
 function showWelcome(next?: () => void) {
   const done = next ?? showHome;
   track("welcome_open");
@@ -281,6 +509,9 @@ function showWelcome(next?: () => void) {
       <h2 class="welcome-title">CBSE Class 12 Maths practice, made simple</h2>
       <p class="welcome-sub">Chapter-wise tests with instant worked solutions.
       Sign in to save your scores to your profile — or explore as a guest.</p>
+      <button id="student-btn" class="btn btn-primary">Student login</button>
+      <p class="hint">Use the username and password your teacher shared.</p>
+      <div class="welcome-divider"><span>teachers &amp; parents</span></div>
       <div id="google-btn" class="google-btn-slot"></div>
       <p id="login-error" class="login-error" hidden></p>
       <div class="welcome-divider"><span>or</span></div>
@@ -288,6 +519,9 @@ function showWelcome(next?: () => void) {
       <p class="hint welcome-note">Guests can take the free demo test. Scores
       stay on this device only.</p>
     </main>`;
+  document.getElementById("student-btn")!.addEventListener("click", () => {
+    showStudentLogin(done);
+  });
   const slot = document.getElementById("google-btn")!;
   const errEl = document.getElementById("login-error") as HTMLElement;
   void renderGoogleButton(

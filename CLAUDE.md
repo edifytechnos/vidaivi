@@ -68,8 +68,17 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   tokeninfo endpoint) and upserts the profile (name/email/picture/phone) in
   Table Storage; `POST/GET /api/attempts` saves/lists the student's attempts.
 - SWA application settings (Azure portal, not repo): `GOOGLE_CLIENT_ID`,
-  `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`
-  are auto-created).
+  `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`,
+  `students` are auto-created), `SESSION_SECRET` (any long random string —
+  signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
+  addresses that get the teacher role).
+- Roles: Google login is for **teachers and parents** (role decided by
+  `TEACHER_EMAILS`); **students** log in with a teacher-issued
+  username/password (`POST /api/student-login` → 30-day HMAC session token,
+  prefix `vst.`). Teachers manage students via `GET/POST /api/students`
+  (create with auto-generated username + password, reset password); passwords
+  are stored as salted scrypt hashes and returned in plain text only at
+  create/reset time. `/api/attempts` accepts both identity kinds.
 - First login asks once for a WhatsApp phone number (stored on the profile —
   the parent-contact capture from the product plan).
 - Attempt saves are fire-and-forget with a localStorage retry queue
