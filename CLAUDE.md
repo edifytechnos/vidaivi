@@ -72,6 +72,12 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   `students` are auto-created), `SESSION_SECRET` (any long random string —
   signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
   addresses that get the teacher role).
+- Admin: `ADMIN_USERNAME` + `ADMIN_PASSWORD` app settings enable
+  `POST /api/admin-login` (12h HMAC session, prefix `vad.`); `ADMIN_EMAILS`
+  grants the admin role to those Google accounts. Admins manage the teacher
+  allowlist (`teachers` table) via `GET/POST /api/teachers` from the app's
+  Admin dashboard (welcome screen → Admin link); the table is checked in
+  addition to `TEACHER_EMAILS`. Admins also have all teacher powers.
 - Roles: Google login is for **teachers and parents** (role decided by
   `TEACHER_EMAILS`); **students** log in with a teacher-issued
   username/password (`POST /api/student-login` → 30-day HMAC session token,

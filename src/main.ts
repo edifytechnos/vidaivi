@@ -4,6 +4,10 @@ import {
   authEnabled,
   isLoggedIn,
   isTeacher,
+  isAdmin,
+  adminLogin,
+  listTeachers,
+  modifyTeacher,
   getProfile,
   signOut,
   renderGoogleButton,
@@ -196,6 +200,16 @@ function showHome() {
     ${topbar(false)}
     ${profileRow()}
     ${
+      isAdmin()
+        ? `<button id="admin-btn" class="test-card teacher-entry">
+             <div class="test-card-main">
+               <div class="test-card-title">🛠️ Admin — teacher access</div>
+               <div class="test-card-sub">Manage which Gmail accounts are teachers</div>
+             </div>
+           </button>`
+        : ""
+    }
+    ${
       isTeacher()
         ? `<button id="teacher-btn" class="test-card teacher-entry">
              <div class="test-card-main">
@@ -241,6 +255,7 @@ function showHome() {
     showWelcome();
   });
   document.getElementById("teacher-btn")?.addEventListener("click", showTeacher);
+  document.getElementById("admin-btn")?.addEventListener("click", showAdmin);
   void renderServerResults();
 }
 
@@ -338,6 +353,138 @@ function showStudentLogin(next: () => void) {
     }
   });
   document.getElementById("su-back")!.addEventListener("click", () => showWelcome(next));
+}
+
+function showAdminLogin(next: () => void) {
+  track("admin_login_open");
+  app.innerHTML = `
+    ${topbar(true)}
+    <main class="card landing">
+      <h2 class="landing-title">Admin login</h2>
+      <input id="ad-user" class="numeric-input" type="text" autocomplete="username"
+             autocapitalize="none" spellcheck="false" placeholder="Username" />
+      <input id="ad-pass" class="numeric-input" type="password" autocomplete="current-password"
+             placeholder="Password" />
+      <p id="ad-error" class="login-error" hidden></p>
+      <div class="actions">
+        <button id="ad-submit" class="btn btn-primary" disabled>Login</button>
+        <button id="ad-back" class="btn btn-ghost">Back</button>
+      </div>
+    </main>`;
+  const user = document.getElementById("ad-user") as HTMLInputElement;
+  const pass = document.getElementById("ad-pass") as HTMLInputElement;
+  const submit = document.getElementById("ad-submit") as HTMLButtonElement;
+  const errEl = document.getElementById("ad-error") as HTMLElement;
+  const update = () => {
+    submit.disabled = !user.value.trim() || !pass.value;
+  };
+  user.addEventListener("input", update);
+  pass.addEventListener("input", update);
+  pass.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !submit.disabled) submit.click();
+  });
+  submit.addEventListener("click", async () => {
+    submit.disabled = true;
+    submit.textContent = "Logging in…";
+    const result = await adminLogin(user.value.trim(), pass.value);
+    if (result.ok) {
+      track("admin_login_success");
+      setGuest(false);
+      showAdmin();
+    } else {
+      errEl.textContent = result.message;
+      errEl.hidden = false;
+      submit.disabled = false;
+      submit.textContent = "Login";
+    }
+  });
+  document.getElementById("ad-back")!.addEventListener("click", () => showWelcome(next));
+}
+
+// ---------- Admin: teacher allowlist ----------
+
+function showAdmin() {
+  track("admin_open");
+  app.innerHTML = `
+    ${topbar(true)}
+    <main>
+      <div class="card">
+        <h2 class="landing-title">Teacher access</h2>
+        <p class="hint">Gmail addresses listed here get the teacher role when
+        they sign in with Google — they can manage students and share logins.</p>
+        <input id="te-email" class="numeric-input" type="email" autocapitalize="none"
+               spellcheck="false" placeholder="teacher@gmail.com" />
+        <p id="te-error" class="login-error" hidden></p>
+        <div class="actions">
+          <button id="te-add" class="btn btn-primary" disabled>Add teacher</button>
+        </div>
+      </div>
+      <div class="card roster-card">
+        <div class="solution-title">Allowed teachers</div>
+        <div id="te-list"><p class="hint">Loading…</p></div>
+      </div>
+      <div class="actions">
+        <button id="te-students" class="btn btn-ghost">My students</button>
+        <button id="te-home" class="btn btn-ghost">Home</button>
+      </div>
+    </main>`;
+
+  const emailEl = document.getElementById("te-email") as HTMLInputElement;
+  const addBtn = document.getElementById("te-add") as HTMLButtonElement;
+  const errEl = document.getElementById("te-error") as HTMLElement;
+  const listEl = document.getElementById("te-list")!;
+
+  emailEl.addEventListener("input", () => {
+    addBtn.disabled = !emailEl.value.includes("@");
+  });
+
+  async function refresh() {
+    const teachers = await listTeachers();
+    if (!teachers) {
+      listEl.innerHTML = `<p class="login-error">Could not load — refresh to retry.</p>`;
+      return;
+    }
+    if (!teachers.length) {
+      listEl.innerHTML = `<p class="hint">No teachers added yet.</p>`;
+      return;
+    }
+    listEl.innerHTML = teachers
+      .map(
+        (t) => `
+      <div class="roster-row">
+        <div class="roster-main"><div class="roster-name">${escapeHtml(t.email)}</div></div>
+        <button class="btn-link te-remove" data-email="${escapeHtml(t.email)}">Remove</button>
+      </div>`
+      )
+      .join("");
+    listEl.querySelectorAll<HTMLButtonElement>(".te-remove").forEach((btn) =>
+      btn.addEventListener("click", async () => {
+        btn.textContent = "Removing…";
+        await modifyTeacher("remove", btn.dataset.email!);
+        void refresh();
+      })
+    );
+  }
+
+  addBtn.addEventListener("click", async () => {
+    addBtn.disabled = true;
+    addBtn.textContent = "Adding…";
+    errEl.hidden = true;
+    const result = await modifyTeacher("add", emailEl.value.trim());
+    addBtn.textContent = "Add teacher";
+    if (result.ok) {
+      emailEl.value = "";
+      void refresh();
+    } else {
+      errEl.textContent = result.message || "Could not add teacher.";
+      errEl.hidden = false;
+      addBtn.disabled = false;
+    }
+  });
+
+  document.getElementById("te-students")!.addEventListener("click", showTeacher);
+  document.getElementById("te-home")!.addEventListener("click", showHome);
+  void refresh();
 }
 
 // ---------- Teacher: student roster ----------
@@ -518,7 +665,11 @@ function showWelcome(next?: () => void) {
       <button id="guest-btn" class="btn btn-ghost">Continue as guest</button>
       <p class="hint welcome-note">Guests can take the free demo test. Scores
       stay on this device only.</p>
+      <p class="admin-link-row"><button id="admin-link" class="btn-link">Admin</button></p>
     </main>`;
+  document.getElementById("admin-link")!.addEventListener("click", () => {
+    showAdminLogin(done);
+  });
   document.getElementById("student-btn")!.addEventListener("click", () => {
     showStudentLogin(done);
   });

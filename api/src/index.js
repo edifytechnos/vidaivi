@@ -9,8 +9,15 @@ const TEACHER_EMAILS = (process.env.TEACHER_EMAILS || "")
   .split(",")
   .map((e) => e.trim().toLowerCase())
   .filter(Boolean);
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 const STUDENT_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+const ADMIN_TOKEN_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
 
 function tableClient(name) {
   return TableClient.fromConnectionString(STORAGE, name);
@@ -54,30 +61,39 @@ async function verifyGoogleToken(credential) {
   return { token };
 }
 
-function roleForEmail(email) {
-  return TEACHER_EMAILS.includes(String(email).toLowerCase())
-    ? "teacher"
-    : "parent";
+// Teacher allowlist lives in the "teachers" table (managed from the admin
+// dashboard); the TEACHER_EMAILS app setting remains as an optional fallback.
+async function resolveRole(email) {
+  const normalized = String(email).toLowerCase();
+  if (ADMIN_EMAILS.includes(normalized)) return "admin";
+  if (TEACHER_EMAILS.includes(normalized)) return "teacher";
+  try {
+    const teachers = tableClient("teachers");
+    await teachers.getEntity("teacher", normalized);
+    return "teacher";
+  } catch {
+    return "parent";
+  }
 }
 
 // ---------- Student sessions (teacher-issued username/password) ----------
 
-function signStudentToken(username) {
+function signSession(prefix, username, ttlMs) {
   const payload = b64url(
-    JSON.stringify({ u: username, exp: Date.now() + STUDENT_TOKEN_TTL_MS })
+    JSON.stringify({ u: username, exp: Date.now() + ttlMs })
   );
   const sig = b64url(
-    crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest()
+    crypto.createHmac("sha256", SESSION_SECRET).update(`${prefix}.${payload}`).digest()
   );
-  return `vst.${payload}.${sig}`;
+  return `${prefix}.${payload}.${sig}`;
 }
 
-function verifyStudentToken(token) {
+function verifySession(expectedPrefix, token) {
   try {
     const [prefix, payload, sig] = token.split(".");
-    if (prefix !== "vst" || !payload || !sig) return null;
+    if (prefix !== expectedPrefix || !payload || !sig) return null;
     const expected = b64url(
-      crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest()
+      crypto.createHmac("sha256", SESSION_SECRET).update(`${prefix}.${payload}`).digest()
     );
     if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected)))
       return null;
@@ -88,6 +104,11 @@ function verifyStudentToken(token) {
     return null;
   }
 }
+
+const signStudentToken = (u) => signSession("vst", u, STUDENT_TOKEN_TTL_MS);
+const verifyStudentToken = (t) => verifySession("vst", t);
+const signAdminToken = (u) => signSession("vad", u, ADMIN_TOKEN_TTL_MS);
+const verifyAdminToken = (t) => verifySession("vad", t);
 
 function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString("hex");
@@ -135,6 +156,12 @@ async function identify(request) {
     if (!session) return { reason: "bad_student_token" };
     return { kind: "student", id: `stu~${session.username}`, username: session.username };
   }
+  if (bearer.startsWith("vad.")) {
+    if (!SESSION_SECRET) return { reason: "no_session_secret_configured" };
+    const session = verifyAdminToken(bearer);
+    if (!session) return { reason: "bad_admin_token" };
+    return { kind: "admin", id: `adm~${session.username}`, name: "Admin", role: "admin" };
+  }
   const { token, reason } = await verifyGoogleToken(bearer);
   if (!token) return { reason };
   return {
@@ -142,7 +169,7 @@ async function identify(request) {
     id: token.sub,
     name: token.name || "",
     email: token.email,
-    role: roleForEmail(token.email),
+    role: await resolveRole(token.email),
   };
 }
 
@@ -164,6 +191,7 @@ app.http("health", {
       hasGoogleClientId: !!GOOGLE_CLIENT_ID,
       hasStorageConnectionString: !!STORAGE,
       hasSessionSecret: !!SESSION_SECRET,
+      hasAdminCredentials: !!(ADMIN_USERNAME && ADMIN_PASSWORD),
       teacherEmailsConfigured: TEACHER_EMAILS.length,
       node: process.version,
     },
@@ -218,7 +246,7 @@ app.http("login", {
         email: merged.email,
         picture: merged.picture,
         phone: merged.phone,
-        role: roleForEmail(token.email),
+        role: await resolveRole(token.email),
       },
     };
   },
@@ -267,6 +295,90 @@ app.http("student-login", {
   },
 });
 
+// ---------- Admin login (credentials from ADMIN_USERNAME/ADMIN_PASSWORD settings) ----------
+
+function safeEqual(a, b) {
+  const ba = Buffer.from(String(a));
+  const bb = Buffer.from(String(b));
+  return ba.length === bb.length && crypto.timingSafeEqual(ba, bb);
+}
+
+app.http("admin-login", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  handler: async (request) => {
+    const err = configError();
+    if (err) return err;
+    if (!SESSION_SECRET || !ADMIN_USERNAME || !ADMIN_PASSWORD) {
+      return { status: 500, jsonBody: { error: "API not configured", reason: "no_admin_credentials" } };
+    }
+    const body = await request.json().catch(() => null);
+    const username = String(body?.username || "").trim();
+    const password = String(body?.password || "");
+    if (!safeEqual(username, ADMIN_USERNAME) || !safeEqual(password, ADMIN_PASSWORD)) {
+      return { status: 401, jsonBody: { error: "Wrong username or password" } };
+    }
+    return { status: 200, jsonBody: { token: signAdminToken(username) } };
+  },
+});
+
+// ---------- Admin: manage the teacher allowlist ----------
+
+app.http("teachers", {
+  methods: ["GET", "POST"],
+  authLevel: "anonymous",
+  handler: async (request) => {
+    const err = configError();
+    if (err) return err;
+    const who = await identify(request);
+    if (!who.kind) {
+      return { status: 401, jsonBody: { error: "Invalid token", reason: who.reason } };
+    }
+    if (who.role !== "admin") {
+      return { status: 403, jsonBody: { error: "Admins only" } };
+    }
+    const teachers = tableClient("teachers");
+    await ensureTable(teachers);
+
+    if (request.method === "POST") {
+      const body = await request.json().catch(() => null);
+      const action = body?.action || "add";
+      const email = String(body?.email || "").trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return { status: 400, jsonBody: { error: "Enter a valid email address" } };
+      }
+      if (action === "remove") {
+        try {
+          await teachers.deleteEntity("teacher", email);
+        } catch {}
+        return { status: 200, jsonBody: { ok: true } };
+      }
+      await teachers.upsertEntity(
+        {
+          partitionKey: "teacher",
+          rowKey: email,
+          addedBy: who.id,
+          addedAt: new Date().toISOString(),
+        },
+        "Merge"
+      );
+      return { status: 200, jsonBody: { ok: true } };
+    }
+
+    // GET — list allowlisted teacher emails
+    const list = [];
+    const iter = teachers.listEntities({
+      queryOptions: { filter: `PartitionKey eq 'teacher'` },
+    });
+    for await (const e of iter) {
+      list.push({ email: e.rowKey, addedAt: e.addedAt });
+      if (list.length >= 200) break;
+    }
+    list.sort((a, b) => a.email.localeCompare(b.email));
+    return { status: 200, jsonBody: { teachers: list } };
+  },
+});
+
 // ---------- Teacher: manage students ----------
 
 app.http("students", {
@@ -279,7 +391,7 @@ app.http("students", {
     if (!who.kind) {
       return { status: 401, jsonBody: { error: "Invalid token", reason: who.reason } };
     }
-    if (who.kind !== "google" || who.role !== "teacher") {
+    if (who.role !== "teacher" && who.role !== "admin") {
       return { status: 403, jsonBody: { error: "Teachers only" } };
     }
     const students = tableClient("students");

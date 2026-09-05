@@ -5,19 +5,19 @@
 // Auth is disabled entirely when VITE_GOOGLE_CLIENT_ID is unset (local dev).
 
 export interface Profile {
-  kind: "google" | "student";
+  kind: "google" | "student" | "admin";
   sub: string; // google sub or student username
   name: string;
   email?: string;
   picture?: string;
   phone?: string;
-  role?: "teacher" | "parent" | "student";
+  role?: "teacher" | "parent" | "student" | "admin";
   school?: string;
   grade?: string;
 }
 
 interface AuthState {
-  kind: "google" | "student";
+  kind: "google" | "student" | "admin";
   credential: string; // Google ID token or student session token
   profile: Profile;
   savedAt: number;
@@ -64,7 +64,12 @@ export function getProfile(): Profile | null {
 }
 
 export function isTeacher(): boolean {
-  return getProfile()?.role === "teacher";
+  const role = getProfile()?.role;
+  return role === "teacher" || role === "admin";
+}
+
+export function isAdmin(): boolean {
+  return getProfile()?.role === "admin";
 }
 
 function saveAuth(state: AuthState): void {
@@ -200,6 +205,65 @@ export async function studentLogin(
     return { ok: true };
   } catch {
     return { ok: false, message: "Network error — check your connection." };
+  }
+}
+
+// ---------- Admin login and teacher allowlist ----------
+
+export async function adminLogin(
+  username: string,
+  password: string
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  try {
+    const res = await fetch("/api/admin-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { ok: false, message: data.error || "Login failed" };
+    }
+    const data = await res.json();
+    saveAuth({
+      kind: "admin",
+      credential: data.token,
+      profile: { kind: "admin", sub: username, name: "Admin", role: "admin" },
+      savedAt: Date.now(),
+    });
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Network error — check your connection." };
+  }
+}
+
+export async function listTeachers(): Promise<{ email: string; addedAt?: string }[] | null> {
+  try {
+    const res = await fetch("/api/teachers", { headers: authHeader() });
+    if (!res.ok) return null;
+    return (await res.json()).teachers;
+  } catch {
+    return null;
+  }
+}
+
+export async function modifyTeacher(
+  action: "add" | "remove",
+  email: string
+): Promise<{ ok: boolean; message?: string }> {
+  try {
+    const res = await fetch("/api/teachers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action, email }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { ok: false, message: data.error || "Request failed" };
+    }
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Network error" };
   }
 }
 
