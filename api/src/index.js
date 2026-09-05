@@ -16,21 +16,32 @@ async function ensureTable(client) {
   }
 }
 
-// Verify a Google ID token and return its payload, or null if invalid.
+// Verify a Google ID token. Returns { token } on success or { reason } on
+// failure — reasons are codes only, never token contents.
 async function verifyGoogleToken(request) {
   const header = request.headers.get("authorization") || "";
   const credential = header.startsWith("Bearer ") ? header.slice(7) : null;
-  if (!credential || !GOOGLE_CLIENT_ID) return null;
-  const res = await fetch(
-    "https://oauth2.googleapis.com/tokeninfo?id_token=" +
-      encodeURIComponent(credential)
-  );
-  if (!res.ok) return null;
+  if (!credential) return { reason: "no_bearer_token" };
+  if (!GOOGLE_CLIENT_ID) return { reason: "no_client_id_configured" };
+  let res;
+  try {
+    res = await fetch(
+      "https://oauth2.googleapis.com/tokeninfo?id_token=" +
+        encodeURIComponent(credential)
+    );
+  } catch {
+    return { reason: "tokeninfo_unreachable" };
+  }
+  if (!res.ok) return { reason: `tokeninfo_rejected_${res.status}` };
   const token = await res.json();
-  if (token.aud !== GOOGLE_CLIENT_ID) return null;
-  if (Number(token.exp) * 1000 < Date.now()) return null;
-  if (!token.sub || !token.email) return null;
-  return token;
+  if (token.aud !== GOOGLE_CLIENT_ID) {
+    return {
+      reason: `aud_mismatch (token aud ...${String(token.aud).slice(-25)} vs configured ...${GOOGLE_CLIENT_ID.slice(-25)})`,
+    };
+  }
+  if (Number(token.exp) * 1000 < Date.now()) return { reason: "expired" };
+  if (!token.sub || !token.email) return { reason: "missing_claims" };
+  return { token };
 }
 
 function publicProfile(entity) {
@@ -65,8 +76,10 @@ app.http("login", {
     if (!STORAGE || !GOOGLE_CLIENT_ID) {
       return { status: 500, jsonBody: { error: "API not configured" } };
     }
-    const token = await verifyGoogleToken(request);
-    if (!token) return { status: 401, jsonBody: { error: "Invalid token" } };
+    const { token, reason } = await verifyGoogleToken(request);
+    if (!token) {
+      return { status: 401, jsonBody: { error: "Invalid token", reason } };
+    }
 
     const body = await request.json().catch(() => ({}));
     const phone =
@@ -106,8 +119,10 @@ app.http("attempts", {
     if (!STORAGE || !GOOGLE_CLIENT_ID) {
       return { status: 500, jsonBody: { error: "API not configured" } };
     }
-    const token = await verifyGoogleToken(request);
-    if (!token) return { status: 401, jsonBody: { error: "Invalid token" } };
+    const { token, reason } = await verifyGoogleToken(request);
+    if (!token) {
+      return { status: 401, jsonBody: { error: "Invalid token", reason } };
+    }
 
     const attempts = tableClient("attempts");
     await ensureTable(attempts);
