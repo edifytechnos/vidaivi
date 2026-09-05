@@ -499,6 +499,247 @@ handlers.reports = async (context, req) => {
   json(context, 200, { students: roster });
 };
 
+// ---------- Tests (DB-backed; Phase 1 of the product plan) ----------
+//
+// Table "tests": PK "test", RK = test id. Questions are stored as JSON
+// chunked across qc0..qcN string properties (Table Storage caps one string
+// property at 64KB). Taxonomy fields (board/klass/subject) are stored from
+// day one even though the UI is fixed to CBSE/12/Maths for now.
+
+const TEST_STATUSES = ["draft", "published", "archived"];
+const Q_CHUNK = 30000;
+
+function chunkQuestions(entity, questions) {
+  const raw = JSON.stringify(questions);
+  const count = Math.max(1, Math.ceil(raw.length / Q_CHUNK));
+  for (let i = 0; i < count; i++) {
+    entity[`qc${i}`] = raw.slice(i * Q_CHUNK, (i + 1) * Q_CHUNK);
+  }
+  entity.chunkCount = count;
+}
+
+function unchunkQuestions(entity) {
+  let raw = "";
+  for (let i = 0; i < (entity.chunkCount || 0); i++) raw += entity[`qc${i}`] || "";
+  try {
+    return JSON.parse(raw || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function validateQuestions(input) {
+  if (!Array.isArray(input) || !input.length || input.length > 60) {
+    return { error: "Provide between 1 and 60 questions" };
+  }
+  const out = [];
+  const seen = new Set();
+  for (const q of input) {
+    if (!q || typeof q !== "object") return { error: "Bad question entry" };
+    const id = String(q.id || "").trim().slice(0, 40);
+    const type = q.type;
+    if (!id || seen.has(id)) return { error: `Question ids must be unique (${id || "missing"})` };
+    seen.add(id);
+    if (!["mcq", "numeric", "long"].includes(type)) return { error: `Unknown question type: ${type}` };
+    if (typeof q.q !== "string" || !q.q.trim()) return { error: `Question ${id}: text required` };
+    if (typeof q.solution !== "string" || !q.solution.trim()) return { error: `Question ${id}: solution required` };
+    const marks = Number(q.marks);
+    if (!Number.isFinite(marks) || marks < 1 || marks > 20) return { error: `Question ${id}: marks must be 1-20` };
+    const clean = {
+      id,
+      chapter: String(q.chapter || "").slice(0, 60),
+      topic: String(q.topic || "").slice(0, 60),
+      type,
+      q: String(q.q).slice(0, 4000),
+      solution: String(q.solution).slice(0, 8000),
+      marks: Math.round(marks),
+    };
+    if (type === "mcq") {
+      if (!Array.isArray(q.options) || q.options.length < 2 || q.options.length > 6) {
+        return { error: `Question ${id}: mcq needs 2-6 options` };
+      }
+      clean.options = q.options.map((o) => String(o).slice(0, 500));
+      const answer = Number(q.answer);
+      if (!Number.isInteger(answer) || answer < 0 || answer >= clean.options.length) {
+        return { error: `Question ${id}: answer must index an option` };
+      }
+      clean.answer = answer;
+    } else if (type === "numeric") {
+      const answer = Number(q.answer);
+      if (!Number.isFinite(answer)) return { error: `Question ${id}: numeric answer required` };
+      clean.answer = answer;
+      const tol = Number(q.tolerance);
+      clean.tolerance = Number.isFinite(tol) && tol >= 0 ? tol : 0;
+    }
+    out.push(clean);
+  }
+  return { questions: out };
+}
+
+function testMeta(e) {
+  const questions = unchunkQuestions(e);
+  return {
+    id: e.rowKey,
+    title: e.title,
+    chapter: e.chapter,
+    teacher: e.teacher || null,
+    order: typeof e.order === "number" ? e.order : 99,
+    access: e.access === "open" ? "open" : "login",
+    status: e.status,
+    platform: !!e.platform,
+    ownerSub: e.ownerSub,
+    questionCount: questions.length,
+    totalMarks: questions.reduce((s, q) => s + (q.marks || 0), 0),
+    updatedAt: e.updatedAt,
+  };
+}
+
+function testFull(e) {
+  return { ...testMeta(e), questions: unchunkQuestions(e) };
+}
+
+async function studentTeacherSub(username) {
+  try {
+    const s = await tableClient("students").getEntity("student", username);
+    return s.teacherSub || "";
+  } catch {
+    return "";
+  }
+}
+
+function canManageTest(who, entity) {
+  if (who.role === "admin") return entity.platform || entity.ownerSub === who.id;
+  return who.role === "teacher" && entity.ownerSub === who.id;
+}
+
+handlers.tests = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+
+  const tests = tableClient("tests");
+  await ensureTable(tests);
+  const isStaff = who.role === "teacher" || who.role === "admin";
+
+  if (req.method === "POST") {
+    if (!isStaff) return json(context, 403, { error: "Teachers only" });
+    const body = getBody(req);
+    const action = body.action || "create";
+
+    if (["publish", "unpublish", "archive", "delete"].includes(action)) {
+      const id = String(body.id || "").trim();
+      let entity;
+      try {
+        entity = await tests.getEntity("test", id);
+      } catch {
+        return json(context, 404, { error: "Test not found" });
+      }
+      if (!canManageTest(who, entity)) return json(context, 403, { error: "Not your test" });
+      if (action === "delete") {
+        if (entity.status !== "draft") return json(context, 400, { error: "Only drafts can be deleted — archive instead" });
+        await tests.deleteEntity("test", id);
+        return json(context, 200, { ok: true });
+      }
+      entity.status = action === "publish" ? "published" : action === "archive" ? "archived" : "draft";
+      entity.updatedAt = new Date().toISOString();
+      await tests.updateEntity(entity, "Replace");
+      return json(context, 200, { ok: true, status: entity.status });
+    }
+
+    if (action !== "create" && action !== "update") {
+      return json(context, 400, { error: `Unknown action: ${action}` });
+    }
+    const t = body.test || {};
+    const title = String(t.title || "").trim().slice(0, 120);
+    if (!title) return json(context, 400, { error: "Title required" });
+    const checked = validateQuestions(t.questions);
+    if (checked.error) return json(context, 400, { error: checked.error });
+
+    if (action === "create") {
+      let id = String(t.id || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 60);
+      if (!id) id = `${slugify(title)}-${crypto.randomInt(100, 1000)}`;
+      try {
+        await tests.getEntity("test", id);
+        return json(context, 409, { error: `Test id already exists: ${id}` });
+      } catch {}
+      const entity = {
+        partitionKey: "test",
+        rowKey: id,
+        title,
+        chapter: String(t.chapter || "").slice(0, 60),
+        teacher: String(t.teacher || "").slice(0, 60),
+        order: Number.isFinite(Number(t.order)) ? Number(t.order) : 99,
+        access: t.access === "open" ? "open" : "login",
+        status: "draft",
+        platform: !!t.platform && who.role === "admin",
+        ownerSub: who.id,
+        ownerEmail: who.email || "",
+        board: "CBSE",
+        klass: "12",
+        subject: "Maths",
+        forkedFromId: String(t.forkedFromId || "").slice(0, 60),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      chunkQuestions(entity, checked.questions);
+      await tests.createEntity(entity);
+      return json(context, 201, { test: testMeta(entity) });
+    }
+
+    // update
+    const id = String(t.id || "").trim();
+    let entity;
+    try {
+      entity = await tests.getEntity("test", id);
+    } catch {
+      return json(context, 404, { error: "Test not found" });
+    }
+    if (!canManageTest(who, entity)) return json(context, 403, { error: "Not your test" });
+    // Clear old chunks before writing new ones (Replace drops absent props).
+    for (let i = 0; i < (entity.chunkCount || 0); i++) delete entity[`qc${i}`];
+    entity.title = title;
+    entity.chapter = String(t.chapter || "").slice(0, 60);
+    entity.teacher = String(t.teacher || "").slice(0, 60);
+    if (Number.isFinite(Number(t.order))) entity.order = Number(t.order);
+    if (t.access) entity.access = t.access === "open" ? "open" : "login";
+    entity.updatedAt = new Date().toISOString();
+    chunkQuestions(entity, checked.questions);
+    await tests.updateEntity(entity, "Replace");
+    return json(context, 200, { test: testMeta(entity) });
+  }
+
+  // GET ?id=... → full test (if visible), GET → metadata list.
+  const wantedId = String((req.query && req.query.id) || "").trim();
+  const teacherSub = who.kind === "student" ? await studentTeacherSub(who.username) : "";
+
+  function visible(e) {
+    if (isStaff) return canManageTest(who, e) || (e.platform && e.status === "published");
+    if (e.status !== "published") return false;
+    if (e.platform) return true;
+    return who.kind === "student" && !!teacherSub && e.ownerSub === teacherSub;
+  }
+
+  if (wantedId) {
+    let entity;
+    try {
+      entity = await tests.getEntity("test", wantedId);
+    } catch {
+      return json(context, 404, { error: "Test not found" });
+    }
+    if (!visible(entity)) return json(context, 403, { error: "Not available" });
+    return json(context, 200, { test: testFull(entity) });
+  }
+
+  const list = [];
+  const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+  for await (const e of iter) {
+    if (visible(e)) list.push(testMeta(e));
+    if (list.length >= 200) break;
+  }
+  list.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
+  json(context, 200, { tests: list });
+};
+
 handlers.attempts = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req);

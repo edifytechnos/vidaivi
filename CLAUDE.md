@@ -92,6 +92,30 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   student's own resume/review UX. Google ID tokens expire after ~1h — an
   expired session just re-queues saves until the next sign-in.
 
+## Cloud-authored tests (`/api/tests`, table `tests`)
+
+Phase 1 of `docs/PRODUCT-PLAN.md`. Teachers author tests that live in Table
+Storage instead of the repo; bundled `src/tests/*.json` stay as the platform seed.
+
+- `GET /api/tests` → metadata list visible to the caller (teachers/admins see
+  their own + published platform tests; students see published platform tests
+  plus their own teacher's published tests).
+- `GET /api/tests?id=<id>` → one full test (questions included) if visible.
+- `POST /api/tests` with `{action, ...}`: `create`/`update` (`{test: {...}}`,
+  same JSON shape as the bundled files), `publish`, `unpublish`, `archive`,
+  `delete` (drafts only). Teachers only; a teacher can only touch their own tests.
+- Lifecycle: `draft → published → archived`; only published tests reach students.
+- Storage shape: PK `test`, RK = test id; questions are JSON split across
+  `qc0..qcN` string properties (Table Storage caps one property at 64KB) with
+  `chunkCount`. Taxonomy (`board`/`klass`/`subject`) is stored from day one,
+  fixed to CBSE/12/Maths until the UI exposes it.
+- Client: `src/api.ts`. Home merges published cloud tests into the test list;
+  a `?test=<id>` link that isn't bundled falls back to fetching it from the API,
+  so teacher-authored test links work the same way as built-in ones.
+- Console → **My tests** lists a teacher's cloud tests with publish/archive/delete.
+  Until the visual editor lands (next increment), tests are created by pasting
+  test JSON.
+
 ## Source layout (`src/`)
 
 - `main.ts` — boot only: analytics init, URL → screen routing. No screen code here.
@@ -102,7 +126,8 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 - `auth.ts` — auth state + all API fetch calls. `analytics.ts` — App Insights.
 - `screens/auth.ts` — welcome, student login, admin login, phone capture.
 - `screens/home.ts` — home test list, profile row, cloud-saved results.
-- `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report.
+- `api.ts` — fetch client for the DB-backed tests API.
+- `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
 - `screens/test.ts` — test player (landing → questions → score → review).
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
