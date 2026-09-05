@@ -215,7 +215,7 @@ export async function adminLogin(
   password: string
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   try {
-    const res = await fetch("/api/adminauth", {
+    const res = await fetch("/api/manageauth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
