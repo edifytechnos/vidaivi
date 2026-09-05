@@ -21,6 +21,8 @@ jobs:
           cache: npm
 
       - name: Install and build
+        env:
+          VITE_APPINSIGHTS_CONNECTION_STRING: ${{ secrets.APPINSIGHTS_CONNECTION_STRING }}
         run: |
           npm ci
           npm run build

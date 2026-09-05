@@ -51,6 +51,11 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret).
 - PRs against `main` get a preview URL posted on the PR — use it for teacher approval
   of new question sets before merging.
+- Analytics: Azure Application Insights (optional). Activates only when the
+  `APPINSIGHTS_CONNECTION_STRING` repo secret is set (passed to the build as
+  `VITE_APPINSIGHTS_CONNECTION_STRING`); without it `src/analytics.ts` no-ops.
+  Events: test_open, test_start, test_resume, question_answered, test_complete,
+  review_open, test_retake, home_open.
 
 ## Commands
 
@@ -58,10 +63,26 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 - `npm run build` — typecheck + production build to `dist/` (ready for Netlify drop)
 - `npm run preview` — serve the built `dist/`
 
-## Question JSON schema (`src/questions.json`) — stable, do not change without updating this file
+## Test & question JSON schema (`src/tests/*.json`) — stable, do not change without updating this file
 
-The file is an array of question objects. `src/main.ts` types this as
-`Question`; do not rename or repurpose fields.
+Each test is one JSON file in `src/tests/` (auto-discovered via `import.meta.glob`
+in `src/main.ts` — adding a file adds the test, no code change). A test file is an
+object:
+
+| Field | Type | Required | Meaning |
+|---|---|---|---|
+| `id` | string | yes | Stable test ID, used in the URL (`/?test=<id>`) and as the localStorage key. Never change after sharing a link. |
+| `title` | string | yes | Shown on home card and test landing screen. |
+| `chapter` | string | yes | CBSE chapter name. |
+| `teacher` | string \| null | yes | Shown as "Curated by …" on the landing screen; `null` hides the line. |
+| `order` | number | no | Sort order on the home screen (ascending). |
+| `questions` | Question[] | yes | Array of question objects (below). |
+
+Student progress/results are stored per test in `localStorage` under
+`vidaivi:attempt:<test id>` — device-local, no backend.
+
+Question objects (`src/main.ts` types this as `Question`; do not rename or
+repurpose fields):
 
 | Field | Type | Required | Meaning |
 |---|---|---|---|

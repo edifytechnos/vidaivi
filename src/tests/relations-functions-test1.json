@@ -1,0 +1,195 @@
+{
+  "id": "relations-functions-test1",
+  "title": "Test 1 — Relations and Functions",
+  "chapter": "Relations and Functions",
+  "teacher": null,
+  "order": 2,
+  "questions": [
+    {
+      "id": "rf-001",
+      "chapter": "Relations and Functions",
+      "topic": "Types of relations",
+      "type": "mcq",
+      "q": "Let $R = \\{(1,2), (2,1)\\}$ be a relation on the set $A = \\{1, 2, 3\\}$. Then $R$ is:",
+      "options": [
+        "reflexive",
+        "symmetric",
+        "transitive",
+        "an equivalence relation"
+      ],
+      "answer": 1,
+      "solution": "Check each property like checking mirrors: **Symmetric** means every arrow has a return arrow — $(1,2)$ has $(2,1)$ and vice versa, so $R$ is symmetric. ✓\n\nNot reflexive: $(1,1), (2,2), (3,3)$ are missing. Not transitive: $(1,2)$ and $(2,1)$ would require $(1,1)$, which is absent. Hence only **symmetric**.",
+      "marks": 1
+    },
+    {
+      "id": "rf-002",
+      "chapter": "Relations and Functions",
+      "topic": "One-one and onto functions",
+      "type": "mcq",
+      "q": "The function $f: \\mathbb{R} \\to \\mathbb{R}$ defined by $f(x) = x^3$ is:",
+      "options": [
+        "one-one but not onto",
+        "onto but not one-one",
+        "both one-one and onto",
+        "neither one-one nor onto"
+      ],
+      "answer": 2,
+      "solution": "**One-one:** $x_1^3 = x_2^3 \\Rightarrow x_1 = x_2$ (cubing never squashes two inputs into one output — the graph always climbs). ✓\n\n**Onto:** every real $y$ has a pre-image $x = y^{1/3}$. ✓\n\nSo $f$ is a **bijection**. Contrast with $x^2$, which folds the negative side onto the positive side and fails both.",
+      "marks": 1
+    },
+    {
+      "id": "rf-003",
+      "chapter": "Relations and Functions",
+      "topic": "Counting functions",
+      "type": "mcq",
+      "q": "If $A = \\{1, 2, 3\\}$ and $B = \\{a, b, c\\}$, the number of one-one functions from $A$ to $B$ is:",
+      "options": ["3", "6", "9", "27"],
+      "answer": 1,
+      "solution": "A one-one function is a seating arrangement: 3 guests, 3 chairs, no sharing. First guest has 3 choices, second has 2, third has 1: $3 \\times 2 \\times 1 = 3! = \\mathbf{6}$.\n\n(All functions would be $3^3 = 27$ — every guest free to pick any chair, sharing allowed.)",
+      "marks": 1
+    },
+    {
+      "id": "rf-004",
+      "chapter": "Relations and Functions",
+      "topic": "Types of relations",
+      "type": "mcq",
+      "q": "The relation $R$ on $\\mathbb{N}$ defined by $a\\,R\\,b$ iff $a$ divides $b$ is:",
+      "options": [
+        "reflexive and symmetric",
+        "reflexive and transitive",
+        "symmetric and transitive",
+        "an equivalence relation"
+      ],
+      "answer": 1,
+      "solution": "**Reflexive:** every number divides itself. ✓\n\n**Transitive:** if $a \\mid b$ and $b \\mid c$, then $a \\mid c$ (a brick fits in a box, the box fits in a truck — the brick fits in the truck). ✓\n\n**Not symmetric:** $2 \\mid 4$ but $4 \\nmid 2$ — divisibility is a one-way street. Hence **reflexive and transitive**.",
+      "marks": 1
+    },
+    {
+      "id": "rf-005",
+      "chapter": "Relations and Functions",
+      "topic": "One-one and onto functions",
+      "type": "mcq",
+      "q": "The function $f: \\mathbb{R} \\to \\mathbb{R}$ defined by $f(x) = |x|$ is:",
+      "options": [
+        "one-one and onto",
+        "one-one but not onto",
+        "onto but not one-one",
+        "neither one-one nor onto"
+      ],
+      "answer": 3,
+      "solution": "**Not one-one:** $f(-2) = f(2) = 2$ — the V-shaped graph folds the number line in half, so two inputs land on one output.\n\n**Not onto:** outputs are never negative, so no $x$ maps to $-1$; half the codomain $\\mathbb{R}$ is unreachable. Hence **neither**.",
+      "marks": 1
+    },
+    {
+      "id": "rf-006",
+      "chapter": "Relations and Functions",
+      "topic": "Composition of functions",
+      "type": "mcq",
+      "q": "If $f(x) = 2x + 3$ and $g(x) = x^2$, then $(f \\circ g)(x)$ equals:",
+      "options": [
+        "$2x^2 + 3$",
+        "$(2x + 3)^2$",
+        "$4x^2 + 9$",
+        "$2x^2 + 6x + 9$"
+      ],
+      "answer": 0,
+      "solution": "$f \\circ g$ means **$g$ runs first, then $f$** — like two machines on a conveyor belt, right to left: $x \\xrightarrow{g} x^2 \\xrightarrow{f} 2x^2 + 3$.\n\nSo $(f \\circ g)(x) = f(g(x)) = f(x^2) = \\mathbf{2x^2 + 3}$. (Option B is $(g \\circ f)(x)$ — the belts swapped.)",
+      "marks": 1
+    },
+    {
+      "id": "rf-007",
+      "chapter": "Relations and Functions",
+      "topic": "Inverse of a function",
+      "type": "numeric",
+      "q": "If $f(x) = 3x - 4$, find $f^{-1}(2)$.",
+      "answer": 2,
+      "tolerance": 0,
+      "solution": "$f^{-1}(2)$ asks: **which input produced the output 2?** Run the machine backwards.\n\nSet $3x - 4 = 2 \\Rightarrow 3x = 6 \\Rightarrow x = \\mathbf{2}$.",
+      "marks": 2
+    },
+    {
+      "id": "rf-008",
+      "chapter": "Relations and Functions",
+      "topic": "Equivalence relations",
+      "type": "numeric",
+      "q": "Find the number of equivalence relations on the set $\\{1, 2, 3\\}$ containing the pair $(1, 2)$.",
+      "answer": 2,
+      "tolerance": 0,
+      "solution": "An equivalence relation is a way of **sorting elements into groups** (partitions). Requiring $(1,2)$ means 1 and 2 must sit in the same group.\n\nPossible partitions: $\\{1,2\\}, \\{3\\}$ — or — $\\{1,2,3\\}$ all together. That's it: $\\mathbf{2}$ equivalence relations.\n\n(Without the $(1,2)$ condition there would be 5 partitions of a 3-element set.)",
+      "marks": 2
+    },
+    {
+      "id": "rf-009",
+      "chapter": "Relations and Functions",
+      "topic": "Composition of functions",
+      "type": "numeric",
+      "q": "If $f(x) = \\dfrac{x}{x - 2}$ for $x \\neq 2$, find $f(f(3))$.",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "Feed the machine twice.\n\n**First pass:** $f(3) = \\dfrac{3}{3 - 2} = 3$.\n\n**Second pass:** $f(f(3)) = f(3) = \\mathbf{3}$.\n\nInteresting: 3 is a *fixed point* — the machine returns it unchanged, like a mirror reflecting a point on its own surface.",
+      "marks": 2
+    },
+    {
+      "id": "rf-010",
+      "chapter": "Relations and Functions",
+      "topic": "Composition of functions",
+      "type": "numeric",
+      "q": "If $g(x) = x^2 + 1$, find $(g \\circ g)(1)$.",
+      "answer": 5,
+      "tolerance": 0,
+      "solution": "Same machine, two passes:\n\n$g(1) = 1^2 + 1 = 2$, then $g(2) = 2^2 + 1 = \\mathbf{5}$.",
+      "marks": 2
+    },
+    {
+      "id": "rf-011",
+      "chapter": "Relations and Functions",
+      "topic": "Counting relations",
+      "type": "numeric",
+      "q": "Find the total number of relations on a set with 2 elements.",
+      "answer": 16,
+      "tolerance": 0,
+      "solution": "A relation on $A$ is any subset of $A \\times A$. With $|A| = 2$, the grid $A \\times A$ has $2 \\times 2 = 4$ cells, and each cell is an independent on/off switch (pair included or not).\n\n$4$ switches $\\Rightarrow 2^4 = \\mathbf{16}$ relations. In general: $2^{n^2}$.",
+      "marks": 2
+    },
+    {
+      "id": "rf-012",
+      "chapter": "Relations and Functions",
+      "topic": "Counting onto functions",
+      "type": "numeric",
+      "q": "Find the number of onto functions from $A = \\{1, 2, 3, 4\\}$ to $B = \\{a, b\\}$.",
+      "answer": 14,
+      "tolerance": 0,
+      "solution": "**Total functions:** each of the 4 elements picks one of 2 targets: $2^4 = 16$ — like 4 people each choosing one of 2 rooms.\n\n**Not onto** means one room stays empty: everyone in room $a$ (1 way) or everyone in room $b$ (1 way) — 2 bad cases.\n\n**Onto** $= 16 - 2 = \\mathbf{14}$.",
+      "marks": 3
+    },
+    {
+      "id": "rf-013",
+      "chapter": "Relations and Functions",
+      "topic": "Inverse of a function",
+      "type": "numeric",
+      "q": "Let $f: \\mathbb{R} - \\{3\\} \\to \\mathbb{R} - \\{1\\}$ be defined by $f(x) = \\dfrac{x - 2}{x - 3}$. Find $f^{-1}(2)$.",
+      "answer": 4,
+      "tolerance": 0,
+      "solution": "Run the machine backwards: find $x$ with $f(x) = 2$.\n\n$$\\frac{x - 2}{x - 3} = 2 \\Rightarrow x - 2 = 2(x - 3) \\Rightarrow x - 2 = 2x - 6 \\Rightarrow x = \\mathbf{4}$$\n\n**Check (always check inverses):** $f(4) = \\dfrac{4 - 2}{4 - 3} = 2$. ✓",
+      "marks": 3
+    },
+    {
+      "id": "rf-014",
+      "chapter": "Relations and Functions",
+      "topic": "Equivalence relations",
+      "type": "long",
+      "q": "Show that the relation $R$ on $\\mathbb{Z}$ defined by $a\\,R\\,b$ iff $(a - b)$ is divisible by 5 is an equivalence relation. Also write the equivalence class $[2]$.",
+      "solution": "Think of the clock analogy: a 5-hour clock face where numbers landing on the same mark are \"equal\". We verify the three properties.\n\n**Reflexive:** $a - a = 0 = 5 \\times 0$, divisible by 5. So $a\\,R\\,a$ for all $a \\in \\mathbb{Z}$. ✓\n\n**Symmetric:** if $a\\,R\\,b$, then $a - b = 5k$ for some $k \\in \\mathbb{Z}$. Then $b - a = 5(-k)$, also divisible by 5, so $b\\,R\\,a$. ✓\n\n**Transitive:** if $a\\,R\\,b$ and $b\\,R\\,c$, then $a - b = 5k$ and $b - c = 5m$. Adding: $a - c = 5(k + m)$, divisible by 5, so $a\\,R\\,c$. ✓\n\nAll three hold, so $R$ is an **equivalence relation**.\n\n**Equivalence class of 2** — all integers landing on the same clock mark as 2:\n\n$$[2] = \\{x \\in \\mathbb{Z} : x - 2 = 5k\\} = \\{\\ldots, -8, -3, 2, 7, 12, \\ldots\\}$$\n\ni.e. $[2] = \\{5k + 2 : k \\in \\mathbb{Z}\\}$.",
+      "marks": 5
+    },
+    {
+      "id": "rf-015",
+      "chapter": "Relations and Functions",
+      "topic": "Invertible functions",
+      "type": "long",
+      "q": "Show that the function $f: \\mathbb{R} \\to \\mathbb{R}$ given by $f(x) = 4x + 3$ is invertible, and find $f^{-1}$.",
+      "solution": "A function is invertible iff it is a perfect pairing (bijective): every input gets a unique output (**one-one**) and every output is used (**onto**). Then the pairing can be read in reverse.\n\n**One-one:** suppose $f(x_1) = f(x_2)$. Then $4x_1 + 3 = 4x_2 + 3 \\Rightarrow 4x_1 = 4x_2 \\Rightarrow x_1 = x_2$. ✓\n\n**Onto:** take any $y \\in \\mathbb{R}$. We need $x$ with $4x + 3 = y$, i.e. $x = \\dfrac{y - 3}{4}$, which is a real number for every $y$. So every $y$ has a pre-image. ✓\n\nHence $f$ is bijective and therefore **invertible**.\n\n**Finding $f^{-1}$:** the machine does \"multiply by 4, then add 3\", so the reverse machine must \"subtract 3, then divide by 4\" — undo the steps in reverse order, like taking off shoes before socks:\n\n$$f^{-1}(y) = \\frac{y - 3}{4}$$\n\n**Check:** $f^{-1}(f(x)) = \\dfrac{(4x + 3) - 3}{4} = x$. ✓",
+      "marks": 5
+    }
+  ]
+}

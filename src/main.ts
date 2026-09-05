@@ -1,5 +1,5 @@
-import questions from "./questions.json";
 import "./style.css";
+import { initAnalytics, track } from "./analytics";
 
 type QType = "mcq" | "numeric" | "long";
 
@@ -16,20 +16,93 @@ interface Question {
   marks: number;
 }
 
+interface Test {
+  id: string;
+  title: string;
+  chapter: string;
+  teacher?: string | null;
+  order?: number;
+  questions: Question[];
+}
+
+interface StoredAnswer {
+  given: number | null; // mcq: option index; numeric: value; long: 1 right / 0 wrong
+  correct: boolean;
+  earned: number;
+}
+
+interface Attempt {
+  answers: Record<string, StoredAnswer>;
+  index: number; // next unanswered question
+  completed: boolean;
+  score: number;
+  completedAt?: string;
+  updatedAt: string;
+}
+
 declare global {
   interface Window {
     renderMathInElement?: (el: HTMLElement, opts?: object) => void;
   }
 }
 
-const QUESTIONS = questions as Question[];
-const TOTAL_MARKS = QUESTIONS.reduce((s, q) => s + q.marks, 0);
+// ---------- Test registry ----------
+
+const modules = import.meta.glob("./tests/*.json", { eager: true }) as Record<
+  string,
+  { default: Test }
+>;
+const TESTS: Test[] = Object.values(modules)
+  .map((m) => m.default)
+  .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+
+function totalMarks(test: Test): number {
+  return test.questions.reduce((s, q) => s + q.marks, 0);
+}
+
+// ---------- Attempt storage (this phone's notebook) ----------
+
+function storageKey(testId: string): string {
+  return `vidaivi:attempt:${testId}`;
+}
+
+function loadAttempt(testId: string): Attempt | null {
+  try {
+    const raw = localStorage.getItem(storageKey(testId));
+    return raw ? (JSON.parse(raw) as Attempt) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveAttempt(testId: string, attempt: Attempt): void {
+  attempt.updatedAt = new Date().toISOString();
+  try {
+    localStorage.setItem(storageKey(testId), JSON.stringify(attempt));
+  } catch {
+    // storage unavailable (private mode etc.) — test still works, just no resume
+  }
+}
+
+function clearAttempt(testId: string): void {
+  try {
+    localStorage.removeItem(storageKey(testId));
+  } catch {}
+}
+
+function newAttempt(): Attempt {
+  return {
+    answers: {},
+    index: 0,
+    completed: false,
+    score: 0,
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+// ---------- Rendering helpers ----------
 
 const app = document.getElementById("app")!;
-
-let index = 0;
-let score = 0;
-const results: { id: string; correct: boolean; earned: number }[] = [];
 
 function renderMath(el: HTMLElement) {
   const run = () =>
@@ -45,13 +118,10 @@ function renderMath(el: HTMLElement) {
 }
 
 function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// Minimal formatting for solution text: **bold** and paragraphs.
+// Minimal formatting for question/solution text: **bold** and paragraphs.
 function formatText(s: string): string {
   return escapeHtml(s)
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
@@ -60,23 +130,127 @@ function formatText(s: string): string {
     .join("");
 }
 
-function progressBar(): string {
-  const pct = (index / QUESTIONS.length) * 100;
+function topbar(showHome: boolean): string {
   return `
-    <div class="progress">
-      <div class="progress-label">Question ${index + 1} of ${QUESTIONS.length}</div>
-      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
-    </div>`;
+    <header class="topbar">
+      <h1>${showHome ? `<a class="home-link" href="./">Vidaivi</a>` : "Vidaivi"}</h1>
+      <span class="chip">CBSE Class 12 Maths</span>
+    </header>`;
 }
 
-function showQuestion() {
-  const q = QUESTIONS[index];
+function gotoTest(testId: string): void {
+  location.href = `./?test=${encodeURIComponent(testId)}`;
+}
+
+// ---------- Screens ----------
+
+function showHome() {
+  track("home_open");
   app.innerHTML = `
-    <header class="topbar">
-      <h1>Matrices Practice</h1>
-      <span class="chip">CBSE Class 12</span>
-    </header>
-    ${progressBar()}
+    ${topbar(false)}
+    <p class="tagline">Chapter-wise practice tests. Attempt, get instant solutions, review any time — right from this link.</p>
+    <div class="test-list">
+      ${TESTS.map((t) => {
+        const attempt = loadAttempt(t.id);
+        const total = totalMarks(t);
+        let status = `<span class="status-chip status-new">Not started</span>`;
+        if (attempt?.completed) {
+          status = `<span class="status-chip status-done">Score ${attempt.score}/${total}</span>`;
+        } else if (attempt && attempt.index > 0) {
+          status = `<span class="status-chip status-progress">In progress · Q${attempt.index + 1} of ${t.questions.length}</span>`;
+        }
+        return `
+        <button class="test-card" data-test="${t.id}">
+          <div class="test-card-main">
+            <div class="test-card-title">${escapeHtml(t.title)}</div>
+            <div class="test-card-sub">${t.questions.length} questions · ${total} marks</div>
+          </div>
+          ${status}
+        </button>`;
+      }).join("")}
+    </div>`;
+  app.querySelectorAll<HTMLButtonElement>(".test-card").forEach((card) =>
+    card.addEventListener("click", () => gotoTest(card.dataset.test!))
+  );
+}
+
+function showLanding(test: Test) {
+  const attempt = loadAttempt(test.id);
+  const total = totalMarks(test);
+  const counts = {
+    mcq: test.questions.filter((q) => q.type === "mcq").length,
+    numeric: test.questions.filter((q) => q.type === "numeric").length,
+    long: test.questions.filter((q) => q.type === "long").length,
+  };
+
+  let primary: { label: string; action: () => void };
+  let secondary = "";
+
+  if (attempt?.completed) {
+    primary = {
+      label: "Review my answers",
+      action: () => {
+        track("review_open", { test: test.id });
+        showReview(test, attempt);
+      },
+    };
+    secondary = `<button id="retake-btn" class="btn btn-ghost">Retake test</button>`;
+  } else if (attempt && attempt.index > 0) {
+    primary = {
+      label: `Continue — Question ${attempt.index + 1} of ${test.questions.length}`,
+      action: () => {
+        track("test_resume", { test: test.id, at: attempt.index });
+        showQuestion(test, attempt);
+      },
+    };
+    secondary = `<button id="retake-btn" class="btn btn-ghost">Start over</button>`;
+  } else {
+    primary = {
+      label: "Start test",
+      action: () => {
+        track("test_start", { test: test.id });
+        showQuestion(test, newAttempt());
+      },
+    };
+  }
+
+  app.innerHTML = `
+    ${topbar(true)}
+    <main class="card landing">
+      <div class="chip chip-topic">${escapeHtml(test.chapter)}</div>
+      <h2 class="landing-title">${escapeHtml(test.title)}</h2>
+      ${test.teacher ? `<p class="landing-teacher">Curated by ${escapeHtml(test.teacher)}</p>` : ""}
+      <ul class="landing-facts">
+        <li><strong>${test.questions.length}</strong> questions · <strong>${total}</strong> marks</li>
+        <li>${counts.mcq} MCQ · ${counts.numeric} numeric · ${counts.long} long answer</li>
+        <li>Instant solutions after every question</li>
+        <li>Your progress is saved on this phone — close and come back any time</li>
+      </ul>
+      <div class="actions">
+        <button id="primary-btn" class="btn btn-primary">${primary.label}</button>
+        ${secondary}
+      </div>
+    </main>`;
+
+  document.getElementById("primary-btn")!.addEventListener("click", primary.action);
+  document.getElementById("retake-btn")?.addEventListener("click", () => {
+    track("test_retake", { test: test.id });
+    clearAttempt(test.id);
+    showQuestion(test, newAttempt());
+  });
+}
+
+function showQuestion(test: Test, attempt: Attempt) {
+  const index = attempt.index;
+  const q = test.questions[index];
+  const pct = (index / test.questions.length) * 100;
+
+  app.innerHTML = `
+    ${topbar(true)}
+    <div class="progress">
+      <div class="progress-label">${escapeHtml(test.title)} — Question ${index + 1} of ${test.questions.length}</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
     <main class="card">
       <div class="meta">
         <span class="chip chip-topic">${escapeHtml(q.topic)}</span>
@@ -124,7 +298,7 @@ function showQuestion() {
         if (i === q.answer) b.classList.add("correct");
         else if (i === selected && !correct) b.classList.add("incorrect");
       });
-      finishQuestion(q, correct);
+      finishQuestion(test, attempt, q, correct, selected);
     });
   } else if (q.type === "numeric") {
     answerArea.innerHTML = `
@@ -145,7 +319,7 @@ function showQuestion() {
       const correct = Number.isFinite(val) && Math.abs(val - q.answer!) <= tol;
       input.disabled = true;
       input.classList.add(correct ? "correct" : "incorrect");
-      finishQuestion(q, correct);
+      finishQuestion(test, attempt, q, correct, val);
     });
   } else {
     // long: attempt on paper, reveal the model solution, self-assess
@@ -157,12 +331,12 @@ function showQuestion() {
       actions.innerHTML = `
         <button id="self-right" class="btn btn-success">I got it right</button>
         <button id="self-wrong" class="btn btn-danger">I got it wrong</button>`;
-      document
-        .getElementById("self-right")!
-        .addEventListener("click", () => recordAndNext(q, true, false));
-      document
-        .getElementById("self-wrong")!
-        .addEventListener("click", () => recordAndNext(q, false, false));
+      document.getElementById("self-right")!.addEventListener("click", () =>
+        recordAndNext(test, attempt, q, true, 1, false)
+      );
+      document.getElementById("self-wrong")!.addEventListener("click", () =>
+        recordAndNext(test, attempt, q, false, 0, false)
+      );
     });
   }
 
@@ -181,70 +355,177 @@ function showSolution(q: Question) {
   renderMath(feedback);
 }
 
-function finishQuestion(q: Question, correct: boolean) {
+function finishQuestion(
+  test: Test,
+  attempt: Attempt,
+  q: Question,
+  correct: boolean,
+  given: number
+) {
   const feedback = document.getElementById("feedback")!;
   feedback.innerHTML = `
     <div class="verdict ${correct ? "verdict-correct" : "verdict-incorrect"}">
       ${correct ? "✓ Correct" : "✗ Incorrect"} · ${correct ? `+${q.marks}` : "0"} / ${q.marks} marks
     </div>`;
   showSolution(q);
-  recordAndNext(q, correct, true);
+  recordAndNext(test, attempt, q, correct, given, true);
 }
 
-function recordAndNext(q: Question, correct: boolean, waitForNext: boolean) {
-  results.push({ id: q.id, correct, earned: correct ? q.marks : 0 });
-  if (correct) score += q.marks;
+function recordAndNext(
+  test: Test,
+  attempt: Attempt,
+  q: Question,
+  correct: boolean,
+  given: number,
+  waitForNext: boolean
+) {
+  attempt.answers[q.id] = { given, correct, earned: correct ? q.marks : 0 };
+  if (correct) attempt.score += q.marks;
+  attempt.index += 1;
+  track("question_answered", {
+    test: test.id,
+    question: q.id,
+    correct,
+  });
 
   const advance = () => {
-    index++;
-    if (index < QUESTIONS.length) showQuestion();
-    else showScore();
+    if (attempt.index < test.questions.length) showQuestion(test, attempt);
+    else {
+      attempt.completed = true;
+      attempt.completedAt = new Date().toISOString();
+      saveAttempt(test.id, attempt);
+      track("test_complete", {
+        test: test.id,
+        score: attempt.score,
+        total: totalMarks(test),
+      });
+      showScore(test, attempt);
+      return;
+    }
   };
+
+  saveAttempt(test.id, attempt);
 
   if (waitForNext) {
     const actions = document.getElementById("actions")!;
     actions.innerHTML = `<button id="next-btn" class="btn btn-primary">
-      ${index < QUESTIONS.length - 1 ? "Next question" : "See my score"}
+      ${attempt.index < test.questions.length ? "Next question" : "See my score"}
     </button>`;
     document.getElementById("next-btn")!.addEventListener("click", advance);
-    document.getElementById("next-btn")!.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    document
+      .getElementById("next-btn")!
+      .scrollIntoView({ behavior: "smooth", block: "nearest" });
   } else {
     advance();
   }
 }
 
-function showScore() {
-  const pct = Math.round((score / TOTAL_MARKS) * 100);
+function showScore(test: Test, attempt: Attempt) {
+  const total = totalMarks(test);
+  const pct = Math.round((attempt.score / total) * 100);
   const message =
-    pct >= 80 ? "Excellent work! 🎉" : pct >= 50 ? "Good effort — keep practising!" : "Keep at it — review the solutions and try again.";
+    pct >= 80
+      ? "Excellent work! 🎉"
+      : pct >= 50
+        ? "Good effort — keep practising!"
+        : "Keep at it — review the solutions and try again.";
   app.innerHTML = `
-    <header class="topbar">
-      <h1>Matrices Practice</h1>
-      <span class="chip">CBSE Class 12</span>
-    </header>
+    ${topbar(true)}
     <main class="card score-card">
-      <div class="score-big">${score} / ${TOTAL_MARKS}</div>
+      <div class="score-big">${attempt.score} / ${total}</div>
       <div class="score-pct">${pct}%</div>
       <p class="score-message">${message}</p>
       <ul class="score-breakdown">
-        ${results
-          .map((r, i) => {
-            const q = QUESTIONS[i];
-            return `<li class="${r.correct ? "row-correct" : "row-incorrect"}">
-              <span>${r.correct ? "✓" : "✗"} Q${i + 1} · ${escapeHtml(q.topic)}</span>
-              <span>${r.earned}/${q.marks}</span>
+        ${test.questions
+          .map((q, i) => {
+            const a = attempt.answers[q.id];
+            const ok = a?.correct ?? false;
+            return `<li class="${ok ? "row-correct" : "row-incorrect"}">
+              <span>${ok ? "✓" : "✗"} Q${i + 1} · ${escapeHtml(q.topic)}</span>
+              <span>${a?.earned ?? 0}/${q.marks}</span>
             </li>`;
           })
           .join("")}
       </ul>
-      <button id="restart-btn" class="btn btn-primary">Try again</button>
+      <p class="hint">Your result is saved on this phone — open this link again any time to review the questions and solutions.</p>
+      <div class="actions">
+        <button id="review-btn" class="btn btn-primary">Review answers</button>
+        <button id="restart-btn" class="btn btn-ghost">Try again</button>
+      </div>
     </main>`;
+  document.getElementById("review-btn")!.addEventListener("click", () => {
+    track("review_open", { test: test.id });
+    showReview(test, attempt);
+  });
   document.getElementById("restart-btn")!.addEventListener("click", () => {
-    index = 0;
-    score = 0;
-    results.length = 0;
-    showQuestion();
+    track("test_retake", { test: test.id });
+    clearAttempt(test.id);
+    showQuestion(test, newAttempt());
   });
 }
 
-showQuestion();
+function describeGiven(q: Question, a: StoredAnswer | undefined): string {
+  if (!a) return "Not answered";
+  if (q.type === "mcq") {
+    const i = a.given ?? -1;
+    const letter = i >= 0 ? String.fromCharCode(65 + i) : "?";
+    return `Your answer: <strong>${letter}.</strong> ${escapeHtml(q.options?.[i] ?? "")}`;
+  }
+  if (q.type === "numeric") return `Your answer: <strong>${a.given}</strong>`;
+  return a.correct ? "Self-assessed: got it right" : "Self-assessed: got it wrong";
+}
+
+function showReview(test: Test, attempt: Attempt) {
+  const total = totalMarks(test);
+  app.innerHTML = `
+    ${topbar(true)}
+    <main>
+      <div class="review-header card">
+        <h2 class="landing-title">${escapeHtml(test.title)} — Review</h2>
+        <div class="score-big score-big-small">${attempt.score} / ${total}</div>
+      </div>
+      ${test.questions
+        .map((q, i) => {
+          const a = attempt.answers[q.id];
+          const ok = a?.correct ?? false;
+          return `
+        <div class="card review-item">
+          <div class="meta">
+            <span class="chip">${i + 1}</span>
+            <span class="chip chip-topic">${escapeHtml(q.topic)}</span>
+            <span class="status-chip ${ok ? "status-done" : "status-wrong"}">${ok ? `✓ ${a?.earned ?? 0}` : "✗ 0"}/${q.marks}</span>
+          </div>
+          <div class="question-text">${formatText(q.q)}</div>
+          <p class="review-given">${describeGiven(q, a)}</p>
+          <div class="solution">
+            <div class="solution-title">Solution</div>
+            ${formatText(q.solution)}
+          </div>
+        </div>`;
+        })
+        .join("")}
+      <div class="actions">
+        <button id="retake-btn" class="btn btn-primary">Retake test</button>
+      </div>
+    </main>`;
+  document.getElementById("retake-btn")!.addEventListener("click", () => {
+    track("test_retake", { test: test.id });
+    clearAttempt(test.id);
+    showQuestion(test, newAttempt());
+  });
+  renderMath(app);
+  window.scrollTo(0, 0);
+}
+
+// ---------- Boot ----------
+
+initAnalytics();
+
+const testId = new URLSearchParams(location.search).get("test");
+const test = TESTS.find((t) => t.id === testId);
+if (test) {
+  track("test_open", { test: test.id });
+  showLanding(test);
+} else {
+  showHome();
+}

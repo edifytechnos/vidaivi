@@ -342,3 +342,141 @@ body {
     padding: 28px;
   }
 }
+
+/* --- home / landing / review --- */
+
+.home-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.tagline {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 16px;
+}
+
+.test-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.test-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 0.15s;
+}
+
+.test-card:hover {
+  border-color: var(--primary);
+}
+
+.test-card-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.test-card-sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.status-chip {
+  flex: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.status-new {
+  background: var(--bg);
+  color: var(--muted);
+}
+
+.status-progress {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.status-done {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.status-wrong {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+.landing-title {
+  margin: 10px 0 4px;
+  font-size: 1.3rem;
+}
+
+.landing-teacher {
+  color: var(--muted);
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+}
+
+.landing-facts {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 4px;
+}
+
+.landing-facts li {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+
+.landing-facts li:last-child {
+  border-bottom: none;
+}
+
+.btn-ghost {
+  background: var(--bg);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.review-header .landing-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.score-big-small {
+  font-size: 1.4rem;
+}
+
+.review-item {
+  margin-bottom: 12px;
+}
+
+.review-given {
+  margin: 10px 0 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
