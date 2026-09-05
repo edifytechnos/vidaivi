@@ -4,6 +4,7 @@
   "chapter": "Matrices",
   "teacher": null,
   "order": 1,
+  "access": "open",
   "questions": [
     {
       "id": "mat-001",

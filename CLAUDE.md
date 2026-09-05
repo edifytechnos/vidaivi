@@ -57,6 +57,26 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   Events: test_open, test_start, test_resume, question_answered, test_complete,
   review_open, test_retake, home_open.
 
+## Auth & data (Google login + SWA managed Functions)
+
+- Tests with `access: "login"` require Google sign-in; the demo stays guest-open.
+- Client: Google Identity Services popup (`src/auth.ts`), enabled only when
+  `VITE_GOOGLE_CLIENT_ID` is set at build time (GitHub secret `GOOGLE_CLIENT_ID`);
+  without it the app is guest-only (local dev).
+- Server: SWA managed Functions in `api/` (Node, Functions v4 model).
+  `POST /api/login` verifies the Google ID token (aud + expiry via Google's
+  tokeninfo endpoint) and upserts the profile (name/email/picture/phone) in
+  Table Storage; `POST/GET /api/attempts` saves/lists the student's attempts.
+- SWA application settings (Azure portal, not repo): `GOOGLE_CLIENT_ID`,
+  `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`
+  are auto-created).
+- First login asks once for a WhatsApp phone number (stored on the profile —
+  the parent-contact capture from the product plan).
+- Attempt saves are fire-and-forget with a localStorage retry queue
+  (`vidaivi:pendingAttempts`); localStorage remains the source of truth for the
+  student's own resume/review UX. Google ID tokens expire after ~1h — an
+  expired session just re-queues saves until the next sign-in.
+
 ## Commands
 
 - `npm run dev` — local dev server
@@ -76,6 +96,7 @@ object:
 | `chapter` | string | yes | CBSE chapter name. |
 | `teacher` | string \| null | yes | Shown as "Curated by …" on the landing screen; `null` hides the line. |
 | `order` | number | no | Sort order on the home screen (ascending). |
+| `access` | `"open"` \| `"login"` | no | `"login"` requires Google sign-in before the test; default `"open"` (guest). |
 | `questions` | Question[] | yes | Array of question objects (below). |
 
 Student progress/results are stored per test in `localStorage` under

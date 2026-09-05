@@ -4,6 +4,7 @@
   "chapter": "Relations and Functions",
   "teacher": null,
   "order": 2,
+  "access": "login",
   "questions": [
     {
       "id": "rf-001",

@@ -24,6 +24,7 @@ jobs:
       - name: Install and build
         env:
           VITE_APPINSIGHTS_CONNECTION_STRING: ${{ secrets.APPINSIGHTS_CONNECTION_STRING }}
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         run: |
           npm ci
           npm run build
@@ -35,8 +36,8 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
           app_location: dist
+          api_location: api
           skip_app_build: true
-          skip_api_build: true
 
   close_pr_preview:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

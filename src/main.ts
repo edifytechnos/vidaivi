@@ -1,5 +1,16 @@
 import "./style.css";
 import { initAnalytics, track } from "./analytics";
+import {
+  authEnabled,
+  isLoggedIn,
+  getProfile,
+  signOut,
+  renderGoogleButton,
+  savePhone,
+  submitAttempt,
+  flushPendingAttempts,
+  fetchMyAttempts,
+} from "./auth";
 
 type QType = "mcq" | "numeric" | "long";
 
@@ -22,6 +33,7 @@ interface Test {
   chapter: string;
   teacher?: string | null;
   order?: number;
+  access?: "open" | "login"; // "login" requires Google sign-in; default "open"
   questions: Question[];
 }
 
@@ -144,10 +156,25 @@ function gotoTest(testId: string): void {
 
 // ---------- Screens ----------
 
+function profileRow(): string {
+  const p = getProfile();
+  if (!p) return "";
+  return `
+    <div class="profile-row">
+      ${p.picture ? `<img class="profile-pic" src="${escapeHtml(p.picture)}" alt="" referrerpolicy="no-referrer">` : ""}
+      <div class="profile-main">
+        <div class="profile-name">${escapeHtml(p.name || p.email)}</div>
+        <div class="profile-sub">${escapeHtml(p.email)}</div>
+      </div>
+      <button id="signout-btn" class="btn-link">Sign out</button>
+    </div>`;
+}
+
 function showHome() {
   track("home_open");
   app.innerHTML = `
     ${topbar(false)}
+    ${profileRow()}
     <p class="tagline">Chapter-wise practice tests. Attempt, get instant solutions, review any time — right from this link.</p>
     <div class="test-list">
       ${TESTS.map((t) => {
@@ -172,9 +199,117 @@ function showHome() {
   app.querySelectorAll<HTMLButtonElement>(".test-card").forEach((card) =>
     card.addEventListener("click", () => gotoTest(card.dataset.test!))
   );
+  document.getElementById("signout-btn")?.addEventListener("click", () => {
+    track("sign_out");
+    signOut();
+    showHome();
+  });
+  void renderServerResults();
+}
+
+// Cloud-saved results for the logged-in student, appended under the test list.
+async function renderServerResults(): Promise<void> {
+  if (!authEnabled || !isLoggedIn()) return;
+  const attempts = await fetchMyAttempts();
+  if (!attempts?.length) return;
+  const titleOf = (id: string) =>
+    TESTS.find((t) => t.id === id)?.title ?? id;
+  const list = document.querySelector(".test-list");
+  list?.insertAdjacentHTML(
+    "afterend",
+    `<div class="card server-results">
+      <div class="solution-title">Your saved results</div>
+      <ul class="score-breakdown">
+        ${attempts
+          .slice(0, 10)
+          .map(
+            (a) => `<li>
+              <span>${escapeHtml(titleOf(a.testId))}</span>
+              <span>${a.score}/${a.total} · ${new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>
+            </li>`
+          )
+          .join("")}
+      </ul>
+    </div>`
+  );
+}
+
+function requiresLogin(test: Test): boolean {
+  return authEnabled && test.access === "login" && !isLoggedIn();
+}
+
+function showLogin(test: Test) {
+  track("login_open", { test: test.id });
+  app.innerHTML = `
+    ${topbar(true)}
+    <main class="card landing">
+      <div class="chip chip-topic">${escapeHtml(test.chapter)}</div>
+      <h2 class="landing-title">${escapeHtml(test.title)}</h2>
+      <p class="hint">Sign in once with Google to take this test — your scores
+      are saved to your profile and follow you on any device.</p>
+      <div id="google-btn" class="google-btn-slot"></div>
+      <p id="login-error" class="login-error" hidden></p>
+      <p class="hint">Just exploring? Try the free demo test from the
+      <a href="./">home page</a> — no sign-in needed.</p>
+    </main>`;
+  const slot = document.getElementById("google-btn")!;
+  const errEl = document.getElementById("login-error") as HTMLElement;
+  void renderGoogleButton(
+    slot,
+    (profile) => {
+      track("login_success", { test: test.id });
+      if (!profile.phone) showPhoneForm(test);
+      else showLanding(test);
+    },
+    (message) => {
+      errEl.textContent = message;
+      errEl.hidden = false;
+    }
+  );
+}
+
+function showPhoneForm(test: Test) {
+  const profile = getProfile();
+  app.innerHTML = `
+    ${topbar(true)}
+    <main class="card landing">
+      <h2 class="landing-title">Almost there${profile?.name ? `, ${escapeHtml(profile.name.split(" ")[0])}` : ""}!</h2>
+      <p class="hint">One last thing — a WhatsApp number where score reports
+      can be shared (yours or a parent's).</p>
+      <input id="phone-input" class="numeric-input" type="tel" inputmode="tel"
+             placeholder="10-digit mobile number" maxlength="15" />
+      <p id="phone-error" class="login-error" hidden></p>
+      <div class="actions">
+        <button id="phone-save" class="btn btn-primary" disabled>Save and continue</button>
+      </div>
+    </main>`;
+  const input = document.getElementById("phone-input") as HTMLInputElement;
+  const save = document.getElementById("phone-save") as HTMLButtonElement;
+  const errEl = document.getElementById("phone-error") as HTMLElement;
+  input.addEventListener("input", () => {
+    save.disabled = input.value.replace(/\D/g, "").length < 10;
+  });
+  save.addEventListener("click", async () => {
+    save.disabled = true;
+    save.textContent = "Saving…";
+    const ok = await savePhone(input.value.trim());
+    if (ok) {
+      track("phone_saved", { test: test.id });
+      showLanding(test);
+    } else {
+      errEl.textContent = "Could not save — check your connection and try again.";
+      errEl.hidden = false;
+      save.disabled = false;
+      save.textContent = "Save and continue";
+    }
+  });
 }
 
 function showLanding(test: Test) {
+  if (requiresLogin(test)) {
+    showLogin(test);
+    return;
+  }
   const attempt = loadAttempt(test.id);
   const total = totalMarks(test);
   const counts = {
@@ -399,6 +534,12 @@ function recordAndNext(
         score: attempt.score,
         total: totalMarks(test),
       });
+      submitAttempt({
+        testId: test.id,
+        score: attempt.score,
+        total: totalMarks(test),
+        completedAt: attempt.completedAt!,
+      });
       showScore(test, attempt);
       return;
     }
@@ -520,6 +661,7 @@ function showReview(test: Test, attempt: Attempt) {
 // ---------- Boot ----------
 
 initAnalytics();
+if (authEnabled && isLoggedIn()) void flushPendingAttempts();
 
 const testId = new URLSearchParams(location.search).get("test");
 const test = TESTS.find((t) => t.id === testId);
