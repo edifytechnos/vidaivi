@@ -254,7 +254,8 @@ app.http("login", {
 
 // ---------- Student login ----------
 
-app.http("student-login", {
+app.http("studentLogin", {
+  route: "student-login",
   methods: ["POST"],
   authLevel: "anonymous",
   handler: async (request) => {
@@ -303,7 +304,8 @@ function safeEqual(a, b) {
   return ba.length === bb.length && crypto.timingSafeEqual(ba, bb);
 }
 
-app.http("admin-login", {
+app.http("adminLogin", {
+  route: "admin-login",
   methods: ["POST"],
   authLevel: "anonymous",
   handler: async (request) => {
