@@ -316,6 +316,22 @@ export async function resetStudentPassword(
   }
 }
 
+export interface StudentReport extends StudentRecord {
+  attempts: ServerAttempt[];
+}
+
+/** Teacher/admin: attempts for one student, or all students when username omitted. */
+export async function fetchReports(username?: string): Promise<StudentReport[] | null> {
+  try {
+    const q = username ? `?username=${encodeURIComponent(username)}` : "";
+    const res = await fetch(`/api/reports${q}`, { headers: authHeader() });
+    if (!res.ok) return null;
+    return (await res.json()).students as StudentReport[];
+  } catch {
+    return null;
+  }
+}
+
 // ---------- Attempts (fire-and-forget with offline queue) ----------
 
 interface PendingAttempt {

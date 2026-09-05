@@ -16,6 +16,7 @@ import {
   listStudents,
   createStudent,
   resetStudentPassword,
+  fetchReports,
   submitAttempt,
   flushPendingAttempts,
   fetchMyAttempts,
@@ -487,6 +488,77 @@ function showAdmin() {
   void refresh();
 }
 
+// ---------- Teacher: student progress report ----------
+
+function testTitle(testId: string): string {
+  return TESTS.find((t) => t.id === testId)?.title ?? testId;
+}
+
+function pct(score: number, total: number): number {
+  return total > 0 ? Math.round((score / total) * 100) : 0;
+}
+
+function showStudentReport(username: string) {
+  track("report_open", { student: username });
+  app.innerHTML = `
+    ${topbar(true)}
+    <main><div class="card"><p class="hint">Loading report…</p></div></main>`;
+
+  void (async () => {
+    const students = await fetchReports(username);
+    const s = students?.[0];
+    if (!s) {
+      app.querySelector("main")!.innerHTML = `
+        <div class="card"><p class="login-error">Could not load the report — go back and retry.</p>
+        <div class="actions"><button id="rep-back" class="btn btn-ghost">Back</button></div></div>`;
+      document.getElementById("rep-back")!.addEventListener("click", showTeacher);
+      return;
+    }
+
+    const attempts = s.attempts ?? [];
+    const attempted = new Set(attempts.map((a) => a.testId));
+    const best = new Map<string, number>();
+    for (const a of attempts) {
+      best.set(a.testId, Math.max(best.get(a.testId) ?? 0, pct(a.score, a.total)));
+    }
+    const avgBest = best.size
+      ? Math.round([...best.values()].reduce((x, y) => x + y, 0) / best.size)
+      : 0;
+
+    app.querySelector("main")!.innerHTML = `
+      <div class="card">
+        <h2 class="landing-title">${escapeHtml(s.name)}</h2>
+        <p class="hint">${escapeHtml([s.username, s.grade, s.school].filter(Boolean).join(" · "))}${s.parentPhone ? ` · Parent: ${escapeHtml(s.parentPhone)}` : ""}</p>
+        <div class="report-stats">
+          <div class="report-stat"><div class="report-stat-num">${attempted.size}/${TESTS.filter((t) => t.access === "login").length || TESTS.length}</div><div class="report-stat-label">tests attempted</div></div>
+          <div class="report-stat"><div class="report-stat-num">${attempts.length}</div><div class="report-stat-label">total attempts</div></div>
+          <div class="report-stat"><div class="report-stat-num">${avgBest}%</div><div class="report-stat-label">avg best score</div></div>
+        </div>
+      </div>
+      <div class="card roster-card">
+        <div class="solution-title">Attempts (newest first)</div>
+        ${
+          attempts.length
+            ? `<ul class="score-breakdown">${attempts
+                .map(
+                  (a) => `<li>
+                    <span>${escapeHtml(testTitle(a.testId))}<br>
+                      <span class="roster-sub">${new Date(a.completedAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</span>
+                    </span>
+                    <span class="${pct(a.score, a.total) >= 50 ? "row-correct" : "row-incorrect"}"><strong>${a.score}/${a.total}</strong> · ${pct(a.score, a.total)}%</span>
+                  </li>`
+                )
+                .join("")}</ul>`
+            : `<p class="hint">No attempts yet — share the login and the test link.</p>`
+        }
+      </div>
+      <div class="actions">
+        <button id="rep-back" class="btn btn-ghost">Back to students</button>
+      </div>`;
+    document.getElementById("rep-back")!.addEventListener("click", showTeacher);
+  })();
+}
+
 // ---------- Teacher: student roster ----------
 
 function credentialMessage(s: { name: string; username: string; password: string }): string {
@@ -590,10 +662,16 @@ function showTeacher() {
           <div class="roster-name">${escapeHtml(s.name)}</div>
           <div class="roster-sub">${escapeHtml(s.username)}${s.grade ? ` · ${escapeHtml(s.grade)}` : ""}${s.school ? ` · ${escapeHtml(s.school)}` : ""}</div>
         </div>
-        <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
+        <span class="roster-actions">
+          <button class="btn-link roster-report" data-user="${escapeHtml(s.username)}">Report</button>
+          <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
+        </span>
       </div>`
       )
       .join("");
+    listEl.querySelectorAll<HTMLButtonElement>(".roster-report").forEach((btn) =>
+      btn.addEventListener("click", () => showStudentReport(btn.dataset.user!))
+    );
     listEl.querySelectorAll<HTMLButtonElement>(".roster-reset").forEach((btn) =>
       btn.addEventListener("click", async () => {
         btn.textContent = "Resetting…";

@@ -666,3 +666,38 @@ body {
   color: var(--muted);
   font-weight: 500;
 }
+
+/* --- student report --- */
+
+.roster-actions {
+  display: flex;
+  gap: 4px;
+  flex: none;
+}
+
+.report-stats {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.report-stat {
+  flex: 1;
+  text-align: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 6px;
+}
+
+.report-stat-num {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.report-stat-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 2px;
+}

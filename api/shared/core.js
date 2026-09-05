@@ -444,6 +444,61 @@ handlers.students = async (context, req) => {
   json(context, 200, { students: list });
 };
 
+// Teacher/admin: attempts for one of their students (?username=...) or all.
+handlers.reports = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+  if (who.role !== "teacher" && who.role !== "admin") {
+    return json(context, 403, { error: "Teachers only" });
+  }
+  const students = tableClient("students");
+  const attempts = tableClient("attempts");
+  await ensureTable(students);
+  await ensureTable(attempts);
+
+  const wanted = String((req.query && req.query.username) || "").trim().toLowerCase();
+
+  // Collect this teacher's students (optionally just one).
+  const roster = [];
+  const iter = students.listEntities({
+    queryOptions: { filter: `PartitionKey eq 'student' and teacherSub eq '${who.id.replace(/'/g, "''")}'` },
+  });
+  for await (const e of iter) {
+    if (wanted && e.rowKey !== wanted) continue;
+    roster.push({
+      username: e.rowKey,
+      name: e.name,
+      school: e.school,
+      grade: e.grade,
+      parentPhone: e.parentPhone,
+    });
+    if (roster.length >= 200) break;
+  }
+  if (wanted && !roster.length) {
+    return json(context, 404, { error: "Student not found" });
+  }
+
+  // Attach each student's attempts (newest first via inverted-time row keys).
+  for (const s of roster) {
+    s.attempts = [];
+    const aIter = attempts.listEntities({
+      queryOptions: { filter: `PartitionKey eq 'stu~${s.username.replace(/'/g, "''")}'` },
+    });
+    for await (const a of aIter) {
+      s.attempts.push({
+        testId: a.testId,
+        score: a.score,
+        total: a.total,
+        completedAt: a.completedAt,
+      });
+      if (s.attempts.length >= 100) break;
+    }
+  }
+  roster.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  json(context, 200, { students: roster });
+};
+
 handlers.attempts = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req);
