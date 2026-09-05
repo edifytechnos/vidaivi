@@ -911,3 +911,160 @@ body {
     flex: 0 0 auto;
   }
 }
+
+/* ---------- Console (teacher/admin) ---------- */
+
+.console {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.console-nav {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.console-nav-title {
+  display: none;
+}
+
+.console-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+
+.console-link .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--faint);
+}
+
+.console-link:hover {
+  background: #f1f5f9;
+  color: var(--text);
+}
+
+.console-link.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.console-link.active .icon {
+  color: var(--primary);
+}
+
+.console-main {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.console-main .roster-card {
+  margin-top: 0;
+}
+
+@media (min-width: 900px) {
+  #app:has(.console) {
+    max-width: 1080px;
+  }
+  .console {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 28px;
+  }
+  .console-nav {
+    flex: 0 0 220px;
+    flex-direction: column;
+    gap: 2px;
+    overflow: visible;
+    position: sticky;
+    top: 16px;
+  }
+  .console-nav-title {
+    display: block;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+    padding: 0 12px 8px;
+  }
+  .console-link {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* ---------- Data tables ---------- */
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 0 -8px;
+  padding: 0 8px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--faint);
+  padding: 8px 12px 8px 4px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 11px 12px 11px 4px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover td {
+  background: #fafbfc;
+}
+
+.cell-strong {
+  font-weight: 600;
+  color: var(--text) !important;
+}
+
+.cell-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px;
+}
+
+.cell-actions {
+  text-align: right;
+}

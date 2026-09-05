@@ -154,6 +154,8 @@ function formatText(s: string): string {
 }
 
 const ICONS = {
+  home: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>`,
+  logout: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>`,
   lock: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
   users: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
   shield: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
@@ -422,9 +424,9 @@ function showAdminLogin(next: () => void) {
 
 function showAdmin() {
   track("admin_open");
-  app.innerHTML = `
-    ${topbar(true)}
-    <main>
+  app.innerHTML = consoleShell(
+    "admin",
+    `
       <div class="card">
         <h2 class="landing-title">Teacher access</h2>
         <p class="hint">Gmail addresses listed here get the teacher role when
@@ -439,12 +441,9 @@ function showAdmin() {
       <div class="card roster-card">
         <div class="solution-title">Allowed teachers</div>
         <div id="te-list"><p class="hint">Loading…</p></div>
-      </div>
-      <div class="actions">
-        <button id="te-students" class="btn btn-ghost">My students</button>
-        <button id="te-home" class="btn btn-ghost">Home</button>
-      </div>
-    </main>`;
+      </div>`
+  );
+  bindConsoleNav();
 
   const emailEl = document.getElementById("te-email") as HTMLInputElement;
   const addBtn = document.getElementById("te-add") as HTMLButtonElement;
@@ -499,9 +498,36 @@ function showAdmin() {
     }
   });
 
-  document.getElementById("te-students")!.addEventListener("click", showTeacher);
-  document.getElementById("te-home")!.addEventListener("click", showHome);
   void refresh();
+}
+
+// ---------- Console shell (teacher/admin area) ----------
+
+function consoleShell(active: "admin" | "students" | "report", content: string): string {
+  return `
+    ${topbar(true)}
+    <div class="console">
+      <aside class="console-nav">
+        <div class="console-nav-title">Console</div>
+        <button class="console-link${active === "students" || active === "report" ? " active" : ""}" id="nav-students">${ICONS.users}<span>My students</span></button>
+        ${isAdmin() ? `<button class="console-link${active === "admin" ? " active" : ""}" id="nav-admin">${ICONS.shield}<span>Teacher access</span></button>` : ""}
+        <button class="console-link" id="nav-home">${ICONS.home}<span>All tests</span></button>
+        <button class="console-link" id="nav-signout">${ICONS.logout}<span>Sign out</span></button>
+      </aside>
+      <main class="console-main">${content}</main>
+    </div>`;
+}
+
+function bindConsoleNav(): void {
+  document.getElementById("nav-students")?.addEventListener("click", showTeacher);
+  document.getElementById("nav-admin")?.addEventListener("click", showAdmin);
+  document.getElementById("nav-home")?.addEventListener("click", showHome);
+  document.getElementById("nav-signout")?.addEventListener("click", () => {
+    track("sign_out");
+    signOut();
+    setGuest(false);
+    showWelcome();
+  });
 }
 
 // ---------- Teacher: student progress report ----------
@@ -516,15 +542,17 @@ function pct(score: number, total: number): number {
 
 function showStudentReport(username: string) {
   track("report_open", { student: username });
-  app.innerHTML = `
-    ${topbar(true)}
-    <main><div class="card"><p class="hint">Loading report…</p></div></main>`;
+  app.innerHTML = consoleShell(
+    "report",
+    `<div class="card"><p class="hint">Loading report…</p></div>`
+  );
+  bindConsoleNav();
 
   void (async () => {
     const students = await fetchReports(username);
     const s = students?.[0];
     if (!s) {
-      app.querySelector("main")!.innerHTML = `
+      app.querySelector(".console-main")!.innerHTML = `
         <div class="card"><p class="login-error">Could not load the report — go back and retry.</p>
         <div class="actions"><button id="rep-back" class="btn btn-ghost">Back</button></div></div>`;
       document.getElementById("rep-back")!.addEventListener("click", showTeacher);
@@ -541,7 +569,7 @@ function showStudentReport(username: string) {
       ? Math.round([...best.values()].reduce((x, y) => x + y, 0) / best.size)
       : 0;
 
-    app.querySelector("main")!.innerHTML = `
+    app.querySelector(".console-main")!.innerHTML = `
       <div class="card">
         <h2 class="landing-title">${escapeHtml(s.name)}</h2>
         <p class="hint">${escapeHtml([s.username, s.grade, s.school].filter(Boolean).join(" · "))}${s.parentPhone ? ` · Parent: ${escapeHtml(s.parentPhone)}` : ""}</p>
@@ -555,16 +583,20 @@ function showStudentReport(username: string) {
         <div class="solution-title">Attempts (newest first)</div>
         ${
           attempts.length
-            ? `<ul class="score-breakdown">${attempts
-                .map(
-                  (a) => `<li>
-                    <span>${escapeHtml(testTitle(a.testId))}<br>
-                      <span class="roster-sub">${new Date(a.completedAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</span>
-                    </span>
-                    <span class="${pct(a.score, a.total) >= 50 ? "row-correct" : "row-incorrect"}"><strong>${a.score}/${a.total}</strong> · ${pct(a.score, a.total)}%</span>
-                  </li>`
-                )
-                .join("")}</ul>`
+            ? `<div class="table-wrap"><table class="data-table">
+                <thead><tr><th>Test</th><th>Completed</th><th>Score</th><th>Result</th></tr></thead>
+                <tbody>${attempts
+                  .map((a) => {
+                    const p = pct(a.score, a.total);
+                    return `<tr>
+                      <td class="cell-strong">${escapeHtml(testTitle(a.testId))}</td>
+                      <td>${new Date(a.completedAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</td>
+                      <td class="cell-mono">${a.score}/${a.total}</td>
+                      <td><span class="status-chip ${p >= 50 ? "status-done" : "status-wrong"}">${p}%</span></td>
+                    </tr>`;
+                  })
+                  .join("")}</tbody>
+              </table></div>`
             : `<p class="hint">No attempts yet — share the login and the test link.</p>`
         }
       </div>
@@ -596,9 +628,9 @@ async function copyText(text: string): Promise<boolean> {
 
 function showTeacher() {
   track("teacher_open");
-  app.innerHTML = `
-    ${topbar(true)}
-    <main>
+  app.innerHTML = consoleShell(
+    "students",
+    `
       <div class="card">
         <h2 class="landing-title">My students</h2>
         <p class="hint">Add a student to generate their username and password,
@@ -616,8 +648,9 @@ function showTeacher() {
       <div class="card roster-card">
         <div class="solution-title">Students</div>
         <div id="st-list"><p class="hint">Loading…</p></div>
-      </div>
-    </main>`;
+      </div>`
+  );
+  bindConsoleNav();
 
   const nameEl = document.getElementById("st-name") as HTMLInputElement;
   const schoolEl = document.getElementById("st-school") as HTMLInputElement;
@@ -670,21 +703,32 @@ function showTeacher() {
       listEl.innerHTML = `<p class="hint">No students yet — add your first above.</p>`;
       return;
     }
-    listEl.innerHTML = students
-      .map(
-        (s) => `
-      <div class="roster-row">
-        <div class="roster-main">
-          <div class="roster-name">${escapeHtml(s.name)}</div>
-          <div class="roster-sub">${escapeHtml(s.username)}${s.grade ? ` · ${escapeHtml(s.grade)}` : ""}${s.school ? ` · ${escapeHtml(s.school)}` : ""}</div>
-        </div>
-        <span class="roster-actions">
-          <button class="btn-link roster-report" data-user="${escapeHtml(s.username)}">Report</button>
-          <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
-        </span>
-      </div>`
-      )
-      .join("");
+    listEl.innerHTML = `
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr>
+            <th>Name</th><th>Username</th><th>Grade</th><th>School</th><th>Parent phone</th><th></th>
+          </tr></thead>
+          <tbody>
+            ${students
+              .map(
+                (s) => `
+              <tr>
+                <td class="cell-strong">${escapeHtml(s.name)}</td>
+                <td class="cell-mono">${escapeHtml(s.username)}</td>
+                <td>${escapeHtml(s.grade || "—")}</td>
+                <td>${escapeHtml(s.school || "—")}</td>
+                <td>${escapeHtml(s.parentPhone || "—")}</td>
+                <td class="cell-actions">
+                  <button class="btn-link roster-report" data-user="${escapeHtml(s.username)}">Report</button>
+                  <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
+                </td>
+              </tr>`
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </div>`;
     listEl.querySelectorAll<HTMLButtonElement>(".roster-report").forEach((btn) =>
       btn.addEventListener("click", () => showStudentReport(btn.dataset.user!))
     );
