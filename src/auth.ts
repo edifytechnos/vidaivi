@@ -1,6 +1,6 @@
 // Two kinds of signed-in identity:
 //  - "google": teachers and parents, via Google Identity Services popup.
-//  - "student": teacher-issued username/password, via /api/studentlogin,
+//  - "student": teacher-issued username/password, via /api/studentauth,
 //    kept alive by a signed session token (~30 days).
 // Auth is disabled entirely when VITE_GOOGLE_CLIENT_ID is unset (local dev).
 
@@ -178,7 +178,7 @@ export async function studentLogin(
   password: string
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   try {
-    const res = await fetch("/api/studentlogin", {
+    const res = await fetch("/api/studentauth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -215,7 +215,7 @@ export async function adminLogin(
   password: string
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   try {
-    const res = await fetch("/api/adminlogin", {
+    const res = await fetch("/api/adminauth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
