@@ -153,10 +153,20 @@ function formatText(s: string): string {
     .join("");
 }
 
+const ICONS = {
+  lock: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  users: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  shield: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+};
+
+function brand(): string {
+  return `<span class="brand-mark">V</span>Vidaivi`;
+}
+
 function topbar(showHome: boolean): string {
   return `
     <header class="topbar">
-      <h1>${showHome ? `<a class="home-link" href="./">Vidaivi</a>` : "Vidaivi"}</h1>
+      <h1>${showHome ? `<a class="home-link" href="./">${brand()}</a>` : brand()}</h1>
       <span class="chip">CBSE Class 12 Maths</span>
     </header>`;
 }
@@ -203,9 +213,12 @@ function showHome() {
     ${
       isAdmin()
         ? `<button id="admin-btn" class="test-card teacher-entry">
-             <div class="test-card-main">
-               <div class="test-card-title">🛠️ Admin — teacher access</div>
-               <div class="test-card-sub">Manage which Gmail accounts are teachers</div>
+             <div class="test-card-row">
+               <span class="nav-icon">${ICONS.shield}</span>
+               <div class="test-card-main">
+                 <div class="test-card-title">Teacher access</div>
+                 <div class="test-card-sub">Manage which Google accounts have the teacher role</div>
+               </div>
              </div>
            </button>`
         : ""
@@ -213,9 +226,12 @@ function showHome() {
     ${
       isTeacher()
         ? `<button id="teacher-btn" class="test-card teacher-entry">
-             <div class="test-card-main">
-               <div class="test-card-title">👩‍🏫 My students</div>
-               <div class="test-card-sub">Add students, share logins, reset passwords</div>
+             <div class="test-card-row">
+               <span class="nav-icon">${ICONS.users}</span>
+               <div class="test-card-main">
+                 <div class="test-card-title">My students</div>
+                 <div class="test-card-sub">Add students, share logins, view progress reports</div>
+               </div>
              </div>
            </button>`
         : ""
@@ -235,7 +251,7 @@ function showHome() {
         return `
         <button class="test-card" data-test="${t.id}">
           <div class="test-card-main">
-            <div class="test-card-title">${locked ? "🔒 " : ""}${escapeHtml(t.title)}</div>
+            <div class="test-card-title">${locked ? ICONS.lock : ""}${escapeHtml(t.title)}</div>
             <div class="test-card-sub">${t.questions.length} questions · ${total} marks${locked ? " · sign in to attempt" : ""}</div>
           </div>
           ${status}
@@ -730,10 +746,11 @@ function showWelcome(next?: () => void) {
   app.innerHTML = `
     ${topbar(false)}
     <main class="card welcome">
-      <div class="welcome-emoji">📐</div>
-      <h2 class="welcome-title">CBSE Class 12 Maths practice, made simple</h2>
-      <p class="welcome-sub">Chapter-wise tests with instant worked solutions.
-      Sign in to save your scores to your profile — or explore as a guest.</p>
+      <div class="welcome-logo">V</div>
+      <h2 class="welcome-title">Welcome to Vidaivi</h2>
+      <p class="welcome-sub">Chapter-wise CBSE Class 12 Maths practice with instant
+      worked solutions. Sign in to keep your scores on your profile,
+      or explore as a guest.</p>
       <button id="student-btn" class="btn btn-primary">Student login</button>
       <p class="hint">Use the username and password your teacher shared.</p>
       <div class="welcome-divider"><span>teachers &amp; parents</span></div>
