@@ -43,6 +43,20 @@ function publicProfile(entity) {
   };
 }
 
+// GET /api/health — config presence check (booleans only, never values).
+app.http("health", {
+  methods: ["GET"],
+  authLevel: "anonymous",
+  handler: async () => ({
+    status: 200,
+    jsonBody: {
+      hasGoogleClientId: !!GOOGLE_CLIENT_ID,
+      hasStorageConnectionString: !!STORAGE,
+      node: process.version,
+    },
+  }),
+});
+
 // POST /api/login — verify Google token, upsert profile, optionally set phone.
 app.http("login", {
   methods: ["POST"],
