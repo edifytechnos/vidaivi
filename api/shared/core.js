@@ -46,7 +46,12 @@ function json(context, status, body) {
 }
 
 function getBearer(req) {
+  // SWA's edge replaces the standard Authorization header before requests
+  // reach managed functions, so the client sends our token in a custom
+  // header instead. Authorization remains as a fallback for local dev.
   const headers = req.headers || {};
+  const custom = headers["x-vidaivi-auth"] || headers["X-Vidaivi-Auth"] || "";
+  if (custom) return custom.startsWith("Bearer ") ? custom.slice(7) : custom;
   const header = headers.authorization || headers.Authorization || "";
   return header.startsWith("Bearer ") ? header.slice(7) : "";
 }

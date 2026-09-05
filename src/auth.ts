@@ -86,7 +86,8 @@ export function signOut(): void {
 
 function authHeader(): Record<string, string> {
   const auth = getAuth();
-  return auth ? { Authorization: `Bearer ${auth.credential}` } : {};
+  // Custom header: SWA strips/replaces Authorization before it reaches the API.
+  return auth ? { "X-Vidaivi-Auth": auth.credential } : {};
 }
 
 // ---------- Google Identity Services (teachers / parents) ----------
@@ -112,7 +113,7 @@ async function apiLogin(credential: string, phone?: string): Promise<Profile> {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${credential}`,
+      "X-Vidaivi-Auth": credential,
     },
     body: JSON.stringify(phone ? { phone } : {}),
   });
