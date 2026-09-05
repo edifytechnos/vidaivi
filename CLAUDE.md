@@ -92,6 +92,30 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   student's own resume/review UX. Google ID tokens expire after ~1h — an
   expired session just re-queues saves until the next sign-in.
 
+## Source layout (`src/`)
+
+- `main.ts` — boot only: analytics init, URL → screen routing. No screen code here.
+- `types.ts` — Question/Test/Attempt interfaces (mirror the JSON schema below).
+- `data.ts` — TESTS registry (`import.meta.glob` over `src/tests/*.json`), `totalMarks`, `testTitle`.
+- `dom.ts` — `app` root, `escapeHtml`/`formatText`/`renderMath`, ICONS, topbar/brand, `copyText`, `pct`.
+- `attempts.ts` — localStorage attempt store, guest mode, `requiresLogin`.
+- `auth.ts` — auth state + all API fetch calls. `analytics.ts` — App Insights.
+- `screens/auth.ts` — welcome, student login, admin login, phone capture.
+- `screens/home.ts` — home test list, profile row, cloud-saved results.
+- `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report.
+- `screens/test.ts` — test player (landing → questions → score → review).
+
+Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
+its listeners; cross-screen imports are function-only (safe with ES-module cycles).
+Full product roadmap lives in `docs/PRODUCT-PLAN.md`.
+
+## E2E regression (`e2e/`)
+
+`node e2e/serve.cjs` serves the built `dist/` on :4400 with `/api/*` proxied to
+production; `node e2e/regression.cjs` runs the Playwright suite (guest flows always;
+admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
+hardcode credentials). See `e2e/README.md`.
+
 ## Commands
 
 - `npm run dev` — local dev server
