@@ -255,7 +255,7 @@ app.http("login", {
 // ---------- Student login ----------
 
 app.http("studentLogin", {
-  route: "student-login",
+  route: "studentlogin",
   methods: ["POST"],
   authLevel: "anonymous",
   handler: async (request) => {
@@ -305,7 +305,7 @@ function safeEqual(a, b) {
 }
 
 app.http("adminLogin", {
-  route: "admin-login",
+  route: "adminlogin",
   methods: ["POST"],
   authLevel: "anonymous",
   handler: async (request) => {
