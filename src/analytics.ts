@@ -18,7 +18,7 @@ const queue: { name: string; props?: Record<string, unknown> }[] = [];
 export function initAnalytics(): void {
   if (!connectionString) return;
   const script = document.createElement("script");
-  script.src = "https://js.monitor.azure.com/scripts/b/ai.3.gzip.min.js";
+  script.src = "https://js.monitor.azure.com/scripts/b/ai.3.gbl.min.js";
   script.async = true;
   script.onload = () => {
     const M = (window as any).Microsoft?.ApplicationInsights;
