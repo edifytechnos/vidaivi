@@ -241,7 +241,7 @@ function showHome() {
         </button>`;
       }).join("")}
     </div>`;
-  app.querySelectorAll<HTMLButtonElement>(".test-card").forEach((card) =>
+  app.querySelectorAll<HTMLButtonElement>(".test-card[data-test]").forEach((card) =>
     card.addEventListener("click", () => gotoTest(card.dataset.test!))
   );
   document.getElementById("signout-btn")?.addEventListener("click", () => {
