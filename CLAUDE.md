@@ -43,6 +43,15 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 - Maths must render properly (matrices, integrals); Class 12 students notice ugly maths.
 - Question content stays in JSON so it ports unchanged into the Angular app later.
 
+## Deployment
+
+- Live at https://vidaivi.seyali.app (Azure Static Web Apps, Free tier; custom domain
+  via CNAME on Hostinger, SSL managed by Azure).
+- Every push to `main` auto-deploys via `.github/workflows/azure-static-web-apps.yml`
+  (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret).
+- PRs against `main` get a preview URL posted on the PR — use it for teacher approval
+  of new question sets before merging.
+
 ## Commands
 
 - `npm run dev` — local dev server
