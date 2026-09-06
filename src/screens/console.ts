@@ -16,10 +16,11 @@ import {
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
 import { app, copyText, escapeHtml, ICONS, pct, topbar } from "../dom";
-import { fetchServerTests, mutateTest, setTestStatus } from "../api";
+import { fetchTestList, mutateTest, seedSampleTests, setTestStatus } from "../api";
 import { showWelcome } from "./auth";
 import { showHome } from "./home";
 import { showBuilder } from "./builder";
+import { createTestAndEdit, showEditor } from "./editor";
 
 function consoleShell(
   active: "admin" | "students" | "report" | "tests",
@@ -75,6 +76,7 @@ export function showMyTests() {
         </div>
         <div class="actions" id="mt-open-import-row">
           <button id="mt-new" class="btn btn-primary">Create test</button>
+          <button id="mt-quick" class="btn btn-ghost">Quick add</button>
           <button id="mt-open-import" class="btn btn-ghost">Import JSON instead</button>
         </div>
       </div>
@@ -92,6 +94,9 @@ export function showMyTests() {
   const listEl = document.getElementById("mt-list")!;
 
   document.getElementById("mt-new")!.addEventListener("click", () => {
+    void createTestAndEdit(showMyTests);
+  });
+  document.getElementById("mt-quick")!.addEventListener("click", () => {
     void showBuilder(null, showMyTests);
   });
   document.getElementById("mt-open-import")!.addEventListener("click", () => {
@@ -105,7 +110,14 @@ export function showMyTests() {
   });
 
   async function refresh() {
-    const tests = await fetchServerTests();
+    let list = await fetchTestList();
+    // A teacher's first visit gets the bundled tests copied in as their own
+    // editable drafts, so the page is never an empty box with no example.
+    if (list?.needsSamples) {
+      listEl.innerHTML = `<p class="hint">Setting up your sample tests…</p>`;
+      if (await seedSampleTests(TESTS)) list = await fetchTestList();
+    }
+    const tests = list?.tests ?? null;
     if (!tests) {
       listEl.innerHTML = `<p class="login-error">Could not load tests — refresh to retry.</p>`;
       return;
@@ -134,11 +146,12 @@ export function showMyTests() {
                        <button class="btn-link mt-act" data-act="archive" data-id="${escapeHtml(t.id)}">Archive</button>`
                     : t.status === "draft"
                       ? `<button class="btn-link mt-edit" data-id="${escapeHtml(t.id)}">Edit</button>
+                         <button class="btn-link mt-quickedit" data-id="${escapeHtml(t.id)}">Quick edit</button>
                          <button class="btn-link mt-act" data-act="publish" data-id="${escapeHtml(t.id)}">Publish</button>
                          <button class="btn-link mt-act" data-act="delete" data-id="${escapeHtml(t.id)}">Delete</button>`
                       : `<button class="btn-link mt-act" data-act="unpublish" data-id="${escapeHtml(t.id)}">Back to draft</button>`;
                 return `<tr>
-                  <td class="cell-strong">${escapeHtml(t.title)}${t.platform ? ` <span class="chip">platform</span>` : ""}</td>
+                  <td class="cell-strong">${escapeHtml(t.title)}${t.platform ? ` <span class="chip">platform</span>` : ""}${t.sample ? ` <span class="chip">sample</span>` : ""}</td>
                   <td>${escapeHtml(t.chapter || "—")}</td>
                   <td>${t.questionCount}</td>
                   <td class="cell-mono">${t.totalMarks}</td>
@@ -151,6 +164,11 @@ export function showMyTests() {
         </table>
       </div>`;
     listEl.querySelectorAll<HTMLButtonElement>(".mt-edit").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        void showEditor(btn.dataset.id!, null, showMyTests);
+      })
+    );
+    listEl.querySelectorAll<HTMLButtonElement>(".mt-quickedit").forEach((btn) =>
       btn.addEventListener("click", () => {
         void showBuilder(btn.dataset.id!, showMyTests);
       })

@@ -573,52 +573,88 @@ function unchunkQuestions(entity) {
   }
 }
 
-function validateQuestions(input) {
-  if (!Array.isArray(input) || !input.length || input.length > 60) {
-    return { error: "Provide between 1 and 60 questions" };
+// Drafts hold work in progress, so a question may be incomplete: only the
+// structural rules (unique ids, known type, length caps) are enforced on save.
+// Publishing runs the same pass with strict=true, which additionally requires
+// everything a student needs and reports every offending question at once.
+function validateQuestions(input, { strict = false } = {}) {
+  if (!Array.isArray(input) || input.length > 60) {
+    return { error: "A test can hold at most 60 questions" };
+  }
+  if (strict && !input.length) {
+    return { error: "Add at least one question before publishing", problems: [] };
   }
   const out = [];
+  const problems = [];
   const seen = new Set();
-  for (const q of input) {
-    if (!q || typeof q !== "object") return { error: "Bad question entry" };
+
+  input.forEach((q, index) => {
+    if (!q || typeof q !== "object") {
+      problems.push({ index, questionId: "", reason: "Not a question" });
+      return;
+    }
     const id = String(q.id || "").trim().slice(0, 40);
-    const type = q.type;
-    if (!id || seen.has(id)) return { error: `Question ids must be unique (${id || "missing"})` };
+    const type = ["mcq", "numeric", "long"].includes(q.type) ? q.type : "mcq";
+    const at = { index, questionId: id };
+
+    // Structural rules hold in every status — a duplicate id would silently
+    // overwrite another question's answers.
+    if (!id) {
+      problems.push({ ...at, reason: "Question has no id", fatal: true });
+      return;
+    }
+    if (seen.has(id)) {
+      problems.push({ ...at, reason: `Duplicate question id "${id}"`, fatal: true });
+      return;
+    }
     seen.add(id);
-    if (!["mcq", "numeric", "long"].includes(type)) return { error: `Unknown question type: ${type}` };
-    if (typeof q.q !== "string" || !q.q.trim()) return { error: `Question ${id}: text required` };
-    if (typeof q.solution !== "string" || !q.solution.trim()) return { error: `Question ${id}: solution required` };
+
     const marks = Number(q.marks);
-    if (!Number.isFinite(marks) || marks < 1 || marks > 20) return { error: `Question ${id}: marks must be 1-20` };
     const clean = {
       id,
       chapter: String(q.chapter || "").slice(0, 60),
       topic: String(q.topic || "").slice(0, 60),
       type,
-      q: String(q.q).slice(0, 4000),
-      solution: String(q.solution).slice(0, 8000),
-      marks: Math.round(marks),
+      q: String(q.q ?? "").slice(0, 4000),
+      solution: String(q.solution ?? "").slice(0, 8000),
+      marks: Number.isFinite(marks) ? Math.min(20, Math.max(0, Math.round(marks))) : 0,
     };
+
+    if (!clean.q.trim()) problems.push({ ...at, reason: "No question text" });
+    if (!clean.solution.trim()) problems.push({ ...at, reason: "No explanation" });
+    if (!(clean.marks >= 1)) problems.push({ ...at, reason: "Marks must be at least 1" });
+
     if (type === "mcq") {
-      if (!Array.isArray(q.options) || q.options.length < 2 || q.options.length > 6) {
-        return { error: `Question ${id}: mcq needs 2-6 options` };
-      }
-      clean.options = q.options.map((o) => String(o).slice(0, 500));
+      const options = Array.isArray(q.options) ? q.options.slice(0, 6).map((o) => String(o).slice(0, 500)) : [];
+      clean.options = options;
       const answer = Number(q.answer);
-      if (!Number.isInteger(answer) || answer < 0 || answer >= clean.options.length) {
-        return { error: `Question ${id}: answer must index an option` };
+      clean.answer = Number.isInteger(answer) && answer >= 0 ? answer : 0;
+      const filled = options.filter((o) => o.trim()).length;
+      if (options.length < 2 || filled < 2) {
+        problems.push({ ...at, reason: "Needs at least two filled options" });
+      } else if (clean.answer >= options.length || !options[clean.answer].trim()) {
+        problems.push({ ...at, reason: "No correct option marked" });
       }
-      clean.answer = answer;
     } else if (type === "numeric") {
       const answer = Number(q.answer);
-      if (!Number.isFinite(answer)) return { error: `Question ${id}: numeric answer required` };
-      clean.answer = answer;
+      if (Number.isFinite(answer)) clean.answer = answer;
+      else problems.push({ ...at, reason: "No numeric answer" });
       const tol = Number(q.tolerance);
       clean.tolerance = Number.isFinite(tol) && tol >= 0 ? tol : 0;
     }
+
     out.push(clean);
+  });
+
+  const fatal = problems.filter((p) => p.fatal);
+  if (fatal.length) return { error: fatal[0].reason, problems: fatal };
+  if (strict && problems.length) {
+    return {
+      error: `${problems.length} question${problems.length > 1 ? "s need" : " needs"} finishing before publishing`,
+      problems,
+    };
   }
-  return { questions: out };
+  return { questions: out, problems };
 }
 
 function testMeta(e) {
@@ -632,6 +668,7 @@ function testMeta(e) {
     access: e.access === "open" ? "open" : "login",
     status: e.status,
     platform: !!e.platform,
+    sample: !!e.sample,
     ownerSub: e.ownerSub,
     questionCount: questions.length,
     totalMarks: questions.reduce((s, q) => s + (q.marks || 0), 0),
@@ -676,10 +713,69 @@ handlers.tests = async (context, req) => {
         await tests.deleteEntity("test", id);
         return json(context, 200, { ok: true });
       }
+      if (action === "publish") {
+        // Students must never meet a half-written question, so the strict pass
+        // runs against what is actually stored — not against what a client says.
+        const ready = validateQuestions(unchunkQuestions(entity), { strict: true });
+        if (ready.error) {
+          return json(context, 400, { error: ready.error, problems: ready.problems || [] });
+        }
+      }
       entity.status = action === "publish" ? "published" : action === "archive" ? "archived" : "draft";
       entity.updatedAt = new Date().toISOString();
       await tests.updateEntity(entity, "Replace");
       return json(context, 200, { ok: true, status: entity.status });
+    }
+
+    if (action === "seedSamples") {
+      // A teacher's first visit gets the bundled tests copied in as their own
+      // editable drafts to learn from. Once only: deleting them is final.
+      const state = tableClient("teacherstate");
+      await ensureTable(state);
+      let seeded = null;
+      try {
+        seeded = await state.getEntity("state", who.id);
+      } catch {}
+      if (seeded && seeded.samplesSeededAt) {
+        return json(context, 200, { ok: true, seeded: 0, alreadySeeded: true });
+      }
+      const samples = Array.isArray(body.tests) ? body.tests.slice(0, 5) : [];
+      const created = [];
+      for (const sample of samples) {
+        const checked = validateQuestions(sample.questions);
+        if (checked.error) continue;
+        const id = `sample-${slugify(sample.title || "test")}-${crypto.randomBytes(3).toString("hex")}`;
+        const entity = {
+          partitionKey: "test",
+          rowKey: id,
+          title: String(sample.title || "Sample test").slice(0, 120),
+          chapter: String(sample.chapter || "").slice(0, 60),
+          teacher: "",
+          order: 99,
+          access: "login",
+          status: "draft",
+          platform: false,
+          sample: true,
+          ownerSub: who.id,
+          ownerEmail: who.email || "",
+          board: "CBSE",
+          klass: "12",
+          subject: "Maths",
+          forkedFromId: String(sample.id || "").slice(0, 60),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        chunkQuestions(entity, checked.questions);
+        try {
+          await tests.createEntity(entity);
+          created.push(testMeta(entity));
+        } catch {}
+      }
+      await state.upsertEntity(
+        { partitionKey: "state", rowKey: who.id, samplesSeededAt: new Date().toISOString() },
+        "Merge"
+      );
+      return json(context, 201, { ok: true, seeded: created.length, tests: created });
     }
 
     if (action !== "create" && action !== "update") {
@@ -689,7 +785,9 @@ handlers.tests = async (context, req) => {
     const title = String(t.title || "").trim().slice(0, 120);
     if (!title) return json(context, 400, { error: "Title required" });
     const checked = validateQuestions(t.questions);
-    if (checked.error) return json(context, 400, { error: checked.error });
+    if (checked.error) {
+      return json(context, 400, { error: checked.error, problems: checked.problems || [] });
+    }
 
     if (action === "create") {
       let id = String(t.id || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 60);
@@ -768,13 +866,27 @@ handlers.tests = async (context, req) => {
   }
 
   const list = [];
+  let ownedCount = 0;
   const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
   for await (const e of iter) {
+    if (isStaff && e.ownerSub === who.id) ownedCount++;
     if (visible(e)) list.push(testMeta(e));
     if (list.length >= 200) break;
   }
   list.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
-  json(context, 200, { tests: list });
+
+  // A teacher with nothing of their own gets the bundled tests copied in as
+  // starting samples — but only the first time, so deleting them sticks.
+  let needsSamples = false;
+  if (isStaff && ownedCount === 0) {
+    try {
+      const seeded = await tableClient("teacherstate").getEntity("state", who.id);
+      needsSamples = !seeded.samplesSeededAt;
+    } catch {
+      needsSamples = true;
+    }
+  }
+  json(context, 200, { tests: list, needsSamples });
 };
 
 handlers.attempts = async (context, req) => {
