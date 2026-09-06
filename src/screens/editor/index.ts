@@ -23,7 +23,9 @@ type Pane = "question" | "answer" | "explain";
 let onExit: () => void = () => {};
 let selectedIndex = -1; // -1 = the test overview
 let pane: Pane = "question";
-let siblings: { id: string; title: string; status: string }[] = [];
+let siblings: { id: string; title: string; status: string; questionCount: number }[] = [];
+const expanded = new Set<string>();
+const treeQuestions = new Map<string, { id: string; topic: string; marks: number; complete: boolean }[]>();
 let unsubscribe: (() => void) | null = null;
 let problems: TestProblem[] = [];
 let publishError = "";
@@ -44,7 +46,8 @@ export async function showEditor(testId: string, questionId: string | null, back
   }
   siblings = (list?.tests ?? [])
     .filter((t) => !t.platform)
-    .map((t) => ({ id: t.id, title: t.title, status: t.status }));
+    .map((t) => ({ id: t.id, title: t.title, status: t.status, questionCount: t.questionCount }));
+  expanded.add(loaded.id);
   loadTest(loaded);
   problems = [];
   publishError = "";
@@ -153,17 +156,11 @@ function statusLabel(test: Test): string {
   return test.status === "published" ? "Published" : test.status === "archived" ? "Archived" : "Draft";
 }
 
+/** Every test is a root node; its questions are the level beneath it. */
 function treeMarkup(test: Test): string {
-  const others = siblings.filter((s) => s.id !== test.id);
-  const insert = (at: number) =>
-    readOnly()
-      ? ""
-      : `<div class="ed-insert" data-at="${at}">
-           <span class="ed-insert-line"></span>
-           <button class="ed-insert-btn" data-at="${at}" title="Insert a question here" aria-label="Insert a question here">
-             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-           </button>
-         </div>`;
+  const rows = siblings.some((s) => s.id === test.id)
+    ? siblings
+    : [...siblings, { id: test.id, title: test.title, status: test.status ?? "draft", questionCount: test.questions.length }];
 
   return `
     <div class="ed-tree-head">
@@ -173,17 +170,53 @@ function treeMarkup(test: Test): string {
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       Create
     </button>
-    <button class="ed-tree-test${selectedIndex < 0 ? " active" : ""}" id="ed-open-overview">
-      <svg class="ed-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      <span class="ed-tree-name">${escapeHtml(test.title || "Untitled test")}</span>
-      <span class="status-chip ${statusClass(test.status ?? "draft")}">${statusLabel(test)}</span>
-    </button>
-    <div class="ed-tree-questions">
-      ${insert(0)}
-      ${test.questions
-        .map(
-          (q, i) => `
+    <div class="ed-tree-body">
+      ${rows.map((row) => testNode(row, test)).join("")}
+    </div>`;
+}
+
+function testNode(
+  row: { id: string; title: string; status: string; questionCount: number },
+  test: Test
+): string {
+  const isCurrent = row.id === test.id;
+  const open = expanded.has(row.id);
+  const title = isCurrent ? test.title || "Untitled test" : row.title;
+  const status = isCurrent ? test.status ?? "draft" : row.status;
+  return `
+    <div class="ed-node${open ? " open" : ""}" data-test="${escapeHtml(row.id)}">
+      <div class="ed-node-head${isCurrent && selectedIndex < 0 ? " active" : ""}">
+        <button class="ed-caret-btn" data-toggle="${escapeHtml(row.id)}" aria-label="${open ? "Collapse" : "Expand"} ${escapeHtml(title)}" aria-expanded="${open}">
+          <svg class="ed-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <button class="ed-tree-test${isCurrent ? "" : " ed-tree-other"}"${isCurrent ? ' id="ed-open-overview"' : ` data-test="${escapeHtml(row.id)}"`}>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <span class="ed-tree-name">${escapeHtml(title)}</span>
+          <span class="status-chip ${statusClass(status)}">${status === "published" ? "Live" : status === "archived" ? "Archived" : "Draft"}</span>
+        </button>
+      </div>
+      ${open ? `<div class="ed-tree-questions">${isCurrent ? currentQuestionRows(test) : otherQuestionRows(row)}</div>` : ""}
+    </div>`;
+}
+
+function currentQuestionRows(test: Test): string {
+  const insert = (at: number) =>
+    readOnly()
+      ? ""
+      : `<div class="ed-insert" data-at="${at}">
+           <span class="ed-insert-line"></span>
+           <button class="ed-insert-btn" data-at="${at}" title="Insert a question here" aria-label="Insert a question here">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+           </button>
+         </div>`;
+  if (!test.questions.length) {
+    return `${insert(0)}<p class="ed-empty ed-tree-empty">No questions yet — use + to add one.</p>`;
+  }
+  return (
+    insert(0) +
+    test.questions
+      .map(
+        (q, i) => `
         <div class="ed-tree-row" data-i="${i}"${readOnly() ? "" : ' draggable="true"'}>
           <span class="ed-grip" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
@@ -202,26 +235,30 @@ function treeMarkup(test: Test): string {
           }
         </div>
         ${insert(i + 1)}`
-        )
-        .join("")}
-      ${test.questions.length === 0 ? `<p class="ed-empty ed-tree-empty">No questions yet — use + to add one.</p>` : ""}
-    </div>
-    ${
-      others.length
-        ? `<div class="ed-tree-others">
-             <span class="ed-tree-title">Your other tests</span>
-             ${others
-               .map(
-                 (s) => `<button class="ed-tree-test ed-tree-other" data-test="${escapeHtml(s.id)}">
-                   <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                   <span class="ed-tree-name">${escapeHtml(s.title)}</span>
-                   <span class="status-chip ${statusClass(s.status)}">${s.status === "published" ? "Live" : s.status === "archived" ? "Archived" : "Draft"}</span>
-                 </button>`
-               )
-               .join("")}
-           </div>`
-        : ""
-    }`;
+      )
+      .join("")
+  );
+}
+
+/** Another test's questions: navigation only until you switch to it. */
+function otherQuestionRows(row: { id: string; questionCount: number }): string {
+  const loaded = treeQuestions.get(row.id);
+  if (!loaded) {
+    return `<p class="ed-empty ed-tree-empty">Loading ${row.questionCount} question${row.questionCount === 1 ? "" : "s"}…</p>`;
+  }
+  if (!loaded.length) return `<p class="ed-empty ed-tree-empty">No questions yet.</p>`;
+  return loaded
+    .map(
+      (q, i) => `
+      <div class="ed-tree-row ed-tree-row-other">
+        <button class="ed-tree-q ed-tree-q-other" data-test="${escapeHtml(row.id)}" data-qid="${escapeHtml(q.id)}">
+          <span class="ed-dot${q.complete ? " done" : ""}"></span>
+          <span class="ed-tree-name">${escapeHtml(q.topic || `Question ${i + 1}`)}</span>
+          <span class="ed-tree-marks">${q.marks || 0} m</span>
+        </button>
+      </div>`
+    )
+    .join("");
 }
 
 function tabsMarkup(): string {
@@ -430,6 +467,21 @@ function refreshTree(): void {
   bindTree();
 }
 
+/** Pull another test's questions in so the tree can show them beneath it. */
+async function loadTreeQuestions(testId: string): Promise<void> {
+  const loaded = await fetchServerTest(testId);
+  treeQuestions.set(
+    testId,
+    (loaded?.questions ?? []).map((q) => ({
+      id: q.id,
+      topic: q.topic,
+      marks: q.marks,
+      complete: isComplete(q),
+    }))
+  );
+  if (expanded.has(testId)) refreshTree();
+}
+
 function insertQuestion(at: number): void {
   const test = currentTest();
   if (!test || readOnly()) return;
@@ -497,6 +549,24 @@ function bindTree(): void {
   document.querySelectorAll<HTMLElement>(".ed-tree-other").forEach((el) =>
     el.addEventListener("click", () => {
       void save().then(() => showEditor(el.dataset.test!, null, onExit));
+    })
+  );
+  document.querySelectorAll<HTMLElement>(".ed-caret-btn").forEach((el) =>
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = el.dataset.toggle!;
+      if (expanded.has(id)) expanded.delete(id);
+      else {
+        expanded.add(id);
+        if (id !== currentTest()?.id && !treeQuestions.has(id)) void loadTreeQuestions(id);
+      }
+      refreshTree();
+    })
+  );
+  document.querySelectorAll<HTMLElement>(".ed-tree-q-other").forEach((el) =>
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      void save().then(() => showEditor(el.dataset.test!, el.dataset.qid ?? null, onExit));
     })
   );
   document.getElementById("ed-new-test")?.addEventListener("click", () => {

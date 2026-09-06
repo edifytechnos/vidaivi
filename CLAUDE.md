@@ -130,10 +130,13 @@ surfaces become bottom tabs and the tree slides in as a drawer. Keep both
 properties — the shell fills the viewport, and the explanation belongs on the
 right rather than stacked in the middle column; `e2e/editor.cjs` asserts each.
 
-Tree interactions follow the design: **Create** makes a new *test*; questions are
-added with the **+** that appears between rows on hover (insert at that
-position); each row has a **…** menu (duplicate, move, delete) and a drag handle
-for reordering.
+The tree is a real tree: **every test is a root node**, its **questions are the
+level beneath it**. Any test can be expanded — another test's questions are
+fetched on demand (`loadTreeQuestions`) and clicking one switches the editor to
+that test. **Create** makes a new *test*; questions are added with the **+** that
+appears between rows on hover, inserting at that position (only the slot below
+the hovered question shows). Each question row has a **…** menu (duplicate,
+move, delete) and a drag handle for reordering.
 
 `index.ts` is the shell (app bar, tree, overview, responsive panes), `state.ts` holds the working
 copy and autosaves ~1s after typing (saves are serialised, never concurrent),

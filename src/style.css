@@ -1340,16 +1340,67 @@ body {
   cursor: pointer;
 }
 
-.ed-tree-test:hover { background: #f1f5f9; }
-.ed-tree-test.active { background: var(--primary-soft); color: var(--primary); }
+.ed-tree-test { flex: 1; min-width: 0; }
 .ed-tree-test .icon { width: 15px; height: 15px; color: var(--faint); flex: none; }
 .ed-tree-test.active .icon { color: var(--primary); }
 .ed-caret { width: 13px; height: 13px; color: var(--muted); flex: none; }
 
-.ed-tree-questions { display: flex; flex-direction: column; padding-left: 10px; }
+.ed-tree-body { display: flex; flex-direction: column; gap: 2px; }
+
+.ed-node { display: flex; flex-direction: column; }
+
+.ed-node-head {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.ed-node-head:hover { background: #f1f5f9; }
+.ed-node-head.active { background: var(--primary-soft); }
+.ed-node-head.active .ed-tree-test { color: var(--primary); }
+.ed-node-head.active .ed-tree-test .icon { color: var(--primary); }
+
+.ed-caret-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 28px;
+  flex: none;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.ed-caret { width: 13px; height: 13px; transition: transform 0.12s; }
+.ed-node.open .ed-caret { transform: rotate(90deg); }
+
+.ed-tree-questions {
+  display: flex;
+  flex-direction: column;
+  padding-left: 22px;
+  position: relative;
+}
+
+/* The guide line that makes the nesting read as a tree */
+.ed-tree-questions::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 2px;
+  bottom: 2px;
+  width: 1px;
+  background: var(--border);
+}
+
+.ed-tree-row-other .ed-tree-q { padding-left: 8px; }
 
 .ed-insert {
   position: relative;
+  z-index: 3;
   height: 8px;
   display: flex;
   align-items: center;
@@ -1362,13 +1413,14 @@ body {
    by hovering the test itself, and an empty test keeps its one + on show. */
 .ed-tree-row:hover + .ed-insert,
 .ed-insert:hover,
-.ed-tree-test:hover + .ed-tree-questions > .ed-insert:first-child,
+.ed-node-head:hover + .ed-tree-questions > .ed-insert:first-child,
 .ed-tree-questions:has(> .ed-tree-empty) > .ed-insert { opacity: 1; }
 
 .ed-insert-line { flex: 1; height: 2px; border-radius: 1px; background: var(--primary); opacity: 0.35; }
 
 .ed-insert-btn {
   position: absolute;
+  z-index: 4;
   left: 50%;
   transform: translateX(-50%);
   width: 20px;
@@ -1485,16 +1537,6 @@ body {
 .ed-tree-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ed-tree-marks { font-size: 11px; color: var(--faint); flex: none; }
 
-.ed-tree-others {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.ed-tree-others .ed-tree-test { font-weight: 500; color: var(--text-secondary); }
 .ed-tree-empty { padding: 8px 10px; }
 
 .ed-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); flex: none; }

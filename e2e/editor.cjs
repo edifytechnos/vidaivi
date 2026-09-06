@@ -38,9 +38,19 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   check((await page.$$(".ed-tree-q")).length === 0, "a new test starts with no questions");
 
   check(await page.isVisible("#ed-new-test"), "the tree's primary button creates a TEST");
+  // Every test is a root node; questions hang beneath their own test.
+  const nodes = await page.$$(".ed-node");
+  check(nodes.length >= 3, `the tree lists every test as a root node (${nodes.length})`);
+  const nested = await page.evaluate(() => {
+    const open = document.querySelector(".ed-node.open");
+    return !!open && !!open.querySelector(".ed-tree-questions");
+  });
+  check(nested, "the open test nests its questions beneath it");
+  const others = await page.$$(".ed-node:not(.open) .ed-caret-btn");
+  check(others.length >= 2, "other tests are collapsed root nodes with a caret");
   await page.click('.ed-insert-btn[data-at="0"]');
   await page.waitForSelector("#ed-q", { timeout: 15000 });
-  check((await page.$$(".ed-tree-row")).length === 1, "the + between rows inserts a question");
+  check((await page.$$(".ed-tree-row[data-i]")).length === 1, "the + between rows inserts a question");
   check(await page.isVisible("#ed-solution"), "question, answer and explanation panels all show on desktop");
   const cols = await page.evaluate(() => {
     const el = document.querySelector(".ed-cols");
@@ -90,8 +100,8 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
 
   // Insert a second question between the first and the end, then remove it.
   await page.click('.ed-insert-btn[data-at="1"]');
-  await page.waitForSelector(".ed-tree-row:nth-of-type(2)", { timeout: 10000 });
-  check((await page.$$(".ed-tree-row")).length === 2, "inserting at a position adds a second question");
+  await page.waitForSelector('.ed-tree-row[data-i="1"]', { timeout: 10000 });
+  check((await page.$$(".ed-tree-row[data-i]")).length === 2, "inserting at a position adds a second question");
 
   // Exactly one insert affordance, and only for the question under the cursor.
   // opacity is transitioned, so wait for it to settle rather than reading mid-fade.
@@ -116,6 +126,18 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
 
   await page.hover(".ed-tree-title");
   check(await waitForShown(0), `no insert lines when the cursor is off the questions (saw ${await shownCount()})`);
+
+  // The + must not be painted over by a neighbouring selected row.
+  await page.hover('.ed-tree-row[data-i="0"]');
+  await waitForShown(1);
+  const plusOnTop = await page.evaluate(() => {
+    const btn = document.querySelector(".ed-insert-btn");
+    if (!btn) return false;
+    const r = btn.getBoundingClientRect();
+    const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    return !!hit && (hit === btn || btn.contains(hit));
+  });
+  check(plusOnTop, "the + stays clickable above the neighbouring row");
   await page.hover('.ed-tree-row[data-i="0"]');
   check(await waitForShown(1), `hovering a question reveals exactly one + (saw ${await shownCount()})`);
   const belowHovered = await page.evaluate(() => {
@@ -129,9 +151,19 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.waitForSelector(".ed-row-actions", { timeout: 8000 });
   check(true, "the row menu opens from the … button");
   await page.click('.ed-row-actions button[data-act="delete"]');
-  await page.waitForFunction(() => document.querySelectorAll(".ed-tree-row").length === 1, { timeout: 10000 });
+  await page.waitForFunction(() => document.querySelectorAll(".ed-tree-row[data-i]").length === 1, { timeout: 10000 });
   check(true, "Delete removes that question");
   await page.waitForSelector(".ed-save-saved", { timeout: 20000 });
+
+  // Expanding another test loads its questions into the tree.
+  const otherCaret = await page.$(".ed-node:not(.open) .ed-caret-btn");
+  if (otherCaret) {
+    await otherCaret.click();
+    await page.waitForSelector(".ed-tree-q-other", { timeout: 20000 });
+    check(true, "expanding another test shows its questions in the tree");
+  } else {
+    check(false, "expected a collapsed test to expand");
+  }
 
   // The question is deliberately unfinished (no explanation) — publish must refuse.
   const hollow = await page.$$(".ed-tree-q:not(:has(.ed-dot.done))");
@@ -149,7 +181,7 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await shot("ed-publish-blocked");
 
   // Finish it, and publishing should now go through.
-  await page.click(".ed-tree-q");
+  await page.click('.ed-tree-q[data-i="0"]');
   await page.waitForSelector("#ed-solution", { timeout: 15000 });
   await page.fill("#ed-solution", "Rows first, then columns.");
   await page.fill("#ed-marks", "1");
@@ -163,7 +195,7 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   check(true, "a finished test publishes");
 
   // Published tests are read-only in this slice.
-  await page.click(".ed-tree-q");
+  await page.click('.ed-tree-q[data-i="0"]');
   await page.waitForSelector(".ed-banner", { timeout: 15000 });
   check(await page.isDisabled("#ed-q"), "a published test opens read-only");
   const roPreview = await page.textContent(".ed-preview");
@@ -179,10 +211,10 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   check(!(await page.$(".ed-save-dirty")), "publishing does not leave the document unsaved");
   await page.waitForSelector("#ed-tree-toggle", { timeout: 20000 });
   check(await page.isVisible("#ed-tree-toggle"), "phone shows the tree toggle");
-  check(!(await page.isVisible(".ed-tree-q")), "the tree is tucked away on a phone");
+  check(!(await page.isVisible('.ed-tree-q[data-i="0"]')), "the tree is tucked away on a phone");
   await page.click("#ed-tree-toggle");
-  await page.waitForSelector(".ed-tree-q:visible", { timeout: 10000 });
-  await page.click(".ed-tree-q");
+  await page.waitForSelector('.ed-tree-q[data-i="0"]:visible', { timeout: 10000 });
+  await page.click('.ed-tree-q[data-i="0"]');
   await page.waitForSelector(".ed-tabs", { timeout: 15000 });
   check((await page.$$(".ed-tab")).length === 3, "phone shows three bottom tabs");
   check(await page.isVisible("#ed-q"), "the Question tab is showing");
