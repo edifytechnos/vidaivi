@@ -6,6 +6,7 @@ Browser regression suite for the built app, exercising the real production API.
 npm run build                       # build dist/ (set VITE_GOOGLE_CLIENT_ID to test login screens)
 node e2e/serve.cjs &                # serves dist/ on :4400, proxies /api/* to production
 node e2e/regression.cjs             # runs the Playwright regression
+node e2e/editor.cjs                 # drives the authoring editor (needs admin creds)
 ```
 
 - Requires `playwright-core` and a Chromium binary (`CHROMIUM_PATH` to override

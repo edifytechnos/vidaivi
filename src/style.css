@@ -1675,3 +1675,39 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Narrow screens: the header must stay one readable row. */
+@media (max-width: 700px) {
+  .ed-crumb-sep,
+  .ed-crumbs > span:last-child {
+    display: none;
+  }
+  .ed-crumbs {
+    flex: 1;
+    min-width: 0;
+  }
+  .ed-save {
+    font-size: 11px;
+  }
+  .ed-header .btn {
+    min-width: 0;
+    padding: 8px 10px;
+    flex: none;
+  }
+  .ed-exit-full {
+    display: none;
+  }
+  .ed-crumb-test {
+    max-width: 46vw;
+  }
+}
+
+.ed-exit-short {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .ed-exit-short {
+    display: inline;
+  }
+}

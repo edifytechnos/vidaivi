@@ -88,7 +88,9 @@ function render(): void {
           <div class="ed-spacer"></div>
           <span class="ed-save" id="ed-save"></span>
           <span class="status-chip ${statusClass(test.status ?? "draft")}">${statusLabel(test)}</span>
-          <button class="btn btn-ghost ed-compact" id="ed-exit">My tests</button>
+          <button class="btn btn-ghost ed-exit" id="ed-exit">
+            <span class="ed-exit-full">My tests</span><span class="ed-exit-short">Back</span>
+          </button>
         </header>
         <div class="ed-body" id="ed-body"></div>
         ${selectedIndex >= 0 ? tabsMarkup() : ""}
@@ -98,6 +100,21 @@ function render(): void {
   renderBody();
   bindChrome();
   renderSaveState();
+}
+
+function typeLabel(type: string): string {
+  return type === "mcq" ? "Multiple choice" : type === "numeric" ? "Numeric" : "Long answer";
+}
+
+function countLabel(n: number, noun: string): string {
+  return `${n} ${noun}${n === 1 ? "" : "s"}`;
+}
+
+/** A plain-text gist for table rows: the raw $…$ and ** markers read as noise. */
+function summarise(text: string): string {
+  const plain = text.replace(/\$\$?/g, "").replace(/\*\*/g, "").replace(/\s+/g, " ").trim();
+  if (!plain) return "Untitled question";
+  return plain.length > 70 ? `${plain.slice(0, 70)}…` : plain;
 }
 
 function statusClass(status: string): string {
@@ -184,6 +201,9 @@ function renderBody(): void {
       <div class="ed-pane" data-pane="explain">${explanationPanel(q)}</div>
     </div>`;
 
+  // Bind first even when read-only: binding is what paints the previews, and a
+  // published test with empty preview boxes looks broken.
+  bindQuestionEditor(body, selectedIndex, renderBody, refreshTree);
   if (readOnly()) {
     body.querySelectorAll<HTMLElement>("input, textarea, select, .ed-panel button").forEach((el) => {
       (el as HTMLInputElement).disabled = true;
@@ -191,7 +211,6 @@ function renderBody(): void {
     document.getElementById("ed-unpublish")?.addEventListener("click", unpublish);
     return;
   }
-  bindQuestionEditor(body, selectedIndex, renderBody, refreshTree);
 
   const topicEl = body.querySelector<HTMLInputElement>("#ed-topic");
   topicEl?.addEventListener("input", () => {
@@ -252,7 +271,7 @@ function overviewMarkup(test: Test): string {
         <div class="ed-panel-head">
           <span class="ed-panel-label">Questions</span>
           <div class="ed-spacer"></div>
-          <span class="ed-hint">${test.questions.length} questions · ${totalMarks(test)} marks</span>
+          <span class="ed-hint">${countLabel(test.questions.length, "question")} · ${countLabel(totalMarks(test), "mark")}</span>
         </div>
         <div class="table-wrap">
           <table class="data-table">
@@ -263,10 +282,10 @@ function overviewMarkup(test: Test): string {
                   const issues = problemFor(q.id);
                   return `<tr class="ov-row" data-i="${i}">
                     <td class="cell-mono">${i + 1}</td>
-                    <td class="cell-strong">${escapeHtml((q.q || "Untitled question").slice(0, 60))}${
+                    <td class="cell-strong">${escapeHtml(summarise(q.q))}${
                       issues.length ? `<div class="ov-problem">${escapeHtml(issues.map((p) => p.reason).join(" · "))}</div>` : ""
                     }</td>
-                    <td>${q.type}</td>
+                    <td>${typeLabel(q.type)}</td>
                     <td>${escapeHtml(q.topic || "—")}</td>
                     <td class="cell-mono">${q.marks || 0}</td>
                   </tr>`;
@@ -348,9 +367,7 @@ async function publish(): Promise<void> {
   problems = [];
   publishError = "";
   track("test_published", { test: test.id });
-  edit(() => {
-    test.status = "published";
-  });
+  test.status = "published";
   render();
 }
 

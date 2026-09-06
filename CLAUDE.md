@@ -112,12 +112,35 @@ Storage instead of the repo; bundled `src/tests/*.json` stay as the platform see
 - Client: `src/api.ts`. Home merges published cloud tests into the test list;
   a `?test=<id>` link that isn't bundled falls back to fetching it from the API,
   so teacher-authored test links work the same way as built-in ones.
-- Console → **My tests** lists a teacher's cloud tests with publish/archive/delete,
-  and **Create test** / **Edit** open the builder (`src/screens/builder.ts`):
+- Console → **My tests** lists a teacher's cloud tests with publish/archive/delete.
+  **Create test** / **Edit** open the authoring editor (`src/screens/editor/`);
+  **Quick add** / **Quick edit** open the card builder (`src/screens/builder.ts`):
   metadata plus per-question cards (type, topic, marks, question, type-specific
   answer fields, solution) with a live "Student sees" preview under each text
   field. Client validation mirrors the server's rules. Pasting test JSON is still
   available as "Import JSON instead".
+
+## Authoring editor (`src/screens/editor/`)
+
+The tree/editor/explanation layout from `docs/PRODUCT-PLAN.md`. `index.ts` is the
+shell (tree, header, overview, responsive tabs), `state.ts` holds the working
+copy and autosaves ~1s after typing (saves are serialised, never concurrent),
+`panels.ts` renders the question body, the type-adaptive Answer Expected panel
+and the explanation, each with a live "Student sees" preview.
+
+- **Validation is status-aware** (`validateQuestions(input, {strict})` in
+  `api/shared/core.js`): a draft may hold unfinished questions so autosave never
+  fails mid-sentence; publishing runs the strict pass against what is *stored*
+  and returns `problems[]` naming every question that needs work.
+- **Question ids carry a random suffix** (`newQuestionId` in `src/api.ts`).
+  They must never be positional — deleting a question and adding another would
+  reuse a surviving question's id.
+- **Editing is draft-only**: a published test opens read-only behind "Unpublish
+  to edit", because `update` overwrites the row students are reading. Versioning
+  (next slice) replaces this.
+- **Starter samples**: a teacher with no tests gets the bundled tests copied in
+  as their own editable drafts, once ever (`teacherstate` table, `seedSamples`).
+- `?edit=<testId>&q=<questionId>` restores a teacher's place across a refresh.
 
 ## Source layout (`src/`)
 
