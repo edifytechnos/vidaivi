@@ -1357,8 +1357,13 @@ body {
   transition: opacity 0.12s;
 }
 
-.ed-tree-questions:hover .ed-insert,
-.ed-insert:hover { opacity: 1; }
+/* Only the insert point below the hovered question — revealing all of them at
+   once turns the tree into a ladder of purple lines. The first slot is reached
+   by hovering the test itself, and an empty test keeps its one + on show. */
+.ed-tree-row:hover + .ed-insert,
+.ed-insert:hover,
+.ed-tree-test:hover + .ed-tree-questions > .ed-insert:first-child,
+.ed-tree-questions:has(> .ed-tree-empty) > .ed-insert { opacity: 1; }
 
 .ed-insert-line { flex: 1; height: 2px; border-radius: 1px; background: var(--primary); opacity: 0.35; }
 

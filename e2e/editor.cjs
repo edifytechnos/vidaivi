@@ -92,6 +92,38 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.click('.ed-insert-btn[data-at="1"]');
   await page.waitForSelector(".ed-tree-row:nth-of-type(2)", { timeout: 10000 });
   check((await page.$$(".ed-tree-row")).length === 2, "inserting at a position adds a second question");
+
+  // Exactly one insert affordance, and only for the question under the cursor.
+  // opacity is transitioned, so wait for it to settle rather than reading mid-fade.
+  const shownCount = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll(".ed-insert")].filter((el) => Number(getComputedStyle(el).opacity) > 0.5).length
+    );
+  const waitForShown = async (n) => {
+    try {
+      await page.waitForFunction(
+        (want) =>
+          [...document.querySelectorAll(".ed-insert")].filter((el) => Number(getComputedStyle(el).opacity) > 0.5)
+            .length === want,
+        n,
+        { timeout: 4000 }
+      );
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  await page.hover(".ed-tree-title");
+  check(await waitForShown(0), `no insert lines when the cursor is off the questions (saw ${await shownCount()})`);
+  await page.hover('.ed-tree-row[data-i="0"]');
+  check(await waitForShown(1), `hovering a question reveals exactly one + (saw ${await shownCount()})`);
+  const belowHovered = await page.evaluate(() => {
+    const row = document.querySelector('.ed-tree-row[data-i="0"]').getBoundingClientRect();
+    const ins = [...document.querySelectorAll(".ed-insert")].find((el) => Number(getComputedStyle(el).opacity) > 0.5);
+    return ins ? ins.getBoundingClientRect().top >= row.bottom - 2 : false;
+  });
+  check(belowHovered, "that + sits directly below the hovered question");
   await page.hover('.ed-tree-row[data-i="1"]');
   await page.click('.ed-row-menu[data-i="1"]');
   await page.waitForSelector(".ed-row-actions", { timeout: 8000 });
