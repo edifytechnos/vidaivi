@@ -4,6 +4,7 @@ import { track } from "../analytics";
 import {
   adminLogin,
   getProfile,
+  isLoggedIn,
   renderGoogleButton,
   savePhone,
   studentLogin,
@@ -15,7 +16,16 @@ import { showSubjects } from "./subjects";
 import { showAdmin } from "./console";
 
 export function showWelcome(next?: () => void) {
-  const done = next ?? (() => void showSubjects());
+  // Where a finished (or skipped) sign-in lands: your subjects if you own
+  // some, the built-in tests if you are only browsing. Guests share this, so
+  // "Continue as guest" never drops onto an empty "Your subjects" grid — even
+  // when the welcome screen was reached back from the student-login screen.
+  const done =
+    next ??
+    (() => {
+      if (isLoggedIn()) void showSubjects();
+      else showHome(null);
+    });
   track("welcome_open");
   app.innerHTML = `
     ${topbar(false)}

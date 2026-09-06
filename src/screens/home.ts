@@ -52,6 +52,11 @@ export function currentSubject(): string | null {
   return activeSubject;
 }
 
+/** Set the working subject without rendering — the caller picks the screen. */
+export function setSubject(subjectId: string | null): void {
+  activeSubject = subjectId;
+}
+
 /** The tests page. `subjectId` null means the built-in (bundled) tests. */
 export function showHome(subjectId: string | null = activeSubject) {
   activeSubject = subjectId;

@@ -21,6 +21,7 @@ import { showWelcome } from "./auth";
 import { currentSubject, showHome } from "./home";
 import { showBuilder } from "./builder";
 import { createTestAndEdit, showEditor } from "./editor";
+import { showSubjects } from "./subjects";
 
 function consoleShell(
   active: "admin" | "students" | "report" | "tests",
@@ -62,6 +63,7 @@ export function showMyTests() {
     "tests",
     `
       <div class="card">
+        <div class="home-crumbs"><button id="mt-subjects" class="btn-link">← All subjects</button></div>
         <h2 class="landing-title">My tests</h2>
         <p class="hint">Tests you author live in the cloud: build one as a draft,
         then publish to make it visible to your students on their home screen.</p>
@@ -93,6 +95,7 @@ export function showMyTests() {
   const errEl = document.getElementById("mt-error") as HTMLElement;
   const listEl = document.getElementById("mt-list")!;
 
+  document.getElementById("mt-subjects")?.addEventListener("click", () => void showSubjects());
   document.getElementById("mt-new")!.addEventListener("click", () => {
     void createTestAndEdit(showMyTests);
   });

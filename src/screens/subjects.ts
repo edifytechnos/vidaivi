@@ -8,7 +8,8 @@ import { getProfile, isTeacher, signOut } from "../auth";
 import { setGuest } from "../attempts";
 import { app, escapeHtml, ICONS, topbar } from "../dom";
 import { showWelcome } from "./auth";
-import { showHome } from "./home";
+import { showMyTests } from "./console";
+import { setSubject, showHome } from "./home";
 
 const BOARDS = ["CBSE", "ICSE", "State Board", "IGCSE"];
 const CLASSES = ["8", "9", "10", "11", "12"];
@@ -63,7 +64,12 @@ async function refresh(): Promise<void> {
     el.addEventListener("click", () => {
       const id = el.dataset.subject!;
       track("subject_open", { subject: id });
-      showHome(id === BUILT_IN_SUBJECT.id ? null : id);
+      const subjectId = id === BUILT_IN_SUBJECT.id ? null : id;
+      setSubject(subjectId);
+      // A teacher wants the page where they build tests; a student wants the
+      // list they can attempt.
+      if (isTeacher() && subjectId) showMyTests();
+      else showHome(subjectId);
     })
   );
   grid.querySelectorAll<HTMLButtonElement>(".subject-del").forEach((el) =>
