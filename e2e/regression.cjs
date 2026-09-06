@@ -58,15 +58,22 @@ function check(ok, label) {
   await page.click("#primary-btn");
   await page.waitForSelector(".option");
   check((await page.$$(".option")).length === 4, "MCQ renders 4 options");
-  // KaTeX comes from a CDN; in sandboxes that block it, skip instead of fail.
-  const katexLoaded = await page.evaluate(() => !!window.renderMathInElement);
-  if (katexLoaded) check((await page.$$(".katex")).length > 0, "KaTeX rendered maths");
-  else console.log("SKIP  KaTeX check (CDN unreachable in this environment)");
+  // serve.cjs mirrors the KaTeX CDN through this origin, so maths must render.
+  await page.waitForFunction(() => !!window.renderMathInElement, { timeout: 15000 });
   await page.click(".option");
   await page.click("#submit-btn");
   await page.waitForSelector(".solution");
   check(await page.isVisible("#next-btn"), "submit shows solution + next button");
+  // Q1's text is prose, but its worked solution carries maths.
+  await page.waitForSelector(".solution .katex", { timeout: 15000 });
+  check(true, "KaTeX typesets the worked solution");
   await shot("demo-q1");
+
+  // Q2 has maths in the question body itself.
+  await page.click("#next-btn");
+  await page.waitForSelector(".question-text");
+  await page.waitForSelector(".question-text .katex", { timeout: 15000 });
+  check(true, "KaTeX typesets the question body");
 
   // Gated test redirects guests to Google sign-in
   await page.goto(BASE + "/?test=relations-functions-test1", { waitUntil: "domcontentloaded" });
