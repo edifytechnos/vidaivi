@@ -3,7 +3,7 @@
 // bottom tabs and the tree opens as a drawer.
 
 import { track } from "../../analytics";
-import { fetchServerTest, fetchTestList, mutateTest, setTestStatus, type TestProblem } from "../../api";
+import { fetchServerTest, fetchTestList, mutateTest, newQuestionId, setTestStatus, type TestProblem } from "../../api";
 import { app, escapeHtml, ICONS, topbar } from "../../dom";
 import type { Test } from "../../types";
 import {
@@ -155,31 +155,56 @@ function statusLabel(test: Test): string {
 
 function treeMarkup(test: Test): string {
   const others = siblings.filter((s) => s.id !== test.id);
+  const insert = (at: number) =>
+    readOnly()
+      ? ""
+      : `<div class="ed-insert" data-at="${at}">
+           <span class="ed-insert-line"></span>
+           <button class="ed-insert-btn" data-at="${at}" title="Insert a question here" aria-label="Insert a question here">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+           </button>
+         </div>`;
+
   return `
     <div class="ed-tree-head">
       <span class="ed-tree-title">Tests &amp; questions</span>
     </div>
-    <button class="ed-tree-add" id="ed-new-question"${readOnly() ? " disabled" : ""}>
+    <button class="ed-tree-add" id="ed-new-test">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      Add question
+      Create
     </button>
     <button class="ed-tree-test${selectedIndex < 0 ? " active" : ""}" id="ed-open-overview">
-      <span class="ed-tree-caret">${ICONS.home}</span>
+      <svg class="ed-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
       <span class="ed-tree-name">${escapeHtml(test.title || "Untitled test")}</span>
       <span class="status-chip ${statusClass(test.status ?? "draft")}">${statusLabel(test)}</span>
     </button>
     <div class="ed-tree-questions">
+      ${insert(0)}
       ${test.questions
         .map(
           (q, i) => `
-        <button class="ed-tree-q${i === selectedIndex ? " active" : ""}" data-i="${i}">
-          <span class="ed-dot${isComplete(q) ? " done" : ""}"></span>
-          <span class="ed-tree-name">${escapeHtml(q.topic || `Question ${i + 1}`)}</span>
-          <span class="ed-tree-marks">${q.marks || 0} m</span>
-        </button>`
+        <div class="ed-tree-row" data-i="${i}"${readOnly() ? "" : ' draggable="true"'}>
+          <span class="ed-grip" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
+          </span>
+          <button class="ed-tree-q${i === selectedIndex ? " active" : ""}" data-i="${i}">
+            <span class="ed-dot${isComplete(q) ? " done" : ""}"></span>
+            <span class="ed-tree-name">${escapeHtml(q.topic || `Question ${i + 1}`)}</span>
+            <span class="ed-tree-marks">${q.marks || 0} m</span>
+          </button>
+          ${
+            readOnly()
+              ? ""
+              : `<button class="ed-row-menu" data-i="${i}" title="More" aria-label="More actions for this question">
+                   <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+                 </button>`
+          }
+        </div>
+        ${insert(i + 1)}`
         )
         .join("")}
-      ${test.questions.length === 0 ? `<p class="ed-empty ed-tree-empty">No questions yet.</p>` : ""}
+      ${test.questions.length === 0 ? `<p class="ed-empty ed-tree-empty">No questions yet — use + to add one.</p>` : ""}
     </div>
     ${
       others.length
@@ -188,7 +213,9 @@ function treeMarkup(test: Test): string {
              ${others
                .map(
                  (s) => `<button class="ed-tree-test ed-tree-other" data-test="${escapeHtml(s.id)}">
+                   <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
                    <span class="ed-tree-name">${escapeHtml(s.title)}</span>
+                   <span class="status-chip ${statusClass(s.status)}">${s.status === "published" ? "Live" : s.status === "archived" ? "Archived" : "Draft"}</span>
                  </button>`
                )
                .join("")}
@@ -403,6 +430,58 @@ function refreshTree(): void {
   bindTree();
 }
 
+function insertQuestion(at: number): void {
+  const test = currentTest();
+  if (!test || readOnly()) return;
+  edit(() => test.questions.splice(at, 0, blankQuestion(test.chapter || "", test.title)));
+  selectedIndex = at;
+  pane = "question";
+  render();
+}
+
+function closeRowMenus(): void {
+  document.querySelectorAll(".ed-row-actions").forEach((m) => m.remove());
+}
+
+function openRowMenu(anchor: HTMLElement, index: number): void {
+  closeRowMenus();
+  const test = currentTest();
+  if (!test) return;
+  const menu = document.createElement("div");
+  menu.className = "ed-row-actions";
+  menu.innerHTML = `
+    <button data-act="duplicate">Duplicate</button>
+    <button data-act="up"${index === 0 ? " disabled" : ""}>Move up</button>
+    <button data-act="down"${index === test.questions.length - 1 ? " disabled" : ""}>Move down</button>
+    <button data-act="delete" class="danger">Delete</button>`;
+  anchor.parentElement?.appendChild(menu);
+
+  menu.querySelectorAll<HTMLButtonElement>("button").forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const act = btn.dataset.act;
+      if (act === "duplicate") {
+        const copy = { ...test.questions[index], id: newQuestionId(test.title) };
+        edit(() => test.questions.splice(index + 1, 0, copy));
+        selectedIndex = index + 1;
+      } else if (act === "up" || act === "down") {
+        const to = act === "up" ? index - 1 : index + 1;
+        if (to < 0 || to >= test.questions.length) return;
+        edit(() => {
+          const [moved] = test.questions.splice(index, 1);
+          test.questions.splice(to, 0, moved);
+        });
+        selectedIndex = to;
+      } else if (act === "delete") {
+        edit(() => test.questions.splice(index, 1));
+        if (selectedIndex >= test.questions.length) selectedIndex = test.questions.length - 1;
+      }
+      closeRowMenus();
+      render();
+    })
+  );
+}
+
 function bindTree(): void {
   document.getElementById("ed-open-overview")?.addEventListener("click", () => {
     selectedIndex = -1;
@@ -420,13 +499,55 @@ function bindTree(): void {
       void save().then(() => showEditor(el.dataset.test!, null, onExit));
     })
   );
-  document.getElementById("ed-new-question")?.addEventListener("click", () => {
-    const test = currentTest();
-    if (!test) return;
-    edit(() => test.questions.push(blankQuestion(test.chapter || "", test.title)));
-    selectedIndex = test.questions.length - 1;
-    pane = "question";
-    render();
+  document.getElementById("ed-new-test")?.addEventListener("click", () => {
+    void save().then(() => createTestAndEdit(onExit));
+  });
+  document.querySelectorAll<HTMLElement>(".ed-insert-btn").forEach((el) =>
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      insertQuestion(Number(el.dataset.at));
+    })
+  );
+  document.querySelectorAll<HTMLElement>(".ed-row-menu").forEach((el) =>
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const already = el.parentElement?.querySelector(".ed-row-actions");
+      if (already) return closeRowMenus();
+      openRowMenu(el, Number(el.dataset.i));
+    })
+  );
+  document.addEventListener("click", closeRowMenus, { once: true });
+
+  // Drag to reorder.
+  let dragFrom = -1;
+  document.querySelectorAll<HTMLElement>(".ed-tree-row").forEach((row) => {
+    row.addEventListener("dragstart", (e) => {
+      dragFrom = Number(row.dataset.i);
+      row.classList.add("dragging");
+      (e as DragEvent).dataTransfer?.setData("text/plain", String(dragFrom));
+    });
+    row.addEventListener("dragend", () => {
+      row.classList.remove("dragging");
+      document.querySelectorAll(".ed-drop").forEach((d) => d.classList.remove("ed-drop"));
+    });
+    row.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      row.classList.add("ed-drop");
+    });
+    row.addEventListener("dragleave", () => row.classList.remove("ed-drop"));
+    row.addEventListener("drop", (e) => {
+      e.preventDefault();
+      row.classList.remove("ed-drop");
+      const test = currentTest();
+      const to = Number(row.dataset.i);
+      if (!test || dragFrom < 0 || dragFrom === to) return;
+      edit(() => {
+        const [moved] = test.questions.splice(dragFrom, 1);
+        test.questions.splice(to, 0, moved);
+      });
+      selectedIndex = to;
+      render();
+    });
   });
 }
 

@@ -1,10 +1,4 @@
-// Drives the authoring editor end to end against a real API, creating a test,
-// editing it, publishing it and deleting it again.
-//
-//   node e2e/serve.cjs &
-//   E2E_ADMIN_USER=… E2E_ADMIN_PASS=… node e2e/editor.cjs
-//
-// Requires admin credentials; never hardcode them.
+// Drive the new authoring editor end to end against the real API.
 const { chromium } = require("playwright-core");
 const BASE = process.env.E2E_BASE || "http://127.0.0.1:4400";
 const EXE = process.env.CHROMIUM_PATH || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
@@ -43,8 +37,10 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   // A brand-new test starts empty — that was impossible before this slice.
   check((await page.$$(".ed-tree-q")).length === 0, "a new test starts with no questions");
 
-  await page.click("#ed-new-question");
+  check(await page.isVisible("#ed-new-test"), "the tree's primary button creates a TEST");
+  await page.click('.ed-insert-btn[data-at="0"]');
   await page.waitForSelector("#ed-q", { timeout: 15000 });
+  check((await page.$$(".ed-tree-row")).length === 1, "the + between rows inserts a question");
   check(await page.isVisible("#ed-solution"), "question, answer and explanation panels all show on desktop");
   const cols = await page.evaluate(() => {
     const el = document.querySelector(".ed-cols");
@@ -59,6 +55,17 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   check(explainRight, "the explanation sits to the RIGHT of the answer panel, not below it");
   check(await page.isVisible(".ed-appbar #ed-publish-bar"), "the app bar carries Publish");
   check(await page.isVisible(".ed-appbar .ed-taxonomy"), "the app bar shows the CBSE / Mathematics 12 context");
+  const fills = await page.evaluate(() => {
+    const ed = document.querySelector(".editor").getBoundingClientRect();
+    const tree = document.querySelector(".ed-tree").getBoundingClientRect();
+    const ex = document.querySelector(".ed-explain").getBoundingClientRect();
+    return {
+      full: ed.width >= window.innerWidth - 1 && ed.height >= window.innerHeight - 1,
+      edges: tree.left <= 1 && ex.right >= window.innerWidth - 1,
+    };
+  });
+  check(fills.full, "the shell fills the viewport");
+  check(fills.edges, "the tree and explanation reach the window edges");
 
   // Maths must typeset in the preview as the teacher writes.
   await page.fill("#ed-q", "Order of a $2\\times 3$ matrix?");
@@ -80,6 +87,19 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.waitForSelector(".ed-tree-q", { timeout: 25000 });
   const treeText = await page.textContent(".ed-tree");
   check(treeText.includes(topic), "the autosaved topic came back after a reload");
+
+  // Insert a second question between the first and the end, then remove it.
+  await page.click('.ed-insert-btn[data-at="1"]');
+  await page.waitForSelector(".ed-tree-row:nth-of-type(2)", { timeout: 10000 });
+  check((await page.$$(".ed-tree-row")).length === 2, "inserting at a position adds a second question");
+  await page.hover('.ed-tree-row[data-i="1"]');
+  await page.click('.ed-row-menu[data-i="1"]');
+  await page.waitForSelector(".ed-row-actions", { timeout: 8000 });
+  check(true, "the row menu opens from the … button");
+  await page.click('.ed-row-actions button[data-act="delete"]');
+  await page.waitForFunction(() => document.querySelectorAll(".ed-tree-row").length === 1, { timeout: 10000 });
+  check(true, "Delete removes that question");
+  await page.waitForSelector(".ed-save-saved", { timeout: 20000 });
 
   // The question is deliberately unfinished (no explanation) — publish must refuse.
   const hollow = await page.$$(".ed-tree-q:not(:has(.ed-dot.done))");

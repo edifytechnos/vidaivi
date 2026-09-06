@@ -122,12 +122,18 @@ Storage instead of the repo; bundled `src/tests/*.json` stay as the platform see
 
 ## Authoring editor (`src/screens/editor/`)
 
-The three-column layout from the approved design canvas: **tests tree (268px) ·
-question being written · explanation (384px)**, under an editor app bar carrying
-identity, taxonomy, status, Preview and Publish. Below 1180px the explanation
-drops under the question; below 900px the three surfaces become bottom tabs and
-the tree hides behind a drawer. Keep the columns — the explanation belongs on the
-right, not stacked in the middle column.
+A **full-bleed application shell** from the approved design canvas — not a page
+of cards in a container. The app bar spans the window; three columns fill the
+height, divided by borders: **tests tree (268px) · question · explanation
+(384px)**. Below 1180px the explanation drops under the question; below 900px the
+surfaces become bottom tabs and the tree slides in as a drawer. Keep both
+properties — the shell fills the viewport, and the explanation belongs on the
+right rather than stacked in the middle column; `e2e/editor.cjs` asserts each.
+
+Tree interactions follow the design: **Create** makes a new *test*; questions are
+added with the **+** that appears between rows on hover (insert at that
+position); each row has a **…** menu (duplicate, move, delete) and a drag handle
+for reordering.
 
 `index.ts` is the shell (app bar, tree, overview, responsive panes), `state.ts` holds the working
 copy and autosaves ~1s after typing (saves are serialised, never concurrent),
