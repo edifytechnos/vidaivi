@@ -22,8 +22,10 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.fill("#ad-user", process.env.E2E_ADMIN_USER);
   await page.fill("#ad-pass", process.env.E2E_ADMIN_PASS);
   await page.click("#ad-submit");
-  await page.waitForSelector("#te-list", { timeout: 20000 });
-  await page.click("#nav-tests");
+  await page.waitForSelector("#sub-grid .subject-card", { timeout: 25000 });
+  // My tests is admin-only now and lives in the topbar menu.
+  await page.click("#top-menu-btn");
+  await page.click('[data-top-nav="mytests"]');
 
   // Create a fresh test through the UI — the editor should open on it.
   await page.waitForSelector("#mt-new", { timeout: 25000 });

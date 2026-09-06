@@ -5,17 +5,14 @@ import {
   authEnabled,
   fetchMyAttempts,
   getProfile,
-  isAdmin,
   isLoggedIn,
-  isTeacher,
   signOut,
 } from "../auth";
 import { fetchTestList } from "../api";
 import { loadAttempt, requiresLogin, setGuest } from "../attempts";
 import { TESTS, totalMarks } from "../data";
-import { app, escapeHtml, gotoTest, ICONS, topbar } from "../dom";
+import { ICONS, app, escapeHtml, gotoTest, setUrl, topbar } from "../dom";
 import { showWelcome } from "./auth";
-import { showAdmin, showTeacher } from "./console";
 import { showSubjects } from "./subjects";
 
 function profileRow(): string {
@@ -59,6 +56,7 @@ export function setSubject(subjectId: string | null): void {
 
 /** The tests page. `subjectId` null means the built-in (bundled) tests. */
 export function showHome(subjectId: string | null = activeSubject) {
+  setUrl();
   activeSubject = subjectId;
   track("home_open", subjectId ? { subject: subjectId } : {});
   app.innerHTML = `
@@ -69,32 +67,6 @@ export function showHome(subjectId: string | null = activeSubject) {
         : ""
     }
     ${profileRow()}
-    ${
-      isAdmin()
-        ? `<button id="admin-btn" class="test-card teacher-entry">
-             <div class="test-card-row">
-               <span class="nav-icon">${ICONS.shield}</span>
-               <div class="test-card-main">
-                 <div class="test-card-title">Teacher access</div>
-                 <div class="test-card-sub">Manage which Google accounts have the teacher role</div>
-               </div>
-             </div>
-           </button>`
-        : ""
-    }
-    ${
-      isTeacher()
-        ? `<button id="teacher-btn" class="test-card teacher-entry">
-             <div class="test-card-row">
-               <span class="nav-icon">${ICONS.users}</span>
-               <div class="test-card-main">
-                 <div class="test-card-title">My students</div>
-                 <div class="test-card-sub">Add students, share logins, view progress reports</div>
-               </div>
-             </div>
-           </button>`
-        : ""
-    }
     <p class="tagline">Chapter-wise practice tests. Attempt, get instant solutions, review any time — right from this link.</p>
     <div class="test-list">
       ${(activeSubject ? [] : TESTS).map((t) => {
@@ -132,8 +104,6 @@ export function showHome(subjectId: string | null = activeSubject) {
     showWelcome();
   });
   document.getElementById("home-subjects")?.addEventListener("click", () => void showSubjects());
-  document.getElementById("teacher-btn")?.addEventListener("click", showTeacher);
-  document.getElementById("admin-btn")?.addEventListener("click", showAdmin);
   void renderServerTests();
   void renderServerResults();
 }
