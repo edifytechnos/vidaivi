@@ -120,6 +120,29 @@ function check(ok, label) {
     await page.waitForSelector("#mt-error:not([hidden])", { timeout: 10000 });
     check(true, "my tests rejects invalid JSON with an error");
     await shot("my-tests");
+
+    // Subjects: a signed-in teacher lands here, and a subject card opens the
+    // page where that subject's tests live.
+    await page.goto(BASE, { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("#sub-grid .subject-card", { timeout: 20000 });
+    check(true, "a signed-in teacher lands on the subjects grid");
+    await shot("subjects");
+    const owned = await page.$(".subject-card:not(.subject-card-builtin)");
+    if (owned) {
+      await owned.click();
+      // Teachers get My tests (where they author), not the student list.
+      await page.waitForSelector("#mt-list", { timeout: 20000 });
+      check(true, "clicking a subject opens its tests page");
+      check(
+        await page.isVisible("#mt-subjects"),
+        "the tests page offers a way back to all subjects"
+      );
+      await page.click("#mt-subjects");
+      await page.waitForSelector("#sub-grid .subject-card", { timeout: 20000 });
+      check(true, "the crumb returns to the subjects grid");
+    } else {
+      console.log("SKIP  subject routing (no teacher-owned subject)");
+    }
   } else {
     console.log("SKIP  admin flows (set E2E_ADMIN_USER / E2E_ADMIN_PASS to enable)");
   }
