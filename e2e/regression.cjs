@@ -88,8 +88,9 @@ function check(ok, label) {
     await shot("admin");
 
     await page.click("#nav-students");
-    await page.waitForSelector("#st-list .data-table, #st-list .hint", { timeout: 20000 });
-    check(true, "students roster loads");
+    // Wait for the loaded state, not the "Loading…" hint that renders first.
+    await page.waitForSelector("#st-list .data-table, #st-list .login-error", { timeout: 20000 });
+    check(await page.isVisible("#st-list .data-table"), "students roster loads");
     await shot("students");
 
     const report = await page.$(".roster-report");
@@ -99,8 +100,19 @@ function check(ok, label) {
       check(true, "student report shows stat tiles");
       await shot("report");
     } else {
-      console.log("SKIP  report (no students in roster)");
+      console.log("SKIP  report (roster is empty)");
     }
+
+    // My tests: the DB-backed test list and its import affordance.
+    await page.click("#nav-tests");
+    await page.waitForSelector("#mt-list .data-table, #mt-list .hint:not(:empty)", { timeout: 20000 });
+    check(await page.isVisible("#mt-open-import"), "my tests page offers test import");
+    await page.click("#mt-open-import");
+    await page.fill("#mt-json", "{ not json");
+    await page.click("#mt-create");
+    await page.waitForSelector("#mt-error:not([hidden])", { timeout: 10000 });
+    check(true, "my tests rejects invalid JSON with an error");
+    await shot("my-tests");
   } else {
     console.log("SKIP  admin flows (set E2E_ADMIN_USER / E2E_ADMIN_PASS to enable)");
   }
