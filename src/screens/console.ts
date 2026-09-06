@@ -15,16 +15,21 @@ import {
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
 import { app, copyText, escapeHtml, ICONS, pct, topbar } from "../dom";
+import { fetchServerTests, mutateTest, setTestStatus } from "../api";
 import { showWelcome } from "./auth";
 import { showHome } from "./home";
 
-function consoleShell(active: "admin" | "students" | "report", content: string): string {
+function consoleShell(
+  active: "admin" | "students" | "report" | "tests",
+  content: string
+): string {
   return `
     ${topbar(true)}
     <div class="console">
       <aside class="console-nav">
         <div class="console-nav-title">Console</div>
         <button class="console-link${active === "students" || active === "report" ? " active" : ""}" id="nav-students">${ICONS.users}<span>My students</span></button>
+        <button class="console-link${active === "tests" ? " active" : ""}" id="nav-tests">${ICONS.home}<span>My tests</span></button>
         ${isAdmin() ? `<button class="console-link${active === "admin" ? " active" : ""}" id="nav-admin">${ICONS.shield}<span>Teacher access</span></button>` : ""}
         <button class="console-link" id="nav-home">${ICONS.home}<span>All tests</span></button>
         <button class="console-link" id="nav-signout">${ICONS.logout}<span>Sign out</span></button>
@@ -35,6 +40,7 @@ function consoleShell(active: "admin" | "students" | "report", content: string):
 
 function bindConsoleNav(): void {
   document.getElementById("nav-students")?.addEventListener("click", showTeacher);
+  document.getElementById("nav-tests")?.addEventListener("click", showMyTests);
   document.getElementById("nav-admin")?.addEventListener("click", showAdmin);
   document.getElementById("nav-home")?.addEventListener("click", showHome);
   document.getElementById("nav-signout")?.addEventListener("click", () => {
@@ -43,6 +49,138 @@ function bindConsoleNav(): void {
     setGuest(false);
     showWelcome();
   });
+}
+
+// ---------- Teacher: my tests (DB-backed) ----------
+
+export function showMyTests() {
+  track("mytests_open");
+  app.innerHTML = consoleShell(
+    "tests",
+    `
+      <div class="card">
+        <h2 class="landing-title">My tests</h2>
+        <p class="hint">Tests you author live in the cloud: create as a draft,
+        then publish to make it visible to your students on their home screen.
+        A visual question editor is coming — for now, paste test JSON below
+        (same format as the built-in tests).</p>
+        <div id="mt-import" style="display:none">
+          <textarea id="mt-json" class="numeric-input" rows="8" spellcheck="false"
+            placeholder='{"id":"my-test","title":"…","chapter":"…","questions":[…]}'></textarea>
+          <p id="mt-error" class="login-error" hidden></p>
+          <div class="actions">
+            <button id="mt-create" class="btn btn-primary">Create draft</button>
+            <button id="mt-cancel" class="btn btn-ghost">Cancel</button>
+          </div>
+        </div>
+        <div class="actions" id="mt-open-import-row">
+          <button id="mt-open-import" class="btn btn-primary">Import test JSON</button>
+        </div>
+      </div>
+      <div class="card roster-card">
+        <div class="solution-title">Your tests</div>
+        <div id="mt-list"><p class="hint">Loading…</p></div>
+      </div>`
+  );
+  bindConsoleNav();
+
+  const importBox = document.getElementById("mt-import") as HTMLElement;
+  const openRow = document.getElementById("mt-open-import-row") as HTMLElement;
+  const jsonEl = document.getElementById("mt-json") as HTMLTextAreaElement;
+  const errEl = document.getElementById("mt-error") as HTMLElement;
+  const listEl = document.getElementById("mt-list")!;
+
+  document.getElementById("mt-open-import")!.addEventListener("click", () => {
+    importBox.style.display = "";
+    openRow.style.display = "none";
+  });
+  document.getElementById("mt-cancel")!.addEventListener("click", () => {
+    importBox.style.display = "none";
+    openRow.style.display = "";
+    errEl.hidden = true;
+  });
+
+  async function refresh() {
+    const tests = await fetchServerTests();
+    if (!tests) {
+      listEl.innerHTML = `<p class="login-error">Could not load tests — refresh to retry.</p>`;
+      return;
+    }
+    const mine = tests.filter((t) => !t.platform || isAdmin());
+    if (!mine.length) {
+      listEl.innerHTML = `<p class="hint">No cloud tests yet — import one above.</p>`;
+      return;
+    }
+    listEl.innerHTML = `
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Title</th><th>Chapter</th><th>Questions</th><th>Marks</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            ${mine
+              .map((t) => {
+                const chip =
+                  t.status === "published"
+                    ? `<span class="status-chip status-done">Published</span>`
+                    : t.status === "archived"
+                      ? `<span class="status-chip status-wrong">Archived</span>`
+                      : `<span class="status-chip status-progress">Draft</span>`;
+                const actions =
+                  t.status === "published"
+                    ? `<button class="btn-link mt-act" data-act="unpublish" data-id="${escapeHtml(t.id)}">Unpublish</button>
+                       <button class="btn-link mt-act" data-act="archive" data-id="${escapeHtml(t.id)}">Archive</button>`
+                    : t.status === "draft"
+                      ? `<button class="btn-link mt-act" data-act="publish" data-id="${escapeHtml(t.id)}">Publish</button>
+                         <button class="btn-link mt-act" data-act="delete" data-id="${escapeHtml(t.id)}">Delete</button>`
+                      : `<button class="btn-link mt-act" data-act="unpublish" data-id="${escapeHtml(t.id)}">Back to draft</button>`;
+                return `<tr>
+                  <td class="cell-strong">${escapeHtml(t.title)}${t.platform ? ` <span class="chip">platform</span>` : ""}</td>
+                  <td>${escapeHtml(t.chapter || "—")}</td>
+                  <td>${t.questionCount}</td>
+                  <td class="cell-mono">${t.totalMarks}</td>
+                  <td>${chip}</td>
+                  <td class="cell-actions">${actions}</td>
+                </tr>`;
+              })
+              .join("")}
+          </tbody>
+        </table>
+      </div>`;
+    listEl.querySelectorAll<HTMLButtonElement>(".mt-act").forEach((btn) =>
+      btn.addEventListener("click", async () => {
+        const act = btn.dataset.act as "publish" | "unpublish" | "archive" | "delete";
+        if (act === "delete" && !confirm("Delete this draft permanently?")) return;
+        btn.textContent = "…";
+        const result = await setTestStatus(btn.dataset.id!, act);
+        if (!result.ok) alert(result.message || "Action failed");
+        void refresh();
+      })
+    );
+  }
+
+  document.getElementById("mt-create")!.addEventListener("click", async () => {
+    errEl.hidden = true;
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(jsonEl.value);
+    } catch {
+      errEl.textContent = "Not valid JSON — check for missing commas or quotes.";
+      errEl.hidden = false;
+      return;
+    }
+    const result = await mutateTest("create", parsed as never);
+    if (!result.ok) {
+      errEl.textContent = result.message;
+      errEl.hidden = false;
+      return;
+    }
+    track("test_created", { test: result.test.id });
+    jsonEl.value = "";
+    importBox.style.display = "none";
+    openRow.style.display = "";
+    void refresh();
+  });
+
+  void refresh();
 }
 
 // ---------- Admin: teacher allowlist ----------

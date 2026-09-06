@@ -10,6 +10,7 @@ import {
   isTeacher,
   signOut,
 } from "../auth";
+import { fetchServerTests } from "../api";
 import { loadAttempt, requiresLogin, setGuest } from "../attempts";
 import { TESTS, totalMarks } from "../data";
 import { app, escapeHtml, gotoTest, ICONS, topbar } from "../dom";
@@ -97,9 +98,10 @@ export function showHome() {
         </button>`;
       }).join("")}
     </div>`;
-  app.querySelectorAll<HTMLButtonElement>(".test-card[data-test]").forEach((card) =>
-    card.addEventListener("click", () => gotoTest(card.dataset.test!))
-  );
+  app.querySelectorAll<HTMLButtonElement>(".test-card[data-test]").forEach((card) => {
+    card.dataset.bound = "1";
+    card.addEventListener("click", () => gotoTest(card.dataset.test!));
+  });
   document.getElementById("signout-btn")?.addEventListener("click", () => {
     track("sign_out");
     signOut();
@@ -112,7 +114,49 @@ export function showHome() {
   });
   document.getElementById("teacher-btn")?.addEventListener("click", showTeacher);
   document.getElementById("admin-btn")?.addEventListener("click", showAdmin);
+  void renderServerTests();
   void renderServerResults();
+}
+
+// DB-backed published tests (teacher-authored / platform) merged into the
+// same list, skipping ids already bundled in the build.
+async function renderServerTests(): Promise<void> {
+  if (!authEnabled || !isLoggedIn()) return;
+  const server = await fetchServerTests();
+  if (!server?.length) return;
+  const bundled = new Set(TESTS.map((t) => t.id));
+  const fresh = server.filter((t) => t.status === "published" && !bundled.has(t.id));
+  if (!fresh.length) return;
+  const list = document.querySelector(".test-list");
+  if (!list) return;
+  list.insertAdjacentHTML(
+    "beforeend",
+    fresh
+      .map((t) => {
+        const attempt = loadAttempt(t.id);
+        let status = `<span class="status-chip status-new">Not started</span>`;
+        if (attempt?.completed) {
+          status = `<span class="status-chip status-done">Score ${attempt.score}/${t.totalMarks}</span>`;
+        } else if (attempt && attempt.index > 0) {
+          status = `<span class="status-chip status-progress">In progress · Q${attempt.index + 1} of ${t.questionCount}</span>`;
+        }
+        return `
+        <button class="test-card" data-test="${escapeHtml(t.id)}">
+          <div class="test-card-main">
+            <div class="test-card-title">${escapeHtml(t.title)}</div>
+            <div class="test-card-sub">${t.questionCount} questions · ${t.totalMarks} marks</div>
+          </div>
+          ${status}
+        </button>`;
+      })
+      .join("")
+  );
+  list.querySelectorAll<HTMLButtonElement>(".test-card[data-test]").forEach((card) => {
+    if (!card.dataset.bound) {
+      card.dataset.bound = "1";
+      card.addEventListener("click", () => gotoTest(card.dataset.test!));
+    }
+  });
 }
 
 // Cloud-saved results for the logged-in student, appended under the test list.

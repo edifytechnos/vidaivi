@@ -3,6 +3,7 @@
 
 import "./style.css";
 import { initAnalytics, track } from "./analytics";
+import { fetchServerTest } from "./api";
 import { authEnabled, isLoggedIn, flushPendingAttempts } from "./auth";
 import { isGuest } from "./attempts";
 import { TESTS } from "./data";
@@ -13,6 +14,11 @@ import { showLanding } from "./screens/test";
 initAnalytics();
 if (authEnabled && isLoggedIn()) void flushPendingAttempts();
 
+function showEntry(): void {
+  if (authEnabled && !isLoggedIn() && !isGuest()) showWelcome();
+  else showHome();
+}
+
 // Tolerate links mangled by messaging apps (trailing "?", "/", punctuation).
 const rawTestId = new URLSearchParams(location.search).get("test") ?? "";
 const testId = rawTestId.replace(/[^A-Za-z0-9-]+$/g, "");
@@ -20,8 +26,16 @@ const test = TESTS.find((t) => t.id === testId);
 if (test) {
   track("test_open", { test: test.id });
   showLanding(test);
-} else if (authEnabled && !isLoggedIn() && !isGuest()) {
-  showWelcome();
+} else if (testId && authEnabled && isLoggedIn()) {
+  // Not in the bundle — could be a DB-backed test shared by a teacher.
+  void fetchServerTest(testId).then((serverTest) => {
+    if (serverTest) {
+      track("test_open", { test: serverTest.id });
+      showLanding(serverTest);
+    } else {
+      showEntry();
+    }
+  });
 } else {
-  showHome();
+  showEntry();
 }

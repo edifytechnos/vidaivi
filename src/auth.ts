@@ -84,7 +84,7 @@ export function signOut(): void {
   } catch {}
 }
 
-function authHeader(): Record<string, string> {
+export function authHeader(): Record<string, string> {
   const auth = getAuth();
   // Custom header: SWA strips/replaces Authorization before it reaches the API.
   return auth ? { "X-Vidaivi-Auth": auth.credential } : {};
