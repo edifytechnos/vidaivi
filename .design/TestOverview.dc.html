@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, sans-serif; font-size: 14px; color: #0f172a; background: #f8fafc; -webkit-font-smoothing: antialiased; }
+    a { color: #6d28d9; } a:hover { color: #5b21b6; }
+    .card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06); }
+    .flabel { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; margin-bottom: 6px; }
+    .input { padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; background: #fff; }
+    th { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; text-align: left; padding: 0 12px 9px; }
+    td { padding: 11px 12px; border-top: 1px solid #e2e8f0; font-size: 13.5px; }
+  </style>
+</helmet>
+<div style="width: 1440px; height: 900px; display: flex; flex-direction: column; background: #f8fafc; overflow: hidden">
+
+  <div style="height: 56px; flex: none; display: flex; align-items: center; gap: 14px; padding: 0 18px; background: #ffffff; border-bottom: 1px solid #e2e8f0">
+    <div style="display: flex; align-items: center; gap: 9px">
+      <span style="width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #6d28d9, #8b5cf6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800">V</span>
+      <span style="font-size: 15px; font-weight: 700; letter-spacing: -0.01em">Vidaivi</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 1px; padding-left: 14px; border-left: 1px solid #e2e8f0">
+      <span style="font-size: 12.5px; font-weight: 600">CBSE</span>
+      <span style="font-size: 11px; color: #94a3b8">Mathematics 12</span>
+    </div>
+    <div style="flex-grow: 1"></div>
+    <span style="font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 9px; border-radius: 5px; background: #fef3c7; color: #92400e">Draft · v2</span>
+    <button style="padding: 8px 16px; font: inherit; font-size: 13px; font-weight: 600; color: #fff; background: #6d28d9; border: 1px solid transparent; border-radius: 8px; cursor: pointer">Publish test</button>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; min-height: 0">
+    <div style="width: 268px; flex: none; background: #ffffff; border-right: 1px solid #e2e8f0; padding: 16px 10px; display: flex; flex-direction: column; gap: 8px">
+      <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; padding: 0 6px">Tests &amp; questions</span>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; background: #f5f3ff; border: 1px solid #ddd6fe">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <span style="font-size: 13.5px; font-weight: 600; color: #6d28d9">Relations &amp; Functions</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1px; padding-left: 22px">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #047857"></span><span style="font-size: 13px; color: #475569">Question 1</span></div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #047857"></span><span style="font-size: 13px; color: #475569">Question 2</span></div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #cbd5e1"></span><span style="font-size: 13px; color: #475569">Question 3</span></div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #047857"></span><span style="font-size: 13px; color: #475569">Question 4</span></div>
+      </div>
+    </div>
+
+    <div style="flex-grow: 1; min-width: 0; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+
+      <div style="display: flex; align-items: flex-start; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+          <span style="font-size: 22px; font-weight: 700; letter-spacing: -0.015em">Relations &amp; Functions — Test 1</span>
+          <span style="font-size: 13px; color: #64748b">4 questions · 12 marks · last published 3 Sep</span>
+        </div>
+        <div style="display: flex; gap: 9px">
+          <button style="padding: 9px 15px; font: inherit; font-size: 13px; font-weight: 600; color: #475569; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer">Preview as student</button>
+          <button style="padding: 9px 15px; font: inherit; font-size: 13px; font-weight: 600; color: #475569; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer">Copy share link</button>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.55fr 1fr; gap: 16px; flex-grow: 1; min-height: 0">
+
+        <div style="display: flex; flex-direction: column; gap: 16px; min-height: 0">
+          <div class="card" style="padding: 18px 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+            <div><span class="flabel">Title</span><div class="input">Relations &amp; Functions — Test 1</div></div>
+            <div><span class="flabel">Chapter</span><div class="input">Relations and Functions</div></div>
+            <div><span class="flabel">Curated by</span><div class="input" style="color: #64748b">Mr. Kumar</div></div>
+            <div><span class="flabel">Who can attempt</span><div class="input" style="display: flex; align-items: center; justify-content: space-between">Signed-in students<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></div></div>
+          </div>
+
+          <div class="card" style="padding: 18px 20px 8px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1; min-height: 0">
+            <div style="display: flex; align-items: center; gap: 10px">
+              <span style="font-size: 13px; font-weight: 700">Questions</span>
+              <div style="flex-grow: 1"></div>
+              <button style="display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: #6d28d9; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 5px 8px; border-radius: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>New question</button>
+              <button style="display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: #6d28d9; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 5px 8px; border-radius: 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>Add existing</button>
+            </div>
+            <table style="width: 100%; border-collapse: collapse">
+              <thead><tr><th style="width: 34px"></th><th>Question</th><th>Type</th><th>Topic</th><th style="text-align: right">Marks</th></tr></thead>
+              <tbody>
+                <tr><td style="color: #94a3b8">1</td><td style="font-weight: 600">Relation R on {1,2,3,4}…</td><td style="color: #64748b">MCQ</td><td style="color: #64748b">Equivalence</td><td style="text-align: right; font-family: ui-monospace, Menlo, monospace">1</td></tr>
+                <tr><td style="color: #94a3b8">2</td><td style="font-weight: 600">Number of onto functions…</td><td style="color: #64748b">Numeric</td><td style="color: #64748b">Functions</td><td style="text-align: right; font-family: ui-monospace, Menlo, monospace">2</td></tr>
+                <tr><td style="color: #94a3b8">3</td><td style="font-weight: 600; color: #92400e">Show that f is a bijection…</td><td style="color: #64748b">Long</td><td style="color: #64748b">Bijection</td><td style="text-align: right; font-family: ui-monospace, Menlo, monospace">5</td></tr>
+                <tr><td style="color: #94a3b8">4</td><td style="display: flex; align-items: center; gap: 7px"><span style="font-weight: 600">Domain of the given function…</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"></path><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"></path></svg></td><td style="color: #64748b">MCQ</td><td style="color: #64748b">Domain</td><td style="text-align: right; font-family: ui-monospace, Menlo, monospace">4</td></tr>
+                <tr><td></td><td colspan="3" style="font-weight: 700">Total</td><td style="text-align: right; font-weight: 700; font-family: ui-monospace, Menlo, monospace">12</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px; min-height: 0">
+          <div class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 13px; font-weight: 700">Version history</span>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; gap: 11px; align-items: flex-start">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: #92400e; margin-top: 5px; flex: none"></span>
+                <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+                  <span style="font-size: 13px; font-weight: 600">v2 — draft</span>
+                  <span style="font-size: 12px; color: #64748b">Editing now · not visible to students</span>
+                </div>
+              </div>
+              <div style="display: flex; gap: 11px; align-items: flex-start">
+                <span style="width: 9px; height: 9px; border-radius: 50%; background: #047857; margin-top: 5px; flex: none"></span>
+                <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+                  <span style="font-size: 13px; font-weight: 600">v1 — published 3 Sep</span>
+                  <span style="font-size: 12px; color: #64748b">18 attempts · this is what students see</span>
+                </div>
+                <button style="background: none; border: none; color: #6d28d9; font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; padding: 2px 6px">View</button>
+              </div>
+            </div>
+            <div style="padding: 10px 12px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 12.5px; color: #475569; line-height: 1.55">
+              Publishing v2 replaces what students see. Their v1 attempts keep showing the v1 questions.
+            </div>
+          </div>
+
+          <div class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+            <span style="font-size: 13px; font-weight: 700">Ready to publish?</span>
+            <div style="display: flex; align-items: center; gap: 9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 13px; color: #475569">All questions have an answer</span></div>
+            <div style="display: flex; align-items: center; gap: 9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg><span style="font-size: 13px; color: #92400e">Question 3 has no explanation</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
