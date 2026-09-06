@@ -11,10 +11,11 @@ import {
 import { setGuest } from "../attempts";
 import { app, escapeHtml, topbar } from "../dom";
 import { showHome } from "./home";
+import { showSubjects } from "./subjects";
 import { showAdmin } from "./console";
 
 export function showWelcome(next?: () => void) {
-  const done = next ?? showHome;
+  const done = next ?? (() => void showSubjects());
   track("welcome_open");
   app.innerHTML = `
     ${topbar(false)}

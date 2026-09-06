@@ -17,6 +17,7 @@ import {
   totalMarks,
 } from "./state";
 import { answerPanel, bindQuestionEditor, blankQuestion, explanationPanel, questionBody } from "./panels";
+import { currentSubject } from "../home";
 
 type Pane = "question" | "answer" | "explain";
 
@@ -682,7 +683,8 @@ export async function createTestAndEdit(back: () => void): Promise<void> {
     teacher: "",
     access: "login",
     questions: [],
-  });
+    subjectId: currentSubject() ?? undefined,
+  } as never);
   if (!result.ok) {
     alert(result.message);
     return;

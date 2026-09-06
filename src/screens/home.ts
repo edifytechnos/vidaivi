@@ -10,12 +10,13 @@ import {
   isTeacher,
   signOut,
 } from "../auth";
-import { fetchServerTests } from "../api";
+import { fetchTestList } from "../api";
 import { loadAttempt, requiresLogin, setGuest } from "../attempts";
 import { TESTS, totalMarks } from "../data";
 import { app, escapeHtml, gotoTest, ICONS, topbar } from "../dom";
 import { showWelcome } from "./auth";
 import { showAdmin, showTeacher } from "./console";
+import { showSubjects } from "./subjects";
 
 function profileRow(): string {
   const p = getProfile();
@@ -45,10 +46,23 @@ function profileRow(): string {
     </div>`;
 }
 
-export function showHome() {
-  track("home_open");
+let activeSubject: string | null = null;
+
+export function currentSubject(): string | null {
+  return activeSubject;
+}
+
+/** The tests page. `subjectId` null means the built-in (bundled) tests. */
+export function showHome(subjectId: string | null = activeSubject) {
+  activeSubject = subjectId;
+  track("home_open", subjectId ? { subject: subjectId } : {});
   app.innerHTML = `
     ${topbar(false)}
+    ${
+      isLoggedIn()
+        ? `<div class="home-crumbs"><button id="home-subjects" class="btn-link">← All subjects</button></div>`
+        : ""
+    }
     ${profileRow()}
     ${
       isAdmin()
@@ -78,7 +92,7 @@ export function showHome() {
     }
     <p class="tagline">Chapter-wise practice tests. Attempt, get instant solutions, review any time — right from this link.</p>
     <div class="test-list">
-      ${TESTS.map((t) => {
+      ${(activeSubject ? [] : TESTS).map((t) => {
         const attempt = loadAttempt(t.id);
         const total = totalMarks(t);
         let status = `<span class="status-chip status-new">Not started</span>`;
@@ -112,6 +126,7 @@ export function showHome() {
     setGuest(false);
     showWelcome();
   });
+  document.getElementById("home-subjects")?.addEventListener("click", () => void showSubjects());
   document.getElementById("teacher-btn")?.addEventListener("click", showTeacher);
   document.getElementById("admin-btn")?.addEventListener("click", showAdmin);
   void renderServerTests();
@@ -122,10 +137,17 @@ export function showHome() {
 // same list, skipping ids already bundled in the build.
 async function renderServerTests(): Promise<void> {
   if (!authEnabled || !isLoggedIn()) return;
-  const server = await fetchServerTests();
+  // Built-in view shows only the bundled tests; a subject shows only its own.
+  const payload = await fetchTestList(activeSubject ?? undefined);
+  const server = payload?.tests ?? null;
   if (!server?.length) return;
   const bundled = new Set(TESTS.map((t) => t.id));
-  const fresh = server.filter((t) => t.status === "published" && !bundled.has(t.id));
+  const fresh = server.filter(
+    (t) =>
+      t.status === "published" &&
+      !bundled.has(t.id) &&
+      (activeSubject ? t.subjectId === activeSubject : !t.subjectId)
+  );
   if (!fresh.length) return;
   const list = document.querySelector(".test-list");
   if (!list) return;
