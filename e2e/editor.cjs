@@ -46,6 +46,19 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.click("#ed-new-question");
   await page.waitForSelector("#ed-q", { timeout: 15000 });
   check(await page.isVisible("#ed-solution"), "question, answer and explanation panels all show on desktop");
+  const cols = await page.evaluate(() => {
+    const el = document.querySelector(".ed-cols");
+    return el ? getComputedStyle(el).gridTemplateColumns.split(" ").length : 0;
+  });
+  check(cols === 3, `desktop lays out three columns (got ${cols})`);
+  const explainRight = await page.evaluate(() => {
+    const a = document.querySelector(".ed-pane-answer")?.getBoundingClientRect();
+    const e = document.querySelector(".ed-explain")?.getBoundingClientRect();
+    return a && e ? e.left >= a.right - 1 : false;
+  });
+  check(explainRight, "the explanation sits to the RIGHT of the answer panel, not below it");
+  check(await page.isVisible(".ed-appbar #ed-publish-bar"), "the app bar carries Publish");
+  check(await page.isVisible(".ed-appbar .ed-taxonomy"), "the app bar shows the CBSE / Mathematics 12 context");
 
   // Maths must typeset in the preview as the teacher writes.
   await page.fill("#ed-q", "Order of a $2\\times 3$ matrix?");
@@ -72,9 +85,7 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   const hollow = await page.$$(".ed-tree-q:not(:has(.ed-dot.done))");
   check(hollow.length >= 1, "an unfinished question shows a hollow dot in the tree");
 
-  await page.click("#ed-open-overview");
-  await page.waitForSelector("#ov-publish", { timeout: 15000 });
-  await page.click("#ov-publish");
+  await page.click("#ed-publish-bar");
   await page.waitForSelector("#ov-publish-error:not([hidden])", { timeout: 25000 });
   const err = await page.textContent("#ov-publish-error");
   check(/finishing/.test(err), `publish is blocked: "${err.trim()}"`);
@@ -95,9 +106,7 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.waitForSelector(".ed-save-saved", { timeout: 20000 });
   check(!(await page.$(".ed-option-text")), "switching to long answer drops the option fields");
 
-  await page.click("#ed-open-overview");
-  await page.waitForSelector("#ov-publish", { timeout: 15000 });
-  await page.click("#ov-publish");
+  await page.click("#ed-publish-bar");
   await page.waitForSelector(".status-chip.status-done", { timeout: 25000 });
   check(true, "a finished test publishes");
 
@@ -112,7 +121,7 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
 
   // Phone layout: three tabs, one surface at a time.
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.click("#ed-unpublish");
+  await page.click("#ed-unpublish-bar");
   await page.waitForSelector(".ed-banner", { state: "detached", timeout: 20000 });
   check(true, "unpublishing clears the read-only banner");
   check(!(await page.$(".ed-save-dirty")), "publishing does not leave the document unsaved");

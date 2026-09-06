@@ -72,34 +72,60 @@ function render(): void {
   if (!test) return;
   syncUrl();
 
+  const q = selectedIndex >= 0 ? test.questions[selectedIndex] : null;
   app.innerHTML = `
-    ${topbar(true)}
-    <div class="editor">
-      <aside class="ed-tree" id="ed-tree">${treeMarkup(test)}</aside>
-      <div class="ed-main">
-        <header class="ed-header">
-          <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests">
-            ${ICONS.users}
-          </button>
-          <div class="ed-crumbs">
-            <span class="ed-crumb-test">${escapeHtml(test.title || "Untitled test")}</span>
-            ${selectedIndex >= 0 ? `<span class="ed-crumb-sep">/</span><span>Question ${selectedIndex + 1}</span>` : ""}
+    <div class="editor" data-pane="${pane}">
+      ${appBar(test)}
+      <div class="ed-cols${selectedIndex < 0 ? " overview" : ""}">
+        <aside class="ed-tree" id="ed-tree">${treeMarkup(test)}</aside>
+        <div class="ed-center">
+          <div class="ed-crumbrow">
+            <button class="ed-crumb-link" id="ed-exit">My tests</button>
+            <span class="ed-crumb-sep">/</span>
+            <button class="ed-crumb-link ed-crumb-test" id="ed-crumb-overview">${escapeHtml(test.title || "Untitled test")}</button>
+            ${selectedIndex >= 0 ? `<span class="ed-crumb-sep">/</span><span class="ed-crumb-current">Question ${selectedIndex + 1}</span>` : ""}
+            <div class="ed-spacer"></div>
+            <span class="ed-save" id="ed-save"></span>
           </div>
-          <div class="ed-spacer"></div>
-          <span class="ed-save" id="ed-save"></span>
-          <span class="status-chip ${statusClass(test.status ?? "draft")}">${statusLabel(test)}</span>
-          <button class="btn btn-ghost ed-exit" id="ed-exit">
-            <span class="ed-exit-full">My tests</span><span class="ed-exit-short">Back</span>
-          </button>
-        </header>
-        <div class="ed-body" id="ed-body"></div>
-        ${selectedIndex >= 0 ? tabsMarkup() : ""}
+          <div class="ed-body" id="ed-body"></div>
+        </div>
+        ${q ? `<aside class="ed-explain" id="ed-explain">${explanationPanel(q)}</aside>` : ""}
       </div>
+      ${selectedIndex >= 0 ? tabsMarkup() : ""}
     </div>`;
 
   renderBody();
   bindChrome();
   renderSaveState();
+}
+
+/** The editor's own app bar, as designed: identity, taxonomy, state, actions. */
+function appBar(test: Test): string {
+  const published = test.status === "published";
+  return `
+    <header class="ed-appbar">
+      <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">
+        ${ICONS.users}
+      </button>
+      <div class="ed-brand">
+        <span class="brand-mark">V</span><span class="ed-brand-name">Vidaivi</span>
+      </div>
+      <div class="ed-taxonomy">
+        <span class="ed-taxonomy-board">CBSE</span>
+        <span class="ed-taxonomy-sub">Mathematics 12</span>
+      </div>
+      <div class="ed-spacer"></div>
+      <span class="status-chip ${statusClass(test.status ?? "draft")}">${statusLabel(test)}</span>
+      <button class="ed-bar-btn" id="ed-preview">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span class="ed-bar-btn-label">Preview</span>
+      </button>
+      ${
+        published
+          ? `<button class="ed-bar-btn primary" id="ed-unpublish-bar">Unpublish</button>`
+          : `<button class="ed-bar-btn primary" id="ed-publish-bar">Publish test</button>`
+      }
+    </header>`;
 }
 
 function typeLabel(type: string): string {
@@ -132,8 +158,11 @@ function treeMarkup(test: Test): string {
   return `
     <div class="ed-tree-head">
       <span class="ed-tree-title">Tests &amp; questions</span>
-      <button class="btn-link" id="ed-new-question"${readOnly() ? " disabled" : ""}>Add question</button>
     </div>
+    <button class="ed-tree-add" id="ed-new-question"${readOnly() ? " disabled" : ""}>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Add question
+    </button>
     <button class="ed-tree-test${selectedIndex < 0 ? " active" : ""}" id="ed-open-overview">
       <span class="ed-tree-caret">${ICONS.home}</span>
       <span class="ed-tree-name">${escapeHtml(test.title || "Untitled test")}</span>
@@ -192,20 +221,15 @@ function renderBody(): void {
   }
   body.innerHTML = `
     ${readOnly() ? readOnlyBanner() : ""}
-    <div class="ed-panes" data-pane="${pane}">
-      <div class="ed-pane" data-pane="question">
-        ${questionBody(q)}
-        ${topicRow(q.topic)}
-      </div>
-      <div class="ed-pane" data-pane="answer">${answerPanel(q)}</div>
-      <div class="ed-pane" data-pane="explain">${explanationPanel(q)}</div>
-    </div>`;
+    <div class="ed-pane ed-pane-question">${questionBody(q)}</div>
+    <div class="ed-pane ed-pane-answer">${answerPanel(q)}</div>`;
 
   // Bind first even when read-only: binding is what paints the previews, and a
   // published test with empty preview boxes looks broken.
-  bindQuestionEditor(body, selectedIndex, renderBody, refreshTree);
+  const editorRoot = document.querySelector<HTMLElement>(".editor") ?? body;
+  bindQuestionEditor(editorRoot, selectedIndex, renderBody, refreshTree);
   if (readOnly()) {
-    body.querySelectorAll<HTMLElement>("input, textarea, select, .ed-panel button").forEach((el) => {
+    editorRoot.querySelectorAll<HTMLElement>("input, textarea, select, .ed-panel button").forEach((el) => {
       (el as HTMLInputElement).disabled = true;
     });
     document.getElementById("ed-unpublish")?.addEventListener("click", unpublish);
@@ -219,15 +243,6 @@ function renderBody(): void {
     });
     refreshTree();
   });
-}
-
-function topicRow(topic: string): string {
-  return `
-    <label class="ed-field ed-topic">
-      <span class="ed-panel-label">Topic</span>
-      <input class="ed-input" id="ed-topic" type="text" maxlength="60"
-             placeholder="e.g. Inverse of a matrix" value="${escapeHtml(topic)}" />
-    </label>`;
 }
 
 function readOnlyBanner(): string {
@@ -420,6 +435,20 @@ function bindChrome(): void {
   document.getElementById("ed-exit")?.addEventListener("click", () => {
     void save().then(onExit);
   });
+  document.getElementById("ed-crumb-overview")?.addEventListener("click", () => {
+    selectedIndex = -1;
+    render();
+  });
+  document.getElementById("ed-preview")?.addEventListener("click", () => {
+    const test = currentTest();
+    if (test) window.open(`./?test=${encodeURIComponent(test.id)}`, "_blank");
+  });
+  document.getElementById("ed-publish-bar")?.addEventListener("click", () => {
+    selectedIndex = -1;
+    render();
+    void publish();
+  });
+  document.getElementById("ed-unpublish-bar")?.addEventListener("click", unpublish);
   document.getElementById("ed-tree-toggle")?.addEventListener("click", () => {
     document.querySelector(".editor")?.classList.toggle("tree-open");
   });
@@ -428,8 +457,8 @@ function bindChrome(): void {
       pane = el.dataset.pane as Pane;
       document.querySelectorAll(".ed-tab").forEach((t) => t.classList.remove("active"));
       el.classList.add("active");
-      const panes = document.querySelector<HTMLElement>(".ed-panes");
-      if (panes) panes.dataset.pane = pane;
+      const editor = document.querySelector<HTMLElement>(".editor");
+      if (editor) editor.dataset.pane = pane;
     })
   );
 }

@@ -12,7 +12,10 @@ export function questionBody(q: Question): string {
     <section class="ed-panel" data-panel="question">
       <div class="ed-panel-head">
         <span class="ed-panel-label">Question</span>
-        <span class="ed-hint">Maths goes between dollar signs — <code>$x^2$</code></span>
+        <div class="ed-spacer"></div>
+        <span class="ed-panel-label">Topic</span>
+        <input class="ed-input ed-topic-input" id="ed-topic" type="text" maxlength="60"
+               placeholder="e.g. Inverse of a matrix" value="${escapeHtml(q.topic)}" />
       </div>
       <textarea class="ed-text" id="ed-q" rows="4"
         placeholder="Type the question. Wrap maths in $…$ and bold in **stars**.">${escapeHtml(q.q)}</textarea>

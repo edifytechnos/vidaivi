@@ -122,8 +122,14 @@ Storage instead of the repo; bundled `src/tests/*.json` stay as the platform see
 
 ## Authoring editor (`src/screens/editor/`)
 
-The tree/editor/explanation layout from `docs/PRODUCT-PLAN.md`. `index.ts` is the
-shell (tree, header, overview, responsive tabs), `state.ts` holds the working
+The three-column layout from the approved design canvas: **tests tree (268px) ·
+question being written · explanation (384px)**, under an editor app bar carrying
+identity, taxonomy, status, Preview and Publish. Below 1180px the explanation
+drops under the question; below 900px the three surfaces become bottom tabs and
+the tree hides behind a drawer. Keep the columns — the explanation belongs on the
+right, not stacked in the middle column.
+
+`index.ts` is the shell (app bar, tree, overview, responsive panes), `state.ts` holds the working
 copy and autosaves ~1s after typing (saves are serialised, never concurrent),
 `panels.ts` renders the question body, the type-adaptive Answer Expected panel
 and the explanation, each with a live "Student sees" preview.
