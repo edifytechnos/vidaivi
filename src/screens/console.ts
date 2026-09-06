@@ -18,7 +18,7 @@ import { TESTS, testTitle } from "../data";
 import { app, copyText, escapeHtml, ICONS, pct, topbar } from "../dom";
 import { fetchTestList, mutateTest, seedSampleTests, setTestStatus } from "../api";
 import { showWelcome } from "./auth";
-import { showHome } from "./home";
+import { currentSubject, showHome } from "./home";
 import { showBuilder } from "./builder";
 import { createTestAndEdit, showEditor } from "./editor";
 
@@ -45,7 +45,7 @@ function bindConsoleNav(): void {
   document.getElementById("nav-students")?.addEventListener("click", showTeacher);
   document.getElementById("nav-tests")?.addEventListener("click", showMyTests);
   document.getElementById("nav-admin")?.addEventListener("click", showAdmin);
-  document.getElementById("nav-home")?.addEventListener("click", showHome);
+  document.getElementById("nav-home")?.addEventListener("click", () => showHome());
   document.getElementById("nav-signout")?.addEventListener("click", () => {
     track("sign_out");
     signOut();
@@ -110,7 +110,7 @@ export function showMyTests() {
   });
 
   async function refresh() {
-    let list = await fetchTestList();
+    let list = await fetchTestList(currentSubject() ?? undefined);
     // A teacher's first visit gets the bundled tests copied in as their own
     // editable drafts, so the page is never an empty box with no example.
     if (list?.needsSamples) {

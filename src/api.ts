@@ -24,6 +24,7 @@ export interface ServerTestMeta {
   status: "draft" | "published" | "archived";
   platform: boolean;
   sample: boolean;
+  subjectId: string;
   ownerSub: string;
   questionCount: number;
   totalMarks: number;
@@ -41,10 +42,13 @@ export async function fetchServerTests(): Promise<ServerTestMeta[] | null> {
 }
 
 /** The list plus whether this teacher still needs their starter samples. */
-export async function fetchTestList(): Promise<{ tests: ServerTestMeta[]; needsSamples: boolean } | null> {
+export async function fetchTestList(
+  subjectId?: string
+): Promise<{ tests: ServerTestMeta[]; needsSamples: boolean } | null> {
   if (!isLoggedIn()) return null;
   try {
-    const res = await fetch("/api/tests", { headers: authHeader() });
+    const q = subjectId ? `?subjectId=${encodeURIComponent(subjectId)}` : "";
+    const res = await fetch(`/api/tests${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     const data = await res.json();
     return { tests: data.tests as ServerTestMeta[], needsSamples: !!data.needsSamples };
@@ -66,6 +70,47 @@ export async function seedSampleTests(tests: Test[]): Promise<number> {
     return (await res.json()).seeded ?? 0;
   } catch {
     return 0;
+  }
+}
+
+export interface Subject {
+  id: string;
+  board: string;
+  klass: string;
+  subject: string;
+  title: string;
+  ownerSub: string;
+  collaborators: string[];
+  testCount?: number;
+  createdAt?: string;
+}
+
+export async function fetchSubjects(): Promise<Subject[] | null> {
+  if (!isLoggedIn()) return null;
+  try {
+    const res = await fetch("/api/subjects", { headers: authHeader() });
+    if (!res.ok) return null;
+    return (await res.json()).subjects as Subject[];
+  } catch {
+    return null;
+  }
+}
+
+export async function mutateSubject(
+  action: "create" | "update" | "delete",
+  input: { id?: string; board?: string; klass?: string; subject?: string }
+): Promise<{ ok: true; subject?: Subject } | { ok: false; message: string }> {
+  try {
+    const res = await fetch("/api/subjects", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action, ...input }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Request failed" };
+    return { ok: true, subject: data.subject };
+  } catch {
+    return { ok: false, message: "Network error" };
   }
 }
 

@@ -12,13 +12,17 @@ import { showWelcome } from "./screens/auth";
 import { showLanding } from "./screens/test";
 import { showEditor } from "./screens/editor";
 import { showMyTests } from "./screens/console";
+import { showSubjects } from "./screens/subjects";
 
 initAnalytics();
 if (authEnabled && isLoggedIn()) void flushPendingAttempts();
 
 function showEntry(): void {
+  // Signed-in users land on their subjects; guests go straight to the
+  // built-in tests, since subjects are something you own.
   if (authEnabled && !isLoggedIn() && !isGuest()) showWelcome();
-  else showHome();
+  else if (authEnabled && isLoggedIn()) void showSubjects();
+  else showHome(null);
 }
 
 // A teacher refreshing mid-edit lands back on the same question.

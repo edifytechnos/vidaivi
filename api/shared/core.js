@@ -671,6 +671,7 @@ function testMeta(e) {
     status: e.status,
     platform: !!e.platform,
     sample: !!e.sample,
+    subjectId: e.subjectId || "",
     ownerSub: e.ownerSub,
     questionCount: questions.length,
     totalMarks: questions.reduce((s, q) => s + (q.marks || 0), 0),
@@ -810,6 +811,7 @@ handlers.tests = async (context, req) => {
         platform: !!t.platform && who.role === "admin",
         ownerSub: who.id,
         ownerEmail: who.email || "",
+        subjectId: String(t.subjectId || "").slice(0, 80),
         board: "CBSE",
         klass: "12",
         subject: "Maths",
@@ -817,6 +819,15 @@ handlers.tests = async (context, req) => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
+      // Stamp the taxonomy from the subject so a test always knows its context.
+      if (entity.subjectId) {
+        try {
+          const sub = await tableClient("subjects").getEntity("subject", entity.subjectId);
+          entity.board = sub.board || entity.board;
+          entity.klass = sub.klass || entity.klass;
+          entity.subject = sub.subject || entity.subject;
+        } catch {}
+      }
       chunkQuestions(entity, checked.questions);
       await tests.createEntity(entity);
       return json(context, 201, { test: testMeta(entity) });
@@ -867,11 +878,13 @@ handlers.tests = async (context, req) => {
     return json(context, 200, { test: testFull(entity) });
   }
 
+  const wantedSubject = String((req.query && req.query.subjectId) || "").trim();
   const list = [];
   let ownedCount = 0;
   const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
   for await (const e of iter) {
     if (isStaff && e.ownerSub === who.id) ownedCount++;
+    if (wantedSubject && (e.subjectId || "") !== wantedSubject) continue;
     if (visible(e)) list.push(testMeta(e));
     if (list.length >= 200) break;
   }
@@ -889,6 +902,202 @@ handlers.tests = async (context, req) => {
     }
   }
   json(context, 200, { tests: list, needsSamples });
+};
+
+// ---------- Subjects (a board + class + subject that owns tests) ----------
+//
+// Teacher-owned, with a collaborators list carried from day one so a subject
+// can be shared later without a migration. Table "subjects": PK "subject",
+// RK = subject id.
+
+function subjectTitle(board, klass, subject) {
+  return [board, klass ? `Class ${klass}` : "", subject].filter(Boolean).join(" ");
+}
+
+function subjectOut(e) {
+  let collaborators = [];
+  try {
+    collaborators = JSON.parse(e.collaborators || "[]");
+  } catch {}
+  return {
+    id: e.rowKey,
+    board: e.board || "",
+    klass: e.klass || "",
+    subject: e.subject || "",
+    title: e.title || subjectTitle(e.board, e.klass, e.subject),
+    ownerSub: e.ownerSub || "",
+    collaborators,
+    createdAt: e.createdAt,
+  };
+}
+
+function canUseSubject(who, e) {
+  if (e.ownerSub === who.id) return true;
+  let collaborators = [];
+  try {
+    collaborators = JSON.parse(e.collaborators || "[]");
+  } catch {}
+  const email = String(who.email || "").toLowerCase();
+  return !!email && collaborators.includes(email);
+}
+
+/** Every subject this teacher owns or collaborates on. */
+async function listOwnedSubjects(who) {
+  const subjects = tableClient("subjects");
+  await ensureTable(subjects);
+  const out = [];
+  const iter = subjects.listEntities({ queryOptions: { filter: `PartitionKey eq 'subject'` } });
+  for await (const e of iter) {
+    if (canUseSubject(who, e)) out.push(e);
+    if (out.length >= 200) break;
+  }
+  return out;
+}
+
+handlers.subjects = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+  const isStaff = who.role === "teacher" || who.role === "admin";
+
+  const subjects = tableClient("subjects");
+  await ensureTable(subjects);
+  const tests = tableClient("tests");
+  await ensureTable(tests);
+
+  if (req.method === "POST") {
+    if (!isStaff) return json(context, 403, { error: "Teachers only" });
+    const body = getBody(req);
+    const action = body.action || "create";
+    const board = String(body.board || "").trim().slice(0, 40);
+    const klass = String(body.klass || "").trim().slice(0, 20);
+    const subject = String(body.subject || "").trim().slice(0, 40);
+
+    if (action === "create") {
+      if (!board || !klass || !subject) {
+        return json(context, 400, { error: "Board, class and subject are all required" });
+      }
+      const slug = slugify(`${board}${klass}${subject}`);
+      const id = `${slug}-${crypto.randomBytes(3).toString("hex")}`;
+      const entity = {
+        partitionKey: "subject",
+        rowKey: id,
+        board,
+        klass,
+        subject,
+        title: subjectTitle(board, klass, subject),
+        ownerSub: who.id,
+        ownerEmail: who.email || "",
+        collaborators: "[]",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      await subjects.createEntity(entity);
+      return json(context, 201, { subject: subjectOut(entity) });
+    }
+
+    const id = String(body.id || "").trim();
+    let entity;
+    try {
+      entity = await subjects.getEntity("subject", id);
+    } catch {
+      return json(context, 404, { error: "Subject not found" });
+    }
+    if (entity.ownerSub !== who.id) return json(context, 403, { error: "Not your subject" });
+
+    if (action === "update") {
+      if (board) entity.board = board;
+      if (klass) entity.klass = klass;
+      if (subject) entity.subject = subject;
+      entity.title = subjectTitle(entity.board, entity.klass, entity.subject);
+      entity.updatedAt = new Date().toISOString();
+      await subjects.updateEntity(entity, "Replace");
+      return json(context, 200, { subject: subjectOut(entity) });
+    }
+
+    if (action === "delete") {
+      // Refuse while tests still point at it — deleting would orphan them.
+      let used = 0;
+      const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+      for await (const t of iter) {
+        if (t.subjectId === id) used++;
+        if (used) break;
+      }
+      if (used) {
+        return json(context, 400, { error: "Move or delete this subject's tests before removing it" });
+      }
+      await subjects.deleteEntity("subject", id);
+      return json(context, 200, { ok: true });
+    }
+
+    return json(context, 400, { error: `Unknown action: ${action}` });
+  }
+
+  // GET
+  if (isStaff) {
+    let owned = await listOwnedSubjects(who);
+
+    // A teacher who has tests but no subject yet gets a default one, and their
+    // tests are filed under it — otherwise the grid would look empty while
+    // their work sits unreachable.
+    if (!owned.length) {
+      const orphans = [];
+      const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+      for await (const t of iter) {
+        if (t.ownerSub === who.id && !t.subjectId) orphans.push(t);
+      }
+      if (orphans.length) {
+        const id = `cbse12maths-${crypto.randomBytes(3).toString("hex")}`;
+        const entity = {
+          partitionKey: "subject",
+          rowKey: id,
+          board: "CBSE",
+          klass: "12",
+          subject: "Maths",
+          title: subjectTitle("CBSE", "12", "Maths"),
+          ownerSub: who.id,
+          ownerEmail: who.email || "",
+          collaborators: "[]",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        await subjects.createEntity(entity);
+        for (const t of orphans) {
+          t.subjectId = id;
+          await tests.updateEntity(t, "Merge");
+        }
+        owned = [entity];
+      }
+    }
+
+    const list = owned.map(subjectOut);
+    // How many tests sit in each, for the card.
+    const counts = {};
+    const iter2 = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+    for await (const t of iter2) {
+      if (t.subjectId) counts[t.subjectId] = (counts[t.subjectId] || 0) + 1;
+    }
+    for (const s of list) s.testCount = counts[s.id] || 0;
+    list.sort((a, b) => a.title.localeCompare(b.title));
+    return json(context, 200, { subjects: list });
+  }
+
+  // Students see the subjects their visible published tests belong to.
+  const wanted = new Set();
+  const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+  const teacherSub = who.kind === "student" ? who.teacherSub || "" : "";
+  for await (const t of iter) {
+    if (t.status !== "published" || !t.subjectId) continue;
+    if (t.platform || (teacherSub && t.ownerSub === teacherSub)) wanted.add(t.subjectId);
+  }
+  const list = [];
+  for (const id of wanted) {
+    try {
+      list.push(subjectOut(await subjects.getEntity("subject", id)));
+    } catch {}
+  }
+  list.sort((a, b) => a.title.localeCompare(b.title));
+  json(context, 200, { subjects: list });
 };
 
 handlers.attempts = async (context, req) => {
