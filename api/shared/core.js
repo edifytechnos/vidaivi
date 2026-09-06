@@ -649,8 +649,10 @@ function validateQuestions(input, { strict = false } = {}) {
   const fatal = problems.filter((p) => p.fatal);
   if (fatal.length) return { error: fatal[0].reason, problems: fatal };
   if (strict && problems.length) {
+    // Count questions, not problems — one question can fail several rules.
+    const affected = new Set(problems.map((p) => p.questionId)).size;
     return {
-      error: `${problems.length} question${problems.length > 1 ? "s need" : " needs"} finishing before publishing`,
+      error: `${affected} question${affected > 1 ? "s need" : " needs"} finishing before publishing`,
       problems,
     };
   }

@@ -26,6 +26,7 @@ let pane: Pane = "question";
 let siblings: { id: string; title: string; status: string }[] = [];
 let unsubscribe: (() => void) | null = null;
 let problems: TestProblem[] = [];
+let publishError = "";
 
 /** Open the authoring screen on a test, optionally focused on one question. */
 export async function showEditor(testId: string, questionId: string | null, back: () => void) {
@@ -46,6 +47,7 @@ export async function showEditor(testId: string, questionId: string | null, back
     .map((t) => ({ id: t.id, title: t.title, status: t.status }));
   loadTest(loaded);
   problems = [];
+  publishError = "";
   selectedIndex = questionId ? loaded.questions.findIndex((q) => q.id === questionId) : -1;
   pane = "question";
 
@@ -278,7 +280,7 @@ function overviewMarkup(test: Test): string {
 
       <section class="ed-panel">
         <div class="ed-panel-head"><span class="ed-panel-label">Publishing</span></div>
-        <p id="ov-publish-error" class="login-error" hidden></p>
+        <p id="ov-publish-error" class="login-error"${publishError ? "" : " hidden"}>${escapeHtml(publishError)}</p>
         <div class="actions">
           ${
             test.status === "draft"
@@ -328,7 +330,6 @@ function bindOverview(): void {
 async function publish(): Promise<void> {
   const test = currentTest();
   const btn = document.getElementById("ov-publish") as HTMLButtonElement | null;
-  const errEl = document.getElementById("ov-publish-error") as HTMLElement | null;
   if (!test || !btn) return;
   btn.disabled = true;
   btn.textContent = "Publishing…";
@@ -337,15 +338,15 @@ async function publish(): Promise<void> {
   btn.disabled = false;
   btn.textContent = "Publish to students";
   if (!result.ok) {
+    // Held in state: renderBody() rebuilds the overview, so a message written
+    // straight into the DOM would be wiped by the very next render.
     problems = result.problems ?? [];
-    if (errEl) {
-      errEl.textContent = result.message || "Could not publish.";
-      errEl.hidden = false;
-    }
+    publishError = result.message || "Could not publish.";
     renderBody();
     return;
   }
   problems = [];
+  publishError = "";
   track("test_published", { test: test.id });
   edit(() => {
     test.status = "published";
