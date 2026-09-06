@@ -22,6 +22,13 @@ const MIME = {
   ".svg": "image/svg+xml",
 };
 
+const CDN_HOSTS = /https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\/[^"')\s]*/g;
+
+/** Point CDN URLs at this origin's /_cdn/ mirror. */
+function rewriteCdn(text) {
+  return text.replace(CDN_HOSTS, (url) => `/_cdn/${encodeURIComponent(url)}`);
+}
+
 http
   .createServer(async (req, res) => {
     try {
@@ -47,14 +54,37 @@ http
         res.end(body);
         return;
       }
+      // Mirror the CDN assets (KaTeX, fonts) through this origin. Browsers in
+      // locked-down environments often can't reach them directly, which would
+      // silently disable maths rendering — the one thing worth checking most.
+      if (req.url.startsWith("/_cdn/")) {
+        const remote = decodeURIComponent(req.url.slice("/_cdn/".length));
+        if (!/^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//.test(remote)) {
+          res.writeHead(403);
+          res.end("blocked");
+          return;
+        }
+        const upstream = await fetch(remote);
+        let body = Buffer.from(await upstream.arrayBuffer());
+        const type = upstream.headers.get("content-type") || "application/octet-stream";
+        // Rewrite nested URLs (e.g. font files referenced from katex.min.css).
+        if (type.includes("text/css")) {
+          body = Buffer.from(rewriteCdn(body.toString()));
+        }
+        res.writeHead(upstream.status, { "content-type": type });
+        res.end(body);
+        return;
+      }
+
       let file = path.join(DIST, req.url.split("?")[0]);
       if (!fs.existsSync(file) || fs.statSync(file).isDirectory()) {
         file = path.join(DIST, "index.html");
       }
-      res.writeHead(200, {
-        "content-type": MIME[path.extname(file)] || "application/octet-stream",
-      });
-      res.end(fs.readFileSync(file));
+      const ext = path.extname(file);
+      let body = fs.readFileSync(file);
+      if (ext === ".html" || ext === ".css") body = Buffer.from(rewriteCdn(body.toString()));
+      res.writeHead(200, { "content-type": MIME[ext] || "application/octet-stream" });
+      res.end(body);
     } catch (e) {
       res.writeHead(502);
       res.end(String(e.message));
