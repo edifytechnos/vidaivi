@@ -1,0 +1,13 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "Question editor — desktop" },
+    { "file": "TestOverview.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "Test overview" },
+    { "file": "AnswerVariants.dc.html", "x": 0, "y": 1020, "w": 1240, "h": 620, "title": "Answer Expected — three types" },
+    { "file": "EquationBuilder.dc.html", "x": 1360, "y": 1020, "w": 1100, "h": 780, "title": "Equation builder" },
+    { "file": "AIProposal.dc.html", "x": 2560, "y": 1020, "w": 1100, "h": 700, "title": "AI explanation — propose and accept" },
+    { "file": "CloneReplicate.dc.html", "x": 0, "y": 1920, "w": 1240, "h": 820, "title": "Clone vs Replicate" },
+    { "file": "PublishVersions.dc.html", "x": 1360, "y": 1920, "w": 1240, "h": 700, "title": "Publishing and versions" },
+    { "file": "Mobile.dc.html", "x": 2720, "y": 1920, "w": 390, "h": 844, "title": "Phone — three tabs" }
+  ],
+  "launch": { "view": "canvas" }
+}

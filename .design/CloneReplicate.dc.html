@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+  <style>
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, sans-serif; font-size: 14px; color: #0f172a; background: #f8fafc; -webkit-font-smoothing: antialiased; }
+    a { color: #6d28d9; } a:hover { color: #5b21b6; }
+    .card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06); }
+    .qrow { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #e2e8f0; border-radius: 9px; background: #fff; }
+    .modeb { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; font-size: 12.5px; font-weight: 600; border-radius: 7px; cursor: pointer; }
+  </style>
+</helmet>
+<div style="width: 1240px; height: 820px; padding: 28px; display: flex; flex-direction: column; gap: 18px; background: #f8fafc; box-sizing: border-box">
+
+  <div style="display: flex; flex-direction: column; gap: 5px">
+    <span style="font-size: 18px; font-weight: 700; letter-spacing: -0.01em">Adding a question you already wrote</span>
+    <span style="font-size: 13.5px; color: #64748b">Two ways to reuse it, and the difference matters later — so the picker names it plainly at the moment of choosing.</span>
+  </div>
+
+  <div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <span style="font-size: 14px; font-weight: 700">Add existing question</span>
+      <div style="flex-grow: 1"></div>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; width: 260px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4-4"></path></svg>
+        <span style="font-size: 13px; color: #94a3b8">Search your questions…</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 9px">
+      <div class="qrow" style="border-color: #ddd6fe; background: #f5f3ff">
+        <span style="width: 17px; height: 17px; border-radius: 5px; background: #6d28d9; display: inline-flex; align-items: center; justify-content: center; flex: none"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg></span>
+        <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+          <span style="font-size: 13.5px; font-weight: 600">Relation R on {1,2,3,4} defined by |a − b| even…</span>
+          <span style="font-size: 12px; color: #64748b">Matrices — Test 1 · MCQ · 1 mark</span>
+        </div>
+      </div>
+      <div class="qrow">
+        <span style="width: 17px; height: 17px; border-radius: 5px; border: 2px solid #cbd5e1; flex: none"></span>
+        <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+          <span style="font-size: 13.5px; font-weight: 600">Find the inverse of a 2×2 matrix A…</span>
+          <span style="font-size: 12px; color: #64748b">Matrices — Test 1 · Long answer · 5 marks</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 4px">
+      <div style="padding: 16px; border: 2px solid #6d28d9; border-radius: 10px; background: #f5f3ff; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: center; gap: 9px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+          <span style="font-size: 14px; font-weight: 700; color: #6d28d9">Clone</span>
+        </div>
+        <span style="font-size: 13px; color: #475569; line-height: 1.6">A separate copy. Edit it freely here — the original never changes, and changes there never reach this test.</span>
+      </div>
+      <div style="padding: 16px; border: 1px solid #cbd5e1; border-radius: 10px; background: #ffffff; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: center; gap: 9px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"></path><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"></path></svg>
+          <span style="font-size: 14px; font-weight: 700">Replicate</span>
+        </div>
+        <span style="font-size: 13px; color: #475569; line-height: 1.6">Stays linked. Fix the original once and every draft using it picks the fix up. Published versions stay frozen until you reopen them.</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; flex-grow: 1; min-height: 0">
+
+    <div class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+      <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8">In the tree — a replicated question</span>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; background: #f8fafc">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #047857; flex: none"></span>
+        <span style="font-size: 13.5px; color: #475569; flex-grow: 1">Question 4</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"></path><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.5-1.5"></path></svg>
+      </div>
+      <span style="font-size: 12.5px; color: #64748b; line-height: 1.6">The link icon is the whole tell: this question is shared with another test. Everything else looks and edits the same.</span>
+    </div>
+
+    <div class="card" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; border-color: #ddd6fe">
+      <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8">When the source has moved on</span>
+      <div style="padding: 13px 14px; border-radius: 9px; background: #f5f3ff; border: 1px solid #ddd6fe; display: flex; align-items: flex-start; gap: 11px">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path></svg>
+        <div style="display: flex; flex-direction: column; gap: 8px; flex-grow: 1">
+          <span style="font-size: 13px; font-weight: 600; color: #0f172a">Update available</span>
+          <span style="font-size: 12.5px; color: #475569; line-height: 1.55">Mr. Kumar edited this question in Matrices — Test 1 two days ago.</span>
+          <div style="display: flex; gap: 8px; margin-top: 2px">
+            <button style="padding: 7px 13px; font: inherit; font-size: 12.5px; font-weight: 600; color: #fff; background: #6d28d9; border: none; border-radius: 7px; cursor: pointer">Pull in the change</button>
+            <button style="padding: 7px 13px; font: inherit; font-size: 12.5px; font-weight: 600; color: #475569; background: #fff; border: 1px solid #cbd5e1; border-radius: 7px; cursor: pointer">See what changed</button>
+          </div>
+        </div>
+      </div>
+      <span style="font-size: 12.5px; color: #64748b; line-height: 1.6">Shown only while this test is a draft. A published version never changes under a student mid-term.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

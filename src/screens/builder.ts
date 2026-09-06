@@ -4,7 +4,7 @@
 // editor drops into these same text fields next.
 
 import { track } from "../analytics";
-import { mutateTest, fetchServerTest } from "../api";
+import { mutateTest, fetchServerTest, newQuestionId } from "../api";
 import { app, escapeHtml, formatText, renderMath, topbar } from "../dom";
 import type { Question, QType, Test } from "../types";
 
@@ -398,11 +398,12 @@ async function save() {
   btn.disabled = true;
   btn.textContent = "Saving…";
 
-  // Question ids must be stable and unique; keep any the test already had.
-  const slug = (draft.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "test").slice(0, 40);
-  const questions = draft.questions.map((q, i) => {
+  // Question ids must be stable and unique. They cannot be positional: deleting
+  // a question and adding another would hand the new one an index a surviving
+  // question already owns, and the server rejects the duplicate.
+  const questions = draft.questions.map((q) => {
     const { _key, ...rest } = q;
-    return { ...rest, id: q.id || `${slug}-q${i + 1}`, chapter: q.chapter || draft.chapter };
+    return { ...rest, id: q.id || newQuestionId(draft.title), chapter: q.chapter || draft.chapter };
   });
 
   const payload: Partial<Test> = {

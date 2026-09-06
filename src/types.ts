@@ -23,6 +23,9 @@ export interface Test {
   teacher?: string | null;
   order?: number;
   access?: "open" | "login"; // "login" requires Google sign-in; default "open"
+  // Present only on tests fetched from the API; bundled JSON tests have neither.
+  status?: "draft" | "published" | "archived";
+  sample?: boolean;
   questions: Question[];
 }
 
