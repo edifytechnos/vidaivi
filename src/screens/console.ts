@@ -19,6 +19,7 @@ import { app, copyText, escapeHtml, ICONS, pct, topbar } from "../dom";
 import { fetchServerTests, mutateTest, setTestStatus } from "../api";
 import { showWelcome } from "./auth";
 import { showHome } from "./home";
+import { showBuilder } from "./builder";
 
 function consoleShell(
   active: "admin" | "students" | "report" | "tests",
@@ -61,10 +62,8 @@ export function showMyTests() {
     `
       <div class="card">
         <h2 class="landing-title">My tests</h2>
-        <p class="hint">Tests you author live in the cloud: create as a draft,
-        then publish to make it visible to your students on their home screen.
-        A visual question editor is coming — for now, paste test JSON below
-        (same format as the built-in tests).</p>
+        <p class="hint">Tests you author live in the cloud: build one as a draft,
+        then publish to make it visible to your students on their home screen.</p>
         <div id="mt-import" style="display:none">
           <textarea id="mt-json" class="numeric-input" rows="8" spellcheck="false"
             placeholder='{"id":"my-test","title":"…","chapter":"…","questions":[…]}'></textarea>
@@ -75,7 +74,8 @@ export function showMyTests() {
           </div>
         </div>
         <div class="actions" id="mt-open-import-row">
-          <button id="mt-open-import" class="btn btn-primary">Import test JSON</button>
+          <button id="mt-new" class="btn btn-primary">Create test</button>
+          <button id="mt-open-import" class="btn btn-ghost">Import JSON instead</button>
         </div>
       </div>
       <div class="card roster-card">
@@ -91,6 +91,9 @@ export function showMyTests() {
   const errEl = document.getElementById("mt-error") as HTMLElement;
   const listEl = document.getElementById("mt-list")!;
 
+  document.getElementById("mt-new")!.addEventListener("click", () => {
+    void showBuilder(null, showMyTests);
+  });
   document.getElementById("mt-open-import")!.addEventListener("click", () => {
     importBox.style.display = "";
     openRow.style.display = "none";
@@ -109,7 +112,7 @@ export function showMyTests() {
     }
     const mine = tests.filter((t) => !t.platform || isAdmin());
     if (!mine.length) {
-      listEl.innerHTML = `<p class="hint">No cloud tests yet — import one above.</p>`;
+      listEl.innerHTML = `<p class="hint">No cloud tests yet — create your first above.</p>`;
       return;
     }
     listEl.innerHTML = `
@@ -130,7 +133,8 @@ export function showMyTests() {
                     ? `<button class="btn-link mt-act" data-act="unpublish" data-id="${escapeHtml(t.id)}">Unpublish</button>
                        <button class="btn-link mt-act" data-act="archive" data-id="${escapeHtml(t.id)}">Archive</button>`
                     : t.status === "draft"
-                      ? `<button class="btn-link mt-act" data-act="publish" data-id="${escapeHtml(t.id)}">Publish</button>
+                      ? `<button class="btn-link mt-edit" data-id="${escapeHtml(t.id)}">Edit</button>
+                         <button class="btn-link mt-act" data-act="publish" data-id="${escapeHtml(t.id)}">Publish</button>
                          <button class="btn-link mt-act" data-act="delete" data-id="${escapeHtml(t.id)}">Delete</button>`
                       : `<button class="btn-link mt-act" data-act="unpublish" data-id="${escapeHtml(t.id)}">Back to draft</button>`;
                 return `<tr>
@@ -146,6 +150,11 @@ export function showMyTests() {
           </tbody>
         </table>
       </div>`;
+    listEl.querySelectorAll<HTMLButtonElement>(".mt-edit").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        void showBuilder(btn.dataset.id!, showMyTests);
+      })
+    );
     listEl.querySelectorAll<HTMLButtonElement>(".mt-act").forEach((btn) =>
       btn.addEventListener("click", async () => {
         const act = btn.dataset.act as "publish" | "unpublish" | "archive" | "delete";

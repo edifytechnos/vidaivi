@@ -1068,3 +1068,101 @@ body {
 .cell-actions {
   text-align: right;
 }
+
+/* ---------- Test builder ---------- */
+
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 0.9rem 0 0.3rem;
+}
+
+.builder-q-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.builder-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .builder-row {
+    grid-template-columns: 1.2fr 1.4fr 0.6fr;
+    align-items: end;
+  }
+  .builder-row .field-label {
+    margin-top: 0;
+  }
+}
+
+.builder-preview {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  padding: 0.7rem 0.85rem;
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  overflow-x: auto;
+}
+
+.builder-preview p:first-child { margin-top: 0; }
+.builder-preview p:last-child { margin-bottom: 0; }
+
+.builder-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.builder-option .numeric-input { margin: 0; flex: 1; }
+.builder-option input[type="radio"] { width: 1.1rem; height: 1.1rem; accent-color: var(--primary); flex: none; }
+
+.builder-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+.builder-total {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.builder textarea.numeric-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.builder code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
+  font-size: 0.85em;
+}
+
+.btn-link[disabled] { opacity: 0.4; cursor: default; }
+
+.builder-preview-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}

@@ -112,9 +112,12 @@ Storage instead of the repo; bundled `src/tests/*.json` stay as the platform see
 - Client: `src/api.ts`. Home merges published cloud tests into the test list;
   a `?test=<id>` link that isn't bundled falls back to fetching it from the API,
   so teacher-authored test links work the same way as built-in ones.
-- Console → **My tests** lists a teacher's cloud tests with publish/archive/delete.
-  Until the visual editor lands (next increment), tests are created by pasting
-  test JSON.
+- Console → **My tests** lists a teacher's cloud tests with publish/archive/delete,
+  and **Create test** / **Edit** open the builder (`src/screens/builder.ts`):
+  metadata plus per-question cards (type, topic, marks, question, type-specific
+  answer fields, solution) with a live "Student sees" preview under each text
+  field. Client validation mirrors the server's rules. Pasting test JSON is still
+  available as "Import JSON instead".
 
 ## Source layout (`src/`)
 
@@ -128,6 +131,7 @@ Storage instead of the repo; bundled `src/tests/*.json` stay as the platform see
 - `screens/home.ts` — home test list, profile row, cloud-saved results.
 - `api.ts` — fetch client for the DB-backed tests API.
 - `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
+- `screens/builder.ts` — visual test builder (create/edit cloud tests).
 - `screens/test.ts` — test player (landing → questions → score → review).
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
@@ -141,9 +145,22 @@ production; `node e2e/regression.cjs` runs the Playwright suite (guest flows alw
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
 hardcode credentials). See `e2e/README.md`.
 
+## Local development
+
+`npm run dev` serves the app on localhost with hot reload. The API is Azure SWA
+managed Functions and can't run under Vite, so `vite.config.ts` proxies `/api/*`
+to a deployed environment — production by default, or set `VITE_API_TARGET` to a
+PR preview URL to try unmerged API changes. Copy `.env.example` to `.env.local`
+(gitignored) to enable the login screens locally; student and admin logins work
+on localhost, while Google sign-in only works from origins registered on the
+OAuth client.
+
+Local dev talks to the **real** database, so students and tests created there
+are the live ones.
+
 ## Commands
 
-- `npm run dev` — local dev server
+- `npm run dev` — local dev server (API proxied, see above)
 - `npm run build` — typecheck + production build to `dist/` (ready for Netlify drop)
 - `npm run preview` — serve the built `dist/`
 
