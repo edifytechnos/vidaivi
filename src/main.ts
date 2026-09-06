@@ -11,10 +11,11 @@ import { showHome } from "./screens/home";
 import { showWelcome } from "./screens/auth";
 import { showLanding } from "./screens/test";
 import { showEditor } from "./screens/editor";
-import { showMyTests } from "./screens/console";
 import { showSubjects } from "./screens/subjects";
+import { installTopbarMenu } from "./screens/menu";
 
 initAnalytics();
+installTopbarMenu();
 if (authEnabled && isLoggedIn()) void flushPendingAttempts();
 
 function showEntry(): void {
@@ -29,7 +30,7 @@ function showEntry(): void {
 const editId = (new URLSearchParams(location.search).get("edit") ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
 if (editId && authEnabled && isLoggedIn()) {
   const questionId = new URLSearchParams(location.search).get("q");
-  void showEditor(editId, questionId, showMyTests);
+  void showEditor(editId, questionId, () => void showSubjects());
 }
 
 // Tolerate links mangled by messaging apps (trailing "?", "/", punctuation).

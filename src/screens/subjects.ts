@@ -3,12 +3,13 @@
 // its tests.
 
 import { track } from "../analytics";
-import { fetchSubjects, mutateSubject, type Subject } from "../api";
+import { fetchSubjects, fetchTestList, mutateSubject, seedSampleTests, type Subject } from "../api";
 import { getProfile, isTeacher, signOut } from "../auth";
 import { setGuest } from "../attempts";
-import { app, escapeHtml, ICONS, topbar } from "../dom";
+import { TESTS } from "../data";
+import { ICONS, app, escapeHtml, setUrl, topbar } from "../dom";
 import { showWelcome } from "./auth";
-import { showMyTests } from "./console";
+import { showEditorForSubject } from "./editor";
 import { setSubject, showHome } from "./home";
 
 const BOARDS = ["CBSE", "ICSE", "State Board", "IGCSE"];
@@ -25,6 +26,7 @@ export const BUILT_IN_SUBJECT = {
 };
 
 export async function showSubjects() {
+  setUrl();
   track("subjects_open");
   const profile = getProfile();
   app.innerHTML = `
@@ -56,6 +58,7 @@ export async function showSubjects() {
 async function refresh(): Promise<void> {
   const grid = document.getElementById("sub-grid");
   if (!grid) return;
+  await seedSamplesOnce(grid);
   const subjects = (await fetchSubjects()) ?? [];
   const cards = [...subjects.map(cardFor), builtInCard()];
   grid.innerHTML = cards.join("");
@@ -66,9 +69,10 @@ async function refresh(): Promise<void> {
       track("subject_open", { subject: id });
       const subjectId = id === BUILT_IN_SUBJECT.id ? null : id;
       setSubject(subjectId);
-      // A teacher wants the page where they build tests; a student wants the
-      // list they can attempt.
-      if (isTeacher() && subjectId) showMyTests();
+      // A teacher goes where they build tests — the editor, scoped to this
+      // subject. A student goes to the list they can attempt. The built-in
+      // subject is never authorable, so it always opens the tests list.
+      if (isTeacher() && subjectId) void showEditorForSubject(subjectId, () => void showSubjects());
       else showHome(subjectId);
     })
   );
@@ -81,6 +85,25 @@ async function refresh(): Promise<void> {
       void refresh();
     })
   );
+}
+
+/**
+ * A teacher's first visit copies the bundled tests in as their own editable
+ * drafts, so they always have a worked example to learn from. Once ever — the
+ * server holds the flag.
+ *
+ * Runs before the subjects are fetched: seeded tests are written without a
+ * subject, and the subjects endpoint adopts orphans into the default subject
+ * it creates. A teacher who already made a subject skips that adoption, so we
+ * hand the seed their first subject instead.
+ */
+async function seedSamplesOnce(grid: HTMLElement): Promise<void> {
+  if (!isTeacher()) return;
+  const list = await fetchTestList();
+  if (!list?.needsSamples) return;
+  grid.innerHTML = `<p class="hint">Setting up your sample tests…</p>`;
+  const owned = (await fetchSubjects()) ?? [];
+  await seedSampleTests(TESTS, owned[0]?.id);
 }
 
 function cardFor(s: Subject): string {

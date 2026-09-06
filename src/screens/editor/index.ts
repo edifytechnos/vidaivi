@@ -4,9 +4,10 @@
 
 import { track } from "../../analytics";
 import { fetchServerTest, fetchTestList, mutateTest, newQuestionId, setTestStatus, type TestProblem } from "../../api";
-import { app, escapeHtml, ICONS, topbar } from "../../dom";
+import { ICONS, app, escapeHtml, setUrl, topbar } from "../../dom";
 import type { Test } from "../../types";
 import {
+  clearTest,
   currentSaveState,
   currentTest,
   edit,
@@ -18,6 +19,7 @@ import {
 } from "./state";
 import { answerPanel, bindQuestionEditor, blankQuestion, explanationPanel, questionBody } from "./panels";
 import { currentSubject } from "../home";
+import { showBuilder } from "../builder";
 
 type Pane = "question" | "answer" | "explain";
 
@@ -27,6 +29,7 @@ let pane: Pane = "question";
 let siblings: { id: string; title: string; status: string; questionCount: number }[] = [];
 const expanded = new Set<string>();
 const treeQuestions = new Map<string, { id: string; topic: string; marks: number; complete: boolean }[]>();
+let treeSubject: string | null = null;
 let unsubscribe: (() => void) | null = null;
 let problems: TestProblem[] = [];
 let publishError = "";
@@ -34,10 +37,15 @@ let publishError = "";
 /** Open the authoring screen on a test, optionally focused on one question. */
 export async function showEditor(testId: string, questionId: string | null, back: () => void) {
   onExit = back;
+  treeSubject = currentSubject();
   track("editor_open", { test: testId });
   app.innerHTML = `${topbar(true)}<main class="card"><p class="hint">Loading…</p></main>`;
 
-  const [loaded, list] = await Promise.all([fetchServerTest(testId), fetchTestList()]);
+  // The tree shows the subject you came in through, not every test you own.
+  const [loaded, list] = await Promise.all([
+    fetchServerTest(testId),
+    fetchTestList(treeSubject ?? undefined),
+  ]);
   if (!loaded) {
     app.innerHTML = `${topbar(true)}<main class="card">
       <p class="login-error">Could not open that test.</p>
@@ -60,6 +68,85 @@ export async function showEditor(testId: string, questionId: string | null, back
   render();
 }
 
+/**
+ * Open the authoring shell on a subject: its first test, or — when the subject
+ * holds none — the same shell with an empty tree. A subject always opens the
+ * same screen, whether or not there is anything in it yet.
+ */
+export async function showEditorForSubject(
+  subjectId: string | null,
+  back: () => void
+): Promise<void> {
+  onExit = back;
+  treeSubject = subjectId;
+  track("editor_subject_open", { subject: subjectId ?? "" });
+  app.innerHTML = `${topbar(true)}<main class="card"><p class="hint">Loading…</p></main>`;
+
+  const list = await fetchTestList(subjectId ?? undefined);
+  const mine = (list?.tests ?? []).filter((t) => !t.platform);
+  if (!mine.length) {
+    siblings = [];
+    clearTest();
+    unsubscribe?.();
+    unsubscribe = null;
+    renderEmptyShell();
+    return;
+  }
+  // A draft is the one you can actually edit, so prefer it over a published one.
+  const first = mine.find((t) => t.status === "draft") ?? mine[0];
+  await showEditor(first.id, null, back);
+}
+
+/**
+ * The shell with no test in it. A separate renderer rather than making the
+ * whole shell tolerate a null test: render, appBar, the crumb row, treeMarkup,
+ * renderBody, bindOverview and bindTree all read the document.
+ */
+function renderEmptyShell(): void {
+  setUrl();
+  app.innerHTML = `
+    <div class="editor" data-pane="question">
+      <header class="ed-appbar">
+        <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Tests">${ICONS.menu}</button>
+        <span class="ed-brand"><span class="brand-mark">V</span><span class="ed-brand-name">Vidaivi</span></span>
+        <span class="ed-taxonomy"><span class="ed-taxonomy-board">CBSE</span><span class="ed-taxonomy-sub">Mathematics 12</span></span>
+        <div class="ed-spacer"></div>
+      </header>
+      <div class="ed-cols overview">
+        <aside class="ed-tree" id="ed-tree">
+          <div class="ed-tree-head">
+            <span class="ed-tree-title">Tests &amp; questions</span>
+          </div>
+          <button class="ed-tree-add" id="ed-new-test">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Create
+          </button>
+          <p class="ed-empty ed-tree-empty">No tests yet.</p>
+        </aside>
+        <div class="ed-center">
+          <div class="ed-crumbrow">
+            <button class="ed-crumb-link" id="ed-exit">All subjects</button>
+          </div>
+          <div class="ed-body">
+            <section class="ed-panel">
+              <div class="ed-panel-head"><span class="ed-panel-label">No tests in this subject yet</span></div>
+              <p class="ed-hint">Create your first test and its questions appear here, beneath it in the tree.</p>
+              <div class="actions"><button class="btn btn-primary" id="ed-empty-create">Create the first test</button></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  const create = () => void createTestAndEdit(onExit);
+  document.getElementById("ed-new-test")!.addEventListener("click", create);
+  document.getElementById("ed-empty-create")!.addEventListener("click", create);
+  document.getElementById("ed-exit")!.addEventListener("click", () => onExit());
+  document.getElementById("ed-tree-toggle")!.addEventListener("click", () => {
+    document.querySelector(".editor")?.classList.toggle("tree-open");
+  });
+}
+
 function readOnly(): boolean {
   return currentTest()?.status !== "draft";
 }
@@ -67,8 +154,9 @@ function readOnly(): boolean {
 function syncUrl(): void {
   const test = currentTest();
   if (!test) return;
-  const q = selectedIndex >= 0 ? `&q=${encodeURIComponent(test.questions[selectedIndex].id)}` : "";
-  history.replaceState(null, "", `./?edit=${encodeURIComponent(test.id)}${q}`);
+  const params: Record<string, string> = { edit: test.id };
+  if (selectedIndex >= 0) params.q = test.questions[selectedIndex].id;
+  setUrl(params);
 }
 
 function render(): void {
@@ -84,7 +172,7 @@ function render(): void {
         <aside class="ed-tree" id="ed-tree">${treeMarkup(test)}</aside>
         <div class="ed-center">
           <div class="ed-crumbrow">
-            <button class="ed-crumb-link" id="ed-exit">My tests</button>
+            <button class="ed-crumb-link" id="ed-exit">All subjects</button>
             <span class="ed-crumb-sep">/</span>
             <button class="ed-crumb-link ed-crumb-test" id="ed-crumb-overview">${escapeHtml(test.title || "Untitled test")}</button>
             ${selectedIndex >= 0 ? `<span class="ed-crumb-sep">/</span><span class="ed-crumb-current">Question ${selectedIndex + 1}</span>` : ""}
@@ -387,6 +475,7 @@ function overviewMarkup(test: Test): string {
               : `<button class="btn btn-ghost" id="ed-unpublish">Move back to draft</button>`
           }
           <button class="btn btn-ghost" id="ov-preview">Preview as student</button>
+          ${test.status === "draft" ? `<button class="btn btn-ghost" id="ov-quick">Quick edit (card view)</button>` : ""}
         </div>
       </section>
     </div>`;
@@ -421,6 +510,11 @@ function bindOverview(): void {
   );
   document.getElementById("ov-preview")?.addEventListener("click", () => {
     window.open(`./?test=${encodeURIComponent(test.id)}`, "_blank");
+  });
+  document.getElementById("ov-quick")?.addEventListener("click", () => {
+    // The card builder is the fast bulk-entry mode; flush edits before handing over.
+    const id = test.id;
+    void save().then(() => showBuilder(id, () => void showEditor(id, null, onExit)));
   });
   document.getElementById("ov-publish")?.addEventListener("click", publish);
   document.getElementById("ed-unpublish")?.addEventListener("click", unpublish);
