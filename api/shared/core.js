@@ -183,7 +183,21 @@ async function identify(req) {
     if (!SESSION_SECRET) return { reason: "no_session_secret_configured" };
     const session = verifySession("vst", bearer);
     if (!session) return { reason: "bad_student_token" };
-    return { kind: "student", id: `stu~${session.username}`, username: session.username };
+    // Student sessions last 30 days, so a signed token outlives the account.
+    // Check the record still exists, otherwise removing a student would not
+    // actually revoke their access. Also carries teacherSub for test scoping.
+    let record;
+    try {
+      record = await tableClient("students").getEntity("student", session.username);
+    } catch {
+      return { reason: "student_removed" };
+    }
+    return {
+      kind: "student",
+      id: `stu~${session.username}`,
+      username: session.username,
+      teacherSub: record.teacherSub || "",
+    };
   }
   if (bearer.startsWith("vad.")) {
     if (!SESSION_SECRET) return { reason: "no_session_secret_configured" };
@@ -372,6 +386,37 @@ handlers.students = async (context, req) => {
   if (req.method === "POST") {
     const body = getBody(req);
     const action = body.action || "create";
+
+    if (action === "remove") {
+      const username = String(body.username || "").trim().toLowerCase();
+      let entity;
+      try {
+        entity = await students.getEntity("student", username);
+      } catch {
+        return json(context, 404, { error: "Student not found" });
+      }
+      if (entity.teacherSub !== who.id) {
+        return json(context, 403, { error: "Not your student" });
+      }
+      // Remove the student's attempt history too, so no orphan rows are left
+      // pointing at a login that no longer exists.
+      const attempts = tableClient("attempts");
+      await ensureTable(attempts);
+      let removedAttempts = 0;
+      try {
+        const iter = attempts.listEntities({
+          queryOptions: { filter: `PartitionKey eq 'stu~${username.replace(/'/g, "''")}'` },
+        });
+        for await (const a of iter) {
+          await attempts.deleteEntity(a.partitionKey, a.rowKey);
+          removedAttempts++;
+        }
+      } catch {
+        // Best effort: the student record still goes, below.
+      }
+      await students.deleteEntity("student", username);
+      return json(context, 200, { ok: true, username, removedAttempts });
+    }
 
     if (action === "reset") {
       const username = String(body.username || "").trim().toLowerCase();
@@ -598,15 +643,6 @@ function testFull(e) {
   return { ...testMeta(e), questions: unchunkQuestions(e) };
 }
 
-async function studentTeacherSub(username) {
-  try {
-    const s = await tableClient("students").getEntity("student", username);
-    return s.teacherSub || "";
-  } catch {
-    return "";
-  }
-}
-
 function canManageTest(who, entity) {
   if (who.role === "admin") return entity.platform || entity.ownerSub === who.id;
   return who.role === "teacher" && entity.ownerSub === who.id;
@@ -710,7 +746,8 @@ handlers.tests = async (context, req) => {
 
   // GET ?id=... → full test (if visible), GET → metadata list.
   const wantedId = String((req.query && req.query.id) || "").trim();
-  const teacherSub = who.kind === "student" ? await studentTeacherSub(who.username) : "";
+  // identify() resolved the student's teacher when it verified the account.
+  const teacherSub = who.kind === "student" ? who.teacherSub || "" : "";
 
   function visible(e) {
     if (isStaff) return canManageTest(who, e) || (e.platform && e.status === "published");
