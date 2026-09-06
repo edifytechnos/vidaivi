@@ -9,6 +9,7 @@ import {
   listStudents,
   listTeachers,
   modifyTeacher,
+  removeStudent,
   resetStudentPassword,
   signOut,
 } from "../auth";
@@ -439,6 +440,7 @@ export function showTeacher() {
                 <td class="cell-actions">
                   <button class="btn-link roster-report" data-user="${escapeHtml(s.username)}">Report</button>
                   <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
+                  <button class="btn-link roster-remove" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Remove</button>
                 </td>
               </tr>`
               )
@@ -463,6 +465,28 @@ export function showTeacher() {
           createdEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }
         btn.textContent = "Reset password";
+      })
+    );
+    listEl.querySelectorAll<HTMLButtonElement>(".roster-remove").forEach((btn) =>
+      btn.addEventListener("click", async () => {
+        const name = btn.dataset.name!;
+        if (
+          !confirm(
+            `Remove ${name} permanently?\n\nTheir login stops working and their ` +
+              `test history is deleted. This cannot be undone.`
+          )
+        ) {
+          return;
+        }
+        btn.textContent = "Removing…";
+        const result = await removeStudent(btn.dataset.user!);
+        if (!result.ok) {
+          btn.textContent = "Remove";
+          alert(result.message || "Could not remove this student.");
+          return;
+        }
+        track("student_removed");
+        void refreshList();
       })
     );
   }

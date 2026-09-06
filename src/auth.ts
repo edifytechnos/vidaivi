@@ -300,6 +300,24 @@ export async function createStudent(input: {
   }
 }
 
+/** Remove a student and their attempt history. Irreversible. */
+export async function removeStudent(
+  username: string
+): Promise<{ ok: boolean; message?: string; removedAttempts?: number }> {
+  try {
+    const res = await fetch("/api/students", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "remove", username }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not remove" };
+    return { ok: true, removedAttempts: data.removedAttempts };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
 export async function resetStudentPassword(
   username: string
 ): Promise<{ username: string; password: string } | null> {

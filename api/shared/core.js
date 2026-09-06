@@ -373,6 +373,37 @@ handlers.students = async (context, req) => {
     const body = getBody(req);
     const action = body.action || "create";
 
+    if (action === "remove") {
+      const username = String(body.username || "").trim().toLowerCase();
+      let entity;
+      try {
+        entity = await students.getEntity("student", username);
+      } catch {
+        return json(context, 404, { error: "Student not found" });
+      }
+      if (entity.teacherSub !== who.id) {
+        return json(context, 403, { error: "Not your student" });
+      }
+      // Remove the student's attempt history too, so no orphan rows are left
+      // pointing at a login that no longer exists.
+      const attempts = tableClient("attempts");
+      await ensureTable(attempts);
+      let removedAttempts = 0;
+      try {
+        const iter = attempts.listEntities({
+          queryOptions: { filter: `PartitionKey eq 'stu~${username.replace(/'/g, "''")}'` },
+        });
+        for await (const a of iter) {
+          await attempts.deleteEntity(a.partitionKey, a.rowKey);
+          removedAttempts++;
+        }
+      } catch {
+        // Best effort: the student record still goes, below.
+      }
+      await students.deleteEntity("student", username);
+      return json(context, 200, { ok: true, username, removedAttempts });
+    }
+
     if (action === "reset") {
       const username = String(body.username || "").trim().toLowerCase();
       let entity;
