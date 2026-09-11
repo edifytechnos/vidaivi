@@ -962,6 +962,14 @@ body {
   color: var(--muted);
 }
 
+/* Only shown on a wrong answer, so it reads as the correction it is. */
+.review-correct {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
 @media (min-width: 480px) {
   #app {
     padding: 0 24px 48px;

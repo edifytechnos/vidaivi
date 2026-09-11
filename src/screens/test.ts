@@ -1,7 +1,13 @@
 // Test player: landing, per-test login gate, question flow, score, review.
 
 import { track } from "../analytics";
-import { renderGoogleButton, submitAttempt } from "../auth";
+import {
+  authEnabled,
+  fetchMyAttempt,
+  isLoggedIn,
+  renderGoogleButton,
+  submitAttempt,
+} from "../auth";
 import {
   clearAttempt,
   loadAttempt,
@@ -54,6 +60,14 @@ export function showLanding(test: Test) {
     return;
   }
   const attempt = loadAttempt(test.id);
+  // A finished test opens straight into read-only review — the landing card
+  // has nothing left to offer once there is a score to look at.
+  if (attempt?.completed) {
+    showReview(test, attempt);
+    return;
+  }
+  // Nothing here, but it may have been taken on another device.
+  if (!attempt && authEnabled && isLoggedIn()) void reviewFromServer(test);
   const total = totalMarks(test);
   const counts = {
     mcq: test.questions.filter((q) => q.type === "mcq").length,
@@ -282,6 +296,8 @@ function recordAndNext(
         score: attempt.score,
         total: totalMarks(test),
         completedAt: attempt.completedAt!,
+        // Carried so review works on a device that never held this attempt.
+        answers: JSON.stringify(attempt.answers),
       });
       showScore(test, attempt);
       return;
@@ -359,6 +375,43 @@ function describeGiven(q: Question, a: StoredAnswer | undefined): string {
   return a.correct ? "Self-assessed: got it right" : "Self-assessed: got it wrong";
 }
 
+/**
+ * Pull this student's latest attempt from the server and, if they finished it,
+ * swap the landing for the review. The landing renders first so the common
+ * case — a test they have never opened — is not held up by a fetch.
+ */
+async function reviewFromServer(test: Test): Promise<void> {
+  const remote = await fetchMyAttempt(test.id);
+  if (!remote?.answers || !remote.completedAt) return;
+  // Still on the same screen? A slow fetch must not yank a student out of a
+  // test they have since started.
+  if (loadAttempt(test.id)) return;
+  const attempt: Attempt = {
+    answers: remote.answers,
+    index: test.questions.length,
+    completed: true,
+    score: remote.score,
+    completedAt: remote.completedAt,
+    updatedAt: remote.completedAt,
+  };
+  saveAttempt(test.id, attempt);
+  showReview(test, attempt);
+}
+
+/** What the right answer was — the first thing a student asks after a cross. */
+function correctLine(q: Question, a: StoredAnswer | undefined): string {
+  if (a?.correct || q.type === "long") return "";
+  if (q.type === "mcq") {
+    const i = q.answer ?? -1;
+    if (i < 0) return "";
+    return `<p class="review-correct">Correct answer: <strong>${String.fromCharCode(65 + i)}.</strong> ${escapeHtml(q.options?.[i] ?? "")}</p>`;
+  }
+  if (q.type === "numeric" && q.answer !== undefined) {
+    return `<p class="review-correct">Correct answer: <strong>${q.answer}</strong></p>`;
+  }
+  return "";
+}
+
 function showReview(test: Test, attempt: Attempt) {
   const total = totalMarks(test);
   app.innerHTML = `
@@ -381,6 +434,7 @@ function showReview(test: Test, attempt: Attempt) {
           </div>
           <div class="question-text">${formatText(q.q)}</div>
           <p class="review-given">${describeGiven(q, a)}</p>
+          ${correctLine(q, a)}
           <div class="solution">
             <div class="solution-title">Solution</div>
             ${formatText(q.solution)}

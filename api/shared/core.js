@@ -1126,6 +1126,13 @@ handlers.attempts = async (context, req) => {
       typeof body.completedAt === "string"
         ? body.completedAt
         : new Date().toISOString();
+    // The per-question answers, so review works on a device that never held
+    // this attempt in localStorage. Oversized blobs are dropped rather than
+    // failing the save — the score is what must never be lost.
+    const answers =
+      typeof body.answers === "string" && body.answers.length <= Q_CHUNK
+        ? body.answers
+        : "";
     // Inverted-time row key so newest attempts sort first in the table.
     const rowKey = `${String(9999999999999 - Date.now())}~${body.testId.slice(0, 80)}`;
     await attempts.createEntity({
@@ -1135,6 +1142,7 @@ handlers.attempts = async (context, req) => {
       score: Math.max(0, Math.min(10000, Math.round(body.score))),
       total: Math.max(0, Math.min(10000, Math.round(body.total))),
       completedAt,
+      answers,
       name: who.kind === "student" ? who.username : who.name,
       email: who.kind === "google" ? who.email : "",
       kind: who.kind,
@@ -1142,10 +1150,40 @@ handlers.attempts = async (context, req) => {
     return json(context, 201, { ok: true });
   }
 
+  const partition = `PartitionKey eq '${who.id.replace(/'/g, "''")}'`;
+
+  // ?testId= asks for one attempt in full. Row keys are an inverted timestamp,
+  // so the first row for a test is the newest — a retake appends rather than
+  // replacing, and the latest attempt is the one to review.
+  const wantedTest = String((req.query && req.query.testId) || "").slice(0, 80);
+  if (wantedTest) {
+    const iter = attempts.listEntities({
+      queryOptions: {
+        filter: `${partition} and testId eq '${wantedTest.replace(/'/g, "''")}'`,
+      },
+    });
+    for await (const e of iter) {
+      let answers = null;
+      try {
+        answers = e.answers ? JSON.parse(e.answers) : null;
+      } catch {
+        answers = null;
+      }
+      return json(context, 200, {
+        attempt: {
+          testId: e.testId,
+          score: e.score,
+          total: e.total,
+          completedAt: e.completedAt,
+          answers,
+        },
+      });
+    }
+    return json(context, 200, { attempt: null });
+  }
+
   const list = [];
-  const iter = attempts.listEntities({
-    queryOptions: { filter: `PartitionKey eq '${who.id.replace(/'/g, "''")}'` },
-  });
+  const iter = attempts.listEntities({ queryOptions: { filter: partition } });
   for await (const e of iter) {
     list.push({
       testId: e.testId,
