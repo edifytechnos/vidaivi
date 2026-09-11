@@ -190,6 +190,63 @@ function check(ok, label) {
     }
     await page.evaluate(() => localStorage.removeItem("vidaivi:attempt:matrices-demo"));
 
+    // Parent links. A code is a key to a child's results, so what matters
+    // most here is the refusals. Redemption itself needs a Google identity,
+    // which this suite cannot produce — that rule is asserted instead.
+    const links = await page.evaluate(async () => {
+      const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+      const hdr = { "X-Vidaivi-Auth": auth.credential };
+      const call = (body) =>
+        fetch("/api/parentlink", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...hdr },
+          body: JSON.stringify(body),
+        }).then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+
+      const roster = await fetch("/api/students", { headers: hdr }).then((r) => r.json());
+      const username = (roster.students || [])[0]?.username || "";
+      if (!username) return { skip: true };
+
+      const made = await call({ action: "invite", username });
+      // A missing route also answers 404, so every refusal below would "pass"
+      // against an API that does not have this feature at all. Prove it exists.
+      if (made.status !== 201) return { missing: true, status: made.status };
+      const badStudent = await call({ action: "invite", username: "no-such-student-xyz" });
+      const badCode = await call({ action: "redeem", code: "ZZZZZZZZ" });
+      const nonGoogle = made.data.code
+        ? await call({ action: "redeem", code: made.data.code })
+        : null;
+      const unlinkedAttempts = await fetch("/api/attempts?student=someone-elses-child", {
+        headers: hdr,
+      });
+      const unlinkedTests = await fetch("/api/tests?student=someone-elses-child", { headers: hdr });
+      return {
+        code: made.data.code || "",
+        badStudent: badStudent.status,
+        badCode: badCode.status,
+        nonGoogle: nonGoogle && nonGoogle.status,
+        unlinkedAttempts: unlinkedAttempts.status,
+        unlinkedTests: unlinkedTests.status,
+      };
+    });
+
+    if (links.skip) {
+      console.log("SKIP  parent links (roster is empty)");
+    } else if (links.missing) {
+      check(false, `/api/parentlink is not deployed here (invite returned ${links.status})`);
+    } else {
+      check(/^[A-Z2-9]{8}$/.test(links.code), `an invite code is minted (${links.code})`);
+      check(
+        !/[ILO01]/.test(links.code),
+        "the code avoids look-alike characters a parent would mistype"
+      );
+      check(links.badStudent === 404, "a code cannot be minted for someone else's student");
+      check(links.badCode === 404, "an unknown code is refused");
+      check(links.nonGoogle === 403, "only a Google account can redeem a code");
+      check(links.unlinkedAttempts === 403, "attempts for an unlinked child are refused");
+      check(links.unlinkedTests === 403, "the test list for an unlinked child is refused");
+    }
+
     // Subjects: a signed-in teacher lands here, and a subject card opens the
     // page where that subject's tests live.
     await page.goto(BASE, { waitUntil: "domcontentloaded" });

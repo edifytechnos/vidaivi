@@ -412,7 +412,15 @@ function correctLine(q: Question, a: StoredAnswer | undefined): string {
   return "";
 }
 
-function showReview(test: Test, attempt: Attempt) {
+/**
+ * Read-only review of someone else's attempt — what a parent sees. Same
+ * screen, minus every control that would write to their child's record.
+ */
+export function showReviewFor(test: Test, attempt: Attempt, back: () => void): void {
+  showReview(test, attempt, back);
+}
+
+function showReview(test: Test, attempt: Attempt, viewerBack?: () => void) {
   const total = totalMarks(test);
   app.innerHTML = `
     ${topbar(true)}
@@ -443,10 +451,15 @@ function showReview(test: Test, attempt: Attempt) {
         })
         .join("")}
       <div class="actions">
-        <button id="retake-btn" class="btn btn-primary">Retake test</button>
+        ${
+          viewerBack
+            ? `<button id="review-back" class="btn btn-ghost">Back</button>`
+            : `<button id="retake-btn" class="btn btn-primary">Retake test</button>`
+        }
       </div>
     </main>`;
-  document.getElementById("retake-btn")!.addEventListener("click", () => {
+  document.getElementById("review-back")?.addEventListener("click", viewerBack ?? (() => {}));
+  document.getElementById("retake-btn")?.addEventListener("click", () => {
     track("test_retake", { test: test.id });
     clearAttempt(test.id);
     showQuestion(test, newAttempt());

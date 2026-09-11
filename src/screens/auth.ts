@@ -5,6 +5,7 @@ import {
   adminLogin,
   getProfile,
   isLoggedIn,
+  isParent,
   renderGoogleButton,
   savePhone,
   studentLogin,
@@ -13,6 +14,7 @@ import { setGuest } from "../attempts";
 import { app, escapeHtml, setUrl, topbar } from "../dom";
 import { showHome } from "./home";
 import { showSubjects } from "./subjects";
+import { showChildren } from "./parent";
 
 export function showWelcome(next?: () => void) {
   setUrl();
@@ -23,7 +25,8 @@ export function showWelcome(next?: () => void) {
   const done =
     next ??
     (() => {
-      if (isLoggedIn()) void showSubjects();
+      if (isParent()) void showChildren();
+      else if (isLoggedIn()) void showSubjects();
       else showHome(null);
     });
   track("welcome_open");

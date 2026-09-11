@@ -70,6 +70,10 @@ export function isTeacher(): boolean {
   return role === "teacher" || role === "admin";
 }
 
+export function isParent(): boolean {
+  return getProfile()?.role === "parent";
+}
+
 export function isAdmin(): boolean {
   return getProfile()?.role === "admin";
 }
@@ -415,11 +419,13 @@ export async function flushPendingAttempts(): Promise<void> {
  * read-only review work on a device that never held it in localStorage.
  */
 export async function fetchMyAttempt(
-  testId: string
+  testId: string,
+  student?: string
 ): Promise<(ServerAttempt & { answers: Record<string, StoredAnswer> | null }) | null> {
   if (!isLoggedIn()) return null;
   try {
-    const res = await fetch(`/api/attempts?testId=${encodeURIComponent(testId)}`, {
+    const q = `?testId=${encodeURIComponent(testId)}${student ? `&student=${encodeURIComponent(student)}` : ""}`;
+    const res = await fetch(`/api/attempts${q}`, {
       headers: authHeader(),
     });
     if (!res.ok) return null;
@@ -429,10 +435,11 @@ export async function fetchMyAttempt(
   }
 }
 
-export async function fetchMyAttempts(): Promise<ServerAttempt[] | null> {
+export async function fetchMyAttempts(student?: string): Promise<ServerAttempt[] | null> {
   if (!isLoggedIn()) return null;
   try {
-    const res = await fetch("/api/attempts", { headers: authHeader() });
+    const q = student ? `?student=${encodeURIComponent(student)}` : "";
+    const res = await fetch(`/api/attempts${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     const data = await res.json();
     return (data.attempts as ServerAttempt[]) ?? null;
