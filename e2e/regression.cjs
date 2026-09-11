@@ -129,6 +129,67 @@ function check(ok, label) {
     check(true, "my tests rejects invalid JSON with an error");
     await shot("my-tests");
 
+    // Review: a completed test opens read-only, on this device and on a
+    // device that has never held the attempt.
+    await page.evaluate(() => {
+      localStorage.setItem(
+        "vidaivi:attempt:matrices-demo",
+        JSON.stringify({
+          answers: { "mat-001": { given: 0, correct: false, earned: 0 } },
+          index: 5,
+          completed: true,
+          score: 3,
+          completedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        })
+      );
+    });
+    await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".review-item", { timeout: 20000 });
+    check(true, "a completed test opens review, not the landing card");
+    check(
+      (await page.textContent(".review-given")).includes("Your answer"),
+      "review shows the answer the student submitted"
+    );
+    check(await page.isVisible(".review-item .solution"), "review shows the explanation");
+    check(
+      (await page.textContent(".review-correct")).includes("Correct answer"),
+      "a wrong answer names the correct one"
+    );
+    await shot("review");
+
+    // The cross-device case: save an attempt to the server, wipe this device,
+    // and the review must rebuild from what the server holds.
+    const saved = await page.evaluate(async () => {
+      const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+      if (!auth?.credential) return "no-token";
+      const res = await fetch("/api/attempts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential },
+        body: JSON.stringify({
+          testId: "matrices-demo",
+          score: 3,
+          total: 8,
+          completedAt: new Date().toISOString(),
+          answers: JSON.stringify({ "mat-001": { given: 0, correct: false, earned: 0 } }),
+        }),
+      });
+      return res.ok ? "ok" : `http-${res.status}`;
+    });
+    if (saved === "ok") {
+      await page.evaluate(() => localStorage.removeItem("vidaivi:attempt:matrices-demo"));
+      await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
+      await page.waitForSelector(".review-item", { timeout: 25000 });
+      check(true, "review rebuilds from the server with no local attempt");
+      check(
+        (await page.textContent(".review-given")).includes("Your answer"),
+        "the server-rebuilt review carries the submitted answer"
+      );
+    } else {
+      check(false, `cross-device review could not save an attempt (${saved})`);
+    }
+    await page.evaluate(() => localStorage.removeItem("vidaivi:attempt:matrices-demo"));
+
     // Subjects: a signed-in teacher lands here, and a subject card opens the
     // page where that subject's tests live.
     await page.goto(BASE, { waitUntil: "domcontentloaded" });

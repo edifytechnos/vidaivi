@@ -4,6 +4,8 @@
 //    kept alive by a signed session token (~30 days).
 // Auth is disabled entirely when VITE_GOOGLE_CLIENT_ID is unset (local dev).
 
+import type { StoredAnswer } from "./types";
+
 export interface Profile {
   kind: "google" | "student" | "admin";
   sub: string; // google sub or student username
@@ -357,6 +359,8 @@ interface PendingAttempt {
   score: number;
   total: number;
   completedAt: string;
+  /** JSON of Attempt.answers, so review works on any device. */
+  answers?: string;
 }
 
 function readPending(): PendingAttempt[] {
@@ -404,6 +408,25 @@ export async function flushPendingAttempts(): Promise<void> {
     if (!(await postAttempt(a))) still.push(a);
   }
   writePending(still);
+}
+
+/**
+ * The student's own latest attempt at one test, answers included — what makes
+ * read-only review work on a device that never held it in localStorage.
+ */
+export async function fetchMyAttempt(
+  testId: string
+): Promise<(ServerAttempt & { answers: Record<string, StoredAnswer> | null }) | null> {
+  if (!isLoggedIn()) return null;
+  try {
+    const res = await fetch(`/api/attempts?testId=${encodeURIComponent(testId)}`, {
+      headers: authHeader(),
+    });
+    if (!res.ok) return null;
+    return (await res.json()).attempt ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function fetchMyAttempts(): Promise<ServerAttempt[] | null> {

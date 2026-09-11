@@ -44,6 +44,28 @@ function profileRow(): string {
 }
 
 let activeSubject: string | null = null;
+/** Server-side scores, so a test finished on another device reads as done. */
+const serverScores = new Map<string, { score: number; total: number }>();
+
+/**
+ * The status chip for one test. localStorage knows about a half-finished
+ * attempt on THIS device; the server knows every completed one, wherever it
+ * was taken — so the server wins for "done" and local fills in progress.
+ */
+function statusChip(testId: string, questionCount: number, total: number): string {
+  const done = serverScores.get(testId);
+  if (done) {
+    return `<span class="status-chip status-done">Score ${done.score}/${done.total}</span>`;
+  }
+  const attempt = loadAttempt(testId);
+  if (attempt?.completed) {
+    return `<span class="status-chip status-done">Score ${attempt.score}/${total}</span>`;
+  }
+  if (attempt && attempt.index > 0) {
+    return `<span class="status-chip status-progress">In progress · Q${attempt.index + 1} of ${questionCount}</span>`;
+  }
+  return `<span class="status-chip status-new">Not started</span>`;
+}
 
 export function currentSubject(): string | null {
   return activeSubject;
@@ -70,14 +92,8 @@ export function showHome(subjectId: string | null = activeSubject) {
     <p class="tagline">Chapter-wise practice tests. Attempt, get instant solutions, review any time — right from this link.</p>
     <div class="test-list">
       ${(activeSubject ? [] : TESTS).map((t) => {
-        const attempt = loadAttempt(t.id);
         const total = totalMarks(t);
-        let status = `<span class="status-chip status-new">Not started</span>`;
-        if (attempt?.completed) {
-          status = `<span class="status-chip status-done">Score ${attempt.score}/${total}</span>`;
-        } else if (attempt && attempt.index > 0) {
-          status = `<span class="status-chip status-progress">In progress · Q${attempt.index + 1} of ${t.questions.length}</span>`;
-        }
+        const status = statusChip(t.id, t.questions.length, total);
         const locked = requiresLogin(t);
         return `
         <button class="test-card" data-test="${t.id}">
@@ -130,13 +146,7 @@ async function renderServerTests(): Promise<void> {
     "beforeend",
     fresh
       .map((t) => {
-        const attempt = loadAttempt(t.id);
-        let status = `<span class="status-chip status-new">Not started</span>`;
-        if (attempt?.completed) {
-          status = `<span class="status-chip status-done">Score ${attempt.score}/${t.totalMarks}</span>`;
-        } else if (attempt && attempt.index > 0) {
-          status = `<span class="status-chip status-progress">In progress · Q${attempt.index + 1} of ${t.questionCount}</span>`;
-        }
+        const status = statusChip(t.id, t.questionCount, t.totalMarks);
         return `
         <button class="test-card" data-test="${escapeHtml(t.id)}">
           <div class="test-card-main">
@@ -156,13 +166,35 @@ async function renderServerTests(): Promise<void> {
   });
 }
 
+/** Repaint every card's chip once the server's attempts have arrived. */
+function refreshStatusChips(): void {
+  document.querySelectorAll<HTMLElement>(".test-card[data-test]").forEach((card) => {
+    const done = serverScores.get(card.dataset.test!);
+    if (!done) return;
+    const chip = card.querySelector(".status-chip");
+    if (!chip) return;
+    chip.className = "status-chip status-done";
+    chip.textContent = `Score ${done.score}/${done.total}`;
+  });
+}
+
 // Cloud-saved results for the logged-in student, appended under the test list.
 async function renderServerResults(): Promise<void> {
   if (!authEnabled || !isLoggedIn()) return;
   const attempts = await fetchMyAttempts();
   if (!attempts?.length) return;
+  // Newest first, so a retake's score is the one shown.
+  for (const a of [...attempts].reverse()) {
+    serverScores.set(a.testId, { score: a.score, total: a.total });
+  }
+  refreshStatusChips();
+  // A cloud test is not in TESTS, so fall back to the list we just fetched
+  // rather than printing a raw test id at the student.
+  const serverTitles = new Map(
+    ((await fetchTestList(activeSubject ?? undefined))?.tests ?? []).map((t) => [t.id, t.title])
+  );
   const titleOf = (id: string) =>
-    TESTS.find((t) => t.id === id)?.title ?? id;
+    TESTS.find((t) => t.id === id)?.title ?? serverTitles.get(id) ?? id;
   const list = document.querySelector(".test-list");
   list?.insertAdjacentHTML(
     "afterend",
