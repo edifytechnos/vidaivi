@@ -26,6 +26,19 @@ export function loadTest(loaded: Test): void {
   timer = null;
 }
 
+/**
+ * Drop the working copy. The editor keeps a module-level document, so a shell
+ * opened on an empty subject must clear it — otherwise currentTest() still
+ * returns the last test and a queued save writes it under the wrong subject.
+ */
+export function clearTest(): void {
+  test = null;
+  saveState = "clean";
+  pending = false;
+  if (timer) clearTimeout(timer);
+  timer = null;
+}
+
 export function currentTest(): Test | null {
   return test;
 }

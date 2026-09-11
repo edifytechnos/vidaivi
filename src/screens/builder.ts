@@ -5,7 +5,7 @@
 
 import { track } from "../analytics";
 import { mutateTest, fetchServerTest, newQuestionId } from "../api";
-import { app, escapeHtml, formatText, renderMath, topbar } from "../dom";
+import { app, escapeHtml, formatText, renderMath, setUrl, topbar } from "../dom";
 import type { Question, QType, Test } from "../types";
 
 interface DraftQuestion extends Question {
@@ -43,6 +43,7 @@ function blankQuestion(chapter: string): DraftQuestion {
 
 /** Open the builder for a new test, or an existing one by id. */
 export async function showBuilder(testId: string | null, back: () => void) {
+  setUrl();
   onDone = back;
   if (testId) {
     app.innerHTML = `${topbar(true)}<main class="card"><p class="hint">Loading test…</p></main>`;

@@ -15,8 +15,8 @@ import {
 } from "../auth";
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
-import { app, copyText, escapeHtml, ICONS, pct, topbar } from "../dom";
-import { fetchTestList, mutateTest, seedSampleTests, setTestStatus } from "../api";
+import { ICONS, app, copyText, escapeHtml, pct, setUrl, topbar } from "../dom";
+import { fetchTestList, mutateTest, setTestStatus } from "../api";
 import { showWelcome } from "./auth";
 import { currentSubject, showHome } from "./home";
 import { showBuilder } from "./builder";
@@ -33,7 +33,7 @@ function consoleShell(
       <aside class="console-nav">
         <div class="console-nav-title">Console</div>
         <button class="console-link${active === "students" || active === "report" ? " active" : ""}" id="nav-students">${ICONS.users}<span>My students</span></button>
-        <button class="console-link${active === "tests" ? " active" : ""}" id="nav-tests">${ICONS.home}<span>My tests</span></button>
+        ${isAdmin() ? `<button class="console-link${active === "tests" ? " active" : ""}" id="nav-tests">${ICONS.home}<span>My tests</span></button>` : ""}
         ${isAdmin() ? `<button class="console-link${active === "admin" ? " active" : ""}" id="nav-admin">${ICONS.shield}<span>Teacher access</span></button>` : ""}
         <button class="console-link" id="nav-home">${ICONS.home}<span>All tests</span></button>
         <button class="console-link" id="nav-signout">${ICONS.logout}<span>Sign out</span></button>
@@ -58,6 +58,7 @@ function bindConsoleNav(): void {
 // ---------- Teacher: my tests (DB-backed) ----------
 
 export function showMyTests() {
+  setUrl();
   track("mytests_open");
   app.innerHTML = consoleShell(
     "tests",
@@ -113,13 +114,9 @@ export function showMyTests() {
   });
 
   async function refresh() {
-    let list = await fetchTestList(currentSubject() ?? undefined);
-    // A teacher's first visit gets the bundled tests copied in as their own
-    // editable drafts, so the page is never an empty box with no example.
-    if (list?.needsSamples) {
-      listEl.innerHTML = `<p class="hint">Setting up your sample tests…</p>`;
-      if (await seedSampleTests(TESTS)) list = await fetchTestList();
-    }
+    // Seeding the sample drafts lives on the subjects screen now — that is the
+    // one screen every signed-in teacher passes through.
+    const list = await fetchTestList(currentSubject() ?? undefined);
     const tests = list?.tests ?? null;
     if (!tests) {
       listEl.innerHTML = `<p class="login-error">Could not load tests — refresh to retry.</p>`;
@@ -217,6 +214,7 @@ export function showMyTests() {
 // ---------- Admin: teacher allowlist ----------
 
 export function showAdmin() {
+  setUrl();
   track("admin_open");
   app.innerHTML = consoleShell(
     "admin",
@@ -298,6 +296,7 @@ export function showAdmin() {
 // ---------- Teacher: student progress report ----------
 
 export function showStudentReport(username: string) {
+  setUrl();
   track("report_open", { student: username });
   app.innerHTML = consoleShell(
     "report",
@@ -375,6 +374,7 @@ function credentialMessage(s: { name: string; username: string; password: string
 }
 
 export function showTeacher() {
+  setUrl();
   track("teacher_open");
   app.innerHTML = consoleShell(
     "students",

@@ -90,8 +90,16 @@ function check(ok, label) {
     await page.fill("#ad-user", ADMIN_USER);
     await page.fill("#ad-pass", ADMIN_PASS);
     await page.click("#ad-submit");
+    // Every sign-in path lands on the subjects grid, admins included.
+    await page.waitForSelector("#sub-grid .subject-card", { timeout: 25000 });
+    check(true, "admin login lands on the subjects grid");
+    await shot("subjects-admin");
+
+    // Account-level places live in the topbar menu now, on every screen.
+    await page.click("#top-menu-btn");
+    await page.click('[data-top-nav="admin"]');
     await page.waitForSelector("#te-list", { timeout: 20000 });
-    check(true, "admin login reaches teacher-access dashboard");
+    check(true, "the topbar menu reaches teacher access");
     await shot("admin");
 
     await page.click("#nav-students");
@@ -130,18 +138,48 @@ function check(ok, label) {
     const owned = await page.$(".subject-card:not(.subject-card-builtin)");
     if (owned) {
       await owned.click();
-      // Teachers get My tests (where they author), not the student list.
-      await page.waitForSelector("#mt-list", { timeout: 20000 });
-      check(true, "clicking a subject opens its tests page");
-      check(
-        await page.isVisible("#mt-subjects"),
-        "the tests page offers a way back to all subjects"
-      );
-      await page.click("#mt-subjects");
+      // A subject opens the authoring editor scoped to it, not a table.
+      await page.waitForSelector(".editor .ed-tree", { timeout: 30000 });
+      check(true, "clicking a subject opens the authoring editor");
+      check(await page.isVisible("#ed-new-test"), "the editor's tree offers Create");
+      await page.click("#ed-exit");
       await page.waitForSelector("#sub-grid .subject-card", { timeout: 20000 });
-      check(true, "the crumb returns to the subjects grid");
+      check(true, "the editor returns to all subjects");
+      // The bug that started this: ?edit= must not survive leaving the editor.
+      check(!/edit=/.test(page.url()), "leaving the editor clears ?edit= from the url");
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await page.waitForSelector("#sub-grid .subject-card", { timeout: 25000 });
+      check(true, "a reload lands on subjects, not a stale editor");
     } else {
       console.log("SKIP  subject routing (no teacher-owned subject)");
+    }
+
+    // A subject with no tests opens the same shell, with an empty tree.
+    // Created and removed here so the check does not depend on live data.
+    const probe = `E2E${Date.now().toString().slice(-6)}`;
+    await page.click("#sub-new");
+    await page.fill("#sf-board", "CBSE");
+    await page.fill("#sf-class", "12");
+    await page.fill("#sf-subject", probe);
+    await page.click("#sf-save");
+    const card = `.subject-card:has(.subject-name:text-is("CBSE Class 12 ${probe}"))`;
+    try {
+      await page.waitForSelector(card, { timeout: 25000 });
+      await page.click(card);
+      await page.waitForSelector(".editor .ed-tree", { timeout: 30000 });
+      check(await page.isVisible("#ed-new-test"), "an empty subject opens the editor shell");
+      check((await page.$$(".ed-node")).length === 0, "the empty subject's tree has no tests");
+      check(await page.isVisible("#ed-empty-create"), "the empty shell offers Create the first test");
+      await page.click("#ed-exit");
+      await page.waitForSelector("#sub-grid .subject-card", { timeout: 20000 });
+    } finally {
+      page.once("dialog", (d) => d.accept());
+      const del = await page.$(`${card} .subject-del`);
+      if (del) {
+        await del.click();
+        await page.waitForSelector(card, { state: "detached", timeout: 20000 }).catch(() => {});
+      }
+      console.log(`  (cleaned up subject ${probe})`);
     }
   } else {
     console.log("SKIP  admin flows (set E2E_ADMIN_USER / E2E_ADMIN_PASS to enable)");

@@ -11,7 +11,7 @@ import {
   setGuest,
 } from "../attempts";
 import { totalMarks } from "../data";
-import { app, escapeHtml, formatText, renderMath, topbar } from "../dom";
+import { app, escapeHtml, formatText, renderMath, setUrl, topbar } from "../dom";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { showPhoneForm } from "./auth";
 
@@ -47,6 +47,8 @@ function showLogin(test: Test) {
 }
 
 export function showLanding(test: Test) {
+  // The one screen with a URL worth keeping — this is the link teachers share.
+  setUrl({ test: test.id });
   if (requiresLogin(test)) {
     showLogin(test);
     return;

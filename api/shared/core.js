@@ -743,6 +743,9 @@ handlers.tests = async (context, req) => {
         return json(context, 200, { ok: true, seeded: 0, alreadySeeded: true });
       }
       const samples = Array.isArray(body.tests) ? body.tests.slice(0, 5) : [];
+      // Optional: file the samples under a subject the teacher already owns.
+      // Without it they are written orphaned and the subjects GET adopts them.
+      const seedSubject = String(body.subjectId || "").slice(0, 80);
       const created = [];
       for (const sample of samples) {
         const checked = validateQuestions(sample.questions);
@@ -764,7 +767,8 @@ handlers.tests = async (context, req) => {
           board: "CBSE",
           klass: "12",
           subject: "Maths",
-          forkedFromId: String(sample.id || "").slice(0, 60),
+          subjectId: seedSubject,
+        forkedFromId: String(sample.id || "").slice(0, 60),
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };

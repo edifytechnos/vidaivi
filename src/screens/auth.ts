@@ -10,12 +10,12 @@ import {
   studentLogin,
 } from "../auth";
 import { setGuest } from "../attempts";
-import { app, escapeHtml, topbar } from "../dom";
+import { app, escapeHtml, setUrl, topbar } from "../dom";
 import { showHome } from "./home";
 import { showSubjects } from "./subjects";
-import { showAdmin } from "./console";
 
 export function showWelcome(next?: () => void) {
+  setUrl();
   // Where a finished (or skipped) sign-in lands: your subjects if you own
   // some, the built-in tests if you are only browsing. Guests share this, so
   // "Continue as guest" never drops onto an empty "Your subjects" grid — even
@@ -75,6 +75,7 @@ export function showWelcome(next?: () => void) {
 }
 
 export function showStudentLogin(next: () => void) {
+  setUrl();
   track("student_login_open");
   app.innerHTML = `
     ${topbar(true)}
@@ -123,6 +124,7 @@ export function showStudentLogin(next: () => void) {
 }
 
 export function showAdminLogin(next: () => void) {
+  setUrl();
   track("admin_login_open");
   app.innerHTML = `
     ${topbar(true)}
@@ -157,7 +159,9 @@ export function showAdminLogin(next: () => void) {
     if (result.ok) {
       track("admin_login_success");
       setGuest(false);
-      showAdmin();
+      // Admins land where everyone else does — the subjects grid. The console
+      // is reached from the topbar menu, not by being dropped into it.
+      next();
     } else {
       errEl.textContent = result.message;
       errEl.hidden = false;
@@ -169,6 +173,7 @@ export function showAdminLogin(next: () => void) {
 }
 
 export function showPhoneForm(next: () => void) {
+  setUrl();
   const profile = getProfile();
   app.innerHTML = `
     ${topbar(true)}

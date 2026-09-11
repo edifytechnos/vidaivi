@@ -59,12 +59,17 @@ export async function fetchTestList(
 
 /** Copy the bundled tests in as this teacher's own editable drafts. The server
  *  only honours this once per teacher, so calling it again is harmless. */
-export async function seedSampleTests(tests: Test[]): Promise<number> {
+/**
+ * Copy the bundled tests in as this teacher's own editable drafts, once ever.
+ * `subjectId` files them under an existing subject; without it the server's
+ * orphan adoption puts them under the default one it creates.
+ */
+export async function seedSampleTests(tests: Test[], subjectId?: string): Promise<number> {
   try {
     const res = await fetch("/api/tests", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
-      body: JSON.stringify({ action: "seedSamples", tests }),
+      body: JSON.stringify({ action: "seedSamples", tests, subjectId }),
     });
     if (!res.ok) return 0;
     return (await res.json()).seeded ?? 0;
