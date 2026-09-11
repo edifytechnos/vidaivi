@@ -16,7 +16,7 @@ import {
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
 import { ICONS, app, copyText, escapeHtml, pct, setUrl, topbar } from "../dom";
-import { fetchTestList, mutateTest, setTestStatus } from "../api";
+import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
 import { showWelcome } from "./auth";
 import { currentSubject, showHome } from "./home";
 import { showBuilder } from "./builder";
@@ -373,6 +373,15 @@ function credentialMessage(s: { name: string; username: string; password: string
   );
 }
 
+function inviteMessage(s: { name: string; code: string }): string {
+  return (
+    `Hi! You can now follow ${s.name}'s maths practice results on Vidaivi.\n\n` +
+    `Open https://vidaivi.seyali.app , sign in with Google, tap "Add a child" ` +
+    `and enter this code:\n\n${s.code}\n\n` +
+    `The code works once and is just for you.`
+  );
+}
+
 export function showTeacher() {
   setUrl();
   track("teacher_open");
@@ -441,6 +450,17 @@ export function showTeacher() {
     );
   }
 
+  function bindInviteCopy(root: HTMLElement) {
+    root.querySelectorAll<HTMLButtonElement>(".invite-copy").forEach((btn) =>
+      btn.addEventListener("click", async () => {
+        const ok = await copyText(
+          inviteMessage({ name: btn.dataset.name!, code: btn.dataset.code! })
+        );
+        btn.textContent = ok ? "Copied! Paste in WhatsApp" : "Copy failed — note the code down";
+      })
+    );
+  }
+
   async function refreshList() {
     const students = await listStudents();
     if (!students) {
@@ -470,6 +490,7 @@ export function showTeacher() {
                 <td class="cell-actions">
                   <button class="btn-link roster-report" data-user="${escapeHtml(s.username)}">Report</button>
                   <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
+                  <button class="btn-link roster-invite" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Invite parent</button>
                   <button class="btn-link roster-remove" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Remove</button>
                 </td>
               </tr>`
@@ -480,6 +501,32 @@ export function showTeacher() {
       </div>`;
     listEl.querySelectorAll<HTMLButtonElement>(".roster-report").forEach((btn) =>
       btn.addEventListener("click", () => showStudentReport(btn.dataset.user!))
+    );
+    listEl.querySelectorAll<HTMLButtonElement>(".roster-invite").forEach((btn) =>
+      btn.addEventListener("click", async () => {
+        btn.textContent = "Creating…";
+        const result = await createParentInvite(btn.dataset.user!);
+        btn.textContent = "Invite parent";
+        if (!result.ok) {
+          alert(result.message);
+          return;
+        }
+        // A code is a key to this child's results — it is shown once, here,
+        // for the teacher to hand over, and works for one parent only.
+        createdEl.innerHTML = `
+          <div class="cred-card">
+            <div class="cred-title">Parent invite for ${escapeHtml(btn.dataset.name!)}</div>
+            <div class="cred-line">Code: <strong>${escapeHtml(result.code)}</strong></div>
+            <div class="cred-line cred-note">Works once, for one parent. They sign in with
+            Google and enter it under “Add a child”.</div>
+            <button class="btn btn-primary invite-copy" data-name="${escapeHtml(btn.dataset.name!)}"
+                    data-code="${escapeHtml(result.code)}">
+              Copy WhatsApp message
+            </button>
+          </div>`;
+        bindInviteCopy(createdEl);
+        createdEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      })
     );
     listEl.querySelectorAll<HTMLButtonElement>(".roster-reset").forEach((btn) =>
       btn.addEventListener("click", async () => {

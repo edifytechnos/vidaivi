@@ -4,7 +4,7 @@
 import "./style.css";
 import { initAnalytics, track } from "./analytics";
 import { fetchServerTest } from "./api";
-import { authEnabled, isLoggedIn, flushPendingAttempts } from "./auth";
+import { authEnabled, isLoggedIn, isParent, flushPendingAttempts } from "./auth";
 import { isGuest } from "./attempts";
 import { TESTS } from "./data";
 import { showHome } from "./screens/home";
@@ -12,6 +12,7 @@ import { showWelcome } from "./screens/auth";
 import { showLanding } from "./screens/test";
 import { showEditor } from "./screens/editor";
 import { showSubjects } from "./screens/subjects";
+import { showChildren } from "./screens/parent";
 import { installTopbarMenu } from "./screens/menu";
 
 initAnalytics();
@@ -22,6 +23,8 @@ function showEntry(): void {
   // Signed-in users land on their subjects; guests go straight to the
   // built-in tests, since subjects are something you own.
   if (authEnabled && !isLoggedIn() && !isGuest()) showWelcome();
+  // A parent owns no subjects — their landing is their children's results.
+  else if (authEnabled && isParent()) void showChildren();
   else if (authEnabled && isLoggedIn()) void showSubjects();
   else showHome(null);
 }

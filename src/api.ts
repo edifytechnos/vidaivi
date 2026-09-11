@@ -42,12 +42,17 @@ export async function fetchServerTests(): Promise<ServerTestMeta[] | null> {
 }
 
 /** The list plus whether this teacher still needs their starter samples. */
+/** `student` asks for a linked child's view — the server checks the link. */
 export async function fetchTestList(
-  subjectId?: string
+  subjectId?: string,
+  student?: string
 ): Promise<{ tests: ServerTestMeta[]; needsSamples: boolean } | null> {
   if (!isLoggedIn()) return null;
   try {
-    const q = subjectId ? `?subjectId=${encodeURIComponent(subjectId)}` : "";
+    const params = new URLSearchParams();
+    if (subjectId) params.set("subjectId", subjectId);
+    if (student) params.set("student", student);
+    const q = params.toString() ? `?${params}` : "";
     const res = await fetch(`/api/tests${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     const data = await res.json();
@@ -75,6 +80,61 @@ export async function seedSampleTests(tests: Test[], subjectId?: string): Promis
     return (await res.json()).seeded ?? 0;
   } catch {
     return 0;
+  }
+}
+
+export interface Child {
+  username: string;
+  name: string;
+  teacherSub: string;
+  linkedAt: string;
+}
+
+/** The children linked to the signed-in parent. */
+export async function fetchChildren(): Promise<Child[] | null> {
+  if (!isLoggedIn()) return null;
+  try {
+    const res = await fetch("/api/parentlink", { headers: authHeader() });
+    if (!res.ok) return null;
+    return (await res.json()).children ?? [];
+  } catch {
+    return null;
+  }
+}
+
+/** Teacher: mint a one-time code to hand a parent. */
+export async function createParentInvite(
+  username: string
+): Promise<{ ok: true; code: string } | { ok: false; message: string }> {
+  try {
+    const res = await fetch("/api/parentlink", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "invite", username }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not create an invite" };
+    return { ok: true, code: data.code };
+  } catch {
+    return { ok: false, message: "Network error — try again" };
+  }
+}
+
+/** Parent: redeem a code and link the child it names. */
+export async function redeemParentInvite(
+  code: string
+): Promise<{ ok: true; child: string } | { ok: false; message: string }> {
+  try {
+    const res = await fetch("/api/parentlink", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "redeem", code }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not use that code" };
+    return { ok: true, child: data.child || "your child" };
+  } catch {
+    return { ok: false, message: "Network error — try again" };
   }
 }
 

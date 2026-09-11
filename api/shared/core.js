@@ -862,13 +862,24 @@ handlers.tests = async (context, req) => {
   // GET ?id=... → full test (if visible), GET → metadata list.
   const wantedId = String((req.query && req.query.id) || "").trim();
   // identify() resolved the student's teacher when it verified the account.
-  const teacherSub = who.kind === "student" ? who.teacherSub || "" : "";
+  let teacherSub = who.kind === "student" ? who.teacherSub || "" : "";
+
+  // A parent sees exactly what their linked child sees. The link row decides
+  // whose teacher that is — never a username the client sent.
+  const wantedChild = String((req.query && req.query.student) || "").trim().toLowerCase();
+  let asChild = false;
+  if (wantedChild) {
+    const link = await childLink(who, wantedChild);
+    if (!link) return json(context, 403, { error: "Not your child" });
+    teacherSub = link.teacherSub;
+    asChild = true;
+  }
 
   function visible(e) {
-    if (isStaff) return canManageTest(who, e) || (e.platform && e.status === "published");
+    if (isStaff && !asChild) return canManageTest(who, e) || (e.platform && e.status === "published");
     if (e.status !== "published") return false;
     if (e.platform) return true;
-    return who.kind === "student" && !!teacherSub && e.ownerSub === teacherSub;
+    return (who.kind === "student" || asChild) && !!teacherSub && e.ownerSub === teacherSub;
   }
 
   if (wantedId) {
@@ -1104,6 +1115,174 @@ handlers.subjects = async (context, req) => {
   json(context, 200, { subjects: list });
 };
 
+
+// ---------- Parent <-> student links ----------
+
+// No look-alike characters (no I, L, O, 0, 1): a parent reads this off
+// WhatsApp and types it in. 31^8 is far too large to guess, and there is no
+// endpoint that enumerates codes.
+const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+const INVITE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+
+function newInviteCode() {
+  let out = "";
+  for (let i = 0; i < 8; i++) out += CODE_ALPHABET[crypto.randomInt(CODE_ALPHABET.length)];
+  return out;
+}
+
+/** Case and stray spaces/dashes only — never a lossy substitution, which
+ *  could turn a valid code into one that cannot be found. */
+function normaliseCode(input) {
+  return String(input || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
+}
+
+/** The children this account may see. Every parent read joins through these,
+ *  never through a student id the client supplied. */
+async function linkedChildren(who) {
+  const links = tableClient("parentlinks");
+  await ensureTable(links);
+  const out = [];
+  try {
+    const iter = links.listEntities({
+      queryOptions: { filter: `PartitionKey eq 'parent~${who.id.replace(/'/g, "''")}'` },
+    });
+    for await (const e of iter) {
+      out.push({
+        username: e.rowKey,
+        name: e.studentName || e.rowKey,
+        teacherSub: e.teacherSub || "",
+        linkedAt: e.linkedAt || "",
+      });
+      if (out.length >= 20) break;
+    }
+  } catch {}
+  out.sort((a, b) => a.name.localeCompare(b.name));
+  return out;
+}
+
+/** The link row, or null. The gate on every parent read. */
+async function childLink(who, username) {
+  if (who.kind !== "google") return null;
+  const links = tableClient("parentlinks");
+  await ensureTable(links);
+  try {
+    const e = await links.getEntity(`parent~${who.id}`, String(username || "").trim().toLowerCase());
+    return { username: e.rowKey, name: e.studentName || e.rowKey, teacherSub: e.teacherSub || "" };
+  } catch {
+    return null;
+  }
+}
+
+handlers.parentlink = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+
+  const invites = tableClient("invites");
+  await ensureTable(invites);
+
+  if (req.method === "POST") {
+    const body = getBody(req) || {};
+    const action = body.action || "redeem";
+
+    // A teacher mints a code for one of their own students.
+    if (action === "invite") {
+      if (who.role !== "teacher" && who.role !== "admin") {
+        return json(context, 403, { error: "Teachers only" });
+      }
+      const username = String(body.username || "").trim().toLowerCase();
+      const students = tableClient("students");
+      await ensureTable(students);
+      let student;
+      try {
+        student = await students.getEntity("student", username);
+      } catch {
+        return json(context, 404, { error: "Student not found" });
+      }
+      if (student.teacherSub !== who.id) {
+        return json(context, 403, { error: "Not your student" });
+      }
+      const now = Date.now();
+      const row = {
+        partitionKey: "invite",
+        rowKey: "",
+        studentUsername: username,
+        studentName: student.name || username,
+        teacherSub: who.id,
+        createdAt: new Date(now).toISOString(),
+        // A code is a key to this child's results. Unused, it stops working.
+        expiresAt: new Date(now + INVITE_TTL_MS).toISOString(),
+        usedAt: "",
+        usedBySub: "",
+      };
+      // Retry once: a collision is vanishingly unlikely but would otherwise
+      // surface to the teacher as an unexplained failure.
+      let code = "";
+      for (let attempt = 0; attempt < 2 && !code; attempt++) {
+        const candidate = newInviteCode();
+        try {
+          await invites.createEntity({ ...row, rowKey: candidate });
+          code = candidate;
+        } catch (e) {
+          if (e.statusCode !== 409) throw e;
+        }
+      }
+      if (!code) return json(context, 500, { error: "Could not create an invite — try again" });
+      return json(context, 201, { ok: true, code });
+    }
+
+    // A parent redeems one. Single use, and the row's etag makes that atomic:
+    // with two parents racing the same code only the first write lands.
+    if (action === "redeem") {
+      if (who.kind !== "google") {
+        return json(context, 403, { error: "Sign in with Google to link a child" });
+      }
+      const code = normaliseCode(body.code);
+      if (code.length < 6) return json(context, 400, { error: "That code does not look right" });
+      let invite;
+      try {
+        invite = await invites.getEntity("invite", code);
+      } catch {
+        return json(context, 404, { error: "No such code - check it and try again" });
+      }
+      if (invite.expiresAt && Date.parse(invite.expiresAt) < Date.now()) {
+        return json(context, 410, { error: "That code has expired — ask for a new one" });
+      }
+      if (invite.usedAt) {
+        // Redeemed by this same parent already? Then it is not an error.
+        if (invite.usedBySub === who.id) {
+          return json(context, 200, { ok: true, alreadyLinked: true, child: invite.studentName });
+        }
+        return json(context, 409, { error: "That code has already been used" });
+      }
+      invite.usedAt = new Date().toISOString();
+      invite.usedBySub = who.id;
+      try {
+        await invites.updateEntity(invite, "Replace", { etag: invite.etag });
+      } catch {
+        return json(context, 409, { error: "That code has already been used" });
+      }
+      const links = tableClient("parentlinks");
+      await ensureTable(links);
+      await links.upsertEntity(
+        {
+          partitionKey: `parent~${who.id}`,
+          rowKey: invite.studentUsername,
+          studentName: invite.studentName || invite.studentUsername,
+          teacherSub: invite.teacherSub || "",
+          linkedAt: new Date().toISOString(),
+        },
+        "Replace"
+      );
+      return json(context, 201, { ok: true, child: invite.studentName || invite.studentUsername });
+    }
+
+    return json(context, 400, { error: `Unknown action: ${action}` });
+  }
+
+  json(context, 200, { children: await linkedChildren(who) });
+};
+
 handlers.attempts = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req);
@@ -1113,6 +1292,11 @@ handlers.attempts = async (context, req) => {
   await ensureTable(attempts);
 
   if (req.method === "POST") {
+    // A parent watches; they never write to their child's record, and their
+    // own attempts would pollute the child's history.
+    if (who.role === "parent") {
+      return json(context, 403, { error: "Parent accounts cannot attempt tests" });
+    }
     const body = getBody(req);
     if (
       !body ||
@@ -1150,7 +1334,16 @@ handlers.attempts = async (context, req) => {
     return json(context, 201, { ok: true });
   }
 
-  const partition = `PartitionKey eq '${who.id.replace(/'/g, "''")}'`;
+  // A parent may read one linked child's attempts instead of their own. The
+  // link row is the authority — never the username the client sent.
+  const wantedChild = String((req.query && req.query.student) || "").trim().toLowerCase();
+  let readAs = who.id;
+  if (wantedChild) {
+    const link = await childLink(who, wantedChild);
+    if (!link) return json(context, 403, { error: "Not your child" });
+    readAs = `stu~${link.username}`;
+  }
+  const partition = `PartitionKey eq '${readAs.replace(/'/g, "''")}'`;
 
   // ?testId= asks for one attempt in full. Row keys are an inverted timestamp,
   // so the first row for a test is the newest — a retake appends rather than
