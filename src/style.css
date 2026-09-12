@@ -2792,3 +2792,157 @@ body {
 .locked-page {
   text-align: center;
 }
+
+/* An expired sign-in is ordinary and hourly — inform, do not alarm. */
+.welcome-expired {
+  margin: 0 0 16px;
+  padding: 11px 14px;
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-sm);
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+/* ---------- The one modal every small creation flow uses ---------- */
+
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.45);
+  overflow-y: auto;
+}
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal {
+  width: 100%;
+  max-width: 460px;
+  margin: auto;
+  padding: 22px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.modal-title {
+  flex: 1;
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.modal-x {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+}
+.modal-x:hover {
+  background: var(--bg);
+}
+
+.modal-desc {
+  margin: 8px 0 0;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.modal-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* A required field is marked, so a placeholder can never pass for a value. */
+.modal-req {
+  color: var(--red);
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--text);
+}
+.modal-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+/* Placeholders must not read as filled-in values — that is the bug this
+   modal replaces. */
+.modal-input::placeholder {
+  color: var(--faint);
+  opacity: 1;
+  font-style: italic;
+}
+
+.modal-field-bad .modal-input {
+  border-color: var(--red);
+}
+.modal-field-bad .modal-label {
+  color: var(--red);
+}
+
+.modal-hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.modal-error {
+  margin: 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 520px) {
+  .modal-scrim {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal {
+    max-width: none;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+}

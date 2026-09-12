@@ -8,6 +8,7 @@ import {
   isParent,
   renderGoogleButton,
   savePhone,
+  sessionJustExpired,
   studentLogin,
 } from "../auth";
 import { setGuest } from "../attempts";
@@ -30,10 +31,19 @@ export function showWelcome(next?: () => void) {
       else showHome(null);
     });
   track("welcome_open");
+  // A sign-in that timed out, not a failure — and nothing of theirs is lost.
+  const expired = sessionJustExpired();
   app.innerHTML = `
     ${topbar(false)}
     <main class="card welcome">
       <div class="welcome-logo">V</div>
+      ${
+        expired
+          ? `<p class="welcome-expired">Your sign-in timed out, so please sign in
+             again. Nothing is lost — your tests, students and answers are all
+             saved.</p>`
+          : ""
+      }
       <h2 class="welcome-title">Welcome to Vidai</h2>
       <p class="welcome-sub">Chapter-wise CBSE Class 12 Maths practice with instant
       worked solutions. Sign in to keep your scores on your profile,

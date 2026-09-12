@@ -703,6 +703,43 @@ function check(ok, label) {
       console.log(`  (cleaned up ${marking.username})`);
     }
 
+    // An expired sign-in must say so. A Google ID token lasts about an hour;
+    // before this, every call 401'd and each screen rendered its own empty
+    // state, so an hour-old session looked exactly like deleted data.
+    const adminAuthForExpiry = await page.evaluate(() => localStorage.getItem("vidai:auth"));
+    for (const role of ["teacher", "admin", "parent"]) {
+      await page.evaluate((r) => {
+        localStorage.setItem(
+          "vidai:auth",
+          JSON.stringify({
+            credential: "expired.google.token",
+            profile: { kind: "google", sub: "1", name: "Expired User", email: "e@x.com", role: r },
+          })
+        );
+      }, role);
+      await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
+      // The shell paints from the cached profile before the first call comes
+      // back, so wait for the welcome screen itself, not for whichever renders
+      // first — otherwise this races its own subject.
+      await page.waitForSelector(".welcome", { timeout: 25000 });
+      const state = await page.evaluate(() => ({
+        welcome: !!document.querySelector(".welcome"),
+        told: !!document.querySelector(".welcome-expired"),
+        stillSignedIn: localStorage.getItem("vidai:auth") !== null,
+      }));
+      check(state.welcome, `an expired ${role} session lands on sign-in, not an empty page`);
+      check(state.told, `and is told the sign-in timed out (${role})`);
+      check(!state.stillSignedIn, `and the dead session is cleared (${role})`);
+    }
+    // The other half: a live session must NOT be signed out.
+    await page.evaluate((a) => localStorage.setItem("vidai:auth", a), adminAuthForExpiry);
+    await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
+    check(
+      await page.evaluate(() => localStorage.getItem("vidai:auth") !== null),
+      "a valid session is left alone"
+    );
+
     // No flicker, no shift. With the API held back, a hard reload must paint
     // the shell and a skeleton at once, and the chrome must not move when the
     // data arrives or when moving between screens.
@@ -762,11 +799,36 @@ function check(ok, label) {
     // A subject with no tests opens the same shell, with an empty tree.
     // Created and removed here so the check does not depend on live data.
     const probe = `E2E${Date.now().toString().slice(-6)}`;
+    // The modal must never let a placeholder pass for a value: the old inline
+    // form pre-filled board and class and left subject showing only a
+    // placeholder, so a form that looked complete failed with "Board, class and
+    // subject are all needed" and named no field in particular.
     await page.click("#sub-new");
-    await page.fill("#sf-board", "CBSE");
-    await page.fill("#sf-class", "12");
-    await page.fill("#sf-subject", probe);
-    await page.click("#sf-save");
+    await page.waitForSelector(".modal", { timeout: 15000 });
+    await page.fill('.modal-input[name="klass"]', "10");
+    await page.click(".modal-submit");
+    await page.waitForSelector(".modal-error:not([hidden])", { timeout: 10000 });
+    check(
+      (await page.textContent(".modal-error")).trim() === "Subject is needed.",
+      "an empty required field is named, not lumped in with the filled ones"
+    );
+    check(
+      await page.evaluate(() =>
+        document.activeElement?.getAttribute("name") === "subject"
+      ),
+      "and the cursor lands in it"
+    );
+    await page.keyboard.press("Escape");
+    await page.waitForSelector(".modal", { state: "detached", timeout: 10000 });
+
+    await page.click("#sub-new");
+    // Creating anything small goes through the shared modal now.
+    await page.waitForSelector(".modal", { timeout: 15000 });
+    await page.fill('.modal-input[name="board"]', "CBSE");
+    await page.fill('.modal-input[name="klass"]', "12");
+    await page.fill('.modal-input[name="subject"]', probe);
+    await page.click(".modal-submit");
+    await page.waitForSelector(".modal", { state: "detached", timeout: 25000 });
     const card = `.subject-card:has(.subject-name:text-is("CBSE Class 12 ${probe}"))`;
     try {
       await page.waitForSelector(card, { timeout: 25000 });

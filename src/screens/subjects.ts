@@ -7,6 +7,7 @@ import { fetchSubjects, fetchTestList, mutateSubject, seedSampleTests, type Subj
 import { isTeacher } from "../auth";
 import { TESTS } from "../data";
 import { escapeHtml, setUrl } from "../dom";
+import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
 import { showEditorForSubject } from "./editor";
@@ -33,7 +34,6 @@ export async function showSubjects() {
     `
     <main class="subjects">
       <div class="subjects-head"><h2 class="subjects-title">Your subjects</h2></div>
-      <div id="sub-form" class="card subject-form" hidden></div>
       <div id="sub-grid">${skeleton.cards(3)}</div>
     </main>`,
     {
@@ -127,61 +127,38 @@ function initials(s: Subject): string {
   return `${(s.subject || "?").slice(0, 1)}${s.klass || ""}`.toUpperCase();
 }
 
+/**
+ * New subject, in the shared modal. Board and class carry sensible defaults;
+ * subject does not, and is marked required — the old inline form pre-filled two
+ * of the three and left the third showing only a placeholder, so a form that
+ * looked complete failed with "Board, class and subject are all needed".
+ */
 function openForm(): void {
-  const host = document.getElementById("sub-form");
-  if (!host) return;
-  host.hidden = false;
-  const options = (values: string[], name: string) =>
-    values.map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("") +
-    `<option value="__other">Something else…</option>`.replace("__other", `other-${name}`);
-
-  host.innerHTML = `
-    <h3 class="subject-form-title">New subject</h3>
-    <p class="hint">A subject is one board, class and subject — the tests you write live inside it.</p>
-    <div class="subject-form-row">
-      <label class="ed-field">
-        <span class="ed-panel-label">Board</span>
-        <input class="ed-input" id="sf-board" list="sf-boards" placeholder="CBSE" value="CBSE" />
-        <datalist id="sf-boards">${options(BOARDS, "board")}</datalist>
-      </label>
-      <label class="ed-field">
-        <span class="ed-panel-label">Class</span>
-        <input class="ed-input" id="sf-class" list="sf-classes" placeholder="12" value="12" />
-        <datalist id="sf-classes">${options(CLASSES, "class")}</datalist>
-      </label>
-      <label class="ed-field">
-        <span class="ed-panel-label">Subject</span>
-        <input class="ed-input" id="sf-subject" list="sf-subjects" placeholder="Maths" />
-        <datalist id="sf-subjects">${options(SUBJECTS, "subject")}</datalist>
-      </label>
-    </div>
-    <p id="sf-error" class="login-error" hidden></p>
-    <div class="actions">
-      <button id="sf-save" class="btn btn-primary">Create subject</button>
-      <button id="sf-cancel" class="btn btn-ghost">Cancel</button>
-    </div>`;
-
-  const err = document.getElementById("sf-error") as HTMLElement;
-  document.getElementById("sf-cancel")!.addEventListener("click", () => {
-    host.hidden = true;
-  });
-  document.getElementById("sf-save")!.addEventListener("click", async () => {
-    const board = (document.getElementById("sf-board") as HTMLInputElement).value.trim();
-    const klass = (document.getElementById("sf-class") as HTMLInputElement).value.trim();
-    const subject = (document.getElementById("sf-subject") as HTMLInputElement).value.trim();
-    if (!board || !klass || !subject) {
-      err.textContent = "Board, class and subject are all needed.";
-      err.hidden = false;
-      return;
-    }
-    const result = await mutateSubject("create", { board, klass, subject });
-    if (!result.ok) {
-      err.textContent = result.message;
-      err.hidden = false;
-      return;
-    }
-    track("subject_created");
-    host.hidden = true;
-    void refresh();
+  openModal({
+    title: "New subject",
+    description:
+      "A subject is one board, class and subject — the tests you write live inside it.",
+    submitLabel: "Create subject",
+    fields: [
+      { name: "board", label: "Board", value: "CBSE", options: BOARDS, required: true },
+      { name: "klass", label: "Class", value: "12", options: CLASSES, required: true },
+      {
+        name: "subject",
+        label: "Subject",
+        placeholder: "e.g. Maths",
+        options: SUBJECTS,
+        required: true,
+      },
+    ],
+    onSubmit: async (v) => {
+      const result = await mutateSubject("create", {
+        board: v.board,
+        klass: v.klass,
+        subject: v.subject,
+      });
+      if (!result.ok) return result.message;
+      track("subject_created");
+      void refresh();
+    },
   });
 }

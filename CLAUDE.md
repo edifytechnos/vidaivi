@@ -356,6 +356,50 @@ asserts it.
   OAuth client**, or Google sign-in fails there. Student and admin logins are
   unaffected.
 
+## An expired session says so (`apiFetch` in `src/auth.ts`)
+
+A Google ID token expires after about an hour. Before this, every call then
+returned `401 {"error":"Invalid token"}` and each fetch helper swallowed it and
+returned `null`/`[]` — so screens rendered their ordinary empty state and the
+console said "Could not load … refresh to retry", which cannot possibly help.
+An hour-old session looked exactly like a teacher whose data had been deleted.
+
+- **Every call to our API goes through `apiFetch`.** A 401 can only mean
+  `identify()` rejected the token — permission refusals are 403 and network
+  failures throw — so it ends the session: `signOut()`, set
+  `vidai:sessionExpired`, and hand off to the callback registered by
+  `handleSessionExpiry()` in `src/main.ts` (which shows the welcome screen).
+- **`/api/login`, `/api/studentauth` and `/api/manageauth` are excluded**: a 401
+  there is a wrong password, not an expired session.
+- One sign-out however many calls 401 together (`expiring` guard), and
+  `vidai:pendingAttempts` is deliberately left alone so unsynced answers
+  survive and flush on the next sign-in.
+- `showWelcome()` reads `sessionJustExpired()` and explains it — the sign-in
+  timed out, nothing is lost. `e2e/regression.cjs` asserts this for teacher,
+  admin and parent, and asserts a valid session is *not* signed out.
+
+## Small creation flows use one modal (`src/modal.ts`)
+
+Creating a subject, a student or a teacher opens `openModal({title, description,
+fields, submitLabel, onSubmit})`. Use it for any new small "create a thing"
+flow rather than adding another inline form.
+
+- `onSubmit(values)` returns a **message to keep the modal open and show it**, or
+  nothing to close. Throwing is treated as returning a message.
+- A `required: true` field is marked with a red `*`, and validation names the one
+  field that is empty ("Subject is needed."), marks it, and focuses it.
+- Esc, the ✕, Cancel and a click on the scrim all close it; focus is trapped
+  inside while open and restored to the trigger on close.
+- `options` renders a datalist — suggestions, never a closed set.
+
+**Why it exists.** The inline subject form pre-filled Board and Class with real
+values and gave Subject only a placeholder. Three boxes with grey-and-black text
+look identically filled, so submitting failed with "Board, class and subject are
+all needed" on a form the teacher had every reason to think was complete. A
+placeholder must never be able to pass for a value: `.modal-input::placeholder`
+is italic and faint for the same reason, and `e2e/regression.cjs` asserts the
+error names the empty field.
+
 ## Working style
 
 - Concise, structured output. No padding.

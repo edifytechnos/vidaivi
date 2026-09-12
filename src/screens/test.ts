@@ -124,8 +124,16 @@ export function showLanding(test: Test) {
       <ul class="landing-facts">
         <li><strong>${test.questions.length}</strong> questions · <strong>${total}</strong> marks</li>
         <li>${counts.mcq} MCQ · ${counts.numeric} numeric · ${counts.long} long answer</li>
-        <li>Instant solutions after every question</li>
-        <li>Your progress is saved on this phone — close and come back any time</li>
+        <li>${
+          canHandIn()
+            ? "Answers and worked solutions open when your teacher releases them"
+            : "Instant solutions after every question"
+        }</li>
+        <li>${
+          canHandIn()
+            ? "Your work is saved as you go — close and come back on any device"
+            : "Your progress is saved on this phone — close and come back any time"
+        }</li>
       </ul>
       <div class="actions">
         <button id="primary-btn" class="btn btn-primary">${primary.label}</button>
@@ -432,6 +440,10 @@ export async function hydrateMarks(
   attempt: Attempt,
   student?: string
 ): Promise<boolean> {
+  // Only a student's own paper, or a named student's, has marks to fetch. A
+  // teacher previewing their own test has nobody to ask about, and asking
+  // anyway earns a 403 on every open.
+  if (!student && !canHandIn()) return false;
   const rows = await fetchGrading({ testId: test.id, student });
   if (!rows.length) return false;
   let changed = false;

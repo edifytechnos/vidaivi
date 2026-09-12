@@ -95,6 +95,60 @@ function saveAuth(state: AuthState): void {
   } catch {}
 }
 
+const EXPIRED_KEY = "vidai:sessionExpired";
+
+// Signing in is the one place a 401 means "wrong credentials" rather than
+// "your session is over" — there is no session yet to end.
+const SIGN_IN_ENDPOINTS = ["/api/login", "/api/studentauth", "/api/manageauth"];
+
+let expiring = false;
+let onExpired: (() => void) | null = null;
+
+/** Let the app say where an expired session should land. Wired in main.ts. */
+export function handleSessionExpiry(fn: () => void): void {
+  onExpired = fn;
+}
+
+export function sessionJustExpired(): boolean {
+  try {
+    const hit = localStorage.getItem(EXPIRED_KEY) === "1";
+    if (hit) localStorage.removeItem(EXPIRED_KEY);
+    return hit;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Every call to our API goes through here.
+ *
+ * A 401 from this API can only mean `identify()` rejected the token: real
+ * permission refusals are 403, and a network failure throws rather than
+ * answering. So a 401 is an unambiguous "this session is over" — and it has to
+ * be acted on, because a Google ID token expires after about an hour and every
+ * helper below quietly turns a 401 into an empty list. That made an hour-old
+ * session look exactly like a teacher whose students had all been deleted.
+ */
+export async function apiFetch(path: string, init?: RequestInit): Promise<Response> {
+  const res = await fetch(path, init);
+  const signIn = SIGN_IN_ENDPOINTS.some((p) => path.startsWith(p));
+  if (res.status === 401 && !signIn && getAuth()) expireSession();
+  return res;
+}
+
+/** End the session once, however many calls came back 401 together. */
+function expireSession(): void {
+  if (expiring) return;
+  expiring = true;
+  // Leave vidai:pendingAttempts alone: unsynced answers are meant to outlive
+  // an expired session and flush on the next sign-in.
+  signOut();
+  try {
+    localStorage.setItem(EXPIRED_KEY, "1");
+  } catch {}
+  onExpired?.();
+}
+
 export function signOut(): void {
   try {
     localStorage.removeItem(AUTH_KEY);
@@ -130,7 +184,7 @@ function loadGis(): Promise<void> {
 }
 
 async function apiLogin(credential: string, phone?: string): Promise<Profile> {
-  const res = await fetch("/api/login", {
+  const res = await apiFetch("/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -201,7 +255,7 @@ export async function studentLogin(
   password: string
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   try {
-    const res = await fetch("/api/studentauth", {
+    const res = await apiFetch("/api/studentauth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -238,7 +292,7 @@ export async function adminLogin(
   password: string
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   try {
-    const res = await fetch("/api/manageauth", {
+    const res = await apiFetch("/api/manageauth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -262,7 +316,7 @@ export async function adminLogin(
 
 export async function listTeachers(): Promise<{ email: string; addedAt?: string }[] | null> {
   try {
-    const res = await fetch("/api/teachers", { headers: authHeader() });
+    const res = await apiFetch("/api/teachers", { headers: authHeader() });
     if (!res.ok) return null;
     return (await res.json()).teachers;
   } catch {
@@ -275,7 +329,7 @@ export async function modifyTeacher(
   email: string
 ): Promise<{ ok: boolean; message?: string }> {
   try {
-    const res = await fetch("/api/teachers", {
+    const res = await apiFetch("/api/teachers", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action, email }),
@@ -294,7 +348,7 @@ export async function modifyTeacher(
 
 export async function listStudents(): Promise<StudentRecord[] | null> {
   try {
-    const res = await fetch("/api/students", { headers: authHeader() });
+    const res = await apiFetch("/api/students", { headers: authHeader() });
     if (!res.ok) return null;
     const data = await res.json();
     return data.students as StudentRecord[];
@@ -310,7 +364,7 @@ export async function createStudent(input: {
   parentPhone: string;
 }): Promise<StudentRecord | null> {
   try {
-    const res = await fetch("/api/students", {
+    const res = await apiFetch("/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "create", ...input }),
@@ -327,7 +381,7 @@ export async function removeStudent(
   username: string
 ): Promise<{ ok: boolean; message?: string; removedAttempts?: number }> {
   try {
-    const res = await fetch("/api/students", {
+    const res = await apiFetch("/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "remove", username }),
@@ -344,7 +398,7 @@ export async function resetStudentPassword(
   username: string
 ): Promise<{ username: string; password: string } | null> {
   try {
-    const res = await fetch("/api/students", {
+    const res = await apiFetch("/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "reset", username }),
@@ -364,7 +418,7 @@ export interface StudentReport extends StudentRecord {
 export async function fetchReports(username?: string): Promise<StudentReport[] | null> {
   try {
     const q = username ? `?username=${encodeURIComponent(username)}` : "";
-    const res = await fetch(`/api/reports${q}`, { headers: authHeader() });
+    const res = await apiFetch(`/api/reports${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     return (await res.json()).students as StudentReport[];
   } catch {
@@ -406,7 +460,7 @@ export async function uploadAnswerImage(payload: {
   maxMarks: number;
   image: string;
 }): Promise<UploadedAnswerImage> {
-  const res = await fetch("/api/answerimage", {
+  const res = await apiFetch("/api/answerimage", {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
     body: JSON.stringify(payload),
@@ -421,7 +475,7 @@ export async function removeAnswerImage(
   questionId: string,
   blob: string
 ): Promise<string[]> {
-  const res = await fetch("/api/answerimage", {
+  const res = await apiFetch("/api/answerimage", {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
     body: JSON.stringify({ action: "remove", testId, questionId, blob }),
@@ -437,7 +491,7 @@ export async function removeAnswerImage(
  */
 export async function answerImageUrl(blob: string): Promise<string | null> {
   try {
-    const res = await fetch(`/api/answerimage?blob=${encodeURIComponent(blob)}`, {
+    const res = await apiFetch(`/api/answerimage?blob=${encodeURIComponent(blob)}`, {
       headers: authHeader(),
     });
     if (!res.ok) return null;
@@ -457,7 +511,7 @@ export async function fetchGrading(opts: {
     if (opts.student) q.set("student", opts.student);
     if (opts.testId) q.set("testId", opts.testId);
     const suffix = q.toString() ? `?${q}` : "";
-    const res = await fetch(`/api/grading${suffix}`, { headers: authHeader() });
+    const res = await apiFetch(`/api/grading${suffix}`, { headers: authHeader() });
     if (!res.ok) return [];
     return ((await res.json()).answers || []) as GradedAnswer[];
   } catch {
@@ -468,7 +522,7 @@ export async function fetchGrading(opts: {
 /** Teacher/admin: everything their students have handed in and not had marked. */
 export async function fetchMarkingQueue(): Promise<GradedAnswer[] | null> {
   try {
-    const res = await fetch("/api/grading?queue=1", { headers: authHeader() });
+    const res = await apiFetch("/api/grading?queue=1", { headers: authHeader() });
     if (!res.ok) return null;
     return ((await res.json()).answers || []) as GradedAnswer[];
   } catch {
@@ -484,7 +538,7 @@ export async function saveMark(payload: {
   comment?: string;
 }): Promise<boolean> {
   try {
-    const res = await fetch("/api/grading", {
+    const res = await apiFetch("/api/grading", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "mark", ...payload }),
@@ -512,7 +566,7 @@ export async function fetchReleased(testId: string, student?: string): Promise<b
   try {
     const q = new URLSearchParams({ testId });
     if (student) q.set("student", student);
-    const res = await fetch(`/api/release?${q}`, { headers: authHeader() });
+    const res = await apiFetch(`/api/release?${q}`, { headers: authHeader() });
     if (!res.ok) return false;
     return !!(await res.json()).released;
   } catch {
@@ -523,7 +577,7 @@ export async function fetchReleased(testId: string, student?: string): Promise<b
 /** Teacher/admin: who this test is open for. */
 export async function fetchReleaseState(testId: string): Promise<ReleaseState | null> {
   try {
-    const res = await fetch(`/api/release?testId=${encodeURIComponent(testId)}`, {
+    const res = await apiFetch(`/api/release?testId=${encodeURIComponent(testId)}`, {
       headers: authHeader(),
     });
     if (!res.ok) return null;
@@ -539,7 +593,7 @@ export async function setReleased(
   opts: { username?: string; released: boolean }
 ): Promise<boolean> {
   try {
-    const res = await fetch("/api/release", {
+    const res = await apiFetch("/api/release", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({
@@ -582,7 +636,7 @@ function writePending(list: PendingAttempt[]): void {
 async function postAttempt(a: PendingAttempt): Promise<boolean> {
   if (!isLoggedIn()) return false;
   try {
-    const res = await fetch("/api/attempts", {
+    const res = await apiFetch("/api/attempts", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(a),
@@ -647,7 +701,7 @@ export async function fetchMyAttempt(
   if (!isLoggedIn()) return none;
   try {
     const q = `?testId=${encodeURIComponent(testId)}${student ? `&student=${encodeURIComponent(student)}` : ""}`;
-    const res = await fetch(`/api/attempts${q}`, {
+    const res = await apiFetch(`/api/attempts${q}`, {
       headers: authHeader(),
     });
     if (!res.ok) return none;
@@ -662,7 +716,7 @@ export async function fetchMyAttempts(student?: string): Promise<ServerAttempt[]
   if (!isLoggedIn()) return null;
   try {
     const q = student ? `?student=${encodeURIComponent(student)}` : "";
-    const res = await fetch(`/api/attempts${q}`, { headers: authHeader() });
+    const res = await apiFetch(`/api/attempts${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     const data = await res.json();
     return (data.attempts as ServerAttempt[]) ?? null;
