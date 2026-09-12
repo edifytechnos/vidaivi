@@ -282,6 +282,25 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
 
+## Releasing the answers (`/api/release`, table `releases`)
+
+Taking a test is **silent**: a signed-in student submits and nothing comes back —
+no verdict, no correct answer, no worked solution, for any question type. The
+teacher decides when the paper opens. (Guests on the demo keep the old instant
+feedback: they have no teacher to release anything, and the demo has to stay
+useful as a demo.)
+
+- Table `releases`: PK = test id, RK = username for one student, or `*` for the
+  whole class. Row holds `releasedAt`, `releasedBy`. "Can this student see the
+  paper" is two point reads — `isReleased(testId, username)` — never a scan.
+- `GET /api/release?testId=` → `{released}` for a student; add `&student=` for a
+  teacher, admin or linked parent asking about one student; a teacher asking
+  without `student` gets `{classWide, students[]}` for the whole test.
+- `POST {action:"release"|"unrelease", testId, username?}` — teachers/admins,
+  gated by `canSeeStudent`. Omit `username` to open it for everyone.
+- Client: `fetchReleased` / `fetchReleaseState` / `setReleased` in `src/auth.ts`.
+  `fetchReleased` **fails closed** — a network error keeps the paper shut.
+
 ## Working style
 
 - Concise, structured output. No padding.

@@ -1846,4 +1846,121 @@ handlers.grading = async (context, req) => {
   return json(context, 200, { ok: true, awarded, maxMarks });
 };
 
+// ---------- Releasing the answers ----------
+//
+// Taking a test is silent: a student submits and nothing comes back — no
+// verdict, no correct answer, no worked solution. The teacher decides when
+// the paper opens, either for one student (from the marking queue) or for
+// the whole class at once.
+//
+// Table `releases`: PK = testId, RK = username, or RK = CLASS_WIDE ("*") for
+// everyone who sat it. Answering "can this student see the paper" is then two
+// point reads, no scan.
+
+const CLASS_WIDE = "*";
+
+async function releasesTable() {
+  const t = tableClient("releases");
+  await ensureTable(t);
+  return t;
+}
+
+/** Has `testId` been opened for `username`, individually or class-wide? */
+async function isReleased(testId, username) {
+  const t = await releasesTable();
+  const user = String(username || "").trim().toLowerCase();
+  const [cls, mine] = await Promise.all([
+    t.getEntity(testId, CLASS_WIDE).then(() => true).catch(() => false),
+    user ? t.getEntity(testId, user).then(() => true).catch(() => false) : Promise.resolve(false),
+  ]);
+  return cls || mine;
+}
+
+handlers.release = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req);
+  if (!who.kind) {
+    return json(context, 401, { error: "Invalid token", reason: who.reason });
+  }
+  const releases = await releasesTable();
+
+  if (req.method === "GET") {
+    const q = req.query || {};
+    const testId = safeId(q.testId, 60);
+    if (!testId) return json(context, 400, { error: "testId is required" });
+
+    // A student (or a parent reading a child) only needs the yes/no.
+    if (who.kind === "student") {
+      return json(context, 200, { released: await isReleased(testId, who.username) });
+    }
+    const student = String(q.student || "").trim().toLowerCase();
+    if (student) {
+      const refusal = await canSeeStudent(who, student);
+      if (refusal) return json(context, 403, { error: refusal });
+      return json(context, 200, { released: await isReleased(testId, student) });
+    }
+
+    // A teacher wants the state of the whole test.
+    if (who.role !== "teacher" && who.role !== "admin") {
+      return json(context, 403, { error: "Teachers only" });
+    }
+    const students = [];
+    let classWide = null;
+    const iter = releases.listEntities({
+      queryOptions: { filter: `PartitionKey eq '${testId.replace(/'/g, "''")}'` },
+    });
+    for await (const e of iter) {
+      const row = { releasedAt: e.releasedAt || "", releasedBy: e.releasedBy || "" };
+      if (e.rowKey === CLASS_WIDE) classWide = row;
+      else students.push({ username: e.rowKey, ...row });
+      if (students.length >= 500) break;
+    }
+    students.sort((a, b) => a.username.localeCompare(b.username));
+    return json(context, 200, { testId, classWide, students });
+  }
+
+  if (req.method !== "POST") {
+    return json(context, 405, { error: "Method not allowed" });
+  }
+  if (who.role !== "teacher" && who.role !== "admin") {
+    return json(context, 403, { error: "Teachers only" });
+  }
+
+  const body = getBody(req) || {};
+  const action = body.action || "release";
+  if (action !== "release" && action !== "unrelease") {
+    return json(context, 400, { error: `Unknown action: ${action}` });
+  }
+  const testId = safeId(body.testId, 60);
+  if (!testId) return json(context, 400, { error: "testId is required" });
+
+  // No username means the whole class.
+  const username = String(body.username || "").trim().toLowerCase();
+  if (username) {
+    const refusal = await canSeeStudent(who, username);
+    if (refusal) return json(context, 403, { error: refusal });
+  }
+  const rowKey = username || CLASS_WIDE;
+
+  if (action === "unrelease") {
+    try {
+      await releases.deleteEntity(testId, rowKey);
+    } catch {
+      // Already closed; the caller asked for closed, so that is the outcome.
+    }
+    return json(context, 200, { ok: true, testId, username: username || null, released: false });
+  }
+
+  await releases.upsertEntity(
+    {
+      partitionKey: testId,
+      rowKey,
+      releasedAt: new Date().toISOString(),
+      releasedBy: who.name || who.email || who.id,
+    },
+    "Replace"
+  );
+  return json(context, 200, { ok: true, testId, username: username || null, released: true });
+};
+
 module.exports = { handlers };

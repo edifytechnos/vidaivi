@@ -490,6 +490,65 @@ export async function saveMark(payload: {
   }
 }
 
+// ---------- Releasing the answers ----------
+
+export interface ReleaseState {
+  testId: string;
+  classWide: { releasedAt: string; releasedBy: string } | null;
+  students: { username: string; releasedAt: string; releasedBy: string }[];
+}
+
+/**
+ * Has the teacher opened this paper? Answers, correct options and worked
+ * solutions all hang off this — a test is silent until it comes back true.
+ * Fails closed: a network error keeps the paper shut rather than leaking it.
+ */
+export async function fetchReleased(testId: string, student?: string): Promise<boolean> {
+  try {
+    const q = new URLSearchParams({ testId });
+    if (student) q.set("student", student);
+    const res = await fetch(`/api/release?${q}`, { headers: authHeader() });
+    if (!res.ok) return false;
+    return !!(await res.json()).released;
+  } catch {
+    return false;
+  }
+}
+
+/** Teacher/admin: who this test is open for. */
+export async function fetchReleaseState(testId: string): Promise<ReleaseState | null> {
+  try {
+    const res = await fetch(`/api/release?testId=${encodeURIComponent(testId)}`, {
+      headers: authHeader(),
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as ReleaseState;
+  } catch {
+    return null;
+  }
+}
+
+/** Open or close a paper — for one student, or for the whole class. */
+export async function setReleased(
+  testId: string,
+  opts: { username?: string; released: boolean }
+): Promise<boolean> {
+  try {
+    const res = await fetch("/api/release", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({
+        action: opts.released ? "release" : "unrelease",
+        testId,
+        username: opts.username,
+      }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 // ---------- Attempts (fire-and-forget with offline queue) ----------
 
 interface PendingAttempt {
