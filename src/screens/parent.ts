@@ -148,16 +148,21 @@ export async function showChildResults(child: Child): Promise<void> {
   }
   // Newest first, so a retake's score is the one shown.
   const scores = new Map<string, { score: number; total: number }>();
+  const started = new Map<string, number>();
   for (const a of [...(attempts ?? [])].reverse()) {
-    scores.set(a.testId, { score: a.score, total: a.total });
+    if (a.status === "progress") started.set(a.testId, a.index ?? 0);
+    else scores.set(a.testId, { score: a.score, total: a.total });
   }
 
   host.innerHTML = `<div class="test-list">${tests
     .map((t) => {
       const done = scores.get(t.id);
+      const at = started.get(t.id) ?? 0;
       const status = done
         ? `<span class="status-chip status-done">Score ${done.score}/${done.total}</span>`
-        : `<span class="status-chip status-new">Not started</span>`;
+        : at > 0
+          ? `<span class="status-chip status-progress">In progress · Q${at + 1} of ${t.questionCount}</span>`
+          : `<span class="status-chip status-new">Not started</span>`;
       return `
       <button class="test-card" data-test="${escapeHtml(t.id)}" ${done ? "" : "disabled"}>
         <div class="test-card-main">
@@ -180,17 +185,20 @@ async function openChildReview(child: Child, testId: string): Promise<void> {
     fetchServerTest(testId),
     fetchMyAttempt(testId, child.username),
   ]);
-  if (!test || !remote?.answers) {
+  // Only a finished attempt is reviewable; a parent never sees a part-answered
+  // paper, and the card for one is not clickable in the first place.
+  const done = remote.attempt;
+  if (!test || !done?.answers) {
     alert("That attempt could not be opened.");
     return;
   }
   const attempt: Attempt = {
-    answers: remote.answers,
+    answers: done.answers,
     index: test.questions.length,
     completed: true,
-    score: remote.score,
-    completedAt: remote.completedAt,
-    updatedAt: remote.completedAt,
+    score: done.score,
+    completedAt: done.completedAt,
+    updatedAt: done.completedAt,
   };
   track("parent_review_open");
   showReviewFor(test, attempt, () => void showChildResults(child));

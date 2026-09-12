@@ -30,6 +30,17 @@ export interface ServerAttempt {
   score: number;
   total: number;
   completedAt: string;
+  /** "progress" rows are part-way through; "done" rows are finished. */
+  status?: "progress" | "done";
+  /** Progress rows only: the next unanswered question. */
+  index?: number;
+}
+
+export interface ServerProgress {
+  testId: string;
+  answers: Record<string, StoredAnswer> | null;
+  index: number;
+  updatedAt: string;
 }
 
 export interface StudentRecord {
@@ -395,6 +406,26 @@ async function postAttempt(a: PendingAttempt): Promise<boolean> {
   }
 }
 
+/**
+ * Save what the student has answered so far. Deliberately NOT queued for
+ * retry: every write carries the whole answer map, so the next answer heals a
+ * dropped one, and a queue would only replay state that is already stale.
+ */
+export function saveProgress(a: {
+  testId: string;
+  answers: string;
+  index: number;
+  score: number;
+  total: number;
+}): void {
+  if (!authEnabled || !isLoggedIn()) return;
+  void fetch("/api/attempts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify({ action: "progress", ...a }),
+  }).catch(() => {});
+}
+
 /** Save a completed attempt to the signed-in identity. Never blocks the UI;
  *  failures are queued and retried after the next successful login. */
 export function submitAttempt(a: PendingAttempt): void {
@@ -421,17 +452,22 @@ export async function flushPendingAttempts(): Promise<void> {
 export async function fetchMyAttempt(
   testId: string,
   student?: string
-): Promise<(ServerAttempt & { answers: Record<string, StoredAnswer> | null }) | null> {
-  if (!isLoggedIn()) return null;
+): Promise<{
+  attempt: (ServerAttempt & { answers: Record<string, StoredAnswer> | null }) | null;
+  progress: ServerProgress | null;
+}> {
+  const none = { attempt: null, progress: null };
+  if (!isLoggedIn()) return none;
   try {
     const q = `?testId=${encodeURIComponent(testId)}${student ? `&student=${encodeURIComponent(student)}` : ""}`;
     const res = await fetch(`/api/attempts${q}`, {
       headers: authHeader(),
     });
-    if (!res.ok) return null;
-    return (await res.json()).attempt ?? null;
+    if (!res.ok) return none;
+    const data = await res.json();
+    return { attempt: data.attempt ?? null, progress: data.progress ?? null };
   } catch {
-    return null;
+    return none;
   }
 }
 

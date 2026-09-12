@@ -39,6 +39,8 @@ function profileRow(): string {
 let activeSubject: string | null = null;
 /** Server-side scores, so a test finished on another device reads as done. */
 const serverScores = new Map<string, { score: number; total: number }>();
+/** Server-side progress, so an unfinished test reads as in progress anywhere. */
+const serverProgress = new Map<string, number>();
 
 /**
  * The status chip for one test. localStorage knows about a half-finished
@@ -54,8 +56,9 @@ function statusChip(testId: string, questionCount: number, total: number): strin
   if (attempt?.completed) {
     return `<span class="status-chip status-done">Score ${attempt.score}/${total}</span>`;
   }
-  if (attempt && attempt.index > 0) {
-    return `<span class="status-chip status-progress">In progress · Q${attempt.index + 1} of ${questionCount}</span>`;
+  const at = attempt && attempt.index > 0 ? attempt.index : serverProgress.get(testId) ?? 0;
+  if (at > 0) {
+    return `<span class="status-chip status-progress">In progress · Q${at + 1} of ${questionCount}</span>`;
   }
   return `<span class="status-chip status-new">Not started</span>`;
 }
@@ -155,12 +158,21 @@ async function renderServerTests(): Promise<void> {
 /** Repaint every card's chip once the server's attempts have arrived. */
 function refreshStatusChips(): void {
   document.querySelectorAll<HTMLElement>(".test-card[data-test]").forEach((card) => {
-    const done = serverScores.get(card.dataset.test!);
-    if (!done) return;
+    const id = card.dataset.test!;
     const chip = card.querySelector(".status-chip");
     if (!chip) return;
-    chip.className = "status-chip status-done";
-    chip.textContent = `Score ${done.score}/${done.total}`;
+    const done = serverScores.get(id);
+    if (done) {
+      chip.className = "status-chip status-done";
+      chip.textContent = `Score ${done.score}/${done.total}`;
+      return;
+    }
+    // Only the server knows a test started on another device.
+    const at = serverProgress.get(id);
+    if (at && at > 0 && !loadAttempt(id)) {
+      chip.className = "status-chip status-progress";
+      chip.textContent = `In progress · Q${at + 1}`;
+    }
   });
 }
 
@@ -175,7 +187,8 @@ async function renderServerResults(): Promise<void> {
   }
   // Newest first, so a retake's score is the one shown.
   for (const a of [...attempts].reverse()) {
-    serverScores.set(a.testId, { score: a.score, total: a.total });
+    if (a.status === "progress") serverProgress.set(a.testId, a.index ?? 0);
+    else serverScores.set(a.testId, { score: a.score, total: a.total });
   }
   refreshStatusChips();
   // A cloud test is not in TESTS, so fall back to the list we just fetched
@@ -190,6 +203,7 @@ async function renderServerResults(): Promise<void> {
       <div class="solution-title">Your saved results</div>
       <ul class="score-breakdown">
         ${attempts
+          .filter((a) => a.status !== "progress")
           .slice(0, 10)
           .map(
             (a) => `<li>
