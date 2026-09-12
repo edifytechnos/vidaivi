@@ -54,8 +54,13 @@ async function refresh(): Promise<void> {
   if (!grid) return;
   await seedSamplesOnce(grid);
   const subjects = (await fetchSubjects()) ?? [];
-  const cards = [...subjects.map(cardFor), builtInCard()];
-  grid.innerHTML = `<div class="subject-grid">${cards.join("")}</div>`;
+  // The built-in card is the bundled demo tests, which belong to nobody. A
+  // student's subjects are their own teacher's — including the teacher's copies
+  // of the library tests — so they never see it.
+  const cards = [...subjects.map(cardFor), ...(isStudentViewer() ? [] : [builtInCard()])];
+  grid.innerHTML = cards.length
+    ? `<div class="subject-grid">${cards.join("")}</div>`
+    : `<p class="hint">No subjects yet — your teacher will share tests with you here.</p>`;
 
   grid.querySelectorAll<HTMLElement>(".subject-card").forEach((el) =>
     el.addEventListener("click", () => {

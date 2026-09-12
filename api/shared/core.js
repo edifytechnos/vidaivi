@@ -738,6 +738,42 @@ function canManageTest(who, entity) {
   return who.role === "teacher" && entity.ownerSub === who.id;
 }
 
+/**
+ * The subject an adopted copy is filed under: the caller's own subject with the
+ * same board/class/subject, created if they have none. A copy filed under the
+ * library's subject would be invisible in the teacher's own subject list.
+ */
+async function subjectForAdopter(who, master) {
+  const board = master.board || "CBSE";
+  const klass = master.klass || "12";
+  const subject = master.subject || "Maths";
+  const subjects = tableClient("subjects");
+  await ensureTable(subjects);
+  const iter = subjects.listEntities({ queryOptions: { filter: `PartitionKey eq 'subject'` } });
+  for await (const e of iter) {
+    if (e.ownerSub !== who.id) continue;
+    if ((e.board || "") === board && (e.klass || "") === klass && (e.subject || "") === subject) {
+      return e.rowKey;
+    }
+  }
+  const id = `${slugify(`${board}${klass}${subject}`)}-${crypto.randomBytes(3).toString("hex")}`;
+  const entity = {
+    partitionKey: "subject",
+    rowKey: id,
+    board,
+    klass,
+    subject,
+    title: subjectTitle(board, klass, subject),
+    ownerSub: who.id,
+    ownerEmail: who.email || "",
+    collaborators: "[]",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  await subjects.createEntity(entity);
+  return id;
+}
+
 handlers.tests = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req);
@@ -817,6 +853,49 @@ handlers.tests = async (context, req) => {
       entity.updatedAt = new Date().toISOString();
       await tests.updateEntity(entity, "Merge");
       return json(context, 200, { ok: true, audience, assignedCount: usernames.length });
+    }
+
+    // A teacher takes their own copy of a published master ("built-in") test.
+    // The master itself is never edited by them — this is a fork, not a share.
+    if (action === "adopt") {
+      const id = String(body.id || "").trim();
+      let master;
+      try {
+        master = await tests.getEntity("test", id);
+      } catch {
+        return json(context, 404, { error: "Test not found" });
+      }
+      if (!master.platform || master.status !== "published") {
+        return json(context, 403, { error: "Not a built-in test" });
+      }
+      const questions = unchunkQuestions(master);
+      const copyId = `${slugify(master.title || "test")}-${crypto.randomBytes(3).toString("hex")}`.slice(0, 60);
+      const entity = {
+        partitionKey: "test",
+        rowKey: copyId,
+        title: String(master.title || "Test").slice(0, 120),
+        chapter: String(master.chapter || "").slice(0, 60),
+        teacher: String(master.teacher || "").slice(0, 60),
+        order: typeof master.order === "number" ? master.order : 99,
+        access: master.access === "open" ? "open" : "login",
+        status: "draft",
+        platform: false,
+        audience: "class",
+        assignedTo: "[]",
+        ownerSub: who.id,
+        ownerEmail: who.email || "",
+        board: master.board || "CBSE",
+        klass: master.klass || "12",
+        subject: master.subject || "Maths",
+        subjectId: await subjectForAdopter(who, master),
+        copiedFrom: id,
+        forkedFromId: id,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      chunkQuestions(entity, questions);
+      await tests.createEntity(entity);
+      return json(context, 201, { test: testMeta(entity) });
     }
 
     if (action === "seedSamples") {
@@ -971,7 +1050,9 @@ handlers.tests = async (context, req) => {
   function visible(e) {
     if (isStaff && !asChild) return canManageTest(who, e) || (e.platform && e.status === "published");
     if (e.status !== "published") return false;
-    if (e.platform) return true;
+    // A master (platform) test reaches no student directly: a student only ever
+    // sees their own teacher's copy of it, made with the "adopt" action.
+    if (e.platform) return false;
     if (!((who.kind === "student" || asChild) && !!teacherSub && e.ownerSub === teacherSub)) return false;
     // Assigned to named students only: everyone else is not in this class.
     return assignedTo(e, asUsername);
@@ -988,6 +1069,21 @@ handlers.tests = async (context, req) => {
     const full = testFull(entity);
     // The class list is the teacher's business — a student never receives it.
     return json(context, 200, { test: isStaff && !asChild ? { ...full, assignedTo: assignedList(entity) } : full });
+  }
+
+  // The library: every published master, for a teacher to take a copy of.
+  if (String((req.query && req.query.library) || "") === "1") {
+    if (!isStaff) return json(context, 403, { error: "Teachers only" });
+    const masters = [];
+    const mine = new Set();
+    const it = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+    for await (const e of it) {
+      if (e.platform && e.status === "published") masters.push(testMeta(e));
+      else if (e.ownerSub === who.id && e.copiedFrom) mine.add(e.copiedFrom);
+    }
+    for (const m of masters) m.adopted = mine.has(m.id);
+    masters.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
+    return json(context, 200, { tests: masters });
   }
 
   const wantedSubject = String((req.query && req.query.subjectId) || "").trim();
@@ -1202,8 +1298,8 @@ handlers.subjects = async (context, req) => {
     if (t.status !== "published" || !t.subjectId) continue;
     // A subject the student has no test in is not their subject — assignment
     // included, or a narrowed test would still light up its subject card.
-    if (t.platform) wanted.add(t.subjectId);
-    else if (teacherSub && t.ownerSub === teacherSub && assignedTo(t, who.username)) {
+    if (t.platform) continue; // masters belong to the library, not to a class
+    if (teacherSub && t.ownerSub === teacherSub && assignedTo(t, who.username)) {
       wanted.add(t.subjectId);
     }
   }

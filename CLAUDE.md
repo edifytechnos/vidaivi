@@ -127,6 +127,31 @@ Storage instead of the repo; bundled `src/tests/*.json` stay as the platform see
   field. Client validation mirrors the server's rules. Pasting test JSON is still
   available as "Import JSON instead".
 
+## The built-in library (`platform: true`, `POST /api/tests {action:"adopt"}`)
+
+A **master** test is one carrying `platform: true` — the Vidai library. It is
+never edited or owned by a teacher, and **it reaches no student directly**: a
+student only ever sees their own teacher's copy of it. `visible()` therefore
+returns `false` for a platform test on the student path, and the student subject
+list skips platform tests for the same reason.
+
+- `GET /api/tests?library=1` → the published masters, each with `adopted: true`
+  when the caller already holds a copy (matched on `copiedFrom`). Teachers only.
+- `POST /api/tests {action:"adopt", id}` copies a published master into the
+  caller's account: a **new id** (never the master's), `ownerSub` = caller,
+  `platform: false`, `status: "draft"`, `audience: "class"`, `copiedFrom` set,
+  every question carried across. It is filed under the caller's **own** subject
+  with the same board/class/subject (`subjectForAdopter`), created if they have
+  none — a copy filed under the library's subject would be invisible to them.
+- Only an admin may create, publish or edit a master (`canManageTest` keeps
+  `entity.platform ||` for admins). That is what "the built-in cannot be
+  changed" means for a teacher.
+- Client: `fetchLibrary` / `adoptTest` in `src/api.ts`, and the **Built-in
+  tests** block in Console → My tests: **Use this test** adopts and opens the
+  editor on the *copy*, so the teacher lands where they can change it.
+- Nothing syncs after the copy is made. `copiedFrom` records the parent so a
+  later slice can say "the master has been updated"; a teacher's copy is theirs.
+
 ## Authoring editor (`src/screens/editor/`)
 
 A **full-bleed application shell** from the approved design canvas — not a page

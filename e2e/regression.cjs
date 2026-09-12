@@ -1361,6 +1361,85 @@ function check(ok, label) {
           `the editor says a draft reaches nobody ("${(draftNote || "").trim()}")`
         );
         check(await page.isVisible("#ed-audience"), "and offers Who sees this");
+
+        // ---- The built-in library ---------------------------------------
+        // A master (platform) test is the library copy: teachers may take
+        // their own copy of it, students never see it directly.
+        const lib = await page.evaluate(async ({ questions, student }) => {
+          const auth = JSON.parse(localStorage.getItem("vidai:auth"));
+          const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+          const post = (url, body) =>
+            fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) })
+              .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+          const get = (url, token) =>
+            fetch(url, { headers: { "X-Vidai-Auth": token || auth.credential } })
+              .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+
+          // The taxonomy is deliberately unique, so the copy lands in a subject
+          // of its own that cleanup can remove without touching a real one.
+          const libSubject = await post("/api/subjects", {
+            action: "create", board: "CBSE", klass: "12", subject: "E2ELibrary",
+          });
+          const libSubjectId = libSubject.data.subject?.id;
+          const masterId = "e2e-master-" + Math.random().toString(36).slice(2, 7);
+          const master = {
+            id: masterId, title: "E2E library master", chapter: "Matrices", teacher: null,
+            platform: true, subjectId: libSubjectId, questions,
+          };
+          await post("/api/tests", { action: "create", test: master });
+          const pub = await post("/api/tests", { action: "publish", id: masterId });
+          const listed = await get("/api/tests?library=1");
+          const inLibrary = (listed.data.tests || []).find((t) => t.id === masterId) || null;
+
+          const adopted = await post("/api/tests", { action: "adopt", id: masterId });
+          const copy = adopted.data.test || null;
+          const masterAfter = await get(`/api/tests?id=${masterId}`);
+
+          // The student's view: the master itself is not available to them.
+          const login = await fetch("/api/studentauth", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: student.username, password: student.password }),
+          }).then((r) => r.json());
+          const studentSees = login.token ? await get(`/api/tests?id=${masterId}`, login.token) : { status: 0 };
+
+          return {
+            masterId, libSubjectId, published: pub.status, inLibrary,
+            copy, adoptStatus: adopted.status,
+            masterQuestions: (masterAfter.data.test?.questions || []).length,
+            masterStatus: masterAfter.data.test?.status,
+            studentStatus: studentSees.status,
+            copySource: (copy && (await get(`/api/tests?id=${copy.id}`)).data.test?.questions?.[0]?.source) || "",
+          };
+        }, { questions: wsQuestions("lib"), student: { username: ws.username, password: ws.password } });
+
+        try {
+          check(lib.published === 200, `a master test publishes into the library (${lib.published})`);
+          check(!!lib.inLibrary, "GET /api/tests?library=1 lists it for a teacher");
+          check(lib.inLibrary && lib.inLibrary.adopted === false, "and says it has not been copied yet");
+          check(lib.adoptStatus === 201 && !!lib.copy, `adopt makes a copy (${lib.adoptStatus})`);
+          if (lib.copy) {
+            check(lib.copy.id !== lib.masterId, `the copy has an id of its own (${lib.copy.id})`);
+            check(lib.copy.status === "draft", "the copy arrives as the teacher's draft");
+            check(!lib.copy.platform, "and is no longer a library test");
+            check(lib.copy.questionCount === 3, `it carries every question (${lib.copy.questionCount})`);
+            check(lib.copySource === "CBSE 2026", `the board-year tags survive the copy ("${lib.copySource}")`);
+          }
+          check(lib.masterQuestions === 3 && lib.masterStatus === "published", "the master itself is untouched");
+          check(lib.studentStatus === 403, `a student cannot open the master directly (${lib.studentStatus})`);
+        } finally {
+          await page.evaluate(async ({ masterId, copyId, subjectId }) => {
+            const auth = JSON.parse(localStorage.getItem("vidai:auth"));
+            const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+            const post = (url, body) =>
+              fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) }).then((r) => r.status);
+            for (const id of [masterId, copyId]) {
+              if (!id) continue;
+              await post("/api/tests", { action: "unpublish", id });
+              await post("/api/tests", { action: "delete", id });
+            }
+            if (subjectId) await post("/api/subjects", { action: "delete", id: subjectId });
+          }, { masterId: lib.masterId, copyId: lib.copy?.id, subjectId: lib.libSubjectId });
+        }
       }
     } finally {
       const wsGone = await page.evaluate(async ({ ws, ids, cred }) => {
