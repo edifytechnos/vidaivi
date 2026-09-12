@@ -179,6 +179,7 @@ and the explanation, each with a live "Student sees" preview.
 - `screens/builder.ts` — visual test builder (create/edit cloud tests).
 - `screens/test.ts` — test player (landing → questions → score); guests only, past the landing.
 - `screens/student.ts` — the student's workspace: subject → tests tree → one question.
+- `screens/assign.ts` — "Who sees this test": the audience picker, shared by the editor and My tests.
 - `screens/review.ts` — read-only review, one question per page.
 - `screens/marking.ts` — the teacher's marking queue for long answers.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
@@ -322,6 +323,59 @@ has no teacher to release anything, and the demo has to stay worth sharing.
 Release is per student *and* per class — see `/api/release` above. The teacher
 presses it from the marking queue (`src/screens/marking.ts`) or from a student's
 report (`showStudentReport` in `src/screens/console.ts`).
+
+## Who sees a test (`audience` / `assignedTo`, `POST /api/tests {action:"assign"}`)
+
+Publishing is the act of sharing: a published test reaches **everyone the
+teacher created**, which is the default (`audience: "class"`) and what every
+test written before assignment carries. A teacher can narrow it to named
+students — `audience: "selected"` plus `assignedTo`, a JSON array of usernames
+on the test row.
+
+- `POST /api/tests {action:"assign", id, audience, usernames[]}` — teachers and
+  admins, own test only. Every username is re-checked through `canSeeStudent`,
+  so a teacher cannot assign someone else's student, and `"selected"` with an
+  empty list is a 400 rather than a test nobody can see by accident.
+- `visible()` gains one clause: published **and** owned by the student's teacher
+  **and** `assignedTo(e, username)`. The student subject list applies the same
+  rule, or a narrowed test would still light up its subject card.
+- **Fails closed**: an unreadable or empty `assignedTo` on a `"selected"` test
+  reaches nobody, never everybody — the same principle as `fetchReleased`.
+- **A student is never sent the class list.** `testMeta` carries `audience` and
+  `assignedCount`; only staff get `assignedTo` (`testMetaForStaff`).
+- Client: `assignTest` in `src/api.ts`, and `openAssign` / `audienceLabel` in
+  `src/screens/assign.ts` — the one dialog the editor's **Who sees this** button
+  and My tests' **Seen by** column both open.
+- **A draft reaches nobody, however it is assigned.** The editor's top bar says
+  so ("Students cannot see this yet — publish it to share it", `audienceNote`),
+  and My tests reads "nobody yet". That sentence is the one that was missing
+  when a teacher wondered where their test had gone.
+
+## The correct MCQ option says it is the correct option
+
+The radio beside each option marks the answer. It used to say nothing, and it
+arrived **pre-set to A** — `blankQuestion`, the quick-add builder, and
+`validateQuestions` (which forced an unset answer back to `0`) all agreed on it
+— so a teacher who never touched the radios published a paper where A was the
+answer to every question.
+
+- Nothing is pre-selected (`answer: -1`), in both the editor
+  (`src/screens/editor/panels.ts`) and the card builder (`src/screens/builder.ts`).
+- The panel says *the option you select is the correct answer*, and until one is
+  picked it says publishing is blocked. The chosen row carries a **Correct
+  answer** tag and every radio has a real `aria-label`.
+- `validateQuestions` keeps an unset answer unset, so the existing strict pass
+  raises "No correct option marked" and publishing returns the question in
+  `problems[]` instead of quietly answering it. Drafts still autosave.
+
+## The shared modal also does radios and checklists (`src/modal.ts`)
+
+`ModalField.kind` is `"text"` (the default), `"radio"` or `"checklist"`, with
+`choices` and an optional `showWhen: {field, value}` that shows a field only
+while another holds a value. A checklist's ticks arrive as the **second**
+argument to `onSubmit` (`picks[name]`), since one field yields many values; a
+radio also reports its single pick in `values`. This is how "Who sees this test"
+is built — use it rather than adding another inline form.
 
 ## The student's workspace (`src/screens/student.ts`)
 

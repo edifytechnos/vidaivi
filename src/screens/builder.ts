@@ -320,7 +320,12 @@ function bindQuestion(q: DraftQuestion) {
     q.type = typeEl.value as QType;
     if (q.type === "mcq") {
       if (!q.options?.length) q.options = ["", "", "", ""];
-      if (typeof q.answer !== "number") q.answer = -1;
+      // Switching from numeric could leave 4.5 sitting where an option index
+      // belongs. Anything that is not a real index means "not marked yet".
+      const opts = q.options ?? [];
+      if (!Number.isInteger(q.answer) || (q.answer ?? -1) < 0 || (q.answer ?? -1) >= opts.length) {
+        q.answer = -1;
+      }
     } else if (q.type === "numeric") {
       delete q.options;
       q.answer = Number.isFinite(q.answer) ? q.answer : 0;
