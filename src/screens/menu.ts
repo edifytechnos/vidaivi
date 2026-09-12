@@ -23,6 +23,27 @@ export function installShell(): void {
       return;
     }
 
+    // The profile menu in the top bar. Any click that is not the button itself
+    // closes it, including a click on one of its own items — which then falls
+    // through to the [data-rail] handling below (Sign out lives in there).
+    const menu = document.getElementById("profile-menu");
+    const btn = document.getElementById("profile-btn");
+    if (menu && btn) {
+      if (target.closest("#profile-btn")) {
+        const open = menu.hidden;
+        menu.hidden = !open;
+        btn.setAttribute("aria-expanded", String(open));
+        return;
+      }
+      if (!target.closest("#profile-menu")) {
+        menu.hidden = true;
+        btn.setAttribute("aria-expanded", "false");
+      } else {
+        menu.hidden = true;
+        btn.setAttribute("aria-expanded", "false");
+      }
+    }
+
     const item = target.closest<HTMLElement>("[data-rail]");
     if (!item) return;
     const to = item.dataset.rail;

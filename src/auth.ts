@@ -103,8 +103,12 @@ export function signOut(): void {
 
 export function authHeader(): Record<string, string> {
   const auth = getAuth();
+  if (!auth) return {};
   // Custom header: SWA strips/replaces Authorization before it reaches the API.
-  return auth ? { "X-Vidai-Auth": auth.credential } : {};
+  // Both names go out for one release: this bundle may be talking to an API
+  // that predates the Vidaivi → Vidai rename, and the deploy is not atomic.
+  // Drop X-Vidaivi-Auth once the renamed API is live everywhere.
+  return { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
 }
 
 // ---------- Google Identity Services (teachers / parents) ----------
@@ -131,6 +135,7 @@ async function apiLogin(credential: string, phone?: string): Promise<Profile> {
     headers: {
       "Content-Type": "application/json",
       "X-Vidai-Auth": credential,
+      "X-Vidaivi-Auth": credential,
     },
     body: JSON.stringify(phone ? { phone } : {}),
   });

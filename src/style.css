@@ -1895,9 +1895,17 @@ body {
 
 .shell {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   height: 100dvh;
   background: var(--bg);
+}
+
+/* The rail and the page share the row under the window-wide top bar. */
+.shell-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
 }
 
 .rail {
@@ -1905,7 +1913,7 @@ body {
   width: 56px;
   display: flex;
   flex-direction: column;
-  padding: 12px 8px;
+  padding: 10px 8px;
   background: var(--surface);
   border-right: 1px solid var(--border);
   transition: width 0.15s ease;
@@ -1915,19 +1923,6 @@ body {
 .shell.rail-open .rail {
   width: 220px;
   padding: 12px 10px;
-}
-
-.rail-brand {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  height: 40px;
-  padding: 0 7px;
-  margin-bottom: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
 }
 
 .rail-item {
@@ -2046,6 +2041,153 @@ body {
   align-items: center;
   gap: 10px;
   flex: none;
+}
+
+/* Brand and profile now live in the bar, which spans the whole window. */
+.shellbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: none;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.shellbar-div {
+  flex: none;
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+}
+
+.tb-profile-wrap {
+  position: relative;
+  flex: none;
+}
+
+.tb-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 9px 0 5px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+.tb-profile:hover {
+  background: var(--bg);
+}
+
+.tb-avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #8b5cf6);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.tb-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tb-role {
+  font-size: 11px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.tb-profile .icon {
+  width: 14px;
+  height: 14px;
+  color: var(--faint);
+}
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  min-width: 216px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+/* [hidden] loses to display:flex without this — the menu would never shut. */
+.profile-menu[hidden] {
+  display: none;
+}
+
+.pm-head {
+  padding: 8px 10px 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.pm-head b {
+  display: block;
+  font-size: 13.5px;
+}
+.pm-head span {
+  font-size: 12px;
+  color: var(--faint);
+  word-break: break-word;
+}
+
+.pm-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.pm-item:hover {
+  background: var(--bg);
+}
+.pm-item .icon {
+  width: 15px;
+  height: 15px;
+  color: var(--faint);
+}
+
+@media (max-width: 600px) {
+  .shellbar {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .shellbar-brand span:not(.brand-mark),
+  .tb-name,
+  .tb-role,
+  .shellbar-div,
+  .shellbar-sub {
+    display: none;
+  }
 }
 
 .shellbar-actions .btn {

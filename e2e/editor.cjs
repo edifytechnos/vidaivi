@@ -244,7 +244,7 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
           const call = (action) =>
             fetch("/api/tests", {
               method: "POST",
-              headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential },
+              headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
               body: JSON.stringify({ action, id }),
             });
           await call("unpublish");

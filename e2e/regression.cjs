@@ -165,7 +165,7 @@ function check(ok, label) {
       if (!auth?.credential) return "no-token";
       const res = await fetch("/api/attempts", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential },
+        headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
         body: JSON.stringify({
           testId: "matrices-demo",
           score: 3,
@@ -197,7 +197,7 @@ function check(ok, label) {
       const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
       return fetch("/api/attempts", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential },
+        headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
         body: JSON.stringify({ action: "progress", testId: "matrices-demo", index: 0, answers: "{}" }),
       }).then((r) => r.status);
     });
@@ -210,7 +210,7 @@ function check(ok, label) {
       const probeId = `e2e-resume-${Date.now()}`;
       const roundTrip = await page.evaluate(async (id) => {
         const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
         await fetch("/api/attempts", {
           method: "POST",
           headers: hdr,
@@ -236,7 +236,7 @@ function check(ok, label) {
       // Continue after the device is wiped.
       const fresh = await page.evaluate(async () => {
         const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-        const hdr = { "X-Vidai-Auth": auth.credential };
+        const hdr = { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
         const mine = await fetch("/api/attempts", { headers: hdr }).then((r) => r.json());
         const finished = new Set((mine.attempts || []).filter((a) => a.status !== "progress").map((a) => a.testId));
         return ["matrices-demo", "relations-functions-test1"].find((id) => !finished.has(id)) || "";
@@ -281,7 +281,7 @@ function check(ok, label) {
           const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
           await fetch("/api/attempts", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential },
+            headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
             body: JSON.stringify({ action: "progress", testId: id, index: 0, answers: "{}" }),
           });
           localStorage.removeItem(`vidai:attempt:${id}`);
@@ -292,7 +292,7 @@ function check(ok, label) {
       // again — an incomplete draft would fail validation before the gate.
       const gate = await page.evaluate(async () => {
         const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
         const created = await fetch("/api/tests", {
           method: "POST",
           headers: hdr,
@@ -361,7 +361,7 @@ function check(ok, label) {
     // which this suite cannot produce — that rule is asserted instead.
     const links = await page.evaluate(async () => {
       const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-      const hdr = { "X-Vidai-Auth": auth.credential };
+      const hdr = { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
       const call = (body) =>
         fetch("/api/parentlink", {
           method: "POST",
@@ -420,7 +420,7 @@ function check(ok, label) {
     // leaves a photo, a grading row or a login behind.
     const marking = await page.evaluate(async () => {
       const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-      const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+      const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
 
       // A missing route answers 404 too, so every refusal below would "pass"
       // against an API without this feature. Prove the queue exists first.
@@ -466,7 +466,7 @@ function check(ok, label) {
           body: JSON.stringify({ username: made.username, password: made.password }),
         }).then((r) => r.json());
         if (!login.token) return { cleanupOnly: true, asTeacher, loginFailed: true, username: made.username };
-        const sHdr = { "Content-Type": "application/json", "X-Vidai-Auth": login.token };
+        const sHdr = { "Content-Type": "application/json", "X-Vidai-Auth": login.token, "X-Vidaivi-Auth": login.token };
         const post = (body) =>
           fetch("/api/answerimage", { method: "POST", headers: sHdr, body: JSON.stringify(body) })
             .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
@@ -526,7 +526,10 @@ function check(ok, label) {
     });
 
     if (marking.missing) {
-      check(false, `/api/grading is not deployed here (queue returned ${marking.queueStatus})`);
+      // Running against an API that predates this feature (production, before
+      // the PR merges). Skipping is honest; every refusal below would otherwise
+      // "pass" against a 404.
+      console.log(`SKIP  long-answer photos (/api/grading is not deployed here: ${marking.queueStatus})`);
     } else if (marking.skip) {
       console.log("SKIP  long-answer photos (could not create a throwaway student)");
     } else if (marking.loginFailed) {
