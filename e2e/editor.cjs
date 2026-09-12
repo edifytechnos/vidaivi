@@ -240,11 +240,11 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
     if (testId && page) {
       try {
         await page.evaluate(async (id) => {
-          const auth = JSON.parse(localStorage.getItem("vidaivi:auth"));
+          const auth = JSON.parse(localStorage.getItem("vidai:auth"));
           const call = (action) =>
             fetch("/api/tests", {
               method: "POST",
-              headers: { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential },
+              headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential },
               body: JSON.stringify({ action, id }),
             });
           await call("unpublish");

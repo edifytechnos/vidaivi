@@ -49,8 +49,17 @@ function getBearer(req) {
   // SWA's edge replaces the standard Authorization header before requests
   // reach managed functions, so the client sends our token in a custom
   // header instead. Authorization remains as a fallback for local dev.
+  //
+  // X-Vidaivi-Auth is the pre-rename name. A student with the page already open
+  // when this deploys is still sending it, so it stays accepted for one release
+  // — drop the two fallbacks below once everyone has reloaded.
   const headers = req.headers || {};
-  const custom = headers["x-vidaivi-auth"] || headers["X-Vidaivi-Auth"] || "";
+  const custom =
+    headers["x-vidai-auth"] ||
+    headers["X-Vidai-Auth"] ||
+    headers["x-vidaivi-auth"] ||
+    headers["X-Vidaivi-Auth"] ||
+    "";
   if (custom) return custom.startsWith("Bearer ") ? custom.slice(7) : custom;
   const header = headers.authorization || headers.Authorization || "";
   return header.startsWith("Bearer ") ? header.slice(7) : "";
@@ -1629,7 +1638,7 @@ handlers.answerimage = async (context, req) => {
     } catch (e) {
       return json(context, 500, { error: "Could not sign the image URL" });
     }
-    // JSON rather than a 302: an <img src> cannot carry X-Vidaivi-Auth, so
+    // JSON rather than a 302: an <img src> cannot carry X-Vidai-Auth, so
     // the client fetches the signed URL first and points the image at that.
     return json(context, 200, { url, expiresIn: Math.floor(SAS_TTL_MS / 1000) });
   }

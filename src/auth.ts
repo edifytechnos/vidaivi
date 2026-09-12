@@ -56,8 +56,8 @@ export interface StudentRecord {
 const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 export const authEnabled = !!CLIENT_ID;
 
-const AUTH_KEY = "vidaivi:auth";
-const PENDING_KEY = "vidaivi:pendingAttempts";
+const AUTH_KEY = "vidai:auth";
+const PENDING_KEY = "vidai:pendingAttempts";
 
 export function getAuth(): AuthState | null {
   try {
@@ -104,7 +104,7 @@ export function signOut(): void {
 export function authHeader(): Record<string, string> {
   const auth = getAuth();
   // Custom header: SWA strips/replaces Authorization before it reaches the API.
-  return auth ? { "X-Vidaivi-Auth": auth.credential } : {};
+  return auth ? { "X-Vidai-Auth": auth.credential } : {};
 }
 
 // ---------- Google Identity Services (teachers / parents) ----------
@@ -130,7 +130,7 @@ async function apiLogin(credential: string, phone?: string): Promise<Profile> {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Vidaivi-Auth": credential,
+      "X-Vidai-Auth": credential,
     },
     body: JSON.stringify(phone ? { phone } : {}),
   });

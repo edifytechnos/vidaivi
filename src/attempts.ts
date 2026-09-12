@@ -1,10 +1,41 @@
 import type { Attempt, Test } from "./types";
 import { authEnabled, isLoggedIn } from "./auth";
 
+// ---------- Rename migration: vidaivi: → vidai: ----------
+
+const OLD_PREFIX = "vidaivi:";
+const NEW_PREFIX = "vidai:";
+
+/**
+ * Carry this device's data across the rename. Must run before anything reads
+ * storage — `vidaivi:auth` holds the session, so skipping it would sign every
+ * student out, and `vidaivi:pendingAttempts` holds saves that never reached the
+ * server. The old keys are left in place: a student who opens an older cached
+ * bundle still finds their data, and deleting them is a later release's job.
+ */
+export function migrateStorage(): void {
+  try {
+    const stale: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith(OLD_PREFIX)) stale.push(key);
+    }
+    for (const key of stale) {
+      const next = NEW_PREFIX + key.slice(OLD_PREFIX.length);
+      // Never overwrite: whatever is already under the new name is newer.
+      if (localStorage.getItem(next) !== null) continue;
+      const value = localStorage.getItem(key);
+      if (value !== null) localStorage.setItem(next, value);
+    }
+  } catch {
+    // Storage unavailable (private mode). Nothing to migrate, nothing to break.
+  }
+}
+
 // ---------- Attempt storage (this phone's notebook) ----------
 
 function storageKey(testId: string): string {
-  return `vidaivi:attempt:${testId}`;
+  return `vidai:attempt:${testId}`;
 }
 
 export function loadAttempt(testId: string): Attempt | null {
@@ -43,7 +74,7 @@ export function newAttempt(): Attempt {
 
 // ---------- Guest mode ----------
 
-const GUEST_KEY = "vidaivi:guestMode";
+const GUEST_KEY = "vidai:guestMode";
 
 export function isGuest(): boolean {
   try {

@@ -36,7 +36,7 @@ const RAIL_ITEMS: RailItem[] = [
   { key: "admin", label: "Teacher access", icon: ICONS.shield, show: isAdmin },
 ];
 
-const RAIL_KEY = "vidaivi:rail";
+const RAIL_KEY = "vidai:rail";
 
 export function railExpanded(): boolean {
   try {
@@ -63,7 +63,7 @@ function railMarkup(): string {
     .join("");
   return `
     <nav class="rail" aria-label="Main">
-      <div class="rail-brand"><span class="brand-mark">V</span><span class="rail-label">Vidaivi</span></div>
+      <div class="rail-brand"><span class="brand-mark">V</span><span class="rail-label">Vidai</span></div>
       ${items}
       <div class="rail-spacer"></div>
       <button class="rail-item" data-rail="signout" title="Sign out" aria-label="Sign out">${ICONS.logout}<span class="rail-label">Sign out</span></button>
@@ -93,7 +93,7 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
     // Guests: no rail. A plain brand bar and the page, as before.
     app.className = "";
     app.innerHTML = `
-      <header class="topbar"><h1><a class="home-link" href="./"><span class="brand-mark">V</span>Vidaivi</a></h1></header>
+      <header class="topbar"><h1><a class="home-link" href="./"><span class="brand-mark">V</span>Vidai</a></h1></header>
       <main id="shell-main" class="guest-main"><div class="page page-narrow">${content}</div></main>`;
     return document.querySelector<HTMLElement>("#shell-main .page")!;
   }

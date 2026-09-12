@@ -5,7 +5,7 @@ import "./style.css";
 import { initAnalytics, track } from "./analytics";
 import { fetchServerTest } from "./api";
 import { authEnabled, isLoggedIn, isParent, flushPendingAttempts } from "./auth";
-import { isGuest } from "./attempts";
+import { isGuest, migrateStorage } from "./attempts";
 import { TESTS } from "./data";
 import { showHome } from "./screens/home";
 import { showWelcome } from "./screens/auth";
@@ -16,6 +16,10 @@ import { showSubjects } from "./screens/subjects";
 import { showChildren } from "./screens/parent";
 import { installShell } from "./screens/menu";
 import { mount, skeleton } from "./shell";
+
+// Before anything reads storage: carry this device across the Vidaivi → Vidai
+// rename, or every signed-in student is silently signed out.
+migrateStorage();
 
 initAnalytics();
 installShell();

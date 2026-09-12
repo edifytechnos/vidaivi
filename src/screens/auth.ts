@@ -34,7 +34,7 @@ export function showWelcome(next?: () => void) {
     ${topbar(false)}
     <main class="card welcome">
       <div class="welcome-logo">V</div>
-      <h2 class="welcome-title">Welcome to Vidaivi</h2>
+      <h2 class="welcome-title">Welcome to Vidai</h2>
       <p class="welcome-sub">Chapter-wise CBSE Class 12 Maths practice with instant
       worked solutions. Sign in to keep your scores on your profile,
       or explore as a guest.</p>

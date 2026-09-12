@@ -11,7 +11,7 @@ const fs = require("fs");
 const path = require("path");
 
 const DIST = path.join(__dirname, "..", "dist");
-const API = process.env.E2E_API_BASE || "https://vidaivi.seyali.app";
+const API = process.env.E2E_API_BASE || "https://vidai.seyali.app";
 const PORT = Number(process.env.E2E_PORT || 4400);
 const MIME = {
   ".html": "text/html",
@@ -38,10 +38,12 @@ http
         const headers = {};
         // Forward only the headers the API cares about — including the
         // custom auth header (SWA strips Authorization in production,
-        // so the app sends X-Vidaivi-Auth).
+        // so the app sends X-Vidai-Auth).
         if (req.headers["content-type"]) headers["content-type"] = req.headers["content-type"];
         if (req.headers["authorization"]) headers["authorization"] = req.headers["authorization"];
-        if (req.headers["x-vidaivi-auth"]) headers["x-vidaivi-auth"] = req.headers["x-vidaivi-auth"];
+        if (req.headers["x-vidai-auth"]) headers["x-vidai-auth"] = req.headers["x-vidai-auth"];
+  // The pre-rename header, still accepted by the API for one release.
+  if (req.headers["x-vidaivi-auth"]) headers["x-vidaivi-auth"] = req.headers["x-vidaivi-auth"];
         const upstream = await fetch(API + req.url, {
           method: req.method,
           headers,

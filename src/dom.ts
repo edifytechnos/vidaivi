@@ -44,7 +44,7 @@ export const ICONS = {
 };
 
 export function brand(): string {
-  return `<span class="brand-mark">V</span>Vidaivi`;
+  return `<span class="brand-mark">V</span>Vidai`;
 }
 
 

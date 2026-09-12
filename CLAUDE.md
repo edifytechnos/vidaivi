@@ -45,7 +45,7 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 
 ## Deployment
 
-- Live at https://vidaivi.seyali.app (Azure Static Web Apps, Free tier; custom domain
+- Live at https://vidai.seyali.app (Azure Static Web Apps, Free tier; custom domain
   via CNAME on Hostinger, SSL managed by Azure).
 - Every push to `main` auto-deploys via `.github/workflows/azure-static-web-apps.yml`
   (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret).
@@ -88,7 +88,7 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 - First login asks once for a WhatsApp phone number (stored on the profile —
   the parent-contact capture from the product plan).
 - Attempt saves are fire-and-forget with a localStorage retry queue
-  (`vidaivi:pendingAttempts`); localStorage remains the source of truth for the
+  (`vidai:pendingAttempts`); localStorage remains the source of truth for the
   student's own resume/review UX. Google ID tokens expire after ~1h — an
   expired session just re-queues saves until the next sign-in.
 
@@ -221,7 +221,7 @@ object:
 | `questions` | Question[] | yes | Array of question objects (below). |
 
 Student progress/results are stored per test in `localStorage` under
-`vidaivi:attempt:<test id>` — device-local, no backend.
+`vidai:attempt:<test id>` — device-local, no backend.
 
 Question objects (`src/main.ts` types this as `Question`; do not rename or
 repurpose fields):
@@ -265,7 +265,7 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   (`src/answerphotos.ts`), so there is no multipart parsing anywhere. Students
   only; ≤ 1.5 MB and ≤ 3 photos per answer; JPEG/PNG confirmed by magic bytes.
   `GET /api/answerimage?blob=` returns `{url}` — a 15-minute SAS — because an
-  `<img>` cannot carry `X-Vidaivi-Auth`. Readable by the owning student, their
+  `<img>` cannot carry `X-Vidai-Auth`. Readable by the owning student, their
   teacher, an admin, or a linked parent.
 - **Marks** live in the `grading` table, one row per (student, test, question):
   PK = `stu~<username>`, RK = `<testId>~<questionId>`, holding `images`,
