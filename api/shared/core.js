@@ -723,6 +723,13 @@ handlers.tests = async (context, req) => {
         if (ready.error) {
           return json(context, 400, { error: ready.error, problems: ready.problems || [] });
         }
+        // Publishing replaces the row a student is reading. Someone part-way
+        // through would have the paper changed under them mid-test.
+        if (await hasAttemptInProgress(id)) {
+          return json(context, 409, {
+            error: "A student is part-way through this test — publishing would change it under them. Try again once they have finished.",
+          });
+        }
       }
       entity.status = action === "publish" ? "published" : action === "archive" ? "archived" : "draft";
       entity.updatedAt = new Date().toISOString();
@@ -1283,6 +1290,36 @@ handlers.parentlink = async (context, req) => {
   json(context, 200, { children: await linkedChildren(who) });
 };
 
+// In-progress rows share the attempts table under a stable key, so each save
+// replaces the last rather than piling up.
+const PROGRESS_PREFIX = "progress~";
+
+function isProgressRow(e) {
+  return String(e.rowKey || "").startsWith(PROGRESS_PREFIX);
+}
+
+function parseAnswers(raw) {
+  try {
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Is anyone part-way through this test right now? */
+async function hasAttemptInProgress(testId) {
+  const attempts = tableClient("attempts");
+  await ensureTable(attempts);
+  const key = `${PROGRESS_PREFIX}${String(testId).slice(0, 80)}`.replace(/'/g, "''");
+  try {
+    const iter = attempts.listEntities({ queryOptions: { filter: `RowKey eq '${key}'` } });
+    for await (const _ of iter) return true;
+  } catch {
+    // A failed check must not block publishing.
+  }
+  return false;
+}
+
 handlers.attempts = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req);
@@ -1298,12 +1335,40 @@ handlers.attempts = async (context, req) => {
       return json(context, 403, { error: "Parent accounts cannot attempt tests" });
     }
     const body = getBody(req);
-    if (
-      !body ||
-      typeof body.testId !== "string" ||
-      typeof body.score !== "number" ||
-      typeof body.total !== "number"
-    ) {
+    if (!body || typeof body.testId !== "string") {
+      return json(context, 400, { error: "Bad attempt payload" });
+    }
+
+    // Work in progress, saved after every answer. One row per (student, test),
+    // upserted under a stable key, so a student who drops off mid-test — or
+    // picks up a different device — loses nothing. Each write carries the WHOLE
+    // answer map, so a dropped one is healed by the next answer.
+    if (body.action === "progress") {
+      if (typeof body.index !== "number") {
+        return json(context, 400, { error: "Bad attempt payload" });
+      }
+      const blob =
+        typeof body.answers === "string" && body.answers.length <= Q_CHUNK ? body.answers : "";
+      await attempts.upsertEntity(
+        {
+          partitionKey: who.id,
+          rowKey: `${PROGRESS_PREFIX}${body.testId.slice(0, 80)}`,
+          testId: body.testId.slice(0, 80),
+          answers: blob,
+          index: Math.max(0, Math.min(1000, Math.round(body.index))),
+          score: Math.max(0, Math.min(10000, Math.round(Number(body.score) || 0))),
+          total: Math.max(0, Math.min(10000, Math.round(Number(body.total) || 0))),
+          updatedAt: new Date().toISOString(),
+          name: who.kind === "student" ? who.username : who.name,
+          email: who.kind === "google" ? who.email : "",
+          kind: who.kind,
+        },
+        "Replace"
+      );
+      return json(context, 200, { ok: true });
+    }
+
+    if (typeof body.score !== "number" || typeof body.total !== "number") {
       return json(context, 400, { error: "Bad attempt payload" });
     }
     const completedAt =
@@ -1331,6 +1396,12 @@ handlers.attempts = async (context, req) => {
       email: who.kind === "google" ? who.email : "",
       kind: who.kind,
     });
+    // The test is finished, so its in-progress row has nothing left to say.
+    // Best effort: a leftover row is harmless because reads prefer the
+    // completed one.
+    try {
+      await attempts.deleteEntity(who.id, `${PROGRESS_PREFIX}${body.testId.slice(0, 80)}`);
+    } catch {}
     return json(context, 201, { ok: true });
   }
 
@@ -1355,35 +1426,48 @@ handlers.attempts = async (context, req) => {
         filter: `${partition} and testId eq '${wantedTest.replace(/'/g, "''")}'`,
       },
     });
+    let done = null;
+    let progress = null;
     for await (const e of iter) {
-      let answers = null;
-      try {
-        answers = e.answers ? JSON.parse(e.answers) : null;
-      } catch {
-        answers = null;
-      }
-      return json(context, 200, {
-        attempt: {
+      const answers = parseAnswers(e.answers);
+      if (isProgressRow(e)) {
+        progress = { testId: e.testId, answers, index: e.index || 0, updatedAt: e.updatedAt || "" };
+      } else if (!done) {
+        done = {
           testId: e.testId,
           score: e.score,
           total: e.total,
           completedAt: e.completedAt,
           answers,
-        },
-      });
+        };
+      }
     }
-    return json(context, 200, { attempt: null });
+    // A finished attempt always wins: a stale progress row left by a failed
+    // delete must never send a student back into a test they completed.
+    return json(context, 200, { attempt: done, progress: done ? null : progress });
   }
 
   const list = [];
   const iter = attempts.listEntities({ queryOptions: { filter: partition } });
   for await (const e of iter) {
-    list.push({
-      testId: e.testId,
-      score: e.score,
-      total: e.total,
-      completedAt: e.completedAt,
-    });
+    list.push(
+      isProgressRow(e)
+        ? {
+            testId: e.testId,
+            score: e.score || 0,
+            total: e.total || 0,
+            completedAt: e.updatedAt || "",
+            status: "progress",
+            index: e.index || 0,
+          }
+        : {
+            testId: e.testId,
+            score: e.score,
+            total: e.total,
+            completedAt: e.completedAt,
+            status: "done",
+          }
+    );
     if (list.length >= 100) break;
   }
   json(context, 200, { attempts: list });

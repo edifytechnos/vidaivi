@@ -6,6 +6,7 @@ import {
   fetchMyAttempt,
   isLoggedIn,
   renderGoogleButton,
+  saveProgress,
   submitAttempt,
 } from "../auth";
 import {
@@ -69,8 +70,8 @@ export function showLanding(test: Test) {
     showReview(test, attempt);
     return;
   }
-  // Nothing here, but it may have been taken on another device.
-  if (!attempt && authEnabled && isLoggedIn()) void reviewFromServer(test);
+  // Nothing here, but it may have been started or finished on another device.
+  if (!attempt && authEnabled && isLoggedIn()) void resumeFromServer(test);
   const total = totalMarks(test);
   const counts = {
     mcq: test.questions.filter((q) => q.type === "mcq").length,
@@ -312,6 +313,17 @@ function recordAndNext(
   };
 
   saveAttempt(test.id, attempt);
+  // Saved after every answer, not only at the end: a student who closes the
+  // tab here picks up where they left off, on this device or another.
+  if (!attempt.completed) {
+    saveProgress({
+      testId: test.id,
+      answers: JSON.stringify(attempt.answers),
+      index: attempt.index,
+      score: attempt.score,
+      total: totalMarks(test),
+    });
+  }
 
   if (waitForNext) {
     const actions = document.getElementById("actions")!;
@@ -385,26 +397,43 @@ function describeGiven(q: Question, a: StoredAnswer | undefined): string {
 }
 
 /**
- * Pull this student's latest attempt from the server and, if they finished it,
- * swap the landing for the review. The landing renders first so the common
- * case — a test they have never opened — is not held up by a fetch.
+ * Pull this student's work on the server: a finished attempt becomes the
+ * review, an unfinished one becomes a Continue. The landing renders first so
+ * the common case — a test they have never opened — is not held up by a fetch.
  */
-async function reviewFromServer(test: Test): Promise<void> {
-  const remote = await fetchMyAttempt(test.id);
-  if (!remote?.answers || !remote.completedAt) return;
+async function resumeFromServer(test: Test): Promise<void> {
+  const { attempt: done, progress } = await fetchMyAttempt(test.id);
   // Still on the same screen? A slow fetch must not yank a student out of a
   // test they have since started.
   if (loadAttempt(test.id)) return;
-  const attempt: Attempt = {
-    answers: remote.answers,
-    index: test.questions.length,
-    completed: true,
-    score: remote.score,
-    completedAt: remote.completedAt,
-    updatedAt: remote.completedAt,
-  };
-  saveAttempt(test.id, attempt);
-  showReview(test, attempt);
+
+  if (done?.answers && done.completedAt) {
+    const attempt: Attempt = {
+      answers: done.answers,
+      index: test.questions.length,
+      completed: true,
+      score: done.score,
+      completedAt: done.completedAt,
+      updatedAt: done.completedAt,
+    };
+    saveAttempt(test.id, attempt);
+    showReview(test, attempt);
+    return;
+  }
+
+  if (progress?.answers && progress.index > 0 && progress.index < test.questions.length) {
+    const score = Object.values(progress.answers).reduce((n, a) => n + (a?.earned ?? 0), 0);
+    const attempt: Attempt = {
+      answers: progress.answers,
+      index: progress.index,
+      completed: false,
+      score,
+      updatedAt: progress.updatedAt || new Date().toISOString(),
+    };
+    saveAttempt(test.id, attempt);
+    // Re-render the landing, which now offers Continue at the right question.
+    showLanding(test);
+  }
 }
 
 /** What the right answer was — the first thing a student asks after a cross. */
