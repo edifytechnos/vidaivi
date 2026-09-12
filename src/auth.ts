@@ -90,6 +90,10 @@ export function isAdmin(): boolean {
 }
 
 function saveAuth(state: AuthState): void {
+  expiring = false;
+  try {
+    localStorage.removeItem(EXPIRED_KEY);
+  } catch {}
   try {
     localStorage.setItem(AUTH_KEY, JSON.stringify(state));
   } catch {}
@@ -109,11 +113,14 @@ export function handleSessionExpiry(fn: () => void): void {
   onExpired = fn;
 }
 
+/**
+ * Reading this does NOT clear it — the welcome screen can render more than once
+ * around an expiry, and a consuming read meant the second render silently
+ * dropped the explanation. It is cleared when someone signs in, in `saveAuth`.
+ */
 export function sessionJustExpired(): boolean {
   try {
-    const hit = localStorage.getItem(EXPIRED_KEY) === "1";
-    if (hit) localStorage.removeItem(EXPIRED_KEY);
-    return hit;
+    return localStorage.getItem(EXPIRED_KEY) === "1";
   } catch {
     return false;
   }
@@ -147,6 +154,20 @@ function expireSession(): void {
     localStorage.setItem(EXPIRED_KEY, "1");
   } catch {}
   onExpired?.();
+}
+
+/**
+ * True once a 401 has ended the session, until someone signs in again.
+ *
+ * `mount()` checks this and refuses to paint. Without that, the screen whose
+ * call was refused is still awaiting its own fetch, and when that resolves it
+ * renders its empty state straight over the welcome message — which is how the
+ * teacher case lost "your sign-in timed out" while admin and parent kept it.
+ * The welcome screen writes to `app` directly rather than through `mount()`,
+ * so it is unaffected.
+ */
+export function sessionIsExpired(): boolean {
+  return expiring;
 }
 
 export function signOut(): void {

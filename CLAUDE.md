@@ -377,6 +377,12 @@ An hour-old session looked exactly like a teacher whose data had been deleted.
 - `showWelcome()` reads `sessionJustExpired()` and explains it — the sign-in
   timed out, nothing is lost. `e2e/regression.cjs` asserts this for teacher,
   admin and parent, and asserts a valid session is *not* signed out.
+- **Two things keep that message on screen**, and both were needed: `mount()`
+  refuses to paint while `sessionIsExpired()`, because the screen whose call was
+  refused is still awaiting its own fetch and would otherwise render its empty
+  state straight over the welcome; and `sessionJustExpired()` does **not** clear
+  the flag on read, because the welcome screen can render more than once around
+  an expiry. Both are cleared in `saveAuth` when someone signs in again.
 
 ## Small creation flows use one modal (`src/modal.ts`)
 

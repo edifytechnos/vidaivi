@@ -7,7 +7,7 @@
 // re-lays-out the chrome — and on a hard reload the rail paints synchronously
 // from the cached profile before any request is made.
 
-import { getProfile, isAdmin, isLoggedIn, isParent, isTeacher } from "./auth";
+import { getProfile, isAdmin, isLoggedIn, isParent, isTeacher, sessionIsExpired } from "./auth";
 import type { Profile } from "./auth";
 import { app, escapeHtml, ICONS } from "./dom";
 
@@ -131,6 +131,10 @@ export interface ShellOpts {
  * writing to it — a skeleton first, the real thing when the data lands.
  */
 export function mount(content: string, opts: ShellOpts): HTMLElement {
+  // A screen whose call was refused is still awaiting its own fetch; when that
+  // resolves it must not paint over the "your sign-in timed out" message.
+  if (sessionIsExpired()) return document.createElement("div");
+
   if (!isLoggedIn()) {
     // Guests: no rail. A plain brand bar and the page, as before.
     app.className = "";
