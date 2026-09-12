@@ -703,6 +703,43 @@ function check(ok, label) {
       console.log(`  (cleaned up ${marking.username})`);
     }
 
+    // An expired sign-in must say so. A Google ID token lasts about an hour;
+    // before this, every call 401'd and each screen rendered its own empty
+    // state, so an hour-old session looked exactly like deleted data.
+    const adminAuthForExpiry = await page.evaluate(() => localStorage.getItem("vidai:auth"));
+    for (const role of ["teacher", "admin", "parent"]) {
+      await page.evaluate((r) => {
+        localStorage.setItem(
+          "vidai:auth",
+          JSON.stringify({
+            credential: "expired.google.token",
+            profile: { kind: "google", sub: "1", name: "Expired User", email: "e@x.com", role: r },
+          })
+        );
+      }, role);
+      await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
+      // The shell paints from the cached profile before the first call comes
+      // back, so wait for the welcome screen itself, not for whichever renders
+      // first — otherwise this races its own subject.
+      await page.waitForSelector(".welcome", { timeout: 25000 });
+      const state = await page.evaluate(() => ({
+        welcome: !!document.querySelector(".welcome"),
+        told: !!document.querySelector(".welcome-expired"),
+        stillSignedIn: localStorage.getItem("vidai:auth") !== null,
+      }));
+      check(state.welcome, `an expired ${role} session lands on sign-in, not an empty page`);
+      check(state.told, `and is told the sign-in timed out (${role})`);
+      check(!state.stillSignedIn, `and the dead session is cleared (${role})`);
+    }
+    // The other half: a live session must NOT be signed out.
+    await page.evaluate((a) => localStorage.setItem("vidai:auth", a), adminAuthForExpiry);
+    await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
+    check(
+      await page.evaluate(() => localStorage.getItem("vidai:auth") !== null),
+      "a valid session is left alone"
+    );
+
     // No flicker, no shift. With the API held back, a hard reload must paint
     // the shell and a skeleton at once, and the chrome must not move when the
     // data arrives or when moving between screens.

@@ -2792,3 +2792,16 @@ body {
 .locked-page {
   text-align: center;
 }
+
+/* An expired sign-in is ordinary and hourly — inform, do not alarm. */
+.welcome-expired {
+  margin: 0 0 16px;
+  padding: 11px 14px;
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-sm);
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: left;
+}

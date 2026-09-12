@@ -4,7 +4,13 @@
 import "./style.css";
 import { initAnalytics, track } from "./analytics";
 import { fetchServerTest } from "./api";
-import { authEnabled, isLoggedIn, isParent, flushPendingAttempts } from "./auth";
+import {
+  authEnabled,
+  flushPendingAttempts,
+  handleSessionExpiry,
+  isLoggedIn,
+  isParent,
+} from "./auth";
 import { isGuest, migrateStorage } from "./attempts";
 import { TESTS } from "./data";
 import { showHome } from "./screens/home";
@@ -23,6 +29,13 @@ migrateStorage();
 
 initAnalytics();
 installShell();
+
+// A 401 anywhere means the session is over — land on the welcome screen, which
+// explains it, rather than leaving screens to render "no data".
+handleSessionExpiry(() => {
+  track("session_expired");
+  showWelcome();
+});
 if (authEnabled && isLoggedIn()) void flushPendingAttempts();
 
 function showEntry(): void {

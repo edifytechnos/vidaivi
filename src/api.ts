@@ -2,7 +2,7 @@
 // Bundled JSON tests (src/tests/*.json) remain the platform seed; DB tests
 // merge in alongside them for logged-in users.
 
-import { authHeader, isLoggedIn } from "./auth";
+import { authHeader, isLoggedIn, apiFetch } from "./auth";
 import type { Test } from "./types";
 
 /** New question ids carry a random suffix: positional ids collide when a
@@ -53,7 +53,7 @@ export async function fetchTestList(
     if (subjectId) params.set("subjectId", subjectId);
     if (student) params.set("student", student);
     const q = params.toString() ? `?${params}` : "";
-    const res = await fetch(`/api/tests${q}`, { headers: authHeader() });
+    const res = await apiFetch(`/api/tests${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     const data = await res.json();
     return { tests: data.tests as ServerTestMeta[], needsSamples: !!data.needsSamples };
@@ -71,7 +71,7 @@ export async function fetchTestList(
  */
 export async function seedSampleTests(tests: Test[], subjectId?: string): Promise<number> {
   try {
-    const res = await fetch("/api/tests", {
+    const res = await apiFetch("/api/tests", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "seedSamples", tests, subjectId }),
@@ -94,7 +94,7 @@ export interface Child {
 export async function fetchChildren(): Promise<Child[] | null> {
   if (!isLoggedIn()) return null;
   try {
-    const res = await fetch("/api/parentlink", { headers: authHeader() });
+    const res = await apiFetch("/api/parentlink", { headers: authHeader() });
     if (!res.ok) return null;
     return (await res.json()).children ?? [];
   } catch {
@@ -107,7 +107,7 @@ export async function createParentInvite(
   username: string
 ): Promise<{ ok: true; code: string } | { ok: false; message: string }> {
   try {
-    const res = await fetch("/api/parentlink", {
+    const res = await apiFetch("/api/parentlink", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "invite", username }),
@@ -125,7 +125,7 @@ export async function redeemParentInvite(
   code: string
 ): Promise<{ ok: true; child: string } | { ok: false; message: string }> {
   try {
-    const res = await fetch("/api/parentlink", {
+    const res = await apiFetch("/api/parentlink", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "redeem", code }),
@@ -153,7 +153,7 @@ export interface Subject {
 export async function fetchSubjects(): Promise<Subject[] | null> {
   if (!isLoggedIn()) return null;
   try {
-    const res = await fetch("/api/subjects", { headers: authHeader() });
+    const res = await apiFetch("/api/subjects", { headers: authHeader() });
     if (!res.ok) return null;
     return (await res.json()).subjects as Subject[];
   } catch {
@@ -166,7 +166,7 @@ export async function mutateSubject(
   input: { id?: string; board?: string; klass?: string; subject?: string }
 ): Promise<{ ok: true; subject?: Subject } | { ok: false; message: string }> {
   try {
-    const res = await fetch("/api/subjects", {
+    const res = await apiFetch("/api/subjects", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action, ...input }),
@@ -182,7 +182,7 @@ export async function mutateSubject(
 export async function fetchServerTest(id: string): Promise<Test | null> {
   if (!isLoggedIn()) return null;
   try {
-    const res = await fetch(`/api/tests?id=${encodeURIComponent(id)}`, {
+    const res = await apiFetch(`/api/tests?id=${encodeURIComponent(id)}`, {
       headers: authHeader(),
     });
     if (!res.ok) return null;
@@ -200,7 +200,7 @@ export async function mutateTest(
   | { ok: false; message: string; problems?: TestProblem[] }
 > {
   try {
-    const res = await fetch("/api/tests", {
+    const res = await apiFetch("/api/tests", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action, test }),
@@ -220,7 +220,7 @@ export async function setTestStatus(
   action: "publish" | "unpublish" | "archive" | "delete"
 ): Promise<{ ok: boolean; message?: string; problems?: TestProblem[] }> {
   try {
-    const res = await fetch("/api/tests", {
+    const res = await apiFetch("/api/tests", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action, id }),
