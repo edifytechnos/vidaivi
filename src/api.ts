@@ -34,6 +34,8 @@ export interface ServerTestMeta {
   questionCount: number;
   totalMarks: number;
   updatedAt?: string;
+  /** Library listing only: this teacher already has a copy of this master. */
+  adopted?: boolean;
 }
 
 export interface TestProblem {
@@ -238,6 +240,36 @@ export async function assignTest(
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return { ok: false, message: data.error || "Could not save who sees this test" };
     return { ok: true, assignedCount: data.assignedCount ?? 0 };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
+/** The built-in library: published master tests any teacher may copy. */
+export async function fetchLibrary(): Promise<ServerTestMeta[] | null> {
+  if (!isLoggedIn()) return null;
+  try {
+    const res = await apiFetch("/api/tests?library=1", { headers: authHeader() });
+    if (!res.ok) return null;
+    return (await res.json()).tests as ServerTestMeta[];
+  } catch {
+    return null;
+  }
+}
+
+/** Take your own editable draft copy of a built-in test. */
+export async function adoptTest(
+  id: string
+): Promise<{ ok: boolean; message?: string; test?: ServerTestMeta }> {
+  try {
+    const res = await apiFetch("/api/tests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "adopt", id }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Request failed" };
+    return { ok: true, test: data.test as ServerTestMeta };
   } catch {
     return { ok: false, message: "Network error" };
   }
