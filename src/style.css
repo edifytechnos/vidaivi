@@ -3079,3 +3079,99 @@ body.modal-open {
 @media (max-width: 899px) {
   .ed-source-input { width: 100%; }
 }
+
+/* ---------- The test's own controls ----------
+   One row at the foot of the answer card — Previous · progress · Save · Next —
+   with Hand in test up on the breadcrumb row, out of the way of answering.
+   Below 560px the primary action takes the full width and the two steps sit
+   under it, so a thumb never has to hit a 90px target beside two others. */
+
+.st-navrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.st-navrow .ed-spacer { flex: 1; }
+.st-count { flex: none; white-space: nowrap; }
+.st-step { flex: none; }
+.st-save { display: contents; }
+.st-save .btn { flex: none; }
+
+/* The crumb row carries the one action that ends the test. */
+.ed-crumbrow .st-handin {
+  flex: none;
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+@media (max-width: 640px) {
+  .ed-crumbrow .st-handin { padding: 8px 12px; }
+  .st-long { display: none; }
+}
+
+@media (max-width: 560px) {
+  .st-navrow {
+    display: grid;
+    /* minmax(0,…) and a zero min-width on the buttons: .btn carries
+       min-width:130px, and a bare 1fr column cannot shrink under it, so the
+       row spilled past the card's right edge on a 390px phone. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px 8px;
+  }
+  .st-navrow .btn { min-width: 0; }
+  /* Save first and full width: it is the thing a student presses every time,
+     then the two steps side by side, then the count. */
+  .st-save .btn { grid-column: 1 / -1; order: -1; width: 100%; }
+  .st-navrow .ed-spacer { display: none; }
+  .st-step { width: 100%; }
+  #st-next, #rv-next { order: 1; }
+  .st-count { grid-column: 1 / -1; order: 2; text-align: center; }
+}
+
+/* The crumb row is one line, always. The test title wrapped onto four lines on
+   a phone and pushed the whole question down; the app bar already carries it,
+   so below 720px the middle of the trail drops out and the subject link and
+   the question number stay. */
+.ed-readonly .ed-crumbrow {
+  flex-wrap: nowrap;
+  min-height: 34px;
+}
+
+.ed-readonly .ed-crumb-mid {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ed-readonly .ed-crumb-test,
+.ed-readonly .ed-crumb-link,
+.ed-readonly .ed-crumb-current {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ed-readonly .ed-crumb-current { flex: none; }
+
+@media (max-width: 720px) {
+  /* Keep the way back and the action; the panel head under it already says
+     which question this is, and the count row says how many are answered. */
+  .ed-readonly .ed-crumb-mid,
+  .ed-readonly .ed-crumbrow > .ed-crumb-sep,
+  .ed-readonly .ed-crumb-current { display: none; }
+  .ed-readonly .ed-crumb-link { flex: none; max-width: 45vw; }
+}
+
+/* Under 900px the bottom tabs float over the page, and they landed on top of
+   Previous/Next and the progress line. Give the scrolling column room to end
+   above them. */
+@media (max-width: 899px) {
+  .ed-readonly .ed-center { padding-bottom: 86px; }
+}

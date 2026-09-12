@@ -985,6 +985,33 @@ function check(ok, label) {
           "and the question says which exam it came from"
         );
 
+        // The button layout J drew: Hand in test up on the breadcrumb row, and
+        // Previous · count · Save · Next as one row at the foot of the answer card.
+        const wsButtons = await page.evaluate(() => {
+          const box = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, right: b.right, bottom: b.bottom }; };
+          return {
+            handinInCrumb: !!document.querySelector(".ed-crumbrow .st-handin"),
+            prev: box("#st-prev"), save: box("#st-save"), next: box("#st-next"),
+            count: box(".st-count"),
+            panel: box(".ed-body .ed-panel:last-of-type"),
+          };
+        });
+        check(wsButtons.handinInCrumb, "Hand in test sits on the breadcrumb row");
+        check(
+          Math.abs(wsButtons.prev.y - wsButtons.save.y) < 4 && Math.abs(wsButtons.save.y - wsButtons.next.y) < 4,
+          "Previous, Save and Next share one row"
+        );
+        check(
+          wsButtons.prev.x < wsButtons.count.x &&
+            wsButtons.count.right < wsButtons.save.x &&
+            wsButtons.save.right <= wsButtons.next.x,
+          "in the order Previous · count · Save · Next"
+        );
+        check(
+          wsButtons.next.right <= wsButtons.panel.right + 1 && wsButtons.prev.x >= wsButtons.panel.x - 1,
+          "and the row stays inside the answer card"
+        );
+
         // Answered in any order, and revisitable.
         await page.click(".ed-student .option[data-i='0']");
         await page.click("#st-save");
@@ -1259,6 +1286,22 @@ function check(ok, label) {
         await page.click("#primary-btn");
         await page.waitForSelector(".ed-student .ed-tabs", { timeout: 20000 });
         check(!(await page.isVisible("#st-tree .ed-tree-q")), "on a phone the tree is tucked away");
+        // .btn carries min-width:130px, so a bare 1fr column used to push this
+        // row past the card's edge on a 390px screen.
+        const phoneRow = await page.evaluate(() => {
+          const box = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, right: b.right, width: b.width }; };
+          return { save: box("#st-save"), prev: box("#st-prev"), next: box("#st-next"),
+                   panel: box(".ed-body .ed-panel:last-of-type"), scrollWidth: document.documentElement.scrollWidth };
+        });
+        check(
+          phoneRow.save.right <= phoneRow.panel.right + 1 && phoneRow.next.right <= phoneRow.panel.right + 1,
+          "on a phone the buttons stay inside the card"
+        );
+        check(
+          phoneRow.save.y < phoneRow.prev.y && phoneRow.save.width > phoneRow.prev.width,
+          "with Save answer full width above Previous and Next"
+        );
+        check(phoneRow.scrollWidth <= 390, `and nothing forces a sideways scroll (${phoneRow.scrollWidth}px)`);
         await page.click('.ed-student .ed-tab[data-pane="tree"]');
         await page.waitForSelector("#st-tree .ed-tree-q:visible", { timeout: 10000 });
         check(true, "and the Questions tab slides it in");

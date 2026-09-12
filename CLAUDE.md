@@ -413,6 +413,17 @@ question scrolling to the end — that rule holds everywhere a test is shown.
 - **Reading the result has both**: that is `src/screens/review.ts`, unchanged —
   three columns, with the explanation on the right, once the teacher releases
   the paper.
+- **The controls follow the approved screen**: *Hand in test* sits at the right
+  of the breadcrumb row, and **Previous · progress · Save answer · Next** form
+  one row at the foot of the answer card. The released result mirrors it, with
+  *Retake test* in the same place. Below 560px that row becomes a grid — Save
+  full width, then the two steps, then the count — and `.st-navrow .btn` needs
+  `min-width: 0`, because `.btn` carries `min-width: 130px` and a bare `1fr`
+  column cannot shrink under it (the row spilled out of the card on a phone).
+  Below 720px the crumb keeps only the subject link and the action; the test
+  title is in the app bar already and wrapped onto four lines otherwise.
+  `e2e/regression.cjs` asserts the order, the single row, and that nothing
+  overflows the card at 390px.
 - **Questions may be answered in any order** and revisited; an answered one is
   ticked in the tree. The score is *recomputed* from the answers on every save
   (`recomputeScore`), never accumulated, so changing an answer cannot double it.

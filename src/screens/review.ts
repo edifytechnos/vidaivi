@@ -153,8 +153,17 @@ export async function showReview(
           ${treeMarkup(test, attempt, index)}
           <div class="ed-center">
             <div class="ed-crumbrow">
-              <span class="ed-crumb-test">${escapeHtml(test.title)}</span>
-              <span>›</span><span>Question ${index + 1} of ${test.questions.length}</span>
+              <span class="ed-crumb-mid">
+                <span class="ed-crumb-test">${escapeHtml(test.title)}</span>
+                <span class="ed-crumb-sep">›</span>
+              </span>
+              <span class="ed-crumb-current">Question ${index + 1} of ${test.questions.length}</span>
+              <span class="ed-spacer"></span>
+              ${
+                opts.back
+                  ? `<button id="review-back" class="btn btn-ghost st-handin">Back</button>`
+                  : `<button id="retake-btn" class="btn btn-primary st-handin">Retake<span class="st-long"> test</span></button>`
+              }
             </div>
             <div class="ed-body">
               <section class="ed-panel">
@@ -181,23 +190,13 @@ export async function showReview(
                     ? `<p class="review-comment"><strong>Your teacher:</strong> ${escapeHtml(a.comment)}</p>`
                     : ""
                 }
+                <div class="st-navrow">
+                  <button class="btn btn-ghost st-step" id="rv-prev"${index === 0 ? " disabled" : ""}>‹ Previous</button>
+                  <span class="ed-hint st-count">${index + 1} of ${test.questions.length}</span>
+                  <span class="ed-spacer"></span>
+                  <button class="btn btn-ghost st-step" id="rv-next"${index === test.questions.length - 1 ? " disabled" : ""}>Next ›</button>
+                </div>
               </section>
-
-              <div class="rv-nav">
-                <button class="btn btn-ghost" id="rv-prev"${index === 0 ? " disabled" : ""}>‹ Previous</button>
-                <span class="ed-spacer"></span>
-                <span class="ed-hint">${index + 1} of ${test.questions.length}</span>
-                <span class="ed-spacer"></span>
-                <button class="btn btn-ghost" id="rv-next"${index === test.questions.length - 1 ? " disabled" : ""}>Next ›</button>
-              </div>
-
-              <div class="actions">
-                ${
-                  opts.back
-                    ? `<button id="review-back" class="btn btn-ghost">Back</button>`
-                    : `<button id="retake-btn" class="btn btn-primary">Retake test</button>`
-                }
-              </div>
             </div>
           </div>
           <aside class="ed-explain">

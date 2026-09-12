@@ -335,9 +335,13 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
             <div class="ed-crumbrow">
               <button class="ed-crumb-link" id="st-back">${escapeHtml(subjectTitle)}</button>
               <span class="ed-crumb-sep">›</span>
-              <span class="ed-crumb-test">${escapeHtml(test.title)}</span>
-              <span class="ed-crumb-sep">›</span>
+              <span class="ed-crumb-mid">
+                <span class="ed-crumb-test">${escapeHtml(test.title)}</span>
+                <span class="ed-crumb-sep">›</span>
+              </span>
               <span class="ed-crumb-current">Question ${index + 1} of ${test.questions.length}</span>
+              <span class="ed-spacer"></span>
+              <button id="st-submit" class="btn btn-primary st-handin">Hand in<span class="st-long"> test</span></button>
             </div>
             <div class="ed-body">
               <section class="ed-panel">
@@ -357,20 +361,15 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
                   ${a ? `<span class="status-chip status-done">Answered</span>` : ""}
                 </div>
                 <div id="st-answer"></div>
-                <div class="actions" id="st-actions"></div>
+                <div class="st-navrow">
+                  <button class="btn btn-ghost st-step" id="st-prev"${index === 0 ? " disabled" : ""}>‹ Previous</button>
+                  <span class="ed-hint st-count">${done} of ${test.questions.length} answered</span>
+                  <span class="ed-spacer"></span>
+                  <span class="st-save" id="st-actions"></span>
+                  <button class="btn btn-ghost st-step" id="st-next"${index === test.questions.length - 1 ? " disabled" : ""}>Next ›</button>
+                </div>
               </section>
 
-              <div class="rv-nav">
-                <button class="btn btn-ghost" id="st-prev"${index === 0 ? " disabled" : ""}>‹ Previous</button>
-                <span class="ed-spacer"></span>
-                <span class="ed-hint">${done} of ${test.questions.length} answered</span>
-                <span class="ed-spacer"></span>
-                <button class="btn btn-ghost" id="st-next"${index === test.questions.length - 1 ? " disabled" : ""}>Next ›</button>
-              </div>
-
-              <div class="actions">
-                <button id="st-submit" class="btn btn-primary">Hand in test</button>
-              </div>
               <p class="hint quiet-note">${ICONS.lock} Answers and worked solutions open when
               your teacher releases them. Your work is saved as you go.</p>
             </div>
