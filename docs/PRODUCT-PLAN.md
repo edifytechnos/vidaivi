@@ -2,7 +2,7 @@
 
 ## Context
 
-Vidaivi started as a single-teacher CBSE-12 Maths pilot (live at vidaivi.seyali.app; Test 1 ships Sun 13 Sep on the current app, untouched by this plan). This plan turns it into a multi-teacher assessment platform: teachers author their own tests with a rich editor, tests are scoped to their students, a platform question bank seeds content via copy-on-fork, and eventually a marketplace lets teachers sell tests to other teachers and to students directly. The long-term vision widens beyond CBSE-12 Maths to other boards (State/ICSE/IGCSE), classes (10/11/12), and exams (JEE/NEET) — so the data model must carry a taxonomy from day one even though the UI shows only CBSE-12 Maths for now.
+Vidaivi started as a single-teacher CBSE-12 Maths pilot (live at vidai.seyali.app; Test 1 ships Sun 13 Sep on the current app, untouched by this plan). This plan turns it into a multi-teacher assessment platform: teachers author their own tests with a rich editor, tests are scoped to their students, a platform question bank seeds content via copy-on-fork, and eventually a marketplace lets teachers sell tests to other teachers and to students directly. The long-term vision widens beyond CBSE-12 Maths to other boards (State/ICSE/IGCSE), classes (10/11/12), and exams (JEE/NEET) — so the data model must carry a taxonomy from day one even though the UI shows only CBSE-12 Maths for now.
 
 **Platform decision (user's call): evolve the existing Vite + TypeScript app** — no Angular rebuild. TipTap is framework-agnostic, so this is viable; the codebase gets modularized as it grows (see Architecture).
 

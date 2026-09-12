@@ -5,7 +5,7 @@ import { defineConfig, loadEnv } from "vite";
 // preview with VITE_API_TARGET to try changes before they reach production.
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const target = env.VITE_API_TARGET || "https://vidaivi.seyali.app";
+  const target = env.VITE_API_TARGET || "https://vidai.seyali.app";
   return {
     server: {
       proxy: {
