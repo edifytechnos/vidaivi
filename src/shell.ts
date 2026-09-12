@@ -263,3 +263,41 @@ export const skeleton = {
       .join("")}</div>`;
   },
 };
+
+// ---------- The questions tree as a drawer ----------
+// Below 900px `.ed-tree` is positioned off-canvas and slides in when its editor
+// carries `tree-open` (see the .ed-tree rules in style.css). Every screen that
+// shows the tree binds it the same way, so the behaviour cannot drift apart.
+
+let escBound = false;
+
+/**
+ * Wire the drawer for one screen: the toggle opens it, and the scrim, a pick
+ * inside the tree, or Escape closes it.
+ */
+export function bindTreeDrawer(editor: HTMLElement): void {
+  const close = (): void => editor.classList.remove("tree-open");
+  editor
+    .querySelector("[data-drawer-toggle]")
+    ?.addEventListener("click", () => editor.classList.toggle("tree-open"));
+  editor.querySelector(".ed-scrim")?.addEventListener("click", close);
+  // Picking a question is the end of what the drawer is for.
+  editor.querySelector(".ed-tree")?.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("button")) close();
+  });
+
+  // One listener for the life of the page, not one per render.
+  if (escBound) return;
+  escBound = true;
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    document.querySelectorAll(".editor.tree-open").forEach((el) => el.classList.remove("tree-open"));
+  });
+}
+
+/** The button that opens it — only rendered where the tree is not a column. */
+export function drawerToggleMarkup(label = "Questions"): string {
+  return `<button class="st-drawer-btn" data-drawer-toggle aria-label="Show ${escapeHtml(label.toLowerCase())}">
+      ${ICONS.menu}<span>${escapeHtml(label)}</span>
+    </button>`;
+}
