@@ -91,18 +91,18 @@ function check(ok, label) {
     await page.fill("#ad-pass", ADMIN_PASS);
     await page.click("#ad-submit");
     // Every sign-in path lands on the subjects grid, admins included.
-    await page.waitForSelector("#sub-grid .subject-card", { timeout: 25000 });
+    await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
     check(true, "admin login lands on the subjects grid");
     await shot("subjects-admin");
 
-    // Account-level places live in the topbar menu now, on every screen.
-    await page.click("#top-menu-btn");
-    await page.click('[data-top-nav="admin"]');
-    await page.waitForSelector("#te-list", { timeout: 20000 });
-    check(true, "the topbar menu reaches teacher access");
+    // The rail is the navigation on every signed-in screen.
+    check(await page.isVisible(".rail"), "a signed-in user gets the rail");
+    await page.click('[data-rail="admin"]');
+    await page.waitForSelector("#te-list .data-table, #te-list .hint", { timeout: 20000 });
+    check(true, "the rail reaches teacher access");
     await shot("admin");
 
-    await page.click("#nav-students");
+    await page.click('[data-rail="students"]');
     // Wait for the loaded state, not the "Loading…" hint that renders first.
     await page.waitForSelector("#st-list .data-table, #st-list .login-error", { timeout: 20000 });
     check(await page.isVisible("#st-list .data-table"), "students roster loads");
@@ -119,7 +119,7 @@ function check(ok, label) {
     }
 
     // My tests: the DB-backed test list and its import affordance.
-    await page.click("#nav-tests");
+    await page.click('[data-rail="mytests"]');
     await page.waitForSelector("#mt-list .data-table, #mt-list .hint:not(:empty)", { timeout: 20000 });
     check(await page.isVisible("#mt-open-import"), "my tests page offers test import");
     await page.click("#mt-open-import");
@@ -249,26 +249,57 @@ function check(ok, label) {
       check(links.unlinkedTests === 403, "the test list for an unlinked child is refused");
     }
 
+    // No flicker, no shift. With the API held back, a hard reload must paint
+    // the shell and a skeleton at once, and the chrome must not move when the
+    // data arrives or when moving between screens.
+    await page.route("**/api/**", async (route) => {
+      await new Promise((r) => setTimeout(r, 1200));
+      // A navigation can retire the request while it is held; that is fine.
+      try { await route.continue(); } catch {}
+    });
+    await page.goto(BASE, { waitUntil: "domcontentloaded" });
+    const early = await page.evaluate(() => {
+      const r = document.querySelector(".rail")?.getBoundingClientRect();
+      const b = document.querySelector(".shellbar")?.getBoundingClientRect();
+      return { rail: r && [r.left, r.width, r.height], bar: b && [b.top, b.height], sk: document.querySelectorAll(".sk").length };
+    });
+    check(!!early.rail && early.sk > 0, `a hard reload paints the shell and a skeleton before data (${early.sk} bones)`);
+    await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
+    const late = await page.evaluate(() => {
+      const r = document.querySelector(".rail").getBoundingClientRect();
+      const b = document.querySelector(".shellbar").getBoundingClientRect();
+      return { rail: [r.left, r.width, r.height], bar: [b.top, b.height], sk: document.querySelectorAll(".sk").length };
+    });
+    check(JSON.stringify(early.rail) === JSON.stringify(late.rail) && JSON.stringify(early.bar) === JSON.stringify(late.bar),
+      "the chrome does not move when the data lands");
+    check(late.sk === 0, "no skeleton is left behind once the data has landed");
+    const shellBefore = await page.$(".shell");
+    await page.click('[data-rail="students"]');
+    await page.waitForSelector("#st-list .data-table, #st-list .login-error", { timeout: 25000 });
+    const sameShell = await page.evaluate((el) => el === document.querySelector(".shell"), shellBefore);
+    check(sameShell, "moving between screens keeps the same shell element (no re-layout)");
+    await page.unroute("**/api/**");
+
     // Subjects: a signed-in teacher lands here, and a subject card opens the
     // page where that subject's tests live.
     await page.goto(BASE, { waitUntil: "domcontentloaded" });
-    await page.waitForSelector("#sub-grid .subject-card", { timeout: 20000 });
+    await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 20000 });
     check(true, "a signed-in teacher lands on the subjects grid");
     await shot("subjects");
-    const owned = await page.$(".subject-card:not(.subject-card-builtin)");
+    const owned = await page.$(".subject-card[data-subject]:not(.subject-card-builtin)");
     if (owned) {
       await owned.click();
       // A subject opens the authoring editor scoped to it, not a table.
-      await page.waitForSelector(".editor .ed-tree", { timeout: 30000 });
+      await page.waitForSelector(".editor:not(.sk-wrap) .ed-tree", { timeout: 30000 });
       check(true, "clicking a subject opens the authoring editor");
       check(await page.isVisible("#ed-new-test"), "the editor's tree offers Create");
       await page.click("#ed-exit");
-      await page.waitForSelector("#sub-grid .subject-card", { timeout: 20000 });
+      await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 20000 });
       check(true, "the editor returns to all subjects");
       // The bug that started this: ?edit= must not survive leaving the editor.
       check(!/edit=/.test(page.url()), "leaving the editor clears ?edit= from the url");
       await page.reload({ waitUntil: "domcontentloaded" });
-      await page.waitForSelector("#sub-grid .subject-card", { timeout: 25000 });
+      await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
       check(true, "a reload lands on subjects, not a stale editor");
     } else {
       console.log("SKIP  subject routing (no teacher-owned subject)");
@@ -286,12 +317,12 @@ function check(ok, label) {
     try {
       await page.waitForSelector(card, { timeout: 25000 });
       await page.click(card);
-      await page.waitForSelector(".editor .ed-tree", { timeout: 30000 });
+      await page.waitForSelector(".editor:not(.sk-wrap) .ed-tree", { timeout: 30000 });
       check(await page.isVisible("#ed-new-test"), "an empty subject opens the editor shell");
       check((await page.$$(".ed-node")).length === 0, "the empty subject's tree has no tests");
       check(await page.isVisible("#ed-empty-create"), "the empty shell offers Create the first test");
       await page.click("#ed-exit");
-      await page.waitForSelector("#sub-grid .subject-card", { timeout: 20000 });
+      await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 20000 });
     } finally {
       page.once("dialog", (d) => d.accept());
       const del = await page.$(`${card} .subject-del`);

@@ -15,44 +15,34 @@ import {
 } from "../auth";
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
-import { ICONS, app, copyText, escapeHtml, pct, setUrl, topbar } from "../dom";
+import { copyText, escapeHtml, pct, setUrl } from "../dom";
+import { mount, skeleton } from "../shell";
 import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
-import { showWelcome } from "./auth";
-import { currentSubject, showHome } from "./home";
+import { currentSubject } from "./home";
 import { showBuilder } from "./builder";
 import { createTestAndEdit, showEditor } from "./editor";
-import { showSubjects } from "./subjects";
 
-function consoleShell(
-  active: "admin" | "students" | "report" | "tests",
-  content: string
-): string {
-  return `
-    ${topbar(true)}
-    <div class="console">
-      <aside class="console-nav">
-        <div class="console-nav-title">Console</div>
-        <button class="console-link${active === "students" || active === "report" ? " active" : ""}" id="nav-students">${ICONS.users}<span>My students</span></button>
-        ${isAdmin() ? `<button class="console-link${active === "tests" ? " active" : ""}" id="nav-tests">${ICONS.home}<span>My tests</span></button>` : ""}
-        ${isAdmin() ? `<button class="console-link${active === "admin" ? " active" : ""}" id="nav-admin">${ICONS.shield}<span>Teacher access</span></button>` : ""}
-        <button class="console-link" id="nav-home">${ICONS.home}<span>All tests</span></button>
-        <button class="console-link" id="nav-signout">${ICONS.logout}<span>Sign out</span></button>
-      </aside>
-      <main class="console-main">${content}</main>
-    </div>`;
+type ConsolePage = "admin" | "students" | "report" | "tests";
+
+const CONSOLE_TITLES: Record<ConsolePage, string> = {
+  admin: "Teacher access",
+  students: "My students",
+  report: "Student report",
+  tests: "My tests",
+};
+
+/** The console pages share the app shell; nothing is bespoke about their chrome. */
+function consoleShell(active: ConsolePage, content: string, sub?: string): void {
+  mount(content, {
+    title: CONSOLE_TITLES[active],
+    sub,
+    active: active === "report" ? "students" : active === "tests" ? "mytests" : active,
+    width: "wide",
+  });
 }
 
 function bindConsoleNav(): void {
-  document.getElementById("nav-students")?.addEventListener("click", showTeacher);
-  document.getElementById("nav-tests")?.addEventListener("click", showMyTests);
-  document.getElementById("nav-admin")?.addEventListener("click", showAdmin);
-  document.getElementById("nav-home")?.addEventListener("click", () => showHome());
-  document.getElementById("nav-signout")?.addEventListener("click", () => {
-    track("sign_out");
-    signOut();
-    setGuest(false);
-    showWelcome();
-  });
+  // Navigation is the rail's now; nothing to bind per page.
 }
 
 // ---------- Teacher: my tests (DB-backed) ----------
@@ -60,11 +50,10 @@ function bindConsoleNav(): void {
 export function showMyTests() {
   setUrl();
   track("mytests_open");
-  app.innerHTML = consoleShell(
+  consoleShell(
     "tests",
     `
       <div class="card">
-        <div class="home-crumbs"><button id="mt-subjects" class="btn-link">← All subjects</button></div>
         <h2 class="landing-title">My tests</h2>
         <p class="hint">Tests you author live in the cloud: build one as a draft,
         then publish to make it visible to your students on their home screen.</p>
@@ -85,7 +74,7 @@ export function showMyTests() {
       </div>
       <div class="card roster-card">
         <div class="solution-title">Your tests</div>
-        <div id="mt-list"><p class="hint">Loading…</p></div>
+        <div id="mt-list">${skeleton.table(3, 5)}</div>
       </div>`
   );
   bindConsoleNav();
@@ -96,7 +85,6 @@ export function showMyTests() {
   const errEl = document.getElementById("mt-error") as HTMLElement;
   const listEl = document.getElementById("mt-list")!;
 
-  document.getElementById("mt-subjects")?.addEventListener("click", () => void showSubjects());
   document.getElementById("mt-new")!.addEventListener("click", () => {
     void createTestAndEdit(showMyTests);
   });
@@ -216,7 +204,7 @@ export function showMyTests() {
 export function showAdmin() {
   setUrl();
   track("admin_open");
-  app.innerHTML = consoleShell(
+  consoleShell(
     "admin",
     `
       <div class="card">
@@ -232,7 +220,7 @@ export function showAdmin() {
       </div>
       <div class="card roster-card">
         <div class="solution-title">Allowed teachers</div>
-        <div id="te-list"><p class="hint">Loading…</p></div>
+        <div id="te-list">${skeleton.table(2, 3)}</div>
       </div>`
   );
   bindConsoleNav();
@@ -298,17 +286,14 @@ export function showAdmin() {
 export function showStudentReport(username: string) {
   setUrl();
   track("report_open", { student: username });
-  app.innerHTML = consoleShell(
-    "report",
-    `<div class="card"><p class="hint">Loading report…</p></div>`
-  );
+  consoleShell("report", `${skeleton.card(2)}${skeleton.table(3, 4)}`);
   bindConsoleNav();
 
   void (async () => {
     const students = await fetchReports(username);
     const s = students?.[0];
     if (!s) {
-      app.querySelector(".console-main")!.innerHTML = `
+      document.querySelector(".shell-main .page")!.innerHTML = `
         <div class="card"><p class="login-error">Could not load the report — go back and retry.</p>
         <div class="actions"><button id="rep-back" class="btn btn-ghost">Back</button></div></div>`;
       document.getElementById("rep-back")!.addEventListener("click", showTeacher);
@@ -325,7 +310,7 @@ export function showStudentReport(username: string) {
       ? Math.round([...best.values()].reduce((x, y) => x + y, 0) / best.size)
       : 0;
 
-    app.querySelector(".console-main")!.innerHTML = `
+    document.querySelector(".shell-main .page")!.innerHTML = `
       <div class="card">
         <h2 class="landing-title">${escapeHtml(s.name)}</h2>
         <p class="hint">${escapeHtml([s.username, s.grade, s.school].filter(Boolean).join(" · "))}${s.parentPhone ? ` · Parent: ${escapeHtml(s.parentPhone)}` : ""}</p>
@@ -385,7 +370,7 @@ function inviteMessage(s: { name: string; code: string }): string {
 export function showTeacher() {
   setUrl();
   track("teacher_open");
-  app.innerHTML = consoleShell(
+  consoleShell(
     "students",
     `
       <div class="card">
@@ -404,7 +389,7 @@ export function showTeacher() {
       </div>
       <div class="card roster-card">
         <div class="solution-title">Students</div>
-        <div id="st-list"><p class="hint">Loading…</p></div>
+        <div id="st-list">${skeleton.table(3, 6)}</div>
       </div>`
   );
   bindConsoleNav();

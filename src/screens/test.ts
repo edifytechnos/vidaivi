@@ -17,14 +17,15 @@ import {
   setGuest,
 } from "../attempts";
 import { totalMarks } from "../data";
-import { app, escapeHtml, formatText, renderMath, setUrl, topbar } from "../dom";
+import { app, escapeHtml, formatText, renderMath, setUrl } from "../dom";
+import { mount } from "../shell";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { showPhoneForm } from "./auth";
 
 function showLogin(test: Test) {
   track("login_open", { test: test.id });
-  app.innerHTML = `
-    ${topbar(true)}
+  mount(
+    `
     <main class="card landing">
       <div class="chip chip-topic">${escapeHtml(test.chapter)}</div>
       <h2 class="landing-title">${escapeHtml(test.title)}</h2>
@@ -34,7 +35,9 @@ function showLogin(test: Test) {
       <p id="login-error" class="login-error" hidden></p>
       <p class="hint">Just exploring? Try the free demo test from the
       <a href="./">home page</a> — no sign-in needed.</p>
-    </main>`;
+    </main>`,
+    { title: test.title, active: "subjects", width: "narrow" }
+  );
   const slot = document.getElementById("google-btn")!;
   const errEl = document.getElementById("login-error") as HTMLElement;
   void renderGoogleButton(
@@ -106,8 +109,8 @@ export function showLanding(test: Test) {
     };
   }
 
-  app.innerHTML = `
-    ${topbar(true)}
+  mount(
+    `
     <main class="card landing">
       <div class="chip chip-topic">${escapeHtml(test.chapter)}</div>
       <h2 class="landing-title">${escapeHtml(test.title)}</h2>
@@ -122,7 +125,9 @@ export function showLanding(test: Test) {
         <button id="primary-btn" class="btn btn-primary">${primary.label}</button>
         ${secondary}
       </div>
-    </main>`;
+    </main>`,
+    { title: test.title, active: "subjects", width: "narrow" }
+  );
 
   document.getElementById("primary-btn")!.addEventListener("click", primary.action);
   document.getElementById("retake-btn")?.addEventListener("click", () => {
@@ -137,8 +142,8 @@ function showQuestion(test: Test, attempt: Attempt) {
   const q = test.questions[index];
   const pct = (index / test.questions.length) * 100;
 
-  app.innerHTML = `
-    ${topbar(true)}
+  mount(
+    `
     <div class="progress">
       <div class="progress-label">${escapeHtml(test.title)} — Question ${index + 1} of ${test.questions.length}</div>
       <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
@@ -152,7 +157,9 @@ function showQuestion(test: Test, attempt: Attempt) {
       <div id="answer-area"></div>
       <div id="feedback"></div>
       <div class="actions" id="actions"></div>
-    </main>`;
+    </main>`,
+    { title: test.title, active: "subjects", width: "narrow" }
+  );
 
   const answerArea = document.getElementById("answer-area")!;
   const actions = document.getElementById("actions")!;
@@ -329,8 +336,8 @@ function showScore(test: Test, attempt: Attempt) {
       : pct >= 50
         ? "Good effort — keep practising!"
         : "Keep at it — review the solutions and try again.";
-  app.innerHTML = `
-    ${topbar(true)}
+  mount(
+    `
     <main class="card score-card">
       <div class="score-big">${attempt.score} / ${total}</div>
       <div class="score-pct">${pct}%</div>
@@ -352,7 +359,9 @@ function showScore(test: Test, attempt: Attempt) {
         <button id="review-btn" class="btn btn-primary">Review answers</button>
         <button id="restart-btn" class="btn btn-ghost">Try again</button>
       </div>
-    </main>`;
+    </main>`,
+    { title: test.title, active: "subjects", width: "narrow" }
+  );
   document.getElementById("review-btn")!.addEventListener("click", () => {
     track("review_open", { test: test.id });
     showReview(test, attempt);
@@ -422,8 +431,8 @@ export function showReviewFor(test: Test, attempt: Attempt, back: () => void): v
 
 function showReview(test: Test, attempt: Attempt, viewerBack?: () => void) {
   const total = totalMarks(test);
-  app.innerHTML = `
-    ${topbar(true)}
+  mount(
+    `
     <main>
       <div class="review-header card">
         <h2 class="landing-title">${escapeHtml(test.title)} — Review</h2>
@@ -457,7 +466,9 @@ function showReview(test: Test, attempt: Attempt, viewerBack?: () => void) {
             : `<button id="retake-btn" class="btn btn-primary">Retake test</button>`
         }
       </div>
-    </main>`;
+    </main>`,
+    { title: test.title, active: "subjects", width: "narrow" }
+  );
   document.getElementById("review-back")?.addEventListener("click", viewerBack ?? (() => {}));
   document.getElementById("retake-btn")?.addEventListener("click", () => {
     track("test_retake", { test: test.id });

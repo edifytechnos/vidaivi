@@ -13,10 +13,11 @@ import { showLanding } from "./screens/test";
 import { showEditor } from "./screens/editor";
 import { showSubjects } from "./screens/subjects";
 import { showChildren } from "./screens/parent";
-import { installTopbarMenu } from "./screens/menu";
+import { installShell } from "./screens/menu";
+import { mount, skeleton } from "./shell";
 
 initAnalytics();
-installTopbarMenu();
+installShell();
 if (authEnabled && isLoggedIn()) void flushPendingAttempts();
 
 function showEntry(): void {
@@ -46,7 +47,9 @@ if (editId) {
   track("test_open", { test: test.id });
   showLanding(test);
 } else if (testId && authEnabled && isLoggedIn()) {
-  // Not in the bundle — could be a DB-backed test shared by a teacher.
+  // Not in the bundle — could be a DB-backed test shared by a teacher. Paint
+  // the shell and a placeholder card now so the reload never shows a blank.
+  mount(skeleton.card(4), { title: "Test", active: "subjects", width: "narrow" });
   void fetchServerTest(testId).then((serverTest) => {
     if (serverTest) {
       track("test_open", { test: serverTest.id });

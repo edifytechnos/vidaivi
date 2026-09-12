@@ -1,19 +1,13 @@
 // Home screen: test list, profile row, cloud-saved results.
 
 import { track } from "../analytics";
-import {
-  authEnabled,
-  fetchMyAttempts,
-  getProfile,
-  isLoggedIn,
-  signOut,
-} from "../auth";
+import { authEnabled, fetchMyAttempts, getProfile, isLoggedIn } from "../auth";
 import { fetchTestList } from "../api";
 import { loadAttempt, requiresLogin, setGuest } from "../attempts";
 import { TESTS, totalMarks } from "../data";
-import { ICONS, app, escapeHtml, gotoTest, setUrl, topbar } from "../dom";
+import { escapeHtml, gotoTest, ICONS, setUrl } from "../dom";
+import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
-import { showSubjects } from "./subjects";
 
 function profileRow(): string {
   const p = getProfile();
@@ -39,7 +33,6 @@ function profileRow(): string {
         <div class="profile-name">${escapeHtml(p.name || p.email || p.sub)}</div>
         <div class="profile-sub">${escapeHtml(sub)}</div>
       </div>
-      <button id="signout-btn" class="btn-link">Sign out</button>
     </div>`;
 }
 
@@ -81,13 +74,8 @@ export function showHome(subjectId: string | null = activeSubject) {
   setUrl();
   activeSubject = subjectId;
   track("home_open", subjectId ? { subject: subjectId } : {});
-  app.innerHTML = `
-    ${topbar(false)}
-    ${
-      isLoggedIn()
-        ? `<div class="home-crumbs"><button id="home-subjects" class="btn-link">← All subjects</button></div>`
-        : ""
-    }
+  const host = mount(
+    `
     ${profileRow()}
     <p class="tagline">Chapter-wise practice tests. Attempt, get instant solutions, review any time — right from this link.</p>
     <div class="test-list">
@@ -104,22 +92,19 @@ export function showHome(subjectId: string | null = activeSubject) {
           ${status}
         </button>`;
       }).join("")}
-    </div>`;
-  app.querySelectorAll<HTMLButtonElement>(".test-card[data-test]").forEach((card) => {
+      ${authEnabled && isLoggedIn() ? skeleton.list(2) : ""}
+    </div>
+    ${authEnabled && isLoggedIn() ? `<div id="server-results">${skeleton.card(3)}</div>` : ""}`,
+    { title: activeSubject ? "Tests" : "Practice tests", active: "subjects", width: "narrow" }
+  );
+  host.querySelectorAll<HTMLButtonElement>(".test-card[data-test]").forEach((card) => {
     card.dataset.bound = "1";
     card.addEventListener("click", () => gotoTest(card.dataset.test!));
-  });
-  document.getElementById("signout-btn")?.addEventListener("click", () => {
-    track("sign_out");
-    signOut();
-    setGuest(false);
-    showWelcome();
   });
   document.getElementById("signin-btn")?.addEventListener("click", () => {
     setGuest(false);
     showWelcome();
   });
-  document.getElementById("home-subjects")?.addEventListener("click", () => void showSubjects());
   void renderServerTests();
   void renderServerResults();
 }
@@ -131,6 +116,7 @@ async function renderServerTests(): Promise<void> {
   // Built-in view shows only the bundled tests; a subject shows only its own.
   const payload = await fetchTestList(activeSubject ?? undefined);
   const server = payload?.tests ?? null;
+  document.querySelector(".test-list .sk-wrap")?.remove();
   if (!server?.length) return;
   const bundled = new Set(TESTS.map((t) => t.id));
   const fresh = server.filter(
@@ -182,7 +168,11 @@ function refreshStatusChips(): void {
 async function renderServerResults(): Promise<void> {
   if (!authEnabled || !isLoggedIn()) return;
   const attempts = await fetchMyAttempts();
-  if (!attempts?.length) return;
+  const slot = document.getElementById("server-results");
+  if (!attempts?.length) {
+    slot?.remove();
+    return;
+  }
   // Newest first, so a retake's score is the one shown.
   for (const a of [...attempts].reverse()) {
     serverScores.set(a.testId, { score: a.score, total: a.total });
@@ -195,10 +185,8 @@ async function renderServerResults(): Promise<void> {
   );
   const titleOf = (id: string) =>
     TESTS.find((t) => t.id === id)?.title ?? serverTitles.get(id) ?? id;
-  const list = document.querySelector(".test-list");
-  list?.insertAdjacentHTML(
-    "afterend",
-    `<div class="card server-results">
+  if (!slot) return;
+  slot.outerHTML = `<div class="card server-results">
       <div class="solution-title">Your saved results</div>
       <ul class="score-breakdown">
         ${attempts
@@ -211,6 +199,5 @@ async function renderServerResults(): Promise<void> {
           )
           .join("")}
       </ul>
-    </div>`
-  );
+    </div>`;
 }

@@ -10,10 +10,9 @@ import {
   redeemParentInvite,
   type Child,
 } from "../api";
-import { fetchMyAttempt, fetchMyAttempts, getProfile, signOut } from "../auth";
-import { setGuest } from "../attempts";
-import { app, escapeHtml, setUrl, topbar } from "../dom";
-import { showWelcome } from "./auth";
+import { fetchMyAttempt, fetchMyAttempts } from "../auth";
+import { escapeHtml, setUrl } from "../dom";
+import { mount, skeleton } from "../shell";
 import { showHome } from "./home";
 import { showReviewFor } from "./test";
 import type { Attempt } from "../types";
@@ -22,28 +21,20 @@ import type { Attempt } from "../types";
 export async function showChildren(force = false): Promise<void> {
   setUrl();
   track("parent_children_open");
-  const profile = getProfile();
-  app.innerHTML = `
-    ${topbar(false)}
+  mount(
+    `
     <main class="subjects">
-      <div class="subjects-head">
-        <h2 class="subjects-title">Your children</h2>
-        <button id="pa-add" class="btn btn-primary subjects-new">+ Add a child</button>
-      </div>
+      <div class="subjects-head"><h2 class="subjects-title">Your children</h2></div>
       <div id="pa-form" class="card subject-form" hidden></div>
-      <div id="pa-grid" class="subject-grid"><p class="hint">Loading…</p></div>
-      <div class="subjects-foot">
-        <span class="hint">${escapeHtml(profile?.name || profile?.email || "")}</span>
-        <button id="pa-signout" class="btn-link">Sign out</button>
-      </div>
-    </main>`;
-
-  document.getElementById("pa-signout")!.addEventListener("click", () => {
-    track("sign_out");
-    signOut();
-    setGuest(false);
-    showWelcome();
-  });
+      <div id="pa-grid">${skeleton.cards(2)}</div>
+    </main>`,
+    {
+      title: "My children",
+      active: "children",
+      width: "wide",
+      actions: `<button id="pa-add" class="btn btn-primary">+ Add a child</button>`,
+    }
+  );
   document.getElementById("pa-add")!.addEventListener("click", () => openCodeForm());
 
   const grid = document.getElementById("pa-grid")!;
@@ -68,7 +59,7 @@ export async function showChildren(force = false): Promise<void> {
     void showChildResults(children[0]);
     return;
   }
-  grid.innerHTML = children
+  grid.innerHTML = `<div class="subject-grid">${children
     .map(
       (c) => `
     <button class="subject-card" data-child="${escapeHtml(c.username)}">
@@ -77,7 +68,7 @@ export async function showChildren(force = false): Promise<void> {
       <span class="subject-meta"><span class="subject-count">View results</span></span>
     </button>`
     )
-    .join("");
+    .join("")}</div>`;
   grid.querySelectorAll<HTMLElement>(".subject-card").forEach((el) =>
     el.addEventListener("click", () => {
       const child = children.find((c) => c.username === el.dataset.child);
@@ -133,17 +124,17 @@ function openCodeForm(): void {
 export async function showChildResults(child: Child): Promise<void> {
   setUrl();
   track("parent_child_open");
-  app.innerHTML = `
-    ${topbar(false)}
-    <div class="home-crumbs"><button id="pa-all" class="btn-link">← All children</button></div>
+  mount(
+    `
     <div class="profile-row">
       <div class="profile-main">
         <div class="profile-name">${escapeHtml(child.name)}</div>
         <div class="profile-sub">Test results</div>
       </div>
     </div>
-    <div id="pa-tests" class="test-list"><p class="hint">Loading…</p></div>`;
-  document.getElementById("pa-all")!.addEventListener("click", () => void showChildren(true));
+    <div id="pa-tests">${skeleton.list(3)}</div>`,
+    { title: child.name, sub: "Test results", active: "children", width: "narrow" }
+  );
 
   const [list, attempts] = await Promise.all([
     fetchTestList(undefined, child.username),
@@ -161,7 +152,7 @@ export async function showChildResults(child: Child): Promise<void> {
     scores.set(a.testId, { score: a.score, total: a.total });
   }
 
-  host.innerHTML = tests
+  host.innerHTML = `<div class="test-list">${tests
     .map((t) => {
       const done = scores.get(t.id);
       const status = done
@@ -176,7 +167,7 @@ export async function showChildResults(child: Child): Promise<void> {
         ${status}
       </button>`;
     })
-    .join("");
+    .join("")}</div>`;
 
   host.querySelectorAll<HTMLButtonElement>(".test-card[data-test]:not([disabled])").forEach((card) =>
     card.addEventListener("click", () => void openChildReview(child, card.dataset.test!))

@@ -58,68 +58,6 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-/* Topbar menu: account-level places, reachable from every screen. */
-.topbar {
-  position: relative;
-}
-
-.top-menu-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: #fff;
-  color: var(--text);
-  cursor: pointer;
-}
-
-.top-menu-btn:hover {
-  background: var(--bg);
-}
-
-/* display:flex would beat the UA rule for [hidden], so state it explicitly. */
-.top-menu[hidden] {
-  display: none;
-}
-
-.top-menu {
-  position: absolute;
-  top: calc(100% - 6px);
-  right: 0;
-  z-index: 40;
-  min-width: 208px;
-  padding: 6px;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.14);
-}
-
-.top-menu button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: none;
-  font: inherit;
-  font-size: 14px;
-  color: var(--text);
-  text-align: left;
-  cursor: pointer;
-}
-
-.top-menu button:hover {
-  background: var(--bg);
-}
-
 .topbar h1 {
   font-size: 17px;
   font-weight: 700;
@@ -989,107 +927,6 @@ body {
   }
 }
 
-/* ---------- Console (teacher/admin) ---------- */
-
-.console {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.console-nav {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-
-.console-nav-title {
-  display: none;
-}
-
-.console-link {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: none;
-  font: inherit;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.12s, color 0.12s;
-}
-
-.console-link .icon {
-  width: 16px;
-  height: 16px;
-  color: var(--faint);
-}
-
-.console-link:hover {
-  background: #f1f5f9;
-  color: var(--text);
-}
-
-.console-link.active {
-  background: var(--primary-soft);
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.console-link.active .icon {
-  color: var(--primary);
-}
-
-.console-main {
-  min-width: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.console-main .roster-card {
-  margin-top: 0;
-}
-
-@media (min-width: 900px) {
-  #app:has(.console) {
-    max-width: 1080px;
-  }
-  .console {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 28px;
-  }
-  .console-nav {
-    flex: 0 0 220px;
-    flex-direction: column;
-    gap: 2px;
-    overflow: visible;
-    position: sticky;
-    top: 16px;
-  }
-  .console-nav-title {
-    display: block;
-    font-weight: 600;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--faint);
-    padding: 0 12px 8px;
-  }
-  .console-link {
-    width: 100%;
-    text-align: left;
-  }
-}
-
 /* ---------- Data tables ---------- */
 
 .table-wrap {
@@ -1251,42 +1088,20 @@ body {
    under the question; below 900px the surfaces become bottom tabs and the tree
    slides in as a drawer. */
 
-#app:has(.editor) {
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
 
 .editor {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  min-height: 0;
   background: var(--bg);
   position: relative;
 }
 
-.ed-appbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: none;
-  height: 57px;
-  padding: 0 16px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
 
 .ed-brand { display: flex; align-items: center; gap: 9px; flex: none; }
 .ed-brand-name { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
 
-.ed-taxonomy {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  padding-left: 12px;
-  border-left: 1px solid var(--border);
-  flex: none;
-}
 
 .ed-taxonomy-board { font-size: 12.5px; font-weight: 600; color: var(--text); }
 .ed-taxonomy-sub { font-size: 11px; color: var(--faint); }
@@ -1884,8 +1699,7 @@ body {
   .editor[data-pane="question"] .ed-explain,
   .editor[data-pane="answer"] .ed-explain { display: none; }
   .ed-brand-name,
-  .ed-taxonomy { display: none; }
-  .ed-bar-btn-label { display: none; }
+    .ed-bar-btn-label { display: none; }
   .ed-bar-btn { padding: 9px 11px; }
   .ed-crumb-link { max-width: 32vw; }
   .ed-explain { border-left: none; border-top: 1px solid var(--border); }
@@ -1928,9 +1742,6 @@ body {
 
 /* ---------- Subjects grid ---------- */
 
-#app:has(.subjects) {
-  max-width: 1100px;
-}
 
 .subjects-head {
   display: flex;
@@ -2070,3 +1881,282 @@ body {
 }
 
 .home-crumbs { margin-bottom: 12px; }
+
+/* ---------- App shell (every signed-in role) ----------
+   One layout: a left rail and a top bar around the page. The shell is built
+   once and kept; screens swap only the page, so nothing in the chrome ever
+   moves between screens. Widths are fixed so the swap never shifts layout. */
+
+#app.has-shell {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.shell {
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg);
+}
+
+.rail {
+  flex: none;
+  width: 56px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 8px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  transition: width 0.15s ease;
+  overflow: hidden;
+}
+
+.shell.rail-open .rail {
+  width: 220px;
+  padding: 12px 10px;
+}
+
+.rail-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 40px;
+  padding: 0 7px;
+  margin-bottom: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.rail-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 11px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.rail-item .icon {
+  width: 18px;
+  height: 18px;
+  color: var(--faint);
+}
+
+.rail-item:hover {
+  background: #f1f5f9;
+  color: var(--text);
+}
+
+.rail-item.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.rail-item.active .icon {
+  color: var(--primary);
+}
+
+.rail-label {
+  display: none;
+}
+
+.shell.rail-open .rail-label {
+  display: inline;
+}
+
+.rail-spacer {
+  flex: 1;
+}
+
+.rail-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 36px;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.rail-toggle .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+  transition: transform 0.15s;
+}
+
+.shell.rail-open .rail-toggle .icon {
+  transform: rotate(180deg);
+}
+
+.shell-page {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.shellbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+  height: 57px;
+  padding: 0 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.shellbar-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.shellbar-sub {
+  font-size: 12px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.shellbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.shellbar-actions .btn {
+  min-width: 0;
+  flex: none;
+  padding: 8px 14px;
+}
+
+.shell-main {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 24px 48px;
+}
+
+.shell-main-full {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-narrow {
+  max-width: 720px;
+}
+
+.page-wide {
+  max-width: 1100px;
+}
+
+.guest-main .page {
+  margin: 0 auto;
+}
+
+/* ---------- Skeletons ----------
+   Placeholders take the exact shape of what replaces them, so data arriving
+   changes nothing but the pixels. */
+
+.sk {
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #eef2f6 25%, #f5f7fa 50%, #eef2f6 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.2s ease-in-out infinite;
+}
+
+.sk-wrap {
+  pointer-events: none;
+}
+
+.sk-card {
+  gap: 10px;
+}
+
+.sk-btn .sk {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+@keyframes sk-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk { animation: none; }
+  .rail, .rail-toggle .icon { transition: none; }
+}
+
+/* The editor's tree toggle only exists on small screens. */
+.ed-tree-toggle {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .ed-tree-toggle {
+    display: inline-flex;
+  }
+  /* Icons only on small screens: the rail never widens where space is short. */
+  .shell.rail-open .rail {
+    width: 56px;
+    padding: 12px 8px;
+  }
+  .shell.rail-open .rail-label {
+    display: none;
+  }
+  .shell-main {
+    padding: 16px 16px 40px;
+  }
+  .shellbar {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  .rail {
+    width: 48px;
+    padding: 10px 4px;
+  }
+  .shell.rail-open .rail {
+    width: 48px;
+    padding: 10px 4px;
+  }
+  .rail-item, .rail-brand {
+    padding: 0 7px;
+  }
+  .rail-toggle {
+    display: none;
+  }
+}
