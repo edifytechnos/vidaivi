@@ -162,6 +162,7 @@ export async function showReview(
                   <span class="ed-panel-label">Question ${index + 1}</span>
                   <div class="ed-spacer"></div>
                   <span class="ed-hint">${escapeHtml(q.topic)} · ${q.marks} mark${q.marks > 1 ? "s" : ""}</span>
+                  ${q.source ? `<span class="chip chip-source">${escapeHtml(q.source)}</span>` : ""}
                 </div>
                 <div class="question-text">${formatText(q.q)}</div>
               </section>

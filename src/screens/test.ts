@@ -191,6 +191,7 @@ export function showQuestion(test: Test, attempt: Attempt) {
       <div class="meta">
         <span class="chip chip-topic">${escapeHtml(q.topic)}</span>
         <span class="chip chip-marks">${q.marks} mark${q.marks > 1 ? "s" : ""}</span>
+        ${q.source ? `<span class="chip chip-source">${escapeHtml(q.source)}</span>` : ""}
       </div>
       <div class="question-text">${formatText(q.q)}</div>
       <div id="answer-area"></div>

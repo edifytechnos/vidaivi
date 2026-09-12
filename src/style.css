@@ -3065,3 +3065,17 @@ body.modal-open {
 .modal-field-bad .modal-choices { outline: 1px solid var(--red); border-radius: var(--radius-sm); }
 
 .cell-quiet { color: var(--faint); }
+
+/* Where a question came from — "CBSE 2025". Quieter than the topic chip: it is
+   provenance, not the thing the student is being asked about. */
+.chip-source {
+  background: #eef2ff;
+  color: #4338ca;
+  font-variant-numeric: tabular-nums;
+}
+
+.ed-source-input { width: 190px; padding: 6px 10px; font-size: 13px; }
+
+@media (max-width: 899px) {
+  .ed-source-input { width: 100%; }
+}

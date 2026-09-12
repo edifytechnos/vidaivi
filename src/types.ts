@@ -7,6 +7,11 @@ export interface Question {
   id: string;
   chapter: string;
   topic: string;
+  /**
+   * Where the question came from, e.g. "CBSE 2025". Optional and free text —
+   * shown as a chip beside the topic. Never graded, never required.
+   */
+  source?: string;
   type: QType;
   q: string;
   options?: string[];

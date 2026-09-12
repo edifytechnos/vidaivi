@@ -213,6 +213,11 @@ function questionCard(q: DraftQuestion, i: number, total: number): string {
                placeholder="e.g. Inverse of a matrix" value="${escapeHtml(q.topic)}" />
       </div>
       <div>
+        <label class="field-label">Source</label>
+        <input class="numeric-input bq-source" type="text" maxlength="40"
+               placeholder="e.g. CBSE 2025 — optional" value="${escapeHtml(q.source ?? "")}" />
+      </div>
+      <div>
         <label class="field-label">Marks</label>
         <input class="numeric-input bq-marks" type="number" min="1" max="20" value="${q.marks}" />
       </div>
@@ -306,6 +311,12 @@ function bindQuestion(q: DraftQuestion) {
   const topicEl = card.querySelector<HTMLInputElement>(".bq-topic")!;
   topicEl.addEventListener("input", () => {
     q.topic = topicEl.value;
+  });
+  const sourceEl = card.querySelector<HTMLInputElement>(".bq-source")!;
+  sourceEl.addEventListener("input", () => {
+    const value = sourceEl.value.trim();
+    if (value) q.source = value;
+    else delete q.source;
   });
   const marksEl = card.querySelector<HTMLInputElement>(".bq-marks")!;
   marksEl.addEventListener("input", () => {
