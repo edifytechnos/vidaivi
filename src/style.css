@@ -2685,3 +2685,110 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* A signed-in student sits a test in silence — these say so, and say who
+   opens it. */
+.quiet-note {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.quiet-note .icon {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  color: var(--faint);
+}
+
+.locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 26px 20px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  text-align: center;
+}
+.locked .icon {
+  width: 24px;
+  height: 24px;
+  color: var(--faint);
+}
+.locked-title {
+  font-size: 14.5px;
+  font-weight: 700;
+}
+.locked-hint {
+  max-width: 460px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* Review: the editor's three columns, read-only. Only additions here — the
+   base .ed-* rules stay exactly as the editor asserts them. */
+.ed-readonly .ed-tree-q {
+  cursor: pointer;
+}
+.ed-readonly .ed-tree-test {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.ed-readonly .ed-explain .solution {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.rv-dot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 800;
+}
+.rv-done {
+  background: var(--green);
+}
+.rv-wrong {
+  background: var(--red);
+}
+.rv-pending {
+  background: var(--amber);
+}
+
+.rv-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rv-nav .btn {
+  min-width: 0;
+  padding: 8px 14px;
+}
+.rv-nav .btn[disabled] {
+  opacity: 0.4;
+}
+
+.locked-page {
+  text-align: center;
+}

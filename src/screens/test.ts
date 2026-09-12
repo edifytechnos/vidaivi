@@ -5,13 +5,14 @@ import {
   authEnabled,
   fetchGrading,
   fetchMyAttempt,
+  fetchReleased,
   getProfile,
   isLoggedIn,
   renderGoogleButton,
   saveProgress,
   submitAttempt,
 } from "../auth";
-import { hydrateThumbs, mountUploader, photoStrip } from "../answerphotos";
+import { mountUploader } from "../answerphotos";
 import {
   clearAttempt,
   loadAttempt,
@@ -23,6 +24,7 @@ import {
 import { totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
 import { mount } from "../shell";
+import { showReview } from "./review";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { showPhoneForm } from "./auth";
 
@@ -70,7 +72,7 @@ export function showLanding(test: Test) {
   // A finished test opens straight into read-only review — the landing card
   // has nothing left to offer once there is a score to look at.
   if (attempt?.completed) {
-    showReview(test, attempt);
+    void showReview(test, attempt);
     return;
   }
   // Nothing here, but it may have been started or finished on another device.
@@ -90,7 +92,7 @@ export function showLanding(test: Test) {
       label: "Review my answers",
       action: () => {
         track("review_open", { test: test.id });
-        showReview(test, attempt);
+        void showReview(test, attempt);
       },
     };
     secondary = `<button id="retake-btn" class="btn btn-ghost">Retake test</button>`;
@@ -141,7 +143,7 @@ export function showLanding(test: Test) {
   });
 }
 
-function showQuestion(test: Test, attempt: Attempt) {
+export function showQuestion(test: Test, attempt: Attempt) {
   const index = attempt.index;
   const q = test.questions[index];
   const pct = (index / test.questions.length) * 100;
@@ -161,6 +163,12 @@ function showQuestion(test: Test, attempt: Attempt) {
       <div id="answer-area"></div>
       <div id="feedback"></div>
       <div class="actions" id="actions"></div>
+      ${
+        canHandIn()
+          ? `<p class="hint quiet-note">${ICONS.lock} Answers and explanations open when your
+             teacher releases them. Your work is saved as you go.</p>`
+          : ""
+      }
     </main>`,
     { title: test.title, active: "subjects", width: "narrow" }
   );
@@ -236,9 +244,7 @@ function showQuestion(test: Test, attempt: Attempt) {
       </div>
       <div class="section-label">Your working</div>
       <div id="uploader"></div>
-      <div class="section-label">Check yourself</div>
-      <p class="hint">Reading the solution does not change your marks — your
-      teacher marks from the photo.</p>`;
+      `;
     const readImages = mountUploader(document.getElementById("uploader")!, {
       testId: test.id,
       testTitle: test.title,
@@ -248,18 +254,12 @@ function showQuestion(test: Test, attempt: Attempt) {
       initial: attempt.answers[q.id]?.images ?? [],
       onChange: () => {},
     });
-    actions.innerHTML = `
-      <button id="reveal-btn" class="btn btn-ghost">Show solution</button>
-      <button id="handin-btn" class="btn btn-primary">Hand in answer</button>`;
+    actions.innerHTML = `<button id="handin-btn" class="btn btn-primary">Hand in answer</button>`;
     actions.insertAdjacentHTML(
       "afterend",
       `<p class="hint" id="handin-note">No photo? You can still hand in — but there
        is nothing for your teacher to mark, so this question scores 0.</p>`
     );
-    document.getElementById("reveal-btn")!.addEventListener("click", (e) => {
-      showSolution(q);
-      (e.currentTarget as HTMLButtonElement).remove();
-    });
     document.getElementById("handin-btn")!.addEventListener("click", () => {
       const images = readImages();
       recordAndNext(test, attempt, q, false, images.length ? 1 : 0, false, {
@@ -309,6 +309,14 @@ function finishQuestion(
   correct: boolean,
   given: number
 ) {
+  // A signed-in student is sitting a test, not drilling: nothing comes back.
+  // No verdict, no correct answer, no worked solution — their teacher decides
+  // when the paper opens. A guest on the demo has no teacher, so they keep the
+  // instant feedback that makes the demo worth sharing.
+  if (canHandIn()) {
+    recordAndNext(test, attempt, q, correct, given, false);
+    return;
+  }
   const feedback = document.getElementById("feedback")!;
   feedback.innerHTML = `
     <div class="verdict ${correct ? "verdict-correct" : "verdict-incorrect"}">
@@ -448,9 +456,12 @@ export async function hydrateMarks(
   return changed;
 }
 
-function showScore(test: Test, attempt: Attempt) {
+function showScore(test: Test, attempt: Attempt, released?: boolean) {
   const total = totalMarks(test);
   const waiting = pendingMarks(test, attempt);
+  // A signed-in student sees nothing question-by-question until the teacher
+  // releases the paper. Guests have no teacher, so theirs is always open.
+  const locked = canHandIn() && released !== true;
   // With marks still out, the percentage would be a lie — the denominator is
   // what has actually been graded, and the pill says what is missing.
   const graded = total - waiting.marks;
@@ -474,7 +485,16 @@ function showScore(test: Test, attempt: Attempt) {
              ${waiting.count} long answer${waiting.count > 1 ? "s" : ""}</span></div>`
           : ""
       }
-      <ul class="score-breakdown">
+      ${
+        locked
+          ? `<div class="locked">
+               ${ICONS.lock}
+               <span class="locked-title">Question-by-question results are locked</span>
+               <span class="locked-hint">Your teacher opens the answers and worked
+               solutions once the class has sat the test. You will see which questions
+               you got right, the correct answers and the explanations, all in one go.</span>
+             </div>`
+          : `<ul class="score-breakdown">
         ${test.questions
           .map((q, i) => {
             const a = attempt.answers[q.id];
@@ -486,45 +506,35 @@ function showScore(test: Test, attempt: Attempt) {
             </li>`;
           })
           .join("")}
-      </ul>
+      </ul>`
+      }
       <p class="hint">Your result is saved on this phone — open this link again any time to review the questions and solutions.</p>
       <div class="actions">
-        <button id="review-btn" class="btn btn-primary">Review answers</button>
+        ${locked ? "" : `<button id="review-btn" class="btn btn-primary">Review answers</button>`}
         <button id="restart-btn" class="btn btn-ghost">Try again</button>
       </div>
     </main>`,
     { title: test.title, active: "subjects", width: "narrow" }
   );
-  document.getElementById("review-btn")!.addEventListener("click", () => {
+  document.getElementById("review-btn")?.addEventListener("click", () => {
     track("review_open", { test: test.id });
-    showReview(test, attempt);
+    void showReview(test, attempt);
   });
   document.getElementById("restart-btn")!.addEventListener("click", () => {
     track("test_retake", { test: test.id });
     clearAttempt(test.id);
     showQuestion(test, newAttempt());
   });
-  // Marks awarded since this device last looked.
-  if (waiting.count) {
-    void hydrateMarks(test, attempt).then((changed) => {
-      if (changed && document.querySelector(".score-card")) showScore(test, attempt);
+  // Marks awarded, or the paper opened, since this device last looked.
+  if (locked || waiting.count) {
+    void Promise.all([
+      waiting.count ? hydrateMarks(test, attempt) : Promise.resolve(false),
+      locked ? fetchReleased(test.id) : Promise.resolve(true),
+    ]).then(([changed, open]) => {
+      if (!document.querySelector(".score-card")) return;
+      if (changed || open !== !locked) showScore(test, attempt, open);
     });
   }
-}
-
-function describeGiven(q: Question, a: StoredAnswer | undefined): string {
-  if (!a) return "Not answered";
-  if (q.type === "mcq") {
-    const i = a.given ?? -1;
-    const letter = i >= 0 ? String.fromCharCode(65 + i) : "?";
-    return `Your answer: <strong>${letter}.</strong> ${escapeHtml(q.options?.[i] ?? "")}`;
-  }
-  if (q.type === "numeric") return `Your answer: <strong>${a.given}</strong>`;
-  if (a.review === "pending") {
-    return `Handed in${a.images?.length ? ` · ${a.images.length} photo${a.images.length > 1 ? "s" : ""}` : ""} — waiting for your teacher`;
-  }
-  if (a.review === "marked") return "Marked by your teacher";
-  return a.correct ? "Self-assessed: got it right" : "Self-assessed: got it wrong";
 }
 
 /**
@@ -548,7 +558,7 @@ async function resumeFromServer(test: Test): Promise<void> {
       updatedAt: done.completedAt,
     };
     saveAttempt(test.id, attempt);
-    showReview(test, attempt);
+    void showReview(test, attempt);
     return;
   }
 
@@ -567,91 +577,15 @@ async function resumeFromServer(test: Test): Promise<void> {
   }
 }
 
-/** What the right answer was — the first thing a student asks after a cross. */
-function correctLine(q: Question, a: StoredAnswer | undefined): string {
-  if (a?.correct || q.type === "long") return "";
-  if (q.type === "mcq") {
-    const i = q.answer ?? -1;
-    if (i < 0) return "";
-    return `<p class="review-correct">Correct answer: <strong>${String.fromCharCode(65 + i)}.</strong> ${escapeHtml(q.options?.[i] ?? "")}</p>`;
-  }
-  if (q.type === "numeric" && q.answer !== undefined) {
-    return `<p class="review-correct">Correct answer: <strong>${q.answer}</strong></p>`;
-  }
-  return "";
-}
-
 /**
- * Read-only review of someone else's attempt — what a parent sees. Same
- * screen, minus every control that would write to their child's record.
+ * Read-only review of someone else's attempt — what a parent sees. Same screen,
+ * minus every control that would write to their child's record.
  */
-export function showReviewFor(test: Test, attempt: Attempt, back: () => void): void {
-  showReview(test, attempt, back);
-}
-
-function showReview(test: Test, attempt: Attempt, viewerBack?: () => void) {
-  const total = totalMarks(test);
-  const waiting = pendingMarks(test, attempt);
-  mount(
-    `
-    <main>
-      <div class="review-header card">
-        <h2 class="landing-title">${escapeHtml(test.title)} — Review</h2>
-        <div class="score-big score-big-small">${attempt.score} / ${waiting.count ? total - waiting.marks : total}</div>
-        ${
-          waiting.count
-            ? `<div class="await-pill">${ICONS.mark}<span>+${waiting.marks} marks awaiting review</span></div>`
-            : ""
-        }
-      </div>
-      ${test.questions
-        .map((q, i) => {
-          const a = attempt.answers[q.id];
-          const pending = a?.review === "pending";
-          const ok = a?.correct ?? false;
-          const chip = pending
-            ? `<span class="status-chip status-progress">Awaiting review</span>`
-            : `<span class="status-chip ${ok ? "status-done" : "status-wrong"}">${ok ? `✓ ${a?.earned ?? 0}` : "✗ 0"}/${q.marks}</span>`;
-          return `
-        <div class="card review-item">
-          <div class="meta">
-            <span class="chip">${i + 1}</span>
-            <span class="chip chip-topic">${escapeHtml(q.topic)}</span>
-            ${chip}
-          </div>
-          <div class="question-text">${formatText(q.q)}</div>
-          <p class="review-given">${describeGiven(q, a)}</p>
-          ${photoStrip(a?.images ?? [], "Handed-in working")}
-          ${
-            a?.review === "marked" && a.comment
-              ? `<p class="review-comment"><strong>Your teacher:</strong> ${escapeHtml(a.comment)}</p>`
-              : ""
-          }
-          ${correctLine(q, a)}
-          <div class="solution">
-            <div class="solution-title">Solution</div>
-            ${formatText(q.solution)}
-          </div>
-        </div>`;
-        })
-        .join("")}
-      <div class="actions">
-        ${
-          viewerBack
-            ? `<button id="review-back" class="btn btn-ghost">Back</button>`
-            : `<button id="retake-btn" class="btn btn-primary">Retake test</button>`
-        }
-      </div>
-    </main>`,
-    { title: test.title, active: "subjects", width: "narrow" }
-  );
-  document.getElementById("review-back")?.addEventListener("click", viewerBack ?? (() => {}));
-  document.getElementById("retake-btn")?.addEventListener("click", () => {
-    track("test_retake", { test: test.id });
-    clearAttempt(test.id);
-    showQuestion(test, newAttempt());
-  });
-  renderMath(app);
-  void hydrateThumbs(app);
-  window.scrollTo(0, 0);
+export function showReviewFor(
+  test: Test,
+  attempt: Attempt,
+  back: () => void,
+  student?: string
+): void {
+  void showReview(test, attempt, { back, student });
 }

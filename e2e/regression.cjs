@@ -129,6 +129,39 @@ function check(ok, label) {
     check(true, "my tests rejects invalid JSON with an error");
     await shot("my-tests");
 
+    // The Vidaivi → Vidai rename must not cost a student their data. Seed the
+    // pre-rename keys, reload, and the app should have carried them across.
+    await page.evaluate(() => {
+      // Only this check's own keys — the admin session lives here too.
+      for (const k of ["vidai:attempt:matrices-demo", "vidai:guestMode"]) localStorage.removeItem(k);
+      localStorage.setItem(
+        "vidaivi:attempt:matrices-demo",
+        JSON.stringify({ answers: {}, index: 2, completed: false, score: 1, updatedAt: "" })
+      );
+      localStorage.setItem("vidaivi:guestMode", "1");
+    });
+    await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("#primary-btn", { timeout: 20000 });
+    const migrated = await page.evaluate(() => ({
+      attempt: localStorage.getItem("vidai:attempt:matrices-demo"),
+      guest: localStorage.getItem("vidai:guestMode"),
+      oldKept: localStorage.getItem("vidaivi:attempt:matrices-demo") !== null,
+    }));
+    check(
+      !!migrated.attempt && JSON.parse(migrated.attempt).index === 2,
+      "a pre-rename attempt is carried across to the new storage key"
+    );
+    check(migrated.guest === "1", "and so is the rest of the device's state");
+    check(migrated.oldKept, "the old keys are left in place for older cached bundles");
+    await page.evaluate(() => {
+      for (const k of [
+        "vidai:attempt:matrices-demo",
+        "vidai:guestMode",
+        "vidaivi:attempt:matrices-demo",
+        "vidaivi:guestMode",
+      ]) localStorage.removeItem(k);
+    });
+
     // Review: a completed test opens read-only, on this device and on a
     // device that has never held the attempt.
     await page.evaluate(() => {
@@ -156,6 +189,31 @@ function check(ok, label) {
       (await page.textContent(".review-correct")).includes("Correct answer"),
       "a wrong answer names the correct one"
     );
+
+    // One question per page, with the rest listed beside it — the teacher's
+    // authoring layout, read-only. Never a scroll of the whole paper.
+    const shape = await page.evaluate(() => ({
+      shown: document.querySelectorAll(".ed-center .question-text").length,
+      rows: document.querySelectorAll("#rv-tree .ed-tree-q").length,
+      cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
+      first: document.querySelector(".ed-center .question-text")?.textContent?.trim() || "",
+    }));
+    check(shape.shown === 1, `review shows one question at a time (${shape.shown} on screen)`);
+    check(shape.rows > 1, `the rest of the paper is listed beside it (${shape.rows} rows)`);
+    check(shape.cols === 3, `it uses the editor's three columns (${shape.cols})`);
+    await page.click("#rv-tree .ed-tree-q[data-i='2']");
+    await page.waitForFunction(
+      (before) => (document.querySelector(".ed-center .question-text")?.textContent?.trim() || "") !== before,
+      shape.first,
+      { timeout: 10000 }
+    );
+    check(true, "picking a question from the list swaps it in place");
+    check(
+      await page.evaluate(() => new URLSearchParams(location.search).get("review") !== null),
+      "the url carries the question, so a refresh lands back on it"
+    );
+    await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".review-item", { timeout: 20000 });
     await shot("review");
 
     // The cross-device case: save an attempt to the server, wipe this device,
