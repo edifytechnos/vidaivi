@@ -354,14 +354,14 @@ function credentialMessage(s: { name: string; username: string; password: string
   return (
     `Hi! Here are ${s.name}'s login details for Vidaivi maths practice tests:\n\n` +
     `Username: ${s.username}\nPassword: ${s.password}\n\n` +
-    `Open https://vidaivi.seyali.app , tap "Student login" and enter these to start.`
+    `Open https://vidai.seyali.app , tap "Student login" and enter these to start.`
   );
 }
 
 function inviteMessage(s: { name: string; code: string }): string {
   return (
     `Hi! You can now follow ${s.name}'s maths practice results on Vidaivi.\n\n` +
-    `Open https://vidaivi.seyali.app , sign in with Google, tap "Add a child" ` +
+    `Open https://vidai.seyali.app , sign in with Google, tap "Add a child" ` +
     `and enter this code:\n\n${s.code}\n\n` +
     `The code works once and is just for you.`
   );

@@ -11,7 +11,7 @@ const fs = require("fs");
 const path = require("path");
 
 const DIST = path.join(__dirname, "..", "dist");
-const API = process.env.E2E_API_BASE || "https://vidaivi.seyali.app";
+const API = process.env.E2E_API_BASE || "https://vidai.seyali.app";
 const PORT = Number(process.env.E2E_PORT || 4400);
 const MIME = {
   ".html": "text/html",
