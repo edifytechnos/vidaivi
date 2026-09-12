@@ -56,8 +56,8 @@ export interface StudentRecord {
 const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 export const authEnabled = !!CLIENT_ID;
 
-const AUTH_KEY = "vidaivi:auth";
-const PENDING_KEY = "vidaivi:pendingAttempts";
+const AUTH_KEY = "vidai:auth";
+const PENDING_KEY = "vidai:pendingAttempts";
 
 export function getAuth(): AuthState | null {
   try {
@@ -103,8 +103,12 @@ export function signOut(): void {
 
 export function authHeader(): Record<string, string> {
   const auth = getAuth();
+  if (!auth) return {};
   // Custom header: SWA strips/replaces Authorization before it reaches the API.
-  return auth ? { "X-Vidaivi-Auth": auth.credential } : {};
+  // Both names go out for one release: this bundle may be talking to an API
+  // that predates the Vidaivi → Vidai rename, and the deploy is not atomic.
+  // Drop X-Vidaivi-Auth once the renamed API is live everywhere.
+  return { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
 }
 
 // ---------- Google Identity Services (teachers / parents) ----------
@@ -130,6 +134,7 @@ async function apiLogin(credential: string, phone?: string): Promise<Profile> {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-Vidai-Auth": credential,
       "X-Vidaivi-Auth": credential,
     },
     body: JSON.stringify(phone ? { phone } : {}),
@@ -364,6 +369,188 @@ export async function fetchReports(username?: string): Promise<StudentReport[] |
     return (await res.json()).students as StudentReport[];
   } catch {
     return null;
+  }
+}
+
+// ---------- Long-answer photos and teacher marking ----------
+
+export interface GradedAnswer {
+  studentId: string;
+  username: string;
+  studentName: string;
+  testId: string;
+  testTitle: string;
+  questionId: string;
+  questionIndex: number;
+  maxMarks: number;
+  images: string[];
+  status: "submitted" | "marked";
+  submittedAt: string;
+  awarded: number | null;
+  comment: string;
+  markedAt: string;
+  markedBy: string;
+}
+
+export interface UploadedAnswerImage {
+  blob: string;
+  images: string[];
+}
+
+/** Hand in one photo of a long answer. Throws with a readable message. */
+export async function uploadAnswerImage(payload: {
+  testId: string;
+  testTitle: string;
+  questionId: string;
+  questionIndex: number;
+  maxMarks: number;
+  image: string;
+}): Promise<UploadedAnswerImage> {
+  const res = await fetch("/api/answerimage", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify(payload),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || "Could not upload that photo");
+  return body as UploadedAnswerImage;
+}
+
+export async function removeAnswerImage(
+  testId: string,
+  questionId: string,
+  blob: string
+): Promise<string[]> {
+  const res = await fetch("/api/answerimage", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify({ action: "remove", testId, questionId, blob }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || "Could not remove that photo");
+  return (body.images || []) as string[];
+}
+
+/**
+ * A short-lived signed URL for one photo. An <img> cannot carry the auth
+ * header, so the URL is fetched first and the image points at that.
+ */
+export async function answerImageUrl(blob: string): Promise<string | null> {
+  try {
+    const res = await fetch(`/api/answerimage?blob=${encodeURIComponent(blob)}`, {
+      headers: authHeader(),
+    });
+    if (!res.ok) return null;
+    return (await res.json()).url as string;
+  } catch {
+    return null;
+  }
+}
+
+/** Grading rows for one student — the caller's own unless `student` is given. */
+export async function fetchGrading(opts: {
+  student?: string;
+  testId?: string;
+} = {}): Promise<GradedAnswer[]> {
+  try {
+    const q = new URLSearchParams();
+    if (opts.student) q.set("student", opts.student);
+    if (opts.testId) q.set("testId", opts.testId);
+    const suffix = q.toString() ? `?${q}` : "";
+    const res = await fetch(`/api/grading${suffix}`, { headers: authHeader() });
+    if (!res.ok) return [];
+    return ((await res.json()).answers || []) as GradedAnswer[];
+  } catch {
+    return [];
+  }
+}
+
+/** Teacher/admin: everything their students have handed in and not had marked. */
+export async function fetchMarkingQueue(): Promise<GradedAnswer[] | null> {
+  try {
+    const res = await fetch("/api/grading?queue=1", { headers: authHeader() });
+    if (!res.ok) return null;
+    return ((await res.json()).answers || []) as GradedAnswer[];
+  } catch {
+    return null;
+  }
+}
+
+export async function saveMark(payload: {
+  username: string;
+  testId: string;
+  questionId: string;
+  awarded: number;
+  comment?: string;
+}): Promise<boolean> {
+  try {
+    const res = await fetch("/api/grading", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "mark", ...payload }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+// ---------- Releasing the answers ----------
+
+export interface ReleaseState {
+  testId: string;
+  classWide: { releasedAt: string; releasedBy: string } | null;
+  students: { username: string; releasedAt: string; releasedBy: string }[];
+}
+
+/**
+ * Has the teacher opened this paper? Answers, correct options and worked
+ * solutions all hang off this — a test is silent until it comes back true.
+ * Fails closed: a network error keeps the paper shut rather than leaking it.
+ */
+export async function fetchReleased(testId: string, student?: string): Promise<boolean> {
+  try {
+    const q = new URLSearchParams({ testId });
+    if (student) q.set("student", student);
+    const res = await fetch(`/api/release?${q}`, { headers: authHeader() });
+    if (!res.ok) return false;
+    return !!(await res.json()).released;
+  } catch {
+    return false;
+  }
+}
+
+/** Teacher/admin: who this test is open for. */
+export async function fetchReleaseState(testId: string): Promise<ReleaseState | null> {
+  try {
+    const res = await fetch(`/api/release?testId=${encodeURIComponent(testId)}`, {
+      headers: authHeader(),
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as ReleaseState;
+  } catch {
+    return null;
+  }
+}
+
+/** Open or close a paper — for one student, or for the whole class. */
+export async function setReleased(
+  testId: string,
+  opts: { username?: string; released: boolean }
+): Promise<boolean> {
+  try {
+    const res = await fetch("/api/release", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({
+        action: opts.released ? "release" : "unrelease",
+        testId,
+        username: opts.username,
+      }),
+    });
+    return res.ok;
+  } catch {
+    return false;
   }
 }
 

@@ -201,5 +201,5 @@ async function openChildReview(child: Child, testId: string): Promise<void> {
     updatedAt: done.completedAt,
   };
   track("parent_review_open");
-  showReviewFor(test, attempt, () => void showChildResults(child));
+  showReviewFor(test, attempt, () => void showChildResults(child), child.username);
 }

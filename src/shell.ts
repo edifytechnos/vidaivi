@@ -8,9 +8,17 @@
 // from the cached profile before any request is made.
 
 import { getProfile, isAdmin, isLoggedIn, isParent, isTeacher } from "./auth";
-import { app, ICONS } from "./dom";
+import type { Profile } from "./auth";
+import { app, escapeHtml, ICONS } from "./dom";
 
-export type RailKey = "subjects" | "students" | "mytests" | "admin" | "results" | "children";
+export type RailKey =
+  | "subjects"
+  | "mark"
+  | "students"
+  | "mytests"
+  | "admin"
+  | "results"
+  | "children";
 
 interface RailItem {
   key: RailKey;
@@ -23,12 +31,13 @@ const RAIL_ITEMS: RailItem[] = [
   { key: "children", label: "My children", icon: ICONS.users, show: isParent },
   { key: "subjects", label: "Subjects", icon: ICONS.folder, show: () => isLoggedIn() && !isParent() },
   { key: "results", label: "My results", icon: ICONS.check, show: () => getProfile()?.kind === "student" },
+  { key: "mark", label: "To mark", icon: ICONS.mark, show: isTeacher },
   { key: "students", label: "My students", icon: ICONS.users, show: isTeacher },
   { key: "mytests", label: "My tests", icon: ICONS.home, show: isAdmin },
   { key: "admin", label: "Teacher access", icon: ICONS.shield, show: isAdmin },
 ];
 
-const RAIL_KEY = "vidaivi:rail";
+const RAIL_KEY = "vidai:rail";
 
 export function railExpanded(): boolean {
   try {
@@ -55,12 +64,53 @@ function railMarkup(): string {
     .join("");
   return `
     <nav class="rail" aria-label="Main">
-      <div class="rail-brand"><span class="brand-mark">V</span><span class="rail-label">Vidaivi</span></div>
       ${items}
       <div class="rail-spacer"></div>
-      <button class="rail-item" data-rail="signout" title="Sign out" aria-label="Sign out">${ICONS.logout}<span class="rail-label">Sign out</span></button>
       <button class="rail-toggle" id="rail-toggle" aria-label="Expand navigation" aria-expanded="${railExpanded()}">${ICONS.chevron}</button>
     </nav>`;
+}
+
+/** Two letters for the avatar — a name if we have one, else the username. */
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "?";
+  return (parts[0][0] + (parts[1]?.[0] ?? "")).toUpperCase();
+}
+
+function roleLabel(profile: Profile): string {
+  if (profile.kind === "student") return "Student";
+  if (profile.role === "admin") return "Admin";
+  if (profile.role === "teacher") return "Teacher";
+  if (profile.role === "parent") return "Parent";
+  return "";
+}
+
+/**
+ * The profile chip and its menu, at the far right of the window-wide top bar.
+ * Sign out lives here rather than at the foot of the rail — where a signed-in
+ * person looks for it.
+ */
+function profileMarkup(): string {
+  const profile = getProfile();
+  if (!profile) return "";
+  const name = profile.name || profile.sub;
+  const role = roleLabel(profile);
+  return `
+    <div class="tb-profile-wrap">
+      <button class="tb-profile" id="profile-btn" aria-haspopup="menu" aria-expanded="false">
+        <span class="tb-avatar">${escapeHtml(initials(name))}</span>
+        <span class="tb-name">${escapeHtml(name)}</span>
+        ${role ? `<span class="tb-role">· ${role}</span>` : ""}
+        ${ICONS.caretDown}
+      </button>
+      <div class="profile-menu" id="profile-menu" role="menu" hidden>
+        <div class="pm-head">
+          <b>${escapeHtml(name)}</b>
+          <span>${escapeHtml(profile.email || profile.sub)}${role ? ` · ${role}` : ""}</span>
+        </div>
+        <button class="pm-item" data-rail="signout" role="menuitem">${ICONS.logout}Sign out</button>
+      </div>
+    </div>`;
 }
 
 export interface ShellOpts {
@@ -85,7 +135,7 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
     // Guests: no rail. A plain brand bar and the page, as before.
     app.className = "";
     app.innerHTML = `
-      <header class="topbar"><h1><a class="home-link" href="./"><span class="brand-mark">V</span>Vidaivi</a></h1></header>
+      <header class="topbar"><h1><a class="home-link" href="./"><span class="brand-mark">V</span>Vidai</a></h1></header>
       <main id="shell-main" class="guest-main"><div class="page page-narrow">${content}</div></main>`;
     return document.querySelector<HTMLElement>("#shell-main .page")!;
   }
@@ -95,14 +145,19 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
     app.className = "has-shell";
     app.innerHTML = `
       <div class="shell${railExpanded() ? " rail-open" : ""}">
-        ${railMarkup()}
-        <div class="shell-page">
-          <header class="shellbar">
-            <span class="shellbar-title" id="shellbar-title"></span>
-            <span class="shellbar-sub" id="shellbar-sub"></span>
-            <div class="shellbar-actions" id="shellbar-actions"></div>
-          </header>
-          <main class="shell-main" id="shell-main"></main>
+        <header class="shellbar">
+          <span class="shellbar-brand"><span class="brand-mark">V</span>Vidai</span>
+          <span class="shellbar-div"></span>
+          <span class="shellbar-title" id="shellbar-title"></span>
+          <span class="shellbar-sub" id="shellbar-sub"></span>
+          <div class="shellbar-actions" id="shellbar-actions"></div>
+          ${profileMarkup()}
+        </header>
+        <div class="shell-body">
+          ${railMarkup()}
+          <div class="shell-page">
+            <main class="shell-main" id="shell-main"></main>
+          </div>
         </div>
       </div>`;
     shell = app.querySelector<HTMLElement>(".shell")!;

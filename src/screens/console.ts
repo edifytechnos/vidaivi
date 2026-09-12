@@ -4,6 +4,7 @@
 import { track } from "../analytics";
 import {
   createStudent,
+  fetchReleaseState,
   fetchReports,
   isAdmin,
   listStudents,
@@ -11,6 +12,7 @@ import {
   modifyTeacher,
   removeStudent,
   resetStudentPassword,
+  setReleased,
   signOut,
 } from "../auth";
 import { setGuest } from "../attempts";
@@ -325,7 +327,7 @@ export function showStudentReport(username: string) {
         ${
           attempts.length
             ? `<div class="table-wrap"><table class="data-table">
-                <thead><tr><th>Test</th><th>Completed</th><th>Score</th><th>Result</th></tr></thead>
+                <thead><tr><th>Test</th><th>Completed</th><th>Score</th><th>Result</th><th>Answers</th><th></th></tr></thead>
                 <tbody>${attempts
                   .map((a) => {
                     const p = pct(a.score, a.total);
@@ -334,6 +336,8 @@ export function showStudentReport(username: string) {
                       <td>${new Date(a.completedAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</td>
                       <td class="cell-mono">${a.score}/${a.total}</td>
                       <td><span class="status-chip ${p >= 50 ? "status-done" : "status-wrong"}">${p}%</span></td>
+                      <td class="rel-cell" data-test="${escapeHtml(a.testId)}"><span class="status-chip status-new">…</span></td>
+                      <td class="cell-actions"><button class="btn-link rel-toggle" data-test="${escapeHtml(a.testId)}" data-user="${escapeHtml(s.username)}">Release</button></td>
                     </tr>`;
                   })
                   .join("")}</tbody>
@@ -341,18 +345,103 @@ export function showStudentReport(username: string) {
             : `<p class="hint">No attempts yet — share the login and the test link.</p>`
         }
       </div>
+      ${
+        attempts.length
+          ? `<div class="card">
+        <div class="solution-title">Release answers to the whole class</div>
+        <p class="hint">Until you release a test, students see their marks but not the
+        answers or the worked solutions. This opens it for everyone who sat it.</p>
+        <div class="rel-rows" id="rel-class">${[...attempted]
+          .map(
+            (id) => `<div class="rel-row" data-test="${escapeHtml(id)}">
+              <span class="rel-name">${escapeHtml(testTitle(id))}</span>
+              <span class="rel-meta rel-state">Checking…</span>
+              <button class="btn btn-ghost rel-class-toggle" data-test="${escapeHtml(id)}">Release to class</button>
+            </div>`
+          )
+          .join("")}</div>
+      </div>`
+          : ""
+      }
       <div class="actions">
         <button id="rep-back" class="btn btn-ghost">Back to students</button>
       </div>`;
     document.getElementById("rep-back")!.addEventListener("click", showTeacher);
+    void paintRelease(s.username, [...attempted]);
   })();
+}
+
+/**
+ * Fill in who each test is open for, then wire the two Release controls.
+ * State is read per test rather than assumed, so a teacher opening the report
+ * on a second device sees the truth.
+ */
+async function paintRelease(username: string, testIds: string[]): Promise<void> {
+  const states = new Map<string, { classWide: boolean; mine: boolean }>();
+
+  const load = async (id: string) => {
+    const state = await fetchReleaseState(id);
+    states.set(id, {
+      classWide: !!state?.classWide,
+      mine: !!state?.students.some((x) => x.username === username),
+    });
+  };
+  await Promise.all(testIds.map(load));
+
+  const paint = () => {
+    for (const [id, state] of states) {
+      const open = state.classWide || state.mine;
+      document.querySelectorAll<HTMLElement>(`.rel-cell[data-test="${CSS.escape(id)}"]`).forEach((cell) => {
+        cell.innerHTML = `<span class="status-chip ${open ? "status-done" : "status-new"}">${open ? "Released" : "Locked"}</span>`;
+      });
+      document.querySelectorAll<HTMLElement>(`.rel-toggle[data-test="${CSS.escape(id)}"]`).forEach((btn) => {
+        btn.textContent = state.mine ? "Hide again" : state.classWide ? "Open to class" : "Release";
+        btn.toggleAttribute("disabled", state.classWide && !state.mine);
+      });
+      const row = document.querySelector<HTMLElement>(`.rel-row[data-test="${CSS.escape(id)}"]`);
+      if (row) {
+        row.querySelector(".rel-state")!.textContent = state.classWide
+          ? "Open to the whole class"
+          : "Locked — students see marks only";
+        row.querySelector(".rel-class-toggle")!.textContent = state.classWide
+          ? "Hide again"
+          : "Release to class";
+      }
+    }
+  };
+  paint();
+
+  const container = document.querySelector(".shell-main .page");
+  container?.addEventListener("click", async (e) => {
+    const target = e.target as HTMLElement;
+    const one = target.closest<HTMLElement>(".rel-toggle");
+    const all = target.closest<HTMLElement>(".rel-class-toggle");
+    const btn = one ?? all;
+    if (!btn || btn.hasAttribute("disabled")) return;
+    const id = btn.dataset.test!;
+    const state = states.get(id);
+    if (!state) return;
+
+    btn.setAttribute("disabled", "");
+    const wantOpen = all ? !state.classWide : !state.mine;
+    const ok = await setReleased(id, {
+      username: all ? undefined : username,
+      released: wantOpen,
+    });
+    btn.removeAttribute("disabled");
+    if (!ok) return;
+    track(wantOpen ? "answers_released" : "answers_hidden", { test: id, scope: all ? "class" : "student" });
+    if (all) state.classWide = wantOpen;
+    else state.mine = wantOpen;
+    paint();
+  });
 }
 
 // ---------- Teacher: student roster ----------
 
 function credentialMessage(s: { name: string; username: string; password: string }): string {
   return (
-    `Hi! Here are ${s.name}'s login details for Vidaivi maths practice tests:\n\n` +
+    `Hi! Here are ${s.name}'s login details for Vidai maths practice tests:\n\n` +
     `Username: ${s.username}\nPassword: ${s.password}\n\n` +
     `Open https://vidai.seyali.app , tap "Student login" and enter these to start.`
   );
@@ -360,7 +449,7 @@ function credentialMessage(s: { name: string; username: string; password: string
 
 function inviteMessage(s: { name: string; code: string }): string {
   return (
-    `Hi! You can now follow ${s.name}'s maths practice results on Vidaivi.\n\n` +
+    `Hi! You can now follow ${s.name}'s maths practice results on Vidai.\n\n` +
     `Open https://vidai.seyali.app , sign in with Google, tap "Add a child" ` +
     `and enter this code:\n\n${s.code}\n\n` +
     `The code works once and is just for you.`

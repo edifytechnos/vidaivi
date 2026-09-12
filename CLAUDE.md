@@ -45,8 +45,10 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 
 ## Deployment
 
-- Live at https://vidai.seyali.app (Azure Static Web Apps, Free tier; custom domain
-  via CNAME on Hostinger, SSL managed by Azure).
+- Live at https://vidai.seyali.app (Azure Static Web Apps, Free tier; custom
+  domain via CNAME on Hostinger, SSL managed by Azure). The pre-rename host
+  https://vidaivi.seyali.app stays pointed at the same app, so test links
+  already shared in the class WhatsApp group keep working.
 - Changing the public hostname takes three steps, all three needed or sign-in breaks:
   CNAME `<host>` → `ambitious-plant-03e9c0f00.5.azurestaticapps.net` in Hostinger DNS,
   the same host added under **Custom domains** in the Azure Static Web App (Azure
@@ -93,7 +95,7 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 - First login asks once for a WhatsApp phone number (stored on the profile —
   the parent-contact capture from the product plan).
 - Attempt saves are fire-and-forget with a localStorage retry queue
-  (`vidaivi:pendingAttempts`); localStorage remains the source of truth for the
+  (`vidai:pendingAttempts`); localStorage remains the source of truth for the
   student's own resume/review UX. Google ID tokens expire after ~1h — an
   expired session just re-queues saves until the next sign-in.
 
@@ -175,7 +177,10 @@ and the explanation, each with a live "Student sees" preview.
 - `api.ts` — fetch client for the DB-backed tests API.
 - `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
 - `screens/builder.ts` — visual test builder (create/edit cloud tests).
-- `screens/test.ts` — test player (landing → questions → score → review).
+- `screens/test.ts` — test player (landing → questions → score).
+- `screens/review.ts` — read-only review, one question per page.
+- `screens/marking.ts` — the teacher's marking queue for long answers.
+- `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
 its listeners; cross-screen imports are function-only (safe with ES-module cycles).
@@ -224,7 +229,7 @@ object:
 | `questions` | Question[] | yes | Array of question objects (below). |
 
 Student progress/results are stored per test in `localStorage` under
-`vidaivi:attempt:<test id>` — device-local, no backend.
+`vidai:attempt:<test id>` — device-local, no backend.
 
 Question objects (`src/main.ts` types this as `Question`; do not rename or
 repurpose fields):
@@ -245,13 +250,111 @@ repurpose fields):
 Grading by type:
 - **mcq** — student picks an option; correct iff selected index equals `answer`.
 - **numeric** — student types a number; correct iff `|value − answer| ≤ tolerance` (defaults to 0 if omitted).
-- **long** — no auto-grading: student reveals the solution and self-assesses ("I got it right/wrong"), earning full `marks` or 0. Do not add `options`/`answer`/`tolerance` to long questions.
+- **long** — no auto-grading. A signed-in student photographs their working and hands it in; the teacher awards the marks (see below). A guest keeps the old self-assessment. Do not add `options`/`answer`/`tolerance` to long questions.
 
 Notes:
 - `answer` is a JSON **number** in both cases (not a string) — that's what `src/main.ts` grades against.
 - Question style: CBSE board pattern (1-mark MCQ, 2–3 mark numeric, 5-mark long).
 - Total marks = sum of `marks` across the file; no separate config.
 - Content is plain-text escaped before rendering, so raw HTML in strings will display literally, not render.
+
+## Long answers: photos in, teacher marks out
+
+A `long` question is no longer self-marked when a **signed-in student** answers
+it. They photograph their working, hand it in, and the teacher awards the marks;
+the score is provisional until then. A guest on the demo, or a teacher previewing
+their own test, keeps the old self-assessment — nobody would ever mark theirs.
+
+- **Photos** live in the private Azure Blob container `answers`
+  (`<studentId>/<testId>/<questionId>/<ts>-<rand>.jpg`), in the same storage
+  account as the tables. `POST /api/answerimage` takes JSON `{testId,
+  questionId, questionIndex, maxMarks, testTitle, image}` where `image` is
+  base64 — the client downscales to 1600px / JPEG 0.72 in a canvas first
+  (`src/answerphotos.ts`), so there is no multipart parsing anywhere. Students
+  only; ≤ 1.5 MB and ≤ 3 photos per answer; JPEG/PNG confirmed by magic bytes.
+  `GET /api/answerimage?blob=` returns `{url}` — a 15-minute SAS — because an
+  `<img>` cannot carry `X-Vidai-Auth`. Readable by the owning student, their
+  teacher, an admin, or a linked parent.
+- **Marks** live in the `grading` table, one row per (student, test, question):
+  PK = `stu~<username>`, RK = `<testId>~<questionId>`, holding `images`,
+  `maxMarks`, `status` (`submitted` → `marked`), `awarded`, `comment`,
+  `teacherId`. `GET /api/grading?queue=1` is the teacher's queue;
+  `GET /api/grading[?student=&testId=]` is one student's rows;
+  `POST {action:"mark", username, testId, questionId, awarded, comment}` awards.
+- **The attempt row is never touched by a teacher.** Its `score` stays the
+  auto-graded subtotal — long answers contribute 0 until marked — and the
+  displayed score is that plus the `awarded` values, merged on read
+  (`hydrateMarks` in `src/screens/test.ts`). That keeps marking off the
+  student's row entirely: no etag races, and no risk of tripping the
+  `Q_CHUNK` guard that silently drops an oversized `answers` blob.
+- Storage needs no new app setting — the blob client reuses
+  `STORAGE_CONNECTION_STRING`. The container is created on first upload.
+
+## Releasing the answers (`/api/release`, table `releases`)
+
+Taking a test is **silent**: a signed-in student submits and nothing comes back —
+no verdict, no correct answer, no worked solution, for any question type. The
+teacher decides when the paper opens. (Guests on the demo keep the old instant
+feedback: they have no teacher to release anything, and the demo has to stay
+useful as a demo.)
+
+- Table `releases`: PK = test id, RK = username for one student, or `*` for the
+  whole class. Row holds `releasedAt`, `releasedBy`. "Can this student see the
+  paper" is two point reads — `isReleased(testId, username)` — never a scan.
+- `GET /api/release?testId=` → `{released}` for a student; add `&student=` for a
+  teacher, admin or linked parent asking about one student; a teacher asking
+  without `student` gets `{classWide, students[]}` for the whole test.
+- `POST {action:"release"|"unrelease", testId, username?}` — teachers/admins,
+  gated by `canSeeStudent`. Omit `username` to open it for everyone.
+- Client: `fetchReleased` / `fetchReleaseState` / `setReleased` in `src/auth.ts`.
+  `fetchReleased` **fails closed** — a network error keeps the paper shut.
+
+## The test is silent until the teacher releases it
+
+A signed-in student submits and **nothing comes back** — no verdict, no correct
+answer, no worked solution, for any question type (`finishQuestion` in
+`src/screens/test.ts`). The score screen shows their marks but locks the
+question-by-question detail. **Guests keep the old instant feedback**: a guest
+has no teacher to release anything, and the demo has to stay worth sharing.
+`canHandIn()` is the one test for "is this a real student with a teacher".
+
+Release is per student *and* per class — see `/api/release` above. The teacher
+presses it from the marking queue (`src/screens/marking.ts`) or from a student's
+report (`showStudentReport` in `src/screens/console.ts`).
+
+## Review: one question per page (`src/screens/review.ts`)
+
+Review is **not** a scroll of the whole paper. It is the layout the teacher
+authors in, read-only: questions listed down the left with each result on its
+row, one question in the middle (the student's answer, their photos, the
+awarded mark and the teacher's comment), the explanation on the right. Prev/next
+walk the paper and `?test=<id>&review=<questionId>` carries the place.
+
+It reuses the editor's **layout only** — `.ed-cols`, `.ed-tree*`, `.ed-panel`,
+`.ed-preview`, `.ed-tabs` — under an `.ed-readonly` modifier. Never change those
+base rules: `e2e/editor.cjs` asserts `.ed-cols` computes to exactly three columns
+at 1280px and that `.ed-tree` / `.ed-explain` sit flush to the rail and the
+window edge. Do **not** reach into `src/screens/editor/` for this: its panels are
+all inputs with no read-only renderer, and `editor/state.ts` is a single shared
+working copy that autosaves, so a student opening a test through it would queue
+writes against the teacher's draft.
+
+The `.review-item` class stays on the question view — `e2e/regression.cjs`
+asserts it.
+
+## The Vidaivi → Vidai rename
+
+- localStorage moved from `vidaivi:*` to `vidai:*`. `migrateStorage()` in
+  `src/attempts.ts` copies every old key across and **must stay the first
+  statement in `src/main.ts`** — `vidaivi:auth` holds the session and
+  `vidaivi:pendingAttempts` holds unsynced saves. The old keys are left in place
+  and can be deleted a release from now.
+- The auth header is `X-Vidai-Auth`. For one release the client sends **both**
+  names and `getBearer()` in `api/shared/core.js` accepts both, because the
+  deploy is not atomic. Drop both fallbacks once the renamed API is everywhere.
+- **`vidai.seyali.app` must be an authorised JavaScript origin on the Google
+  OAuth client**, or Google sign-in fails there. Student and admin logins are
+  unaffected.
 
 ## Working style
 

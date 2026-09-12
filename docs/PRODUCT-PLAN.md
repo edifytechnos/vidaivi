@@ -1,8 +1,8 @@
-# Vidaivi — Full Product Requirements & Phased Build Plan
+# Vidai — Full Product Requirements & Phased Build Plan
 
 ## Context
 
-Vidaivi started as a single-teacher CBSE-12 Maths pilot (live at vidai.seyali.app; Test 1 ships Sun 13 Sep on the current app, untouched by this plan). This plan turns it into a multi-teacher assessment platform: teachers author their own tests with a rich editor, tests are scoped to their students, a platform question bank seeds content via copy-on-fork, and eventually a marketplace lets teachers sell tests to other teachers and to students directly. The long-term vision widens beyond CBSE-12 Maths to other boards (State/ICSE/IGCSE), classes (10/11/12), and exams (JEE/NEET) — so the data model must carry a taxonomy from day one even though the UI shows only CBSE-12 Maths for now.
+Vidai started as a single-teacher CBSE-12 Maths pilot (live at vidai.seyali.app; Test 1 ships Sun 13 Sep on the current app, untouched by this plan). This plan turns it into a multi-teacher assessment platform: teachers author their own tests with a rich editor, tests are scoped to their students, a platform question bank seeds content via copy-on-fork, and eventually a marketplace lets teachers sell tests to other teachers and to students directly. The long-term vision widens beyond CBSE-12 Maths to other boards (State/ICSE/IGCSE), classes (10/11/12), and exams (JEE/NEET) — so the data model must carry a taxonomy from day one even though the UI shows only CBSE-12 Maths for now.
 
 **Platform decision (user's call): evolve the existing Vite + TypeScript app** — no Angular rebuild. TipTap is framework-agnostic, so this is viable; the codebase gets modularized as it grows (see Architecture).
 
@@ -22,7 +22,7 @@ Student ownership: **one teacher per student** (their class), plus independent m
 
 - **Taxonomy** on every test/question: `{board, klass, subject, chapter, topic}` — e.g. `{CBSE, 12, Maths, Matrices, "Inverse"}`. UI fixed to CBSE/12/Maths for now; model ready for State/ICSE/IGCSE, classes 10–12, JEE/NEET.
 - **Test** (moves from repo JSON to DB): id, ownerTeacherSub, taxonomy, title, status (`draft | in_review | published | archived`), settings (openAt, closeAt, timerMinutes, maxAttempts, leaderboardEnabled), collaborators[], approvers[], forkedFromId, marketplace fields (listed, price — schema only until Phase 4).
-- **Question**: belongs to a test; rich content as TipTap JSON (rendered read-only for students, KaTeX for maths, images from Blob Storage); types: `mcq`, `mcq-multi`, `numeric` (+tolerance), `fill-blank` (accepted answers, case/space tolerant), `long` (self-assessed); marks, solution (also TipTap).
+- **Question**: belongs to a test; rich content as TipTap JSON (rendered read-only for students, KaTeX for maths, images from Blob Storage); types: `mcq`, `mcq-multi`, `numeric` (+tolerance), `fill-blank` (accepted answers, case/space tolerant), `long` (**photo handed in, teacher-marked** — see CLAUDE.md; self-assessed only for guests, who have no teacher); marks, solution (also TipTap).
 - **Platform bank** = tests/questions owned by admin, flagged `platform: true`. Current repo JSON tests become the seed (demo stays guest-open). **Copy-on-pick fork**: picking a bank test/question clones it under the teacher; original never mutates. `forkedFromId` retained for future suggest-back.
 - **Attempt** (extend existing): + per-question answers payload (for question-level review), duration, attempt number.
 - **Comment**: scope = question or test; author (student/teacher); threaded reply; resolved flag.
@@ -64,8 +64,8 @@ Current live app: 3 roles, roster, reports, Test 1 by Sep 13 with the friend's q
 
 - **Modularize `src/`**: split the current single `main.ts` (~1100 lines) into `screens/` (one file per screen), `api.ts` (fetch client), `router.ts` (current query-param routing formalized), `state.ts`. No framework; a tiny render/bind convention documented in CLAUDE.md. Do this as Phase 1 step 0 — before the editor lands.
 - **Dependencies to add** (each needs the usual CLAUDE.md ask — pre-approved by this plan): `@tiptap/core` + starter-kit + a KaTeX math extension, and nothing else until Phase 4 (Razorpay is a script include).
-- **API** stays SWA managed Functions (v3 layout, `shared/core.js`); new function folders: `tests`, `questions` (or nested in tests), `upload` (Blob), `comments`, `dashboard`, later `orders`, `webhook-razorpay`, `notifications`. Respect the two SWA landmines already discovered: **no `/api/admin*` route names, auth via `X-Vidaivi-Auth` header**.
-- **Storage**: Table Storage continues (tests/questions/comments/purchases tables); **Azure Blob Storage** container for question images (public-read, unguessable names). Supabase not needed under this path.
+- **API** stays SWA managed Functions (v3 layout, `shared/core.js`); new function folders: `tests`, `questions` (or nested in tests), `upload` (Blob), `comments`, `dashboard`, later `orders`, `webhook-razorpay`, `notifications`. Respect the two SWA landmines already discovered: **no `/api/admin*` route names, auth via `X-Vidai-Auth` header**.
+- **Storage**: Table Storage continues (tests/questions/comments/purchases tables); **Azure Blob Storage** for images. The `answers` container (students' handed-in working) is **private**, read through short-lived SAS URLs minted by `/api/answerimage` — the earlier "public-read, unguessable names" idea predates having real auth, and is not what shipped. Supabase not needed under this path.
 - **Known risks**: TipTap JSON rendering must be sanitized server-side or rendered through TipTap's own renderer (never innerHTML raw); Table Storage has no transactions across tables — keep writes idempotent; the no-framework choice means discipline (the modularization + CLAUDE.md conventions are the mitigation). Re-evaluate the Angular question only if the editor phase proves painful.
 
 ## Cross-cutting

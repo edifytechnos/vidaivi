@@ -1,7 +1,7 @@
 // Home screen: test list, profile row, cloud-saved results.
 
 import { track } from "../analytics";
-import { authEnabled, fetchMyAttempts, getProfile, isLoggedIn } from "../auth";
+import { authEnabled, fetchGrading, fetchMyAttempts, getProfile, isLoggedIn } from "../auth";
 import { fetchTestList } from "../api";
 import { loadAttempt, requiresLogin, setGuest } from "../attempts";
 import { TESTS, totalMarks } from "../data";
@@ -41,6 +41,8 @@ let activeSubject: string | null = null;
 const serverScores = new Map<string, { score: number; total: number }>();
 /** Server-side progress, so an unfinished test reads as in progress anywhere. */
 const serverProgress = new Map<string, number>();
+/** testId → long answers still with the teacher. */
+const serverPending = new Map<string, number>();
 
 /**
  * The status chip for one test. localStorage knows about a half-finished
@@ -48,9 +50,12 @@ const serverProgress = new Map<string, number>();
  * was taken — so the server wins for "done" and local fills in progress.
  */
 function statusChip(testId: string, questionCount: number, total: number): string {
+  const pending = serverPending.get(testId) ?? 0;
   const done = serverScores.get(testId);
   if (done) {
-    return `<span class="status-chip status-done">Score ${done.score}/${done.total}</span>`;
+    return pending
+      ? `<span class="status-chip status-progress">Awaiting review · ${done.score}/${done.total} so far</span>`
+      : `<span class="status-chip status-done">Score ${done.score}/${done.total}</span>`;
   }
   const attempt = loadAttempt(testId);
   if (attempt?.completed) {
@@ -162,9 +167,12 @@ function refreshStatusChips(): void {
     const chip = card.querySelector(".status-chip");
     if (!chip) return;
     const done = serverScores.get(id);
+    const pending = serverPending.get(id) ?? 0;
     if (done) {
-      chip.className = "status-chip status-done";
-      chip.textContent = `Score ${done.score}/${done.total}`;
+      chip.className = `status-chip ${pending ? "status-progress" : "status-done"}`;
+      chip.textContent = pending
+        ? `Awaiting review · ${done.score}/${done.total} so far`
+        : `Score ${done.score}/${done.total}`;
       return;
     }
     // Only the server knows a test started on another device.
@@ -179,10 +187,17 @@ function refreshStatusChips(): void {
 // Cloud-saved results for the logged-in student, appended under the test list.
 async function renderServerResults(): Promise<void> {
   if (!authEnabled || !isLoggedIn()) return;
-  const attempts = await fetchMyAttempts();
+  const [attempts, grading] = await Promise.all([fetchMyAttempts(), fetchGrading()]);
+  serverPending.clear();
+  for (const row of grading) {
+    if (row.status === "submitted") {
+      serverPending.set(row.testId, (serverPending.get(row.testId) ?? 0) + 1);
+    }
+  }
   const slot = document.getElementById("server-results");
   if (!attempts?.length) {
     slot?.remove();
+    refreshStatusChips();
     return;
   }
   // Newest first, so a retake's score is the one shown.

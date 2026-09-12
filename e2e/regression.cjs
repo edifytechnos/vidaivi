@@ -129,11 +129,44 @@ function check(ok, label) {
     check(true, "my tests rejects invalid JSON with an error");
     await shot("my-tests");
 
+    // The Vidaivi → Vidai rename must not cost a student their data. Seed the
+    // pre-rename keys, reload, and the app should have carried them across.
+    await page.evaluate(() => {
+      // Only this check's own keys — the admin session lives here too.
+      for (const k of ["vidai:attempt:matrices-demo", "vidai:guestMode"]) localStorage.removeItem(k);
+      localStorage.setItem(
+        "vidaivi:attempt:matrices-demo",
+        JSON.stringify({ answers: {}, index: 2, completed: false, score: 1, updatedAt: "" })
+      );
+      localStorage.setItem("vidaivi:guestMode", "1");
+    });
+    await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("#primary-btn", { timeout: 20000 });
+    const migrated = await page.evaluate(() => ({
+      attempt: localStorage.getItem("vidai:attempt:matrices-demo"),
+      guest: localStorage.getItem("vidai:guestMode"),
+      oldKept: localStorage.getItem("vidaivi:attempt:matrices-demo") !== null,
+    }));
+    check(
+      !!migrated.attempt && JSON.parse(migrated.attempt).index === 2,
+      "a pre-rename attempt is carried across to the new storage key"
+    );
+    check(migrated.guest === "1", "and so is the rest of the device's state");
+    check(migrated.oldKept, "the old keys are left in place for older cached bundles");
+    await page.evaluate(() => {
+      for (const k of [
+        "vidai:attempt:matrices-demo",
+        "vidai:guestMode",
+        "vidaivi:attempt:matrices-demo",
+        "vidaivi:guestMode",
+      ]) localStorage.removeItem(k);
+    });
+
     // Review: a completed test opens read-only, on this device and on a
     // device that has never held the attempt.
     await page.evaluate(() => {
       localStorage.setItem(
-        "vidaivi:attempt:matrices-demo",
+        "vidai:attempt:matrices-demo",
         JSON.stringify({
           answers: { "mat-001": { given: 0, correct: false, earned: 0 } },
           index: 5,
@@ -156,16 +189,41 @@ function check(ok, label) {
       (await page.textContent(".review-correct")).includes("Correct answer"),
       "a wrong answer names the correct one"
     );
+
+    // One question per page, with the rest listed beside it — the teacher's
+    // authoring layout, read-only. Never a scroll of the whole paper.
+    const shape = await page.evaluate(() => ({
+      shown: document.querySelectorAll(".ed-center .question-text").length,
+      rows: document.querySelectorAll("#rv-tree .ed-tree-q").length,
+      cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
+      first: document.querySelector(".ed-center .question-text")?.textContent?.trim() || "",
+    }));
+    check(shape.shown === 1, `review shows one question at a time (${shape.shown} on screen)`);
+    check(shape.rows > 1, `the rest of the paper is listed beside it (${shape.rows} rows)`);
+    check(shape.cols === 3, `it uses the editor's three columns (${shape.cols})`);
+    await page.click("#rv-tree .ed-tree-q[data-i='2']");
+    await page.waitForFunction(
+      (before) => (document.querySelector(".ed-center .question-text")?.textContent?.trim() || "") !== before,
+      shape.first,
+      { timeout: 10000 }
+    );
+    check(true, "picking a question from the list swaps it in place");
+    check(
+      await page.evaluate(() => new URLSearchParams(location.search).get("review") !== null),
+      "the url carries the question, so a refresh lands back on it"
+    );
+    await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".review-item", { timeout: 20000 });
     await shot("review");
 
     // The cross-device case: save an attempt to the server, wipe this device,
     // and the review must rebuild from what the server holds.
     const saved = await page.evaluate(async () => {
-      const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+      const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
       if (!auth?.credential) return "no-token";
       const res = await fetch("/api/attempts", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential },
+        headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
         body: JSON.stringify({
           testId: "matrices-demo",
           score: 3,
@@ -177,7 +235,7 @@ function check(ok, label) {
       return res.ok ? "ok" : `http-${res.status}`;
     });
     if (saved === "ok") {
-      await page.evaluate(() => localStorage.removeItem("vidaivi:attempt:matrices-demo"));
+      await page.evaluate(() => localStorage.removeItem("vidai:attempt:matrices-demo"));
       await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
       await page.waitForSelector(".review-item", { timeout: 25000 });
       check(true, "review rebuilds from the server with no local attempt");
@@ -188,16 +246,16 @@ function check(ok, label) {
     } else {
       check(false, `cross-device review could not save an attempt (${saved})`);
     }
-    await page.evaluate(() => localStorage.removeItem("vidaivi:attempt:matrices-demo"));
+    await page.evaluate(() => localStorage.removeItem("vidai:attempt:matrices-demo"));
 
     // Work in progress, saved as it is given. Probe first with index 0, which
     // an API without this feature rejects (400) and one with it accepts
     // harmlessly — so running this suite against an older API writes nothing.
     const progressProbe = await page.evaluate(async () => {
-      const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+      const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
       return fetch("/api/attempts", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential },
+        headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
         body: JSON.stringify({ action: "progress", testId: "matrices-demo", index: 0, answers: "{}" }),
       }).then((r) => r.status);
     });
@@ -209,8 +267,8 @@ function check(ok, label) {
       // cannot be decided by leftover rows from earlier runs.
       const probeId = `e2e-resume-${Date.now()}`;
       const roundTrip = await page.evaluate(async (id) => {
-        const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
-        const hdr = { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential };
+        const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
         await fetch("/api/attempts", {
           method: "POST",
           headers: hdr,
@@ -235,8 +293,8 @@ function check(ok, label) {
       // End to end: a bundled test this identity has never finished must offer
       // Continue after the device is wiped.
       const fresh = await page.evaluate(async () => {
-        const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
-        const hdr = { "X-Vidaivi-Auth": auth.credential };
+        const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
+        const hdr = { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
         const mine = await fetch("/api/attempts", { headers: hdr }).then((r) => r.json());
         const finished = new Set((mine.attempts || []).filter((a) => a.status !== "progress").map((a) => a.testId));
         return ["matrices-demo", "relations-functions-test1"].find((id) => !finished.has(id)) || "";
@@ -245,7 +303,7 @@ function check(ok, label) {
         console.log("SKIP  resume in the UI (this account has finished every bundled test)");
       } else {
         await page.goto(`${BASE}/?test=${fresh}`, { waitUntil: "domcontentloaded" });
-        await page.evaluate((id) => localStorage.removeItem(`vidaivi:attempt:${id}`), fresh);
+        await page.evaluate((id) => localStorage.removeItem(`vidai:attempt:${id}`), fresh);
         await page.reload({ waitUntil: "domcontentloaded" });
         await page.waitForSelector("#primary-btn", { timeout: 20000 });
         await page.click("#primary-btn");
@@ -260,7 +318,7 @@ function check(ok, label) {
         const saved = await progressSaved.then((r) => r.status()).catch(() => 0);
         check(saved === 200, `answering a question saves progress to the server (${saved})`);
 
-        await page.evaluate((id) => localStorage.removeItem(`vidaivi:attempt:${id}`), fresh);
+        await page.evaluate((id) => localStorage.removeItem(`vidai:attempt:${id}`), fresh);
         await page.goto(`${BASE}/?test=${fresh}`, { waitUntil: "domcontentloaded" });
         await page.waitForSelector("#primary-btn", { timeout: 25000 });
         const label = await page
@@ -278,21 +336,21 @@ function check(ok, label) {
 
         // Put it back to "not started" rather than leaving a half-done test.
         await page.evaluate(async (id) => {
-          const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+          const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
           await fetch("/api/attempts", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential },
+            headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
             body: JSON.stringify({ action: "progress", testId: id, index: 0, answers: "{}" }),
           });
-          localStorage.removeItem(`vidaivi:attempt:${id}`);
+          localStorage.removeItem(`vidai:attempt:${id}`);
         }, fresh);
       }
 
       // The publish gate, on a draft this run creates complete and deletes
       // again — an incomplete draft would fail validation before the gate.
       const gate = await page.evaluate(async () => {
-        const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
-        const hdr = { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential };
+        const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
         const created = await fetch("/api/tests", {
           method: "POST",
           headers: hdr,
@@ -360,8 +418,8 @@ function check(ok, label) {
     // most here is the refusals. Redemption itself needs a Google identity,
     // which this suite cannot produce — that rule is asserted instead.
     const links = await page.evaluate(async () => {
-      const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
-      const hdr = { "X-Vidaivi-Auth": auth.credential };
+      const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
+      const hdr = { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
       const call = (body) =>
         fetch("/api/parentlink", {
           method: "POST",
@@ -413,6 +471,236 @@ function check(ok, label) {
       check(links.nonGoogle === 403, "only a Google account can redeem a code");
       check(links.unlinkedAttempts === 403, "attempts for an unlinked child are refused");
       check(links.unlinkedTests === 403, "the test list for an unlinked child is refused");
+    }
+
+    // Long-answer photos and the teacher's marking queue. This runs the whole
+    // loop on a throwaway student it creates and then removes, so it never
+    // leaves a photo, a grading row or a login behind.
+    const marking = await page.evaluate(async () => {
+      const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
+      const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
+
+      // A missing route answers 404 too, so every refusal below would "pass"
+      // against an API without this feature. Prove the queue exists first.
+      const queueStatus = await fetch("/api/grading?queue=1", { headers: hdr }).then((r) => r.status);
+      if (queueStatus !== 200) return { missing: true, queueStatus };
+
+      const made = await fetch("/api/students", {
+        method: "POST",
+        headers: hdr,
+        body: JSON.stringify({ name: "E2E Photo Student", grade: "12", school: "E2E" }),
+      }).then((r) => r.json());
+      if (!made.username || !made.password) return { skip: true };
+
+      const cleanup = async () =>
+        fetch("/api/students", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({ action: "remove", username: made.username }),
+        });
+
+      try {
+        // A real JPEG, drawn here rather than pasted as a constant.
+        const canvas = document.createElement("canvas");
+        canvas.width = 40;
+        canvas.height = 30;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, 40, 30);
+        ctx.fillStyle = "#000";
+        ctx.fillText("f-1", 4, 20);
+        const jpeg = canvas.toDataURL("image/jpeg", 0.7).split(",")[1];
+
+        // The teacher/admin identity must not be able to hand work in.
+        const asTeacher = await fetch("/api/answerimage", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({ testId: "e2e-photo", questionId: "q1", image: jpeg }),
+        }).then((r) => r.status);
+
+        const login = await fetch("/api/studentauth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: made.username, password: made.password }),
+        }).then((r) => r.json());
+        if (!login.token) return { cleanupOnly: true, asTeacher, loginFailed: true, username: made.username };
+        const sHdr = { "Content-Type": "application/json", "X-Vidai-Auth": login.token, "X-Vidaivi-Auth": login.token };
+        const post = (body) =>
+          fetch("/api/answerimage", { method: "POST", headers: sHdr, body: JSON.stringify(body) })
+            .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+
+        const base = { testId: "e2e-photo", testTitle: "E2E photo test", questionId: "q1", questionIndex: 0, maxMarks: 5 };
+        const notAnImage = await post({ ...base, image: btoa("this is plainly not a jpeg") });
+        const tooBig = await post({ ...base, image: "/9j/" + "A".repeat(2_400_000) });
+        const uploaded = await post({ ...base, image: jpeg });
+
+        // The signed URL is per-student: nobody else's blob comes back.
+        const signed = await fetch(
+          `/api/answerimage?blob=${encodeURIComponent(uploaded.data.blob || "x")}`,
+          { headers: sHdr }
+        ).then(async (r) => ({ status: r.status, url: (await r.json().catch(() => ({}))).url || "" }));
+        const someoneElse = await fetch(
+          "/api/answerimage?blob=" + encodeURIComponent("stu~not-this-student/t/q/1.jpg"),
+          { headers: sHdr }
+        ).then((r) => r.status);
+
+        // It reaches the teacher's queue, gets marked, and reads back marked.
+        const queue = await fetch("/api/grading?queue=1", { headers: hdr }).then((r) => r.json());
+        const inQueue = (queue.answers || []).some(
+          (a) => a.username === made.username && a.testId === "e2e-photo"
+        );
+        const marked = await fetch("/api/grading", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({
+            action: "mark",
+            username: made.username,
+            testId: "e2e-photo",
+            questionId: "q1",
+            awarded: 9, // over maxMarks on purpose: must clamp to 5
+            comment: "Good method.",
+          }),
+        }).then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+        const mine = await fetch("/api/grading?testId=e2e-photo", { headers: sHdr }).then((r) => r.json());
+
+        return {
+          asTeacher,
+          notAnImage: notAnImage.status,
+          tooBig: tooBig.status,
+          uploaded: uploaded.status,
+          blob: uploaded.data.blob || "",
+          signedStatus: signed.status,
+          signedUrl: signed.url,
+          someoneElse,
+          inQueue,
+          markStatus: marked.status,
+          awarded: marked.data.awarded,
+          readBack: (mine.answers || [])[0] || null,
+          username: made.username,
+          token: login.token,
+
+          // Release: the paper is shut until the teacher opens it.
+          release: await (async () => {
+            const get = (hdr) =>
+              fetch("/api/release?testId=e2e-photo", { headers: hdr }).then((r) =>
+                r.json().catch(() => ({}))
+              );
+            const before = await get(sHdr);
+            // A student must not be able to open their own paper.
+            const bySelf = await fetch("/api/release", {
+              method: "POST",
+              headers: sHdr,
+              body: JSON.stringify({ action: "release", testId: "e2e-photo" }),
+            }).then((r) => r.status);
+            // Nor may a teacher open one for somebody else's student.
+            const forStranger = await fetch("/api/release", {
+              method: "POST",
+              headers: hdr,
+              body: JSON.stringify({
+                action: "release",
+                testId: "e2e-photo",
+                username: "no-such-student-xyz",
+              }),
+            }).then((r) => r.status);
+            const opened = await fetch("/api/release", {
+              method: "POST",
+              headers: hdr,
+              body: JSON.stringify({ action: "release", testId: "e2e-photo", username: made.username }),
+            }).then((r) => r.status);
+            const after = await get(sHdr);
+            await fetch("/api/release", {
+              method: "POST",
+              headers: hdr,
+              body: JSON.stringify({ action: "unrelease", testId: "e2e-photo", username: made.username }),
+            });
+            const closedAgain = await get(sHdr);
+            return {
+              before: before.released,
+              bySelf,
+              forStranger,
+              opened,
+              after: after.released,
+              closedAgain: closedAgain.released,
+            };
+          })(),
+        };
+      } finally {
+        await cleanup();
+      }
+    });
+
+    if (marking.missing) {
+      // Running against an API that predates this feature (production, before
+      // the PR merges). Skipping is honest; every refusal below would otherwise
+      // "pass" against a 404.
+      console.log(`SKIP  long-answer photos (/api/grading is not deployed here: ${marking.queueStatus})`);
+    } else if (marking.skip) {
+      console.log("SKIP  long-answer photos (could not create a throwaway student)");
+    } else if (marking.loginFailed) {
+      check(false, "long-answer photos: the throwaway student could not sign in");
+    } else {
+      check(marking.asTeacher === 403, `a teacher cannot hand work in as a student (${marking.asTeacher})`);
+      check(marking.notAnImage === 415, `a body that is not an image is refused (${marking.notAnImage})`);
+      check(marking.tooBig === 413, `an oversized photo is refused (${marking.tooBig})`);
+      check(marking.uploaded === 201, `a student hands in a photo of their working (${marking.uploaded})`);
+      check(
+        marking.blob.startsWith(`stu~${marking.username}/e2e-photo/q1/`),
+        `the photo is stored under its own student (${marking.blob})`
+      );
+      check(
+        marking.signedStatus === 200 && /^https:\/\/.+sig=/.test(marking.signedUrl),
+        "reading it back gives a signed, expiring URL"
+      );
+      check(marking.someoneElse === 403, `another student's photo is refused (${marking.someoneElse})`);
+      check(marking.inQueue, "it turns up in the teacher's marking queue");
+      check(marking.markStatus === 200, `the teacher awards marks (${marking.markStatus})`);
+      check(marking.awarded === 5, `marks are clamped to what the question is worth (got ${marking.awarded})`);
+      check(marking.readBack?.status === "marked", "the student's copy reads back as marked");
+      check(marking.readBack?.awarded === 5 && marking.readBack?.comment === "Good method.",
+        "with the mark and the teacher's comment");
+      const r = marking.release;
+      check(r.before === false, "a paper starts shut — the student sees no answers");
+      check(r.bySelf === 403, `a student cannot open their own paper (${r.bySelf})`);
+      // 403 when the student belongs to another teacher, 404 when there is no
+      // such student — both refusals, and which one depends on the username.
+      check(
+        r.forStranger === 403 || r.forStranger === 404,
+        `a teacher cannot open one for a student who is not theirs (${r.forStranger})`
+      );
+      check(r.opened === 200 && r.after === true, "the teacher opens it and the student sees it");
+      check(r.closedAgain === false, "and can shut it again");
+      // Sitting the test as a real student: nothing comes back. Swap the page's
+      // session for the throwaway student's, then put the admin's back.
+      const adminAuth = await page.evaluate(() => localStorage.getItem("vidai:auth"));
+      await page.evaluate((token) => {
+        localStorage.setItem(
+          "vidai:auth",
+          JSON.stringify({
+            credential: token,
+            profile: { kind: "student", sub: "e2e", name: "E2E Photo Student", role: "student" },
+          })
+        );
+        localStorage.removeItem("vidai:attempt:matrices-demo");
+      }, marking.token);
+      await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
+      await page.waitForSelector("#primary-btn", { timeout: 20000 });
+      await page.click("#primary-btn");
+      await page.waitForSelector(".option", { timeout: 20000 });
+      await page.click(".option");
+      await page.click("#submit-btn");
+      await page.waitForSelector(".option, .score-card", { timeout: 20000 });
+      const silent = await page.evaluate(() => ({
+        verdict: document.querySelectorAll(".verdict").length,
+        solution: document.querySelectorAll(".solution").length,
+      }));
+      check(silent.verdict === 0, `a student gets no verdict on submit (${silent.verdict} found)`);
+      check(silent.solution === 0, `and no worked solution (${silent.solution} found)`);
+      await page.evaluate((a) => {
+        localStorage.removeItem("vidai:attempt:matrices-demo");
+        if (a) localStorage.setItem("vidai:auth", a);
+      }, adminAuth);
+
+      console.log(`  (cleaned up ${marking.username})`);
     }
 
     // No flicker, no shift. With the API held back, a hard reload must paint

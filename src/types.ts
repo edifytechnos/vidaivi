@@ -33,6 +33,16 @@ export interface StoredAnswer {
   given: number | null; // mcq: option index; numeric: value; long: 1 right / 0 wrong
   correct: boolean;
   earned: number;
+  /** Long answers: blob names of the photos handed in. */
+  images?: string[];
+  /**
+   * Long answers only. "pending" until the teacher awards marks — `earned`
+   * stays 0 while it is, so the score screen can be honest about what is
+   * still out for review.
+   */
+  review?: "pending" | "marked";
+  /** What the teacher wrote when awarding the marks. */
+  comment?: string;
 }
 
 export interface Attempt {
