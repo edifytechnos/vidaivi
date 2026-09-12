@@ -23,15 +23,14 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.fill("#ad-pass", process.env.E2E_ADMIN_PASS);
   await page.click("#ad-submit");
   await page.waitForSelector("#sub-grid .subject-card", { timeout: 25000 });
-  // My tests is admin-only now and lives in the topbar menu.
-  await page.click("#top-menu-btn");
-  await page.click('[data-top-nav="mytests"]');
+  // My tests is admin-only and lives on the rail.
+  await page.click('[data-rail="mytests"]');
 
   // Create a fresh test through the UI — the editor should open on it.
   await page.waitForSelector("#mt-new", { timeout: 25000 });
   await page.click("#mt-new");
-  await page.waitForSelector(".editor", { timeout: 30000 });
-  check(await page.isVisible(".ed-tree"), "Create test opens the editor with the tests tree");
+  await page.waitForSelector(".editor:not(.sk-wrap)", { timeout: 30000 });
+  check(await page.isVisible(".editor:not(.sk-wrap) .ed-tree"), "Create test opens the editor with the tests tree");
   check(/edit=/.test(page.url()), "url carries the test so a refresh restores it");
   testId = new URL(page.url()).searchParams.get("edit");
   await shot("ed-overview");
@@ -65,19 +64,24 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
     return a && e ? e.left >= a.right - 1 : false;
   });
   check(explainRight, "the explanation sits to the RIGHT of the answer panel, not below it");
-  check(await page.isVisible(".ed-appbar #ed-publish-bar"), "the app bar carries Publish");
-  check(await page.isVisible(".ed-appbar .ed-taxonomy"), "the app bar shows the CBSE / Mathematics 12 context");
+  check(await page.isVisible(".shellbar #ed-publish-bar"), "the shared top bar carries Publish");
+  check((await page.textContent("#shellbar-title")).trim().length > 0, "the shared top bar shows the test title");
+  // The editor fills the shell's page area: from the rail's right edge and the
+  // top bar's bottom edge to the window's right and bottom.
   const fills = await page.evaluate(() => {
     const ed = document.querySelector(".editor").getBoundingClientRect();
+    const rail = document.querySelector(".rail").getBoundingClientRect();
+    const bar = document.querySelector(".shellbar").getBoundingClientRect();
     const tree = document.querySelector(".ed-tree").getBoundingClientRect();
     const ex = document.querySelector(".ed-explain").getBoundingClientRect();
     return {
-      full: ed.width >= window.innerWidth - 1 && ed.height >= window.innerHeight - 1,
-      edges: tree.left <= 1 && ex.right >= window.innerWidth - 1,
+      full: Math.abs(ed.left - rail.right) <= 1 && Math.abs(ed.top - bar.bottom) <= 1 &&
+            ed.right >= window.innerWidth - 1 && ed.bottom >= window.innerHeight - 1,
+      edges: Math.abs(tree.left - rail.right) <= 1 && ex.right >= window.innerWidth - 1,
     };
   });
-  check(fills.full, "the shell fills the viewport");
-  check(fills.edges, "the tree and explanation reach the window edges");
+  check(fills.full, "the editor fills the page area beside the rail and under the top bar");
+  check(fills.edges, "the tree sits against the rail and the explanation reaches the window edge");
 
   // Maths must typeset in the preview as the teacher writes.
   await page.fill("#ed-q", "Order of a $2\\times 3$ matrix?");
@@ -96,8 +100,9 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
 
   // The edit survives a reload — proof it really reached the server.
   await page.reload({ waitUntil: "domcontentloaded" });
-  await page.waitForSelector(".ed-tree-q", { timeout: 25000 });
-  const treeText = await page.textContent(".ed-tree");
+  // The shell paints a skeleton first; read the tree only once the document is in.
+  await page.waitForSelector('.editor:not(.sk-wrap) .ed-tree-q[data-i="0"]', { timeout: 30000 });
+  const treeText = await page.textContent(".editor:not(.sk-wrap) .ed-tree");
   check(treeText.includes(topic), "the autosaved topic came back after a reload");
 
   // Insert a second question between the first and the end, then remove it.

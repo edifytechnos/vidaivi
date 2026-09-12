@@ -4,7 +4,8 @@
 
 import { track } from "../../analytics";
 import { fetchServerTest, fetchTestList, mutateTest, newQuestionId, setTestStatus, type TestProblem } from "../../api";
-import { ICONS, app, escapeHtml, setUrl, topbar } from "../../dom";
+import { ICONS, escapeHtml, setUrl } from "../../dom";
+import { mount, setShellbar, skeleton } from "../../shell";
 import type { Test } from "../../types";
 import {
   clearTest,
@@ -39,7 +40,8 @@ export async function showEditor(testId: string, questionId: string | null, back
   onExit = back;
   treeSubject = currentSubject();
   track("editor_open", { test: testId });
-  app.innerHTML = `${topbar(true)}<main class="card"><p class="hint">Loading…</p></main>`;
+  // The shell and the editor's shape paint at once; the document fills it in.
+  mount(skeleton.editor(), { title: "Loading…", active: "subjects", full: true });
 
   // The tree shows the subject you came in through, not every test you own.
   const [loaded, list] = await Promise.all([
@@ -47,9 +49,12 @@ export async function showEditor(testId: string, questionId: string | null, back
     fetchTestList(treeSubject ?? undefined),
   ]);
   if (!loaded) {
-    app.innerHTML = `${topbar(true)}<main class="card">
+    mount(
+      `<main class="card">
       <p class="login-error">Could not open that test.</p>
-      <div class="actions"><button id="ed-back" class="btn btn-ghost">Back to my tests</button></div></main>`;
+      <div class="actions"><button id="ed-back" class="btn btn-ghost">Back to subjects</button></div></main>`,
+      { title: "Test", active: "subjects", width: "narrow" }
+    );
     document.getElementById("ed-back")!.addEventListener("click", back);
     return;
   }
@@ -80,7 +85,7 @@ export async function showEditorForSubject(
   onExit = back;
   treeSubject = subjectId;
   track("editor_subject_open", { subject: subjectId ?? "" });
-  app.innerHTML = `${topbar(true)}<main class="card"><p class="hint">Loading…</p></main>`;
+  mount(skeleton.editor(), { title: "Loading…", active: "subjects", full: true });
 
   const list = await fetchTestList(subjectId ?? undefined);
   const mine = (list?.tests ?? []).filter((t) => !t.platform);
@@ -104,14 +109,9 @@ export async function showEditorForSubject(
  */
 function renderEmptyShell(): void {
   setUrl();
-  app.innerHTML = `
+  mount(
+    `
     <div class="editor" data-pane="question">
-      <header class="ed-appbar">
-        <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Tests">${ICONS.menu}</button>
-        <span class="ed-brand"><span class="brand-mark">V</span><span class="ed-brand-name">Vidaivi</span></span>
-        <span class="ed-taxonomy"><span class="ed-taxonomy-board">CBSE</span><span class="ed-taxonomy-sub">Mathematics 12</span></span>
-        <div class="ed-spacer"></div>
-      </header>
       <div class="ed-cols overview">
         <aside class="ed-tree" id="ed-tree">
           <div class="ed-tree-head">
@@ -136,15 +136,14 @@ function renderEmptyShell(): void {
           </div>
         </div>
       </div>
-    </div>`;
+    </div>`,
+    { title: "New subject", sub: "No tests yet", active: "subjects", full: true }
+  );
 
   const create = () => void createTestAndEdit(onExit);
   document.getElementById("ed-new-test")!.addEventListener("click", create);
   document.getElementById("ed-empty-create")!.addEventListener("click", create);
   document.getElementById("ed-exit")!.addEventListener("click", () => onExit());
-  document.getElementById("ed-tree-toggle")!.addEventListener("click", () => {
-    document.querySelector(".editor")?.classList.toggle("tree-open");
-  });
 }
 
 function readOnly(): boolean {
@@ -165,9 +164,9 @@ function render(): void {
   syncUrl();
 
   const q = selectedIndex >= 0 ? test.questions[selectedIndex] : null;
-  app.innerHTML = `
+  mount(
+    `
     <div class="editor" data-pane="${pane}">
-      ${appBar(test)}
       <div class="ed-cols${selectedIndex < 0 ? " overview" : ""}">
         <aside class="ed-tree" id="ed-tree">${treeMarkup(test)}</aside>
         <div class="ed-center">
@@ -184,7 +183,9 @@ function render(): void {
         ${q ? `<aside class="ed-explain" id="ed-explain">${explanationPanel(q)}</aside>` : ""}
       </div>
       ${selectedIndex >= 0 ? tabsMarkup() : ""}
-    </div>`;
+    </div>`,
+    { title: test.title || "Untitled test", active: "subjects", full: true, actions: editorActions(test) }
+  );
 
   renderBody();
   bindChrome();
@@ -192,32 +193,18 @@ function render(): void {
 }
 
 /** The editor's own app bar, as designed: identity, taxonomy, state, actions. */
-function appBar(test: Test): string {
+/** The editor's controls sit in the shell's top bar, not in a bar of their own. */
+function editorActions(test: Test): string {
   const published = test.status === "published";
   return `
-    <header class="ed-appbar">
-      <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">
-        ${ICONS.users}
-      </button>
-      <div class="ed-brand">
-        <span class="brand-mark">V</span><span class="ed-brand-name">Vidaivi</span>
-      </div>
-      <div class="ed-taxonomy">
-        <span class="ed-taxonomy-board">CBSE</span>
-        <span class="ed-taxonomy-sub">Mathematics 12</span>
-      </div>
-      <div class="ed-spacer"></div>
+      <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.users}</button>
       <span class="status-chip ${statusClass(test.status ?? "draft")}">${statusLabel(test)}</span>
-      <button class="ed-bar-btn" id="ed-preview">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        <span class="ed-bar-btn-label">Preview</span>
-      </button>
+      <button class="ed-bar-btn" id="ed-preview">${ICONS.eye}<span class="ed-bar-btn-label">Preview</span></button>
       ${
         published
           ? `<button class="ed-bar-btn primary" id="ed-unpublish-bar">Unpublish</button>`
           : `<button class="ed-bar-btn primary" id="ed-publish-bar">Publish test</button>`
-      }
-    </header>`;
+      }`;
 }
 
 function typeLabel(type: string): string {
@@ -747,6 +734,12 @@ function bindChrome(): void {
       if (editor) editor.dataset.pane = pane;
     })
   );
+}
+
+/** Keep the top bar's status chip and publish button in step with the document. */
+function refreshShellbar(): void {
+  const test = currentTest();
+  if (test) setShellbar({ title: test.title || "Untitled test", actions: editorActions(test) });
 }
 
 function renderSaveState(): void {

@@ -4,10 +4,10 @@
 
 import { track } from "../analytics";
 import { fetchSubjects, fetchTestList, mutateSubject, seedSampleTests, type Subject } from "../api";
-import { getProfile, isTeacher, signOut } from "../auth";
-import { setGuest } from "../attempts";
+import { isTeacher } from "../auth";
 import { TESTS } from "../data";
-import { ICONS, app, escapeHtml, setUrl, topbar } from "../dom";
+import { escapeHtml, setUrl } from "../dom";
+import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
 import { showEditorForSubject } from "./editor";
 import { setSubject, showHome } from "./home";
@@ -28,28 +28,21 @@ export const BUILT_IN_SUBJECT = {
 export async function showSubjects() {
   setUrl();
   track("subjects_open");
-  const profile = getProfile();
-  app.innerHTML = `
-    ${topbar(false)}
+  // The shell paints at once; the grid shows its shape until the data lands.
+  mount(
+    `
     <main class="subjects">
-      <div class="subjects-head">
-        <h2 class="subjects-title">Your subjects</h2>
-        ${isTeacher() ? `<button id="sub-new" class="btn btn-primary subjects-new">+ Subject</button>` : ""}
-      </div>
+      <div class="subjects-head"><h2 class="subjects-title">Your subjects</h2></div>
       <div id="sub-form" class="card subject-form" hidden></div>
-      <div id="sub-grid" class="subject-grid"><p class="hint">Loading…</p></div>
-      <div class="subjects-foot">
-        <span class="hint">${escapeHtml(profile?.name || profile?.email || "")}</span>
-        <button id="sub-signout" class="btn-link">Sign out</button>
-      </div>
-    </main>`;
-
-  document.getElementById("sub-signout")!.addEventListener("click", () => {
-    track("sign_out");
-    signOut();
-    setGuest(false);
-    showWelcome();
-  });
+      <div id="sub-grid">${skeleton.cards(3)}</div>
+    </main>`,
+    {
+      title: "Subjects",
+      active: "subjects",
+      width: "wide",
+      actions: isTeacher() ? `<button id="sub-new" class="btn btn-primary">+ Subject</button>` : "",
+    }
+  );
   document.getElementById("sub-new")?.addEventListener("click", () => openForm());
 
   await refresh();
@@ -61,7 +54,7 @@ async function refresh(): Promise<void> {
   await seedSamplesOnce(grid);
   const subjects = (await fetchSubjects()) ?? [];
   const cards = [...subjects.map(cardFor), builtInCard()];
-  grid.innerHTML = cards.join("");
+  grid.innerHTML = `<div class="subject-grid">${cards.join("")}</div>`;
 
   grid.querySelectorAll<HTMLElement>(".subject-card").forEach((el) =>
     el.addEventListener("click", () => {
@@ -101,7 +94,7 @@ async function seedSamplesOnce(grid: HTMLElement): Promise<void> {
   if (!isTeacher()) return;
   const list = await fetchTestList();
   if (!list?.needsSamples) return;
-  grid.innerHTML = `<p class="hint">Setting up your sample tests…</p>`;
+  grid.innerHTML = skeleton.cards(3);
   const owned = (await fetchSubjects()) ?? [];
   await seedSampleTests(TESTS, owned[0]?.id);
 }

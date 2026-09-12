@@ -5,7 +5,8 @@
 
 import { track } from "../analytics";
 import { mutateTest, fetchServerTest, newQuestionId } from "../api";
-import { app, escapeHtml, formatText, renderMath, setUrl, topbar } from "../dom";
+import { app, escapeHtml, formatText, renderMath, setUrl } from "../dom";
+import { mount, skeleton } from "../shell";
 import type { Question, QType, Test } from "../types";
 
 interface DraftQuestion extends Question {
@@ -46,12 +47,12 @@ export async function showBuilder(testId: string | null, back: () => void) {
   setUrl();
   onDone = back;
   if (testId) {
-    app.innerHTML = `${topbar(true)}<main class="card"><p class="hint">Loading test…</p></main>`;
+    mount(skeleton.card(4), { title: "Quick edit", active: "subjects", width: "narrow" });
     const loaded = await fetchServerTest(testId);
     if (!loaded) {
-      app.innerHTML = `${topbar(true)}<main class="card">
+      mount(`<main class="card">
         <p class="login-error">Could not load that test.</p>
-        <div class="actions"><button id="b-back" class="btn btn-ghost">Back</button></div></main>`;
+        <div class="actions"><button id="b-back" class="btn btn-ghost">Back</button></div></main>`, { title: "Quick edit", active: "subjects", width: "narrow" });
       document.getElementById("b-back")!.addEventListener("click", back);
       return;
     }
@@ -87,8 +88,8 @@ function totalMarks(): number {
 }
 
 function render() {
-  app.innerHTML = `
-    ${topbar(true)}
+  mount(
+    `
     <main class="builder">
       <div class="card">
         <h2 class="landing-title">${draft.existing ? "Edit test" : "New test"}</h2>
@@ -123,7 +124,9 @@ function render() {
           <button id="b-cancel" class="btn btn-ghost">Cancel</button>
         </div>
       </div>
-    </main>`;
+    </main>`,
+    { title: draft.existing ? "Quick edit" : "Quick add", active: "subjects", width: "narrow" }
+  );
 
   bindMeta();
   renderQuestions();
