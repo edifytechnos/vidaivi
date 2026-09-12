@@ -1,0 +1,222 @@
+{
+  "id": "lib-c10-real-numbers",
+  "title": "Class 10 · Real Numbers — Chapter Test 1",
+  "chapter": "Real Numbers",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "rn-001",
+      "chapter": "Real Numbers",
+      "topic": "HCF by prime factorisation",
+      "type": "mcq",
+      "q": "The HCF of 960 and 432 is:",
+      "solution": "Break both numbers into primes: $960 = 2^{6} \\times 3 \\times 5$ and $432 = 2^{4} \\times 3^{3}$.\n\nThe HCF takes every prime they share, each at the **lowest** power it appears: $2^{4} \\times 3 = 16 \\times 3 = \\mathbf{48}$.\n\nPicture two toolboxes. The HCF is what you can take out of **both** — and of each tool you can only take as many as the emptier box holds.",
+      "marks": 1,
+      "source": "CBSE 2026",
+      "options": [
+        "48",
+        "54",
+        "72",
+        "36"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "rn-002",
+      "chapter": "Real Numbers",
+      "topic": "Fundamental Theorem of Arithmetic",
+      "type": "mcq",
+      "q": "For any natural number $n$, $6^{n}$ ends with the digit:",
+      "solution": "$6^{1} = 6$, $6^{2} = 36$, $6^{3} = 216$ — the last digit stays **6**.\n\nHere is why it can never be 0: $6 = 2 \\times 3$, so $6^{n} = 2^{n} \\times 3^{n}$ and **5 is never a factor**. A number ends in 0 only when it is divisible by both 2 and 5.\n\nMultiplying by 6 is a wheel that keeps landing on the same spot: anything ending in 6, times 6, ends in 6 again.",
+      "marks": 1,
+      "source": "CBSE 2026",
+      "options": [
+        "0",
+        "6",
+        "3",
+        "2"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "rn-003",
+      "chapter": "Real Numbers",
+      "topic": "Rational and irrational numbers",
+      "type": "mcq",
+      "q": "$\\sqrt{0.4}$ is a/an:",
+      "solution": "$\\sqrt{0.4} = \\sqrt{\\dfrac{4}{10}} = \\dfrac{2}{\\sqrt{10}}$.\n\n$10$ is not a perfect square, so $\\sqrt{10}$ is irrational — and a non-zero rational divided by an irrational is **irrational**.\n\nRule of thumb: the square root of a fraction is rational only when the top and the bottom are both perfect squares. Here the bottom is 10, so the root never settles down into a fraction.",
+      "marks": 1,
+      "source": "CBSE 2025",
+      "options": [
+        "natural number",
+        "integer",
+        "rational number",
+        "irrational number"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "rn-004",
+      "chapter": "Real Numbers",
+      "topic": "HCF and LCM — assertion and reason",
+      "type": "mcq",
+      "q": "**Assertion (A):** For any two prime numbers $p$ and $q$, their HCF is 1 and their LCM is $p + q$.\n\n**Reason (R):** For any two natural numbers, HCF $\\times$ LCM = product of the numbers.\n\nChoose the correct option:",
+      "solution": "Two different primes share no factor, so HCF $= 1$ — that half is right. But their LCM is $p \\times q$, **not** $p + q$: for $p = 2$, $q = 3$ the LCM is 6, not 5. So **(A) is false**.\n\n(R) is a standard identity and is **true**: HCF $\\times$ LCM $= p \\times q$.\n\nCheck it on the same pair: $1 \\times 6 = 2 \\times 3$.",
+      "marks": 1,
+      "source": "CBSE 2025",
+      "options": [
+        "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+        "Both (A) and (R) are true, but (R) is not the correct explanation of (A)",
+        "(A) is true, but (R) is false",
+        "(A) is false, but (R) is true"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "rn-005",
+      "chapter": "Real Numbers",
+      "topic": "Irrational numbers — assertion and reason",
+      "type": "mcq",
+      "q": "**Assertion (A):** $(\\sqrt{3} + \\sqrt{5})$ is an irrational number.\n\n**Reason (R):** The sum of any two irrational numbers is always irrational.\n\nChoose the correct option:",
+      "solution": "(A) is **true**: $\\sqrt{3} + \\sqrt{5}$ cannot be written as a ratio of two integers.\n\n(R) is **false**, and one counter-example is enough to sink it: $\\sqrt{3}$ and $-\\sqrt{3}$ are both irrational, yet their sum is $0$, which is rational.\n\nSo the assertion stands, but not for the reason offered. Any claim with *always* in it falls to a single counter-example — one black swan ends 'all swans are white'.",
+      "marks": 1,
+      "source": "CBSE 2026",
+      "options": [
+        "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+        "Both (A) and (R) are true, but (R) is not the correct explanation of (A)",
+        "(A) is true, but (R) is false",
+        "(A) is false, but (R) is true"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "rn-006",
+      "chapter": "Real Numbers",
+      "topic": "HCF times LCM equals the product",
+      "type": "mcq",
+      "q": "If HCF $(2520,\\ 6600) = 40$ and LCM $(2520,\\ 6600) = 252 \\times k$, then the value of $k$ is:",
+      "solution": "For any two numbers, HCF $\\times$ LCM $=$ their product.\n\n$40 \\times 252k = 2520 \\times 6600 = 16632000$\n\n$10080\\,k = 16632000 \\Rightarrow k = \\mathbf{1650}$.\n\nThe identity is worth trusting: every prime factor of the two numbers is split between the HCF (the shared part) and the LCM (everything, at its highest power). Nothing is created and nothing is lost.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "1650",
+        "1600",
+        "165",
+        "1625"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "rn-007",
+      "chapter": "Real Numbers",
+      "topic": "LCM by prime factorisation",
+      "type": "mcq",
+      "q": "If $a = 2^{2} \\times 3^{x}$, $b = 2^{2} \\times 3 \\times 5$, $c = 2^{2} \\times 3 \\times 7$ and LCM $(a, b, c) = 3780$, then $x$ is equal to:",
+      "solution": "Factorise the LCM: $3780 = 2^{2} \\times 3^{3} \\times 5 \\times 7$.\n\nThe LCM takes each prime at its **highest** power across $a$, $b$ and $c$. Only $a$ can supply more than one 3, so $3^{x}$ must be the $3^{3}$ — giving $x = \\mathbf{3}$.\n\nThree shopping lists, one combined order: for each item you buy the largest quantity anybody asked for.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "0"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "rn-008",
+      "chapter": "Real Numbers",
+      "topic": "LCM of three numbers",
+      "type": "mcq",
+      "q": "The LCM of the three numbers 28, 44 and 132 is:",
+      "solution": "$28 = 2^{2} \\times 7$, $44 = 2^{2} \\times 11$, $132 = 2^{2} \\times 3 \\times 11$.\n\nTake each prime at its highest power: $2^{2} \\times 3 \\times 7 \\times 11 = \\mathbf{924}$.\n\nWorth checking: $924 \\div 28 = 33$, $924 \\div 44 = 21$, $924 \\div 132 = 7$ — all whole, so 924 is a common multiple, and no smaller number manages it.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "258",
+        "231",
+        "462",
+        "924"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "rn-009",
+      "chapter": "Real Numbers",
+      "topic": "HCF as a linear combination",
+      "type": "numeric",
+      "q": "If the HCF of 210 and 55 is expressed as $210 \\times 5 + 55m$, find the value of $m$.",
+      "solution": "First the HCF: $210 = 2 \\times 3 \\times 5 \\times 7$ and $55 = 5 \\times 11$, so HCF $= 5$.\n\nNow solve $5 = 210 \\times 5 + 55m = 1050 + 55m$\n\n$55m = 5 - 1050 = -1045 \\Rightarrow m = \\mathbf{-19}$.\n\nThe minus sign is not a slip. Writing an HCF as a combination of the two numbers nearly always means subtracting a large multiple of one from the other — that is exactly what Euclid's algorithm does, run backwards.",
+      "marks": 2,
+      "source": "CBSE 2026",
+      "answer": -19,
+      "tolerance": 0
+    },
+    {
+      "id": "rn-010",
+      "chapter": "Real Numbers",
+      "topic": "Co-prime numbers",
+      "type": "numeric",
+      "q": "If the product of two co-prime numbers is 553, find their HCF.",
+      "solution": "Co-prime means the two numbers share no factor except 1 — so their HCF is $\\mathbf{1}$, whatever their product happens to be.\n\n(For the curious: $553 = 7 \\times 79$, and both are prime.)\n\nThe product is a distraction. Being told two people have no relative in common settles the question — you never need to know how big their families are.",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "rn-011",
+      "chapter": "Real Numbers",
+      "topic": "LCM in a word problem",
+      "type": "numeric",
+      "q": "Find the smallest number which is exactly divisible by both 306 and 657.",
+      "solution": "The smallest number divisible by both is their LCM.\n\n$306 = 2 \\times 3^{2} \\times 17$ and $657 = 3^{2} \\times 73$, so HCF $= 3^{2} = 9$.\n\nUsing HCF $\\times$ LCM $=$ product: LCM $= \\dfrac{306 \\times 657}{9} = \\dfrac{201042}{9} = \\mathbf{22338}$.\n\nThink of two gears with 306 and 657 teeth. They start aligned, and the first moment both are back at the start is after 22,338 teeth have gone past — that is the LCM.",
+      "marks": 3,
+      "answer": 22338,
+      "tolerance": 0
+    },
+    {
+      "id": "rn-012",
+      "chapter": "Real Numbers",
+      "topic": "HCF with remainders",
+      "type": "numeric",
+      "q": "Find the greatest number which divides 70 and 125, leaving remainders 5 and 8 respectively.",
+      "solution": "Take the remainders off first. The number divides $70 - 5 = 65$ and $125 - 8 = 117$ exactly.\n\nSo it is the HCF of 65 and 117: $65 = 5 \\times 13$, $117 = 3^{2} \\times 13$, giving HCF $= \\mathbf{13}$.\n\nCheck: $70 = 13 \\times 5 + 5$ and $125 = 13 \\times 9 + 8$.\n\nStripping the remainder first is the whole trick — it turns 'leaves a remainder' into 'divides exactly', which is the only kind of question HCF can answer.",
+      "marks": 3,
+      "answer": 13,
+      "tolerance": 0
+    },
+    {
+      "id": "rn-013",
+      "chapter": "Real Numbers",
+      "topic": "Proving irrationality",
+      "type": "long",
+      "q": "Prove that $2 + 3\\sqrt{5}$ is an irrational number, given that $\\sqrt{5}$ is an irrational number.",
+      "solution": "**Step 1.** Suppose the opposite: that $2 + 3\\sqrt{5}$ is rational. Then it can be written as $\\dfrac{a}{b}$, with $a$ and $b$ integers and $b \\neq 0$.\n\n**Step 2.** Rearrange: $3\\sqrt{5} = \\dfrac{a}{b} - 2 = \\dfrac{a - 2b}{b}$, so $\\sqrt{5} = \\dfrac{a - 2b}{3b}$.\n\n**Step 3.** The right-hand side is one integer divided by another, so it is rational. That makes $\\sqrt{5}$ rational — contradicting what the question gives us.\n\n**Step 4.** The only thing assumed was Step 1, so Step 1 is wrong. Hence $2 + 3\\sqrt{5}$ is **irrational**.\n\nThe shape of every proof like this: the rationals are a closed club — add, subtract, multiply or divide members and you never leave. If arithmetic on $\\sqrt{5}$ could land you inside, $\\sqrt{5}$ was a member all along.",
+      "marks": 2,
+      "source": "CBSE 2026"
+    },
+    {
+      "id": "rn-014",
+      "chapter": "Real Numbers",
+      "topic": "Proving irrationality",
+      "type": "long",
+      "q": "Prove that $\\sqrt{5}$ is an irrational number.",
+      "solution": "**Step 1.** Suppose $\\sqrt{5}$ is rational. Then $\\sqrt{5} = \\dfrac{p}{q}$ where $p$ and $q$ are integers with no common factor other than 1, and $q \\neq 0$.\n\n**Step 2.** Square both sides: $5 = \\dfrac{p^{2}}{q^{2}}$, so $p^{2} = 5q^{2}$.\n\n**Step 3.** So $5$ divides $p^{2}$, and since 5 is prime, $5$ divides $p$. Write $p = 5k$.\n\n**Step 4.** Substitute: $25k^{2} = 5q^{2}$, so $q^{2} = 5k^{2}$. By the same argument, $5$ divides $q$.\n\n**Step 5.** Now 5 divides both $p$ and $q$ — but we said they had no common factor. That is the contradiction, so the assumption in Step 1 is false and $\\sqrt{5}$ is **irrational**.\n\nThe engine here is the Fundamental Theorem of Arithmetic: every number has exactly one prime recipe. A square's recipe always has each prime an even number of times, so a lone 5 on one side and a paired 5 on the other can never balance.",
+      "marks": 3,
+      "source": "CBSE 2025"
+    },
+    {
+      "id": "rn-015",
+      "chapter": "Real Numbers",
+      "topic": "Composite numbers",
+      "type": "long",
+      "q": "Let $p$, $q$ and $r$ be three distinct prime numbers. Check whether $pqr + q$ is a composite number or not. Further, give an example of three distinct primes $p$, $q$, $r$ such that\n\n(i) $pqr + 1$ is a composite number\n\n(ii) $pqr + 1$ is a prime number",
+      "solution": "**Is $pqr + q$ composite?** Yes. Take $q$ out as a common factor:\n\n$pqr + q = q\\,(pr + 1)$\n\n$q$ is a prime, so $q > 1$, and $pr + 1 > 1$ as well. The number therefore has a factor other than 1 and itself, which is exactly what **composite** means.\n\n**(i) $pqr + 1$ composite:** take $p = 3$, $q = 5$, $r = 7$. Then $pqr + 1 = 105 + 1 = 106 = 2 \\times 53$ — composite.\n\n**(ii) $pqr + 1$ prime:** take $p = 2$, $q = 3$, $r = 5$. Then $pqr + 1 = 30 + 1 = 31$ — prime.\n\nThe first part is spotting a common wrapper: once $q$ is outside the bracket, the number is visibly a product of two things bigger than 1. The last two parts are a reminder that 'one more than a product of primes' is sometimes prime and sometimes not — there is no rule, which is why the question asks for examples.",
+      "marks": 3,
+      "source": "CBSE 2025"
+    }
+  ]
+}
