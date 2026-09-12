@@ -47,18 +47,34 @@ export function answerPanel(q: Question): string {
 function answerFields(q: Question): string {
   if (q.type === "mcq") {
     const options = q.options?.length ? q.options : ["", "", "", ""];
+    // Nothing says what the radio is for unless we say it. It used to arrive
+    // pre-set to A as well, so a teacher who never touched it published a test
+    // where A was the answer to every question.
+    const picked = typeof q.answer === "number" && q.answer >= 0;
     return `
+      <p class="ed-note${picked ? "" : " ed-note-todo"}">
+        ${
+          picked
+            ? "The option you select is the correct answer — the student's mark comes from it."
+            : "Select the option that is the correct answer. Until you do, this question cannot be published."
+        }
+      </p>
       <div class="ed-options">
         ${options
           .map(
-            (opt, i) => `
+            (opt, i) => {
+              const letter = String.fromCharCode(65 + i);
+              return `
           <div class="ed-option${q.answer === i ? " correct" : ""}">
-            <input type="radio" name="ed-correct" class="ed-correct" data-i="${i}"${q.answer === i ? " checked" : ""} />
-            <span class="ed-option-letter">${String.fromCharCode(65 + i)}</span>
+            <input type="radio" name="ed-correct" class="ed-correct" data-i="${i}"${q.answer === i ? " checked" : ""}
+                   aria-label="Mark option ${letter} as the correct answer" />
+            <span class="ed-option-letter">${letter}</span>
             <input class="ed-option-text" data-i="${i}" type="text" maxlength="500"
-                   placeholder="Option ${String.fromCharCode(65 + i)}" value="${escapeHtml(opt)}" />
+                   placeholder="Option ${letter}" value="${escapeHtml(opt)}" />
+            ${q.answer === i ? `<span class="ed-correct-tag">Correct answer</span>` : ""}
             ${options.length > 2 ? `<button class="btn-link ed-option-del" data-i="${i}" aria-label="Remove option">Remove</button>` : ""}
-          </div>`
+          </div>`;
+            }
           )
           .join("")}
       </div>
@@ -231,7 +247,9 @@ export function blankQuestion(chapter: string, title: string): Question {
     type: "mcq",
     q: "",
     options: ["", "", "", ""],
-    answer: 0,
+    // Nothing pre-marked: the teacher chooses, and publishing refuses until
+    // they have. A default of 0 silently made A the answer.
+    answer: -1,
     solution: "",
     marks: 1,
   };

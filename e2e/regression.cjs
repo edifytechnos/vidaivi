@@ -476,7 +476,11 @@ function check(ok, label) {
     // Long-answer photos and the teacher's marking queue. This runs the whole
     // loop on a throwaway student it creates and then removes, so it never
     // leaves a photo, a grading row or a login behind.
-    const marking = await page.evaluate(async () => {
+    // A per-run test id: student usernames are derived from the name and can be
+    // handed out again once a student is removed, and a recycled username would
+    // otherwise inherit the previous run's grading row ("already marked", 409).
+    const photoTestId = "e2e-photo-" + Math.random().toString(36).slice(2, 7);
+    const marking = await page.evaluate(async (photoTestId) => {
       const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
       const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
 
@@ -515,7 +519,7 @@ function check(ok, label) {
         const asTeacher = await fetch("/api/answerimage", {
           method: "POST",
           headers: hdr,
-          body: JSON.stringify({ testId: "e2e-photo", questionId: "q1", image: jpeg }),
+          body: JSON.stringify({ testId: photoTestId, questionId: "q1", image: jpeg }),
         }).then((r) => r.status);
 
         const login = await fetch("/api/studentauth", {
@@ -529,7 +533,7 @@ function check(ok, label) {
           fetch("/api/answerimage", { method: "POST", headers: sHdr, body: JSON.stringify(body) })
             .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
 
-        const base = { testId: "e2e-photo", testTitle: "E2E photo test", questionId: "q1", questionIndex: 0, maxMarks: 5 };
+        const base = { testId: photoTestId, testTitle: "E2E photo test", questionId: "q1", questionIndex: 0, maxMarks: 5 };
         const notAnImage = await post({ ...base, image: btoa("this is plainly not a jpeg") });
         const tooBig = await post({ ...base, image: "/9j/" + "A".repeat(2_400_000) });
         const uploaded = await post({ ...base, image: jpeg });
@@ -547,7 +551,7 @@ function check(ok, label) {
         // It reaches the teacher's queue, gets marked, and reads back marked.
         const queue = await fetch("/api/grading?queue=1", { headers: hdr }).then((r) => r.json());
         const inQueue = (queue.answers || []).some(
-          (a) => a.username === made.username && a.testId === "e2e-photo"
+          (a) => a.username === made.username && a.testId === photoTestId
         );
         const marked = await fetch("/api/grading", {
           method: "POST",
@@ -555,13 +559,13 @@ function check(ok, label) {
           body: JSON.stringify({
             action: "mark",
             username: made.username,
-            testId: "e2e-photo",
+            testId: photoTestId,
             questionId: "q1",
             awarded: 9, // over maxMarks on purpose: must clamp to 5
             comment: "Good method.",
           }),
         }).then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
-        const mine = await fetch("/api/grading?testId=e2e-photo", { headers: sHdr }).then((r) => r.json());
+        const mine = await fetch(`/api/grading?testId=${photoTestId}`, { headers: sHdr }).then((r) => r.json());
 
         return {
           asTeacher,
@@ -582,7 +586,7 @@ function check(ok, label) {
           // Release: the paper is shut until the teacher opens it.
           release: await (async () => {
             const get = (hdr) =>
-              fetch("/api/release?testId=e2e-photo", { headers: hdr }).then((r) =>
+              fetch(`/api/release?testId=${photoTestId}`, { headers: hdr }).then((r) =>
                 r.json().catch(() => ({}))
               );
             const before = await get(sHdr);
@@ -590,7 +594,7 @@ function check(ok, label) {
             const bySelf = await fetch("/api/release", {
               method: "POST",
               headers: sHdr,
-              body: JSON.stringify({ action: "release", testId: "e2e-photo" }),
+              body: JSON.stringify({ action: "release", testId: photoTestId }),
             }).then((r) => r.status);
             // Nor may a teacher open one for somebody else's student.
             const forStranger = await fetch("/api/release", {
@@ -598,20 +602,20 @@ function check(ok, label) {
               headers: hdr,
               body: JSON.stringify({
                 action: "release",
-                testId: "e2e-photo",
+                testId: photoTestId,
                 username: "no-such-student-xyz",
               }),
             }).then((r) => r.status);
             const opened = await fetch("/api/release", {
               method: "POST",
               headers: hdr,
-              body: JSON.stringify({ action: "release", testId: "e2e-photo", username: made.username }),
+              body: JSON.stringify({ action: "release", testId: photoTestId, username: made.username }),
             }).then((r) => r.status);
             const after = await get(sHdr);
             await fetch("/api/release", {
               method: "POST",
               headers: hdr,
-              body: JSON.stringify({ action: "unrelease", testId: "e2e-photo", username: made.username }),
+              body: JSON.stringify({ action: "unrelease", testId: photoTestId, username: made.username }),
             });
             const closedAgain = await get(sHdr);
             return {
@@ -627,7 +631,7 @@ function check(ok, label) {
       } finally {
         await cleanup();
       }
-    });
+    }, photoTestId);
 
     if (marking.missing) {
       // Running against an API that predates this feature (production, before
@@ -644,7 +648,7 @@ function check(ok, label) {
       check(marking.tooBig === 413, `an oversized photo is refused (${marking.tooBig})`);
       check(marking.uploaded === 201, `a student hands in a photo of their working (${marking.uploaded})`);
       check(
-        marking.blob.startsWith(`stu~${marking.username}/e2e-photo/q1/`),
+        marking.blob.startsWith(`stu~${marking.username}/${photoTestId}/q1/`),
         `the photo is stored under its own student (${marking.blob})`
       );
       check(
@@ -921,8 +925,20 @@ function check(ok, label) {
         const r = await post("/api/tests", { action: "publish", id: test.id });
         if (r.status === 200 || r.status === 201) published++;
       }
+      // A draft, left as one: a draft must reach nobody, however it is assigned.
+      const draft = { ...tests[0], id: tests[0].id + "-draft", title: "E2E workspace draft" };
+      await post("/api/tests", { action: "create", test: { ...draft, subjectId } });
       const student = await post("/api/students", { name: "E2E Workspace Student", grade: "12", school: "E2E" });
-      return { subjectId, published, username: student.data.username, password: student.data.password };
+      const other = await post("/api/students", { name: "E2E Other Student", grade: "12", school: "E2E" });
+      return {
+        subjectId,
+        published,
+        draftId: draft.id,
+        username: student.data.username,
+        password: student.data.password,
+        other: other.data.username,
+        otherPassword: other.data.password,
+      };
     }, wsTests);
     // The admin credential, kept for cleanup: the student's session replaces it
     // in localStorage below, and cleanup through that would be refused.
@@ -1036,6 +1052,177 @@ function check(ok, label) {
         check(wsResult.cols === 3, `the result view brings back the third column (${wsResult.cols})`);
         check(wsResult.solution, "and shows the explanation beside the question");
 
+
+        // ---- Who sees a test ------------------------------------------
+        // Publishing shares with everyone the teacher created; assignment
+        // narrows it to named students. A draft reaches nobody either way.
+        const audience = await page.evaluate(async ({ ws, tests, cred }) => {
+          const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": cred };
+          const post = (body) =>
+            fetch("/api/tests", { method: "POST", headers: hdr, body: JSON.stringify(body) })
+              .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+          const signIn = (username, password) =>
+            fetch("/api/studentauth", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username, password }),
+            }).then((r) => r.json());
+
+          const asStudent = async (token, id) => {
+            const h = { "X-Vidai-Auth": token };
+            const one = await fetch(`/api/tests?id=${encodeURIComponent(id)}`, { headers: h });
+            const list = await fetch("/api/tests", { headers: h }).then((r) => r.json());
+            const subjects = await fetch("/api/subjects", { headers: h }).then((r) => r.json());
+            const row = (list.tests || []).find((t) => t.id === id);
+            return {
+              one: one.status,
+              listed: !!row,
+              leaksRoster: !!row && row.assignedTo !== undefined,
+              subjects: (subjects.subjects || []).map((x) => x.id),
+            };
+          };
+
+          const a = await signIn(ws.username, ws.password);
+          const b = await signIn(ws.other, ws.otherPassword);
+          if (!a.token || !b.token) return { skip: true };
+
+          // Test B starts shared with the class: both students can open it.
+          const classWide = {
+            a: await asStudent(a.token, tests[1].id),
+            b: await asStudent(b.token, tests[1].id),
+          };
+
+          // Narrow it to the first student only.
+          const assigned = await post({
+            action: "assign",
+            id: tests[1].id,
+            audience: "selected",
+            usernames: [ws.username],
+          });
+          const narrowed = {
+            a: await asStudent(a.token, tests[1].id),
+            b: await asStudent(b.token, tests[1].id),
+          };
+
+          // Someone else's student cannot be assigned.
+          const stranger = await post({
+            action: "assign",
+            id: tests[1].id,
+            audience: "selected",
+            usernames: ["no-such-student-xyz"],
+          });
+          // Nor an empty list posing as "selected" — that would read as nobody.
+          const empty = await post({
+            action: "assign",
+            id: tests[1].id,
+            audience: "selected",
+            usernames: [],
+          });
+
+          const draft = { a: await asStudent(a.token, ws.draftId) };
+
+          // An MCQ with no option marked. The API used to force it to A, so a
+          // teacher who never touched the radios published a paper where A was
+          // the answer to everything.
+          const unmarkedId = `${ws.draftId}-unmarked`;
+          const unmarked = {
+            id: unmarkedId,
+            title: "E2E unmarked answer",
+            chapter: "Matrices",
+            teacher: null,
+            subjectId: ws.subjectId,
+            questions: [
+              {
+                id: "u1",
+                chapter: "Matrices",
+                topic: "Order",
+                type: "mcq",
+                q: "Which one is right?",
+                options: ["First", "Second", "Third", "Fourth"],
+                answer: -1,
+                solution: "The second one.",
+                marks: 1,
+              },
+            ],
+          };
+          await post({ action: "create", test: unmarked });
+          const storedUnmarked = await fetch(`/api/tests?id=${encodeURIComponent(unmarkedId)}`, { headers: hdr })
+            .then((r) => r.json())
+            .then((d) => d.test?.questions?.[0]?.answer);
+          const publishUnmarked = await post({ action: "publish", id: unmarkedId });
+          await post({ action: "delete", id: unmarkedId });
+
+          // The teacher's own list still carries the roster.
+          const teacherRow = await fetch("/api/tests", { headers: hdr })
+            .then((r) => r.json())
+            .then((d) => (d.tests || []).find((t) => t.id === tests[1].id));
+
+          // Put it back, so the rest of the fixture behaves as before.
+          await post({ action: "assign", id: tests[1].id, audience: "class", usernames: [] });
+          return {
+            classWide,
+            assigned: assigned.status,
+            narrowed,
+            stranger: stranger.status,
+            empty: empty.status,
+            draft,
+            teacherRow,
+            storedUnmarked,
+            publishUnmarked: publishUnmarked.status,
+            publishProblems: publishUnmarked.data.problems || [],
+            publishError: publishUnmarked.data.error || "",
+          };
+        }, { ws, tests: wsTests, cred: wsAdmin });
+
+        if (audience.skip) {
+          check(false, "who-sees-this: the throwaway students could not sign in");
+        } else {
+          check(
+            audience.classWide.a.listed && audience.classWide.b.listed,
+            "a published test reaches everyone the teacher created"
+          );
+          check(audience.assigned === 200, `the teacher narrows it to named students (${audience.assigned})`);
+          check(
+            audience.narrowed.a.listed && audience.narrowed.a.one === 200,
+            "the assigned student still sees it"
+          );
+          check(
+            !audience.narrowed.b.listed && audience.narrowed.b.one === 403,
+            `a student it was not assigned to cannot see or open it (${audience.narrowed.b.one})`
+          );
+          check(
+            !audience.narrowed.b.subjects.includes(ws.subjectId) || audience.classWide.b.listed === false,
+            "and its subject stops listing for them when nothing else in it is theirs"
+          );
+          check(
+            !audience.classWide.a.leaksRoster && !audience.narrowed.a.leaksRoster,
+            "a student is never sent the class list"
+          );
+          check(
+            Array.isArray(audience.teacherRow?.assignedTo),
+            "the teacher's own list does carry it"
+          );
+          check(
+            audience.stranger === 403 || audience.stranger === 404,
+            `another teacher's student cannot be assigned (${audience.stranger})`
+          );
+          check(audience.empty === 400, `"selected" with nobody picked is refused (${audience.empty})`);
+          check(
+            !audience.draft.a.listed && audience.draft.a.one === 403,
+            "a draft reaches nobody, however it is assigned"
+          );
+          check(
+            audience.storedUnmarked === -1,
+            `an unmarked MCQ answer stays unmarked, not forced to A (${audience.storedUnmarked})`
+          );
+          check(
+            audience.publishUnmarked === 400 &&
+              audience.publishProblems.some((p) => /correct option/i.test(p.reason || "")),
+            `publishing it is refused, saying which question needs an answer ("${audience.publishError}")`
+          );
+        }
+
+
         // Phone: the tree is a drawer behind its tab, one surface at a time.
         await page.setViewportSize({ width: 390, height: 844 });
         await page.goto(BASE + `/?test=${wsTests[1].id}`, { waitUntil: "domcontentloaded" });
@@ -1047,14 +1234,33 @@ function check(ok, label) {
         await page.waitForSelector("#st-tree .ed-tree-q:visible", { timeout: 10000 });
         check(true, "and the Questions tab slides it in");
         await page.setViewportSize({ width: 1280, height: 900 });
+
+        // The editor says what a draft means — the sentence J went hunting for.
+        await page.evaluate((cred) => {
+          localStorage.setItem("vidai:auth", JSON.stringify({
+            kind: "admin", credential: cred,
+            profile: { kind: "admin", sub: "admin", name: "E2E Admin", role: "admin" },
+          }));
+        }, wsAdmin);
+        await page.goto(BASE + `/?edit=${ws.draftId}`, { waitUntil: "domcontentloaded" });
+        await page.waitForSelector("#ed-audience", { timeout: 30000 });
+        const draftNote = await page.textContent("#shellbar-sub");
+        check(
+          /cannot see this yet/i.test(draftNote || ""),
+          `the editor says a draft reaches nobody ("${(draftNote || "").trim()}")`
+        );
+        check(await page.isVisible("#ed-audience"), "and offers Who sees this");
       }
     } finally {
       const wsGone = await page.evaluate(async ({ ws, ids, cred }) => {
         const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": cred };
         const post = (url, body) =>
           fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) }).then((r) => r.status);
-        if (ws.username) await post("/api/students", { action: "remove", username: ws.username });
-        for (const id of ids) {
+        for (const username of [ws.username, ws.other]) {
+          if (username) await post("/api/students", { action: "remove", username });
+        }
+        for (const id of [...ids, ws.draftId]) {
+          if (!id) continue;
           await post("/api/tests", { action: "unpublish", id });
           await post("/api/tests", { action: "delete", id });
         }

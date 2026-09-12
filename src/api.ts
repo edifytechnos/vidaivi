@@ -15,6 +15,11 @@ export function newQuestionId(title: string): string {
 }
 
 export interface ServerTestMeta {
+  /** "class" = everyone this teacher teaches; "selected" = `assignedTo` only. */
+  audience?: "class" | "selected";
+  assignedCount?: number;
+  /** Staff only — a student never receives the class list. */
+  assignedTo?: string[];
   id: string;
   title: string;
   chapter: string;
@@ -210,6 +215,29 @@ export async function mutateTest(
       return { ok: false, message: data.error || "Request failed", problems: data.problems };
     }
     return { ok: true, test: data.test };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
+/**
+ * Who sits this test. "class" is everyone the teacher created; "selected" is
+ * the named students and nobody else. The server re-checks every username.
+ */
+export async function assignTest(
+  id: string,
+  audience: "class" | "selected",
+  usernames: string[]
+): Promise<{ ok: true; assignedCount: number } | { ok: false; message: string }> {
+  try {
+    const res = await apiFetch("/api/tests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "assign", id, audience, usernames }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not save who sees this test" };
+    return { ok: true, assignedCount: data.assignedCount ?? 0 };
   } catch {
     return { ok: false, message: "Network error" };
   }

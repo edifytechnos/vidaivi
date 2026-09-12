@@ -2999,3 +2999,69 @@ body.modal-open {
 
 /* Two tabs on this screen, not the editor's three. */
 .ed-student .ed-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* ---------- The correct MCQ option, said out loud ---------- */
+
+.ed-note {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* Nothing marked yet: this is the one thing standing between the teacher and
+   publishing, so it reads as a instruction rather than a footnote. */
+.ed-note-todo {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: var(--primary-soft);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.ed-correct-tag {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bq-pick { margin: 0 0 8px; }
+
+/* ---------- Modal: radio groups and checklists ---------- */
+
+.modal-fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.modal-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.modal-choice:hover { background: var(--bg); }
+.modal-choice input { margin-top: 2px; flex: none; }
+.modal-choice-main { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.modal-choice-label { font-size: 13.5px; color: var(--text); }
+.modal-field-bad .modal-choices { outline: 1px solid var(--red); border-radius: var(--radius-sm); }
+
+.cell-quiet { color: var(--faint); }

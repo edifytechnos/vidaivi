@@ -6,6 +6,7 @@ import { track } from "../../analytics";
 import { fetchServerTest, fetchTestList, mutateTest, newQuestionId, setTestStatus, type TestProblem } from "../../api";
 import { ICONS, escapeHtml, setUrl } from "../../dom";
 import { mount, setShellbar, skeleton } from "../../shell";
+import { openAssign } from "../assign";
 import type { Test } from "../../types";
 import {
   clearTest,
@@ -184,7 +185,13 @@ function render(): void {
       </div>
       ${selectedIndex >= 0 ? tabsMarkup() : ""}
     </div>`,
-    { title: test.title || "Untitled test", active: "subjects", full: true, actions: editorActions(test) }
+    {
+      title: test.title || "Untitled test",
+      sub: audienceNote(test),
+      active: "subjects",
+      full: true,
+      actions: editorActions(test),
+    }
   );
 
   renderBody();
@@ -198,13 +205,27 @@ function editorActions(test: Test): string {
   const published = test.status === "published";
   return `
       <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.users}</button>
-      <span class="status-chip ${statusClass(test.status ?? "draft")}">${statusLabel(test)}</span>
+      <span class="status-chip ${statusClass(test.status ?? "draft")}" title="${escapeHtml(audienceNote(test))}">${statusLabel(test)}</span>
+      <button class="ed-bar-btn" id="ed-audience">${ICONS.users}<span class="ed-bar-btn-label">Who sees this</span></button>
       <button class="ed-bar-btn" id="ed-preview">${ICONS.eye}<span class="ed-bar-btn-label">Preview</span></button>
       ${
         published
           ? `<button class="ed-bar-btn primary" id="ed-unpublish-bar">Unpublish</button>`
           : `<button class="ed-bar-btn primary" id="ed-publish-bar">Publish test</button>`
       }`;
+}
+
+/**
+ * What the status actually means for students. A draft reaches nobody however
+ * it is assigned — that is the sentence a teacher needs and never had.
+ */
+function audienceNote(test: Test): string {
+  if (test.status !== "published") {
+    return "Students cannot see this yet — publish it to share it.";
+  }
+  return test.audience === "selected"
+    ? `Published to ${test.assignedCount ?? 0} selected student${(test.assignedCount ?? 0) === 1 ? "" : "s"}.`
+    : "Published to everyone you teach.";
 }
 
 function typeLabel(type: string): string {
@@ -712,6 +733,19 @@ function bindChrome(): void {
     selectedIndex = -1;
     render();
   });
+  document.getElementById("ed-audience")?.addEventListener("click", () => {
+    const test = currentTest();
+    if (!test) return;
+    void openAssign(test, (result) => {
+      // The picker wrote to the server; mirror it on the working copy so the
+      // bar reads right without a reload. This is metadata, not question
+      // content, so it never needs to go back through autosave.
+      test.audience = result.audience;
+      test.assignedCount = result.assignedCount;
+      test.assignedTo = result.assignedTo;
+      render();
+    });
+  });
   document.getElementById("ed-preview")?.addEventListener("click", () => {
     const test = currentTest();
     if (test) window.open(`./?test=${encodeURIComponent(test.id)}`, "_blank");
@@ -739,7 +773,13 @@ function bindChrome(): void {
 /** Keep the top bar's status chip and publish button in step with the document. */
 function refreshShellbar(): void {
   const test = currentTest();
-  if (test) setShellbar({ title: test.title || "Untitled test", actions: editorActions(test) });
+  if (test) {
+    setShellbar({
+      title: test.title || "Untitled test",
+      sub: audienceNote(test),
+      actions: editorActions(test),
+    });
+  }
 }
 
 function renderSaveState(): void {

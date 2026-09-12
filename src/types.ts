@@ -26,6 +26,11 @@ export interface Test {
   // Present only on tests fetched from the API; bundled JSON tests have neither.
   status?: "draft" | "published" | "archived";
   sample?: boolean;
+  /** Who sits it: "class" is everyone the owner teaches; "selected" is `assignedTo`. */
+  audience?: "class" | "selected";
+  assignedCount?: number;
+  /** Staff only — the server never sends this to a student. */
+  assignedTo?: string[];
   questions: Question[];
 }
 
