@@ -1119,6 +1119,15 @@ function check(ok, label) {
             usernames: [],
           });
 
+          // With every test in the subject narrowed away from B, the subject
+          // card must go too — a subject is only theirs through its tests.
+          await post({ action: "assign", id: tests[0].id, audience: "selected", usernames: [ws.username] });
+          const subjectGone = {
+            b: (await asStudent(b.token, tests[0].id)).subjects,
+            a: (await asStudent(a.token, tests[0].id)).subjects,
+          };
+          await post({ action: "assign", id: tests[0].id, audience: "class", usernames: [] });
+
           const draft = { a: await asStudent(a.token, ws.draftId) };
 
           // An MCQ with no option marked. The API used to force it to A, so a
@@ -1150,6 +1159,9 @@ function check(ok, label) {
             .then((r) => r.json())
             .then((d) => d.test?.questions?.[0]?.answer);
           const publishUnmarked = await post({ action: "publish", id: unmarkedId });
+          // Unpublish first: only drafts can be deleted, so a publish that
+          // unexpectedly succeeded would otherwise leave the fixture behind.
+          await post({ action: "unpublish", id: unmarkedId });
           await post({ action: "delete", id: unmarkedId });
 
           // The teacher's own list still carries the roster.
@@ -1166,6 +1178,7 @@ function check(ok, label) {
             stranger: stranger.status,
             empty: empty.status,
             draft,
+            subjectGone,
             teacherRow,
             storedUnmarked,
             publishUnmarked: publishUnmarked.status,
@@ -1191,8 +1204,8 @@ function check(ok, label) {
             `a student it was not assigned to cannot see or open it (${audience.narrowed.b.one})`
           );
           check(
-            !audience.narrowed.b.subjects.includes(ws.subjectId) || audience.classWide.b.listed === false,
-            "and its subject stops listing for them when nothing else in it is theirs"
+            !audience.subjectGone.b.includes(ws.subjectId) && audience.subjectGone.a.includes(ws.subjectId),
+            "and the subject itself stops listing for a student with no test left in it"
           );
           check(
             !audience.classWide.a.leaksRoster && !audience.narrowed.a.leaksRoster,
