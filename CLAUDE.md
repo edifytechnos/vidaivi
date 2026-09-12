@@ -241,6 +241,7 @@ repurpose fields):
 | `id` | string | yes | Unique stable ID, e.g. `"mat-003"`. Never reuse. |
 | `chapter` | string | yes | CBSE chapter name, e.g. `"Matrices"`. |
 | `topic` | string | yes | Sub-topic shown as a chip on the question card. |
+| `source` | string | no | Where the question came from, e.g. `"CBSE 2025"`. Shown as a quieter chip beside the topic; never graded, never required. |
 | `type` | `"mcq"` \| `"numeric"` \| `"long"` | yes | Controls the UI and grading (see below). |
 | `q` | string | yes | Question text. Inline maths in `$...$`, display maths in `$$...$$` (KaTeX). JSON-escape backslashes: `\\times`, `\\begin{pmatrix}`. |
 | `options` | string[] | mcq only | Answer choices, rendered A/B/C/D in order. |
@@ -323,6 +324,25 @@ has no teacher to release anything, and the demo has to stay worth sharing.
 Release is per student *and* per class — see `/api/release` above. The teacher
 presses it from the marking queue (`src/screens/marking.ts`) or from a student's
 report (`showStudentReport` in `src/screens/console.ts`).
+
+## Where a question came from (`source`)
+
+A question may carry `source` — free text, ≤ 40 characters, e.g. `"CBSE 2025"` —
+rendered as a `.chip-source` beside the topic wherever a question is shown:
+`src/screens/student.ts` (sitting the test), `src/screens/review.ts` (the
+released result) and `src/screens/test.ts` (the guest player). Teachers set it in
+the **Source** box beside Topic, in both the editor and the quick-add builder.
+
+It is optional and never validated: a question without one is complete, so no
+existing test can become unpublishable. But it **must be carried explicitly** in
+the `clean` object inside `validateQuestions` (`api/shared/core.js`) — that object
+is rebuilt from scratch on every save, so any property not named there is
+silently dropped on the first round trip.
+
+The first use is the Class 10 Real Numbers test, whose board-year tags are
+evidenced question by question in `docs/class10-real-numbers-sources.md`. Tag a
+question with a year only when the paper has actually been read: a wrong year is
+worse in front of a class than no year at all.
 
 ## Who sees a test (`audience` / `assignedTo`, `POST /api/tests {action:"assign"}`)
 

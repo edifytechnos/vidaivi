@@ -16,6 +16,9 @@ export function questionBody(q: Question): string {
         <span class="ed-panel-label">Topic</span>
         <input class="ed-input ed-topic-input" id="ed-topic" type="text" maxlength="60"
                placeholder="e.g. Inverse of a matrix" value="${escapeHtml(q.topic)}" />
+        <span class="ed-panel-label">Source</span>
+        <input class="ed-input ed-source-input" id="ed-source" type="text" maxlength="40"
+               placeholder="e.g. CBSE 2025 — optional" value="${escapeHtml(q.source ?? "")}" />
       </div>
       <textarea class="ed-text" id="ed-q" rows="4"
         placeholder="Type the question. Wrap maths in $…$ and bold in **stars**.">${escapeHtml(q.q)}</textarea>
@@ -145,6 +148,15 @@ export function bindQuestionEditor(
     });
     preview();
     onStructureChange();
+  });
+
+  const sourceEl = root.querySelector<HTMLInputElement>("#ed-source");
+  sourceEl?.addEventListener("input", () => {
+    edit(() => {
+      const value = sourceEl.value.trim();
+      if (value) q.source = value;
+      else delete q.source;
+    });
   });
 
   const sEl = root.querySelector<HTMLTextAreaElement>("#ed-solution");

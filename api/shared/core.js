@@ -628,6 +628,11 @@ function validateQuestions(input, { strict = false } = {}) {
       solution: String(q.solution ?? "").slice(0, 8000),
       marks: Number.isFinite(marks) ? Math.min(20, Math.max(0, Math.round(marks))) : 0,
     };
+    // Where the question came from ("CBSE 2025"). Optional and never validated:
+    // a question without one is complete. It has to be carried here explicitly —
+    // `clean` is built from scratch, so anything not named is dropped on save.
+    const source = String(q.source || "").trim().slice(0, 40);
+    if (source) clean.source = source;
 
     if (!clean.q.trim()) problems.push({ ...at, reason: "No question text" });
     if (!clean.solution.trim()) problems.push({ ...at, reason: "No explanation" });
