@@ -1473,4 +1473,377 @@ handlers.attempts = async (context, req) => {
   json(context, 200, { attempts: list });
 };
 
+// ---------- Answer photos for long questions ----------
+//
+// A long answer is no longer self-marked. The student hands in a photo of
+// their working; the teacher awards the marks. Two stores are involved:
+//
+//   * the `answers` blob container holds the photos (Table Storage caps a
+//     property at 64KB, so images can never live in a table row), and
+//   * the `grading` table holds one row per (student, test, question) —
+//     what was handed in, and what the teacher awarded.
+//
+// The attempt row is deliberately left alone: its `score` stays the
+// auto-graded subtotal, and `parseAnswers`' blob is already dropped past
+// Q_CHUNK, so widening it would eventually wipe a student's answer map.
+// A teacher marking a paper therefore never writes to the student's row.
+
+const ANSWER_CONTAINER = "answers";
+const MAX_IMAGE_BYTES = 1500000;
+const MAX_IMAGES_PER_ANSWER = 3;
+const SAS_TTL_MS = 15 * 60 * 1000;
+
+let blobServiceCache = null;
+function blobService() {
+  if (!blobServiceCache) {
+    const { BlobServiceClient } = require("@azure/storage-blob");
+    blobServiceCache = BlobServiceClient.fromConnectionString(STORAGE);
+  }
+  return blobServiceCache;
+}
+
+let containerReady = null;
+async function answerContainer() {
+  const c = blobService().getContainerClient(ANSWER_CONTAINER);
+  // Private: no public access argument. Reads go through a short-lived SAS
+  // minted below, never through a guessable URL.
+  if (!containerReady) containerReady = c.createIfNotExists().catch(() => {});
+  await containerReady;
+  return c;
+}
+
+/** Ids reach blob paths and row keys, so keep them to a boring alphabet. */
+function safeId(value, max) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "")
+    .slice(0, max);
+}
+
+/** Trust the bytes, not the caller's content type. */
+function sniffImage(buf) {
+  if (buf.length > 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) {
+    return "image/jpeg";
+  }
+  if (
+    buf.length > 8 &&
+    buf[0] === 0x89 &&
+    buf[1] === 0x50 &&
+    buf[2] === 0x4e &&
+    buf[3] === 0x47
+  ) {
+    return "image/png";
+  }
+  return "";
+}
+
+function gradingKey(testId, questionId) {
+  return `${testId}~${questionId}`;
+}
+
+function parseImages(raw) {
+  try {
+    const v = raw ? JSON.parse(raw) : [];
+    return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function gradingOut(e) {
+  const images = parseImages(e.images);
+  return {
+    studentId: e.partitionKey,
+    username: String(e.partitionKey || "").replace(/^stu~/, ""),
+    studentName: e.studentName || "",
+    testId: e.testId || "",
+    testTitle: e.testTitle || "",
+    questionId: e.questionId || "",
+    questionIndex: typeof e.questionIndex === "number" ? e.questionIndex : 0,
+    maxMarks: typeof e.maxMarks === "number" ? e.maxMarks : 0,
+    images,
+    status: e.status || "submitted",
+    submittedAt: e.submittedAt || "",
+    awarded: typeof e.awarded === "number" ? e.awarded : null,
+    comment: e.comment || "",
+    markedAt: e.markedAt || "",
+    markedBy: e.markedBy || "",
+  };
+}
+
+async function gradingTable() {
+  const t = tableClient("grading");
+  await ensureTable(t);
+  return t;
+}
+
+/** Is this caller allowed to see `username`'s work? Returns a reason or "". */
+async function canSeeStudent(who, username) {
+  const user = String(username || "").trim().toLowerCase();
+  if (!user) return "Unknown student";
+  if (who.kind === "student") {
+    return who.username === user ? "" : "Not your work";
+  }
+  if (who.role === "admin") return "";
+  if (who.role === "teacher") {
+    try {
+      const rec = await tableClient("students").getEntity("student", user);
+      return rec.teacherSub === who.id ? "" : "Not your student";
+    } catch {
+      return "Student not found";
+    }
+  }
+  // Parents see only a child they have redeemed an invite code for.
+  const link = await childLink(who, user);
+  return link ? "" : "Not your child";
+}
+
+handlers.answerimage = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req);
+  if (!who.kind) {
+    return json(context, 401, { error: "Invalid token", reason: who.reason });
+  }
+
+  if (req.method === "GET") {
+    const blobName = String((req.query && req.query.blob) || "");
+    // "stu~ananya42/test-1/q-15/1699…​.jpg"
+    const owner = blobName.split("/")[0] || "";
+    if (!owner.startsWith("stu~")) {
+      return json(context, 400, { error: "Unknown image" });
+    }
+    const refusal = await canSeeStudent(who, owner.slice(4));
+    if (refusal) return json(context, 403, { error: refusal });
+    const container = await answerContainer();
+    const blob = container.getBlockBlobClient(blobName);
+    if (!(await blob.exists())) {
+      return json(context, 404, { error: "Image not found" });
+    }
+    let url;
+    try {
+      url = await blob.generateSasUrl({
+        permissions: require("@azure/storage-blob").BlobSASPermissions.parse("r"),
+        expiresOn: new Date(Date.now() + SAS_TTL_MS),
+      });
+    } catch (e) {
+      return json(context, 500, { error: "Could not sign the image URL" });
+    }
+    // JSON rather than a 302: an <img src> cannot carry X-Vidaivi-Auth, so
+    // the client fetches the signed URL first and points the image at that.
+    return json(context, 200, { url, expiresIn: Math.floor(SAS_TTL_MS / 1000) });
+  }
+
+  if (req.method !== "POST") {
+    return json(context, 405, { error: "Method not allowed" });
+  }
+
+  // Only a student hands work in. A teacher previewing their own test, or a
+  // parent looking over a shoulder, must not be able to write a photo.
+  if (who.kind !== "student") {
+    return json(context, 403, { error: "Students only" });
+  }
+
+  const body = getBody(req) || {};
+  const action = body.action || "upload";
+  const testId = safeId(body.testId, 60);
+  const questionId = safeId(body.questionId, 40);
+  if (!testId || !questionId) {
+    return json(context, 400, { error: "testId and questionId are required" });
+  }
+
+  const grading = await gradingTable();
+  const rowKey = gradingKey(testId, questionId);
+  let existing = null;
+  try {
+    existing = await grading.getEntity(who.id, rowKey);
+  } catch {}
+  const images = existing ? parseImages(existing.images) : [];
+
+  if (action === "remove") {
+    const blobName = String(body.blob || "");
+    if (!images.includes(blobName)) {
+      return json(context, 404, { error: "No such photo on this answer" });
+    }
+    if (existing && existing.status === "marked") {
+      return json(context, 409, {
+        error: "Your teacher has already marked this answer.",
+      });
+    }
+    const container = await answerContainer();
+    try {
+      await container.getBlockBlobClient(blobName).deleteIfExists();
+    } catch {}
+    const left = images.filter((n) => n !== blobName);
+    await grading.upsertEntity(
+      { partitionKey: who.id, rowKey, images: JSON.stringify(left) },
+      "Merge"
+    );
+    return json(context, 200, { ok: true, images: left });
+  }
+
+  if (existing && existing.status === "marked") {
+    return json(context, 409, {
+      error: "Your teacher has already marked this answer.",
+    });
+  }
+  if (images.length >= MAX_IMAGES_PER_ANSWER) {
+    return json(context, 409, {
+      error: `At most ${MAX_IMAGES_PER_ANSWER} photos per answer`,
+    });
+  }
+
+  const raw = String(body.image || "").replace(/^data:image\/[a-z+]+;base64,/, "");
+  if (!raw) return json(context, 400, { error: "No image sent" });
+  let buf;
+  try {
+    buf = Buffer.from(raw, "base64");
+  } catch {
+    return json(context, 400, { error: "Image is not valid base64" });
+  }
+  if (!buf.length) return json(context, 400, { error: "Image is empty" });
+  if (buf.length > MAX_IMAGE_BYTES) {
+    return json(context, 413, {
+      error: "That photo is too large — try again with a smaller one",
+    });
+  }
+  const contentType = sniffImage(buf);
+  if (!contentType) {
+    return json(context, 415, { error: "Only JPEG or PNG photos" });
+  }
+
+  const ext = contentType === "image/png" ? "png" : "jpg";
+  const blobName = `${who.id}/${testId}/${questionId}/${Date.now()}-${b64url(
+    crypto.randomBytes(6)
+  )}.${ext}`;
+  const container = await answerContainer();
+  await container.getBlockBlobClient(blobName).uploadData(buf, {
+    blobHTTPHeaders: { blobContentType: contentType },
+  });
+
+  const next = images.concat(blobName);
+  const maxMarks = Math.max(0, Math.min(100, Number(body.maxMarks) || 0));
+  const questionIndex = Math.max(0, Math.min(200, Number(body.questionIndex) || 0));
+  await grading.upsertEntity(
+    {
+      partitionKey: who.id,
+      rowKey,
+      testId,
+      questionId,
+      testTitle: String(body.testTitle || "").slice(0, 120),
+      questionIndex,
+      maxMarks,
+      images: JSON.stringify(next),
+      status: "submitted",
+      submittedAt: new Date().toISOString(),
+      teacherId: who.teacherSub || "",
+      studentName: who.username,
+    },
+    "Merge"
+  );
+
+  return json(context, 201, { blob: blobName, images: next });
+};
+
+handlers.grading = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req);
+  if (!who.kind) {
+    return json(context, 401, { error: "Invalid token", reason: who.reason });
+  }
+  const grading = await gradingTable();
+
+  if (req.method === "GET") {
+    const q = req.query || {};
+
+    // The teacher's marking queue: everything handed in by their students.
+    if (q.queue) {
+      if (who.role !== "teacher" && who.role !== "admin") {
+        return json(context, 403, { error: "Teachers only" });
+      }
+      const clauses = ["status eq 'submitted'"];
+      if (who.role !== "admin") {
+        clauses.push(`teacherId eq '${who.id.replace(/'/g, "''")}'`);
+      }
+      const out = [];
+      const iter = grading.listEntities({
+        queryOptions: { filter: clauses.join(" and ") },
+      });
+      for await (const e of iter) {
+        out.push(gradingOut(e));
+        if (out.length >= 200) break;
+      }
+      out.sort(
+        (a, b) =>
+          (a.testTitle || "").localeCompare(b.testTitle || "") ||
+          a.questionIndex - b.questionIndex ||
+          (a.studentName || "").localeCompare(b.studentName || "")
+      );
+      return json(context, 200, { answers: out });
+    }
+
+    // One student's rows, used to merge awarded marks into a score or review.
+    const username =
+      who.kind === "student" ? who.username : String(q.student || "").trim().toLowerCase();
+    const refusal = await canSeeStudent(who, username);
+    if (refusal) return json(context, 403, { error: refusal });
+    const testId = safeId(q.testId, 60);
+    const clauses = [`PartitionKey eq 'stu~${username.replace(/'/g, "''")}'`];
+    if (testId) clauses.push(`testId eq '${testId}'`);
+    const out = [];
+    const iter = grading.listEntities({
+      queryOptions: { filter: clauses.join(" and ") },
+    });
+    for await (const e of iter) {
+      out.push(gradingOut(e));
+      if (out.length >= 200) break;
+    }
+    out.sort((a, b) => a.questionIndex - b.questionIndex);
+    return json(context, 200, { answers: out });
+  }
+
+  if (req.method !== "POST") {
+    return json(context, 405, { error: "Method not allowed" });
+  }
+
+  const body = getBody(req) || {};
+  const action = body.action || "mark";
+  if (action !== "mark") {
+    return json(context, 400, { error: `Unknown action: ${action}` });
+  }
+  if (who.role !== "teacher" && who.role !== "admin") {
+    return json(context, 403, { error: "Teachers only" });
+  }
+
+  const username = String(body.username || "").trim().toLowerCase();
+  const refusal = await canSeeStudent(who, username);
+  if (refusal) return json(context, 403, { error: refusal });
+
+  const testId = safeId(body.testId, 60);
+  const questionId = safeId(body.questionId, 40);
+  let entity;
+  try {
+    entity = await grading.getEntity(`stu~${username}`, gradingKey(testId, questionId));
+  } catch {
+    return json(context, 404, { error: "Nothing handed in for that question" });
+  }
+
+  const maxMarks = typeof entity.maxMarks === "number" ? entity.maxMarks : 0;
+  const awarded = Math.max(0, Math.min(maxMarks, Math.round(Number(body.awarded) || 0)));
+  await grading.upsertEntity(
+    {
+      partitionKey: entity.partitionKey,
+      rowKey: entity.rowKey,
+      status: "marked",
+      awarded,
+      comment: String(body.comment || "").slice(0, 600),
+      markedAt: new Date().toISOString(),
+      markedBy: who.name || who.email || who.id,
+    },
+    "Merge"
+  );
+
+  return json(context, 200, { ok: true, awarded, maxMarks });
+};
+
 module.exports = { handlers };

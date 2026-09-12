@@ -3,12 +3,15 @@
 import { track } from "../analytics";
 import {
   authEnabled,
+  fetchGrading,
   fetchMyAttempt,
+  getProfile,
   isLoggedIn,
   renderGoogleButton,
   saveProgress,
   submitAttempt,
 } from "../auth";
+import { hydrateThumbs, mountUploader, photoStrip } from "../answerphotos";
 import {
   clearAttempt,
   loadAttempt,
@@ -18,7 +21,7 @@ import {
   setGuest,
 } from "../attempts";
 import { totalMarks } from "../data";
-import { app, escapeHtml, formatText, renderMath, setUrl } from "../dom";
+import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
 import { mount } from "../shell";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { showPhoneForm } from "./auth";
@@ -221,8 +224,52 @@ function showQuestion(test: Test, attempt: Attempt) {
       input.classList.add(correct ? "correct" : "incorrect");
       finishQuestion(test, attempt, q, correct, val);
     });
+  } else if (canHandIn()) {
+    // long, signed in as a student: work on paper, hand in a photo, and the
+    // teacher awards the marks. Nothing here is auto-graded.
+    answerArea.innerHTML = `
+      <div class="note">
+        ${ICONS.mark}
+        <span><strong>Your teacher marks this one.</strong> Work it out on paper,
+        then add a photo so they can see your method. The marks appear once they
+        have reviewed it.</span>
+      </div>
+      <div class="section-label">Your working</div>
+      <div id="uploader"></div>
+      <div class="section-label">Check yourself</div>
+      <p class="hint">Reading the solution does not change your marks — your
+      teacher marks from the photo.</p>`;
+    const readImages = mountUploader(document.getElementById("uploader")!, {
+      testId: test.id,
+      testTitle: test.title,
+      questionId: q.id,
+      questionIndex: index,
+      maxMarks: q.marks,
+      initial: attempt.answers[q.id]?.images ?? [],
+      onChange: () => {},
+    });
+    actions.innerHTML = `
+      <button id="reveal-btn" class="btn btn-ghost">Show solution</button>
+      <button id="handin-btn" class="btn btn-primary">Hand in answer</button>`;
+    actions.insertAdjacentHTML(
+      "afterend",
+      `<p class="hint" id="handin-note">No photo? You can still hand in — but there
+       is nothing for your teacher to mark, so this question scores 0.</p>`
+    );
+    document.getElementById("reveal-btn")!.addEventListener("click", (e) => {
+      showSolution(q);
+      (e.currentTarget as HTMLButtonElement).remove();
+    });
+    document.getElementById("handin-btn")!.addEventListener("click", () => {
+      const images = readImages();
+      recordAndNext(test, attempt, q, false, images.length ? 1 : 0, false, {
+        images,
+        review: images.length ? "pending" : undefined,
+      });
+    });
   } else {
-    // long: attempt on paper, reveal the model solution, self-assess
+    // long, without a student sign-in (the guest demo, or a teacher previewing
+    // their own test): no one is going to mark this, so keep the honour system.
     answerArea.innerHTML = `
       <p class="hint">Work this out on paper, then reveal the solution and mark yourself honestly.</p>`;
     actions.innerHTML = `<button id="reveal-btn" class="btn btn-primary">Show solution</button>`;
@@ -277,9 +324,15 @@ function recordAndNext(
   q: Question,
   correct: boolean,
   given: number,
-  waitForNext: boolean
+  waitForNext: boolean,
+  extra?: Partial<StoredAnswer>
 ) {
-  attempt.answers[q.id] = { given, correct, earned: correct ? q.marks : 0 };
+  attempt.answers[q.id] = {
+    given,
+    correct,
+    earned: correct ? q.marks : 0,
+    ...extra,
+  };
   if (correct) attempt.score += q.marks;
   attempt.index += 1;
   track("question_answered", {
@@ -339,11 +392,72 @@ function recordAndNext(
   }
 }
 
+/**
+ * Can this person actually hand work in? Only a signed-in student has a
+ * teacher to mark it. A guest on the demo, or a teacher previewing their own
+ * test, keeps the old self-assessment — there is nobody to mark theirs.
+ */
+function canHandIn(): boolean {
+  return isLoggedIn() && getProfile()?.kind === "student";
+}
+
+/** Marks still with the teacher, and what they are worth. */
+function pendingMarks(test: Test, attempt: Attempt): { count: number; marks: number } {
+  let count = 0;
+  let marks = 0;
+  for (const q of test.questions) {
+    if (attempt.answers[q.id]?.review === "pending") {
+      count++;
+      marks += q.marks;
+    }
+  }
+  return { count, marks };
+}
+
+/**
+ * Fold the teacher's marks into a local attempt. The attempt row on the
+ * server keeps only the auto-graded score; awarded marks live in their own
+ * rows, so they are merged in on read. Returns true if anything changed.
+ */
+export async function hydrateMarks(
+  test: Test,
+  attempt: Attempt,
+  student?: string
+): Promise<boolean> {
+  const rows = await fetchGrading({ testId: test.id, student });
+  if (!rows.length) return false;
+  let changed = false;
+  for (const row of rows) {
+    const a = attempt.answers[row.questionId];
+    if (!a) continue;
+    if (row.images.length && (a.images ?? []).join() !== row.images.join()) {
+      a.images = row.images;
+      changed = true;
+    }
+    if (row.status === "marked" && a.review !== "marked") {
+      const awarded = row.awarded ?? 0;
+      attempt.score += awarded - a.earned;
+      a.earned = awarded;
+      a.correct = awarded > 0;
+      a.review = "marked";
+      a.comment = row.comment;
+      changed = true;
+    }
+  }
+  if (changed && !student) saveAttempt(test.id, attempt);
+  return changed;
+}
+
 function showScore(test: Test, attempt: Attempt) {
   const total = totalMarks(test);
-  const pct = Math.round((attempt.score / total) * 100);
-  const message =
-    pct >= 80
+  const waiting = pendingMarks(test, attempt);
+  // With marks still out, the percentage would be a lie — the denominator is
+  // what has actually been graded, and the pill says what is missing.
+  const graded = total - waiting.marks;
+  const pct = graded > 0 ? Math.round((attempt.score / graded) * 100) : 0;
+  const message = waiting.count
+    ? "Handed in — your teacher marks the long answers next."
+    : pct >= 80
       ? "Excellent work! 🎉"
       : pct >= 50
         ? "Good effort — keep practising!"
@@ -351,17 +465,24 @@ function showScore(test: Test, attempt: Attempt) {
   mount(
     `
     <main class="card score-card">
-      <div class="score-big">${attempt.score} / ${total}</div>
-      <div class="score-pct">${pct}%</div>
+      <div class="score-big">${attempt.score} / ${waiting.count ? graded : total}</div>
+      <div class="score-pct">${pct}%${waiting.count ? " of what is marked so far" : ""}</div>
       <p class="score-message">${message}</p>
+      ${
+        waiting.count
+          ? `<div class="await-pill">${ICONS.mark}<span>+${waiting.marks} marks awaiting your teacher's review —
+             ${waiting.count} long answer${waiting.count > 1 ? "s" : ""}</span></div>`
+          : ""
+      }
       <ul class="score-breakdown">
         ${test.questions
           .map((q, i) => {
             const a = attempt.answers[q.id];
+            const pending = a?.review === "pending";
             const ok = a?.correct ?? false;
-            return `<li class="${ok ? "row-correct" : "row-incorrect"}">
-              <span>${ok ? "✓" : "✗"} Q${i + 1} · ${escapeHtml(q.topic)}</span>
-              <span>${a?.earned ?? 0}/${q.marks}</span>
+            return `<li class="${pending ? "row-pending" : ok ? "row-correct" : "row-incorrect"}">
+              <span>${pending ? "⏳" : ok ? "✓" : "✗"} Q${i + 1} · ${escapeHtml(q.topic)}</span>
+              <span>${pending ? `— /${q.marks}` : `${a?.earned ?? 0}/${q.marks}`}</span>
             </li>`;
           })
           .join("")}
@@ -383,6 +504,12 @@ function showScore(test: Test, attempt: Attempt) {
     clearAttempt(test.id);
     showQuestion(test, newAttempt());
   });
+  // Marks awarded since this device last looked.
+  if (waiting.count) {
+    void hydrateMarks(test, attempt).then((changed) => {
+      if (changed && document.querySelector(".score-card")) showScore(test, attempt);
+    });
+  }
 }
 
 function describeGiven(q: Question, a: StoredAnswer | undefined): string {
@@ -393,6 +520,10 @@ function describeGiven(q: Question, a: StoredAnswer | undefined): string {
     return `Your answer: <strong>${letter}.</strong> ${escapeHtml(q.options?.[i] ?? "")}`;
   }
   if (q.type === "numeric") return `Your answer: <strong>${a.given}</strong>`;
+  if (a.review === "pending") {
+    return `Handed in${a.images?.length ? ` · ${a.images.length} photo${a.images.length > 1 ? "s" : ""}` : ""} — waiting for your teacher`;
+  }
+  if (a.review === "marked") return "Marked by your teacher";
   return a.correct ? "Self-assessed: got it right" : "Self-assessed: got it wrong";
 }
 
@@ -460,26 +591,42 @@ export function showReviewFor(test: Test, attempt: Attempt, back: () => void): v
 
 function showReview(test: Test, attempt: Attempt, viewerBack?: () => void) {
   const total = totalMarks(test);
+  const waiting = pendingMarks(test, attempt);
   mount(
     `
     <main>
       <div class="review-header card">
         <h2 class="landing-title">${escapeHtml(test.title)} — Review</h2>
-        <div class="score-big score-big-small">${attempt.score} / ${total}</div>
+        <div class="score-big score-big-small">${attempt.score} / ${waiting.count ? total - waiting.marks : total}</div>
+        ${
+          waiting.count
+            ? `<div class="await-pill">${ICONS.mark}<span>+${waiting.marks} marks awaiting review</span></div>`
+            : ""
+        }
       </div>
       ${test.questions
         .map((q, i) => {
           const a = attempt.answers[q.id];
+          const pending = a?.review === "pending";
           const ok = a?.correct ?? false;
+          const chip = pending
+            ? `<span class="status-chip status-progress">Awaiting review</span>`
+            : `<span class="status-chip ${ok ? "status-done" : "status-wrong"}">${ok ? `✓ ${a?.earned ?? 0}` : "✗ 0"}/${q.marks}</span>`;
           return `
         <div class="card review-item">
           <div class="meta">
             <span class="chip">${i + 1}</span>
             <span class="chip chip-topic">${escapeHtml(q.topic)}</span>
-            <span class="status-chip ${ok ? "status-done" : "status-wrong"}">${ok ? `✓ ${a?.earned ?? 0}` : "✗ 0"}/${q.marks}</span>
+            ${chip}
           </div>
           <div class="question-text">${formatText(q.q)}</div>
           <p class="review-given">${describeGiven(q, a)}</p>
+          ${photoStrip(a?.images ?? [], "Handed-in working")}
+          ${
+            a?.review === "marked" && a.comment
+              ? `<p class="review-comment"><strong>Your teacher:</strong> ${escapeHtml(a.comment)}</p>`
+              : ""
+          }
           ${correctLine(q, a)}
           <div class="solution">
             <div class="solution-title">Solution</div>
@@ -505,5 +652,6 @@ function showReview(test: Test, attempt: Attempt, viewerBack?: () => void) {
     showQuestion(test, newAttempt());
   });
   renderMath(app);
+  void hydrateThumbs(app);
   window.scrollTo(0, 0);
 }

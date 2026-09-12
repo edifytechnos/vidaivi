@@ -10,7 +10,14 @@
 import { getProfile, isAdmin, isLoggedIn, isParent, isTeacher } from "./auth";
 import { app, ICONS } from "./dom";
 
-export type RailKey = "subjects" | "students" | "mytests" | "admin" | "results" | "children";
+export type RailKey =
+  | "subjects"
+  | "mark"
+  | "students"
+  | "mytests"
+  | "admin"
+  | "results"
+  | "children";
 
 interface RailItem {
   key: RailKey;
@@ -23,6 +30,7 @@ const RAIL_ITEMS: RailItem[] = [
   { key: "children", label: "My children", icon: ICONS.users, show: isParent },
   { key: "subjects", label: "Subjects", icon: ICONS.folder, show: () => isLoggedIn() && !isParent() },
   { key: "results", label: "My results", icon: ICONS.check, show: () => getProfile()?.kind === "student" },
+  { key: "mark", label: "To mark", icon: ICONS.mark, show: isTeacher },
   { key: "students", label: "My students", icon: ICONS.users, show: isTeacher },
   { key: "mytests", label: "My tests", icon: ICONS.home, show: isAdmin },
   { key: "admin", label: "Teacher access", icon: ICONS.shield, show: isAdmin },

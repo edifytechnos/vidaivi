@@ -367,6 +367,129 @@ export async function fetchReports(username?: string): Promise<StudentReport[] |
   }
 }
 
+// ---------- Long-answer photos and teacher marking ----------
+
+export interface GradedAnswer {
+  studentId: string;
+  username: string;
+  studentName: string;
+  testId: string;
+  testTitle: string;
+  questionId: string;
+  questionIndex: number;
+  maxMarks: number;
+  images: string[];
+  status: "submitted" | "marked";
+  submittedAt: string;
+  awarded: number | null;
+  comment: string;
+  markedAt: string;
+  markedBy: string;
+}
+
+export interface UploadedAnswerImage {
+  blob: string;
+  images: string[];
+}
+
+/** Hand in one photo of a long answer. Throws with a readable message. */
+export async function uploadAnswerImage(payload: {
+  testId: string;
+  testTitle: string;
+  questionId: string;
+  questionIndex: number;
+  maxMarks: number;
+  image: string;
+}): Promise<UploadedAnswerImage> {
+  const res = await fetch("/api/answerimage", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify(payload),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || "Could not upload that photo");
+  return body as UploadedAnswerImage;
+}
+
+export async function removeAnswerImage(
+  testId: string,
+  questionId: string,
+  blob: string
+): Promise<string[]> {
+  const res = await fetch("/api/answerimage", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeader() },
+    body: JSON.stringify({ action: "remove", testId, questionId, blob }),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(body.error || "Could not remove that photo");
+  return (body.images || []) as string[];
+}
+
+/**
+ * A short-lived signed URL for one photo. An <img> cannot carry the auth
+ * header, so the URL is fetched first and the image points at that.
+ */
+export async function answerImageUrl(blob: string): Promise<string | null> {
+  try {
+    const res = await fetch(`/api/answerimage?blob=${encodeURIComponent(blob)}`, {
+      headers: authHeader(),
+    });
+    if (!res.ok) return null;
+    return (await res.json()).url as string;
+  } catch {
+    return null;
+  }
+}
+
+/** Grading rows for one student — the caller's own unless `student` is given. */
+export async function fetchGrading(opts: {
+  student?: string;
+  testId?: string;
+} = {}): Promise<GradedAnswer[]> {
+  try {
+    const q = new URLSearchParams();
+    if (opts.student) q.set("student", opts.student);
+    if (opts.testId) q.set("testId", opts.testId);
+    const suffix = q.toString() ? `?${q}` : "";
+    const res = await fetch(`/api/grading${suffix}`, { headers: authHeader() });
+    if (!res.ok) return [];
+    return ((await res.json()).answers || []) as GradedAnswer[];
+  } catch {
+    return [];
+  }
+}
+
+/** Teacher/admin: everything their students have handed in and not had marked. */
+export async function fetchMarkingQueue(): Promise<GradedAnswer[] | null> {
+  try {
+    const res = await fetch("/api/grading?queue=1", { headers: authHeader() });
+    if (!res.ok) return null;
+    return ((await res.json()).answers || []) as GradedAnswer[];
+  } catch {
+    return null;
+  }
+}
+
+export async function saveMark(payload: {
+  username: string;
+  testId: string;
+  questionId: string;
+  awarded: number;
+  comment?: string;
+}): Promise<boolean> {
+  try {
+    const res = await fetch("/api/grading", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "mark", ...payload }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 // ---------- Attempts (fire-and-forget with offline queue) ----------
 
 interface PendingAttempt {

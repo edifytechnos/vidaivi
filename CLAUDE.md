@@ -171,6 +171,8 @@ and the explanation, each with a live "Student sees" preview.
 - `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
 - `screens/builder.ts` — visual test builder (create/edit cloud tests).
 - `screens/test.ts` — test player (landing → questions → score → review).
+- `screens/marking.ts` — the teacher's marking queue for long answers.
+- `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
 its listeners; cross-screen imports are function-only (safe with ES-module cycles).
@@ -247,6 +249,38 @@ Notes:
 - Question style: CBSE board pattern (1-mark MCQ, 2–3 mark numeric, 5-mark long).
 - Total marks = sum of `marks` across the file; no separate config.
 - Content is plain-text escaped before rendering, so raw HTML in strings will display literally, not render.
+
+## Long answers: photos in, teacher marks out
+
+A `long` question is no longer self-marked when a **signed-in student** answers
+it. They photograph their working, hand it in, and the teacher awards the marks;
+the score is provisional until then. A guest on the demo, or a teacher previewing
+their own test, keeps the old self-assessment — nobody would ever mark theirs.
+
+- **Photos** live in the private Azure Blob container `answers`
+  (`<studentId>/<testId>/<questionId>/<ts>-<rand>.jpg`), in the same storage
+  account as the tables. `POST /api/answerimage` takes JSON `{testId,
+  questionId, questionIndex, maxMarks, testTitle, image}` where `image` is
+  base64 — the client downscales to 1600px / JPEG 0.72 in a canvas first
+  (`src/answerphotos.ts`), so there is no multipart parsing anywhere. Students
+  only; ≤ 1.5 MB and ≤ 3 photos per answer; JPEG/PNG confirmed by magic bytes.
+  `GET /api/answerimage?blob=` returns `{url}` — a 15-minute SAS — because an
+  `<img>` cannot carry `X-Vidaivi-Auth`. Readable by the owning student, their
+  teacher, an admin, or a linked parent.
+- **Marks** live in the `grading` table, one row per (student, test, question):
+  PK = `stu~<username>`, RK = `<testId>~<questionId>`, holding `images`,
+  `maxMarks`, `status` (`submitted` → `marked`), `awarded`, `comment`,
+  `teacherId`. `GET /api/grading?queue=1` is the teacher's queue;
+  `GET /api/grading[?student=&testId=]` is one student's rows;
+  `POST {action:"mark", username, testId, questionId, awarded, comment}` awards.
+- **The attempt row is never touched by a teacher.** Its `score` stays the
+  auto-graded subtotal — long answers contribute 0 until marked — and the
+  displayed score is that plus the `awarded` values, merged on read
+  (`hydrateMarks` in `src/screens/test.ts`). That keeps marking off the
+  student's row entirely: no etag races, and no risk of tripping the
+  `Q_CHUNK` guard that silently drops an oversized `answers` blob.
+- Storage needs no new app setting — the blob client reuses
+  `STORAGE_CONNECTION_STRING`. The container is created on first upload.
 
 ## Working style
 

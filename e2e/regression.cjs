@@ -415,6 +415,145 @@ function check(ok, label) {
       check(links.unlinkedTests === 403, "the test list for an unlinked child is refused");
     }
 
+    // Long-answer photos and the teacher's marking queue. This runs the whole
+    // loop on a throwaway student it creates and then removes, so it never
+    // leaves a photo, a grading row or a login behind.
+    const marking = await page.evaluate(async () => {
+      const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+      const hdr = { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential };
+
+      // A missing route answers 404 too, so every refusal below would "pass"
+      // against an API without this feature. Prove the queue exists first.
+      const queueStatus = await fetch("/api/grading?queue=1", { headers: hdr }).then((r) => r.status);
+      if (queueStatus !== 200) return { missing: true, queueStatus };
+
+      const made = await fetch("/api/students", {
+        method: "POST",
+        headers: hdr,
+        body: JSON.stringify({ name: "E2E Photo Student", grade: "12", school: "E2E" }),
+      }).then((r) => r.json());
+      if (!made.username || !made.password) return { skip: true };
+
+      const cleanup = async () =>
+        fetch("/api/students", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({ action: "remove", username: made.username }),
+        });
+
+      try {
+        // A real JPEG, drawn here rather than pasted as a constant.
+        const canvas = document.createElement("canvas");
+        canvas.width = 40;
+        canvas.height = 30;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, 40, 30);
+        ctx.fillStyle = "#000";
+        ctx.fillText("f-1", 4, 20);
+        const jpeg = canvas.toDataURL("image/jpeg", 0.7).split(",")[1];
+
+        // The teacher/admin identity must not be able to hand work in.
+        const asTeacher = await fetch("/api/answerimage", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({ testId: "e2e-photo", questionId: "q1", image: jpeg }),
+        }).then((r) => r.status);
+
+        const login = await fetch("/api/studentauth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: made.username, password: made.password }),
+        }).then((r) => r.json());
+        if (!login.token) return { cleanupOnly: true, asTeacher, loginFailed: true, username: made.username };
+        const sHdr = { "Content-Type": "application/json", "X-Vidaivi-Auth": login.token };
+        const post = (body) =>
+          fetch("/api/answerimage", { method: "POST", headers: sHdr, body: JSON.stringify(body) })
+            .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+
+        const base = { testId: "e2e-photo", testTitle: "E2E photo test", questionId: "q1", questionIndex: 0, maxMarks: 5 };
+        const notAnImage = await post({ ...base, image: btoa("this is plainly not a jpeg") });
+        const tooBig = await post({ ...base, image: "/9j/" + "A".repeat(2_400_000) });
+        const uploaded = await post({ ...base, image: jpeg });
+
+        // The signed URL is per-student: nobody else's blob comes back.
+        const signed = await fetch(
+          `/api/answerimage?blob=${encodeURIComponent(uploaded.data.blob || "x")}`,
+          { headers: sHdr }
+        ).then(async (r) => ({ status: r.status, url: (await r.json().catch(() => ({}))).url || "" }));
+        const someoneElse = await fetch(
+          "/api/answerimage?blob=" + encodeURIComponent("stu~not-this-student/t/q/1.jpg"),
+          { headers: sHdr }
+        ).then((r) => r.status);
+
+        // It reaches the teacher's queue, gets marked, and reads back marked.
+        const queue = await fetch("/api/grading?queue=1", { headers: hdr }).then((r) => r.json());
+        const inQueue = (queue.answers || []).some(
+          (a) => a.username === made.username && a.testId === "e2e-photo"
+        );
+        const marked = await fetch("/api/grading", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({
+            action: "mark",
+            username: made.username,
+            testId: "e2e-photo",
+            questionId: "q1",
+            awarded: 9, // over maxMarks on purpose: must clamp to 5
+            comment: "Good method.",
+          }),
+        }).then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+        const mine = await fetch("/api/grading?testId=e2e-photo", { headers: sHdr }).then((r) => r.json());
+
+        return {
+          asTeacher,
+          notAnImage: notAnImage.status,
+          tooBig: tooBig.status,
+          uploaded: uploaded.status,
+          blob: uploaded.data.blob || "",
+          signedStatus: signed.status,
+          signedUrl: signed.url,
+          someoneElse,
+          inQueue,
+          markStatus: marked.status,
+          awarded: marked.data.awarded,
+          readBack: (mine.answers || [])[0] || null,
+          username: made.username,
+        };
+      } finally {
+        await cleanup();
+      }
+    });
+
+    if (marking.missing) {
+      check(false, `/api/grading is not deployed here (queue returned ${marking.queueStatus})`);
+    } else if (marking.skip) {
+      console.log("SKIP  long-answer photos (could not create a throwaway student)");
+    } else if (marking.loginFailed) {
+      check(false, "long-answer photos: the throwaway student could not sign in");
+    } else {
+      check(marking.asTeacher === 403, `a teacher cannot hand work in as a student (${marking.asTeacher})`);
+      check(marking.notAnImage === 415, `a body that is not an image is refused (${marking.notAnImage})`);
+      check(marking.tooBig === 413, `an oversized photo is refused (${marking.tooBig})`);
+      check(marking.uploaded === 201, `a student hands in a photo of their working (${marking.uploaded})`);
+      check(
+        marking.blob.startsWith(`stu~${marking.username}/e2e-photo/q1/`),
+        `the photo is stored under its own student (${marking.blob})`
+      );
+      check(
+        marking.signedStatus === 200 && /^https:\/\/.+sig=/.test(marking.signedUrl),
+        "reading it back gives a signed, expiring URL"
+      );
+      check(marking.someoneElse === 403, `another student's photo is refused (${marking.someoneElse})`);
+      check(marking.inQueue, "it turns up in the teacher's marking queue");
+      check(marking.markStatus === 200, `the teacher awards marks (${marking.markStatus})`);
+      check(marking.awarded === 5, `marks are clamped to what the question is worth (got ${marking.awarded})`);
+      check(marking.readBack?.status === "marked", "the student's copy reads back as marked");
+      check(marking.readBack?.awarded === 5 && marking.readBack?.comment === "Good method.",
+        "with the mark and the teacher's comment");
+      console.log(`  (cleaned up ${marking.username})`);
+    }
+
     // No flicker, no shift. With the API held back, a hard reload must paint
     // the shell and a skeleton at once, and the chrome must not move when the
     // data arrives or when moving between screens.

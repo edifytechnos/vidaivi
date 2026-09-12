@@ -8,6 +8,7 @@ import { railExpanded, setRailExpanded } from "../shell";
 import { showWelcome } from "./auth";
 import { showAdmin, showMyTests, showTeacher } from "./console";
 import { showHome } from "./home";
+import { showMarking } from "./marking";
 import { showChildren } from "./parent";
 import { showSubjects } from "./subjects";
 
@@ -29,6 +30,7 @@ export function installShell(): void {
     if (to === "subjects") void showSubjects();
     else if (to === "children") void showChildren();
     else if (to === "results") showHome();
+    else if (to === "mark") void showMarking();
     else if (to === "students") showTeacher();
     else if (to === "mytests") showMyTests();
     else if (to === "admin") showAdmin();

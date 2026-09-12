@@ -5,6 +5,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@azure/data-tables": "^13.2.2"
+    "@azure/data-tables": "^13.2.2",
+    "@azure/storage-blob": "^12.28.0"
   }
 }

@@ -10,6 +10,7 @@ import { TESTS } from "./data";
 import { showHome } from "./screens/home";
 import { showWelcome } from "./screens/auth";
 import { showLanding } from "./screens/test";
+import { showMarking } from "./screens/marking";
 import { showEditor } from "./screens/editor";
 import { showSubjects } from "./screens/subjects";
 import { showChildren } from "./screens/parent";
@@ -37,12 +38,17 @@ if (editId && authEnabled && isLoggedIn()) {
   void showEditor(editId, questionId, () => void showSubjects());
 }
 
+// A teacher refreshing the marking queue stays on it.
+const markMode = new URLSearchParams(location.search).get("mark") === "1";
+
 // Tolerate links mangled by messaging apps (trailing "?", "/", punctuation).
 const rawTestId = new URLSearchParams(location.search).get("test") ?? "";
 const testId = rawTestId.replace(/[^A-Za-z0-9-]+$/g, "");
 const test = TESTS.find((t) => t.id === testId);
 if (editId) {
   // handled above
+} else if (markMode && authEnabled && isLoggedIn()) {
+  void showMarking();
 } else if (test) {
   track("test_open", { test: test.id });
   showLanding(test);
