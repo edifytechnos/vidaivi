@@ -899,7 +899,9 @@ function check(ok, label) {
     const wsQuestions = (n) => [
       { id: `${n}q1`, chapter: "Matrices", topic: "Order", type: "mcq",
         q: "Order of a $2\\times3$ matrix?", options: ["2x3", "3x2", "6", "2"], answer: 0,
-        solution: "Rows then columns.", marks: 1 },
+        // `source` is rebuilt from scratch server-side, so a round trip is the
+        // only thing that proves it is carried rather than silently dropped.
+        source: "CBSE 2026", solution: "Rows then columns.", marks: 1 },
       { id: `${n}q2`, chapter: "Matrices", topic: "Determinant", type: "numeric",
         q: "$\\det(I_2)$?", answer: 1, tolerance: 0, solution: "The identity has determinant 1.", marks: 2 },
       { id: `${n}q3`, chapter: "Matrices", topic: "Proof", type: "long",
@@ -978,6 +980,10 @@ function check(ok, label) {
         check(wsShape.rows === 3, `its questions are listed beside it (${wsShape.rows})`);
         check(wsShape.cols === 2, `sitting a test has no third column (${wsShape.cols})`);
         check(wsShape.explain === 0 && wsShape.solution === 0, "no explanation and no solution while sitting it");
+        check(
+          (await page.textContent(".ed-center .chip-source").catch(() => "")) === "CBSE 2026",
+          "and the question says which exam it came from"
+        );
 
         // Answered in any order, and revisitable.
         await page.click(".ed-student .option[data-i='0']");
@@ -1128,6 +1134,11 @@ function check(ok, label) {
           };
           await post({ action: "assign", id: tests[0].id, audience: "class", usernames: [] });
 
+          // Where a question came from must survive the save.
+          const storedSource = await fetch(`/api/tests?id=${encodeURIComponent(tests[0].id)}`, { headers: hdr })
+            .then((r) => r.json())
+            .then((d) => d.test?.questions?.[0]?.source);
+
           const draft = { a: await asStudent(a.token, ws.draftId) };
 
           // An MCQ with no option marked. The API used to force it to A, so a
@@ -1178,6 +1189,7 @@ function check(ok, label) {
             stranger: stranger.status,
             empty: empty.status,
             draft,
+            storedSource,
             subjectGone,
             teacherRow,
             storedUnmarked,
@@ -1223,6 +1235,10 @@ function check(ok, label) {
           check(
             !audience.draft.a.listed && audience.draft.a.one === 403,
             "a draft reaches nobody, however it is assigned"
+          );
+          check(
+            audience.storedSource === "CBSE 2026",
+            `a question's source survives the save (${audience.storedSource})`
           );
           check(
             audience.storedUnmarked === -1,
