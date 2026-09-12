@@ -36,7 +36,9 @@ function blankQuestion(chapter: string): DraftQuestion {
     type: "mcq",
     q: "",
     options: ["", "", "", ""],
-    answer: 0,
+    // Unmarked: the teacher picks the correct option. A default of 0 made A
+    // the answer for anyone who never looked at the radios.
+    answer: -1,
     solution: "",
     marks: 1,
   };
@@ -233,15 +235,22 @@ function typedFields(q: DraftQuestion): string {
   if (q.type === "mcq") {
     const opts = q.options?.length ? q.options : ["", "", "", ""];
     return `
-      <label class="field-label">Options — select the correct one</label>
+      <label class="field-label">Options — the one you select is the correct answer</label>
+      ${
+        typeof q.answer === "number" && q.answer >= 0
+          ? ""
+          : `<p class="hint bq-pick">Select the correct option. Until you do, this question cannot be published.</p>`
+      }
       ${opts
         .map(
           (opt, i) => `
         <div class="builder-option">
-          <input type="radio" name="ans-${q._key}" class="bq-correct" data-i="${i}"${q.answer === i ? " checked" : ""} />
+          <input type="radio" name="ans-${q._key}" class="bq-correct" data-i="${i}"${q.answer === i ? " checked" : ""}
+                 aria-label="Mark option ${String.fromCharCode(65 + i)} as the correct answer" />
           <span class="option-letter">${String.fromCharCode(65 + i)}</span>
           <input class="numeric-input bq-option" data-i="${i}" type="text" maxlength="500"
                  placeholder="Option ${String.fromCharCode(65 + i)}" value="${escapeHtml(opt)}" />
+          ${q.answer === i ? `<span class="ed-correct-tag">Correct</span>` : ""}
           ${opts.length > 2 ? `<button class="btn-link bq-option-del" data-i="${i}">Remove</button>` : ""}
         </div>`
         )
@@ -311,7 +320,12 @@ function bindQuestion(q: DraftQuestion) {
     q.type = typeEl.value as QType;
     if (q.type === "mcq") {
       if (!q.options?.length) q.options = ["", "", "", ""];
-      if (typeof q.answer !== "number" || q.answer < 0) q.answer = 0;
+      // Switching from numeric could leave 4.5 sitting where an option index
+      // belongs. Anything that is not a real index means "not marked yet".
+      const opts = q.options ?? [];
+      if (!Number.isInteger(q.answer) || (q.answer ?? -1) < 0 || (q.answer ?? -1) >= opts.length) {
+        q.answer = -1;
+      }
     } else if (q.type === "numeric") {
       delete q.options;
       q.answer = Number.isFinite(q.answer) ? q.answer : 0;

@@ -10,10 +10,28 @@
 
 import { escapeHtml } from "./dom";
 
+export interface ModalChoice {
+  value: string;
+  label: string;
+  hint?: string;
+  checked?: boolean;
+}
+
 export interface ModalField {
   /** Key in the values object handed to onSubmit. */
   name: string;
   label: string;
+  /**
+   * "text" (the default) is a single input. "radio" picks one of `choices`,
+   * and "checklist" ticks any number of them — a checklist's picks arrive as
+   * the second argument to onSubmit, since one field yields many values.
+   */
+  kind?: "text" | "radio" | "checklist";
+  choices?: ModalChoice[];
+  /** Show this field only while another field holds this value. */
+  showWhen?: { field: string; value: string };
+  /** What to say when a checklist has nothing to tick. */
+  empty?: string;
   placeholder?: string;
   value?: string;
   type?: "text" | "email" | "tel";
@@ -33,7 +51,68 @@ export interface ModalOpts {
    * Return a message to keep the modal open and show it, or nothing to close.
    * Throwing is treated the same as returning a message.
    */
-  onSubmit: (values: Record<string, string>) => Promise<string | null | void>;
+  onSubmit: (
+    values: Record<string, string>,
+    picks: Record<string, string[]>
+  ) => Promise<string | null | void>;
+}
+
+function choiceRows(f: ModalField): string {
+  const choices = f.choices ?? [];
+  if (!choices.length) {
+    return `<p class="modal-hint">${escapeHtml(f.empty ?? "Nothing to choose from yet.")}</p>`;
+  }
+  const type = f.kind === "radio" ? "radio" : "checkbox";
+  return `<div class="modal-choices">${choices
+    .map(
+      (c, i) => `
+      <label class="modal-choice">
+        <input type="${type}" name="${escapeHtml(f.name)}" value="${escapeHtml(c.value)}"
+               class="modal-choice-input"${c.checked || (type === "radio" && i === 0 && !choices.some((x) => x.checked)) ? " checked" : ""} />
+        <span class="modal-choice-main">
+          <span class="modal-choice-label">${escapeHtml(c.label)}</span>
+          ${c.hint ? `<span class="modal-hint">${escapeHtml(c.hint)}</span>` : ""}
+        </span>
+      </label>`
+    )
+    .join("")}</div>`;
+}
+
+function fieldMarkup(f: ModalField): string {
+  const hidden = f.showWhen ? " hidden" : "";
+  if (f.kind === "radio" || f.kind === "checklist") {
+    return `
+      <fieldset class="modal-field modal-fieldset" data-field="${escapeHtml(f.name)}"${
+        f.showWhen ? ` data-when-field="${escapeHtml(f.showWhen.field)}" data-when-value="${escapeHtml(f.showWhen.value)}"` : ""
+      }${hidden}>
+        <legend class="modal-label">${escapeHtml(f.label)}${
+          f.required ? ` <span class="modal-req" aria-hidden="true">*</span>` : ""
+        }</legend>
+        ${choiceRows(f)}
+        ${f.hint ? `<span class="modal-hint">${escapeHtml(f.hint)}</span>` : ""}
+      </fieldset>`;
+  }
+  return `
+    <label class="modal-field" data-field="${escapeHtml(f.name)}">
+      <span class="modal-label">${escapeHtml(f.label)}${
+        f.required ? ` <span class="modal-req" aria-hidden="true">*</span>` : ""
+      }</span>
+      <input class="modal-input" name="${escapeHtml(f.name)}"
+             type="${f.type ?? "text"}"
+             ${f.inputmode ? `inputmode="${escapeHtml(f.inputmode)}"` : ""}
+             ${f.options?.length ? `list="modal-list-${escapeHtml(f.name)}"` : ""}
+             ${f.type === "email" ? 'autocapitalize="none" spellcheck="false"' : ""}
+             placeholder="${escapeHtml(f.placeholder ?? "")}"
+             value="${escapeHtml(f.value ?? "")}" />
+      ${
+        f.options?.length
+          ? `<datalist id="modal-list-${escapeHtml(f.name)}">${f.options
+              .map((o) => `<option value="${escapeHtml(o)}"></option>`)
+              .join("")}</datalist>`
+          : ""
+      }
+      ${f.hint ? `<span class="modal-hint">${escapeHtml(f.hint)}</span>` : ""}
+    </label>`;
 }
 
 let open = false;
@@ -53,31 +132,7 @@ export function openModal(opts: ModalOpts): void {
       </div>
       ${opts.description ? `<p class="hint modal-desc">${escapeHtml(opts.description)}</p>` : ""}
       <form class="modal-body" novalidate>
-        ${opts.fields
-          .map(
-            (f) => `
-          <label class="modal-field" data-field="${escapeHtml(f.name)}">
-            <span class="modal-label">${escapeHtml(f.label)}${
-              f.required ? ` <span class="modal-req" aria-hidden="true">*</span>` : ""
-            }</span>
-            <input class="modal-input" name="${escapeHtml(f.name)}"
-                   type="${f.type ?? "text"}"
-                   ${f.inputmode ? `inputmode="${escapeHtml(f.inputmode)}"` : ""}
-                   ${f.options?.length ? `list="modal-list-${escapeHtml(f.name)}"` : ""}
-                   ${f.type === "email" ? 'autocapitalize="none" spellcheck="false"' : ""}
-                   placeholder="${escapeHtml(f.placeholder ?? "")}"
-                   value="${escapeHtml(f.value ?? "")}" />
-            ${
-              f.options?.length
-                ? `<datalist id="modal-list-${escapeHtml(f.name)}">${f.options
-                    .map((o) => `<option value="${escapeHtml(o)}"></option>`)
-                    .join("")}</datalist>`
-                : ""
-            }
-            ${f.hint ? `<span class="modal-hint">${escapeHtml(f.hint)}</span>` : ""}
-          </label>`
-          )
-          .join("")}
+        ${opts.fields.map((f) => fieldMarkup(f)).join("")}
         <p class="login-error modal-error" hidden></p>
         <div class="modal-actions">
           <button type="submit" class="btn btn-primary modal-submit">${escapeHtml(opts.submitLabel)}</button>
@@ -128,7 +183,9 @@ export function openModal(opts: ModalOpts): void {
     error.textContent = message;
     error.hidden = false;
     if (!field) return;
-    const el = inputs.find((i) => i.name === field.name);
+    const el =
+      inputs.find((i) => i.name === field.name) ??
+      host.querySelector<HTMLInputElement>(`input[name="${field.name}"]`);
     el?.closest(".modal-field")?.classList.add("modal-field-bad");
     el?.focus();
   }
@@ -146,15 +203,53 @@ export function openModal(opts: ModalOpts): void {
     })
   );
 
+  // A field with showWhen follows the field it depends on, live.
+  const applyConditions = (): void => {
+    host.querySelectorAll<HTMLElement>("[data-when-field]").forEach((el) => {
+      const on = el.dataset.whenField!;
+      const want = el.dataset.whenValue!;
+      const picked = host.querySelector<HTMLInputElement>(`input[name="${on}"]:checked`);
+      el.hidden = (picked?.value ?? "") !== want;
+    });
+  };
+  host.querySelectorAll<HTMLInputElement>(".modal-choice-input").forEach((el) =>
+    el.addEventListener("change", () => {
+      applyConditions();
+      error.hidden = true;
+      el.closest(".modal-field")?.classList.remove("modal-field-bad");
+    })
+  );
+  applyConditions();
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const values: Record<string, string> = {};
     for (const input of inputs) values[input.name] = input.value.trim();
+    // One checklist yields many values, so they travel separately; a radio
+    // also reports its single pick in `values` for callers that want it.
+    const picks: Record<string, string[]> = {};
+    for (const f of opts.fields) {
+      if (f.kind !== "radio" && f.kind !== "checklist") continue;
+      const chosen = Array.from(
+        host.querySelectorAll<HTMLInputElement>(`input[name="${f.name}"]:checked`)
+      ).map((el) => el.value);
+      picks[f.name] = chosen;
+      if (f.kind === "radio") values[f.name] = chosen[0] ?? "";
+    }
 
     // Name the field that is actually empty, rather than listing all of them.
-    const missing = opts.fields.find((f) => f.required && !values[f.name]);
+    const missing = opts.fields.find((f) => {
+      if (!f.required) return false;
+      const hiddenNow = host.querySelector<HTMLElement>(`[data-field="${f.name}"]`)?.hidden;
+      if (hiddenNow) return false;
+      if (f.kind === "checklist" || f.kind === "radio") return !(picks[f.name] ?? []).length;
+      return !values[f.name];
+    });
     if (missing) {
-      fail(`${missing.label} is needed.`, missing);
+      fail(
+        missing.kind === "checklist" ? `Pick at least one ${missing.label.toLowerCase()}.` : `${missing.label} is needed.`,
+        missing
+      );
       return;
     }
 
@@ -163,7 +258,7 @@ export function openModal(opts: ModalOpts): void {
     submit.textContent = "Saving…";
     let message: string | null | void = null;
     try {
-      message = await opts.onSubmit(values);
+      message = await opts.onSubmit(values, picks);
     } catch (err) {
       message = err instanceof Error ? err.message : "That did not work — try again.";
     }

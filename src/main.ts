@@ -19,6 +19,7 @@ import { showLanding } from "./screens/test";
 import { showMarking } from "./screens/marking";
 import { showEditor } from "./screens/editor";
 import { showSubjects } from "./screens/subjects";
+import { isStudentViewer, showStudentSubject } from "./screens/student";
 import { showChildren } from "./screens/parent";
 import { installShell } from "./screens/menu";
 import { mount, skeleton } from "./shell";
@@ -55,6 +56,9 @@ if (editId && authEnabled && isLoggedIn()) {
   void showEditor(editId, questionId, () => void showSubjects());
 }
 
+// A student refreshing inside a subject stays in that subject's tests tree.
+const subjectId = (new URLSearchParams(location.search).get("subject") ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
+
 // A teacher refreshing the marking queue stays on it.
 const markMode = new URLSearchParams(location.search).get("mark") === "1";
 
@@ -64,6 +68,8 @@ const testId = rawTestId.replace(/[^A-Za-z0-9-]+$/g, "");
 const test = TESTS.find((t) => t.id === testId);
 if (editId) {
   // handled above
+} else if (subjectId && !rawTestId && authEnabled && isLoggedIn() && isStudentViewer()) {
+  void showStudentSubject(subjectId);
 } else if (markMode && authEnabled && isLoggedIn()) {
   void showMarking();
 } else if (test) {

@@ -24,6 +24,7 @@ import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "..
 import { currentSubject } from "./home";
 import { showBuilder } from "./builder";
 import { createTestAndEdit, showEditor } from "./editor";
+import { audienceLabel, openAssign } from "./assign";
 
 type ConsolePage = "admin" | "students" | "report" | "tests";
 
@@ -121,7 +122,7 @@ export function showMyTests() {
     listEl.innerHTML = `
       <div class="table-wrap">
         <table class="data-table">
-          <thead><tr><th>Title</th><th>Chapter</th><th>Questions</th><th>Marks</th><th>Status</th><th></th></tr></thead>
+          <thead><tr><th>Title</th><th>Chapter</th><th>Questions</th><th>Marks</th><th>Status</th><th>Seen by</th><th></th></tr></thead>
           <tbody>
             ${mine
               .map((t) => {
@@ -131,6 +132,12 @@ export function showMyTests() {
                     : t.status === "archived"
                       ? `<span class="status-chip status-wrong">Archived</span>`
                       : `<span class="status-chip status-progress">Draft</span>`;
+                // A draft reaches nobody, whoever it is assigned to — say so
+                // here rather than leaving a teacher to wonder where it went.
+                const seenBy =
+                  t.status === "published"
+                    ? escapeHtml(audienceLabel(t))
+                    : `<span class="cell-quiet">nobody yet</span>`;
                 const actions =
                   t.status === "published"
                     ? `<button class="btn-link mt-act" data-act="unpublish" data-id="${escapeHtml(t.id)}">Unpublish</button>
@@ -147,6 +154,7 @@ export function showMyTests() {
                   <td>${t.questionCount}</td>
                   <td class="cell-mono">${t.totalMarks}</td>
                   <td>${chip}</td>
+                  <td>${seenBy}<br><button class="btn-link mt-assign" data-id="${escapeHtml(t.id)}">Change</button></td>
                   <td class="cell-actions">${actions}</td>
                 </tr>`;
               })
@@ -154,6 +162,12 @@ export function showMyTests() {
           </tbody>
         </table>
       </div>`;
+    listEl.querySelectorAll<HTMLButtonElement>(".mt-assign").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const test = mine.find((t) => t.id === btn.dataset.id);
+        if (test) void openAssign(test, () => void refresh());
+      })
+    );
     listEl.querySelectorAll<HTMLButtonElement>(".mt-edit").forEach((btn) =>
       btn.addEventListener("click", () => {
         void showEditor(btn.dataset.id!, null, showMyTests);

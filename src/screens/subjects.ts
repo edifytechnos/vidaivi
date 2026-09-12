@@ -12,6 +12,7 @@ import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
 import { showEditorForSubject } from "./editor";
 import { setSubject, showHome } from "./home";
+import { isStudentViewer, showStudentSubject } from "./student";
 
 const BOARDS = ["CBSE", "ICSE", "State Board", "IGCSE"];
 const CLASSES = ["8", "9", "10", "11", "12"];
@@ -63,9 +64,10 @@ async function refresh(): Promise<void> {
       const subjectId = id === BUILT_IN_SUBJECT.id ? null : id;
       setSubject(subjectId);
       // A teacher goes where they build tests — the editor, scoped to this
-      // subject. A student goes to the list they can attempt. The built-in
-      // subject is never authorable, so it always opens the tests list.
+      // subject. A student goes to their tests tree: the same shape, read-only,
+      // one question at a time. The built-in subject is never authorable.
       if (isTeacher() && subjectId) void showEditorForSubject(subjectId, () => void showSubjects());
+      else if (isStudentViewer()) void showStudentSubject(subjectId, el.dataset.title || undefined);
       else showHome(subjectId);
     })
   );
@@ -102,7 +104,7 @@ async function seedSamplesOnce(grid: HTMLElement): Promise<void> {
 function cardFor(s: Subject): string {
   const count = s.testCount ?? 0;
   return `
-    <button class="subject-card" data-subject="${escapeHtml(s.id)}">
+    <button class="subject-card" data-subject="${escapeHtml(s.id)}" data-title="${escapeHtml(s.title)}">
       <span class="subject-mark">${escapeHtml(initials(s))}</span>
       <span class="subject-name">${escapeHtml(s.title)}</span>
       <span class="subject-meta">
@@ -114,7 +116,7 @@ function cardFor(s: Subject): string {
 
 function builtInCard(): string {
   return `
-    <button class="subject-card subject-card-builtin" data-subject="${BUILT_IN_SUBJECT.id}">
+    <button class="subject-card subject-card-builtin" data-subject="${BUILT_IN_SUBJECT.id}" data-title="${escapeHtml(BUILT_IN_SUBJECT.title)}">
       <span class="subject-mark">${escapeHtml(BUILT_IN_SUBJECT.board.slice(0, 2))}</span>
       <span class="subject-name">${escapeHtml(BUILT_IN_SUBJECT.title)}</span>
       <span class="subject-meta">

@@ -637,11 +637,14 @@ function validateQuestions(input, { strict = false } = {}) {
       const options = Array.isArray(q.options) ? q.options.slice(0, 6).map((o) => String(o).slice(0, 500)) : [];
       clean.options = options;
       const answer = Number(q.answer);
-      clean.answer = Number.isInteger(answer) && answer >= 0 ? answer : 0;
+      // An unset answer stays unset. Coercing it to 0 silently made option A
+      // the correct one, so a teacher who never touched the radios published a
+      // paper where A was the answer to every question.
+      clean.answer = Number.isInteger(answer) && answer >= 0 ? answer : -1;
       const filled = options.filter((o) => o.trim()).length;
       if (options.length < 2 || filled < 2) {
         problems.push({ ...at, reason: "Needs at least two filled options" });
-      } else if (clean.answer >= options.length || !options[clean.answer].trim()) {
+      } else if (clean.answer < 0 || clean.answer >= options.length || !options[clean.answer].trim()) {
         problems.push({ ...at, reason: "No correct option marked" });
       }
     } else if (type === "numeric") {
@@ -668,9 +671,37 @@ function validateQuestions(input, { strict = false } = {}) {
   return { questions: out, problems };
 }
 
+/**
+ * Who a test is for. "class" is everyone the owner teaches — the default, and
+ * what every test written before assignment existed carries. "selected" is the
+ * named usernames in `assignedTo` and nobody else.
+ *
+ * Fails closed: an unreadable or empty list on a "selected" test reaches no
+ * student, never every student.
+ */
+function assignedList(e) {
+  try {
+    const list = JSON.parse(e.assignedTo || "[]");
+    return Array.isArray(list) ? list.map((u) => String(u).toLowerCase()) : [];
+  } catch {
+    return [];
+  }
+}
+
+function audienceOf(e) {
+  return e.audience === "selected" ? "selected" : "class";
+}
+
+function assignedTo(e, username) {
+  if (audienceOf(e) !== "selected") return true;
+  return assignedList(e).includes(String(username || "").toLowerCase());
+}
+
 function testMeta(e) {
   const questions = unchunkQuestions(e);
   return {
+    audience: audienceOf(e),
+    assignedCount: audienceOf(e) === "selected" ? assignedList(e).length : 0,
     id: e.rowKey,
     title: e.title,
     chapter: e.chapter,
@@ -690,6 +721,11 @@ function testMeta(e) {
 
 function testFull(e) {
   return { ...testMeta(e), questions: unchunkQuestions(e) };
+}
+
+/** The staff view: same metadata plus the usernames it is assigned to. */
+function testMetaForStaff(e) {
+  return { ...testMeta(e), assignedTo: assignedList(e) };
 }
 
 function canManageTest(who, entity) {
@@ -744,6 +780,38 @@ handlers.tests = async (context, req) => {
       entity.updatedAt = new Date().toISOString();
       await tests.updateEntity(entity, "Replace");
       return json(context, 200, { ok: true, status: entity.status });
+    }
+
+    if (action === "assign") {
+      const id = String(body.id || "").trim();
+      let entity;
+      try {
+        entity = await tests.getEntity("test", id);
+      } catch {
+        return json(context, 404, { error: "Test not found" });
+      }
+      if (!canManageTest(who, entity)) return json(context, 403, { error: "Not your test" });
+
+      const audience = body.audience === "selected" ? "selected" : "class";
+      let usernames = [];
+      if (audience === "selected") {
+        usernames = Array.isArray(body.usernames)
+          ? [...new Set(body.usernames.map((u) => String(u || "").trim().toLowerCase()).filter(Boolean))].slice(0, 500)
+          : [];
+        if (!usernames.length) {
+          return json(context, 400, { error: "Pick at least one student, or share it with everyone you teach" });
+        }
+        // Never take the client's word for whose student this is.
+        for (const username of usernames) {
+          const reason = await canSeeStudent(who, username);
+          if (reason) return refuse(context, reason);
+        }
+      }
+      entity.audience = audience;
+      entity.assignedTo = JSON.stringify(usernames);
+      entity.updatedAt = new Date().toISOString();
+      await tests.updateEntity(entity, "Merge");
+      return json(context, 200, { ok: true, audience, assignedCount: usernames.length });
     }
 
     if (action === "seedSamples") {
@@ -891,11 +959,17 @@ handlers.tests = async (context, req) => {
     asChild = true;
   }
 
+  // A parent reads as their child, so assignment is checked against the child's
+  // username, not the parent's.
+  const asUsername = asChild ? wantedChild : who.username || "";
+
   function visible(e) {
     if (isStaff && !asChild) return canManageTest(who, e) || (e.platform && e.status === "published");
     if (e.status !== "published") return false;
     if (e.platform) return true;
-    return (who.kind === "student" || asChild) && !!teacherSub && e.ownerSub === teacherSub;
+    if (!((who.kind === "student" || asChild) && !!teacherSub && e.ownerSub === teacherSub)) return false;
+    // Assigned to named students only: everyone else is not in this class.
+    return assignedTo(e, asUsername);
   }
 
   if (wantedId) {
@@ -906,7 +980,9 @@ handlers.tests = async (context, req) => {
       return json(context, 404, { error: "Test not found" });
     }
     if (!visible(entity)) return json(context, 403, { error: "Not available" });
-    return json(context, 200, { test: testFull(entity) });
+    const full = testFull(entity);
+    // The class list is the teacher's business — a student never receives it.
+    return json(context, 200, { test: isStaff && !asChild ? { ...full, assignedTo: assignedList(entity) } : full });
   }
 
   const wantedSubject = String((req.query && req.query.subjectId) || "").trim();
@@ -916,7 +992,7 @@ handlers.tests = async (context, req) => {
   for await (const e of iter) {
     if (isStaff && e.ownerSub === who.id) ownedCount++;
     if (wantedSubject && (e.subjectId || "") !== wantedSubject) continue;
-    if (visible(e)) list.push(testMeta(e));
+    if (visible(e)) list.push(isStaff && !asChild ? testMetaForStaff(e) : testMeta(e));
     if (list.length >= 200) break;
   }
   list.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
@@ -1119,7 +1195,12 @@ handlers.subjects = async (context, req) => {
   const teacherSub = who.kind === "student" ? who.teacherSub || "" : "";
   for await (const t of iter) {
     if (t.status !== "published" || !t.subjectId) continue;
-    if (t.platform || (teacherSub && t.ownerSub === teacherSub)) wanted.add(t.subjectId);
+    // A subject the student has no test in is not their subject — assignment
+    // included, or a narrowed test would still light up its subject card.
+    if (t.platform) wanted.add(t.subjectId);
+    else if (teacherSub && t.ownerSub === teacherSub && assignedTo(t, who.username)) {
+      wanted.add(t.subjectId);
+    }
   }
   const list = [];
   for (const id of wanted) {
