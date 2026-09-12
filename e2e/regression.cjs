@@ -661,9 +661,11 @@ function check(ok, label) {
       const r = marking.release;
       check(r.before === false, "a paper starts shut — the student sees no answers");
       check(r.bySelf === 403, `a student cannot open their own paper (${r.bySelf})`);
+      // 403 when the student belongs to another teacher, 404 when there is no
+      // such student — both refusals, and which one depends on the username.
       check(
-        r.forStranger === 403,
-        `a teacher cannot open one for another teacher's student (${r.forStranger})`
+        r.forStranger === 403 || r.forStranger === 404,
+        `a teacher cannot open one for a student who is not theirs (${r.forStranger})`
       );
       check(r.opened === 200 && r.after === true, "the teacher opens it and the student sees it");
       check(r.closedAgain === false, "and can shut it again");

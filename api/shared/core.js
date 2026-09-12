@@ -1594,18 +1594,25 @@ async function canSeeStudent(who, username) {
   if (who.kind === "student") {
     return who.username === user ? "" : "Not your work";
   }
-  if (who.role === "admin") return "";
-  if (who.role === "teacher") {
+  if (who.role === "admin" || who.role === "teacher") {
+    // Admins reach every student, but the student still has to exist —
+    // otherwise a typo silently writes rows keyed to nobody.
+    let rec;
     try {
-      const rec = await tableClient("students").getEntity("student", user);
-      return rec.teacherSub === who.id ? "" : "Not your student";
+      rec = await tableClient("students").getEntity("student", user);
     } catch {
       return "Student not found";
     }
+    return who.role === "admin" || rec.teacherSub === who.id ? "" : "Not your student";
   }
   // Parents see only a child they have redeemed an invite code for.
   const link = await childLink(who, user);
   return link ? "" : "Not your child";
+}
+
+/** Turn a canSeeStudent reason into a response. Missing is 404, not 403. */
+function refuse(context, reason) {
+  return json(context, reason === "Student not found" ? 404 : 403, { error: reason });
 }
 
 handlers.answerimage = async (context, req) => {
@@ -1623,7 +1630,7 @@ handlers.answerimage = async (context, req) => {
       return json(context, 400, { error: "Unknown image" });
     }
     const refusal = await canSeeStudent(who, owner.slice(4));
-    if (refusal) return json(context, 403, { error: refusal });
+    if (refusal) return refuse(context, refusal);
     const container = await answerContainer();
     const blob = container.getBlockBlobClient(blobName);
     if (!(await blob.exists())) {
@@ -1795,7 +1802,7 @@ handlers.grading = async (context, req) => {
     const username =
       who.kind === "student" ? who.username : String(q.student || "").trim().toLowerCase();
     const refusal = await canSeeStudent(who, username);
-    if (refusal) return json(context, 403, { error: refusal });
+    if (refusal) return refuse(context, refusal);
     const testId = safeId(q.testId, 60);
     const clauses = [`PartitionKey eq 'stu~${username.replace(/'/g, "''")}'`];
     if (testId) clauses.push(`testId eq '${testId}'`);
@@ -1826,7 +1833,7 @@ handlers.grading = async (context, req) => {
 
   const username = String(body.username || "").trim().toLowerCase();
   const refusal = await canSeeStudent(who, username);
-  if (refusal) return json(context, 403, { error: refusal });
+  if (refusal) return refuse(context, refusal);
 
   const testId = safeId(body.testId, 60);
   const questionId = safeId(body.questionId, 40);
@@ -1905,7 +1912,7 @@ handlers.release = async (context, req) => {
     const student = String(q.student || "").trim().toLowerCase();
     if (student) {
       const refusal = await canSeeStudent(who, student);
-      if (refusal) return json(context, 403, { error: refusal });
+      if (refusal) return refuse(context, refusal);
       return json(context, 200, { released: await isReleased(testId, student) });
     }
 
@@ -1947,7 +1954,7 @@ handlers.release = async (context, req) => {
   const username = String(body.username || "").trim().toLowerCase();
   if (username) {
     const refusal = await canSeeStudent(who, username);
-    if (refusal) return json(context, 403, { error: refusal });
+    if (refusal) return refuse(context, refusal);
   }
   const rowKey = username || CLASS_WIDE;
 
