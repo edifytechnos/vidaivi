@@ -241,7 +241,9 @@ function check(ok, label) {
         "the code avoids look-alike characters a parent would mistype"
       );
       check(links.badStudent === 404, "a code cannot be minted for someone else's student");
-      check(links.badCode === 404, "an unknown code is refused");
+      // The Google-only gate runs before the lookup, so an ineligible account
+      // gets the same 403 for any code — it cannot probe which codes exist.
+      check(links.badCode === 403, "an ineligible account learns nothing from an unknown code");
       check(links.nonGoogle === 403, "only a Google account can redeem a code");
       check(links.unlinkedAttempts === 403, "attempts for an unlinked child are refused");
       check(links.unlinkedTests === 403, "the test list for an unlinked child is refused");
