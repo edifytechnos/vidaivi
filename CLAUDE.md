@@ -45,7 +45,9 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 
 ## Deployment
 
-- Live at https://vidai.seyali.app (Azure Static Web Apps, Free tier; custom domain
+- Live at https://vidai.seyali.app and https://vidaivi.seyali.app (the
+  pre-rename host, kept alive so test links already shared in the class
+  WhatsApp group keep working) (Azure Static Web Apps, Free tier; custom domain
   via CNAME on Hostinger, SSL managed by Azure).
 - Every push to `main` auto-deploys via `.github/workflows/azure-static-web-apps.yml`
   (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret).
@@ -170,7 +172,8 @@ and the explanation, each with a live "Student sees" preview.
 - `api.ts` — fetch client for the DB-backed tests API.
 - `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
 - `screens/builder.ts` — visual test builder (create/edit cloud tests).
-- `screens/test.ts` — test player (landing → questions → score → review).
+- `screens/test.ts` — test player (landing → questions → score).
+- `screens/review.ts` — read-only review, one question per page.
 - `screens/marking.ts` — the teacher's marking queue for long answers.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 
@@ -242,7 +245,7 @@ repurpose fields):
 Grading by type:
 - **mcq** — student picks an option; correct iff selected index equals `answer`.
 - **numeric** — student types a number; correct iff `|value − answer| ≤ tolerance` (defaults to 0 if omitted).
-- **long** — no auto-grading: student reveals the solution and self-assesses ("I got it right/wrong"), earning full `marks` or 0. Do not add `options`/`answer`/`tolerance` to long questions.
+- **long** — no auto-grading. A signed-in student photographs their working and hands it in; the teacher awards the marks (see below). A guest keeps the old self-assessment. Do not add `options`/`answer`/`tolerance` to long questions.
 
 Notes:
 - `answer` is a JSON **number** in both cases (not a string) — that's what `src/main.ts` grades against.
@@ -300,6 +303,53 @@ useful as a demo.)
   gated by `canSeeStudent`. Omit `username` to open it for everyone.
 - Client: `fetchReleased` / `fetchReleaseState` / `setReleased` in `src/auth.ts`.
   `fetchReleased` **fails closed** — a network error keeps the paper shut.
+
+## The test is silent until the teacher releases it
+
+A signed-in student submits and **nothing comes back** — no verdict, no correct
+answer, no worked solution, for any question type (`finishQuestion` in
+`src/screens/test.ts`). The score screen shows their marks but locks the
+question-by-question detail. **Guests keep the old instant feedback**: a guest
+has no teacher to release anything, and the demo has to stay worth sharing.
+`canHandIn()` is the one test for "is this a real student with a teacher".
+
+Release is per student *and* per class — see `/api/release` above. The teacher
+presses it from the marking queue (`src/screens/marking.ts`) or from a student's
+report (`showStudentReport` in `src/screens/console.ts`).
+
+## Review: one question per page (`src/screens/review.ts`)
+
+Review is **not** a scroll of the whole paper. It is the layout the teacher
+authors in, read-only: questions listed down the left with each result on its
+row, one question in the middle (the student's answer, their photos, the
+awarded mark and the teacher's comment), the explanation on the right. Prev/next
+walk the paper and `?test=<id>&review=<questionId>` carries the place.
+
+It reuses the editor's **layout only** — `.ed-cols`, `.ed-tree*`, `.ed-panel`,
+`.ed-preview`, `.ed-tabs` — under an `.ed-readonly` modifier. Never change those
+base rules: `e2e/editor.cjs` asserts `.ed-cols` computes to exactly three columns
+at 1280px and that `.ed-tree` / `.ed-explain` sit flush to the rail and the
+window edge. Do **not** reach into `src/screens/editor/` for this: its panels are
+all inputs with no read-only renderer, and `editor/state.ts` is a single shared
+working copy that autosaves, so a student opening a test through it would queue
+writes against the teacher's draft.
+
+The `.review-item` class stays on the question view — `e2e/regression.cjs`
+asserts it.
+
+## The Vidaivi → Vidai rename
+
+- localStorage moved from `vidaivi:*` to `vidai:*`. `migrateStorage()` in
+  `src/attempts.ts` copies every old key across and **must stay the first
+  statement in `src/main.ts`** — `vidaivi:auth` holds the session and
+  `vidaivi:pendingAttempts` holds unsynced saves. The old keys are left in place
+  and can be deleted a release from now.
+- The auth header is `X-Vidai-Auth`. For one release the client sends **both**
+  names and `getBearer()` in `api/shared/core.js` accepts both, because the
+  deploy is not atomic. Drop both fallbacks once the renamed API is everywhere.
+- **`vidai.seyali.app` must be an authorised JavaScript origin on the Google
+  OAuth client**, or Google sign-in fails there. Student and admin logins are
+  unaffected.
 
 ## Working style
 

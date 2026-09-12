@@ -577,6 +577,52 @@ function check(ok, label) {
           awarded: marked.data.awarded,
           readBack: (mine.answers || [])[0] || null,
           username: made.username,
+          token: login.token,
+
+          // Release: the paper is shut until the teacher opens it.
+          release: await (async () => {
+            const get = (hdr) =>
+              fetch("/api/release?testId=e2e-photo", { headers: hdr }).then((r) =>
+                r.json().catch(() => ({}))
+              );
+            const before = await get(sHdr);
+            // A student must not be able to open their own paper.
+            const bySelf = await fetch("/api/release", {
+              method: "POST",
+              headers: sHdr,
+              body: JSON.stringify({ action: "release", testId: "e2e-photo" }),
+            }).then((r) => r.status);
+            // Nor may a teacher open one for somebody else's student.
+            const forStranger = await fetch("/api/release", {
+              method: "POST",
+              headers: hdr,
+              body: JSON.stringify({
+                action: "release",
+                testId: "e2e-photo",
+                username: "no-such-student-xyz",
+              }),
+            }).then((r) => r.status);
+            const opened = await fetch("/api/release", {
+              method: "POST",
+              headers: hdr,
+              body: JSON.stringify({ action: "release", testId: "e2e-photo", username: made.username }),
+            }).then((r) => r.status);
+            const after = await get(sHdr);
+            await fetch("/api/release", {
+              method: "POST",
+              headers: hdr,
+              body: JSON.stringify({ action: "unrelease", testId: "e2e-photo", username: made.username }),
+            });
+            const closedAgain = await get(sHdr);
+            return {
+              before: before.released,
+              bySelf,
+              forStranger,
+              opened,
+              after: after.released,
+              closedAgain: closedAgain.released,
+            };
+          })(),
         };
       } finally {
         await cleanup();
@@ -612,6 +658,46 @@ function check(ok, label) {
       check(marking.readBack?.status === "marked", "the student's copy reads back as marked");
       check(marking.readBack?.awarded === 5 && marking.readBack?.comment === "Good method.",
         "with the mark and the teacher's comment");
+      const r = marking.release;
+      check(r.before === false, "a paper starts shut — the student sees no answers");
+      check(r.bySelf === 403, `a student cannot open their own paper (${r.bySelf})`);
+      check(
+        r.forStranger === 403,
+        `a teacher cannot open one for another teacher's student (${r.forStranger})`
+      );
+      check(r.opened === 200 && r.after === true, "the teacher opens it and the student sees it");
+      check(r.closedAgain === false, "and can shut it again");
+      // Sitting the test as a real student: nothing comes back. Swap the page's
+      // session for the throwaway student's, then put the admin's back.
+      const adminAuth = await page.evaluate(() => localStorage.getItem("vidai:auth"));
+      await page.evaluate((token) => {
+        localStorage.setItem(
+          "vidai:auth",
+          JSON.stringify({
+            credential: token,
+            profile: { kind: "student", sub: "e2e", name: "E2E Photo Student", role: "student" },
+          })
+        );
+        localStorage.removeItem("vidai:attempt:matrices-demo");
+      }, marking.token);
+      await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
+      await page.waitForSelector("#primary-btn", { timeout: 20000 });
+      await page.click("#primary-btn");
+      await page.waitForSelector(".option", { timeout: 20000 });
+      await page.click(".option");
+      await page.click("#submit-btn");
+      await page.waitForSelector(".option, .score-card", { timeout: 20000 });
+      const silent = await page.evaluate(() => ({
+        verdict: document.querySelectorAll(".verdict").length,
+        solution: document.querySelectorAll(".solution").length,
+      }));
+      check(silent.verdict === 0, `a student gets no verdict on submit (${silent.verdict} found)`);
+      check(silent.solution === 0, `and no worked solution (${silent.solution} found)`);
+      await page.evaluate((a) => {
+        localStorage.removeItem("vidai:attempt:matrices-demo");
+        if (a) localStorage.setItem("vidai:auth", a);
+      }, adminAuth);
+
       console.log(`  (cleaned up ${marking.username})`);
     }
 

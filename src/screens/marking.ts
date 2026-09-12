@@ -7,7 +7,13 @@
 // once per test id and cached for the session.
 
 import { track } from "../analytics";
-import { fetchMarkingQueue, saveMark, type GradedAnswer } from "../auth";
+import {
+  fetchMarkingQueue,
+  fetchReleaseState,
+  saveMark,
+  setReleased,
+  type GradedAnswer,
+} from "../auth";
 import { fetchServerTest } from "../api";
 import { TESTS } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
@@ -103,7 +109,66 @@ function detailMarkup(row: GradedAnswer, q: Question | null, position: string): 
           <span class="pos">${position}</span>
         </div>
       </div>
+
+      <div class="pane">
+        <div class="pane-title">
+          <span>Answers and explanations</span>
+          <span id="rel-chip" class="status-chip status-new">Checking…</span>
+        </div>
+        <p class="hint">${escapeHtml(row.studentName || row.username)} can see their marks
+        but not the answers or the worked solutions. Release when you are ready for them
+        to study the paper.</p>
+        <div class="detail-foot" style="margin-top:12px">
+          <button type="button" class="btn btn-ghost" id="rel-one" disabled>Release to ${escapeHtml(row.studentName || row.username)}</button>
+          <button type="button" class="btn btn-ghost" id="rel-all" disabled>Release to the whole class</button>
+        </div>
+      </div>
     </section>`;
+}
+
+/**
+ * The two Release buttons under the marking pane. Read the real state first —
+ * a teacher marking on a second device must not be told the wrong thing.
+ */
+async function wireRelease(row: GradedAnswer): Promise<void> {
+  const chip = document.getElementById("rel-chip");
+  const one = document.getElementById("rel-one") as HTMLButtonElement | null;
+  const all = document.getElementById("rel-all") as HTMLButtonElement | null;
+  if (!chip || !one || !all) return;
+
+  const state = await fetchReleaseState(row.testId);
+  let classWide = !!state?.classWide;
+  let mine = !!state?.students.some((x) => x.username === row.username);
+
+  const paint = () => {
+    const open = classWide || mine;
+    chip.className = `status-chip ${open ? "status-done" : "status-new"}`;
+    chip.textContent = classWide ? "Open to the class" : mine ? "Released" : "Not released";
+    one.textContent = mine
+      ? `Hide again from ${row.studentName || row.username}`
+      : `Release to ${row.studentName || row.username}`;
+    one.disabled = classWide && !mine;
+    all.textContent = classWide ? "Hide again from the class" : "Release to the whole class";
+    all.disabled = false;
+  };
+  paint();
+
+  const press = async (btn: HTMLButtonElement, scope: "student" | "class") => {
+    btn.disabled = true;
+    const wantOpen = scope === "class" ? !classWide : !mine;
+    const ok = await setReleased(row.testId, {
+      username: scope === "class" ? undefined : row.username,
+      released: wantOpen,
+    });
+    if (ok) {
+      track("answers_released", { test: row.testId, scope, open: wantOpen });
+      if (scope === "class") classWide = wantOpen;
+      else mine = wantOpen;
+    }
+    paint();
+  };
+  one.addEventListener("click", () => void press(one, "student"));
+  all.addEventListener("click", () => void press(all, "class"));
 }
 
 export async function showMarking(): Promise<void> {
@@ -160,6 +225,7 @@ export async function showMarking(): Promise<void> {
     );
     renderMath(app);
     void hydrateThumbs(app);
+    void wireRelease(row);
 
     let awarded: number | null = null;
     const save = document.getElementById("mark-save") as HTMLButtonElement;
