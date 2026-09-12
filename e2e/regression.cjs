@@ -1085,6 +1085,17 @@ function check(ok, label) {
         check(wsResult.cols === 3, `the result view brings back the third column (${wsResult.cols})`);
         check(wsResult.solution, "and shows the explanation beside the question");
 
+        // The result screen used to have no way to reach the question list on a
+        // phone at all: its bottom tabs switch panes, and nothing opened the tree.
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.waitForSelector(".review-item [data-drawer-toggle]", { timeout: 25000 });
+        check(!(await page.isVisible("#rv-tree .ed-tree-q")), "the result's question list starts closed on a phone");
+        await page.click("[data-drawer-toggle]");
+        await page.waitForSelector("#rv-tree .ed-tree-q:visible", { timeout: 10000 });
+        check(true, "and opens from the same Questions button");
+        await page.setViewportSize({ width: 1280, height: 900 });
+
 
         // ---- Who sees a test ------------------------------------------
         // Publishing shares with everyone the teacher created; assignment
@@ -1284,8 +1295,12 @@ function check(ok, label) {
         await page.goto(BASE + `/?test=${wsTests[1].id}`, { waitUntil: "domcontentloaded" });
         await page.waitForSelector("#primary-btn", { timeout: 25000 });
         await page.click("#primary-btn");
-        await page.waitForSelector(".ed-student .ed-tabs", { timeout: 20000 });
+        await page.waitForSelector("[data-drawer-toggle]", { timeout: 20000 });
         check(!(await page.isVisible("#st-tree .ed-tree-q")), "on a phone the tree is tucked away");
+        check(
+          !(await page.$(".ed-student .ed-tabs")),
+          "the bottom tab bar is gone — the drawer has its own button"
+        );
         // .btn carries min-width:130px, so a bare 1fr column used to push this
         // row past the card's edge on a 390px screen.
         const phoneRow = await page.evaluate(() => {
@@ -1302,9 +1317,33 @@ function check(ok, label) {
           "with Save answer full width above Previous and Next"
         );
         check(phoneRow.scrollWidth <= 390, `and nothing forces a sideways scroll (${phoneRow.scrollWidth}px)`);
-        await page.click('.ed-student .ed-tab[data-pane="tree"]');
+        // The drawer: parked off-canvas, slides in, and the scrim shuts it.
+        const parked = await page.evaluate(() => {
+          const t = document.querySelector(".ed-tree");
+          return { visibility: getComputedStyle(t).visibility, x: t.getBoundingClientRect().x };
+        });
+        check(
+          parked.visibility === "hidden" && parked.x < 0,
+          `the tree waits off-screen to the left (${Math.round(parked.x)}px, ${parked.visibility})`
+        );
+        await page.click("[data-drawer-toggle]");
         await page.waitForSelector("#st-tree .ed-tree-q:visible", { timeout: 10000 });
-        check(true, "and the Questions tab slides it in");
+        // It slides, so wait for the transform to land rather than racing it.
+        await page.waitForFunction(
+          () => document.querySelector(".ed-tree").getBoundingClientRect().x >= 0,
+          { timeout: 10000 }
+        );
+        const opened = await page.evaluate(() => ({
+          x: document.querySelector(".ed-tree").getBoundingClientRect().x,
+          scrim: getComputedStyle(document.querySelector(".ed-scrim")).display,
+        }));
+        check(opened.scrim === "block", `the Questions button slides it in over a scrim (at ${Math.round(opened.x)}px)`);
+        await page.mouse.click(370, 500);
+        await page.waitForFunction(
+          () => getComputedStyle(document.querySelector(".ed-tree")).visibility === "hidden",
+          { timeout: 10000 }
+        );
+        check(true, "and a tap outside closes it again");
         await page.setViewportSize({ width: 1280, height: 900 });
 
         // The editor says what a draft means — the sentence J went hunting for.

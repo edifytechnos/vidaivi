@@ -21,7 +21,7 @@ import { fetchServerTest, fetchTestList } from "../api";
 import { loadAttempt, newAttempt, saveAttempt } from "../attempts";
 import { gradeAnswer, TESTS, totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
-import { mount, skeleton } from "../shell";
+import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
 import type { Attempt, Question, Test } from "../types";
 import { showReview } from "./review";
 import { showScore } from "./test";
@@ -215,7 +215,10 @@ function renderOverview(): void {
       <div class="ed-cols overview st-workspace">
         ${studentTreeMarkup()}
         <div class="ed-center">
-          <div class="ed-crumbrow"><span class="ed-crumb-test">${escapeHtml(subjectTitle)}</span></div>
+          <div class="ed-crumbrow">
+            ${drawerToggleMarkup("Tests")}
+            <span class="ed-crumb-test">${escapeHtml(subjectTitle)}</span>
+          </div>
           <div class="ed-body">
             <section class="ed-panel">
               <div class="ed-panel-head"><span class="ed-panel-label">Your tests</span></div>
@@ -251,15 +254,12 @@ function renderOverview(): void {
           </div>
         </div>
       </div>
-      <div class="ed-tabs">
-        <button class="ed-tab" data-pane="tree">Tests</button>
-        <button class="ed-tab active" data-pane="question">Test</button>
-      </div>
+      <div class="ed-scrim"></div>
     </div>`,
     { title: subjectTitle, active: "subjects", full: true }
   );
   bindTree();
-  bindTabs();
+  bindDrawer();
   // The cards say the same thing as the tree, so they must do the same thing.
   document.querySelector(".ed-center .test-list")?.addEventListener("click", (e) => {
     const card = (e.target as HTMLElement).closest<HTMLButtonElement>(".test-card[data-test]");
@@ -333,6 +333,7 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
           })}
           <div class="ed-center">
             <div class="ed-crumbrow">
+              ${drawerToggleMarkup()}
               <button class="ed-crumb-link" id="st-back">${escapeHtml(subjectTitle)}</button>
               <span class="ed-crumb-sep">›</span>
               <span class="ed-crumb-mid">
@@ -375,10 +376,7 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
             </div>
           </div>
         </div>
-        <div class="ed-tabs">
-          <button class="ed-tab" data-pane="tree">Questions</button>
-          <button class="ed-tab active" data-pane="question">Question</button>
-        </div>
+        <div class="ed-scrim"></div>
       </div>`,
       { title: test.title, sub: "In progress", active: "subjects", full: true }
     );
@@ -389,7 +387,7 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
       index = i;
       render();
     });
-    bindTabs();
+    bindDrawer();
     document.getElementById("st-back")!.addEventListener("click", () =>
       void showStudentSubject(subjectId, subjectTitle)
     );
@@ -557,28 +555,10 @@ function handIn(test: Test, attempt: Attempt): void {
   showScore(test, attempt);
 }
 
-/**
- * Phone layout: the tree is a drawer, not a pane. Below 900px `.ed-tree` is
- * positioned off-screen until the editor carries `tree-open`, so the Tests tab
- * toggles that class rather than the `data-pane` the other tabs use.
- */
-function bindTabs(): void {
+/** Small screens: the tree slides in from the left over the question. */
+function bindDrawer(): void {
   const editor = document.querySelector<HTMLElement>(".ed-student");
-  editor?.querySelector(".ed-tabs")?.addEventListener("click", (e) => {
-    const tab = (e.target as HTMLElement).closest<HTMLElement>("[data-pane]");
-    if (!tab) return;
-    const pane = tab.dataset.pane!;
-    editor.classList.toggle("tree-open", pane === "tree");
-    if (pane !== "tree") editor.setAttribute("data-pane", pane);
-    editor.querySelectorAll(".ed-tab").forEach((t) => t.classList.toggle("active", t === tab));
-  });
-  // Picking anything in the drawer closes it again.
-  editor?.querySelector(".ed-tree")?.addEventListener("click", () => {
-    editor.classList.remove("tree-open");
-    editor.querySelectorAll(".ed-tab").forEach((t) =>
-      t.classList.toggle("active", (t as HTMLElement).dataset.pane !== "tree")
-    );
-  });
+  if (editor) bindTreeDrawer(editor);
 }
 
 /** Back to the subject grid — the rail's Subjects item, for this screen. */

@@ -424,6 +424,19 @@ question scrolling to the end — that rule holds everywhere a test is shown.
   title is in the app bar already and wrapped onto four lines otherwise.
   `e2e/regression.cjs` asserts the order, the single row, and that nothing
   overflows the card at 390px.
+- **Below 900px the tree is a side drawer**, on the workspace and the result
+  alike: `.ed-tree` is parked off-canvas with `transform: translateX(-100%)` and
+  **`visibility: hidden`** — the visibility is what hides it, since a transform
+  alone leaves it "visible" to Playwright and to a screen reader — and slides in
+  when its `.editor` carries `tree-open`. `bindTreeDrawer` and
+  `drawerToggleMarkup` in `src/shell.ts` are the one implementation: a
+  **Questions** button at the left of the crumb row opens it; the scrim, Escape
+  or picking a question closes it. The workspace's old bottom tab bar is gone
+  with it (its only job was the tree), which is also how the result screen
+  finally got a way to reach its question list on a phone.
+- **Padding is tighter below 900px** (`.ed-center` 12/14, `.ed-panel` 12/13,
+  10/11 under 480px) so the question owns the small screen. The ≥900px canvas is
+  untouched.
 - **Questions may be answered in any order** and revisited; an answered one is
   ticked in the tree. The score is *recomputed* from the answers on every save
   (`recomputeScore`), never accumulated, so changing an answer cannot double it.
