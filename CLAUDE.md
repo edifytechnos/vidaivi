@@ -45,10 +45,15 @@ Keep scope brutally small. This is a food cart, not a restaurant.
 
 ## Deployment
 
-- Live at https://vidai.seyali.app and https://vidaivi.seyali.app (the
-  pre-rename host, kept alive so test links already shared in the class
-  WhatsApp group keep working) (Azure Static Web Apps, Free tier; custom domain
-  via CNAME on Hostinger, SSL managed by Azure).
+- Live at https://vidai.seyali.app (Azure Static Web Apps, Free tier; custom
+  domain via CNAME on Hostinger, SSL managed by Azure). The pre-rename host
+  https://vidaivi.seyali.app stays pointed at the same app, so test links
+  already shared in the class WhatsApp group keep working.
+- Changing the public hostname takes three steps, all three needed or sign-in breaks:
+  CNAME `<host>` → `ambitious-plant-03e9c0f00.5.azurestaticapps.net` in Hostinger DNS,
+  the same host added under **Custom domains** in the Azure Static Web App (Azure
+  issues the certificate — until then HTTPS fails), and `https://<host>` added to
+  **Authorised JavaScript origins** on the Google OAuth client.
 - Every push to `main` auto-deploys via `.github/workflows/azure-static-web-apps.yml`
   (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret).
 - PRs against `main` get a preview URL posted on the PR — use it for teacher approval
