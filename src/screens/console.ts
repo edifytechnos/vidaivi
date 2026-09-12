@@ -18,6 +18,7 @@ import {
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
 import { copyText, escapeHtml, pct, setUrl } from "../dom";
+import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
 import { currentSubject } from "./home";
@@ -213,11 +214,8 @@ export function showAdmin() {
         <h2 class="landing-title">Teacher access</h2>
         <p class="hint">Gmail addresses listed here get the teacher role when
         they sign in with Google — they can manage students and share logins.</p>
-        <input id="te-email" class="numeric-input" type="email" autocapitalize="none"
-               spellcheck="false" placeholder="teacher@gmail.com" />
-        <p id="te-error" class="login-error" hidden></p>
         <div class="actions">
-          <button id="te-add" class="btn btn-primary" disabled>Add teacher</button>
+          <button id="te-add" class="btn btn-primary">Add teacher</button>
         </div>
       </div>
       <div class="card roster-card">
@@ -227,14 +225,8 @@ export function showAdmin() {
   );
   bindConsoleNav();
 
-  const emailEl = document.getElementById("te-email") as HTMLInputElement;
   const addBtn = document.getElementById("te-add") as HTMLButtonElement;
-  const errEl = document.getElementById("te-error") as HTMLElement;
   const listEl = document.getElementById("te-list")!;
-
-  emailEl.addEventListener("input", () => {
-    addBtn.disabled = !emailEl.value.includes("@");
-  });
 
   async function refresh() {
     const teachers = await listTeachers();
@@ -264,21 +256,29 @@ export function showAdmin() {
     );
   }
 
-  addBtn.addEventListener("click", async () => {
-    addBtn.disabled = true;
-    addBtn.textContent = "Adding…";
-    errEl.hidden = true;
-    const result = await modifyTeacher("add", emailEl.value.trim());
-    addBtn.textContent = "Add teacher";
-    if (result.ok) {
-      emailEl.value = "";
-      void refresh();
-    } else {
-      errEl.textContent = result.message || "Could not add teacher.";
-      errEl.hidden = false;
-      addBtn.disabled = false;
-    }
-  });
+  addBtn.addEventListener("click", () =>
+    openModal({
+      title: "Add teacher",
+      description:
+        "This Gmail address gets the teacher role the next time they sign in with Google.",
+      submitLabel: "Add teacher",
+      fields: [
+        {
+          name: "email",
+          label: "Gmail address",
+          type: "email",
+          placeholder: "teacher@gmail.com",
+          required: true,
+        },
+      ],
+      onSubmit: async (v) => {
+        if (!v.email.includes("@")) return "That does not look like an email address.";
+        const result = await modifyTeacher("add", v.email);
+        if (!result.ok) return result.message || "Could not add teacher.";
+        void refresh();
+      },
+    })
+  );
 
   void refresh();
 }
@@ -466,13 +466,8 @@ export function showTeacher() {
         <h2 class="landing-title">My students</h2>
         <p class="hint">Add a student to generate their username and password,
         then share it on WhatsApp. Passwords are shown only once — use Reset if lost.</p>
-        <input id="st-name" class="numeric-input" type="text" placeholder="Student name *" />
-        <input id="st-school" class="numeric-input" type="text" placeholder="School name" />
-        <input id="st-grade" class="numeric-input" type="text" placeholder="Grade (e.g. 12-A)" />
-        <input id="st-phone" class="numeric-input" type="tel" inputmode="tel" placeholder="Parent's WhatsApp number" />
-        <p id="st-error" class="login-error" hidden></p>
         <div class="actions">
-          <button id="st-add" class="btn btn-primary" disabled>Add student</button>
+          <button id="st-add" class="btn btn-primary">Add student</button>
         </div>
         <div id="st-created"></div>
       </div>
@@ -483,18 +478,9 @@ export function showTeacher() {
   );
   bindConsoleNav();
 
-  const nameEl = document.getElementById("st-name") as HTMLInputElement;
-  const schoolEl = document.getElementById("st-school") as HTMLInputElement;
-  const gradeEl = document.getElementById("st-grade") as HTMLInputElement;
-  const phoneEl = document.getElementById("st-phone") as HTMLInputElement;
   const addBtn = document.getElementById("st-add") as HTMLButtonElement;
-  const errEl = document.getElementById("st-error") as HTMLElement;
   const createdEl = document.getElementById("st-created")!;
   const listEl = document.getElementById("st-list")!;
-
-  nameEl.addEventListener("input", () => {
-    addBtn.disabled = !nameEl.value.trim();
-  });
 
   function credentialCard(s: { name: string; username: string; password: string }): string {
     return `
@@ -642,36 +628,46 @@ export function showTeacher() {
     );
   }
 
-  addBtn.addEventListener("click", async () => {
-    addBtn.disabled = true;
-    addBtn.textContent = "Adding…";
-    errEl.hidden = true;
-    const created = await createStudent({
-      name: nameEl.value.trim(),
-      school: schoolEl.value.trim(),
-      grade: gradeEl.value.trim(),
-      parentPhone: phoneEl.value.trim(),
-    });
-    addBtn.textContent = "Add student";
-    if (created?.password) {
-      track("student_created");
-      createdEl.innerHTML = credentialCard({
-        name: created.name,
-        username: created.username,
-        password: created.password,
-      });
-      bindCopyButtons(createdEl);
-      nameEl.value = "";
-      schoolEl.value = "";
-      gradeEl.value = "";
-      phoneEl.value = "";
-      void refreshList();
-    } else {
-      errEl.textContent = "Could not add student — check your connection and try again.";
-      errEl.hidden = false;
-      addBtn.disabled = false;
-    }
-  });
+  addBtn.addEventListener("click", () =>
+    openModal({
+      title: "Add student",
+      description:
+        "Their username and password are generated for you, and shown once — copy the WhatsApp message before you close it.",
+      submitLabel: "Add student",
+      fields: [
+        { name: "name", label: "Student name", placeholder: "e.g. Ananya R", required: true },
+        { name: "school", label: "School", placeholder: "e.g. DAV Public School" },
+        { name: "grade", label: "Grade", placeholder: "e.g. 12-A" },
+        {
+          name: "parentPhone",
+          label: "Parent's WhatsApp number",
+          type: "tel",
+          inputmode: "tel",
+          placeholder: "e.g. 9876543210",
+          hint: "Used to send the score report later.",
+        },
+      ],
+      onSubmit: async (v) => {
+        const created = await createStudent({
+          name: v.name,
+          school: v.school,
+          grade: v.grade,
+          parentPhone: v.parentPhone,
+        });
+        if (!created?.password) {
+          return "Could not add student — check your connection and try again.";
+        }
+        track("student_created");
+        createdEl.innerHTML = credentialCard({
+          name: created.name,
+          username: created.username,
+          password: created.password,
+        });
+        bindCopyButtons(createdEl);
+        void refreshList();
+      },
+    })
+  );
 
   void refreshList();
 }

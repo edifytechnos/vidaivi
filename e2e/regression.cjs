@@ -799,11 +799,36 @@ function check(ok, label) {
     // A subject with no tests opens the same shell, with an empty tree.
     // Created and removed here so the check does not depend on live data.
     const probe = `E2E${Date.now().toString().slice(-6)}`;
+    // The modal must never let a placeholder pass for a value: the old inline
+    // form pre-filled board and class and left subject showing only a
+    // placeholder, so a form that looked complete failed with "Board, class and
+    // subject are all needed" and named no field in particular.
     await page.click("#sub-new");
-    await page.fill("#sf-board", "CBSE");
-    await page.fill("#sf-class", "12");
-    await page.fill("#sf-subject", probe);
-    await page.click("#sf-save");
+    await page.waitForSelector(".modal", { timeout: 15000 });
+    await page.fill('.modal-input[name="klass"]', "10");
+    await page.click(".modal-submit");
+    await page.waitForSelector(".modal-error:not([hidden])", { timeout: 10000 });
+    check(
+      (await page.textContent(".modal-error")).trim() === "Subject is needed.",
+      "an empty required field is named, not lumped in with the filled ones"
+    );
+    check(
+      await page.evaluate(() =>
+        document.activeElement?.getAttribute("name") === "subject"
+      ),
+      "and the cursor lands in it"
+    );
+    await page.keyboard.press("Escape");
+    await page.waitForSelector(".modal", { state: "detached", timeout: 10000 });
+
+    await page.click("#sub-new");
+    // Creating anything small goes through the shared modal now.
+    await page.waitForSelector(".modal", { timeout: 15000 });
+    await page.fill('.modal-input[name="board"]', "CBSE");
+    await page.fill('.modal-input[name="klass"]', "12");
+    await page.fill('.modal-input[name="subject"]', probe);
+    await page.click(".modal-submit");
+    await page.waitForSelector(".modal", { state: "detached", timeout: 25000 });
     const card = `.subject-card:has(.subject-name:text-is("CBSE Class 12 ${probe}"))`;
     try {
       await page.waitForSelector(card, { timeout: 25000 });
