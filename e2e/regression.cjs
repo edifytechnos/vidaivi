@@ -205,79 +205,155 @@ function check(ok, label) {
     if (progressProbe !== 200) {
       console.log(`SKIP  per-question saving (/api/attempts has no progress action here: ${progressProbe})`);
     } else {
-      // Answer one question, wipe the device, and the landing must offer
-      // Continue at the right question — rebuilt from the server.
-      await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
-      await page.evaluate(() => localStorage.removeItem("vidaivi:attempt:matrices-demo"));
-      await page.reload({ waitUntil: "domcontentloaded" });
-      await page.waitForSelector("#primary-btn", { timeout: 20000 });
-      await page.click("#primary-btn");
-      await page.waitForSelector(".option", { timeout: 20000 });
-      const progressSaved = page.waitForResponse(
-        (r) => r.url().includes("/api/attempts") && r.request().method() === "POST",
-        { timeout: 20000 }
-      );
-      await page.click(".option");
-      await page.click("#submit-btn");
-      await page.waitForSelector("#next-btn", { timeout: 20000 });
-      const saved = await progressSaved.then((r) => r.status()).catch(() => 0);
-      check(saved === 200, `answering a question saves progress to the server (${saved})`);
-
-      await page.evaluate(() => localStorage.removeItem("vidaivi:attempt:matrices-demo"));
-      await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
-      await page.waitForSelector("#primary-btn", { timeout: 25000 });
-      const resumed = await page
-        .waitForFunction(() => document.querySelector("#primary-btn")?.textContent?.includes("Continue"), { timeout: 25000 })
-        .then(() => true)
-        .catch(() => false);
-      check(resumed, "a wiped device resumes the test from the server");
-      if (resumed) {
-        const label = (await page.textContent("#primary-btn")).trim();
-        check(/Question 2 of/.test(label), `it continues at the right question ("${label}")`);
-      }
-
-      // Publishing would change the paper under whoever is part-way through.
-      const gate = await page.evaluate(async () => {
+      // The mechanism, on a test id nobody has ever completed, so the result
+      // cannot be decided by leftover rows from earlier runs.
+      const probeId = `e2e-resume-${Date.now()}`;
+      const roundTrip = await page.evaluate(async (id) => {
         const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
         const hdr = { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential };
-        const list = await fetch("/api/tests", { headers: hdr }).then((r) => r.json());
-        const mine = (list.tests || []).find((t) => t.status === "draft" && !t.platform);
-        if (!mine) return { skip: true };
         await fetch("/api/attempts", {
           method: "POST",
           headers: hdr,
-          body: JSON.stringify({ action: "progress", testId: mine.id, index: 1, answers: "{}" }),
+          body: JSON.stringify({
+            action: "progress",
+            testId: id,
+            index: 1,
+            answers: JSON.stringify({ "q-1": { given: 0, correct: true, earned: 1 } }),
+          }),
+        });
+        return fetch(`/api/attempts?testId=${id}`, { headers: hdr }).then((r) => r.json());
+      }, probeId);
+      check(
+        roundTrip.attempt === null && roundTrip.progress?.index === 1,
+        "an unfinished test reads back as progress, not as a finished attempt"
+      );
+      check(
+        !!roundTrip.progress?.answers && Object.keys(roundTrip.progress.answers).length === 1,
+        "the answers given so far come back with it"
+      );
+
+      // End to end: a bundled test this identity has never finished must offer
+      // Continue after the device is wiped.
+      const fresh = await page.evaluate(async () => {
+        const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+        const hdr = { "X-Vidaivi-Auth": auth.credential };
+        const mine = await fetch("/api/attempts", { headers: hdr }).then((r) => r.json());
+        const finished = new Set((mine.attempts || []).filter((a) => a.status !== "progress").map((a) => a.testId));
+        return ["matrices-demo", "relations-functions-test1"].find((id) => !finished.has(id)) || "";
+      });
+      if (!fresh) {
+        console.log("SKIP  resume in the UI (this account has finished every bundled test)");
+      } else {
+        await page.goto(`${BASE}/?test=${fresh}`, { waitUntil: "domcontentloaded" });
+        await page.evaluate((id) => localStorage.removeItem(`vidaivi:attempt:${id}`), fresh);
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.waitForSelector("#primary-btn", { timeout: 20000 });
+        await page.click("#primary-btn");
+        await page.waitForSelector(".option", { timeout: 20000 });
+        const progressSaved = page.waitForResponse(
+          (r) => r.url().includes("/api/attempts") && r.request().method() === "POST",
+          { timeout: 20000 }
+        );
+        await page.click(".option");
+        await page.click("#submit-btn");
+        await page.waitForSelector("#next-btn", { timeout: 20000 });
+        const saved = await progressSaved.then((r) => r.status()).catch(() => 0);
+        check(saved === 200, `answering a question saves progress to the server (${saved})`);
+
+        await page.evaluate((id) => localStorage.removeItem(`vidaivi:attempt:${id}`), fresh);
+        await page.goto(`${BASE}/?test=${fresh}`, { waitUntil: "domcontentloaded" });
+        await page.waitForSelector("#primary-btn", { timeout: 25000 });
+        const label = await page
+          .waitForFunction(
+            () => {
+              const t = document.querySelector("#primary-btn")?.textContent || "";
+              return t.includes("Continue") ? t : false;
+            },
+            { timeout: 25000 }
+          )
+          .then((h) => h.jsonValue())
+          .catch(() => "");
+        check(!!label, "a wiped device resumes the test from the server");
+        if (label) check(/Question 2 of/.test(label), `it continues at the right question ("${label.trim()}")`);
+
+        // Put it back to "not started" rather than leaving a half-done test.
+        await page.evaluate(async (id) => {
+          const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+          await fetch("/api/attempts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential },
+            body: JSON.stringify({ action: "progress", testId: id, index: 0, answers: "{}" }),
+          });
+          localStorage.removeItem(`vidaivi:attempt:${id}`);
+        }, fresh);
+      }
+
+      // The publish gate, on a draft this run creates complete and deletes
+      // again — an incomplete draft would fail validation before the gate.
+      const gate = await page.evaluate(async () => {
+        const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
+        const hdr = { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential };
+        const created = await fetch("/api/tests", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({
+            action: "create",
+            test: {
+              title: "E2E publish gate",
+              chapter: "Matrices",
+              questions: [
+                {
+                  id: "gate-q1",
+                  chapter: "Matrices",
+                  topic: "Gate",
+                  type: "mcq",
+                  q: "Two plus two?",
+                  options: ["3", "4"],
+                  answer: 1,
+                  solution: "Four.",
+                  marks: 1,
+                },
+              ],
+            },
+          }),
+        }).then((r) => r.json());
+        const id = created.test?.id;
+        if (!id) return { skip: true };
+        // Clean first, so the only reason publish can fail is the gate.
+        const clean = await fetch("/api/tests", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({ action: "publish", id }),
+        }).then((r) => r.status);
+        await fetch("/api/tests", { method: "POST", headers: hdr, body: JSON.stringify({ action: "unpublish", id }) });
+        // Now someone is part-way through it.
+        await fetch("/api/attempts", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({ action: "progress", testId: id, index: 1, answers: "{}" }),
         });
         const blocked = await fetch("/api/tests", {
           method: "POST",
           headers: hdr,
-          body: JSON.stringify({ action: "publish", id: mine.id }),
+          body: JSON.stringify({ action: "publish", id }),
         }).then(async (r) => ({ status: r.status, error: (await r.json().catch(() => ({}))).error || "" }));
-        // Put it back to "not started" so the roster is not left dirty.
         await fetch("/api/attempts", {
           method: "POST",
           headers: hdr,
-          body: JSON.stringify({ action: "progress", testId: mine.id, index: 0, answers: "{}" }),
+          body: JSON.stringify({ action: "progress", testId: id, index: 0, answers: "{}" }),
         });
-        return { id: mine.id, ...blocked };
+        await fetch("/api/tests", { method: "POST", headers: hdr, body: JSON.stringify({ action: "delete", id }) });
+        return { id, clean, ...blocked };
       });
       if (gate.skip) {
-        console.log("SKIP  publish gate (no draft test to try)");
+        console.log("SKIP  publish gate (could not create a draft to try)");
       } else {
+        check(gate.clean === 200, `a complete draft publishes when nobody is mid-test (${gate.clean})`);
         check(gate.status === 409, `publishing is refused while a student is part-way through (${gate.status})`);
         check(/part-way through/i.test(gate.error), "the refusal explains why in the teacher's words");
+        console.log(`  (cleaned up ${gate.id})`);
       }
 
-      // Leave the demo reading "not started" for the next run.
-      await page.evaluate(async () => {
-        const auth = JSON.parse(localStorage.getItem("vidaivi:auth") || "null");
-        await fetch("/api/attempts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "X-Vidaivi-Auth": auth.credential },
-          body: JSON.stringify({ action: "progress", testId: "matrices-demo", index: 0, answers: "{}" }),
-        });
-        localStorage.removeItem("vidaivi:attempt:matrices-demo");
-      });
     }
 
     // Parent links. A code is a key to a child's results, so what matters
