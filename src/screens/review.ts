@@ -16,7 +16,7 @@ import { totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
 import { mount } from "../shell";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
-import { hydrateMarks, showQuestion } from "./test";
+import { hydrateMarks, startTest } from "./test";
 
 export interface ReviewOpts {
   /** Viewer mode (a parent): where Back goes. Retake is hidden. */
@@ -238,7 +238,7 @@ export async function showReview(
       track("test_retake", { test: test.id });
       clearAttempt(test.id);
       setUrl({ test: test.id });
-      showQuestion(test, newAttempt());
+      startTest(test, newAttempt());
     });
 
     renderMath(app);

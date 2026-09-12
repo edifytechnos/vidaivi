@@ -27,6 +27,7 @@ import { mount } from "../shell";
 import { showReview } from "./review";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { showPhoneForm } from "./auth";
+import { showAttempt } from "./student";
 
 function showLogin(test: Test) {
   track("login_open", { test: test.id });
@@ -62,6 +63,9 @@ function showLogin(test: Test) {
 }
 
 export function showLanding(test: Test) {
+  // Read the address bar before touching it: setUrl below drops every
+  // parameter but ?test=, and ?q= is what says where a student was.
+  const onQuestion = new URLSearchParams(location.search).get("q");
   // The one screen with a URL worth keeping — this is the link teachers share.
   setUrl({ test: test.id });
   if (requiresLogin(test)) {
@@ -69,6 +73,16 @@ export function showLanding(test: Test) {
     return;
   }
   const attempt = loadAttempt(test.id);
+  // A student refreshing mid-test lands back on the question they were on.
+  // The landing card has nothing to offer someone already part-way through:
+  // their work is in the workspace, and ?q= says which question.
+  if (onQuestion && canHandIn() && attempt && !attempt.completed) {
+    // setUrl above has already dropped ?q=, so hand the position over rather
+    // than leaving showAttempt to read an address bar we just rewrote.
+    const at = test.questions.findIndex((qq) => qq.id === onQuestion);
+    showAttempt(test, attempt, at < 0 ? 0 : at);
+    return;
+  }
   // A finished test opens straight into read-only review — the landing card
   // has nothing left to offer once there is a score to look at.
   if (attempt?.completed) {
@@ -101,7 +115,7 @@ export function showLanding(test: Test) {
       label: `Continue — Question ${attempt.index + 1} of ${test.questions.length}`,
       action: () => {
         track("test_resume", { test: test.id, at: attempt.index });
-        showQuestion(test, attempt);
+        startTest(test, attempt);
       },
     };
     secondary = `<button id="retake-btn" class="btn btn-ghost">Start over</button>`;
@@ -110,7 +124,7 @@ export function showLanding(test: Test) {
       label: "Start test",
       action: () => {
         track("test_start", { test: test.id });
-        showQuestion(test, newAttempt());
+        startTest(test, newAttempt());
       },
     };
   }
@@ -147,8 +161,19 @@ export function showLanding(test: Test) {
   document.getElementById("retake-btn")?.addEventListener("click", () => {
     track("test_retake", { test: test.id });
     clearAttempt(test.id);
-    showQuestion(test, newAttempt());
+    startTest(test, newAttempt());
   });
+}
+
+/**
+ * Which player. A signed-in student sits the test in the workspace — the tree
+ * of questions beside one question at a time, answerable in any order. A guest
+ * on the demo keeps the linear player below, because the demo's whole value is
+ * the instant verdict and solution after each question.
+ */
+export function startTest(test: Test, attempt: Attempt): void {
+  if (canHandIn()) showAttempt(test, attempt);
+  else showQuestion(test, attempt);
 }
 
 export function showQuestion(test: Test, attempt: Attempt) {
@@ -413,7 +438,7 @@ function recordAndNext(
  * teacher to mark it. A guest on the demo, or a teacher previewing their own
  * test, keeps the old self-assessment — there is nobody to mark theirs.
  */
-function canHandIn(): boolean {
+export function canHandIn(): boolean {
   return isLoggedIn() && getProfile()?.kind === "student";
 }
 
@@ -468,7 +493,7 @@ export async function hydrateMarks(
   return changed;
 }
 
-function showScore(test: Test, attempt: Attempt, released?: boolean) {
+export function showScore(test: Test, attempt: Attempt, released?: boolean) {
   const total = totalMarks(test);
   const waiting = pendingMarks(test, attempt);
   // A signed-in student sees nothing question-by-question until the teacher
@@ -535,7 +560,7 @@ function showScore(test: Test, attempt: Attempt, released?: boolean) {
   document.getElementById("restart-btn")!.addEventListener("click", () => {
     track("test_retake", { test: test.id });
     clearAttempt(test.id);
-    showQuestion(test, newAttempt());
+    startTest(test, newAttempt());
   });
   // Marks awarded, or the paper opened, since this device last looked.
   if (locked || waiting.count) {

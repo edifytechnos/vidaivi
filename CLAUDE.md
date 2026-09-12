@@ -177,7 +177,8 @@ and the explanation, each with a live "Student sees" preview.
 - `api.ts` — fetch client for the DB-backed tests API.
 - `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
 - `screens/builder.ts` — visual test builder (create/edit cloud tests).
-- `screens/test.ts` — test player (landing → questions → score).
+- `screens/test.ts` — test player (landing → questions → score); guests only, past the landing.
+- `screens/student.ts` — the student's workspace: subject → tests tree → one question.
 - `screens/review.ts` — read-only review, one question per page.
 - `screens/marking.ts` — the teacher's marking queue for long answers.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
@@ -321,6 +322,42 @@ has no teacher to release anything, and the demo has to stay worth sharing.
 Release is per student *and* per class — see `/api/release` above. The teacher
 presses it from the marking queue (`src/screens/marking.ts`) or from a student's
 report (`showStudentReport` in `src/screens/console.ts`).
+
+## The student's workspace (`src/screens/student.ts`)
+
+A student gets the same shape their teacher authors in, read-only: **subjects →
+a tree of tests → one question beside the tree**. Never a single page of every
+question scrolling to the end — that rule holds everywhere a test is shown.
+
+- Signing in lands on **Your subjects** (already true); a subject now opens the
+  workspace rather than the flat test list. Every test is a root node in the
+  tree and the open test's questions are the level beneath it, exactly as in
+  `src/screens/editor/`.
+- **Sitting the test has no explanation column** — `.ed-cols.overview`, two
+  columns — and no worked solution anywhere on the page. The discussion panel
+  under the question is the next phase's work; nothing is stubbed for it yet.
+- **Reading the result has both**: that is `src/screens/review.ts`, unchanged —
+  three columns, with the explanation on the right, once the teacher releases
+  the paper.
+- **Questions may be answered in any order** and revisited; an answered one is
+  ticked in the tree. The score is *recomputed* from the answers on every save
+  (`recomputeScore`), never accumulated, so changing an answer cannot double it.
+- **One test at a time**: while an attempt is in progress, every other
+  not-started test is disabled in the tree and on the overview cards. Finishing
+  or handing in releases the lock.
+- `?test=<id>&q=<questionId>` carries the place, so a refresh mid-test lands
+  back on the same question instead of the landing card (`showLanding` reads
+  `?q=` *before* `setUrl` drops it). `vidai:subject` remembers which subject the
+  student is working in, so "back" still works after a reload.
+- A shared `?test=` link opens with no subject loaded, so `showAttempt` seeds the
+  tree with the test being sat and fills the rest of the subject in when it
+  arrives — the tree is never empty under the question.
+- **Guests keep the old linear player** (`showQuestion` in `src/screens/test.ts`)
+  with its instant verdict and solution: the demo's whole value is that
+  feedback, and a guest has no teacher to release anything. `startTest` is the
+  one place that chooses, on `canHandIn()`.
+- Coming later, deliberately not built: a running timer, and questions unlocked
+  only in order.
 
 ## Review: one question per page (`src/screens/review.ts`)
 

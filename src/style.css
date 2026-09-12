@@ -2946,3 +2946,56 @@ body.modal-open {
     border-radius: var(--radius) var(--radius) 0 0;
   }
 }
+
+/* ---------- Student workspace ----------
+   The tree of tests and questions beside one question at a time. Layout is the
+   editor's, under .ed-readonly; only these additions are new. The explanation
+   column is absent while a test is being sat — nothing comes back until the
+   teacher releases the paper — so the shell stays two columns (.overview). */
+
+.st-workspace .ed-center { gap: 12px; }
+
+.st-test {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.st-test:hover:not(:disabled) { background: #f1f5f9; }
+.st-test .icon { width: 15px; height: 15px; color: var(--faint); flex: none; }
+.ed-node.open > .ed-node-head > .st-test { color: var(--primary); }
+.ed-node.open > .ed-node-head > .st-test .icon { color: var(--primary); }
+
+.st-locked { cursor: not-allowed; color: var(--faint); }
+.st-lock .icon { width: 14px; height: 14px; color: var(--faint); }
+
+/* Answered or not — the only per-question signal a student gets while sitting
+   the test. Right and wrong stay hidden until the teacher releases the paper. */
+.st-dot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.st-answered { background: var(--primary-soft); color: var(--primary); }
+.st-todo { border: 1.5px dashed var(--border-strong); }
+
+/* Two tabs on this screen, not the editor's three. */
+.ed-student .ed-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }

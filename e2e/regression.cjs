@@ -669,36 +669,73 @@ function check(ok, label) {
       );
       check(r.opened === 200 && r.after === true, "the teacher opens it and the student sees it");
       check(r.closedAgain === false, "and can shut it again");
-      // Sitting the test as a real student: nothing comes back. Swap the page's
-      // session for the throwaway student's, then put the admin's back.
+      // Sitting the test as a real student: nothing comes back. This needs a
+      // student who still exists — the one above is deleted by the time we get
+      // here — because the workspace saves progress to the server as it goes,
+      // and a dead token would end the session mid-check.
       const adminAuth = await page.evaluate(() => localStorage.getItem("vidai:auth"));
+      const sitter = await page.evaluate(async () => {
+        const auth = JSON.parse(localStorage.getItem("vidai:auth"));
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+        const made = await fetch("/api/students", {
+          method: "POST",
+          headers: hdr,
+          body: JSON.stringify({ name: "E2E Sitting Student", grade: "12", school: "E2E" }),
+        }).then((r) => r.json());
+        if (!made.username) return null;
+        const login = await fetch("/api/studentauth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: made.username, password: made.password }),
+        }).then((r) => r.json());
+        return { username: made.username, token: login.token };
+      });
       await page.evaluate((token) => {
         localStorage.setItem(
           "vidai:auth",
           JSON.stringify({
+            kind: "student",
             credential: token,
-            profile: { kind: "student", sub: "e2e", name: "E2E Photo Student", role: "student" },
+            profile: { kind: "student", sub: "e2e", name: "E2E Sitting Student", role: "student" },
           })
         );
         localStorage.removeItem("vidai:attempt:matrices-demo");
-      }, marking.token);
+      }, sitter?.token ?? marking.token);
       await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
       await page.waitForSelector("#primary-btn", { timeout: 20000 });
       await page.click("#primary-btn");
-      await page.waitForSelector(".option", { timeout: 20000 });
-      await page.click(".option");
-      await page.click("#submit-btn");
-      await page.waitForSelector(".option, .score-card", { timeout: 20000 });
+      // A signed-in student sits the test in the workspace (src/screens/student.ts):
+      // the question list beside one question, and Save rather than Submit.
+      await page.waitForSelector(".ed-student .option", { timeout: 20000 });
+      await page.click(".ed-student .option");
+      await page.click("#st-save");
+      // The tree is a drawer at phone width, so count the tick rather than
+      // waiting for it to be on screen.
+      await page.waitForFunction(
+        () => document.querySelectorAll("#st-tree .st-answered").length === 1,
+        { timeout: 20000 }
+      );
       const silent = await page.evaluate(() => ({
         verdict: document.querySelectorAll(".verdict").length,
         solution: document.querySelectorAll(".solution").length,
+        explain: document.querySelectorAll(".ed-explain").length,
       }));
       check(silent.verdict === 0, `a student gets no verdict on submit (${silent.verdict} found)`);
       check(silent.solution === 0, `and no worked solution (${silent.solution} found)`);
-      await page.evaluate((a) => {
+      check(silent.explain === 0, "and no explanation panel while the test is being sat");
+      await page.evaluate(async ({ a, username }) => {
         localStorage.removeItem("vidai:attempt:matrices-demo");
+        localStorage.removeItem("vidai:subject");
         if (a) localStorage.setItem("vidai:auth", a);
-      }, adminAuth);
+        if (username) {
+          const auth = JSON.parse(a);
+          await fetch("/api/students", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential },
+            body: JSON.stringify({ action: "remove", username }),
+          });
+        }
+      }, { a: adminAuth, username: sitter?.username });
 
       console.log(`  (cleaned up ${marking.username})`);
     }
@@ -847,6 +884,191 @@ function check(ok, label) {
         await page.waitForSelector(card, { state: "detached", timeout: 20000 }).catch(() => {});
       }
       console.log(`  (cleaned up subject ${probe})`);
+    }
+
+    // ---- The student's workspace ----------------------------------------
+    // A student lands on their subjects, opens one, and gets the tree of tests
+    // with one question beside it — the teacher's authoring shape, read-only.
+    // Sitting the test has no explanation panel; the released result does.
+    // Everything here is thrown away again at the end: subject, tests, student.
+    const wsId = "e2e-workspace-" + Math.random().toString(36).slice(2, 7);
+    const wsQuestions = (n) => [
+      { id: `${n}q1`, chapter: "Matrices", topic: "Order", type: "mcq",
+        q: "Order of a $2\\times3$ matrix?", options: ["2x3", "3x2", "6", "2"], answer: 0,
+        solution: "Rows then columns.", marks: 1 },
+      { id: `${n}q2`, chapter: "Matrices", topic: "Determinant", type: "numeric",
+        q: "$\\det(I_2)$?", answer: 1, tolerance: 0, solution: "The identity has determinant 1.", marks: 2 },
+      { id: `${n}q3`, chapter: "Matrices", topic: "Proof", type: "long",
+        q: "Prove $(AB)^T=B^TA^T$.", solution: "Compare entries.", marks: 5 },
+    ];
+    const wsTests = [
+      { id: wsId + "-a", title: "E2E workspace A", chapter: "Matrices", teacher: null, questions: wsQuestions("a") },
+      { id: wsId + "-b", title: "E2E workspace B", chapter: "Matrices", teacher: null, questions: wsQuestions("b") },
+    ];
+    const ws = await page.evaluate(async (tests) => {
+      const auth = JSON.parse(localStorage.getItem("vidai:auth"));
+      const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+      const post = (url, body) =>
+        fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) })
+          .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+      const subject = await post("/api/subjects", {
+        action: "create", board: "CBSE", klass: "12", subject: "E2EWorkspace",
+      });
+      const subjectId = subject.data.subject?.id;
+      let published = 0;
+      for (const test of tests) {
+        await post("/api/tests", { action: "create", test: { ...test, subjectId } });
+        const r = await post("/api/tests", { action: "publish", id: test.id });
+        if (r.status === 200 || r.status === 201) published++;
+      }
+      const student = await post("/api/students", { name: "E2E Workspace Student", grade: "12", school: "E2E" });
+      return { subjectId, published, username: student.data.username, password: student.data.password };
+    }, wsTests);
+    // The admin credential, kept for cleanup: the student's session replaces it
+    // in localStorage below, and cleanup through that would be refused.
+    const wsAdmin = await page.evaluate(() => JSON.parse(localStorage.getItem("vidai:auth")).credential);
+
+    try {
+      if (ws.published !== wsTests.length || !ws.username) {
+        check(false, `workspace fixture could not be published (${ws.published}/${wsTests.length})`);
+      } else {
+        await page.evaluate(() => localStorage.clear());
+        await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
+        await page.click("#student-btn");
+        await page.fill("#su-user", ws.username);
+        await page.fill("#su-pass", ws.password);
+        await page.click("#su-submit");
+        await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
+        check(true, "a student lands on the subjects they are assigned");
+        check(
+          !!(await page.$(`.subject-card[data-subject='${ws.subjectId}']`)),
+          "their teacher's subject is one of them"
+        );
+
+        await page.click(`.subject-card[data-subject='${ws.subjectId}']`);
+        await page.waitForSelector("#st-tree .st-test", { timeout: 25000 });
+        check((await page.$$("#st-tree .st-test")).length === 2, "a subject opens its tests as a tree");
+
+        await page.click(`#st-tree .st-test[data-test='${wsTests[0].id}']`);
+        await page.waitForSelector(".ed-center .question-text", { timeout: 25000 });
+        const wsShape = await page.evaluate(() => ({
+          shown: document.querySelectorAll(".ed-center .question-text").length,
+          rows: document.querySelectorAll("#st-tree .ed-tree-q").length,
+          cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
+          explain: document.querySelectorAll(".ed-explain").length,
+          solution: document.querySelectorAll(".solution").length,
+        }));
+        check(wsShape.shown === 1, `one question on screen, never the whole paper (${wsShape.shown})`);
+        check(wsShape.rows === 3, `its questions are listed beside it (${wsShape.rows})`);
+        check(wsShape.cols === 2, `sitting a test has no third column (${wsShape.cols})`);
+        check(wsShape.explain === 0 && wsShape.solution === 0, "no explanation and no solution while sitting it");
+
+        // Answered in any order, and revisitable.
+        await page.click(".ed-student .option[data-i='0']");
+        await page.click("#st-save");
+        await page.waitForFunction(
+          () => document.querySelectorAll("#st-tree .st-answered").length === 1,
+          { timeout: 15000 }
+        );
+        check(true, "an answered question is ticked in the list");
+        await page.click("#st-tree .ed-tree-q[data-i='2']");
+        await page.waitForSelector("#st-upload", { timeout: 15000 });
+        check(true, "a later question can be opened before the one before it");
+        await page.click("#st-tree .ed-tree-q[data-i='1']");
+        await page.waitForSelector("#st-num", { timeout: 15000 });
+        await page.fill("#st-num", "1");
+        await page.click("#st-save");
+        await page.waitForFunction(
+          () => document.querySelectorAll("#st-tree .st-answered").length === 2,
+          { timeout: 15000 }
+        );
+        check(true, "and answered out of order");
+
+        // A refresh lands back on the same question.
+        const wsBefore = await page.evaluate(() => new URLSearchParams(location.search).get("q"));
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.waitForSelector(".ed-center .question-text", { timeout: 25000 });
+        const wsAfter = await page.evaluate(() => new URLSearchParams(location.search).get("q"));
+        check(!!wsBefore && wsBefore === wsAfter, `a refresh stays on the question (${wsBefore} → ${wsAfter})`);
+
+        // One test at a time: the other one is locked while this is open.
+        await page.click("#st-back");
+        await page.waitForSelector("#st-tree .st-test", { timeout: 20000 });
+        const wsLocks = await page.$$eval("#st-tree .st-test", (n) =>
+          n.map((e) => ({ id: e.dataset.test, disabled: e.disabled })));
+        check(
+          wsLocks.find((t) => t.id === wsTests[1].id)?.disabled === true,
+          "another test is locked while one is in progress"
+        );
+        check(
+          wsLocks.find((t) => t.id === wsTests[0].id)?.disabled === false,
+          "and the one in progress stays open"
+        );
+
+        // Hand in: the score, with the paper still shut.
+        await page.click(`#st-tree .st-test[data-test='${wsTests[0].id}']`);
+        await page.waitForSelector("#st-submit", { timeout: 20000 });
+        page.once("dialog", (d) => d.accept());
+        await page.click("#st-submit");
+        await page.waitForSelector(".score-card", { timeout: 20000 });
+        check(
+          (await page.textContent(".score-big")).replace(/\s/g, "").startsWith("3/"),
+          "handing in scores only what is auto-graded"
+        );
+        check(await page.isVisible(".locked-title"), "the detail stays locked until the teacher releases it");
+
+        // Released, the result view is the three-column one, explanation and all.
+        const wsReleased = await page.evaluate(async ({ id, username, cred }) =>
+          fetch("/api/release", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-Vidai-Auth": cred },
+            body: JSON.stringify({ action: "release", testId: id, username }),
+          }).then((r) => r.status),
+          { id: wsTests[0].id, username: ws.username, cred: wsAdmin }
+        );
+        check(wsReleased === 200, `the teacher releases the paper (${wsReleased})`);
+        await page.goto(BASE + `/?test=${wsTests[0].id}`, { waitUntil: "domcontentloaded" });
+        await page.waitForSelector(".review-item", { timeout: 25000 });
+        const wsResult = await page.evaluate(() => ({
+          cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
+          solution: !!document.querySelector(".review-item .solution"),
+        }));
+        check(wsResult.cols === 3, `the result view brings back the third column (${wsResult.cols})`);
+        check(wsResult.solution, "and shows the explanation beside the question");
+
+        // Phone: the tree is a drawer behind its tab, one surface at a time.
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto(BASE + `/?test=${wsTests[1].id}`, { waitUntil: "domcontentloaded" });
+        await page.waitForSelector("#primary-btn", { timeout: 25000 });
+        await page.click("#primary-btn");
+        await page.waitForSelector(".ed-student .ed-tabs", { timeout: 20000 });
+        check(!(await page.isVisible("#st-tree .ed-tree-q")), "on a phone the tree is tucked away");
+        await page.click('.ed-student .ed-tab[data-pane="tree"]');
+        await page.waitForSelector("#st-tree .ed-tree-q:visible", { timeout: 10000 });
+        check(true, "and the Questions tab slides it in");
+        await page.setViewportSize({ width: 1280, height: 900 });
+      }
+    } finally {
+      const wsGone = await page.evaluate(async ({ ws, ids, cred }) => {
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": cred };
+        const post = (url, body) =>
+          fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) }).then((r) => r.status);
+        if (ws.username) await post("/api/students", { action: "remove", username: ws.username });
+        for (const id of ids) {
+          await post("/api/tests", { action: "unpublish", id });
+          await post("/api/tests", { action: "delete", id });
+        }
+        return ws.subjectId ? post("/api/subjects", { action: "delete", id: ws.subjectId }) : 0;
+      }, { ws, ids: wsTests.map((t) => t.id), cred: wsAdmin });
+      console.log(`  (cleaned up workspace fixture, subject ${wsGone})`);
+      // Back to the admin session for anything that follows.
+      await page.evaluate((cred) => {
+        localStorage.clear();
+        localStorage.setItem("vidai:auth", JSON.stringify({
+          kind: "admin", credential: cred,
+          profile: { kind: "admin", sub: "admin", name: "E2E Admin", role: "admin" },
+        }));
+      }, wsAdmin);
     }
   } else {
     console.log("SKIP  admin flows (set E2E_ADMIN_USER / E2E_ADMIN_PASS to enable)");
