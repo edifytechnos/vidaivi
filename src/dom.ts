@@ -47,37 +47,26 @@ export function formatText(s: string): string {
 }
 
 /**
- * How a test is named in a list: the chapter on top, the rest of its title
- * beneath in smaller, lighter type. "Class 10 · Real Numbers — Chapter Test 1"
- * with chapter "Real Numbers" reads as **Real Numbers** / *Chapter Test 1*, so
- * two tests on the same chapter are still told apart.
+ * How a test is named in a list: the **title** on top, the **subtitle** beneath
+ * in smaller, lighter type. Both come straight from what the teacher typed —
+ * line one is the Title box, line two is the Subtitle box, and nothing is
+ * derived, stripped or rearranged.
  *
- * The class prefix goes because the class is the subject you are already in —
- * repeating it on every row spent the width that the distinguishing half needed.
- * The stored title is never touched; this is display only.
+ * It used to put the chapter first and try to work the rest out of the title by
+ * substring-matching and stripping a "Class 10 ·" prefix. That was clever and
+ * unpredictable: the teacher could not tell what either line would say without
+ * running it. Two boxes, two lines, in that order.
+ *
+ * (The second field is still `chapter` in the JSON — the stored schema has not
+ * changed, only the label above the box and where it renders.)
  */
-export function testLabel(title: string, chapter?: string): { main: string; sub: string } {
-  const full = String(title || "").trim();
-  // "Class 10 · ", "Class 12 - ", "Class 9 — " — the separator is optional.
-  const stripped = full.replace(/^class\s*\d+\s*[·—–:-]?\s*/i, "").trim() || full;
-  const chap = String(chapter || "").trim();
-
-  if (chap) {
-    const at = stripped.toLowerCase().indexOf(chap.toLowerCase());
-    if (at !== -1) {
-      const rest = (stripped.slice(0, at) + " " + stripped.slice(at + chap.length))
-        .replace(/[·—–:-]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-      return { main: chap, sub: rest };
-    }
-  }
-  return { main: stripped, sub: "" };
+export function testLabel(title: string, subtitle?: string): { main: string; sub: string } {
+  return { main: String(title || "").trim(), sub: String(subtitle || "").trim() };
 }
 
 /** The same label as markup, so every list renders it identically. */
-export function testLabelMarkup(title: string, chapter?: string): string {
-  const { main, sub } = testLabel(title, chapter);
+export function testLabelMarkup(title: string, subtitle?: string): string {
+  const { main, sub } = testLabel(title, subtitle);
   return `<span class="tl"><span class="tl-main">${escapeHtml(main)}</span>${
     sub ? `<span class="tl-sub">${escapeHtml(sub)}</span>` : ""
   }</span>`;

@@ -74,7 +74,11 @@ if (editId) {
 } else if (subjectId && !rawTestId && authEnabled && isLoggedIn() && isStudentViewer()) {
   void showStudentSubject(subjectId);
 } else if (libraryId && authEnabled && isLoggedIn()) {
-  void import("./screens/library").then((m) => m.showLibrary(libraryId));
+  // A built-in shelf is an ordinary subject in the editor now. Old ?library=
+  // links keep working by landing in the same place.
+  void import("./screens/editor").then((m) =>
+    m.showEditorForSubject(libraryId, () => void import("./screens/subjects").then((x) => x.showSubjects()))
+  );
 } else if (markMode && authEnabled && isLoggedIn()) {
   void showMarking();
 } else if (test) {

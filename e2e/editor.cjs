@@ -27,8 +27,19 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.click('[data-rail="mytests"]');
 
   // Create a fresh test through the UI — the editor should open on it.
+  // Creating now asks what to start from, so the blank option is confirmed.
   await page.waitForSelector("#mt-new", { timeout: 25000 });
   await page.click("#mt-new");
+  const picker = await page.waitForSelector(".modal-submit", { timeout: 20000 }).catch(() => null);
+  if (picker) {
+    check(
+      await page.isVisible('.modal-choice-label:text-is("A blank test")'),
+      "Add a test offers a blank test"
+    );
+    const shelfOption = await page.$('.modal-choice-label:text-is("CBSE Class 10 Maths")');
+    check(!!shelfOption, "Add a test offers copying from a built-in subject");
+    await page.click(".modal-submit");
+  }
   await page.waitForSelector(".editor:not(.sk-wrap)", { timeout: 30000 });
   check(await page.isVisible(".editor:not(.sk-wrap) .ed-tree"), "Create test opens the editor with the tests tree");
   check(/edit=/.test(page.url()), "url carries the test so a refresh restores it");
@@ -185,6 +196,35 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   for (const id of ["ed-audience", "ov-preview", "ov-quick", "ov-publish"]) {
     check(await page.isVisible(`.ed-toolbar #${id}`), `${id} is an icon button in the pane toolbar`);
   }
+  // The actions sit in the Test details panel's own header, not in a bar above it.
+  const toolbarInPanel = await page.evaluate(() => {
+    const bar = document.querySelector(".ed-toolbar");
+    return !!bar?.closest(".ed-panel-head") && !!bar?.closest(".ed-panel");
+  });
+  check(toolbarInPanel, "the icon row sits inside the Test details panel header");
+  check(
+    await page.$('.ed-panel-label:text-is("Subtitle")'),
+    "the second box is labelled Subtitle, not Chapter"
+  );
+  check(!(await page.$('.ed-panel-label:text-is("Chapter")')), "no Chapter label remains");
+
+  // Title on line one, Subtitle on line two — both exactly as typed.
+  await page.fill("#ov-title", "Alpha Title");
+  await page.fill("#ov-chapter", "Beta Subtitle");
+  await page.waitForSelector(".ed-save-saved", { timeout: 20000 });
+  const treeLabel = await page.evaluate(() => {
+    // The row for the test being edited, not whichever test sorts first.
+    const row = document.querySelector("#ed-open-overview");
+    const node = row?.querySelector(".ed-tree-name");
+    return {
+      main: node?.querySelector(".tl-main")?.textContent?.trim() || "",
+      sub: node?.querySelector(".tl-sub")?.textContent?.trim() || "",
+      icons: document.querySelectorAll(".ed-tree-test svg.icon").length,
+    };
+  });
+  check(treeLabel.main === "Alpha Title", `the tree shows the Title first (got "${treeLabel.main}")`);
+  check(treeLabel.sub === "Beta Subtitle", `and the Subtitle beneath (got "${treeLabel.sub}")`);
+  check(treeLabel.icons === 0, `no folder icon on the tree row (saw ${treeLabel.icons})`);
   await page.click(".ed-toolbar #ov-publish");
   await page.waitForSelector("#ov-publish-error:not([hidden])", { timeout: 25000 });
   const err = await page.textContent("#ov-publish-error");

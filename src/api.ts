@@ -261,21 +261,38 @@ export async function fetchLibrary(subjectId?: string): Promise<ServerTestMeta[]
 }
 
 /** Take your own editable draft copy of a built-in test. */
-export async function adoptTest(
-  id: string
-): Promise<{ ok: boolean; message?: string; test?: ServerTestMeta }> {
+/**
+ * Take a copy of one or more built-in tests. `into` files them under a subject
+ * the caller owns; without it the server picks the caller's subject with the
+ * same board/class/subject, creating one if they have none.
+ *
+ * Many ids go in ONE request — a teacher building a subject from the library
+ * picks several chapters, and that must not be a POST per chapter.
+ */
+export async function adoptTests(
+  ids: string[],
+  into?: string | null
+): Promise<{ ok: boolean; message?: string; tests?: ServerTestMeta[] }> {
   try {
     const res = await apiFetch("/api/tests", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
-      body: JSON.stringify({ action: "adopt", id }),
+      body: JSON.stringify({ action: "adopt", ids, ...(into ? { subjectId: into } : {}) }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) return { ok: false, message: data.error || "Request failed" };
-    return { ok: true, test: data.test as ServerTestMeta };
+    return { ok: true, tests: (data.tests ?? []) as ServerTestMeta[] };
   } catch {
     return { ok: false, message: "Network error" };
   }
+}
+
+export async function adoptTest(
+  id: string,
+  into?: string | null
+): Promise<{ ok: boolean; message?: string; test?: ServerTestMeta }> {
+  const result = await adoptTests([id], into);
+  return { ok: result.ok, message: result.message, test: result.tests?.[0] };
 }
 
 export async function setTestStatus(

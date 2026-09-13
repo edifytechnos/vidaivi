@@ -3,7 +3,15 @@
 // its tests.
 
 import { track } from "../analytics";
-import { fetchSubjects, fetchTestList, mutateSubject, seedSampleTests, type Subject } from "../api";
+import {
+  adoptTests,
+  fetchLibrary,
+  fetchSubjects,
+  fetchTestList,
+  mutateSubject,
+  seedSampleTests,
+  type Subject,
+} from "../api";
 import { isTeacher } from "../auth";
 import { TESTS } from "../data";
 import { escapeHtml, setUrl } from "../dom";
@@ -11,7 +19,6 @@ import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
 import { showEditorForSubject } from "./editor";
-import { showLibrary } from "./library";
 import { setSubject, showHome } from "./home";
 import { isStudentViewer, showStudentSubject } from "./student";
 
@@ -36,7 +43,7 @@ export async function showSubjects() {
       actions: isTeacher() ? `<button id="sub-new" class="btn btn-primary">+ Subject</button>` : "",
     }
   );
-  document.getElementById("sub-new")?.addEventListener("click", () => openForm());
+  document.getElementById("sub-new")?.addEventListener("click", () => void openForm());
 
   await refresh();
 }
@@ -58,13 +65,6 @@ async function refresh(): Promise<void> {
     el.addEventListener("click", () => {
       const id = el.dataset.subject!;
       track("subject_open", { subject: id });
-      // A built-in shelf is never authorable: the editor autosaves into one
-      // shared working copy, and a master is nobody's to change. It opens
-      // read-only instead, with Use this test on every chapter.
-      if (el.dataset.platform === "1") {
-        void showLibrary(id, el.dataset.title || undefined);
-        return;
-      }
       setSubject(id);
       // A teacher goes where they build tests — the editor, scoped to this
       // subject. A student goes to their tests tree: the same shape, read-only,
@@ -129,31 +129,121 @@ function initials(s: Subject): string {
  * of the three and left the third showing only a placeholder, so a form that
  * looked complete failed with "Board, class and subject are all needed".
  */
-function openForm(): void {
+async function openForm(): Promise<void> {
+  // One round of fetches when the dialog opens, in parallel: the shelves to
+  // offer, and every built-in test so each shelf can list its own.
+  const [subjects, masters] = await Promise.all([fetchSubjects(), fetchLibrary()]);
+  const shelves = (subjects ?? []).filter((x) => x.platform);
+  const library = masters ?? [];
+
+  // One checklist per shelf, each shown only while that shelf is chosen. The
+  // modal's showWhen compares against a fixed value, so this is how a dependent
+  // list is expressed without inventing a second dialog.
+  const shelfTests = shelves.map((sh) => ({
+    name: `tests_${sh.id}`,
+    label: `Tests to copy from ${sh.title}`,
+    kind: "checklist" as const,
+    showWhen: { field: "from", value: sh.id },
+    empty: "This built-in subject has no published tests yet.",
+    choices: library
+      .filter((t) => t.subjectId === sh.id)
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+      .map((t) => ({
+        value: t.id,
+        label: t.title,
+        hint: `${t.chapter ? `${t.chapter} · ` : ""}${t.questionCount} questions · ${t.totalMarks} marks`,
+      })),
+  }));
+
   openModal({
     title: "New subject",
     description:
       "A subject is one board, class and subject — the tests you write live inside it.",
     submitLabel: "Create subject",
     fields: [
-      { name: "board", label: "Board", value: "CBSE", options: BOARDS, required: true },
-      { name: "klass", label: "Class", value: "12", options: CLASSES, required: true },
+      ...(shelves.length
+        ? [
+            {
+              name: "from",
+              label: "Start from",
+              kind: "radio" as const,
+              choices: [
+                { value: "blank", label: "A blank subject", hint: "Write your own tests" },
+                ...shelves.map((sh) => ({
+                  value: sh.id,
+                  label: sh.title,
+                  hint: "Copy tests from this built-in subject",
+                })),
+              ],
+            },
+          ]
+        : []),
+      {
+        name: "board",
+        label: "Board",
+        value: "CBSE",
+        options: BOARDS,
+        required: true,
+        ...(shelves.length ? { showWhen: { field: "from", value: "blank" } } : {}),
+      },
+      {
+        name: "klass",
+        label: "Class",
+        value: "12",
+        options: CLASSES,
+        required: true,
+        ...(shelves.length ? { showWhen: { field: "from", value: "blank" } } : {}),
+      },
       {
         name: "subject",
         label: "Subject",
         placeholder: "e.g. Maths",
         options: SUBJECTS,
         required: true,
+        ...(shelves.length ? { showWhen: { field: "from", value: "blank" } } : {}),
       },
+      ...shelfTests,
     ],
-    onSubmit: async (v) => {
-      const result = await mutateSubject("create", {
-        board: v.board,
-        klass: v.klass,
-        subject: v.subject,
+    onSubmit: async (v, picks) => {
+      const from = v.from || "blank";
+      const shelf = shelves.find((x) => x.id === from);
+
+      if (!shelf) {
+        const result = await mutateSubject("create", {
+          board: v.board,
+          klass: v.klass,
+          subject: v.subject,
+        });
+        if (!result.ok) return result.message;
+        track("subject_created");
+        void refresh();
+        return;
+      }
+
+      // From a shelf: the new subject inherits the shelf's taxonomy, so the
+      // teacher never retypes what they just picked.
+      const wanted = picks[`tests_${shelf.id}`] ?? [];
+      if (!wanted.length) return "Tick at least one test to copy.";
+
+      const made = await mutateSubject("create", {
+        board: shelf.board,
+        klass: shelf.klass,
+        subject: shelf.subject,
       });
-      if (!result.ok) return result.message;
-      track("subject_created");
+      if (!made.ok) return made.message;
+      const into = made.subject?.id;
+      if (!into) return "The subject was created but could not be opened.";
+
+      const copied = await adoptTests(wanted, into);
+      if (!copied.ok) {
+        // The subject exists; say so rather than implying nothing happened.
+        void refresh();
+        return `Subject created, but the tests could not be copied: ${copied.message}`;
+      }
+      track("subject_created_from_library", {
+        subject: shelf.id,
+        copied: String(copied.tests?.length ?? 0),
+      });
       void refresh();
     },
   });

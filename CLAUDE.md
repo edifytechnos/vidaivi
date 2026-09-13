@@ -191,22 +191,30 @@ list skips platform tests for the same reason.
 
 - `GET /api/tests?library=1` → the published masters, each with `adopted: true`
   when the caller already holds a copy (matched on `copiedFrom`). Teachers only.
-- `POST /api/tests {action:"adopt", id}` copies a published master into the
-  caller's account: a **new id** (never the master's), `ownerSub` = caller,
-  `platform: false`, `status: "draft"`, `audience: "class"`, `copiedFrom` set,
-  every question carried across. It is filed under the caller's **own** subject
-  with the same board/class/subject (`subjectForAdopter`), created if they have
-  none — a copy filed under the library's subject would be invisible to them.
+- `POST /api/tests {action:"adopt", ids[], subjectId?}` copies published masters
+  into the caller's account: each gets a **new id** (never the master's),
+  `ownerSub` = caller, `platform: false`, `status: "draft"`, `audience: "class"`,
+  `copiedFrom` set, every question carried across. **`ids` is a list because a
+  teacher building a subject picks several chapters at once** — one request, not
+  one per chapter (rule 3), bounded by `inBatches(ids, 10, …)` and capped at 50.
+  `id` is still accepted for a single copy.
+  `subjectId` files the copies under a subject the caller **owns** — anything
+  else is a 403, so copies can never be dropped into someone else's subject or
+  into the library itself. Without it they land in the caller's own subject with
+  the same board/class/subject (`subjectForAdopter`), created if they have none.
 - Only an admin may create, publish or edit a master (`canManageTest` keeps
   `entity.platform ||` for admins). That is what "the built-in cannot be
   changed" means for a teacher.
-- Client: `fetchLibrary` / `adoptTest` in `src/api.ts`, and the **Built-in
-  tests** block in Console → My tests: **Use this test** adopts and opens the
-  editor on the *copy*, so the teacher lands where they can change it.
+- Client: `fetchLibrary` / `adoptTests` in `src/api.ts`. **A teacher never
+  browses the library to adopt.** They meet it at the two moments they are
+  already asking for something: **New subject** offers "start from a built-in
+  subject" with a tick list of its tests, and the **+** in the tests tree offers
+  "copy a built-in test" into the subject they are in. Both use the shared modal
+  (`src/modal.ts`).
 - Nothing syncs after the copy is made. `copiedFrom` records the parent so a
   later slice can say "the master has been updated"; a teacher's copy is theirs.
 
-## The library has shelves: platform subjects (`src/screens/library.ts`)
+## The library has shelves: platform subjects
 
 A **shelf** is a subject row carrying `platform: true` — "CBSE Class 10 Maths",
 holding one master test per NCERT chapter. It is the shape a teacher already
@@ -221,20 +229,21 @@ beside their own subjects.
   subject list is derived from the tests they can see, and platform tests are
   already skipped there.
 - `GET /api/tests?library=1&subjectId=<id>` is one shelf's chapters.
-- Opening a shelf goes to `showLibrary`, **never** the authoring editor:
-  `editor/state.ts` is one shared working copy that autosaves, so browsing a
-  master through it would queue writes against a test nobody may change.
-  `src/screens/library.ts` is read-only and reuses the editor's *layout* only,
-  exactly as `src/screens/review.ts` does — `.ed-cols` / `.ed-tree*` /
-  `.ed-panel` under `.ed-readonly`, with `bindTreeDrawer` for the phone drawer.
-  **Use this test** in the crumb row adopts the chapter and opens the editor on
-  the copy.
-- `?library=<id>` survives a refresh (`src/main.ts`). The chapter is deliberately
-  *not* in the URL: a `test=` param there would be caught by the shared-link
-  route and open the test player instead.
-- The crumb's back link names the shelf on a wide screen and reads "‹ Back"
-  below 720px (`.crumb-wide` / `.crumb-tight`) — the full title pushed **Use
-  this test** off the edge of a 390px screen.
+- **A shelf opens in the ordinary authoring editor**, like any other subject —
+  it is in the subject dropdown, badged *(built in)*. An **admin** edits a
+  master there exactly as they would their own test (unpublish → edit →
+  publish; unpublishing a master is safe because it reaches no student). A
+  **teacher** gets it read-only.
+  This reverses an earlier rule that shelves must never open in the editor. The
+  danger it guarded against was real — `editor/state.ts` autosaves ~1s after a
+  keystroke, so a teacher who could type into a master would queue writes the
+  server then rejects — and it is now handled at the source: **`readOnly()` in
+  `src/screens/editor/index.ts` returns true for `test.platform && !isAdmin()`**,
+  so the client never asks. `canManageTest` on the server is still the real
+  gate. The separate read-only browser (`src/screens/library.ts`) is deleted;
+  `?library=<id>` redirects into the editor so old links keep working.
+- The **+** in the tree is hidden on a shelf unless you are an admin
+  (`canAddHere()`): a teacher cannot add to the library.
 
 ### Where chapter content lives
 
@@ -284,24 +293,40 @@ the tests, and reused on every render. Switching calls `showEditorForSubject`.
 picker out from under an open dropdown. Below 1100px the audience note drops and
 below 600px the title does: the crumb row already carries the test's name.
 
-**Every action is one icon row** (`.ed-toolbar`, `toolbarMarkup`) at the top
-right of the overview pane — Who sees this (`#ed-audience`), Preview
-(`#ov-preview`), Quick edit (`#ov-quick`, drafts only) and Publish
-(`#ov-publish`) / Move back to draft (`#ed-unpublish-bar`). There is no
+**Every action is one icon row** (`.ed-toolbar`, `toolbarMarkup`) in the **Test
+details panel's own header**, right-aligned — Who sees this (`#ed-audience`),
+Preview (`#ov-preview`), Quick edit (`#ov-quick`, drafts only) and Publish
+(`#ov-publish`) / Move back to draft (`#ed-unpublish-bar`). It belongs to that
+panel, not to a bar floating above it. On a library master viewed by a teacher
+the row collapses to **Preview alone** — publishing, the audience picker and
+quick edit would all 403. There is no
 PUBLISHING card and no duplicate set in the app bar; the bar keeps identity and
 state only (the tree toggle and the status chip, whose `title` is
 `audienceNote()`). The read-only banner keeps its own `#ed-unpublish`, which is
 why the toolbar's is `#ed-unpublish-bar` — two of the same id would leave one
 unbindable.
 
-**A test is named on two lines wherever it is listed**: the chapter, and the
-rest of the title beneath it smaller and lighter, so two tests on the same
-chapter are told apart. `testLabel` / `testLabelMarkup` in `src/dom.ts` is the
-one implementation (`.tl > .tl-main + .tl-sub`) — it strips a leading
-`Class N ·` prefix, since the class is the subject you are already in. Used by
-the editor tree, `library.ts`, `student.ts`, `review.ts` and `home.ts`. **Not**
-the app bar (`mount({title})` sets `textContent`, and a second line would grow
-the bar) and **not** the My tests table, which has its own Chapter column.
+**A test is named on two lines wherever it is listed**: the **Title** on top and
+the **Subtitle** beneath it, smaller and lighter. `testLabel` /
+`testLabelMarkup` in `src/dom.ts` is the one implementation
+(`.tl > .tl-main + .tl-sub`), and it is deliberately trivial — line one is what
+the teacher typed in Title, line two is what they typed in Subtitle. **Nothing
+is derived, stripped or rearranged.**
+
+An earlier version put the chapter first and tried to work the rest out of the
+title by substring-matching and stripping a `Class N ·` prefix. It was clever
+and unpredictable: a teacher could not tell what either line would say without
+running it. Two boxes, two lines, in that order.
+
+The second box is **labelled Subtitle** in the editor and the card builder, but
+it is still `chapter` in the JSON and in Table Storage — the stored schema has
+not changed, only the label and where it renders. Used by the editor tree,
+`student.ts`, `review.ts` and `home.ts`. **Not** the app bar
+(`mount({title})` sets `textContent`, and a second line would grow the bar) and
+**not** the My tests table, which has its own Chapter column.
+
+**The tree rows carry no icon.** The caret already says a row opens, and the
+two-line label is the thing to read.
 
 `index.ts` is the shell (app bar, tree, overview, responsive panes), `state.ts` holds the working
 copy and autosaves ~1s after typing (saves are serialised, never concurrent),

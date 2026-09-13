@@ -1062,44 +1062,76 @@ handlers.tests = async (context, req) => {
     // A teacher takes their own copy of a published master ("built-in") test.
     // The master itself is never edited by them — this is a fork, not a share.
     if (action === "adopt") {
-      const id = String(body.id || "").trim();
-      let master;
-      try {
-        master = await tests.getEntity("test", id);
-      } catch {
-        return json(context, 404, { error: "Test not found" });
+      // One or many. A teacher building a subject from the library picks
+      // several chapters at once, and that must be ONE round trip rather than
+      // one per chapter (rule 3: nothing awaited in a loop).
+      const ids = Array.isArray(body.ids)
+        ? body.ids.map((x) => String(x || "").trim()).filter(Boolean).slice(0, 50)
+        : [String(body.id || "").trim()].filter(Boolean);
+      if (!ids.length) return json(context, 400, { error: "Nothing to copy" });
+
+      // Where the copies are filed. A caller may name one of their OWN
+      // subjects; anything else falls back to the subject-per-taxonomy rule,
+      // so a teacher cannot drop copies into somebody else's subject.
+      let intoSubject = "";
+      const wantSubject = String(body.subjectId || "").trim();
+      if (wantSubject) {
+        const subjects = tableClient("subjects");
+        await ensureTable(subjects);
+        try {
+          const row = await subjects.getEntity("subject", wantSubject);
+          if (row.ownerSub === who.id && !row.platform) intoSubject = row.rowKey;
+        } catch {}
+        if (!intoSubject) return json(context, 403, { error: "Not your subject" });
       }
-      if (!master.platform || master.status !== "published") {
-        return json(context, 403, { error: "Not a built-in test" });
-      }
-      const questions = unchunkQuestions(master);
-      const copyId = `${slugify(master.title || "test")}-${crypto.randomBytes(3).toString("hex")}`.slice(0, 60);
-      const entity = {
-        partitionKey: "test",
-        rowKey: copyId,
-        title: String(master.title || "Test").slice(0, 120),
-        chapter: String(master.chapter || "").slice(0, 60),
-        teacher: String(master.teacher || "").slice(0, 60),
-        order: typeof master.order === "number" ? master.order : 99,
-        access: master.access === "open" ? "open" : "login",
-        status: "draft",
-        platform: false,
-        audience: "class",
-        assignedTo: "[]",
-        ownerSub: who.id,
-        ownerEmail: who.email || "",
-        board: master.board || "CBSE",
-        klass: master.klass || "12",
-        subject: master.subject || "Maths",
-        subjectId: await subjectForAdopter(who, master),
-        copiedFrom: id,
-        forkedFromId: id,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      chunkQuestions(entity, questions);
-      await tests.createEntity(entity);
-      return json(context, 201, { test: testMeta(entity) });
+
+      const copies = [];
+      const failed = [];
+      await inBatches(ids, 10, async (id) => {
+        let master;
+        try {
+          master = await tests.getEntity("test", id);
+        } catch {
+          failed.push(id);
+          return;
+        }
+        if (!master.platform || master.status !== "published") {
+          failed.push(id);
+          return;
+        }
+        const questions = unchunkQuestions(master);
+        const copyId = `${slugify(master.title || "test")}-${crypto.randomBytes(3).toString("hex")}`.slice(0, 60);
+        const entity = {
+          partitionKey: "test",
+          rowKey: copyId,
+          title: String(master.title || "Test").slice(0, 120),
+          chapter: String(master.chapter || "").slice(0, 60),
+          teacher: String(master.teacher || "").slice(0, 60),
+          order: typeof master.order === "number" ? master.order : 99,
+          access: master.access === "open" ? "open" : "login",
+          status: "draft",
+          platform: false,
+          audience: "class",
+          assignedTo: "[]",
+          ownerSub: who.id,
+          ownerEmail: who.email || "",
+          board: master.board || "CBSE",
+          klass: master.klass || "12",
+          subject: master.subject || "Maths",
+          subjectId: intoSubject || (await subjectForAdopter(who, master)),
+          copiedFrom: id,
+          forkedFromId: id,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        chunkQuestions(entity, questions);
+        await tests.createEntity(entity);
+        copies.push(testMeta(entity));
+      });
+
+      if (!copies.length) return json(context, 404, { error: "No built-in test was copied" });
+      // `test` stays for the single-copy callers that predate `ids`.
+      return json(context, 201, { test: copies[0], tests: copies, failed });
     }
 
     if (action === "seedSamples") {

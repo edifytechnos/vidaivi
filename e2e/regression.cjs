@@ -50,7 +50,8 @@ function check(ok, label) {
   check(cards.length >= 2, `home lists ${cards.length} tests`);
   const lockedSub = await page.textContent(".test-card[data-test='relations-functions-test1'] .test-card-sub");
   check(lockedSub.includes("sign in"), "login-gated test shows sign-in hint for guests");
-  // Every listed test names its chapter on top, the rest of the title beneath.
+  // Every listed test shows the Title on line one and the Subtitle beneath it,
+  // both exactly as typed — nothing derived or rearranged.
   const label = await page.evaluate(() => {
     const card = document.querySelector(".test-card[data-test='relations-functions-test1'] .test-card-title");
     return {
@@ -58,8 +59,8 @@ function check(ok, label) {
       sub: card?.querySelector(".tl-sub")?.textContent?.trim() || "",
     };
   });
-  check(label.main === "Relations and Functions", `the chapter leads the label (got "${label.main}")`);
-  check(label.sub.length > 0 && label.sub !== label.main, `the rest of the title sits beneath it (got "${label.sub}")`);
+  check(label.main === "Test 1 — Relations and Functions", `the title leads the label (got "${label.main}")`);
+  check(label.sub === "Relations and Functions", `the subtitle sits beneath it (got "${label.sub}")`);
   await shot("home-guest");
 
   // Demo test: answer first (MCQ) question
