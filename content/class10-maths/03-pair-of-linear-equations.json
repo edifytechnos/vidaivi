@@ -1,0 +1,215 @@
+{
+  "id": "lib-c10-linear-equations",
+  "title": "Class 10 · Pair of Linear Equations — Chapter Test 3",
+  "chapter": "Pair of Linear Equations in Two Variables",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "le-001",
+      "topic": "Number of solutions from the coefficients",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The pair of linear equations $x + 2y + 5 = 0$ and $-3x = 6y - 1$ has:",
+      "options": [
+        "a unique solution",
+        "exactly two solutions",
+        "infinitely many solutions",
+        "no solution"
+      ],
+      "answer": 3,
+      "solution": "Put the second equation in standard form first: $-3x = 6y - 1$ becomes $3x + 6y - 1 = 0$.\n\nNow compare the three ratios:\n\n$\\dfrac{a_1}{a_2} = \\dfrac{1}{3}$, $\\dfrac{b_1}{b_2} = \\dfrac{2}{6} = \\dfrac{1}{3}$, $\\dfrac{c_1}{c_2} = \\dfrac{5}{-1} = -5$\n\nThe first two are equal but the third is different:\n\n$\\dfrac{a_1}{a_2} = \\dfrac{b_1}{b_2} \\neq \\dfrac{c_1}{c_2}$\n\nThat is the **parallel lines** case, so there is **no solution**.\n\nThink of $a$ and $b$ as setting the *direction* of a line and $c$ as setting *where* it sits. Same direction, different position — two railway tracks running side by side, never meeting.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-002",
+      "topic": "What consistent means",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If a pair of linear equations in two variables is consistent, then the lines represented by the two equations are:",
+      "options": [
+        "always intersecting",
+        "parallel",
+        "always coincident",
+        "intersecting or coincident"
+      ],
+      "answer": 3,
+      "solution": "**Consistent** means simply: *there is at least one solution*.\n\nTwo lines can meet in three ways:\n\n- **Intersecting** at one point → exactly one solution → consistent ✓\n- **Coincident** (the same line drawn twice) → infinitely many solutions → consistent ✓\n- **Parallel and distinct** → no solution → *in*consistent ✗\n\nSo a consistent pair is **intersecting or coincident**.\n\nThe trap is option (A). \"Always intersecting\" quietly throws away the coincident case, which is consistent too — infinitely many solutions is still more than none.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-003",
+      "topic": "Two horizontal lines",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The pair of linear equations $y = 0$ and $y = -7$ have:",
+      "options": [
+        "exactly one solution",
+        "two solutions",
+        "infinitely many solutions",
+        "no solution"
+      ],
+      "answer": 3,
+      "solution": "Picture the two lines rather than reaching for a formula.\n\n$y = 0$ is the $x$-axis. $y = -7$ is a horizontal line 7 units below it.\n\nBoth are horizontal, so they never meet — and no point can have $y = 0$ and $y = -7$ at the same time. There is **no solution**.\n\nBy the ratio test with $0 \\cdot x + 1 \\cdot y + 0 = 0$ and $0 \\cdot x + 1 \\cdot y + 7 = 0$: the $y$-coefficients match, but $\\dfrac{0}{7} \\neq \\dfrac{1}{1}$ — the parallel case again.\n\nA number cannot be in two places at once. That is all this question is asking.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-004",
+      "topic": "What inconsistent means",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A system of two linear equations in two variables is inconsistent if the lines are:",
+      "options": [
+        "coincident",
+        "parallel",
+        "intersecting at one point",
+        "intersecting at right angles"
+      ],
+      "answer": 1,
+      "solution": "**Inconsistent** means there is *no* solution at all — the two lines never share a point.\n\nCheck the options:\n\n- Coincident → infinitely many shared points → consistent\n- **Parallel (and distinct) → no shared point → inconsistent** ✓\n- Intersecting at one point → one shared point → consistent\n- Intersecting at right angles → still intersecting → consistent\n\nSo the answer is **parallel**.\n\nAt right angles is a red herring: the *angle* they cross at makes no difference. What matters is only whether they cross.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-005",
+      "topic": "Using a known solution",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $x = 1$ and $y = 2$ is a solution of the pair of linear equations $2x - 3y + a = 0$ and $2x + 3y - b = 0$, then:",
+      "options": [
+        "$a = 2b$",
+        "$2a = b$",
+        "$a + 2b = 0$",
+        "$2a + b = 0$"
+      ],
+      "answer": 1,
+      "solution": "\"Is a solution\" means the pair $(1, 2)$ satisfies **both** equations. Substitute it into each.\n\nFirst equation: $2(1) - 3(2) + a = 0 \\Rightarrow 2 - 6 + a = 0 \\Rightarrow a = 4$\n\nSecond equation: $2(1) + 3(2) - b = 0 \\Rightarrow 2 + 6 - b = 0 \\Rightarrow b = 8$\n\nNow test the options with $a = 4$, $b = 8$:\n\n$2a = 2(4) = 8 = b$ ✓\n\nSo the answer is **$2a = b$**.\n\nBeing handed a solution turns the unknowns inside out: normally you know $a$ and $b$ and hunt for $x$ and $y$. Here the point is given and the *coefficients* are what you solve for.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-006",
+      "topic": "Infinitely many solutions — assertion and reason",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "**Assertion (A):** The pair of linear equations $px + 3y + 59 = 0$ and $2x + 6y + 118 = 0$ will have infinitely many solutions if $p = 1$.\n\n**Reason (R):** If the pair of linear equations $px + 3y + 19 = 0$ and $2x + 6y + 157 = 0$ has a unique solution, then $p \\neq 1$.",
+      "options": [
+        "Both Assertion (A) and Reason (R) are true, and Reason (R) is the correct explanation of Assertion (A).",
+        "Both Assertion (A) and Reason (R) are true, but Reason (R) is not the correct explanation of Assertion (A).",
+        "Assertion (A) is true, but Reason (R) is false.",
+        "Assertion (A) is false, but Reason (R) is true."
+      ],
+      "answer": 1,
+      "solution": "**Check (A).** Infinitely many solutions needs all three ratios equal. With $p = 1$:\n\n$\\dfrac{1}{2} = \\dfrac{3}{6} = \\dfrac{59}{118}$ — all equal to $\\tfrac{1}{2}$ ✓\n\nSo **(A) is true**.\n\n**Check (R).** A unique solution needs $\\dfrac{p}{2} \\neq \\dfrac{3}{6} = \\dfrac{1}{2}$, i.e. $p \\neq 1$ ✓\n\nSo **(R) is true**.\n\n**Does (R) explain (A)?** No. (R) is about a *different* pair of equations and a *different* case — unique solutions. Knowing when lines cross once does not tell you when they lie on top of each other.\n\nAnswer: **(B)** — both true, but (R) is not the explanation.\n\nAssertion–Reason questions are two questions and then a third: is this the reason, or just another true sentence standing nearby?",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-007",
+      "topic": "Condition for a unique solution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The pair of linear equations $kx + 2y = 5$ and $3x + y = 1$ has a unique solution for:",
+      "options": [
+        "$k = 6$",
+        "$k \\neq 6$",
+        "all values of $k$",
+        "no value of $k$"
+      ],
+      "answer": 1,
+      "solution": "A unique solution means the lines cross exactly once, and that happens when the $x$ and $y$ coefficients are **not** in the same ratio:\n\n$\\dfrac{a_1}{a_2} \\neq \\dfrac{b_1}{b_2}$\n\n$\\dfrac{k}{3} \\neq \\dfrac{2}{1}$\n\n$k \\neq 6$\n\nSo the answer is **$k \\neq 6$**.\n\nAt $k = 6$ the equations become $6x + 2y = 5$ and $3x + y = 1$; doubling the second gives $6x + 2y = 2$, which contradicts $6x + 2y = 5$ — parallel lines, no solution. Every other $k$ tilts one line relative to the other, and two lines at different angles must cross somewhere.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-008",
+      "topic": "Solving by elimination",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Solve the pair of linear equations $2x + y = 7$ and $x - y = 2$, and write the value of $x$.",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "The $y$ terms are already $+y$ and $-y$, so **adding** the equations wipes $y$ out:\n\n$(2x + y) + (x - y) = 7 + 2$\n\n$3x = 9$\n\n$x = \\mathbf{3}$\n\n(And then $y = 2x - 7$… more simply, from $x - y = 2$: $y = 3 - 2 = 1$.)\n\nCheck both: $2(3) + 1 = 7$ ✓ and $3 - 1 = 2$ ✓\n\nElimination is choosing which unknown to make disappear. Look for the one whose coefficients are already opposite, or easiest to make opposite — here $y$ was handed to you.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-009",
+      "topic": "A word problem in two unknowns",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The sum of two numbers is $50$ and their difference is $10$. Find the larger number.",
+      "answer": 30,
+      "tolerance": 0,
+      "solution": "Let the numbers be $x$ (larger) and $y$.\n\n$x + y = 50$\n\n$x - y = 10$\n\nAdd the two equations: $2x = 60$, so $x = \\mathbf{30}$ (and $y = 20$).\n\nCheck: $30 + 20 = 50$ ✓ and $30 - 20 = 10$ ✓\n\nThere is a picture for this. Lay the two numbers end to end: together they are 50. The larger one sticks out past the smaller by 10. Take that overhang off and you have two equal pieces of 20 — then give the overhang back to the larger one.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-010",
+      "topic": "Solving graphically",
+      "source": "CBSE 2026",
+      "type": "long",
+      "marks": 2,
+      "q": "Solve the linear equations $3x + y = 14$ and $y = 2$ graphically.",
+      "solution": "**Draw $y = 2$.** A horizontal line two units above the $x$-axis.\n\n**Draw $3x + y = 14$.** Two points are enough:\n\n| $x$ | $y = 14 - 3x$ |\n|---|---|\n| 0 | 14 |\n| 4 | 2 |\n\nPlot $(0, 14)$ and $(4, 2)$ and join them.\n\n**Read off the crossing point.** The two lines meet at $(4, 2)$.\n\nSo $x = 4$, $y = 2$.\n\n**Check algebraically:** substituting $y = 2$ into $3x + y = 14$ gives $3x = 12$, so $x = 4$ ✓\n\nA graph turns \"solve these together\" into something you can see: each line is the set of all points obeying its own rule, so the point where they cross is the one point obeying both.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-011",
+      "topic": "Solving graphically",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "Solve the following system of linear equations graphically:\n\n$$x - y + 1 = 0$$\n\n$$x + y = 5$$",
+      "solution": "**Table for $x - y + 1 = 0$**, i.e. $y = x + 1$:\n\n| $x$ | 0 | 2 | 4 |\n|---|---|---|---|\n| $y$ | 1 | 3 | 5 |\n\n**Table for $x + y = 5$**, i.e. $y = 5 - x$:\n\n| $x$ | 0 | 2 | 5 |\n|---|---|---|---|\n| $y$ | 5 | 3 | 0 |\n\nPlot both lines on the same axes. They cross at $(2, 3)$.\n\nSo $x = 2$ and $y = 3$.\n\n**Check:** $2 - 3 + 1 = 0$ ✓ and $2 + 3 = 5$ ✓\n\nNotice both tables contain $(2, 3)$ — that is the crossing point showing up before you have drawn anything. In the exam, still draw the graph: the marks are for the lines as much as for the answer.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-012",
+      "topic": "A word problem in two unknowns",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "Rehana went to a bank to withdraw ₹2,000. She asked the cashier to give her ₹50 and ₹100 notes only. Rehana got 25 notes in all. Find how many notes of ₹50 and ₹100 she received.",
+      "solution": "**Name the unknowns.** Let $x$ be the number of ₹50 notes and $y$ the number of ₹100 notes.\n\n**Turn each sentence into an equation.**\n\n\"25 notes in all\": $x + y = 25$\n\n\"₹2,000 in total\": $50x + 100y = 2000$, which simplifies (divide by 50) to $x + 2y = 40$\n\n**Subtract the first from the second:**\n\n$(x + 2y) - (x + y) = 40 - 25$\n\n$y = 15$\n\nand then $x = 25 - 15 = 10$.\n\nSo Rehana received **10 notes of ₹50 and 15 notes of ₹100**.\n\n**Check:** $10 + 15 = 25$ notes ✓ and $10(50) + 15(100) = 500 + 1500 = ₹2000$ ✓\n\nTwo facts, two unknowns — a count and a total. That pairing is the signature of almost every notes-and-coins problem.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-013",
+      "topic": "An interest word problem",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 5,
+      "q": "Vijay invested certain amounts of money in two schemes A and B, which offer interest at the rate of 8% per annum and 9% per annum respectively. He received ₹1,860 as the total annual interest. However, had he interchanged the amounts of investment in the two schemes, he would have received ₹20 more as annual interest. How much money did he invest in each scheme?",
+      "solution": "**Name the unknowns.** Let ₹$x$ go into scheme A (8%) and ₹$y$ into scheme B (9%).\n\n**As invested:**\n\n$\\dfrac{8x}{100} + \\dfrac{9y}{100} = 1860 \\Rightarrow 8x + 9y = 186000$ … (1)\n\n**Interchanged**, the interest is ₹20 more, i.e. ₹1,880:\n\n$\\dfrac{9x}{100} + \\dfrac{8y}{100} = 1880 \\Rightarrow 9x + 8y = 188000$ … (2)\n\n**Add (1) and (2):** $17x + 17y = 374000$, so\n\n$x + y = 22000$ … (3)\n\n**Subtract (1) from (2):** $x - y = 2000$ … (4)\n\n**Solve (3) and (4):** adding gives $2x = 24000$, so $x = 12000$, and then $y = 10000$.\n\nSo Vijay invested **₹12,000 in scheme A and ₹10,000 in scheme B**.\n\n**Check:** $0.08(12000) + 0.09(10000) = 960 + 900 = ₹1860$ ✓\n\nInterchanged: $0.09(12000) + 0.08(10000) = 1080 + 800 = ₹1880$, which is ₹20 more ✓\n\nThe swap is the gift here. Adding the two equations makes them symmetric — every coefficient becomes 17 — and subtracting them cancels almost everything. Whenever a problem hands you a situation *and* its mirror image, add and subtract before you do anything else.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-014",
+      "topic": "An age word problem",
+      "type": "long",
+      "marks": 3,
+      "q": "Five years ago, a father was seven times as old as his son. Five years from now, the father will be three times as old as his son. Find their present ages.",
+      "solution": "**Name the unknowns at the present moment.** Let the father be $x$ years and the son $y$ years old now.\n\n**Five years ago** they were $x - 5$ and $y - 5$:\n\n$x - 5 = 7(y - 5) \\Rightarrow x - 5 = 7y - 35 \\Rightarrow x = 7y - 30$ … (1)\n\n**Five years from now** they will be $x + 5$ and $y + 5$:\n\n$x + 5 = 3(y + 5) \\Rightarrow x + 5 = 3y + 15 \\Rightarrow x = 3y + 10$ … (2)\n\n**Set (1) equal to (2):**\n\n$7y - 30 = 3y + 10$\n\n$4y = 40 \\Rightarrow y = 10$, and then $x = 3(10) + 10 = 40$.\n\nSo the father is **40** and the son is **10** today.\n\n**Check:** five years ago they were 35 and 5, and $35 = 7 \\times 5$ ✓; in five years they will be 45 and 15, and $45 = 3 \\times 15$ ✓\n\nThe one rule that keeps age problems straight: whatever the year, **add the same number to both ages**. Time moves at the same speed for everybody — only the *ratio* between the ages changes.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    },
+    {
+      "id": "le-015",
+      "topic": "Condition for infinitely many solutions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The pair of equations $2x + 3y = 7$ and $6x + 9y = k$ has infinitely many solutions when $k$ equals:",
+      "options": [
+        "$7$",
+        "$14$",
+        "$21$",
+        "any value"
+      ],
+      "answer": 2,
+      "solution": "Infinitely many solutions means the two equations describe **the same line** — all three ratios equal:\n\n$\\dfrac{2}{6} = \\dfrac{3}{9} = \\dfrac{7}{k}$\n\nThe first two are both $\\dfrac{1}{3}$, so we need\n\n$\\dfrac{7}{k} = \\dfrac{1}{3} \\Rightarrow k = \\mathbf{21}$\n\nCheck: with $k = 21$ the second equation is $6x + 9y = 21$, which is exactly the first multiplied by 3. It adds no new information at all.\n\nThat is what \"infinitely many solutions\" really means — the second equation was the first one in disguise, so you were only ever given one equation for two unknowns.",
+      "chapter": "Pair of Linear Equations in Two Variables"
+    }
+  ]
+}
