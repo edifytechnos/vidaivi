@@ -83,7 +83,15 @@ an authorised JavaScript origin on the OAuth client, alongside
 `https://vidai.seyali.app`.
 
 - **One branch under test at a time** — they share the environment, so the
-  newest push wins. Azure's Free plan allows 3 named environments per app if that ever
+  newest push wins.
+- **The Free plan allows only THREE staging environments per app, and the
+  fourth does not fail loudly.** It half-serves: roughly half of all requests
+  come back as Azure's own 404 page. If QA starts flapping, that is why —
+  count the live environments (`…-<name>.eastasia.5.azurestaticapps.net`) and
+  close a stale one with **Actions → Deploy to Azure Static Web Apps → Run
+  workflow → close_environment**. A PR closing frees its own slot
+  automatically; that `pull_request: [closed]` trigger runs the cleanup job
+  only and never deploys. Azure's Free plan allows 3 named environments per app if that ever
   needs to become two.
 - **`vidai.qa.seyali.app` is not possible here.** Azure does not support custom
   domains on preview environments, only on an app's *production* environment

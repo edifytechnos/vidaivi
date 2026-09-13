@@ -11,11 +11,23 @@ name: Deploy to Azure Static Web Apps
 on:
   push:
     branches: ["**"]
+  # Closing a PR still has to free its environment: the Free plan allows only
+  # THREE staging environments per app, and the fourth does not fail loudly —
+  # it half-serves, answering some requests with Azure's own 404. This trigger
+  # runs the cleanup job only; it never deploys.
+  pull_request:
+    types: [closed]
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      close_environment:
+        description: "Name of a staging environment to close (frees a slot)"
+        required: false
+        type: string
 
 jobs:
   production:
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Build and deploy
     steps:
@@ -55,7 +67,7 @@ jobs:
   # become two. A custom domain cannot be used here — Azure does not support
   # custom domains on preview environments, only on an app's production one.
   qa:
-    if: github.ref != 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Build and deploy to QA
     steps:
@@ -84,3 +96,17 @@ jobs:
           api_location: api
           skip_app_build: true
           deployment_environment: qa
+
+  # Free a staging environment slot: automatically when a PR closes, or by hand
+  # via workflow_dispatch when a stale one needs clearing.
+  close_environment:
+    if: github.event_name == 'pull_request' || inputs.close_environment != ''
+    runs-on: ubuntu-latest
+    name: Close a staging environment
+    steps:
+      - name: Close
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: close
+          deployment_environment: ${{ inputs.close_environment || github.event.number }}
