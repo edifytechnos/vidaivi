@@ -22,6 +22,21 @@ const MIME = {
   ".svg": "image/svg+xml",
 };
 
+// Apply the deployed globalHeaders locally, so the CSP is exercised by the
+// suite rather than first met in production. SWA applies these at the edge;
+// without them here, a policy that breaks Google sign-in would pass every
+// local run and fail only once it was live.
+function globalHeaders() {
+  try {
+    const cfg = JSON.parse(fs.readFileSync(path.join(DIST, "staticwebapp.config.json"), "utf8"));
+    return cfg.globalHeaders || {};
+  } catch {
+    return {};
+  }
+}
+
+const SECURITY_HEADERS = globalHeaders();
+
 const CDN_HOSTS = /https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\/[^"')\s]*/g;
 
 /** Point CDN URLs at this origin's /_cdn/ mirror. */
@@ -85,7 +100,10 @@ http
       const ext = path.extname(file);
       let body = fs.readFileSync(file);
       if (ext === ".html" || ext === ".css") body = Buffer.from(rewriteCdn(body.toString()));
-      res.writeHead(200, { "content-type": MIME[ext] || "application/octet-stream" });
+      res.writeHead(200, {
+        "content-type": MIME[ext] || "application/octet-stream",
+        ...SECURITY_HEADERS,
+      });
       res.end(body);
     } catch (e) {
       res.writeHead(502);

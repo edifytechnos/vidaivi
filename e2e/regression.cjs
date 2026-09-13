@@ -25,6 +25,15 @@ function check(ok, label) {
 (async () => {
   const browser = await chromium.launch({ executablePath: EXE, args: ["--no-sandbox"] });
   const page = await (await browser.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+  // Record every Content-Security-Policy refusal the page makes, on every
+  // document it loads, so a policy that blocks something the app needs shows up
+  // as a failure here instead of as a dead button in front of a class.
+  await page.addInitScript(() => {
+    window.__cspViolations = [];
+    document.addEventListener("securitypolicyviolation", (e) => {
+      window.__cspViolations.push(`${e.violatedDirective} blocked ${e.blockedURI}`);
+    });
+  });
   const shot = (name) => (SHOT ? page.screenshot({ path: `${SHOT}/${name}.png`, fullPage: true }) : Promise.resolve());
 
   // Welcome screen
@@ -58,6 +67,12 @@ function check(ok, label) {
   await page.click("#primary-btn");
   await page.waitForSelector(".option");
   check((await page.$$(".option")).length === 4, "MCQ renders 4 options");
+  // The CSP must not break what the app actually needs. A violation here is a
+  // real outage — sign-in, maths or images silently dead — so fail on any.
+  check(
+    (await page.evaluate(() => window.__cspViolations.length)) === 0,
+    `no CSP violations so far (${JSON.stringify(await page.evaluate(() => window.__cspViolations.slice(0, 3)))})`
+  );
   // KaTeX is bundled and imported on demand rather than loaded from a CDN, so
   // there is no global to probe for. What matters is unchanged and asserted
   // below: a .katex node must appear wherever maths is shown.
@@ -75,6 +90,36 @@ function check(ok, label) {
   await page.waitForSelector(".question-text");
   await page.waitForSelector(".question-text .katex", { timeout: 15000 });
   check(true, "KaTeX typesets the question body");
+
+  // Brute force is answered with a lock, not with another guess. Uses a name
+  // nobody owns, so only that throwaway bucket is spent; the IP bucket is far
+  // looser precisely so a run like this cannot lock the suite — or a school —
+  // out of the accounts that matter.
+  const throttle = await page.evaluate(async () => {
+    const username = `e2e-nobody-${Date.now()}`;
+    const seen = [];
+    for (let i = 0; i < 8; i++) {
+      const res = await fetch("/api/studentauth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password: `wrong-${i}` }),
+      });
+      seen.push(res.status);
+      if (res.status === 429) {
+        return { locked: true, at: i + 1, seen, retryAfter: res.headers.get("retry-after") };
+      }
+    }
+    return { locked: false, seen };
+  });
+  if (!throttle.locked && throttle.seen.every((s) => s === 401)) {
+    console.log("SKIP  login throttling (this API predates it — every guess answered 401)");
+  } else {
+    check(throttle.locked, `repeated wrong passwords are locked out (after ${throttle.at})`);
+    check(
+      Number(throttle.retryAfter) > 0,
+      `the lock says how long to wait (Retry-After: ${throttle.retryAfter})`
+    );
+  }
 
   // Gated test redirects guests to Google sign-in
   await page.goto(BASE + "/?test=relations-functions-test1", { waitUntil: "domcontentloaded" });

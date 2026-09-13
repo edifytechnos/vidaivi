@@ -33,8 +33,22 @@ export function renderMath(el: HTMLElement) {
   );
 }
 
+/**
+ * Escape for HTML, quotes included.
+ *
+ * The quotes are not optional decoration: this is interpolated into attribute
+ * positions all over the app — `value="${escapeHtml(opt)}"` and friends — and
+ * escaping only `& < >` leaves a `"` free to close the attribute and open an
+ * event handler. Text positions never needed them; attribute positions always
+ * did, and one helper serves both.
+ */
 export function escapeHtml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 // Minimal formatting for question/solution text: **bold** and paragraphs.

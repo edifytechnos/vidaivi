@@ -1,6 +1,6 @@
 ---
 name: vidai-scale
-description: The performance, scaling and cost rules every change to Vidai must hold. Use BEFORE writing or editing anything in api/ (a handler, an Azure Table Storage query, a listEntities call, a partition key, a blob read), before adding or changing a fetch on the client, before adding a screen that loads data, and whenever the task mentions caching, CDN, edge, cold starts, cost, bandwidth, throughput, "slow", "scale", "high traffic", "many students", "many teachers", or choosing an Azure service. Also use when reviewing a diff that touches those things.
+description: The performance, scaling, cost and security rules every change to Vidai must hold. Use BEFORE writing or editing anything in api/ (a handler, an Azure Table Storage query, a listEntities call, a partition key, a blob read), before adding or changing a fetch on the client, before adding a screen that loads data, and whenever the task mentions caching, CDN, edge, cold starts, cost, bandwidth, throughput, "slow", "scale", "high traffic", "many students", "many teachers", choosing an Azure service, or anything touching auth, login, passwords, tokens, sessions, escaping, XSS, CSP, headers, rate limiting or permissions. Also use when reviewing a diff that touches those things.
 ---
 
 # Building Vidai so it stays fast and nearly free
@@ -145,10 +145,49 @@ partition — fine at one teacher, fatal at five hundred. Re-partitioning by
 `ownerSub` is the next real step, and it gets cheaper the sooner it is done. If
 a task lands near it, say so rather than building more on the constant key.
 
+## Before you touch anything security-shaped
+
+Vidai holds minors' names, exam answers and photographs of their handwriting.
+Full detail is under **Security** in `CLAUDE.md`; these are the ones easiest to
+undo by accident.
+
+**Any endpoint that checks a credential** goes through `loginGate` **before** the
+row read and before any hashing — scrypt is slow on purpose, so an unthrottled
+caller reaching it is a denial of service the owner pays for. Note the failure on
+both buckets, clear the username bucket on success.
+
+```js
+const gate = await loginGate(req, username);
+if (gate.lockMs > 0) return tooManyAttempts(context, gate.lockMs);
+// ... check the credential ...
+if (!ok) { await noteLoginFailure(gate); return json(context, 401, {...}); }
+await clearFailures(gate.table, "user", gate.user);
+```
+
+**Never tighten the IP bucket to match the username one.** `LOCK_AFTER` is
+`{ user: 5, ip: 50 }` because a whole school sits behind one NAT address, and an
+equal threshold lets one student's fumbled password lock out the class.
+
+**A miss must cost what a hit costs.** No early return when a username is
+unknown — compare against `timingDecoyHash()`. No `||` short-circuit between two
+credential compares.
+
+**`escapeHtml` escapes quotes too.** It is interpolated into attribute positions;
+narrowing it back to `& < >` reopens the whole class of bug.
+
+**The CSP is tested, not just written.** `e2e/serve.cjs` applies `globalHeaders`
+locally and `e2e/regression.cjs` fails on any `securitypolicyviolation`. If you
+add an origin, a font, an image host or a script, run the suite — a CSP that
+only breaks in production breaks it in front of a class. Never add
+`'unsafe-inline'` to `script-src`: it holds today only because the build has no
+inline script and no `eval`.
+
+**Storage keys are digests.** No raw IP in a table row.
+
 ## Checking the work
 
 ```sh
-node e2e/helpers.cjs        # offline: stamped counts, the cache, inBatches
+node e2e/helpers.cjs        # offline: counts, cache, inBatches, lockout, passwords
 npm run build               # typecheck + production build
 node e2e/serve.cjs &        # serves dist/ on :4400, proxies /api/* to production
 node e2e/regression.cjs     # browser regression (guest flows always)

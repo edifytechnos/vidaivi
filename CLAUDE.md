@@ -327,6 +327,108 @@ Ranked, with the next architectural step first:
 
 Prices are from memory — check the Azure calculator before committing to any.
 
+## Security — the rules that hold everywhere
+
+Vidai holds minors' names, exam answers and photographs of their handwriting.
+That is the standard to design to, and none of what follows costs anything.
+
+### Signing in is throttled, and the two buckets are not equal
+
+There was no rate limiting anywhere. A student password was one of **23,040**
+strings and nothing counted the guesses, so a classmate who knew a username
+could walk the whole space in minutes. Every guess also ran scrypt, which made
+the login endpoint a CPU burn billed to a consumption plan.
+
+- Table **`authattempts`**: PK = bucket kind (`user` | `ip`), RK = a **sha256
+  digest** of the identifier — no raw IP is ever stored. Point reads and point
+  writes only, never a scan.
+- **The gate runs before the row read and before any hashing** (`loginGate`).
+  Letting an unthrottled caller reach scrypt is what turns a login into a denial
+  of service the owner pays for.
+- **`LOCK_AFTER = { user: 5, ip: 50 }`, and the gap is deliberate.** A whole
+  school commonly sits behind one NAT address; an IP threshold as tight as the
+  username one would let a single student fumbling their password lock out every
+  classmate. The username bucket stops an attack — an attacker must name an
+  account and cannot evade the count. The IP bucket only catches someone walking
+  many accounts at once, and `x-forwarded-for` is **not** a trust boundary, so
+  spoofing it sidesteps only the weaker of the two.
+- Locks step 30s → 1m → 2m → 5m → 15m → 30m and cap there. A quiet
+  `FAIL_WINDOW_MS` (15 min) wipes the slate: this throttles attacks, it does not
+  punish a student who mistypes today and again next week.
+- Covers `/api/studentauth`, `/api/manageauth` and invite redemption. Redemption
+  buckets the **caller**, never the code — locking a code would let anyone shut
+  a real parent out.
+
+### A wrong username costs exactly what a wrong password costs
+
+`studentlogin` used to return early when the username was unknown, so the answer
+came back measurably quicker for a name with no account — a free oracle for
+"which of my classmates is registered". An unknown username now still pays for a
+comparison against `timingDecoyHash()`. `adminlogin` runs both `safeEqual`
+compares rather than `||`-short-circuiting past the second.
+
+### Generated passwords
+
+`word + 2 digits + word + word` from a **64-word list** — 64³ × 90 =
+**23,592,960**, exactly 1024× the 23,040 it was. Still all lowercase with a
+two-digit number, because a student reads it off WhatsApp and types it on a
+phone. **Existing students keep their old password until it is reset** — reset
+the roster once after this ships.
+
+### Escaping covers quotes
+
+`escapeHtml` escaped `& < >` and not `"` or `'`, while being interpolated into
+attribute positions all over the app (`value="${escapeHtml(opt)}"`). Text
+positions never needed the quotes; attribute positions always did. One helper
+serves both — **never narrow it again**.
+
+### The Content-Security-Policy is real, and the suite proves it
+
+`globalHeaders` in `public/staticwebapp.config.json` carries the CSP plus
+`x-content-type-options`, `referrer-policy`, `permissions-policy` and
+`cross-origin-opener-policy`.
+
+- `script-src 'self'` holds because the build has **no inline script and no
+  `eval`** — keep it that way, and never add `'unsafe-inline'` to scripts.
+- `style-src` does allow `'unsafe-inline'`: KaTeX writes inline styles on every
+  formula. Style injection is a far smaller problem than script injection, and
+  this is the trade that buys a strict `script-src`.
+- `font-src` allows `data:` because Vite inlines one small KaTeX `woff` under
+  its 4KB limit. A `data:` font cannot execute.
+- `permissions-policy` keeps `camera=(self)`: answer photos use
+  `<input type="file" capture>`, and locking the camera off risks the hand-in
+  flow on Android for no gain.
+- **`e2e/serve.cjs` applies these headers locally**, so the policy is exercised
+  by the suite rather than first met in production, and
+  `e2e/regression.cjs` fails on any `securitypolicyviolation`. That test caught
+  the `data:` font on its first run. **A CSP that is not tested is a CSP that
+  breaks sign-in in front of a class.**
+
+### Already sound — do not regress these
+
+- Every interpolated OData filter escapes quotes (`.replace(/'/g, "''")`).
+- `safeId` allowlists `[a-z0-9-]` rather than blocklisting.
+- `/api/answerimage` parses the owner from the blob path, requires the `stu~`
+  prefix, gates on `canSeeStudent`, and signs a SAS scoped to that one blob for
+  15 minutes.
+- Passwords are scrypt with a per-user salt, compared with `timingSafeEqual`.
+- `ROSTER_SELECT` excludes `passwordHash`.
+- Authorization fails **closed**: `assignedTo`, `fetchReleased`, `canSeeStudent`.
+- Login says "Wrong username or password" for both halves.
+
+### Known and not yet done
+
+- **The session token lives in `localStorage`**, so an XSS that gets past the
+  CSP could still take an account. The fix is an httpOnly + Secure +
+  SameSite cookie, which also delivers silent renewal; the custom auth header
+  stays as the CSRF defence.
+- **No token revocation** — no "sign out everywhere". A `tokenEpoch` on the
+  profile row, embedded in the token, buys it.
+- **Admin is one shared password with no second factor.** Throttled now, but the
+  blast radius is the whole platform.
+- `authattempts` rows are never swept. They are tiny and point-keyed, so this is
+  untidy rather than costly.
+
 ## Source layout (`src/`)
 
 - `main.ts` — boot only: analytics init, URL → screen routing. No screen code here.
@@ -715,6 +817,6 @@ error names the empty field.
 - Concise, structured output. No padding.
 - Prefer the smallest change that keeps the loop moving.
 - Ask before adding any dependency, backend, or new feature outside this file.
-- Hold to **Performance, scale and cost** above on every change that touches
-  `api/` or adds a fetch. The `vidai-scale` skill carries the same rules as a
+- Hold to **Performance, scale and cost** and **Security** above on every change
+  that touches `api/` or adds a fetch. The `vidai-scale` skill carries both as a
   checklist — invoke it before writing a query, a handler or a screen fetch.
