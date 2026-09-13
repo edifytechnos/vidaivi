@@ -7,108 +7,6 @@
   "access": "login",
   "questions": [
     {
-      "id": "rn-001",
-      "chapter": "Real Numbers",
-      "topic": "HCF by prime factorisation",
-      "type": "mcq",
-      "q": "The HCF of 960 and 432 is:",
-      "solution": "Break both numbers into primes: $960 = 2^{6} \\times 3 \\times 5$ and $432 = 2^{4} \\times 3^{3}$.\n\nThe HCF takes every prime they share, each at the **lowest** power it appears: $2^{4} \\times 3 = 16 \\times 3 = \\mathbf{48}$.\n\nPicture two toolboxes. The HCF is what you can take out of **both** — and of each tool you can only take as many as the emptier box holds.",
-      "marks": 1,
-      "source": "CBSE 2026",
-      "options": [
-        "48",
-        "54",
-        "72",
-        "36"
-      ],
-      "answer": 0
-    },
-    {
-      "id": "rn-002",
-      "chapter": "Real Numbers",
-      "topic": "Fundamental Theorem of Arithmetic",
-      "type": "mcq",
-      "q": "For any natural number $n$, $6^{n}$ ends with the digit:",
-      "solution": "$6^{1} = 6$, $6^{2} = 36$, $6^{3} = 216$ — the last digit stays **6**.\n\nHere is why it can never be 0: $6 = 2 \\times 3$, so $6^{n} = 2^{n} \\times 3^{n}$ and **5 is never a factor**. A number ends in 0 only when it is divisible by both 2 and 5.\n\nMultiplying by 6 is a wheel that keeps landing on the same spot: anything ending in 6, times 6, ends in 6 again.",
-      "marks": 1,
-      "source": "CBSE 2026",
-      "options": [
-        "0",
-        "6",
-        "3",
-        "2"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "rn-003",
-      "chapter": "Real Numbers",
-      "topic": "Rational and irrational numbers",
-      "type": "mcq",
-      "q": "$\\sqrt{0.4}$ is a/an:",
-      "solution": "$\\sqrt{0.4} = \\sqrt{\\dfrac{4}{10}} = \\dfrac{2}{\\sqrt{10}}$.\n\n$10$ is not a perfect square, so $\\sqrt{10}$ is irrational — and a non-zero rational divided by an irrational is **irrational**.\n\nRule of thumb: the square root of a fraction is rational only when the top and the bottom are both perfect squares. Here the bottom is 10, so the root never settles down into a fraction.",
-      "marks": 1,
-      "source": "CBSE 2025",
-      "options": [
-        "natural number",
-        "integer",
-        "rational number",
-        "irrational number"
-      ],
-      "answer": 3
-    },
-    {
-      "id": "rn-004",
-      "chapter": "Real Numbers",
-      "topic": "HCF and LCM — assertion and reason",
-      "type": "mcq",
-      "q": "**Assertion (A):** For any two prime numbers $p$ and $q$, their HCF is 1 and their LCM is $p + q$.\n\n**Reason (R):** For any two natural numbers, HCF $\\times$ LCM = product of the numbers.\n\nChoose the correct option:",
-      "solution": "Two different primes share no factor, so HCF $= 1$ — that half is right. But their LCM is $p \\times q$, **not** $p + q$: for $p = 2$, $q = 3$ the LCM is 6, not 5. So **(A) is false**.\n\n(R) is a standard identity and is **true**: HCF $\\times$ LCM $= p \\times q$.\n\nCheck it on the same pair: $1 \\times 6 = 2 \\times 3$.",
-      "marks": 1,
-      "source": "CBSE 2025",
-      "options": [
-        "Both (A) and (R) are true and (R) is the correct explanation of (A)",
-        "Both (A) and (R) are true, but (R) is not the correct explanation of (A)",
-        "(A) is true, but (R) is false",
-        "(A) is false, but (R) is true"
-      ],
-      "answer": 3
-    },
-    {
-      "id": "rn-005",
-      "chapter": "Real Numbers",
-      "topic": "Irrational numbers — assertion and reason",
-      "type": "mcq",
-      "q": "**Assertion (A):** $(\\sqrt{3} + \\sqrt{5})$ is an irrational number.\n\n**Reason (R):** The sum of any two irrational numbers is always irrational.\n\nChoose the correct option:",
-      "solution": "(A) is **true**: $\\sqrt{3} + \\sqrt{5}$ cannot be written as a ratio of two integers.\n\n(R) is **false**, and one counter-example is enough to sink it: $\\sqrt{3}$ and $-\\sqrt{3}$ are both irrational, yet their sum is $0$, which is rational.\n\nSo the assertion stands, but not for the reason offered. Any claim with *always* in it falls to a single counter-example — one black swan ends 'all swans are white'.",
-      "marks": 1,
-      "source": "CBSE 2026",
-      "options": [
-        "Both (A) and (R) are true and (R) is the correct explanation of (A)",
-        "Both (A) and (R) are true, but (R) is not the correct explanation of (A)",
-        "(A) is true, but (R) is false",
-        "(A) is false, but (R) is true"
-      ],
-      "answer": 2
-    },
-    {
-      "id": "rn-006",
-      "chapter": "Real Numbers",
-      "topic": "HCF times LCM equals the product",
-      "type": "mcq",
-      "q": "If HCF $(2520,\\ 6600) = 40$ and LCM $(2520,\\ 6600) = 252 \\times k$, then the value of $k$ is:",
-      "solution": "For any two numbers, HCF $\\times$ LCM $=$ their product.\n\n$40 \\times 252k = 2520 \\times 6600 = 16632000$\n\n$10080\\,k = 16632000 \\Rightarrow k = \\mathbf{1650}$.\n\nThe identity is worth trusting: every prime factor of the two numbers is split between the HCF (the shared part) and the LCM (everything, at its highest power). Nothing is created and nothing is lost.",
-      "marks": 1,
-      "source": "CBSE 2024",
-      "options": [
-        "1650",
-        "1600",
-        "165",
-        "1625"
-      ],
-      "answer": 0
-    },
-    {
       "id": "rn-007",
       "chapter": "Real Numbers",
       "topic": "LCM by prime factorisation",
@@ -143,16 +41,89 @@
       "answer": 3
     },
     {
-      "id": "rn-009",
+      "id": "rn-005",
       "chapter": "Real Numbers",
-      "topic": "HCF as a linear combination",
-      "type": "numeric",
-      "q": "If the HCF of 210 and 55 is expressed as $210 \\times 5 + 55m$, find the value of $m$.",
-      "solution": "First the HCF: $210 = 2 \\times 3 \\times 5 \\times 7$ and $55 = 5 \\times 11$, so HCF $= 5$.\n\nNow solve $5 = 210 \\times 5 + 55m = 1050 + 55m$\n\n$55m = 5 - 1050 = -1045 \\Rightarrow m = \\mathbf{-19}$.\n\nThe minus sign is not a slip. Writing an HCF as a combination of the two numbers nearly always means subtracting a large multiple of one from the other — that is exactly what Euclid's algorithm does, run backwards.",
-      "marks": 2,
+      "topic": "Irrational numbers — assertion and reason",
+      "type": "mcq",
+      "q": "**Assertion (A):** $(\\sqrt{3} + \\sqrt{5})$ is an irrational number.\n\n**Reason (R):** The sum of any two irrational numbers is always irrational.\n\nChoose the correct option:",
+      "solution": "(A) is **true**: $\\sqrt{3} + \\sqrt{5}$ cannot be written as a ratio of two integers.\n\n(R) is **false**, and one counter-example is enough to sink it: $\\sqrt{3}$ and $-\\sqrt{3}$ are both irrational, yet their sum is $0$, which is rational.\n\nSo the assertion stands, but not for the reason offered. Any claim with *always* in it falls to a single counter-example — one black swan ends 'all swans are white'.",
+      "marks": 1,
       "source": "CBSE 2026",
-      "answer": -19,
-      "tolerance": 0
+      "options": [
+        "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+        "Both (A) and (R) are true, but (R) is not the correct explanation of (A)",
+        "(A) is true, but (R) is false",
+        "(A) is false, but (R) is true"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "rn-016",
+      "chapter": "Real Numbers",
+      "topic": "HCF and LCM of two numbers",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The HCF of two numbers 65 and 104 is 13. If the LCM of 65 and 104 is $40x$, then the value of $x$ is:",
+      "options": [
+        "5",
+        "13",
+        "40",
+        "8"
+      ],
+      "answer": 1,
+      "solution": "For any two numbers, **product of the numbers = HCF $\\times$ LCM**. Nothing is created or lost — every prime in the two numbers is either shared (and lands in the HCF) or not (and lands only in the LCM).\n\n$65 \\times 104 = 13 \\times \\text{LCM}$\n\n$6760 = 13 \\times \\text{LCM}$, so LCM $= 520$.\n\nThe question says the LCM is $40x$, so $40x = 520$ and $x = \\mathbf{13}$.\n\nPicture the two numbers' prime factors as two overlapping circles. The overlap is the HCF; the whole of both circles together is the LCM. Multiply the two numbers and you have counted the overlap twice — which is exactly why dividing by the HCF gives the LCM."
+    },
+    {
+      "id": "rn-017",
+      "chapter": "Real Numbers",
+      "topic": "HCF and LCM together",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If HCF$(98,\\ 28) = m$ and LCM$(98,\\ 28) = n$, then the value of $n - 7m$ is:",
+      "options": [
+        "0",
+        "28",
+        "98",
+        "198"
+      ],
+      "answer": 2,
+      "solution": "Break both into primes: $98 = 2 \\times 7^{2}$ and $28 = 2^{2} \\times 7$.\n\n**HCF** takes each shared prime at its *lowest* power: $2 \\times 7 = 14$, so $m = 14$.\n\n**LCM** takes every prime at its *highest* power: $2^{2} \\times 7^{2} = 196$, so $n = 196$.\n\n$n - 7m = 196 - 7 \\times 14 = 196 - 98 = \\mathbf{98}$.\n\nCheck it the other way: $98 \\times 28 = 2744 = 14 \\times 196$. The HCF and LCM always multiply back to the two numbers."
+    },
+    {
+      "id": "rn-018",
+      "chapter": "Real Numbers",
+      "topic": "HCF of three numbers",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The HCF of 40, 110 and 360 is:",
+      "options": [
+        "40",
+        "110",
+        "360",
+        "10"
+      ],
+      "answer": 3,
+      "solution": "Factorise all three:\n\n$40 = 2^{3} \\times 5$\n\n$110 = 2 \\times 5 \\times 11$\n\n$360 = 2^{3} \\times 3^{2} \\times 5$\n\nThe HCF keeps only the primes that appear in **every** one of them, each at its lowest power. Both $2$ and $5$ appear in all three; the lowest power of $2$ is $2^{1}$ (from 110) and of $5$ is $5^{1}$.\n\nHCF $= 2 \\times 5 = \\mathbf{10}$.\n\n$3$ and $11$ are each missing from at least one number, so neither can be in the HCF. A chain is only as strong as its weakest link — the HCF is only as big as the *poorest* supply of each prime."
+    },
+    {
+      "id": "rn-019",
+      "chapter": "Real Numbers",
+      "topic": "HCF — assertion and reason",
+      "source": "CBSE 2026",
+      "type": "mcq",
+      "marks": 1,
+      "q": "**Assertion (A):** H.C.F.$(36m^{2},\\ 18m) = 18m$, where $m$ is a prime number.\n\n**Reason (R):** The HCF of two numbers is always less than or equal to the smaller number.",
+      "options": [
+        "Both Assertion (A) and Reason (R) are true, and Reason (R) is the correct explanation of Assertion (A).",
+        "Both Assertion (A) and Reason (R) are true, but Reason (R) is not the correct explanation of Assertion (A).",
+        "Assertion (A) is true, but Reason (R) is false.",
+        "Assertion (A) is false, but Reason (R) is true."
+      ],
+      "answer": 1,
+      "solution": "**Is (A) true?** Write both out: $36m^{2} = 2^{2} \\times 3^{2} \\times m^{2}$ and $18m = 2 \\times 3^{2} \\times m$. Take each shared prime at its lowest power: $2^{1} \\times 3^{2} \\times m^{1} = 18m$. So **(A) is true**.\n\n**Is (R) true?** Yes. The HCF divides both numbers, and a divisor of a positive number can never exceed it — so it cannot exceed the smaller one either. **(R) is true**.\n\n**Does (R) explain (A)?** No. (R) only tells you the HCF is *at most* $18m$; it never tells you it *reaches* $18m$. The factorisation does that. True, but not the reason.\n\nSo the answer is **(B)**: both true, (R) not the correct explanation."
     },
     {
       "id": "rn-010",
@@ -167,14 +138,15 @@
       "tolerance": 0
     },
     {
-      "id": "rn-011",
+      "id": "rn-009",
       "chapter": "Real Numbers",
-      "topic": "LCM in a word problem",
+      "topic": "HCF as a linear combination",
       "type": "numeric",
-      "q": "Find the smallest number which is exactly divisible by both 306 and 657.",
-      "solution": "The smallest number divisible by both is their LCM.\n\n$306 = 2 \\times 3^{2} \\times 17$ and $657 = 3^{2} \\times 73$, so HCF $= 3^{2} = 9$.\n\nUsing HCF $\\times$ LCM $=$ product: LCM $= \\dfrac{306 \\times 657}{9} = \\dfrac{201042}{9} = \\mathbf{22338}$.\n\nThink of two gears with 306 and 657 teeth. They start aligned, and the first moment both are back at the start is after 22,338 teeth have gone past — that is the LCM.",
-      "marks": 3,
-      "answer": 22338,
+      "q": "If the HCF of 210 and 55 is expressed as $210 \\times 5 + 55m$, find the value of $m$.",
+      "solution": "First the HCF: $210 = 2 \\times 3 \\times 5 \\times 7$ and $55 = 5 \\times 11$, so HCF $= 5$.\n\nNow solve $5 = 210 \\times 5 + 55m = 1050 + 55m$\n\n$55m = 5 - 1050 = -1045 \\Rightarrow m = \\mathbf{-19}$.\n\nThe minus sign is not a slip. Writing an HCF as a combination of the two numbers nearly always means subtracting a large multiple of one from the other — that is exactly what Euclid's algorithm does, run backwards.",
+      "marks": 2,
+      "source": "CBSE 2026",
+      "answer": -19,
       "tolerance": 0
     },
     {
@@ -186,7 +158,8 @@
       "solution": "Take the remainders off first. The number divides $70 - 5 = 65$ and $125 - 8 = 117$ exactly.\n\nSo it is the HCF of 65 and 117: $65 = 5 \\times 13$, $117 = 3^{2} \\times 13$, giving HCF $= \\mathbf{13}$.\n\nCheck: $70 = 13 \\times 5 + 5$ and $125 = 13 \\times 9 + 8$.\n\nStripping the remainder first is the whole trick — it turns 'leaves a remainder' into 'divides exactly', which is the only kind of question HCF can answer.",
       "marks": 3,
       "answer": 13,
-      "tolerance": 0
+      "tolerance": 0,
+      "source": "CBSE 2025"
     },
     {
       "id": "rn-013",
@@ -197,6 +170,26 @@
       "solution": "**Step 1.** Suppose the opposite: that $2 + 3\\sqrt{5}$ is rational. Then it can be written as $\\dfrac{a}{b}$, with $a$ and $b$ integers and $b \\neq 0$.\n\n**Step 2.** Rearrange: $3\\sqrt{5} = \\dfrac{a}{b} - 2 = \\dfrac{a - 2b}{b}$, so $\\sqrt{5} = \\dfrac{a - 2b}{3b}$.\n\n**Step 3.** The right-hand side is one integer divided by another, so it is rational. That makes $\\sqrt{5}$ rational — contradicting what the question gives us.\n\n**Step 4.** The only thing assumed was Step 1, so Step 1 is wrong. Hence $2 + 3\\sqrt{5}$ is **irrational**.\n\nThe shape of every proof like this: the rationals are a closed club — add, subtract, multiply or divide members and you never leave. If arithmetic on $\\sqrt{5}$ could land you inside, $\\sqrt{5}$ was a member all along.",
       "marks": 2,
       "source": "CBSE 2026"
+    },
+    {
+      "id": "rn-021",
+      "chapter": "Real Numbers",
+      "topic": "Ending digit and prime factors",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 2,
+      "q": "Can the number $8^{n}$, $n$ being a natural number, end with the digit 0? Give reasons.",
+      "solution": "**No, it can never end in 0.**\n\nA number ends in 0 exactly when it is divisible by 10, and $10 = 2 \\times 5$. So to end in 0, a number must have **both** a 2 and a 5 in its prime factorisation.\n\nNow factorise $8^{n}$:\n\n$8 = 2^{3}$, so $8^{n} = (2^{3})^{n} = 2^{3n}$\n\nIts prime factorisation contains **only 2s**. There is no 5 anywhere in it.\n\nBy the Fundamental Theorem of Arithmetic, a number's prime factorisation is unique — no 5 goes in, so no 5 can ever come out. Without a 5 there is no factor of 10, and so $8^{n}$ cannot end in 0 for any natural number $n$.\n\nThink of the primes as ingredients. You can bake with as many 2s as you like, but you will never taste a 5 in the cake if you never put one in the bowl. ($8^{n}$ ends in 8, 4, 2 or 6, cycling in that order.)"
+    },
+    {
+      "id": "rn-020",
+      "chapter": "Real Numbers",
+      "topic": "Proving irrationality",
+      "source": "CBSE 2026",
+      "type": "long",
+      "marks": 2,
+      "q": "Prove that $2 - 5\\sqrt{3}$ is an irrational number, given that $\\sqrt{3}$ is an irrational number.",
+      "solution": "**Assume the opposite** and watch it break.\n\nSuppose $2 - 5\\sqrt{3}$ is rational. Call it $\\dfrac{a}{b}$, where $a$ and $b$ are integers and $b \\neq 0$.\n\n$2 - 5\\sqrt{3} = \\dfrac{a}{b}$\n\nRearrange to get $\\sqrt{3}$ on its own:\n\n$5\\sqrt{3} = 2 - \\dfrac{a}{b} = \\dfrac{2b - a}{b}$\n\n$\\sqrt{3} = \\dfrac{2b - a}{5b}$\n\nThe right-hand side is one integer over another, so it is **rational**. But we were told $\\sqrt{3}$ is **irrational**. A number cannot be both.\n\nSo the assumption was wrong, and $2 - 5\\sqrt{3}$ is **irrational**.\n\nThink of rationals as a closed room: add, subtract, multiply or divide two of them and you never get out. So if $2 - 5\\sqrt{3}$ were inside the room, un-doing the $2$ and the $5$ — both rational moves — would leave $\\sqrt{3}$ inside it too. Since $\\sqrt{3}$ is outside, $2 - 5\\sqrt{3}$ must be outside as well."
     },
     {
       "id": "rn-014",
