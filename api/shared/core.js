@@ -1734,21 +1734,33 @@ function parseAnswers(raw) {
   }
 }
 
-/** The usernames a teacher's published test can reach. */
-async function audienceUsernames(entity) {
-  if (audienceOf(entity) === "selected") return assignedList(entity);
+/**
+ * Every attempts partition that could be holding a progress row for this test.
+ *
+ * Its audience, and — the one easy to forget — **the owner themselves**, who
+ * can be sitting their own test to preview it. A teacher's or admin's progress
+ * row lands under their own id, never under `stu~`, so a check that walked the
+ * roster alone would let them publish the paper out from under their own
+ * half-finished preview.
+ */
+async function attemptPartitionsFor(entity) {
+  const owner = String(entity.ownerSub || "");
+  const out = owner ? [owner] : [];
+  if (audienceOf(entity) === "selected") {
+    for (const username of assignedList(entity)) out.push(`stu~${username}`);
+    return out;
+  }
   const students = tableClient("students");
   await ensureTable(students);
-  const out = [];
   const iter = students.listEntities({
     queryOptions: {
-      filter: `PartitionKey eq 'student' and teacherSub eq '${String(entity.ownerSub || "").replace(/'/g, "''")}'`,
+      filter: `PartitionKey eq 'student' and teacherSub eq '${owner.replace(/'/g, "''")}'`,
       select: ["PartitionKey", "RowKey"],
     },
   });
   for await (const e of iter) {
-    out.push(e.rowKey);
-    if (out.length >= 500) break;
+    out.push(`stu~${e.rowKey}`);
+    if (out.length >= 501) break;
   }
   return out;
 }
@@ -1758,21 +1770,21 @@ async function audienceUsernames(entity) {
  *
  * The attempts table is partitioned per student, so asking by RowKey alone
  * meant a scan of every attempt ever written, by anybody, growing forever. Only
- * this test's own audience can be sitting it, and their progress row has a
- * known key — so this is a handful of point reads instead, run a few at a time
- * and abandoned the moment one answers yes.
+ * only this test's audience and its owner can be sitting it, and their progress
+ * row has a known key — so this is a handful of point reads instead, run a few
+ * at a time and abandoned the moment one answers yes.
  */
 async function hasAttemptInProgress(entity) {
   const attempts = tableClient("attempts");
   await ensureTable(attempts);
   const rowKey = `${PROGRESS_PREFIX}${String(entity.rowKey).slice(0, 80)}`;
   try {
-    const usernames = await audienceUsernames(entity);
-    for (let i = 0; i < usernames.length; i += 20) {
+    const partitions = await attemptPartitionsFor(entity);
+    for (let i = 0; i < partitions.length; i += 20) {
       const found = await Promise.all(
-        usernames.slice(i, i + 20).map((username) =>
+        partitions.slice(i, i + 20).map((partitionKey) =>
           attempts
-            .getEntity(`stu~${username}`, rowKey)
+            .getEntity(partitionKey, rowKey)
             .then(() => true)
             .catch(() => false)
         )
