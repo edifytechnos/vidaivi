@@ -1,0 +1,211 @@
+{
+  "id": "lib-c10-probability",
+  "title": "Class 10 · Probability — Chapter Test 14",
+  "chapter": "Probability",
+  "teacher": null,
+  "order": 14,
+  "access": "login",
+  "questions": [
+    {
+      "id": "pb-001",
+      "topic": "Two dice — a sum condition",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two dice are rolled together. The probability of getting the sum of the two numbers to be more than 10 is:",
+      "options": [
+        "$\\dfrac{1}{9}$",
+        "$\\dfrac{1}{6}$",
+        "$\\dfrac{7}{12}$",
+        "$\\dfrac{1}{12}$"
+      ],
+      "answer": 3,
+      "solution": "**Count the total outcomes.** Each die has 6 faces, so two dice give $6 \\times 6 = 36$ equally likely outcomes.\n\n**List the favourable ones.** \"More than 10\" means a sum of 11 or 12:\n\nsum 11: $(5,6)$, $(6,5)$ — 2 ways\n\nsum 12: $(6,6)$ — 1 way\n\nThat is 3 favourable outcomes.\n\n$P = \\dfrac{3}{36} = \\mathbf{\\dfrac{1}{12}}$\n\nThe habit that prevents errors: treat the two dice as **distinguishable** — say one red and one blue. Then $(5,6)$ and $(6,5)$ are genuinely different outcomes, and the denominator really is 36. Counting $\\{5,6\\}$ as one outcome is the classic mistake and would give $\\tfrac{2}{21}$.\n\n\"More than 10\" excludes 10 itself. If it had said \"10 or more\", there would be 6 favourable outcomes and the answer would be $\\tfrac{1}{6}$ — which is exactly why option (B) is there.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-002",
+      "topic": "Two dice — different numbers",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two dice are thrown together. The probability that they show different numbers is:",
+      "options": [
+        "$\\dfrac{1}{6}$",
+        "$\\dfrac{5}{6}$",
+        "$\\dfrac{1}{3}$",
+        "$\\dfrac{2}{3}$"
+      ],
+      "answer": 1,
+      "solution": "Counting \"different\" directly means listing 30 outcomes. Count the **opposite** instead.\n\nThe dice show the *same* number in exactly 6 ways: $(1,1), (2,2), (3,3), (4,4), (5,5), (6,6)$.\n\n$P(\\text{same}) = \\dfrac{6}{36} = \\dfrac{1}{6}$\n\nNow use the complement rule, $P(\\text{not } E) = 1 - P(E)$:\n\n$P(\\text{different}) = 1 - \\dfrac{1}{6} = \\mathbf{\\dfrac{5}{6}}$\n\nWhenever the favourable outcomes are many and the unfavourable ones are few, count the few. \"At least one…\", \"different…\", \"not…\" are the phrases that should make you reach for the complement.\n\nA sanity check on the answer: two dice agreeing is clearly unusual, so the probability of *disagreeing* should be close to 1. $\\tfrac{5}{6} \\approx 0.83$ ✓",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-003",
+      "topic": "Drawing from a bag",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A bag contains 3 red balls, 5 white balls and 7 black balls. The probability that a ball drawn from the bag at random will be neither red nor black is:",
+      "options": [
+        "$\\dfrac{1}{3}$",
+        "$\\dfrac{1}{5}$",
+        "$\\dfrac{7}{15}$",
+        "$\\dfrac{8}{15}$"
+      ],
+      "answer": 0,
+      "solution": "**Read \"neither red nor black\" carefully.** With only three colours in the bag, a ball that is neither red nor black must be **white**.\n\nTotal balls: $3 + 5 + 7 = 15$\n\nWhite balls: $5$\n\n$P = \\dfrac{5}{15} = \\mathbf{\\dfrac{1}{3}}$\n\nThe distractors are all real counts from the same bag: $\\tfrac{7}{15}$ is black, and $\\tfrac{8}{15}$ is red-or-white ($3 + 5$). Each is the answer to a question that was not asked.\n\nTranslate the wording into a single colour before doing any arithmetic. \"Neither A nor B\" out of three options always means \"the third one\".",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-004",
+      "topic": "Probability of a good egg",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The probability of getting a bad egg in a lot of 400 eggs is $0.045$. The number of good eggs in the lot is:",
+      "options": [
+        "$18$",
+        "$382$",
+        "$360$",
+        "$395$"
+      ],
+      "answer": 1,
+      "solution": "**Find the bad eggs first.**\n\n$P(\\text{bad}) = \\dfrac{\\text{number of bad eggs}}{400} = 0.045$\n\nnumber of bad eggs $= 0.045 \\times 400 = 18$\n\n**Then the good ones:**\n\n$400 - 18 = \\mathbf{382}$\n\nOption (A), $18$, is the number of *bad* eggs — the answer to the question one step before the one asked. It is the most-chosen wrong answer in questions of this shape.\n\nThe check is easy: $P(\\text{good}) = 1 - 0.045 = 0.955$, and $0.955 \\times 400 = 382$ ✓ Either route works; the second avoids the trap altogether.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-005",
+      "topic": "A single die",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The probability of throwing a number greater than 2 with a fair die is:",
+      "options": [
+        "$\\dfrac{2}{3}$",
+        "$\\dfrac{1}{3}$",
+        "$\\dfrac{1}{6}$",
+        "$\\dfrac{5}{6}$"
+      ],
+      "answer": 0,
+      "solution": "The favourable outcomes are $3, 4, 5, 6$ — four of them out of six faces.\n\n$P = \\dfrac{4}{6} = \\mathbf{\\dfrac{2}{3}}$\n\n\"Greater than 2\" does **not** include 2. If the question had said \"2 or more\", there would be five favourable outcomes and the answer would be $\\tfrac{5}{6}$ — option (D), waiting for a careless reader.\n\nThe words worth slowing down for, every time:\n\n- **greater than 2** → $3,4,5,6$\n- **at least 2** / **2 or more** → $2,3,4,5,6$\n- **at most 2** / **2 or less** → $1,2$\n- **less than 2** → $1$",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-006",
+      "topic": "Selecting a number",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "What is the probability that a number selected randomly from the numbers $1, 2, 3, \\ldots, 15$ is a multiple of 4?",
+      "options": [
+        "$\\dfrac{4}{15}$",
+        "$\\dfrac{6}{15}$",
+        "$\\dfrac{3}{15}$",
+        "$\\dfrac{5}{15}$"
+      ],
+      "answer": 2,
+      "solution": "**List the multiples of 4 up to 15:** $4, 8, 12$. There are 3 of them.\n\n$P = \\mathbf{\\dfrac{3}{15}} = \\dfrac{1}{5}$\n\nOption (A), $\\tfrac{4}{15}$, is what you get by including 16 — which is not in the list. The list stops at 15, so stop at 12.\n\nA reliable way to count multiples of $k$ up to $n$: it is $\\left\\lfloor \\dfrac{n}{k} \\right\\rfloor$, the whole-number part of the division. Here $\\lfloor 15 \\div 4 \\rfloor = \\lfloor 3.75 \\rfloor = 3$ ✓ — quicker and safer than listing once the numbers get large.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-007",
+      "topic": "Tossing two coins",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two coins are tossed simultaneously. The probability of getting at most one tail is:",
+      "options": [
+        "$\\dfrac{1}{2}$",
+        "$\\dfrac{1}{4}$",
+        "$\\dfrac{3}{4}$",
+        "$1$"
+      ],
+      "answer": 2,
+      "solution": "**Write out the sample space.** Two coins give four equally likely outcomes:\n\n$HH,\\ HT,\\ TH,\\ TT$\n\n**\"At most one tail\"** means zero tails or one tail — so $HH$, $HT$ and $TH$. That is 3 outcomes.\n\n$P = \\mathbf{\\dfrac{3}{4}}$\n\nThe only outcome excluded is $TT$, with two tails. So you could get there by the complement: $1 - P(TT) = 1 - \\tfrac{1}{4} = \\tfrac{3}{4}$ ✓\n\n**At most** trips people up because it *includes* the number named and everything below it — right down to zero. And note that $HT$ and $TH$ are two different outcomes: the first coin and the second coin are distinguishable, even if they look identical in your hand.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-008",
+      "topic": "Two dice — a difference condition",
+      "source": "CBSE 2025",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Two dice are thrown at the same time. Determine the probability that the difference of the numbers on the two dice is 2.\n\nThe probability is $\\dfrac{a}{9}$. Give the value of $a$.",
+      "answer": 2,
+      "tolerance": 0,
+      "solution": "**Total outcomes:** $6 \\times 6 = 36$.\n\n**Favourable outcomes** — pairs differing by 2, counting both orders:\n\n$(1,3), (2,4), (3,5), (4,6)$ — 4 ways\n\n$(3,1), (4,2), (5,3), (6,4)$ — 4 ways\n\nThat is **8** favourable outcomes.\n\n$P = \\dfrac{8}{36} = \\dfrac{2}{9}$, so $a = \\mathbf{2}$.\n\nThe step most often missed is the **second line**. \"The difference is 2\" does not say which die is larger, so every pair counts twice. Listing only $(1,3), (2,4), (3,5), (4,6)$ gives $\\tfrac{4}{36} = \\tfrac{1}{9}$ — exactly half the right answer.\n\nA tidy way to see it: sketch the $6 \\times 6$ grid of outcomes and mark the two diagonals two steps either side of the main one. Four cells on each, eight in all.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-009",
+      "topic": "Two dice — odd on both",
+      "source": "CBSE 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Two dice are tossed simultaneously. Find the probability of getting an odd number on both dice.\n\nThe probability is $\\dfrac{1}{a}$. Give the value of $a$.",
+      "answer": 4,
+      "tolerance": 0,
+      "solution": "**Count the favourable outcomes.** Each die shows an odd number in 3 ways ($1, 3, 5$), and the dice are independent, so both are odd in\n\n$3 \\times 3 = 9$ ways\n\n$P = \\dfrac{9}{36} = \\dfrac{1}{4}$, so $a = \\mathbf{4}$.\n\n**Or by multiplying probabilities.** Each die is odd with probability $\\tfrac{3}{6} = \\tfrac{1}{2}$, and one die's result does not affect the other's:\n\n$P = \\dfrac{1}{2} \\times \\dfrac{1}{2} = \\dfrac{1}{4}$ ✓\n\nBoth routes are fine, and agreeing with yourself twice is worth the extra line. The multiplication shortcut only works because the dice are **independent** — one die has no idea what the other did.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-010",
+      "topic": "A pack of cards",
+      "type": "numeric",
+      "marks": 1,
+      "q": "One card is drawn at random from a well-shuffled pack of 52 cards. The probability that it is a king is $\\dfrac{1}{a}$. Give the value of $a$.",
+      "answer": 13,
+      "tolerance": 0,
+      "solution": "A standard pack has 52 cards and **four** kings — one in each suit (hearts, diamonds, clubs, spades).\n\n$P(\\text{king}) = \\dfrac{4}{52} = \\dfrac{1}{13}$, so $a = \\mathbf{13}$.\n\nThe pack facts worth memorising, because half the probability questions in the paper assume them:\n\n- 52 cards, 4 suits of 13\n- **red**: hearts and diamonds — 26 cards; **black**: clubs and spades — 26\n- **face cards**: jack, queen, king — 3 per suit, **12** in all\n- **aces**: 4, and an ace is *not* a face card\n\nThat last point catches people out every year.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-011",
+      "topic": "The complement rule",
+      "type": "numeric",
+      "marks": 1,
+      "q": "If $P(E) = 0.37$, find $P(\\text{not } E)$.\n\nGive your answer correct to two decimal places.",
+      "answer": 0.63,
+      "tolerance": 0.001,
+      "solution": "An event either happens or it does not, and those two possibilities cover everything:\n\n$P(E) + P(\\text{not } E) = 1$\n\n$P(\\text{not } E) = 1 - 0.37 = \\mathbf{0.63}$\n\nThat is the **complement rule**, and it is the single most useful line in the chapter — not because this question is hard, but because it turns awkward counting problems ($\\text{at least one}$, $\\text{different}$, $\\text{not a face card}$) into easy ones.\n\nTwo facts that follow from it and are worth stating: every probability lies between $0$ and $1$, and a probability can never be negative or more than 1. If a calculation gives $1.2$ or $-0.3$, it is wrong — no interpretation needed.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-012",
+      "topic": "Two dice — a sum condition",
+      "type": "long",
+      "marks": 3,
+      "q": "Two dice are thrown together. Find the probability that:\n\n(i) the sum of the numbers is 9\n\n(ii) the sum of the numbers is a prime number",
+      "solution": "**Total outcomes:** $6 \\times 6 = 36$.\n\n**(i) Sum is 9.** List them:\n\n$(3,6), (4,5), (5,4), (6,3)$ — **4** outcomes\n\n$P = \\dfrac{4}{36} = \\mathbf{\\dfrac{1}{9}}$\n\n**(ii) Sum is prime.** The possible sums run from 2 to 12; the primes among them are $2, 3, 5, 7, 11$.\n\nsum 2: $(1,1)$ — 1 way\n\nsum 3: $(1,2), (2,1)$ — 2 ways\n\nsum 5: $(1,4), (2,3), (3,2), (4,1)$ — 4 ways\n\nsum 7: $(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)$ — 6 ways\n\nsum 11: $(5,6), (6,5)$ — 2 ways\n\nTotal: $1 + 2 + 4 + 6 + 2 = 15$ outcomes\n\n$P = \\dfrac{15}{36} = \\mathbf{\\dfrac{5}{12}}$\n\nThe number of ways to make each sum rises to a peak at 7 (six ways) and falls away symmetrically either side — $1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1$ for sums $2$ to $12$. Sketching that little pyramid once at the start of the question makes every part of it a lookup.\n\nAnd remember 9 is **not** prime ($9 = 3 \\times 3$), so part (i)'s outcomes are not among part (ii)'s.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-013",
+      "topic": "Drawing from a bag",
+      "type": "long",
+      "marks": 3,
+      "q": "A bag contains 5 red, 8 white and 7 black balls. One ball is drawn at random. Find the probability that it is:\n\n(i) red or white\n\n(ii) not black\n\n(iii) neither white nor black",
+      "solution": "**Total balls:** $5 + 8 + 7 = 20$.\n\n**(i) Red or white.** These cannot both happen at once, so add the counts:\n\n$5 + 8 = 13$, giving $P = \\mathbf{\\dfrac{13}{20}}$\n\n**(ii) Not black.** Use the complement:\n\n$P(\\text{black}) = \\dfrac{7}{20}$, so $P(\\text{not black}) = 1 - \\dfrac{7}{20} = \\mathbf{\\dfrac{13}{20}}$\n\nThe same answer as (i) — and that is no accident. With three colours, \"not black\" *is* \"red or white\". The two parts are the same event described two ways, and getting the same number is a free check on your working.\n\n**(iii) Neither white nor black.** That leaves only red:\n\n$P = \\dfrac{5}{20} = \\mathbf{\\dfrac{1}{4}}$\n\nEach part is really a translation exercise. Convert the wording into a set of balls first, count them, and the arithmetic takes one line.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-014",
+      "topic": "Numbered cards",
+      "type": "long",
+      "marks": 3,
+      "q": "Cards numbered 1 to 30 are placed in a box and mixed thoroughly. One card is drawn at random. Find the probability that the number on the card is:\n\n(i) divisible by 3\n\n(ii) a perfect square\n\n(iii) a prime number greater than 20",
+      "solution": "**Total outcomes:** 30.\n\n**(i) Divisible by 3.** $3, 6, 9, \\ldots, 30$ — that is $\\left\\lfloor \\tfrac{30}{3} \\right\\rfloor = 10$ numbers.\n\n$P = \\dfrac{10}{30} = \\mathbf{\\dfrac{1}{3}}$\n\n**(ii) A perfect square.** $1, 4, 9, 16, 25$ — 5 numbers (note $36 > 30$).\n\n$P = \\dfrac{5}{30} = \\mathbf{\\dfrac{1}{6}}$\n\n**(iii) A prime greater than 20.** The primes up to 30 are $2, 3, 5, 7, 11, 13, 17, 19, 23, 29$. Those above 20 are $23$ and $29$ — 2 numbers.\n\n$P = \\dfrac{2}{30} = \\mathbf{\\dfrac{1}{15}}$\n\nTwo details that cost marks. **1 is a perfect square** ($1 = 1^{2}$) and is easily forgotten. And **1 is not prime** — the primes start at 2 — while $27 = 3^{3}$ and $25 = 5^{2}$ are not primes either, however odd they look.\n\nWrite the full list out once; it is faster than second-guessing each number.",
+      "chapter": "Probability"
+    },
+    {
+      "id": "pb-015",
+      "topic": "Probability and its complement",
+      "type": "long",
+      "marks": 2,
+      "q": "A box contains 90 discs numbered from 1 to 90. If one disc is drawn at random, find the probability that it bears a two-digit number.",
+      "solution": "**Total outcomes:** 90 discs, numbered 1 to 90.\n\n**Count the two-digit numbers.** These run from 10 to 90:\n\n$90 - 10 + 1 = 81$ numbers\n\n$P = \\dfrac{81}{90} = \\mathbf{\\dfrac{9}{10}}$\n\n**Or by the complement**, which is quicker: the discs that are *not* two-digit are the single-digit ones, $1$ to $9$ — nine of them.\n\n$P = 1 - \\dfrac{9}{90} = 1 - \\dfrac{1}{10} = \\dfrac{9}{10}$ ✓\n\nThe $+1$ in the first method is the fence-post count again: from 10 to 90 there are 80 *gaps* but 81 *numbers*. Whenever you count a run of consecutive integers from $a$ to $b$, it is $b - a + 1$.\n\nThe complement route sidesteps that entirely, which is why it is the safer of the two.",
+      "chapter": "Probability"
+    }
+  ]
+}
