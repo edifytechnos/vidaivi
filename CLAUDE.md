@@ -189,6 +189,98 @@ and the explanation, each with a live "Student sees" preview.
   as their own editable drafts, once ever (`teacherstate` table, `seedSamples`).
 - `?edit=<testId>&q=<questionId>` restores a teacher's place across a refresh.
 
+## Performance, scale and cost — the rules that hold everywhere
+
+This is a free-tier product with paying customers coming. Money is not the
+binding constraint — Table Storage is about $0.045/GB a month and $0.00036 per
+10,000 transactions, so even ten million operations costs pennies. **Latency on
+a cheap Android phone and the Free tier's 100 GB/month of bandwidth are the
+constraints**, which is why every rule below is about doing less work and
+sending fewer bytes rather than about buying something.
+
+Where everything lives: the static site on **Azure Static Web Apps Free**
+(global edge), the API as **SWA managed Functions** (`api/`, consumption plan,
+cold starts of 1–3s), the data in **11 Azure Table Storage tables** and
+students' answer photos in the private blob container `answers`. No Redis, no
+Front Door, no Cosmos — and none of them are wanted until the numbers say so.
+
+### The five rules
+
+1. **Every `listEntities` names the properties it wants.** Without `select`,
+   Table Storage returns the whole row — which for `tests` means `qc0..qcN`,
+   the full text of every question. A list of titles was carrying every paper
+   it walked past. Projections live next to the query (`TEST_META_SELECT`,
+   `SUBJECT_SELECT`, `ROSTER_SELECT`, `ATTEMPT_LIST_SELECT`, `GRADING_SELECT`)
+   — **add a property to the projection when a listing starts needing it**, and
+   never add the question chunks back.
+2. **Never query without a PartitionKey.** A filter on `RowKey` alone, or on an
+   ordinary property alone, is a scan of the whole table that grows forever.
+   `hasAttemptInProgress` was one; it is now a handful of point reads against
+   the test's own audience. If a question cannot be answered from one partition,
+   the key is wrong — change the key, don't write the scan.
+3. **No N+1 awaited in a loop.** Use `inBatches(items, 20, fn)`: parallel, but
+   bounded. `/api/reports` was 200 serial round trips for a class of 200.
+4. **Anything derived from a stable input is memoised in-process.** A warm
+   Function instance serves many requests, so `makeCache(max)` holds Google
+   token claims, the teacher allowlist and student records behind short TTLs.
+   Every cache entry carries a TTL and **every write that invalidates one calls
+   `drop()`**, because a warm instance must never disagree with a cold one for
+   longer than its TTL. See the revocation note below.
+5. **Derived counts are stamped on write, never computed on read.**
+   `chunkQuestions` writes `questionCount` and `totalMarks` alongside the
+   chunks, which is the only reason a listing can project the chunks away.
+   Every write of questions goes through that one function, so they cannot
+   drift. Rows written before this are healed once, bounded, by
+   `backfillCounts`.
+
+### What the caches cost in correctness
+
+- **Google tokens** (`GOOGLE_TOKEN_TTL_MS`, 5 min): capped well under the
+  token's own hour. A rejection is cached for 30s so a client looping on a
+  stale token cannot hammer Google.
+- **Teacher allowlist** (`ROLE_TTL_MS`, 60s): `handlers.teachers` drops the
+  entry on add and remove, so the admin's own instance sees the change at once;
+  another instance catches up within the minute.
+- **Student records** (`STUDENT_TTL_MS`, 30s): the deliberate trade. Removing a
+  student must revoke their access — the students handler drops the entry on
+  delete and reset, but **across instances a removed account stays usable for
+  up to 30 seconds**. Shorten this before lengthening it.
+- Token cache keys are a **sha256 of the credential**, never the credential.
+
+### Client and edge
+
+- `public/staticwebapp.config.json` caches `/assets/*` (Vite-fingerprinted, so
+  safe) as `immutable` for a year, `index.html` and `/` as `no-cache`, and
+  `/api/*` as `no-store`. **A new asset gets a new hash; never hand-edit a file
+  under `/assets/` in place.**
+- **KaTeX is bundled, not CDN-loaded**, and imported dynamically from
+  `renderMath` in `src/dom.ts`, so it sits in its own chunk and loads only when
+  maths appears. Same origin means no extra DNS + TLS handshake on a phone, and
+  a school network that blocks jsDelivr can no longer silently kill maths
+  rendering. Fonts are still Google-hosted.
+- A screen should fetch **once**, in parallel (`Promise.all`), not call the
+  same endpoint twice on one render.
+
+### Not yet, and why
+
+Ranked, with the next architectural step first:
+
+- **Re-partition `tests` and `subjects` by `ownerSub`** — they use a constant
+  PartitionKey (`"test"`, `"subject"`), so every read still scans the whole
+  platform and every write lands in one partition. Fine at one teacher, fatal
+  at five hundred. **This is the one true architectural change outstanding**,
+  and it gets cheaper the sooner it is done.
+- **Bake published tests to immutable blobs on publish.** Editing is already
+  draft-only, so a published paper never changes — which makes it CDN-cacheable
+  forever at `tests/<id>/<version>.json`. Forty students opening the same test
+  would be one origin read, not forty Function invocations.
+- **SWA Standard (~$9/mo)** — buy first, when the SLA or >100 GB/mo is needed.
+- **Front Door (~$35/mo), Redis (~$16/mo), Cosmos DB** — no. SWA already serves
+  static from a global edge, rule 4 gives most of what Redis would, and Table
+  Storage with the right partition keys handles a hundred thousand students.
+
+Prices are from memory — check the Azure calculator before committing to any.
+
 ## Source layout (`src/`)
 
 - `main.ts` — boot only: analytics init, URL → screen routing. No screen code here.
@@ -218,7 +310,11 @@ Full product roadmap lives in `docs/PRODUCT-PLAN.md`.
 `node e2e/serve.cjs` serves the built `dist/` on :4400 with `/api/*` proxied to
 production; `node e2e/regression.cjs` runs the Playwright suite (guest flows always;
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
-hardcode credentials). See `e2e/README.md`.
+hardcode credentials). `node e2e/helpers.cjs` needs no browser and no network: it
+covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
+in-process cache, `inBatches`). Because the browser suite proxies `/api/*` to
+**production**, it does not exercise unmerged API changes — point `E2E_API_BASE`
+at the PR preview for those. See `e2e/README.md`.
 
 ## Local development
 
@@ -571,3 +667,6 @@ error names the empty field.
 - Concise, structured output. No padding.
 - Prefer the smallest change that keeps the loop moving.
 - Ask before adding any dependency, backend, or new feature outside this file.
+- Hold to **Performance, scale and cost** above on every change that touches
+  `api/` or adds a fetch. The `vidai-scale` skill carries the same rules as a
+  checklist — invoke it before writing a query, a handler or a screen fetch.
