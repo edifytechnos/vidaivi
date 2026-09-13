@@ -98,7 +98,16 @@ function b64url(buf) {
 function json(context, status, body) {
   context.res = {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      // Set here rather than in staticwebapp.config.json, whose route headers
+      // do not reach /api/* at all: those requests go to the Functions backend
+      // and only the function's own headers survive. Every API response is
+      // built here, so this is the one place that can say it. It matters most
+      // for the answerimage SAS and for any authenticated GET an intermediary
+      // might otherwise think it may keep.
+      "Cache-Control": "no-store",
+    },
     body,
   };
 }
