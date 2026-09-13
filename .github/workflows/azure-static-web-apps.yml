@@ -67,7 +67,11 @@ jobs:
   # become two. A custom domain cannot be used here — Azure does not support
   # custom domains on preview environments, only on an app's production one.
   qa:
-    if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+    # Also runnable by hand (Run workflow, with close_environment left empty),
+    # to redeploy QA without inventing a commit.
+    if: >-
+      (github.event_name == 'push' && github.ref != 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && inputs.close_environment == '')
     runs-on: ubuntu-latest
     name: Build and deploy to QA
     steps:
