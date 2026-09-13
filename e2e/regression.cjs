@@ -58,8 +58,9 @@ function check(ok, label) {
   await page.click("#primary-btn");
   await page.waitForSelector(".option");
   check((await page.$$(".option")).length === 4, "MCQ renders 4 options");
-  // serve.cjs mirrors the KaTeX CDN through this origin, so maths must render.
-  await page.waitForFunction(() => !!window.renderMathInElement, { timeout: 15000 });
+  // KaTeX is bundled and imported on demand rather than loaded from a CDN, so
+  // there is no global to probe for. What matters is unchanged and asserted
+  // below: a .katex node must appear wherever maths is shown.
   await page.click(".option");
   await page.click("#submit-btn");
   await page.waitForSelector(".solution");

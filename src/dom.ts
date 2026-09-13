@@ -1,18 +1,36 @@
 // DOM root, rendering helpers, and icons. The signed-in chrome lives in shell.ts.
 
+import type { RenderMathInElement } from "./types";
+
 export const app = document.getElementById("app")!;
 
+// KaTeX is bundled rather than pulled from a CDN. Same origin means no extra
+// DNS + TLS handshake on the cheap Android phones this is built for, a school
+// network that blocks jsDelivr can no longer silently kill maths rendering, and
+// Vite fingerprints the files so they cache immutably. The import is dynamic so
+// none of it sits in the first bundle — nothing loads until maths is on screen.
+let katex: Promise<RenderMathInElement> | null = null;
+
+function loadKatex(): Promise<RenderMathInElement> {
+  if (!katex) {
+    katex = Promise.all([
+      import("katex/contrib/auto-render"),
+      import("katex/dist/katex.min.css"),
+    ]).then(([mod]) => mod.default);
+  }
+  return katex;
+}
+
 export function renderMath(el: HTMLElement) {
-  const run = () =>
-    window.renderMathInElement?.(el, {
+  void loadKatex().then((render) =>
+    render(el, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
         { left: "$", right: "$", display: false },
       ],
       throwOnError: false,
-    });
-  if (window.renderMathInElement) run();
-  else window.addEventListener("DOMContentLoaded", run, { once: true });
+    })
+  );
 }
 
 export function escapeHtml(s: string): string {

@@ -64,8 +64,5 @@ export interface Attempt {
   updatedAt: string;
 }
 
-declare global {
-  interface Window {
-    renderMathInElement?: (el: HTMLElement, opts?: object) => void;
-  }
-}
+/** KaTeX's auto-render contrib entry ships no type declarations of its own. */
+export type RenderMathInElement = (el: HTMLElement, opts?: object) => void;
