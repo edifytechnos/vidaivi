@@ -1,0 +1,192 @@
+{
+  "id": "lib-c10-surface-areas-and-volumes",
+  "title": "Class 10 · Surface Areas and Volumes — Chapter Test 12",
+  "chapter": "Surface Areas and Volumes",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "sv-001",
+      "topic": "Surface area of a hemisphere",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ratio of the total surface area of a solid hemisphere to the square of its radius is:",
+      "options": [
+        "$2\\pi : 1$",
+        "$4\\pi : 1$",
+        "$3\\pi : 1$",
+        "$1 : 4\\pi$"
+      ],
+      "answer": 2,
+      "solution": "A **solid** hemisphere has two surfaces, and both must be counted:\n\n- the curved dome: $2\\pi r^{2}$\n- the flat circular base: $\\pi r^{2}$\n\n$\\text{TSA} = 2\\pi r^{2} + \\pi r^{2} = 3\\pi r^{2}$\n\nSo the ratio to $r^{2}$ is\n\n$\\dfrac{3\\pi r^{2}}{r^{2}} = \\mathbf{3\\pi : 1}$\n\nOption (A) is the trap — $2\\pi r^{2}$ is the **curved** surface area only, which is what you would want for a hemispherical bowl, open at the top. The word **solid** is what tells you to add the base.\n\nRead the shape's description before choosing a formula: solid or hollow, open or closed. It is usually one word, and usually worth a mark.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-002",
+      "topic": "Volume of a sphere",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The volume of a sphere of radius 21 cm is: (Take $\\pi = \\dfrac{22}{7}$)",
+      "options": [
+        "$38808$ cm³",
+        "$5544$ cm³",
+        "$9702$ cm³",
+        "$1386$ cm³"
+      ],
+      "answer": 0,
+      "solution": "$V = \\dfrac{4}{3}\\pi r^{3} = \\dfrac{4}{3} \\times \\dfrac{22}{7} \\times 21^{3}$\n\nCancel the 7 into a 21 before multiplying:\n\n$= \\dfrac{4}{3} \\times 22 \\times 3 \\times 441 = 4 \\times 22 \\times 441 = \\mathbf{38808}$ cm³\n\nOption (B), $5544$ cm², is the **surface area** $4\\pi r^{2}$ — a different quantity in different units.\n\nThe two sphere formulas are easy to confuse. A memory hook: the volume has a $\\tfrac{4}{3}$ and an $r^{3}$ (three dimensions, cubed); the surface area has a plain $4$ and an $r^{2}$ (two dimensions, squared).",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-003",
+      "topic": "Curved surface area of a cylinder",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The curved surface area of a cylinder of radius 7 cm and height 10 cm is: (Take $\\pi = \\dfrac{22}{7}$)",
+      "options": [
+        "$220$ cm²",
+        "$440$ cm²",
+        "$748$ cm²",
+        "$1540$ cm²"
+      ],
+      "answer": 1,
+      "solution": "$\\text{CSA} = 2\\pi rh = 2 \\times \\dfrac{22}{7} \\times 7 \\times 10 = 2 \\times 22 \\times 10 = \\mathbf{440}$ cm²\n\nHere is where the formula comes from, and it makes it impossible to forget. Cut the curved surface down one side and unroll it: you get a **rectangle**. Its height is the cylinder's height $h$, and its width is the distance round the circle, $2\\pi r$. Area of a rectangle is length times width — hence $2\\pi rh$.\n\nOption (C), $748$ cm², is the **total** surface area $2\\pi r(r + h)$, which adds the two circular ends. Option (D) is the volume $\\pi r^{2}h$, in the wrong units.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-004",
+      "topic": "Slant height of a cone",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A cone has base radius 5 cm and height 12 cm. Its slant height is:",
+      "options": [
+        "$17$ cm",
+        "$13$ cm",
+        "$7$ cm",
+        "$60$ cm"
+      ],
+      "answer": 1,
+      "solution": "The radius, the height and the slant height form a **right triangle** inside the cone: the height is vertical, the radius horizontal, and the slant height joins the apex to the rim.\n\n$l = \\sqrt{r^{2} + h^{2}} = \\sqrt{5^{2} + 12^{2}} = \\sqrt{25 + 144} = \\sqrt{169} = \\mathbf{13}$ cm\n\nOption (A), $17$, is $5 + 12$ — adding instead of using Pythagoras. Option (D), $60$, is $5 \\times 12$.\n\nThe slant height is always the **longest** of the three, because it is the hypotenuse. If your answer is smaller than the height, something has gone wrong.\n\n$5, 12, 13$ once more — the examiners' favourite triple.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-005",
+      "topic": "Volume of a hemisphere",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The volume of a hemisphere of radius 3.5 cm is: (Take $\\pi = \\dfrac{22}{7}$)",
+      "options": [
+        "$89.83$ cm³",
+        "$179.67$ cm³",
+        "$77$ cm³",
+        "$38.5$ cm³"
+      ],
+      "answer": 0,
+      "solution": "A hemisphere is half a sphere, so its volume is half of $\\tfrac{4}{3}\\pi r^{3}$:\n\n$V = \\dfrac{2}{3}\\pi r^{3} = \\dfrac{2}{3} \\times \\dfrac{22}{7} \\times \\left(\\dfrac{7}{2}\\right)^{3}$\n\n$= \\dfrac{2}{3} \\times \\dfrac{22}{7} \\times \\dfrac{343}{8} = \\dfrac{2 \\times 22 \\times 49}{3 \\times 8} = \\dfrac{2156}{24} \\approx \\mathbf{89.83}$ cm³\n\nWriting $3.5$ as $\\tfrac{7}{2}$ is what makes this manageable — the 7 cancels with the $\\pi$ and the arithmetic stays in whole numbers until the last step.\n\nOption (B) is the full sphere, twice as big.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-006",
+      "topic": "Ratio of volumes",
+      "source": "CBSE 2025",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If the radii of the bases of a cylinder and a cone are in the ratio $3 : 4$ and their heights are in the ratio $2 : 3$, find the ratio of their volumes.\n\nThe ratio is $a : 8$. Give the value of $a$.",
+      "answer": 9,
+      "tolerance": 0,
+      "solution": "Write both radii and both heights with a single letter each, using the ratios:\n\nradii: $3x$ and $4x$;  heights: $2y$ and $3y$\n\n**Cylinder:** $V_1 = \\pi r^{2}h = \\pi(3x)^{2}(2y) = 18\\pi x^{2}y$\n\n**Cone:** $V_2 = \\dfrac{1}{3}\\pi r^{2}h = \\dfrac{1}{3}\\pi(4x)^{2}(3y) = \\dfrac{1}{3} \\times 48\\pi x^{2}y = 16\\pi x^{2}y$\n\n**Ratio:**\n\n$\\dfrac{V_1}{V_2} = \\dfrac{18\\pi x^{2}y}{16\\pi x^{2}y} = \\dfrac{18}{16} = \\dfrac{9}{8}$\n\nSo the ratio is $\\mathbf{9} : 8$.\n\nEverything except the numbers cancels — $\\pi$, $x^{2}$ and $y$ all disappear — which is why a ratio question never needs actual measurements.\n\nThe one thing to watch is the cone's $\\tfrac{1}{3}$. A cone holds exactly a third of the cylinder that fits around it, same base and same height; forgetting that turns $9 : 8$ into $9 : 24$.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-007",
+      "topic": "Melting and recasting",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A solid metallic sphere of radius 6 cm is melted and recast into a solid cone of the same radius. Find the height of the cone in centimetres.",
+      "answer": 24,
+      "tolerance": 0,
+      "solution": "**The principle:** melting changes the shape but not the amount of metal, so the two **volumes are equal**.\n\n$\\text{volume of sphere} = \\text{volume of cone}$\n\n$\\dfrac{4}{3}\\pi r^{3} = \\dfrac{1}{3}\\pi r^{2}h$\n\nThe radius is 6 in both, so\n\n$\\dfrac{4}{3}\\pi (6)^{3} = \\dfrac{1}{3}\\pi (6)^{2} h$\n\nCancel $\\tfrac{1}{3}\\pi$ from both sides:\n\n$4 \\times 216 = 36h$\n\n$864 = 36h \\Rightarrow h = \\mathbf{24}$ cm\n\nThere is a tidier way to see it: with the radii equal, the equation reduces to $4r = h$, so the cone is always **four times as tall as the sphere's radius**.\n\nEvery melting, recasting or \"how many small balls from one big one\" question is the same single sentence: **total volume before = total volume after.** Write that line first and the algebra follows.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-008",
+      "topic": "Total surface area of a cylinder",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the total surface area, in cm², of a solid cylinder of radius 7 cm and height 14 cm. (Take $\\pi = \\dfrac{22}{7}$)",
+      "answer": 924,
+      "tolerance": 0,
+      "solution": "A solid cylinder has three surfaces: the curved side and the two circular ends.\n\n$\\text{TSA} = 2\\pi rh + 2\\pi r^{2} = 2\\pi r(h + r)$\n\n$= 2 \\times \\dfrac{22}{7} \\times 7 \\times (14 + 7)$\n\n$= 2 \\times 22 \\times 21 = \\mathbf{924}$ cm²\n\nFactoring to $2\\pi r(h + r)$ before substituting turns two multiplications into one — worth doing every time.\n\n**Check by parts:** curved $= 2 \\times \\tfrac{22}{7} \\times 7 \\times 14 = 616$; two ends $= 2 \\times \\tfrac{22}{7} \\times 49 = 308$; total $616 + 308 = 924$ ✓\n\nIf the cylinder were a pipe open at both ends, you would want just the $616$.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-009",
+      "topic": "Volume and surface area of a combined solid",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 3,
+      "q": "A solid toy is in the form of a hemisphere surmounted by a right circular cone. The height of the cone is 2 cm and the diameter of the base is 4 cm. Determine the volume of the toy. Also find the surface area of the toy. (Take $\\pi = 3.14$)",
+      "solution": "Diameter 4 cm means $r = 2$ cm for **both** parts, and the cone's height is $h = 2$ cm.\n\n**Volume** — add the two solids:\n\nhemisphere: $\\dfrac{2}{3}\\pi r^{3} = \\dfrac{2}{3} \\times 3.14 \\times 8 = 16.75$ cm³\n\ncone: $\\dfrac{1}{3}\\pi r^{2}h = \\dfrac{1}{3} \\times 3.14 \\times 4 \\times 2 = 8.37$ cm³\n\n$\\text{total volume} = 16.75 + 8.37 = \\mathbf{25.12}$ cm³\n\n**Surface area** — and here you must think, not just add. The two flat circular faces are **glued together inside** the toy; neither is on the outside. What you can see is the hemisphere's dome and the cone's slant.\n\nSlant height of the cone: $l = \\sqrt{r^{2} + h^{2}} = \\sqrt{4 + 4} = 2\\sqrt{2} \\approx 2.83$ cm\n\ncurved surface of hemisphere: $2\\pi r^{2} = 2 \\times 3.14 \\times 4 = 25.12$ cm²\n\ncurved surface of cone: $\\pi r l = 3.14 \\times 2 \\times 2.83 = 17.76$ cm²\n\n$\\text{total surface area} = 25.12 + 17.76 \\approx \\mathbf{42.88}$ cm²\n\n**Volumes add; surface areas do not.** When two solids are joined, the faces where they meet vanish from the outside — and in a combined-solid question that is nearly always where the marks are.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-010",
+      "topic": "Canvas for a tent",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 5,
+      "q": "A tent is in the shape of a cylinder surmounted by a conical top. If the height and diameter of the cylindrical part are 3.5 m and 6 m, and the slant height of the top is 4.2 m, find the area of canvas used for making the tent. Also find the cost of the canvas at the rate of ₹500 per m². (Take $\\pi = \\dfrac{22}{7}$)",
+      "solution": "Diameter 6 m gives $r = 3$ m; the cylinder's height is $h = 3.5$ m and the cone's slant height is $l = 4.2$ m.\n\n**Which surfaces are canvas?** The curved side of the cylinder and the curved surface of the cone — nothing else. The tent has no lid between the two parts, and its floor is the ground.\n\n**Cylinder, curved surface:**\n\n$2\\pi rh = 2 \\times \\dfrac{22}{7} \\times 3 \\times 3.5 = 66$ m²\n\n**Cone, curved surface:**\n\n$\\pi rl = \\dfrac{22}{7} \\times 3 \\times 4.2 = 39.6$ m²\n\n**Total canvas:**\n\n$66 + 39.6 = \\mathbf{105.6}$ m²\n\n**Cost:**\n\n$105.6 \\times 500 = \\mathbf{₹52{,}800}$\n\nThe examiner's trap is the two circles: the cylinder's base (the ground) and the disc where cone meets cylinder (which does not exist — the tent is open all the way up). Adding either would cost you marks.\n\nAsk of every combined-solid question: *which faces would I actually paint, cover or touch?* That question, not the formula sheet, decides what to add.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-011",
+      "topic": "Displacement and counting solids",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 5,
+      "q": "A vessel is in the form of an inverted cone. Its height is 8 cm and the radius of its top, which is open, is 5 cm. It is filled with water up to the brim. When lead shots, each of which is a sphere of radius 0.5 cm, are dropped into the vessel, one-fourth of the water flows out. Find the number of lead shots dropped in the vessel.",
+      "solution": "**The principle:** each lead shot pushes out its own volume of water. So the total volume of the shots equals the volume of water that overflowed.\n\n**Volume of the cone (the water it held):**\n\n$V = \\dfrac{1}{3}\\pi r^{2}h = \\dfrac{1}{3}\\pi (5)^{2}(8) = \\dfrac{200\\pi}{3}$ cm³\n\n**Water that flowed out** — one fourth of it:\n\n$\\dfrac{1}{4} \\times \\dfrac{200\\pi}{3} = \\dfrac{50\\pi}{3}$ cm³\n\n**Volume of one lead shot** ($r = 0.5 = \\tfrac{1}{2}$ cm):\n\n$\\dfrac{4}{3}\\pi\\left(\\dfrac{1}{2}\\right)^{3} = \\dfrac{4}{3}\\pi \\times \\dfrac{1}{8} = \\dfrac{\\pi}{6}$ cm³\n\n**Number of shots:**\n\n$n = \\dfrac{50\\pi/3}{\\pi/6} = \\dfrac{50\\pi}{3} \\times \\dfrac{6}{\\pi} = \\mathbf{100}$\n\nThe $\\pi$ cancels, which is the signal that you were never meant to work out a decimal. Keep it symbolic to the end.\n\n**Sanity check:** each shot is about $0.52$ cm³ and the overflow is about $52.4$ cm³ — a hundred of them, as found ✓\n\nWatch the radius: the shots are given by radius $0.5$ cm, not diameter. Halving it again would divide the volume by eight and give 800 shots.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-012",
+      "topic": "Mass from volume",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 5,
+      "q": "A solid iron pole consists of a solid cylinder of height 200 cm and base diameter 28 cm, which is surmounted by another cylinder of height 50 cm and radius 7 cm. Find the mass of the pole, given that 1 cm³ of iron has approximately 8 g mass. (Take $\\pi = \\dfrac{22}{7}$)",
+      "solution": "**Lower cylinder.** Diameter 28 cm gives $r = 14$ cm, $h = 200$ cm:\n\n$V_1 = \\pi r^{2}h = \\dfrac{22}{7} \\times 196 \\times 200 = 22 \\times 28 \\times 200 = 123200$ cm³\n\n**Upper cylinder.** $r = 7$ cm, $h = 50$ cm:\n\n$V_2 = \\dfrac{22}{7} \\times 49 \\times 50 = 22 \\times 7 \\times 50 = 7700$ cm³\n\n**Total volume:**\n\n$V = 123200 + 7700 = 130900$ cm³\n\n**Mass**, at 8 g per cm³:\n\n$130900 \\times 8 = 1047200$ g $= \\mathbf{1047.2}$ kg\n\nTwo traps in one question. First, the lower cylinder is given by **diameter** and the upper by **radius** — mixing them up is the single most likely error, and it would nearly quadruple the first volume. Second, the answer comes out in **grams**; converting to kilograms at the end is part of the answer.\n\nThe pole is solid throughout, so the volumes simply add — no hidden faces to worry about, unlike a surface-area question.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-013",
+      "topic": "Joining two cubes",
+      "type": "long",
+      "marks": 3,
+      "q": "Two cubes each of side 4 cm are joined end to end. Find the surface area of the resulting cuboid.",
+      "solution": "**Work out the cuboid's dimensions.** Joining two $4 \\times 4 \\times 4$ cubes face to face doubles one dimension only:\n\n$8 \\text{ cm} \\times 4 \\text{ cm} \\times 4 \\text{ cm}$\n\n**Surface area of a cuboid:**\n\n$2(lb + bh + hl) = 2(8 \\times 4 + 4 \\times 4 + 4 \\times 8)$\n\n$= 2(32 + 16 + 32) = 2 \\times 80 = \\mathbf{160}$ cm²\n\n**Why it is not just twice one cube's surface area.** Each cube alone has surface area $6 \\times 16 = 96$ cm², so two of them have $192$ cm². But joining them **hides two faces** — one on each cube — of $16$ cm² each:\n\n$192 - 2(16) = 192 - 32 = 160$ cm² ✓\n\nThe two methods agree, and the second explains the first.\n\nThe same principle runs through every combined solid: **volumes add, surfaces lose whatever is glued.** Here two square faces disappear; in the toy question earlier it was two circles.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-014",
+      "topic": "Recasting into smaller solids",
+      "type": "long",
+      "marks": 3,
+      "q": "A solid metallic sphere of radius 10.5 cm is melted and recast into smaller solid cones, each of radius 3.5 cm and height 3 cm. Find the number of cones formed. (Take $\\pi = \\dfrac{22}{7}$)",
+      "solution": "**The principle:** the metal is conserved, so\n\n$\\text{volume of the sphere} = n \\times \\text{volume of one cone}$\n\n**Volume of the sphere** ($r = 10.5 = \\tfrac{21}{2}$ cm):\n\n$\\dfrac{4}{3}\\pi r^{3} = \\dfrac{4}{3} \\times \\dfrac{22}{7} \\times \\dfrac{9261}{8} = 4851$ cm³\n\n**Volume of one cone** ($r = 3.5 = \\tfrac{7}{2}$ cm, $h = 3$ cm):\n\n$\\dfrac{1}{3}\\pi r^{2}h = \\dfrac{1}{3} \\times \\dfrac{22}{7} \\times \\dfrac{49}{4} \\times 3 = \\dfrac{77}{2} = 38.5$ cm³\n\n**Number of cones:**\n\n$n = \\dfrac{4851}{38.5} = \\mathbf{126}$\n\nA faster route is to set up the equation before computing anything and let the fractions cancel:\n\n$n = \\dfrac{\\frac{4}{3}\\pi (10.5)^{3}}{\\frac{1}{3}\\pi (3.5)^{2}(3)} = \\dfrac{4 (10.5)^{3}}{(3.5)^{2} \\times 3} = \\dfrac{4 \\times 1157.625}{36.75} = 126$\n\nThe $\\pi$ and the thirds vanish either way. The answer must be a **whole number** — if it is not, check your arithmetic, because you cannot cast two-thirds of a cone.",
+      "chapter": "Surface Areas and Volumes"
+    },
+    {
+      "id": "sv-015",
+      "topic": "A well and the ring around it",
+      "type": "long",
+      "marks": 3,
+      "q": "A well of diameter 3 m is dug 14 m deep. The earth taken out has been spread evenly all around it in the shape of a circular ring of width 4 m to form an embankment. Find the height of the embankment. (Take $\\pi = \\dfrac{22}{7}$)",
+      "solution": "**The principle again:** the earth dug out is exactly the earth spread around, so the two volumes are equal.\n\n**Volume dug out** — a cylinder of radius $1.5$ m and depth 14 m:\n\n$V = \\pi r^{2}h = \\dfrac{22}{7} \\times (1.5)^{2} \\times 14 = \\dfrac{22}{7} \\times 2.25 \\times 14 = 99$ m³\n\n**The embankment** is a ring (a hollow cylinder) of height $H$. Its inner radius is the well's, $1.5$ m, and it is 4 m wide, so its outer radius is $1.5 + 4 = 5.5$ m.\n\n$\\text{volume} = \\pi\\big(R^{2} - r^{2}\\big)H = \\dfrac{22}{7}\\big(5.5^{2} - 1.5^{2}\\big)H$\n\n$= \\dfrac{22}{7}\\big(30.25 - 2.25\\big)H = \\dfrac{22}{7} \\times 28 \\times H = 88H$\n\n**Set them equal:**\n\n$88H = 99 \\Rightarrow H = \\dfrac{99}{88} = \\mathbf{1.125}$ m\n\nThe step that catches people is the outer radius. The width of 4 m is measured **from the edge of the well outwards**, so it is added to the well's *radius*, not to its diameter — $R = 5.5$, not $7$.\n\nAnd the embankment is a ring, not a disc: the well is still there in the middle, which is why you subtract $r^{2}$.",
+      "chapter": "Surface Areas and Volumes"
+    }
+  ]
+}
