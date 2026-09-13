@@ -2,17 +2,20 @@ name: Deploy to Azure Static Web Apps
 
 # Two deploy jobs, deliberately not one with a conditional environment: a push
 # to main goes to production and must never be able to land anywhere else.
+#
+# Both fire on PUSH, and there is no pull_request trigger. That is not a style
+# choice: on a pull_request event the deploy action derives the environment from
+# the PR number and ignores `deployment_environment`, so the named QA
+# environment is only reachable from a branch push. Microsoft's own example
+# pairs `deployment_environment` with a push-on-branches trigger.
 on:
   push:
-    branches: [main]
+    branches: ["**"]
   workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches: [main]
 
 jobs:
   production:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Build and deploy
     steps:
@@ -41,17 +44,18 @@ jobs:
           api_location: api
           skip_app_build: true
 
-  # Every PR deploys to ONE named environment with a stable URL, rather than a
-  # per-PR one. Google sign-in is bound to an origin, so a URL that changes with
+  # Every branch but main deploys to ONE named environment with a stable URL,
+  # rather than a per-PR one. Google sign-in is bound to an origin, so a URL that changes with
   # the PR number cannot be signed in to — a QA site nobody can log into is not
   # a QA site. The hostname below is the only extra origin on the OAuth client.
   #
-  # The trade: one PR under test at a time, since they share the environment.
+  # The trade: one branch under test at a time, since they share the
+  # environment; the newest push wins.
   # Azure's Free plan allows 3 named environments per app if that ever needs to
   # become two. A custom domain cannot be used here — Azure does not support
   # custom domains on preview environments, only on an app's production one.
   qa:
-    if: github.event_name == 'pull_request'
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Build and deploy to QA
     steps:

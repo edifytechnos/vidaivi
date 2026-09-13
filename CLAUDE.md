@@ -58,13 +58,23 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret). That workflow has
   **two jobs on purpose** — `production` (push/dispatch) and `qa` (pull request).
   A single job with a conditional environment could land a push to `main`
-  somewhere other than production; two jobs cannot.
+  somewhere other than production; two jobs cannot. **Both fire on `push`, and
+  there is no `pull_request` trigger** — see below.
 
 ### QA is one fixed URL, not a URL per PR
 
 **https://ambitious-plant-03e9c0f00-qa.eastasia.5.azurestaticapps.net** — every
-PR against `main` deploys here (`deployment_environment: qa`, an Azure *named
-environment*). Use it for teacher approval of new question sets before merging.
+push to a branch that is not `main` deploys here (`deployment_environment: qa`,
+an Azure *named environment*). Use it for teacher approval of new question sets
+before merging.
+
+**It has to be a push trigger, not `pull_request`.** On a `pull_request` event
+the deploy action derives the environment from the PR number and **silently
+ignores `deployment_environment`** — the job succeeds and the log reads
+`Visit your site at: …-<PR number>.…`. That was tried and does not work;
+Microsoft's own example pairs `deployment_environment` with a push-on-branches
+trigger. The cost is that PRs no longer get an automatic preview comment, which
+is fine when the URL never changes.
 
 The URL is fixed **because Google sign-in is bound to an origin**. Per-PR
 previews (`…-<PR number>.…`) each have a new origin, so nobody can sign in to
@@ -72,8 +82,8 @@ one, which makes them useless for testing anything behind a login. This host is
 an authorised JavaScript origin on the OAuth client, alongside
 `https://vidai.seyali.app`.
 
-- **One PR under test at a time** — they share the environment, so the newest
-  push wins. Azure's Free plan allows 3 named environments per app if that ever
+- **One branch under test at a time** — they share the environment, so the
+  newest push wins. Azure's Free plan allows 3 named environments per app if that ever
   needs to become two.
 - **`vidai.qa.seyali.app` is not possible here.** Azure does not support custom
   domains on preview environments, only on an app's *production* environment
