@@ -84,15 +84,31 @@ an authorised JavaScript origin on the OAuth client, alongside
 
 - **One branch under test at a time** — they share the environment, so the
   newest push wins.
-- **The Free plan allows only THREE staging environments per app, and the
-  fourth does not fail loudly.** It half-serves: roughly half of all requests
-  come back as Azure's own 404 page. If QA starts flapping, that is why —
-  count the live environments (`…-<name>.eastasia.5.azurestaticapps.net`) and
-  close a stale one with **Actions → Deploy to Azure Static Web Apps → Run
-  workflow → close_environment**. A PR closing frees its own slot
-  automatically; that `pull_request: [closed]` trigger runs the cleanup job
-  only and never deploys. Azure's Free plan allows 3 named environments per app if that ever
-  needs to become two.
+- **The named environment does not route reliably, and this is unresolved.**
+  It answers only some requests; the rest come back as Azure's own 404 page.
+  Measured repeatedly over an afternoon: `qa` ranged 0/10 to 7/10 while the
+  PR-numbered environment `26` on the same app served 10/10 every time. So on
+  this app, *PR* staging environments are reliable and a *named* one is not.
+  **Do not hand the QA URL to anyone as a working test site until this is
+  fixed.**
+  Two theories were tested and **disproved**: it is not the Free plan's
+  3-staging-environment limit (a slot was freed, env `27` confirmed closed, no
+  change) and it is not first-deploy propagation (a clean redeploy into the
+  free slot, no change). The `Unexpected input 'deployment_environment'`
+  warning in the log is a red herring — the action's manifest does not declare
+  the input, but Docker passes it through and the deploy engine honours it, as
+  the log's own `Visit your site at: …-qa.…` line shows.
+  The way out is a **second Static Web App**, whose *production* environment
+  would be the QA site: production environments route reliably, they can carry
+  a custom domain, and separate app settings would let QA stop writing to the
+  live database.
+- **The Free plan allows three staging environments per app.** Not the cause of
+  the above, but still a real limit worth respecting: a PR closing frees its own
+  slot automatically (the `pull_request: [closed]` trigger runs the cleanup job
+  only and never deploys). **Actions → Run workflow** takes a
+  `close_environment` name, but Azure refuses it outside a PR event
+  (*"Request is missing the pull request id"*) — closing and reopening the PR
+  is what actually frees a slot by hand.
 - **`vidai.qa.seyali.app` is not possible here.** Azure does not support custom
   domains on preview environments, only on an app's *production* environment
   ([docs](https://learn.microsoft.com/en-us/azure/static-web-apps/custom-domain)).
