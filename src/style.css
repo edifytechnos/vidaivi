@@ -1185,7 +1185,14 @@ body {
 
 .editor.tree-open .ed-tree { display: flex; }
 
-.ed-tree-head { margin-bottom: 10px; }
+.ed-tree-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ed-tree-head .ed-tree-title { flex: 1; min-width: 0; }
 
 .ed-tree-title {
   font-size: 11px;
@@ -1196,16 +1203,13 @@ body {
 }
 
 .ed-tree-add {
-  width: 100%;
+  flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  font: inherit;
-  font-size: 13.5px;
-  font-weight: 600;
+  width: 26px;
+  height: 26px;
+  padding: 0;
   color: #fff;
   background: var(--primary);
   border: 1px solid transparent;
@@ -1213,6 +1217,7 @@ body {
   cursor: pointer;
 }
 
+.ed-tree-add svg { width: 15px; height: 15px; }
 .ed-tree-add:hover { background: var(--primary-hover); }
 
 .ed-tree-test {
@@ -2063,6 +2068,12 @@ body {
 /* Brand and profile now live in the bar, which spans the whole window. */
 .shellbar-brand {
   display: flex;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
   align-items: center;
   gap: 9px;
   flex: none;
@@ -2198,11 +2209,14 @@ body {
     padding: 0 12px;
     gap: 8px;
   }
-  .shellbar-brand span:not(.brand-mark),
+  .shellbar-brand .brand-word,
   .tb-name,
   .tb-role,
   .shellbar-div,
-  .shellbar-sub {
+  .shellbar-sub,
+  /* The crumb row under the bar already names the test; on a phone the bar's
+     copy of it only crowds out the subject picker. */
+  .shellbar-title {
     display: none;
   }
 }
@@ -3269,4 +3283,105 @@ body.modal-open {
 @media (max-width: 720px) {
   .crumb-wide { display: none; }
   .crumb-tight { display: inline; }
+}
+
+
+/* A test's name in a list: the chapter, with the rest of the title beneath it,
+   so two tests on the same chapter are still told apart. See testLabel(). */
+.tl {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  text-align: left;
+}
+
+.tl-main {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tl-sub {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The subject this teacher is working in, in the app bar beside the brand. */
+.shellbar-lead {
+  /* Shrinkable, not fixed: on a phone the bar is brand + subject + profile, and
+     the subject is the one part that can give up width without losing meaning. */
+  /* Fixed width: the title beside it already ellipsizes, so the bar gives up
+     the test's name before it gives up the name of the subject you are in. */
+  flex: none;
+  display: flex;
+  align-items: center;
+}
+
+.shellbar-lead[hidden] { display: none; }
+
+.shellbar-select {
+  width: 168px;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+/* One row of actions at the top right of the pane — icons with tooltips, not
+   the same three buttons written out twice on one screen. */
+.ed-toolbar {
+  display: flex;
+  margin-top: -2px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ed-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.ed-tool svg { width: 17px; height: 17px; }
+.ed-tool:hover { color: var(--text); border-color: var(--muted); }
+
+.ed-tool.primary {
+  color: #fff;
+  background: var(--primary);
+  border-color: transparent;
+}
+
+.ed-tool.primary:hover { background: var(--primary-hover); color: #fff; }
+.ed-tool:disabled { opacity: 0.55; cursor: default; }
+
+@media (max-width: 600px) {
+  .shellbar-select { width: 120px; }
+}
+
+/* Below 1100px the bar cannot hold brand, subject, title, note, state and
+   profile. The note goes first: the status chip carries it as a tooltip, and
+   the test's own name is what a teacher needs to see. */
+@media (max-width: 1100px) {
+  .shellbar-sub { display: none; }
+  .shellbar-title { min-width: 60px; }
 }

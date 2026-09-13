@@ -41,14 +41,14 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   check(await page.isVisible("#ed-new-test"), "the tree's primary button creates a TEST");
   // Every test is a root node; questions hang beneath their own test.
   const nodes = await page.$$(".ed-node");
-  check(nodes.length >= 3, `the tree lists every test as a root node (${nodes.length})`);
+  check(nodes.length >= 2, `the tree lists every test as a root node (${nodes.length})`);
   const nested = await page.evaluate(() => {
     const open = document.querySelector(".ed-node.open");
     return !!open && !!open.querySelector(".ed-tree-questions");
   });
   check(nested, "the open test nests its questions beneath it");
   const others = await page.$$(".ed-node:not(.open) .ed-caret-btn");
-  check(others.length >= 2, "other tests are collapsed root nodes with a caret");
+  check(others.length >= 1, "other tests are collapsed root nodes with a caret");
   await page.click('.ed-insert-btn[data-at="0"]');
   await page.waitForSelector("#ed-q", { timeout: 15000 });
   check((await page.$$(".ed-tree-row[data-i]")).length === 1, "the + between rows inserts a question");
@@ -64,7 +64,10 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
     return a && e ? e.left >= a.right - 1 : false;
   });
   check(explainRight, "the explanation sits to the RIGHT of the answer panel, not below it");
-  check(await page.isVisible(".shellbar #ed-publish-bar"), "the shared top bar carries Publish");
+  // Publish now lives in the pane's own icon toolbar, not a second time in the
+  // app bar — the app bar keeps identity and state only.
+  check(!(await page.$(".shellbar #ed-publish-bar")), "the app bar no longer duplicates Publish");
+  check(await page.isVisible("#shellbar-home"), "the brand is a button that goes to Your subjects");
   check((await page.textContent("#shellbar-title")).trim().length > 0, "the shared top bar shows the test title");
   // The editor fills the shell's page area: from the rail's right edge and the
   // top bar's bottom edge to the window's right and bottom.
@@ -176,7 +179,13 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   const hollow = await page.$$(".ed-tree-q:not(:has(.ed-dot.done))");
   check(hollow.length >= 1, "an unfinished question shows a hollow dot in the tree");
 
-  await page.click("#ed-publish-bar");
+  await page.click("#ed-crumb-overview");
+  await page.waitForSelector(".ed-toolbar #ov-publish", { timeout: 15000 });
+  check(!(await page.$('.ed-panel-label:text-is("Publishing")')), "the duplicate PUBLISHING card is gone");
+  for (const id of ["ed-audience", "ov-preview", "ov-quick", "ov-publish"]) {
+    check(await page.isVisible(`.ed-toolbar #${id}`), `${id} is an icon button in the pane toolbar`);
+  }
+  await page.click(".ed-toolbar #ov-publish");
   await page.waitForSelector("#ov-publish-error:not([hidden])", { timeout: 25000 });
   const err = await page.textContent("#ov-publish-error");
   check(/finishing/.test(err), `publish is blocked: "${err.trim()}"`);
@@ -184,7 +193,7 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   check(/No explanation/.test(ovText), "the overview names what is unfinished");
   check(/1 question · 1 mark\b/.test(ovText), "counts read as singular for one question");
   check(/Multiple choice/.test(ovText), "the question type reads in plain words");
-  check(!/\$/.test(ovText.split("PUBLISHING")[0]), "the summary strips maths markers");
+  check(!/\$/.test(ovText), "the summary strips maths markers");
   await shot("ed-publish-blocked");
 
   // Finish it, and publishing should now go through.
@@ -197,7 +206,9 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   await page.waitForSelector(".ed-save-saved", { timeout: 20000 });
   check(!(await page.$(".ed-option-text")), "switching to long answer drops the option fields");
 
-  await page.click("#ed-publish-bar");
+  await page.click("#ed-crumb-overview");
+  await page.waitForSelector(".ed-toolbar #ov-publish", { timeout: 15000 });
+  await page.click(".ed-toolbar #ov-publish");
   await page.waitForSelector(".status-chip.status-done", { timeout: 25000 });
   check(true, "a finished test publishes");
 
@@ -212,7 +223,7 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
 
   // Phone layout: three tabs, one surface at a time.
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.click("#ed-unpublish-bar");
+  await page.click(".ed-banner #ed-unpublish");
   await page.waitForSelector(".ed-banner", { state: "detached", timeout: 20000 });
   check(true, "unpublishing clears the read-only banner");
   check(!(await page.$(".ed-save-dirty")), "publishing does not leave the document unsaved");

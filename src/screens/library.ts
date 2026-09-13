@@ -9,7 +9,7 @@
 
 import { track } from "../analytics";
 import { adoptTest, fetchLibrary, fetchServerTest, type ServerTestMeta } from "../api";
-import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
+import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
 import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
 import type { Test } from "../types";
 import { showEditor } from "./editor";
@@ -43,7 +43,7 @@ function treeMarkup(activeTest?: string, test?: Test, activeQuestion = 0): strin
           <div class="ed-node-head${active ? " active" : ""}">
             <button class="ed-tree-test lib-test" data-test="${escapeHtml(t.id)}">
               ${ICONS.folder}
-              <span class="ed-tree-name">${escapeHtml(t.title)}</span>
+              <span class="ed-tree-name">${testLabelMarkup(t.title, t.chapter)}</span>
               ${
                 t.adopted
                   ? `<span class="status-chip status-done">Copied</span>`
@@ -136,7 +136,7 @@ function renderOverview(): void {
                         (t) => `
                         <button class="test-card" data-test="${escapeHtml(t.id)}">
                           <div class="test-card-main">
-                            <div class="test-card-title">${escapeHtml(t.title)}</div>
+                            <div class="test-card-title">${testLabelMarkup(t.title, t.chapter)}</div>
                             <div class="test-card-sub">${escapeHtml(t.chapter || "")} · ${t.questionCount} questions · ${t.totalMarks} marks</div>
                           </div>
                           <span class="status-chip status-${t.adopted ? "done" : "new"}">${t.adopted ? "In My tests" : "Not copied"}</span>

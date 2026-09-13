@@ -3,8 +3,16 @@
 // bottom tabs and the tree opens as a drawer.
 
 import { track } from "../../analytics";
-import { fetchServerTest, fetchTestList, mutateTest, newQuestionId, setTestStatus, type TestProblem } from "../../api";
-import { ICONS, escapeHtml, setUrl } from "../../dom";
+import {
+  fetchServerTest,
+  fetchSubjects,
+  fetchTestList,
+  mutateTest,
+  newQuestionId,
+  setTestStatus,
+  type TestProblem,
+} from "../../api";
+import { ICONS, escapeHtml, setUrl, testLabelMarkup } from "../../dom";
 import { mount, setShellbar, skeleton } from "../../shell";
 import { openAssign } from "../assign";
 import type { Test } from "../../types";
@@ -20,7 +28,7 @@ import {
   totalMarks,
 } from "./state";
 import { answerPanel, bindQuestionEditor, blankQuestion, explanationPanel, questionBody } from "./panels";
-import { currentSubject } from "../home";
+import { currentSubject, setSubject } from "../home";
 import { showBuilder } from "../builder";
 
 type Pane = "question" | "answer" | "explain";
@@ -28,7 +36,9 @@ type Pane = "question" | "answer" | "explain";
 let onExit: () => void = () => {};
 let selectedIndex = -1; // -1 = the test overview
 let pane: Pane = "question";
-let siblings: { id: string; title: string; status: string; questionCount: number }[] = [];
+let siblings: { id: string; title: string; chapter: string; status: string; questionCount: number }[] = [];
+/** The teacher's own subjects, for the app bar picker. Fetched once per open. */
+let ownSubjects: { id: string; title: string }[] = [];
 const expanded = new Set<string>();
 const treeQuestions = new Map<string, { id: string; topic: string; marks: number; complete: boolean }[]>();
 let treeSubject: string | null = null;
@@ -45,9 +55,10 @@ export async function showEditor(testId: string, questionId: string | null, back
   mount(skeleton.editor(), { title: "Loading…", active: "subjects", full: true });
 
   // The tree shows the subject you came in through, not every test you own.
-  const [loaded, list] = await Promise.all([
+  const [loaded, list, subjectList] = await Promise.all([
     fetchServerTest(testId),
     fetchTestList(treeSubject ?? undefined),
+    fetchSubjects(),
   ]);
   if (!loaded) {
     mount(
@@ -61,7 +72,15 @@ export async function showEditor(testId: string, questionId: string | null, back
   }
   siblings = (list?.tests ?? [])
     .filter((t) => !t.platform)
-    .map((t) => ({ id: t.id, title: t.title, status: t.status, questionCount: t.questionCount }));
+    .map((t) => ({
+      id: t.id,
+      title: t.title,
+      chapter: t.chapter || "",
+      status: t.status,
+      questionCount: t.questionCount,
+    }));
+  // A shelf is read-only and lives on its own screen, so it is never offered here.
+  ownSubjects = (subjectList ?? []).filter((x) => !x.platform).map((x) => ({ id: x.id, title: x.title }));
   expanded.add(loaded.id);
   loadTest(loaded);
   problems = [];
@@ -117,11 +136,8 @@ function renderEmptyShell(): void {
         <aside class="ed-tree" id="ed-tree">
           <div class="ed-tree-head">
             <span class="ed-tree-title">Tests &amp; questions</span>
+            <button class="ed-tree-add" id="ed-new-test" title="Create a test" aria-label="Create a test">${ICONS.plus}</button>
           </div>
-          <button class="ed-tree-add" id="ed-new-test">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-            Create
-          </button>
           <p class="ed-empty ed-tree-empty">No tests yet.</p>
         </aside>
         <div class="ed-center">
@@ -190,6 +206,7 @@ function render(): void {
       sub: audienceNote(test),
       active: "subjects",
       full: true,
+      lead: subjectLead(),
       actions: editorActions(test),
     }
   );
@@ -199,20 +216,51 @@ function render(): void {
   renderSaveState();
 }
 
-/** The editor's own app bar, as designed: identity, taxonomy, state, actions. */
+/**
+ * The subject this teacher is working in, as a picker. Switching reloads the
+ * tree through the same path Your subjects uses, so there is one way in.
+ * Only their own subjects: a built-in shelf is read-only and opens elsewhere.
+ */
+function subjectLead(): string {
+  if (ownSubjects.length < 1) return "";
+  const here = treeSubject ?? "";
+  const options = ownSubjects
+    .map(
+      (x) =>
+        `<option value="${escapeHtml(x.id)}"${x.id === here ? " selected" : ""}>${escapeHtml(x.title)}</option>`
+    )
+    .join("");
+  return `<select class="shellbar-select" id="ed-subject" aria-label="Subject">${options}</select>`;
+}
+
 /** The editor's controls sit in the shell's top bar, not in a bar of their own. */
 function editorActions(test: Test): string {
-  const published = test.status === "published";
+  // Identity and state only. Every *action* lives in the pane's toolbar, so a
+  // teacher is not choosing between two buttons that do the same thing.
   return `
-      <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.users}</button>
-      <span class="status-chip ${statusClass(test.status ?? "draft")}" title="${escapeHtml(audienceNote(test))}">${statusLabel(test)}</span>
-      <button class="ed-bar-btn" id="ed-audience">${ICONS.users}<span class="ed-bar-btn-label">Who sees this</span></button>
-      <button class="ed-bar-btn" id="ed-preview">${ICONS.eye}<span class="ed-bar-btn-label">Preview</span></button>
+      <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.menu}</button>
+      <span class="status-chip ${statusClass(test.status ?? "draft")}" title="${escapeHtml(audienceNote(test))}">${statusLabel(test)}</span>`;
+}
+
+/**
+ * The one row of actions, at the top right of the pane. Icons with tooltips:
+ * the labels said the same thing twice over, once here and once in the app bar.
+ */
+function toolbarMarkup(test: Test): string {
+  const draft = test.status === "draft";
+  const btn = (id: string, icon: string, label: string, cls = "") =>
+    `<button class="ed-tool${cls ? " " + cls : ""}" id="${id}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${icon}</button>`;
+  return `
+    <div class="ed-toolbar">
+      ${btn("ed-audience", ICONS.users, "Who sees this")}
+      ${btn("ov-preview", ICONS.eye, "Preview as student")}
+      ${draft ? btn("ov-quick", ICONS.pencil, "Quick edit (card view)") : ""}
       ${
-        published
-          ? `<button class="ed-bar-btn primary" id="ed-unpublish-bar">Unpublish</button>`
-          : `<button class="ed-bar-btn primary" id="ed-publish-bar">Publish test</button>`
-      }`;
+        draft
+          ? btn("ov-publish", ICONS.send, "Publish to students", "primary")
+          : btn("ed-unpublish-bar", ICONS.undo, "Move back to draft")
+      }
+    </div>`;
 }
 
 /**
@@ -257,28 +305,35 @@ function statusLabel(test: Test): string {
 function treeMarkup(test: Test): string {
   const rows = siblings.some((s) => s.id === test.id)
     ? siblings
-    : [...siblings, { id: test.id, title: test.title, status: test.status ?? "draft", questionCount: test.questions.length }];
+    : [
+        ...siblings,
+        {
+          id: test.id,
+          title: test.title,
+          chapter: test.chapter || "",
+          status: test.status ?? "draft",
+          questionCount: test.questions.length,
+        },
+      ];
 
   return `
     <div class="ed-tree-head">
       <span class="ed-tree-title">Tests &amp; questions</span>
+      <button class="ed-tree-add" id="ed-new-test" title="Create a test" aria-label="Create a test">${ICONS.plus}</button>
     </div>
-    <button class="ed-tree-add" id="ed-new-test">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      Create
-    </button>
     <div class="ed-tree-body">
       ${rows.map((row) => testNode(row, test)).join("")}
     </div>`;
 }
 
 function testNode(
-  row: { id: string; title: string; status: string; questionCount: number },
+  row: { id: string; title: string; chapter?: string; status: string; questionCount: number },
   test: Test
 ): string {
   const isCurrent = row.id === test.id;
   const open = expanded.has(row.id);
   const title = isCurrent ? test.title || "Untitled test" : row.title;
+  const chapter = isCurrent ? test.chapter || "" : row.chapter;
   const status = isCurrent ? test.status ?? "draft" : row.status;
   return `
     <div class="ed-node${open ? " open" : ""}" data-test="${escapeHtml(row.id)}">
@@ -288,7 +343,7 @@ function testNode(
         </button>
         <button class="ed-tree-test${isCurrent ? "" : " ed-tree-other"}"${isCurrent ? ' id="ed-open-overview"' : ` data-test="${escapeHtml(row.id)}"`}>
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-          <span class="ed-tree-name">${escapeHtml(title)}</span>
+          <span class="ed-tree-name">${testLabelMarkup(title, chapter)}</span>
           <span class="status-chip ${statusClass(status)}">${status === "published" ? "Live" : status === "archived" ? "Archived" : "Draft"}</span>
         </button>
       </div>
@@ -418,6 +473,8 @@ function overviewMarkup(test: Test): string {
   const problemFor = (id: string) => problems.filter((p) => p.questionId === id);
   return `
     <div class="ed-overview">
+      ${toolbarMarkup(test)}
+      <p id="ov-publish-error" class="login-error"${publishError ? "" : " hidden"}>${escapeHtml(publishError)}</p>
       <section class="ed-panel">
         <div class="ed-panel-head"><span class="ed-panel-label">Test details</span></div>
         <div class="ed-grid">
@@ -473,19 +530,6 @@ function overviewMarkup(test: Test): string {
         ${test.questions.length === 0 ? `<p class="ed-empty">No questions yet — add the first from the tree.</p>` : ""}
       </section>
 
-      <section class="ed-panel">
-        <div class="ed-panel-head"><span class="ed-panel-label">Publishing</span></div>
-        <p id="ov-publish-error" class="login-error"${publishError ? "" : " hidden"}>${escapeHtml(publishError)}</p>
-        <div class="actions">
-          ${
-            test.status === "draft"
-              ? `<button class="btn btn-primary" id="ov-publish">Publish to students</button>`
-              : `<button class="btn btn-ghost" id="ed-unpublish">Move back to draft</button>`
-          }
-          <button class="btn btn-ghost" id="ov-preview">Preview as student</button>
-          ${test.status === "draft" ? `<button class="btn btn-ghost" id="ov-quick">Quick edit (card view)</button>` : ""}
-        </div>
-      </section>
     </div>`;
 }
 
@@ -532,12 +576,11 @@ async function publish(): Promise<void> {
   const test = currentTest();
   const btn = document.getElementById("ov-publish") as HTMLButtonElement | null;
   if (!test || !btn) return;
+  // An icon button: it says "publishing" by going dim, not by changing its label.
   btn.disabled = true;
-  btn.textContent = "Publishing…";
   await save(); // publish validates what is stored, so flush pending edits first
   const result = await setTestStatus(test.id, "publish");
   btn.disabled = false;
-  btn.textContent = "Publish to students";
   if (!result.ok) {
     // Held in state: renderBody() rebuilds the overview, so a message written
     // straight into the DOM would be wiped by the very next render.
@@ -728,6 +771,13 @@ function bindChrome(): void {
   bindTree();
   document.getElementById("ed-exit")?.addEventListener("click", () => {
     void save().then(onExit);
+  });
+  const subjectSel = document.getElementById("ed-subject") as HTMLSelectElement | null;
+  subjectSel?.addEventListener("change", () => {
+    const id = subjectSel.value;
+    if (!id || id === treeSubject) return;
+    setSubject(id);
+    void save().then(() => showEditorForSubject(id, onExit));
   });
   document.getElementById("ed-crumb-overview")?.addEventListener("click", () => {
     selectedIndex = -1;

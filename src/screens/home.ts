@@ -5,7 +5,7 @@ import { authEnabled, fetchGrading, fetchMyAttempts, getProfile, isLoggedIn } fr
 import { fetchTestList } from "../api";
 import { loadAttempt, requiresLogin, setGuest } from "../attempts";
 import { TESTS, totalMarks } from "../data";
-import { escapeHtml, gotoTest, ICONS, setUrl } from "../dom";
+import { escapeHtml, gotoTest, ICONS, setUrl, testLabelMarkup } from "../dom";
 import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
 
@@ -94,7 +94,7 @@ export function showHome(subjectId: string | null = activeSubject) {
         return `
         <button class="test-card" data-test="${t.id}">
           <div class="test-card-main">
-            <div class="test-card-title">${locked ? ICONS.lock : ""}${escapeHtml(t.title)}</div>
+            <div class="test-card-title">${locked ? ICONS.lock : ""}${testLabelMarkup(t.title, t.chapter)}</div>
             <div class="test-card-sub">${t.questions.length} questions · ${total} marks${locked ? " · sign in to attempt" : ""}</div>
           </div>
           ${status}
@@ -144,7 +144,7 @@ async function renderServerTests(): Promise<void> {
         return `
         <button class="test-card" data-test="${escapeHtml(t.id)}">
           <div class="test-card-main">
-            <div class="test-card-title">${escapeHtml(t.title)}</div>
+            <div class="test-card-title">${testLabelMarkup(t.title, t.chapter)}</div>
             <div class="test-card-sub">${t.questionCount} questions · ${t.totalMarks} marks</div>
           </div>
           ${status}

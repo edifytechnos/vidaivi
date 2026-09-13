@@ -211,10 +211,43 @@ right rather than stacked in the middle column; `e2e/editor.cjs` asserts each.
 The tree is a real tree: **every test is a root node**, its **questions are the
 level beneath it**. Any test can be expanded — another test's questions are
 fetched on demand (`loadTreeQuestions`) and clicking one switches the editor to
-that test. **Create** makes a new *test*; questions are added with the **+** that
-appears between rows on hover, inserting at that position (only the slot below
+that test. **Create** is the small **+** in the tree's header (`#ed-new-test`) and makes a
+new *test*; questions are added with the **+** that appears between rows on hover, inserting at that position (only the slot below
 the hovered question shows). Each question row has a **…** menu (duplicate,
 move, delete) and a drag handle for reordering.
+
+### The app bar names where you are; the pane holds the actions
+
+The bar reads **Vidai │ subject ▾ │ test title · status**. The brand is a button
+that goes to Your subjects (bound in `installShell()` in `src/screens/menu.ts` —
+`shell.ts` must not import `screens/subjects.ts`, which imports `mount` from it).
+`mount()`/`setShellbar()` take an optional **`lead`** slot between brand and
+title; the editor fills it with `#ed-subject`, a `<select>` of the teacher's
+**own** subjects (a platform shelf is read-only and opens on its own screen).
+The list is fetched **once when the editor opens**, in the same `Promise.all` as
+the tests, and reused on every render. Switching calls `showEditorForSubject`.
+`setShellbar` writes `lead` only when given it, so a re-render cannot wipe the
+picker out from under an open dropdown. Below 1100px the audience note drops and
+below 600px the title does: the crumb row already carries the test's name.
+
+**Every action is one icon row** (`.ed-toolbar`, `toolbarMarkup`) at the top
+right of the overview pane — Who sees this (`#ed-audience`), Preview
+(`#ov-preview`), Quick edit (`#ov-quick`, drafts only) and Publish
+(`#ov-publish`) / Move back to draft (`#ed-unpublish-bar`). There is no
+PUBLISHING card and no duplicate set in the app bar; the bar keeps identity and
+state only (the tree toggle and the status chip, whose `title` is
+`audienceNote()`). The read-only banner keeps its own `#ed-unpublish`, which is
+why the toolbar's is `#ed-unpublish-bar` — two of the same id would leave one
+unbindable.
+
+**A test is named on two lines wherever it is listed**: the chapter, and the
+rest of the title beneath it smaller and lighter, so two tests on the same
+chapter are told apart. `testLabel` / `testLabelMarkup` in `src/dom.ts` is the
+one implementation (`.tl > .tl-main + .tl-sub`) — it strips a leading
+`Class N ·` prefix, since the class is the subject you are already in. Used by
+the editor tree, `library.ts`, `student.ts`, `review.ts` and `home.ts`. **Not**
+the app bar (`mount({title})` sets `textContent`, and a second line would grow
+the bar) and **not** the My tests table, which has its own Chapter column.
 
 `index.ts` is the shell (app bar, tree, overview, responsive panes), `state.ts` holds the working
 copy and autosaves ~1s after typing (saves are serialised, never concurrent),

@@ -46,6 +46,43 @@ export function formatText(s: string): string {
     .join("");
 }
 
+/**
+ * How a test is named in a list: the chapter on top, the rest of its title
+ * beneath in smaller, lighter type. "Class 10 · Real Numbers — Chapter Test 1"
+ * with chapter "Real Numbers" reads as **Real Numbers** / *Chapter Test 1*, so
+ * two tests on the same chapter are still told apart.
+ *
+ * The class prefix goes because the class is the subject you are already in —
+ * repeating it on every row spent the width that the distinguishing half needed.
+ * The stored title is never touched; this is display only.
+ */
+export function testLabel(title: string, chapter?: string): { main: string; sub: string } {
+  const full = String(title || "").trim();
+  // "Class 10 · ", "Class 12 - ", "Class 9 — " — the separator is optional.
+  const stripped = full.replace(/^class\s*\d+\s*[·—–:-]?\s*/i, "").trim() || full;
+  const chap = String(chapter || "").trim();
+
+  if (chap) {
+    const at = stripped.toLowerCase().indexOf(chap.toLowerCase());
+    if (at !== -1) {
+      const rest = (stripped.slice(0, at) + " " + stripped.slice(at + chap.length))
+        .replace(/[·—–:-]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      return { main: chap, sub: rest };
+    }
+  }
+  return { main: stripped, sub: "" };
+}
+
+/** The same label as markup, so every list renders it identically. */
+export function testLabelMarkup(title: string, chapter?: string): string {
+  const { main, sub } = testLabel(title, chapter);
+  return `<span class="tl"><span class="tl-main">${escapeHtml(main)}</span>${
+    sub ? `<span class="tl-sub">${escapeHtml(sub)}</span>` : ""
+  }</span>`;
+}
+
 export const ICONS = {
   home: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>`,
   logout: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>`,
@@ -60,6 +97,10 @@ export const ICONS = {
   mark: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>`,
   caretDown: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`,
   shield: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+  plus: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>`,
+  pencil: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>`,
+  send: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>`,
+  undo: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M3.5 13a9 9 0 1 0 2.1-5.7L3 10"/></svg>`,
 };
 
 export function brand(): string {

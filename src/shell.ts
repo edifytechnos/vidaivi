@@ -118,6 +118,8 @@ export interface ShellOpts {
   sub?: string;
   /** Page-specific buttons for the top bar's right side. */
   actions?: string;
+  /** A control between the brand and the title — the editor's subject picker. */
+  lead?: string;
   active?: RailKey;
   /** The editor: content fills the page area edge to edge, no gutter. */
   full?: boolean;
@@ -150,8 +152,9 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
     app.innerHTML = `
       <div class="shell${railExpanded() ? " rail-open" : ""}">
         <header class="shellbar">
-          <span class="shellbar-brand"><span class="brand-mark">V</span>Vidai</span>
+          <button class="shellbar-brand" id="shellbar-home" title="Your subjects" aria-label="Your subjects"><span class="brand-mark">V</span><span class="brand-word">Vidai</span></button>
           <span class="shellbar-div"></span>
+          <span class="shellbar-lead" id="shellbar-lead"></span>
           <span class="shellbar-title" id="shellbar-title"></span>
           <span class="shellbar-sub" id="shellbar-sub"></span>
           <div class="shellbar-actions" id="shellbar-actions"></div>
@@ -168,6 +171,9 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
   }
 
   document.getElementById("shellbar-title")!.textContent = opts.title;
+  const lead = document.getElementById("shellbar-lead")!;
+  lead.innerHTML = opts.lead ?? "";
+  lead.hidden = !opts.lead;
   const sub = document.getElementById("shellbar-sub")!;
   sub.textContent = opts.sub ?? "";
   sub.hidden = !opts.sub;
@@ -184,13 +190,20 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
 }
 
 /** Update only the top bar — the editor does this as its status changes. */
-export function setShellbar(opts: Pick<ShellOpts, "title" | "sub" | "actions">): void {
+export function setShellbar(opts: Pick<ShellOpts, "title" | "sub" | "actions" | "lead">): void {
   const title = document.getElementById("shellbar-title");
   if (!title) return;
   title.textContent = opts.title;
   const sub = document.getElementById("shellbar-sub")!;
   sub.textContent = opts.sub ?? "";
   sub.hidden = !opts.sub;
+  // Only when given: a re-render that omits it must not wipe the subject picker
+  // out from under an open dropdown.
+  if (opts.lead !== undefined) {
+    const lead = document.getElementById("shellbar-lead")!;
+    lead.innerHTML = opts.lead;
+    lead.hidden = !opts.lead;
+  }
   if (opts.actions !== undefined) document.getElementById("shellbar-actions")!.innerHTML = opts.actions;
 }
 
