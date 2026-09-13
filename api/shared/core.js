@@ -21,16 +21,74 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const STUDENT_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const ADMIN_TOKEN_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
 
-function tableClient(name) {
-  return TableClient.fromConnectionString(STORAGE, name);
+// ---------- In-process caches ----------
+//
+// A warm Function instance serves many requests before it is recycled, so
+// anything derived from a stable input is memoised here. This is the whole of
+// the caching tier: no Redis, no Front Door, nothing to pay for. Every entry
+// carries a TTL, because a cold instance must never be able to disagree with a
+// warm one for longer than that TTL.
+
+function makeCache(maxEntries = 500) {
+  const map = new Map();
+  return {
+    get(key) {
+      const hit = map.get(key);
+      if (!hit) return undefined;
+      if (hit.expires <= Date.now()) {
+        map.delete(key);
+        return undefined;
+      }
+      map.delete(key); // re-insert, so the least recently used key evicts first
+      map.set(key, hit);
+      return hit.value;
+    },
+    set(key, value, ttlMs) {
+      map.delete(key);
+      map.set(key, { value, expires: Date.now() + ttlMs });
+      if (map.size > maxEntries) map.delete(map.keys().next().value);
+      return value;
+    },
+    drop(key) {
+      map.delete(key);
+    },
+  };
 }
 
+/** Run `fn` over `items` a few at a time: parallel, but never unbounded. */
+async function inBatches(items, size, fn) {
+  const out = [];
+  for (let i = 0; i < items.length; i += size) {
+    out.push(...(await Promise.all(items.slice(i, i + size).map(fn))));
+  }
+  return out;
+}
+
+// A TableClient is stateless and owns the HTTP connection pool, so building a
+// new one per call threw away keep-alive on every request.
+const tableClients = new Map();
+
+function tableClient(name) {
+  let client = tableClients.get(name);
+  if (!client) {
+    client = TableClient.fromConnectionString(STORAGE, name);
+    tableClients.set(name, client);
+  }
+  return client;
+}
+
+// createTable answers 409 the moment the table exists, so calling it on every
+// request bought nothing but a round trip. Once per table per instance is enough.
+const ensuredTables = new Set();
+
 async function ensureTable(client) {
+  if (ensuredTables.has(client.tableName)) return;
   try {
     await client.createTable();
   } catch (e) {
     if (e.statusCode !== 409) throw e; // 409 = already exists
   }
+  ensuredTables.add(client.tableName);
 }
 
 function b64url(buf) {
@@ -76,9 +134,33 @@ function getBody(req) {
 
 // ---------- Google auth (teachers / parents) ----------
 
+// Google's tokeninfo endpoint sat in front of every single request a teacher
+// or parent made — an outbound HTTPS round trip before any of our own work.
+// The answer is pinned to one credential string and holds until that token
+// expires, so a warm instance verifies each token once. The TTL is capped well
+// under the token's own hour so a withdrawn account cannot linger.
+const GOOGLE_TOKEN_TTL_MS = 5 * 60 * 1000;
+const GOOGLE_TOKEN_FAIL_TTL_MS = 30 * 1000;
+const tokenCache = makeCache(500);
+
 async function verifyGoogleToken(credential) {
   if (!credential) return { reason: "no_bearer_token" };
   if (!GOOGLE_CLIENT_ID) return { reason: "no_client_id_configured" };
+  // The credential is a secret: key on a digest of it, never on the token.
+  const key = crypto.createHash("sha256").update(credential).digest("base64url");
+  const cached = tokenCache.get(key);
+  if (cached) return cached;
+  const result = await askGoogleAboutToken(credential);
+  // A rejection is cached briefly too, or a client looping on a stale token
+  // would hammer Google once per retry.
+  const ttl = result.token
+    ? Math.min(GOOGLE_TOKEN_TTL_MS, Number(result.token.exp) * 1000 - Date.now())
+    : GOOGLE_TOKEN_FAIL_TTL_MS;
+  if (ttl > 0) tokenCache.set(key, result, ttl);
+  return result;
+}
+
+async function askGoogleAboutToken(credential) {
   let res;
   try {
     res = await fetch(
@@ -102,16 +184,24 @@ async function verifyGoogleToken(credential) {
 
 // Teacher allowlist lives in the "teachers" table (managed from the admin
 // dashboard); the TEACHER_EMAILS app setting remains as an optional fallback.
+// One table read per request, for an answer that changes about twice a year.
+// The teachers handler drops the entry when the allowlist is edited, so an
+// admin sees their own change at once; another instance catches up within the TTL.
+const ROLE_TTL_MS = 60 * 1000;
+const roleCache = makeCache(500);
+
 async function resolveRole(email) {
   const normalized = String(email).toLowerCase();
   if (ADMIN_EMAILS.includes(normalized)) return "admin";
   if (TEACHER_EMAILS.includes(normalized)) return "teacher";
+  const cached = roleCache.get(normalized);
+  if (cached) return cached;
+  let role = "parent";
   try {
     await tableClient("teachers").getEntity("teacher", normalized);
-    return "teacher";
-  } catch {
-    return "parent";
-  }
+    role = "teacher";
+  } catch {}
+  return roleCache.set(normalized, role, ROLE_TTL_MS);
 }
 
 // ---------- Sessions (students and admins) ----------
@@ -174,6 +264,16 @@ function generatePassword() {
   return `${w1}${n}${w2}`;
 }
 
+// A roster row never needs the password hash — the one property on a student
+// that must not travel further than the login check.
+const ROSTER_SELECT = [
+  "PartitionKey", "RowKey", "name", "school", "grade", "parentPhone", "teacherSub",
+];
+
+const ATTEMPT_LIST_SELECT = [
+  "PartitionKey", "RowKey", "testId", "score", "total", "completedAt", "updatedAt", "index",
+];
+
 function slugify(name) {
   return (
     String(name)
@@ -185,6 +285,23 @@ function slugify(name) {
 
 // ---------- Unified caller identity ----------
 
+// Every student request read this row. Removing a student must still revoke
+// their access, so the window is short and the students handler drops the entry
+// the moment it deletes or resets an account; across instances the account stays
+// usable for at most STUDENT_TTL_MS after removal.
+const STUDENT_TTL_MS = 30 * 1000;
+const studentCache = makeCache(500);
+
+async function studentRecord(username) {
+  const cached = studentCache.get(username);
+  if (cached !== undefined) return cached;
+  let record = null;
+  try {
+    record = await tableClient("students").getEntity("student", username);
+  } catch {}
+  return studentCache.set(username, record, STUDENT_TTL_MS);
+}
+
 async function identify(req) {
   const bearer = getBearer(req);
   if (!bearer) return { reason: "no_bearer_token" };
@@ -195,12 +312,8 @@ async function identify(req) {
     // Student sessions last 30 days, so a signed token outlives the account.
     // Check the record still exists, otherwise removing a student would not
     // actually revoke their access. Also carries teacherSub for test scoping.
-    let record;
-    try {
-      record = await tableClient("students").getEntity("student", session.username);
-    } catch {
-      return { reason: "student_removed" };
-    }
+    const record = await studentRecord(session.username);
+    if (!record) return { reason: "student_removed" };
     return {
       kind: "student",
       id: `stu~${session.username}`,
@@ -356,8 +469,10 @@ handlers.teachers = async (context, req) => {
       try {
         await teachers.deleteEntity("teacher", email);
       } catch {}
+      roleCache.drop(email);
       return json(context, 200, { ok: true });
     }
+    roleCache.drop(email);
     await teachers.upsertEntity(
       {
         partitionKey: "teacher",
@@ -372,7 +487,7 @@ handlers.teachers = async (context, req) => {
 
   const list = [];
   const iter = teachers.listEntities({
-    queryOptions: { filter: `PartitionKey eq 'teacher'` },
+    queryOptions: { filter: `PartitionKey eq 'teacher'`, select: ["PartitionKey", "RowKey", "addedAt"] },
   });
   for await (const e of iter) {
     list.push({ email: e.rowKey, addedAt: e.addedAt });
@@ -414,7 +529,10 @@ handlers.students = async (context, req) => {
       let removedAttempts = 0;
       try {
         const iter = attempts.listEntities({
-          queryOptions: { filter: `PartitionKey eq 'stu~${username.replace(/'/g, "''")}'` },
+          queryOptions: {
+            filter: `PartitionKey eq 'stu~${username.replace(/'/g, "''")}'`,
+            select: ["PartitionKey", "RowKey"],
+          },
         });
         for await (const a of iter) {
           await attempts.deleteEntity(a.partitionKey, a.rowKey);
@@ -424,6 +542,7 @@ handlers.students = async (context, req) => {
         // Best effort: the student record still goes, below.
       }
       await students.deleteEntity("student", username);
+      studentCache.drop(username); // revoke this instance's copy at once
       return json(context, 200, { ok: true, username, removedAttempts });
     }
 
@@ -441,6 +560,7 @@ handlers.students = async (context, req) => {
       const password = generatePassword();
       entity.passwordHash = hashPassword(password);
       await students.upsertEntity(entity, "Merge");
+      studentCache.drop(username);
       return json(context, 200, { username, password });
     }
 
@@ -476,12 +596,16 @@ handlers.students = async (context, req) => {
       teacherEmail: who.email || "",
       createdAt: new Date().toISOString(),
     });
+    studentCache.drop(username); // in case a lookup cached this name as absent
     return json(context, 201, { username, password, name, school, grade, parentPhone });
   }
 
   const list = [];
   const iter = students.listEntities({
-    queryOptions: { filter: `PartitionKey eq 'student' and teacherSub eq '${who.id.replace(/'/g, "''")}'` },
+    queryOptions: {
+      filter: `PartitionKey eq 'student' and teacherSub eq '${who.id.replace(/'/g, "''")}'`,
+      select: ROSTER_SELECT.concat("createdAt"),
+    },
   });
   for await (const e of iter) {
     list.push({
@@ -516,7 +640,10 @@ handlers.reports = async (context, req) => {
   // Collect this teacher's students (optionally just one).
   const roster = [];
   const iter = students.listEntities({
-    queryOptions: { filter: `PartitionKey eq 'student' and teacherSub eq '${who.id.replace(/'/g, "''")}'` },
+    queryOptions: {
+      filter: `PartitionKey eq 'student' and teacherSub eq '${who.id.replace(/'/g, "''")}'`,
+      select: ROSTER_SELECT,
+    },
   });
   for await (const e of iter) {
     if (wanted && e.rowKey !== wanted) continue;
@@ -534,10 +661,15 @@ handlers.reports = async (context, req) => {
   }
 
   // Attach each student's attempts (newest first via inverted-time row keys).
-  for (const s of roster) {
+  // One partition query per student, but run a few at a time: awaiting them one
+  // after another made a class of 200 into 200 serial round trips.
+  await inBatches(roster, 20, async (s) => {
     s.attempts = [];
     const aIter = attempts.listEntities({
-      queryOptions: { filter: `PartitionKey eq 'stu~${s.username.replace(/'/g, "''")}'` },
+      queryOptions: {
+        filter: `PartitionKey eq 'stu~${s.username.replace(/'/g, "''")}'`,
+        select: ATTEMPT_LIST_SELECT,
+      },
     });
     for await (const a of aIter) {
       s.attempts.push({
@@ -548,7 +680,7 @@ handlers.reports = async (context, req) => {
       });
       if (s.attempts.length >= 100) break;
     }
-  }
+  });
   roster.sort((a, b) => String(a.name).localeCompare(String(b.name)));
   json(context, 200, { students: roster });
 };
@@ -561,6 +693,28 @@ handlers.reports = async (context, req) => {
 // day one even though the UI is fixed to CBSE/12/Maths for now.
 
 const TEST_STATUSES = ["draft", "published", "archived"];
+
+// Listing tests must never pull their questions off the wire. Without an
+// explicit projection Table Storage hands back every property — qc0..qcN
+// included — so a list of titles carried the full text of every paper it saw.
+// Anything visible(), testMeta() or testMetaForStaff() touches belongs here;
+// the question chunks deliberately do not.
+const TEST_META_SELECT = [
+  "PartitionKey", "RowKey", "title", "chapter", "teacher", "order", "access",
+  "status", "platform", "sample", "subjectId", "ownerSub", "updatedAt",
+  "audience", "assignedTo", "copiedFrom", "questionCount", "totalMarks",
+  "board", "klass", "subject",
+];
+
+// How many legacy rows one request may heal. Beyond it the rest keep their
+// fallback for the next listing, so no single request pays an unbounded cost.
+const COUNT_BACKFILL_BUDGET = 25;
+
+const SUBJECT_SELECT = [
+  "PartitionKey", "RowKey", "board", "klass", "subject", "title", "ownerSub",
+  "collaborators", "createdAt",
+];
+
 const Q_CHUNK = 30000;
 
 function chunkQuestions(entity, questions) {
@@ -570,6 +724,42 @@ function chunkQuestions(entity, questions) {
     entity[`qc${i}`] = raw.slice(i * Q_CHUNK, (i + 1) * Q_CHUNK);
   }
   entity.chunkCount = count;
+  // Denormalised so a listing can say how big a test is without reading its
+  // questions back. Every write of questions goes through here, so the stored
+  // counts cannot drift from the stored questions.
+  entity.questionCount = questions.length;
+  entity.totalMarks = questions.reduce((sum, q) => sum + (Number(q.marks) || 0), 0);
+}
+
+function countsFromQuestions(questions) {
+  return {
+    questionCount: questions.length,
+    totalMarks: questions.reduce((sum, q) => sum + (Number(q.marks) || 0), 0),
+  };
+}
+
+/** The stamped counts, or null for a row written before they existed. */
+function storedCounts(e) {
+  return typeof e.questionCount === "number" && typeof e.totalMarks === "number"
+    ? { questionCount: e.questionCount, totalMarks: e.totalMarks }
+    : null;
+}
+
+/**
+ * Heal a row written before the counts were stamped: read it in full once,
+ * write the counts back, and answer from them afterwards. Bounded per request,
+ * so one listing can never turn into a table-wide rewrite.
+ */
+async function backfillCounts(tests, e, budget) {
+  if (storedCounts(e) || budget.left <= 0) return e;
+  budget.left--;
+  try {
+    const counts = countsFromQuestions(unchunkQuestions(await tests.getEntity("test", e.rowKey)));
+    await tests.updateEntity({ partitionKey: "test", rowKey: e.rowKey, ...counts }, "Merge");
+    return { ...e, ...counts };
+  } catch {
+    return e; // derived data: a failed heal must never fail the listing
+  }
 }
 
 function unchunkQuestions(entity) {
@@ -703,7 +893,10 @@ function assignedTo(e, username) {
 }
 
 function testMeta(e) {
-  const questions = unchunkQuestions(e);
+  // The counts are stamped on write, so a listing projects them off the row
+  // instead of pulling every question body over the wire. A row written before
+  // that is healed by backfillCounts(); this fallback covers the direct reads.
+  const counts = storedCounts(e) || countsFromQuestions(unchunkQuestions(e));
   return {
     audience: audienceOf(e),
     assignedCount: audienceOf(e) === "selected" ? assignedList(e).length : 0,
@@ -718,8 +911,8 @@ function testMeta(e) {
     sample: !!e.sample,
     subjectId: e.subjectId || "",
     ownerSub: e.ownerSub,
-    questionCount: questions.length,
-    totalMarks: questions.reduce((s, q) => s + (q.marks || 0), 0),
+    questionCount: counts.questionCount,
+    totalMarks: counts.totalMarks,
     updatedAt: e.updatedAt,
   };
 }
@@ -749,7 +942,9 @@ async function subjectForAdopter(who, master) {
   const subject = master.subject || "Maths";
   const subjects = tableClient("subjects");
   await ensureTable(subjects);
-  const iter = subjects.listEntities({ queryOptions: { filter: `PartitionKey eq 'subject'` } });
+  const iter = subjects.listEntities({
+    queryOptions: { filter: `PartitionKey eq 'subject'`, select: SUBJECT_SELECT },
+  });
   for await (const e of iter) {
     if (e.ownerSub !== who.id) continue;
     if ((e.board || "") === board && (e.klass || "") === klass && (e.subject || "") === subject) {
@@ -811,7 +1006,7 @@ handlers.tests = async (context, req) => {
         }
         // Publishing replaces the row a student is reading. Someone part-way
         // through would have the paper changed under them mid-test.
-        if (await hasAttemptInProgress(id)) {
+        if (await hasAttemptInProgress(entity)) {
           return json(context, 409, {
             error: "A student is part-way through this test — publishing would change it under them. Try again once they have finished.",
           });
@@ -1076,9 +1271,12 @@ handlers.tests = async (context, req) => {
     if (!isStaff) return json(context, 403, { error: "Teachers only" });
     const masters = [];
     const mine = new Set();
-    const it = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+    const budget = { left: COUNT_BACKFILL_BUDGET };
+    const it = tests.listEntities({
+      queryOptions: { filter: `PartitionKey eq 'test'`, select: TEST_META_SELECT },
+    });
     for await (const e of it) {
-      if (e.platform && e.status === "published") masters.push(testMeta(e));
+      if (e.platform && e.status === "published") masters.push(testMeta(await backfillCounts(tests, e, budget)));
       else if (e.ownerSub === who.id && e.copiedFrom) mine.add(e.copiedFrom);
     }
     for (const m of masters) m.adopted = mine.has(m.id);
@@ -1089,11 +1287,16 @@ handlers.tests = async (context, req) => {
   const wantedSubject = String((req.query && req.query.subjectId) || "").trim();
   const list = [];
   let ownedCount = 0;
-  const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
-  for await (const e of iter) {
-    if (isStaff && e.ownerSub === who.id) ownedCount++;
-    if (wantedSubject && (e.subjectId || "") !== wantedSubject) continue;
-    if (visible(e)) list.push(isStaff && !asChild ? testMetaForStaff(e) : testMeta(e));
+  const budget = { left: COUNT_BACKFILL_BUDGET };
+  const iter = tests.listEntities({
+    queryOptions: { filter: `PartitionKey eq 'test'`, select: TEST_META_SELECT },
+  });
+  for await (const row of iter) {
+    if (isStaff && row.ownerSub === who.id) ownedCount++;
+    if (wantedSubject && (row.subjectId || "") !== wantedSubject) continue;
+    if (!visible(row)) continue;
+    const e = await backfillCounts(tests, row, budget);
+    list.push(isStaff && !asChild ? testMetaForStaff(e) : testMeta(e));
     if (list.length >= 200) break;
   }
   list.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
@@ -1154,7 +1357,9 @@ async function listOwnedSubjects(who) {
   const subjects = tableClient("subjects");
   await ensureTable(subjects);
   const out = [];
-  const iter = subjects.listEntities({ queryOptions: { filter: `PartitionKey eq 'subject'` } });
+  const iter = subjects.listEntities({
+    queryOptions: { filter: `PartitionKey eq 'subject'`, select: SUBJECT_SELECT },
+  });
   for await (const e of iter) {
     if (canUseSubject(who, e)) out.push(e);
     if (out.length >= 200) break;
@@ -1226,10 +1431,15 @@ handlers.subjects = async (context, req) => {
     if (action === "delete") {
       // Refuse while tests still point at it — deleting would orphan them.
       let used = 0;
-      const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
-      for await (const t of iter) {
-        if (t.subjectId === id) used++;
-        if (used) break;
+      const iter = tests.listEntities({
+        queryOptions: {
+          filter: `PartitionKey eq 'test' and subjectId eq '${id.replace(/'/g, "''")}'`,
+          select: ["PartitionKey", "RowKey"],
+        },
+      });
+      for await (const _ of iter) {
+        used++;
+        break;
       }
       if (used) {
         return json(context, 400, { error: "Move or delete this subject's tests before removing it" });
@@ -1250,9 +1460,14 @@ handlers.subjects = async (context, req) => {
     // their work sits unreachable.
     if (!owned.length) {
       const orphans = [];
-      const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+      const iter = tests.listEntities({
+        queryOptions: {
+          filter: `PartitionKey eq 'test' and ownerSub eq '${who.id.replace(/'/g, "''")}'`,
+          select: ["PartitionKey", "RowKey", "subjectId"],
+        },
+      });
       for await (const t of iter) {
-        if (t.ownerSub === who.id && !t.subjectId) orphans.push(t);
+        if (!t.subjectId) orphans.push(t);
       }
       if (orphans.length) {
         const id = `cbse12maths-${crypto.randomBytes(3).toString("hex")}`;
@@ -1271,8 +1486,12 @@ handlers.subjects = async (context, req) => {
         };
         await subjects.createEntity(entity);
         for (const t of orphans) {
-          t.subjectId = id;
-          await tests.updateEntity(t, "Merge");
+          // A projected row carries no etag, so name the keys explicitly and
+          // merge only the one property this is actually setting.
+          await tests.updateEntity(
+            { partitionKey: "test", rowKey: t.rowKey, subjectId: id },
+            "Merge"
+          );
         }
         owned = [entity];
       }
@@ -1281,7 +1500,12 @@ handlers.subjects = async (context, req) => {
     const list = owned.map(subjectOut);
     // How many tests sit in each, for the card.
     const counts = {};
-    const iter2 = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
+    const iter2 = tests.listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq 'test'`,
+        select: ["PartitionKey", "RowKey", "subjectId"],
+      },
+    });
     for await (const t of iter2) {
       if (t.subjectId) counts[t.subjectId] = (counts[t.subjectId] || 0) + 1;
     }
@@ -1292,8 +1516,18 @@ handlers.subjects = async (context, req) => {
 
   // Students see the subjects their visible published tests belong to.
   const wanted = new Set();
-  const iter = tests.listEntities({ queryOptions: { filter: `PartitionKey eq 'test'` } });
   const teacherSub = who.kind === "student" ? who.teacherSub || "" : "";
+  // Only a student reaches here with a teacher, and the loop below admits
+  // nothing without one, so asking at all would be pure waste.
+  if (!teacherSub) return json(context, 200, { subjects: [] });
+  const iter = tests.listEntities({
+    queryOptions: {
+      // A student only ever sees their own teacher's published tests, so ask
+      // the table for those rather than filtering the whole platform in memory.
+      filter: `PartitionKey eq 'test' and ownerSub eq '${teacherSub.replace(/'/g, "''")}' and status eq 'published'`,
+      select: ["PartitionKey", "RowKey", "status", "subjectId", "platform", "ownerSub", "audience", "assignedTo"],
+    },
+  });
   for await (const t of iter) {
     if (t.status !== "published" || !t.subjectId) continue;
     // A subject the student has no test in is not their subject — assignment
@@ -1342,7 +1576,10 @@ async function linkedChildren(who) {
   const out = [];
   try {
     const iter = links.listEntities({
-      queryOptions: { filter: `PartitionKey eq 'parent~${who.id.replace(/'/g, "''")}'` },
+      queryOptions: {
+        filter: `PartitionKey eq 'parent~${who.id.replace(/'/g, "''")}'`,
+        select: ["PartitionKey", "RowKey", "studentName", "teacherSub", "linkedAt"],
+      },
     });
     for await (const e of iter) {
       out.push({
@@ -1497,14 +1734,51 @@ function parseAnswers(raw) {
   }
 }
 
-/** Is anyone part-way through this test right now? */
-async function hasAttemptInProgress(testId) {
+/** The usernames a teacher's published test can reach. */
+async function audienceUsernames(entity) {
+  if (audienceOf(entity) === "selected") return assignedList(entity);
+  const students = tableClient("students");
+  await ensureTable(students);
+  const out = [];
+  const iter = students.listEntities({
+    queryOptions: {
+      filter: `PartitionKey eq 'student' and teacherSub eq '${String(entity.ownerSub || "").replace(/'/g, "''")}'`,
+      select: ["PartitionKey", "RowKey"],
+    },
+  });
+  for await (const e of iter) {
+    out.push(e.rowKey);
+    if (out.length >= 500) break;
+  }
+  return out;
+}
+
+/**
+ * Is anyone part-way through this test right now?
+ *
+ * The attempts table is partitioned per student, so asking by RowKey alone
+ * meant a scan of every attempt ever written, by anybody, growing forever. Only
+ * this test's own audience can be sitting it, and their progress row has a
+ * known key — so this is a handful of point reads instead, run a few at a time
+ * and abandoned the moment one answers yes.
+ */
+async function hasAttemptInProgress(entity) {
   const attempts = tableClient("attempts");
   await ensureTable(attempts);
-  const key = `${PROGRESS_PREFIX}${String(testId).slice(0, 80)}`.replace(/'/g, "''");
+  const rowKey = `${PROGRESS_PREFIX}${String(entity.rowKey).slice(0, 80)}`;
   try {
-    const iter = attempts.listEntities({ queryOptions: { filter: `RowKey eq '${key}'` } });
-    for await (const _ of iter) return true;
+    const usernames = await audienceUsernames(entity);
+    for (let i = 0; i < usernames.length; i += 20) {
+      const found = await Promise.all(
+        usernames.slice(i, i + 20).map((username) =>
+          attempts
+            .getEntity(`stu~${username}`, rowKey)
+            .then(() => true)
+            .catch(() => false)
+        )
+      );
+      if (found.some(Boolean)) return true;
+    }
   } catch {
     // A failed check must not block publishing.
   }
@@ -1615,6 +1889,9 @@ handlers.attempts = async (context, req) => {
     const iter = attempts.listEntities({
       queryOptions: {
         filter: `${partition} and testId eq '${wantedTest.replace(/'/g, "''")}'`,
+        // The one read that does want the answers blob — say so, rather than
+        // leaving the projection off and taking whatever the row happens to hold.
+        select: ATTEMPT_LIST_SELECT.concat("answers"),
       },
     });
     let done = null;
@@ -1639,7 +1916,9 @@ handlers.attempts = async (context, req) => {
   }
 
   const list = [];
-  const iter = attempts.listEntities({ queryOptions: { filter: partition } });
+  const iter = attempts.listEntities({
+    queryOptions: { filter: partition, select: ATTEMPT_LIST_SELECT },
+  });
   for await (const e of iter) {
     list.push(
       isProgressRow(e)
@@ -1741,6 +2020,12 @@ function parseImages(raw) {
     return [];
   }
 }
+
+const GRADING_SELECT = [
+  "PartitionKey", "RowKey", "studentName", "testId", "testTitle", "questionId",
+  "questionIndex", "maxMarks", "images", "status", "submittedAt", "awarded",
+  "comment", "markedAt", "markedBy",
+];
 
 function gradingOut(e) {
   const images = parseImages(e.images);
@@ -1965,7 +2250,7 @@ handlers.grading = async (context, req) => {
       }
       const out = [];
       const iter = grading.listEntities({
-        queryOptions: { filter: clauses.join(" and ") },
+        queryOptions: { filter: clauses.join(" and "), select: GRADING_SELECT },
       });
       for await (const e of iter) {
         out.push(gradingOut(e));
@@ -1990,7 +2275,7 @@ handlers.grading = async (context, req) => {
     if (testId) clauses.push(`testId eq '${testId}'`);
     const out = [];
     const iter = grading.listEntities({
-      queryOptions: { filter: clauses.join(" and ") },
+      queryOptions: { filter: clauses.join(" and "), select: GRADING_SELECT },
     });
     for await (const e of iter) {
       out.push(gradingOut(e));
@@ -2105,7 +2390,10 @@ handlers.release = async (context, req) => {
     const students = [];
     let classWide = null;
     const iter = releases.listEntities({
-      queryOptions: { filter: `PartitionKey eq '${testId.replace(/'/g, "''")}'` },
+      queryOptions: {
+        filter: `PartitionKey eq '${testId.replace(/'/g, "''")}'`,
+        select: ["PartitionKey", "RowKey", "releasedAt", "releasedBy"],
+      },
     });
     for await (const e of iter) {
       const row = { releasedAt: e.releasedAt || "", releasedBy: e.releasedBy || "" };
