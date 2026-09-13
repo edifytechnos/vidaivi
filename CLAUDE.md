@@ -90,23 +90,20 @@ unlike the `vidai.seyali.app` entry above which is done.
 
 - **One branch under test at a time** — they share the environment, so the
   newest push wins.
-- **Give a fresh deploy a few minutes before judging it.** Straight after a
-  push the environment routes inconsistently — some requests come back as
-  Azure's own 404 page — and settles to 100% within roughly fifteen quiet
-  minutes. Measured stable at 40/40 on `index.html` and 15/15 on each hashed
-  asset once it has settled. Testing inside that window looks exactly like a
-  broken site, and it is the single most misleading thing about this setup.
-- **Stay at or under three staging environments** — the Free plan's limit.
-  Exceeding it does **not** fail loudly: the evidence is that the surplus
-  environment half-serves, answering roughly half of requests with Azure's 404,
-  while the deploy log still reports success. An afternoon was lost to this. A
-  closing PR frees its own slot automatically via the `close_environment` job;
-  **Actions → Run workflow** takes a `close_environment` name but Azure refuses
-  it outside a PR event (*"Request is missing the pull request id"*), so closing
-  and reopening a PR is what frees a slot by hand.
-  The two symptoms above are hard to tell apart, and the honest position is that
-  a half-serving `qa` was most likely the environment limit — freeing the slot
-  plus a redeploy and a quiet quarter of an hour is what fixed it.
+- **Stay at or under three staging environments** — the Free plan's limit, and
+  the thing that actually breaks QA. Exceeding it does **not** fail loudly: the
+  surplus environment half-serves, answering roughly half of all requests with
+  Azure's own 404 page while the deploy log still reports success. An afternoon
+  was lost to this. A closing PR frees its own slot automatically via the
+  `close_environment` job; **Actions → Run workflow** takes a
+  `close_environment` name but Azure refuses it outside a PR event
+  (*"Request is missing the pull request id"*), so closing and reopening a PR is
+  what frees a slot by hand.
+  Measured, once back to two environments: a deploy causes **no disruption at
+  all** — 10/10 before, during and after, then 30/30 on `index.html` and 12/12
+  on each hashed asset. While a third environment existed, fifteen quiet minutes
+  never recovered past ~50%. So a flapping QA means **count the environments**;
+  it is not something to wait out.
 - **`vidai.qa.seyali.app` is not possible here.** Azure does not support custom
   domains on preview environments, only on an app's *production* environment
   ([docs](https://learn.microsoft.com/en-us/azure/static-web-apps/custom-domain)).
