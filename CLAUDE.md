@@ -56,10 +56,11 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   **Authorised JavaScript origins** on the Google OAuth client.
 - Every push to `main` auto-deploys via `.github/workflows/azure-static-web-apps.yml`
   (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret). That workflow has
-  **two jobs on purpose** — `production` (push/dispatch) and `qa` (pull request).
-  A single job with a conditional environment could land a push to `main`
-  somewhere other than production; two jobs cannot. **Both fire on `push`, and
-  there is no `pull_request` trigger** — see below.
+  **separate `production` and `qa` deploy jobs on purpose**: a single job with a
+  conditional environment could land a push to `main` somewhere other than
+  production, and two jobs cannot. Both fire on **`push`** — `production` when
+  the ref is `main`, `qa` when it is not — and a third job, `close_environment`,
+  runs on `pull_request: [closed]` and never deploys.
 
 ### QA is one fixed URL, not a URL per PR
 
@@ -78,37 +79,34 @@ is fine when the URL never changes.
 
 The URL is fixed **because Google sign-in is bound to an origin**. Per-PR
 previews (`…-<PR number>.…`) each have a new origin, so nobody can sign in to
-one, which makes them useless for testing anything behind a login. This host is
-an authorised JavaScript origin on the OAuth client, alongside
-`https://vidai.seyali.app`.
+one, which makes them useless for testing anything behind a login.
+
+**Only Google sign-in needs that origin entry.** Admin and student logins go
+through `/api/manageauth` and `/api/studentauth`, which are not origin-bound, so
+QA is fully testable as an admin or a student today. Signing in **with Google**
+on QA additionally requires this host under **Authorised JavaScript origins** on
+the OAuth client — *this is a pending step, not a record of one already taken*,
+unlike the `vidai.seyali.app` entry above which is done.
 
 - **One branch under test at a time** — they share the environment, so the
   newest push wins.
-- **The named environment does not route reliably, and this is unresolved.**
-  It answers only some requests; the rest come back as Azure's own 404 page.
-  Measured repeatedly over an afternoon: `qa` ranged 0/10 to 7/10 while the
-  PR-numbered environment `26` on the same app served 10/10 every time. So on
-  this app, *PR* staging environments are reliable and a *named* one is not.
-  **Do not hand the QA URL to anyone as a working test site until this is
-  fixed.**
-  Two theories were tested and **disproved**: it is not the Free plan's
-  3-staging-environment limit (a slot was freed, env `27` confirmed closed, no
-  change) and it is not first-deploy propagation (a clean redeploy into the
-  free slot, no change). The `Unexpected input 'deployment_environment'`
-  warning in the log is a red herring — the action's manifest does not declare
-  the input, but Docker passes it through and the deploy engine honours it, as
-  the log's own `Visit your site at: …-qa.…` line shows.
-  The way out is a **second Static Web App**, whose *production* environment
-  would be the QA site: production environments route reliably, they can carry
-  a custom domain, and separate app settings would let QA stop writing to the
-  live database.
-- **The Free plan allows three staging environments per app.** Not the cause of
-  the above, but still a real limit worth respecting: a PR closing frees its own
-  slot automatically (the `pull_request: [closed]` trigger runs the cleanup job
-  only and never deploys). **Actions → Run workflow** takes a
-  `close_environment` name, but Azure refuses it outside a PR event
-  (*"Request is missing the pull request id"*) — closing and reopening the PR
-  is what actually frees a slot by hand.
+- **Give a fresh deploy a few minutes before judging it.** Straight after a
+  push the environment routes inconsistently — some requests come back as
+  Azure's own 404 page — and settles to 100% within roughly fifteen quiet
+  minutes. Measured stable at 40/40 on `index.html` and 15/15 on each hashed
+  asset once it has settled. Testing inside that window looks exactly like a
+  broken site, and it is the single most misleading thing about this setup.
+- **Stay at or under three staging environments** — the Free plan's limit.
+  Exceeding it does **not** fail loudly: the evidence is that the surplus
+  environment half-serves, answering roughly half of requests with Azure's 404,
+  while the deploy log still reports success. An afternoon was lost to this. A
+  closing PR frees its own slot automatically via the `close_environment` job;
+  **Actions → Run workflow** takes a `close_environment` name but Azure refuses
+  it outside a PR event (*"Request is missing the pull request id"*), so closing
+  and reopening a PR is what frees a slot by hand.
+  The two symptoms above are hard to tell apart, and the honest position is that
+  a half-serving `qa` was most likely the environment limit — freeing the slot
+  plus a redeploy and a quiet quarter of an hour is what fixed it.
 - **`vidai.qa.seyali.app` is not possible here.** Azure does not support custom
   domains on preview environments, only on an app's *production* environment
   ([docs](https://learn.microsoft.com/en-us/azure/static-web-apps/custom-domain)).
