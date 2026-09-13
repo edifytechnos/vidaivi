@@ -403,6 +403,12 @@ function check(ok, label) {
           body: JSON.stringify({
             action: "create",
             test: {
+              // A unique id every run. Letting the server name it gives
+              // "e2epublishgate-<100..999>" — only 900 of them — and the
+              // cleanup below writes index 0, which keeps a progress row
+              // rather than removing it. A later run that collided then met
+              // that leftover row and failed the publish it expected to pass.
+              id: `e2egate-${Date.now()}`,
               title: "E2E publish gate",
               chapter: "Matrices",
               questions: [
