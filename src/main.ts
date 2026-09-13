@@ -59,6 +59,9 @@ if (editId && authEnabled && isLoggedIn()) {
 // A student refreshing inside a subject stays in that subject's tests tree.
 const subjectId = (new URLSearchParams(location.search).get("subject") ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
 
+// A teacher refreshing inside a built-in shelf stays on the shelf.
+const libraryId = (new URLSearchParams(location.search).get("library") ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
+
 // A teacher refreshing the marking queue stays on it.
 const markMode = new URLSearchParams(location.search).get("mark") === "1";
 
@@ -70,6 +73,8 @@ if (editId) {
   // handled above
 } else if (subjectId && !rawTestId && authEnabled && isLoggedIn() && isStudentViewer()) {
   void showStudentSubject(subjectId);
+} else if (libraryId && authEnabled && isLoggedIn()) {
+  void import("./screens/library").then((m) => m.showLibrary(libraryId));
 } else if (markMode && authEnabled && isLoggedIn()) {
   void showMarking();
 } else if (test) {

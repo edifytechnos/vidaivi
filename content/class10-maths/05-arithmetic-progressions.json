@@ -1,0 +1,222 @@
+{
+  "id": "lib-c10-arithmetic-progressions",
+  "title": "Class 10 · Arithmetic Progressions — Chapter Test 5",
+  "chapter": "Arithmetic Progressions",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "ap-001",
+      "topic": "Common difference from two terms",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The common difference of an A.P. in which $a_{15} - a_{11} = 48$ is:",
+      "options": [
+        "$12$",
+        "$16$",
+        "$-12$",
+        "$-16$"
+      ],
+      "answer": 0,
+      "solution": "Write both terms with the standard formula $a_n = a + (n-1)d$:\n\n$a_{15} = a + 14d$ and $a_{11} = a + 10d$\n\nSubtract — the first term $a$ cancels:\n\n$a_{15} - a_{11} = (a + 14d) - (a + 10d) = 4d$\n\nSo $4d = 48$ and $d = \\mathbf{12}$.\n\nThere is a shortcut worth remembering: **the gap between the 15th and the 11th term is four steps**, and each step is $d$. In general $a_m - a_n = (m - n)d$ — you never need $a$ at all.\n\nThink of a staircase. To know the height of one step you do not need to know how high the ground floor is; you only need the rise between two named steps and how many steps apart they are.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-002",
+      "topic": "Which term is a given value",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which term of the A.P. $-29,\\ -26,\\ -23,\\ \\ldots,\\ 61$ is $16$?",
+      "options": [
+        "11th",
+        "16th",
+        "10th",
+        "31st"
+      ],
+      "answer": 1,
+      "solution": "First read off $a$ and $d$:\n\n$a = -29$, $d = -26 - (-29) = 3$\n\nSet the $n$th term equal to 16:\n\n$a + (n-1)d = 16$\n\n$-29 + (n-1)3 = 16$\n\n$(n-1)3 = 45$\n\n$n - 1 = 15 \\Rightarrow n = 16$\n\nSo $16$ is the **16th** term.\n\n(The $61$ at the end just tells you where the A.P. stops; it plays no part in this question.)\n\nA neat check: from $-29$ to $16$ is a climb of $45$, and each step is $3$, so it takes $15$ steps — and after 15 steps from the *first* term you are standing on the 16th.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-003",
+      "topic": "Three terms in A.P.",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Three numbers in A.P. have the sum $30$. What is its middle term?",
+      "options": [
+        "$4$",
+        "$10$",
+        "$16$",
+        "$8$"
+      ],
+      "answer": 1,
+      "solution": "Name the three terms cleverly: $a - d$, $a$, $a + d$ — putting the middle one at the centre.\n\nNow add them:\n\n$(a - d) + a + (a + d) = 3a$\n\nThe $-d$ and $+d$ cancel, so the sum is just three times the middle term:\n\n$3a = 30 \\Rightarrow a = \\mathbf{10}$\n\nNotice you never learn $d$, and you do not need to — there are infinitely many such triples ($9, 10, 11$; $5, 10, 15$; $-20, 10, 40$ …) and every one of them has middle term 10.\n\nThe picture is a see-saw. The outer two terms sit the same distance either side of the middle one, so the middle term is exactly the average — the balance point.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-004",
+      "topic": "An A.P. of surds",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The next (4th) term of the A.P. $\\sqrt{18},\\ \\sqrt{50},\\ \\sqrt{98},\\ \\ldots$ is:",
+      "options": [
+        "$\\sqrt{128}$",
+        "$\\sqrt{140}$",
+        "$\\sqrt{162}$",
+        "$\\sqrt{200}$"
+      ],
+      "answer": 2,
+      "solution": "Those surds do not look like an A.P. until you simplify them:\n\n$\\sqrt{18} = 3\\sqrt{2}$,  $\\sqrt{50} = 5\\sqrt{2}$,  $\\sqrt{98} = 7\\sqrt{2}$\n\nNow it is obvious: the multipliers are $3, 5, 7$ — an A.P. with $d = 2\\sqrt{2}$. The next multiplier is $9$:\n\nnext term $= 9\\sqrt{2} = \\sqrt{81 \\times 2} = \\mathbf{\\sqrt{162}}$\n\nThe trap is adding the numbers *under* the roots. The gaps there are $32$ and $48$ — not equal — so $\\sqrt{98} + 32$ would be nonsense.\n\nPull the perfect square out of each root first, and a disguised A.P. shows its true shape.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-005",
+      "topic": "Counting the terms",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of terms in the A.P. $3,\\ 6,\\ 9,\\ 12,\\ \\ldots,\\ 111$ is:",
+      "options": [
+        "$36$",
+        "$40$",
+        "$37$",
+        "$30$"
+      ],
+      "answer": 2,
+      "solution": "Here $a = 3$, $d = 3$, and the last term is $111$.\n\n$a + (n-1)d = 111$\n\n$3 + (n-1)3 = 111$\n\n$(n-1)3 = 108$\n\n$n - 1 = 36 \\Rightarrow n = \\mathbf{37}$\n\nThe tempting wrong answer is $36$, which is $111 \\div 3$ — the number of *steps*, not the number of terms.\n\nThink of fence posts and gaps. A fence with 36 gaps has 37 posts, because the first post came before any gap did. Counting terms in an A.P. is the same off-by-one every time.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-006",
+      "topic": "First term from the sum formula",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the sum of the first $n$ terms of an A.P. is $3n^{2} + 4n$ and its common difference is $6$, then its first term is:",
+      "options": [
+        "$7$",
+        "$4$",
+        "$6$",
+        "$3$"
+      ],
+      "answer": 0,
+      "solution": "The sum of the first **one** term *is* the first term. So put $n = 1$ into the formula:\n\n$S_1 = 3(1)^{2} + 4(1) = 3 + 4 = \\mathbf{7}$\n\nThat is the whole question.\n\nCheck it against the given common difference: $S_2 = 3(4) + 4(2) = 20$, so the second term is $S_2 - S_1 = 20 - 7 = 13$, and $13 - 7 = 6$ ✓ — exactly the $d$ the question states.\n\n$S_n$ is a running total. Every individual term can be recovered by taking one total away from the next: $a_n = S_n - S_{n-1}$. The first term is simply the case where there is nothing to subtract.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-007",
+      "topic": "Finding an unknown in three A.P. terms",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the first three terms of an A.P. are $3p - 1$, $3p + 5$ and $5p + 1$ respectively, then the value of $p$ is:",
+      "options": [
+        "$2$",
+        "$-3$",
+        "$4$",
+        "$5$"
+      ],
+      "answer": 3,
+      "solution": "In an A.P. the gap between consecutive terms is always the same, so\n\n$(\\text{2nd}) - (\\text{1st}) = (\\text{3rd}) - (\\text{2nd})$\n\n$(3p + 5) - (3p - 1) = (5p + 1) - (3p + 5)$\n\n$6 = 2p - 4$\n\n$2p = 10 \\Rightarrow p = \\mathbf{5}$\n\nCheck: with $p = 5$ the terms are $14$, $20$, $26$ — a common difference of 6 ✓\n\nAn equivalent way to say it: the middle term is the average of its neighbours, $2 \\times (3p+5) = (3p-1) + (5p+1)$. Same equation, same answer — use whichever you find easier to write down without slipping a sign.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-008",
+      "topic": "Common difference from two terms",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The common difference of an A.P. in which $a_{20} - a_{15} = 20$ is:",
+      "options": [
+        "$4$",
+        "$5$",
+        "$4d$",
+        "$5d$"
+      ],
+      "answer": 0,
+      "solution": "The 20th term is five steps beyond the 15th, so\n\n$a_{20} - a_{15} = 5d$\n\n$5d = 20 \\Rightarrow d = \\mathbf{4}$\n\nOptions (C) and (D) are there to catch a half-finished answer: $5d$ is the *expression* for the difference, not the value of $d$. The question asks for the common difference itself, which is a number.\n\nRead the last line of a question again before choosing. Getting to $5d = 20$ is most of the work, and it is a shame to stop one division short.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-009",
+      "topic": "Reading an A.P. from its nth term",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the $n$th term of an A.P. is $a_n = 5n - 3$, then its common difference is:",
+      "options": [
+        "$5$",
+        "$-3$",
+        "$2$",
+        "$3$"
+      ],
+      "answer": 0,
+      "solution": "Write out the first few terms:\n\n$a_1 = 5(1) - 3 = 2$,  $a_2 = 5(2) - 3 = 7$,  $a_3 = 5(3) - 3 = 12$\n\nThe gaps are $7 - 2 = 5$ and $12 - 7 = 5$, so $d = \\mathbf{5}$.\n\nMore directly:\n\n$a_n - a_{n-1} = (5n - 3) - \\big(5(n-1) - 3\\big) = 5$\n\nWhenever the $n$th term is a straight line in $n$ — anything of the form $pn + q$ — the **coefficient of $n$ is the common difference** and $p + q$ is the first term. Here $d = 5$ and $a_1 = 5 - 3 = 2$.\n\nThat is no accident: an A.P. climbs by the same amount each step, which is exactly what a straight line does.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-010",
+      "topic": "A proof about sums",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "If the sum of the first $m$ terms of an A.P. is the same as the sum of its first $n$ terms $(m \\neq n)$, then show that the sum of its first $(m + n)$ terms is zero.",
+      "solution": "**Set the two sums equal.** With $S_k = \\dfrac{k}{2}\\big[2a + (k-1)d\\big]$:\n\n$\\dfrac{m}{2}\\big[2a + (m-1)d\\big] = \\dfrac{n}{2}\\big[2a + (n-1)d\\big]$\n\nMultiply by 2 and expand:\n\n$2am + m(m-1)d = 2an + n(n-1)d$\n\n**Gather like terms:**\n\n$2a(m - n) + d\\big[m(m-1) - n(n-1)\\big] = 0$\n\n$m(m-1) - n(n-1) = m^{2} - m - n^{2} + n = (m^{2} - n^{2}) - (m - n) = (m-n)(m+n) - (m-n) = (m-n)(m+n-1)$\n\nSo\n\n$(m - n)\\big[2a + (m + n - 1)d\\big] = 0$\n\n**Use $m \\neq n$.** Since $m - n \\neq 0$, the other bracket must vanish:\n\n$2a + (m + n - 1)d = 0$\n\n**Now the sum of $(m+n)$ terms:**\n\n$S_{m+n} = \\dfrac{m+n}{2}\\big[2a + (m+n-1)d\\big] = \\dfrac{m+n}{2} \\times 0 = \\mathbf{0}$ ∎\n\nThe condition $m \\neq n$ is what makes the whole proof work — it is the licence to divide out $(m-n)$.\n\nWhat is going on underneath: if two different running totals are equal, everything added in between must have cancelled out, so the A.P. crosses from positive to negative — and it turns out to do so exactly symmetrically.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-011",
+      "topic": "Three terms from a sum and a sum of squares",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "In an A.P., the sum of three consecutive terms is $24$ and the sum of their squares is $194$. Find the numbers.",
+      "solution": "**Choose the names well.** Let the three terms be $a - d$, $a$, $a + d$.\n\n**First condition:**\n\n$(a - d) + a + (a + d) = 24 \\Rightarrow 3a = 24 \\Rightarrow a = 8$\n\n**Second condition:**\n\n$(a - d)^{2} + a^{2} + (a + d)^{2} = 194$\n\nExpand: $(a^{2} - 2ad + d^{2}) + a^{2} + (a^{2} + 2ad + d^{2}) = 3a^{2} + 2d^{2}$\n\nThe $2ad$ terms cancel, leaving\n\n$3(8)^{2} + 2d^{2} = 194$\n\n$192 + 2d^{2} = 194 \\Rightarrow d^{2} = 1 \\Rightarrow d = \\pm 1$\n\n**The numbers** are $7, 8, 9$ (or $9, 8, 7$ if you take $d = -1$ — the same three numbers, read backwards).\n\n**Check:** $7 + 8 + 9 = 24$ ✓ and $49 + 64 + 81 = 194$ ✓\n\nThe reason for writing the terms as $a-d, a, a+d$ rather than $a, a+d, a+2d$ is that it makes the middle term the centre of symmetry — so the awkward cross terms cancel themselves in both conditions, and two messy equations become two easy ones.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-012",
+      "topic": "Sum of n terms from two given sums",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "If the sum of the first 7 terms of an A.P. is $49$ and that of the first 17 terms is $289$, find the sum of its first 20 terms.",
+      "solution": "**Write both conditions** using $S_k = \\dfrac{k}{2}\\big[2a + (k-1)d\\big]$.\n\n$S_7 = \\dfrac{7}{2}\\big[2a + 6d\\big] = 7(a + 3d) = 49 \\Rightarrow a + 3d = 7$ … (1)\n\n$S_{17} = \\dfrac{17}{2}\\big[2a + 16d\\big] = 17(a + 8d) = 289 \\Rightarrow a + 8d = 17$ … (2)\n\n**Subtract (1) from (2):**\n\n$5d = 10 \\Rightarrow d = 2$, and then $a = 7 - 6 = 1$.\n\n**Now the 20-term sum:**\n\n$S_{20} = \\dfrac{20}{2}\\big[2(1) + 19(2)\\big] = 10\\big[2 + 38\\big] = 10 \\times 40 = \\mathbf{400}$\n\n**Check:** $S_7 = \\tfrac{7}{2}(2 + 12) = 49$ ✓ and $S_{17} = \\tfrac{17}{2}(2 + 32) = 289$ ✓\n\nThere is a pattern hiding here: $49 = 7^{2}$, $289 = 17^{2}$ and $400 = 20^{2}$. With $a = 1$ and $d = 2$ this is the A.P. of odd numbers $1, 3, 5, 7, \\ldots$, and the sum of the first $n$ odd numbers is always $n^{2}$ — a fact worth carrying into the exam hall.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-013",
+      "topic": "First term and common difference from a ratio",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "The ratio of the 10th term to the 30th term of an A.P. is $1 : 3$ and the sum of its first six terms is $42$. Find the first term and the common difference of the A.P.",
+      "solution": "**Turn the ratio into an equation.**\n\n$\\dfrac{a_{10}}{a_{30}} = \\dfrac{a + 9d}{a + 29d} = \\dfrac{1}{3}$\n\nCross-multiply:\n\n$3(a + 9d) = a + 29d$\n\n$3a + 27d = a + 29d$\n\n$2a = 2d \\Rightarrow a = d$\n\n**Use the sum.**\n\n$S_6 = \\dfrac{6}{2}\\big[2a + 5d\\big] = 3(2a + 5d) = 42 \\Rightarrow 2a + 5d = 14$\n\nSubstitute $d = a$:\n\n$2a + 5a = 14 \\Rightarrow 7a = 14 \\Rightarrow a = 2$, and so $d = 2$.\n\nThe first term is **2** and the common difference is **2**.\n\n**Check:** $a_{10} = 2 + 18 = 20$, $a_{30} = 2 + 58 = 60$, and $20 : 60 = 1 : 3$ ✓ The first six terms are $2, 4, 6, 8, 10, 12$, summing to $42$ ✓\n\nTwo facts, two unknowns. The ratio alone cannot pin down $a$ and $d$ — it only fixes their *relationship* ($a = d$) — and the sum is what fixes the scale.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-014",
+      "topic": "Terms from a given sum",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "If the sum of the first 14 terms of an A.P. is $1050$ and its first term is $10$, then find the 20th term and the $n$th term.",
+      "solution": "**Use the sum to find $d$.**\n\n$S_{14} = \\dfrac{14}{2}\\big[2a + 13d\\big] = 7\\big[2(10) + 13d\\big] = 1050$\n\n$20 + 13d = 150$\n\n$13d = 130 \\Rightarrow d = 10$\n\n**The 20th term:**\n\n$a_{20} = a + 19d = 10 + 19(10) = \\mathbf{200}$\n\n**The $n$th term:**\n\n$a_n = a + (n-1)d = 10 + (n-1)10 = \\mathbf{10n}$\n\n**Check:** the A.P. is $10, 20, 30, \\ldots$ Its first 14 terms sum to $10(1 + 2 + \\cdots + 14) = 10 \\times 105 = 1050$ ✓ and $a_{20} = 200$ ✓\n\nOnce $a_n$ came out as the clean $10n$, the A.P. revealed itself as simply the multiples of ten. Always simplify the $n$th term at the end — a tidy form is both easier to check and a sign you have not slipped.",
+      "chapter": "Arithmetic Progressions"
+    },
+    {
+      "id": "ap-015",
+      "topic": "Number of terms and common difference",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "The first term of an A.P. is $5$, the last term is $45$ and the sum of all the terms is $400$. Find the number of terms and the common difference of the A.P.",
+      "solution": "**When the last term is known**, use the other sum formula:\n\n$S_n = \\dfrac{n}{2}(a + l)$, where $l$ is the last term.\n\n$400 = \\dfrac{n}{2}(5 + 45) = \\dfrac{n}{2}(50) = 25n$\n\n$n = \\mathbf{16}$\n\n**Now the common difference**, from the last term being the 16th:\n\n$a + (n-1)d = l$\n\n$5 + 15d = 45$\n\n$15d = 40 \\Rightarrow d = \\dfrac{40}{15} = \\mathbf{\\dfrac{8}{3}}$\n\n**Check:** $S_{16} = \\dfrac{16}{2}(5 + 45) = 8 \\times 50 = 400$ ✓\n\nPicking the right formula saves the whole question. $S_n = \\tfrac{n}{2}(a+l)$ needs no $d$ at all, so it hands you $n$ immediately; the other version, $\\tfrac{n}{2}[2a+(n-1)d]$, would have left you with two unknowns tangled together.\n\nWhy it works: pair the first term with the last, the second with the second-to-last, and so on. Every pair adds to the same total $a + l$, and there are $\\tfrac{n}{2}$ pairs.",
+      "chapter": "Arithmetic Progressions"
+    }
+  ]
+}

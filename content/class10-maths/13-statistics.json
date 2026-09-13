@@ -1,0 +1,211 @@
+{
+  "id": "lib-c10-statistics",
+  "title": "Class 10 · Statistics — Chapter Test 13",
+  "chapter": "Statistics",
+  "teacher": null,
+  "order": 13,
+  "access": "login",
+  "questions": [
+    {
+      "id": "st-001",
+      "topic": "Effect of shifting the data",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the value of each observation in a data set is increased by 2, then the median of the new data:",
+      "options": [
+        "increases by 2",
+        "increases by $2n$",
+        "remains the same",
+        "decreases by 2"
+      ],
+      "answer": 0,
+      "solution": "The median is the **middle value** once the data is put in order. Adding 2 to every observation shifts every value along by 2 but does not change the *order*, so the same observation stays in the middle — and it too has gone up by 2.\n\nSo the median **increases by 2**.\n\nTry it: $1, 3, 7$ has median $3$. Add 2 to each: $3, 5, 9$, median $5$ ✓\n\nThe same is true of the mean and the mode — shift all the data and every measure of *centre* shifts with it. What does **not** change is any measure of *spread*: the range and the standard deviation stay exactly as they were, because the gaps between values are untouched.\n\nPicture sliding the whole ruler two units to the right. Every mark moves; none of the distances between them do.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-002",
+      "topic": "The empirical relationship",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the difference of the mode and the median of a data set is 24, then the difference of its median and mean is:",
+      "options": [
+        "$12$",
+        "$24$",
+        "$8$",
+        "$36$"
+      ],
+      "answer": 0,
+      "solution": "Use the **empirical relationship** between the three averages:\n\n$\\text{Mode} = 3\\,\\text{Median} - 2\\,\\text{Mean}$\n\nRearrange to bring out the differences:\n\n$\\text{Mode} - \\text{Median} = 2\\,\\text{Median} - 2\\,\\text{Mean} = 2(\\text{Median} - \\text{Mean})$\n\nSo\n\n$24 = 2(\\text{Median} - \\text{Mean})$\n\n$\\text{Median} - \\text{Mean} = \\mathbf{12}$\n\nThe relationship says something quite visual: on a skewed distribution the three averages line up in order, and **the median sits twice as close to the mean as the mode does.** Mode, median, mean — spaced $2 : 1$.\n\nThat picture is worth more than the formula, because it tells you the answer must be *smaller* than 24 before you calculate anything.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-003",
+      "topic": "The empirical relationship",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the mean and mode of a data set are 24 and 12 respectively, then its median is:",
+      "options": [
+        "$25$",
+        "$18$",
+        "$20$",
+        "$22$"
+      ],
+      "answer": 2,
+      "solution": "From $\\text{Mode} = 3\\,\\text{Median} - 2\\,\\text{Mean}$, make the median the subject:\n\n$3\\,\\text{Median} = \\text{Mode} + 2\\,\\text{Mean}$\n\n$\\text{Median} = \\dfrac{\\text{Mode} + 2\\,\\text{Mean}}{3} = \\dfrac{12 + 2(24)}{3} = \\dfrac{60}{3} = \\mathbf{20}$\n\n**Check the spacing.** Mode $12$, median $20$, mean $24$: the median is 8 from the mode and 4 from the mean — exactly the $2:1$ split ✓\n\nOne form of the relationship is enough if you can rearrange it. The three versions are all the same equation:\n\n$\\text{Mode} = 3\\,\\text{Median} - 2\\,\\text{Mean}$\n\n$\\text{Median} = \\dfrac{\\text{Mode} + 2\\,\\text{Mean}}{3}$\n\n$\\text{Mean} = \\dfrac{3\\,\\text{Median} - \\text{Mode}}{2}$",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-004",
+      "topic": "The empirical relationship",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "What is the mode of a data set if the median and mean of the same data are $9.6$ and $10.5$ respectively?",
+      "options": [
+        "$7.8$",
+        "$12.3$",
+        "$8.4$",
+        "$11.4$"
+      ],
+      "answer": 0,
+      "solution": "$\\text{Mode} = 3\\,\\text{Median} - 2\\,\\text{Mean}$\n\n$= 3(9.6) - 2(10.5) = 28.8 - 21 = \\mathbf{7.8}$\n\n**Check the ordering.** Here the mean ($10.5$) is above the median ($9.6$), which is above the mode ($7.8$) — the signature of data with a long tail to the *right*, where a few large values drag the mean up.\n\nThat ordering is a useful guard against sign errors. If your mode came out *above* the mean when the mean is above the median, you have subtracted the wrong way round.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-005",
+      "topic": "Mean of a combined set",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The mean of seven observations is 17. If the mean of the first four observations is 15 and that of the last four observations is 18, then the fourth observation is:",
+      "options": [
+        "$14$",
+        "$13$",
+        "$12$",
+        "$10$"
+      ],
+      "answer": 1,
+      "solution": "Turn every mean into a **total** — that is the whole method.\n\nAll seven: $7 \\times 17 = 119$\n\nFirst four: $4 \\times 15 = 60$\n\nLast four: $4 \\times 18 = 72$\n\nNow notice: \"the first four\" and \"the last four\" together account for eight observations, but there are only seven. The **fourth observation belongs to both groups**, so it has been counted twice.\n\n$60 + 72 = 132 = 119 + (\\text{fourth observation})$\n\n$\\text{fourth observation} = 132 - 119 = \\mathbf{13}$\n\nThe double-counting is the entire question. Whenever two overlapping groups are described, add their totals and subtract the true total — what is left is the overlap.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-006",
+      "topic": "Mean of grouped data",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For a grouped frequency distribution, $\\sum f_i = 20$ and $\\sum f_i x_i = 460$. The mean is:",
+      "options": [
+        "$20$",
+        "$23$",
+        "$46$",
+        "$9200$"
+      ],
+      "answer": 1,
+      "solution": "For grouped data the mean is\n\n$\\bar{x} = \\dfrac{\\sum f_i x_i}{\\sum f_i} = \\dfrac{460}{20} = \\mathbf{23}$\n\nThat is all there is to it: the total of all the values divided by how many there are. The $f_i x_i$ column adds up every value in a class at once ($f_i$ observations, each taken as $x_i$), and $\\sum f_i$ counts them.\n\nOption (D), $9200$, is the product instead of the quotient — worth ruling out on size alone. The mean must always lie between the smallest and largest class marks, so a five-digit answer cannot be right.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-007",
+      "topic": "Class mark",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The class mark of the class $25 - 40$ is:",
+      "options": [
+        "$25$",
+        "$40$",
+        "$15$",
+        "$32.5$"
+      ],
+      "answer": 3,
+      "solution": "The **class mark** is the midpoint of the class — the single value used to represent everything in it:\n\n$\\text{class mark} = \\dfrac{\\text{lower limit} + \\text{upper limit}}{2} = \\dfrac{25 + 40}{2} = \\dfrac{65}{2} = \\mathbf{32.5}$\n\nOption (C), $15$, is the class **size** (the width, $40 - 25$) — a different thing entirely, and the one that goes into the mode and median formulas as $h$.\n\nKeep the two apart:\n\n- **class mark** $x_i$ — the middle of the interval, used for the *mean*\n- **class size** $h$ — the width of the interval, used for the *mode* and *median*",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-008",
+      "topic": "Modal class",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the distribution with classes $0-10$, $10-20$, $20-30$, $30-40$ and frequencies $5$, $8$, $12$, $7$, the modal class is:",
+      "options": [
+        "$0-10$",
+        "$10-20$",
+        "$20-30$",
+        "$30-40$"
+      ],
+      "answer": 2,
+      "solution": "The **modal class** is simply the class with the **highest frequency**.\n\nThe frequencies are $5$, $8$, $12$, $7$. The largest is $12$, which belongs to the class $\\mathbf{20-30}$.\n\nA common confusion: the modal class is *not* the class with the largest class mark, nor the last class, nor the one with the largest cumulative frequency. It is the tallest bar on the histogram.\n\nFinding it is always the first step of a mode calculation, because it fixes $l$ (its lower limit), $f_1$ (its own frequency), and $f_0$ and $f_2$ (the frequencies immediately before and after it).",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-009",
+      "topic": "Mean by the direct method",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the mean of the following distribution:\n\n| Class | 0 – 10 | 10 – 20 | 20 – 30 | 30 – 40 |\n|---|---|---|---|---|\n| Frequency | 4 | 6 | 8 | 2 |",
+      "answer": 19,
+      "tolerance": 0.01,
+      "solution": "**Build the table.** The class marks $x_i$ are the midpoints of each class:\n\n| Class | $x_i$ | $f_i$ | $f_i x_i$ |\n|---|---|---|---|\n| 0 – 10 | 5 | 4 | 20 |\n| 10 – 20 | 15 | 6 | 90 |\n| 20 – 30 | 25 | 8 | 200 |\n| 30 – 40 | 35 | 2 | 70 |\n| **Total** | | **20** | **380** |\n\n**Mean:**\n\n$\\bar{x} = \\dfrac{\\sum f_i x_i}{\\sum f_i} = \\dfrac{380}{20} = \\mathbf{19}$\n\n**Sanity check:** the class marks run from 5 to 35, and the heaviest class is 20–30, so a mean a little under 20 is exactly what the table suggests ✓\n\nThe direct method is three columns: the midpoint of each class, the frequency, and their product. Grouped data hides the individual values, so every observation in a class is treated as sitting at its midpoint — that assumption is the whole approximation.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-010",
+      "topic": "Median of grouped data",
+      "type": "numeric",
+      "marks": 2,
+      "q": "For a grouped distribution, the median class is $20 - 30$, with $n = 50$, cumulative frequency before the median class $cf = 18$, frequency of the median class $f = 12$ and class size $h = 10$. Find the median.\n\nGive your answer correct to two decimal places.",
+      "answer": 25.83,
+      "tolerance": 0.01,
+      "solution": "The median of grouped data is\n\n$\\text{Median} = l + \\left(\\dfrac{\\frac{n}{2} - cf}{f}\\right) \\times h$\n\nwith $l = 20$, $n = 50$, $cf = 18$, $f = 12$, $h = 10$:\n\n$= 20 + \\left(\\dfrac{25 - 18}{12}\\right) \\times 10$\n\n$= 20 + \\dfrac{7}{12} \\times 10 = 20 + 5.833 \\approx \\mathbf{25.83}$\n\nWhat the formula is really doing: the median lies somewhere inside the class $20-30$. We need $25$ observations to reach the halfway point and $18$ are already behind us, so we need $7$ more out of the $12$ in this class. Assuming they are spread evenly, we go $\\tfrac{7}{12}$ of the way across the class's 10-unit width.\n\nThe answer must land **inside the median class**, between 20 and 30. If it does not, something has gone wrong — usually $cf$ taken from the wrong row.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-011",
+      "topic": "Mean and mode of a distribution",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 5,
+      "q": "Find the mean and mode of the following frequency distribution:\n\n| Class | Frequency |\n|---|---|\n| 0 – 10 | 8 |\n| 10 – 20 | 7 |\n| 20 – 30 | 15 |\n| 30 – 40 | 20 |\n| 40 – 50 | 12 |\n| 50 – 60 | 8 |\n| 60 – 70 | 10 |",
+      "solution": "**Mean, by the direct method.** Take the class marks and build the $f_i x_i$ column:\n\n| Class | $x_i$ | $f_i$ | $f_i x_i$ |\n|---|---|---|---|\n| 0 – 10 | 5 | 8 | 40 |\n| 10 – 20 | 15 | 7 | 105 |\n| 20 – 30 | 25 | 15 | 375 |\n| 30 – 40 | 35 | 20 | 700 |\n| 40 – 50 | 45 | 12 | 540 |\n| 50 – 60 | 55 | 8 | 440 |\n| 60 – 70 | 65 | 10 | 650 |\n| **Total** | | **80** | **2850** |\n\n$\\bar{x} = \\dfrac{\\sum f_i x_i}{\\sum f_i} = \\dfrac{2850}{80} = \\mathbf{35.625}$\n\n**Mode.** The highest frequency is $20$, so the **modal class is $30 - 40$**. Read off:\n\n$l = 30$ (lower limit of the modal class)\n\n$f_1 = 20$ (frequency of the modal class)\n\n$f_0 = 15$ (the class before)\n\n$f_2 = 12$ (the class after)\n\n$h = 10$ (class size)\n\n$\\text{Mode} = l + \\left(\\dfrac{f_1 - f_0}{2f_1 - f_0 - f_2}\\right) \\times h$\n\n$= 30 + \\left(\\dfrac{20 - 15}{40 - 15 - 12}\\right) \\times 10$\n\n$= 30 + \\dfrac{5}{13} \\times 10 = 30 + 3.85 \\approx \\mathbf{33.85}$\n\n**Both answers land where they should:** the mean at $35.6$ and the mode at $33.8$, both inside the busy middle of the table ✓\n\nThe mode formula is asking a simple question: within the tallest bar, does the *previous* bar or the *next* one pull harder? Here the class before has 15 and the one after has 12, so the peak leans slightly back towards 30 — and $\\tfrac{5}{13}$ of the way across is just what that lean amounts to.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-012",
+      "topic": "Finding a missing frequency",
+      "type": "long",
+      "marks": 3,
+      "q": "If the mean of the following distribution is 18, find the missing frequency $f$:\n\n| Class | 11 – 13 | 13 – 15 | 15 – 17 | 17 – 19 | 19 – 21 | 21 – 23 | 23 – 25 |\n|---|---|---|---|---|---|---|---|\n| Frequency | 3 | 6 | 9 | 13 | $f$ | 5 | 4 |",
+      "solution": "**Build the table with $f$ carried through.**\n\n| Class | $x_i$ | $f_i$ | $f_i x_i$ |\n|---|---|---|---|\n| 11 – 13 | 12 | 3 | 36 |\n| 13 – 15 | 14 | 6 | 84 |\n| 15 – 17 | 16 | 9 | 144 |\n| 17 – 19 | 18 | 13 | 234 |\n| 19 – 21 | 20 | $f$ | $20f$ |\n| 21 – 23 | 22 | 5 | 110 |\n| 23 – 25 | 24 | 4 | 96 |\n| **Total** | | $40 + f$ | $704 + 20f$ |\n\n**Set the mean equal to 18:**\n\n$\\dfrac{704 + 20f}{40 + f} = 18$\n\n$704 + 20f = 18(40 + f) = 720 + 18f$\n\n$2f = 16 \\Rightarrow f = \\mathbf{8}$\n\n**Check:** with $f = 8$, $\\sum f_i = 48$ and $\\sum f_i x_i = 704 + 160 = 864$, so the mean is $\\tfrac{864}{48} = 18$ ✓\n\nThe method is always the same: carry the unknown through both totals, then let the given mean turn the fraction into a linear equation. Resist the urge to guess values of $f$ — the algebra is quicker and it proves the answer is unique.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-013",
+      "topic": "Median of grouped data",
+      "type": "long",
+      "marks": 3,
+      "q": "Find the median of the following distribution:\n\n| Class | 0 – 10 | 10 – 20 | 20 – 30 | 30 – 40 | 40 – 50 |\n|---|---|---|---|---|---|\n| Frequency | 5 | 8 | 20 | 15 | 7 |",
+      "solution": "**Build the cumulative frequency column** — this is the step the whole method rests on.\n\n| Class | $f$ | Cumulative frequency |\n|---|---|---|\n| 0 – 10 | 5 | 5 |\n| 10 – 20 | 8 | 13 |\n| 20 – 30 | 20 | 33 |\n| 30 – 40 | 15 | 48 |\n| 40 – 50 | 7 | 55 |\n\n**Find the median class.** $n = 55$, so $\\dfrac{n}{2} = 27.5$. Look down the cumulative column for the first value that reaches $27.5$: it is $33$, in the class $20 - 30$. That is the **median class**.\n\n**Apply the formula** with $l = 20$, $cf = 13$ (the row *before* the median class), $f = 20$, $h = 10$:\n\n$\\text{Median} = l + \\left(\\dfrac{\\frac{n}{2} - cf}{f}\\right)h = 20 + \\left(\\dfrac{27.5 - 13}{20}\\right) \\times 10$\n\n$= 20 + \\dfrac{14.5}{20} \\times 10 = 20 + 7.25 = \\mathbf{27.25}$\n\n**Check:** the answer sits inside $20 - 30$ ✓, and a little past the middle of it, which matches $27.5$ being a little past the $13$ already accumulated.\n\nThe two places marks are lost: taking $cf$ from the median class's own row instead of the one before it, and forgetting that $\\tfrac{n}{2}$ is used here — not $\\tfrac{n+1}{2}$, which belongs to ungrouped data.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-014",
+      "topic": "Mean by the assumed-mean method",
+      "type": "long",
+      "marks": 3,
+      "q": "Find the mean of the following distribution using the assumed-mean method, taking $a = 25$:\n\n| Class | 0 – 10 | 10 – 20 | 20 – 30 | 30 – 40 | 40 – 50 |\n|---|---|---|---|---|---|\n| Frequency | 7 | 8 | 12 | 13 | 10 |",
+      "solution": "**Set up with $a = 25$** and $d_i = x_i - a$:\n\n| Class | $x_i$ | $f_i$ | $d_i = x_i - 25$ | $f_i d_i$ |\n|---|---|---|---|---|\n| 0 – 10 | 5 | 7 | $-20$ | $-140$ |\n| 10 – 20 | 15 | 8 | $-10$ | $-80$ |\n| 20 – 30 | 25 | 12 | $0$ | $0$ |\n| 30 – 40 | 35 | 13 | $10$ | $130$ |\n| 40 – 50 | 45 | 10 | $20$ | $200$ |\n| **Total** | | **50** | | **$110$** |\n\n**Apply the formula:**\n\n$\\bar{x} = a + \\dfrac{\\sum f_i d_i}{\\sum f_i} = 25 + \\dfrac{110}{50} = 25 + 2.2 = \\mathbf{27.2}$\n\n**Check by the direct method:** $\\sum f_i x_i = 35 + 120 + 300 + 455 + 450 = 1360$, and $\\tfrac{1360}{50} = 27.2$ ✓\n\nWhy bother with an assumed mean? Because the numbers stay small. The direct method needs four-digit products; here the largest is $200$, and half the column is negative and cancels.\n\nThe answer does not depend on which $a$ you choose — pick the class mark nearest the middle (often the one with the highest frequency) and the arithmetic is easiest.",
+      "chapter": "Statistics"
+    },
+    {
+      "id": "st-015",
+      "topic": "Choosing the right average",
+      "type": "long",
+      "marks": 2,
+      "q": "The monthly salaries (in ₹) of eight employees of a small firm are:\n\n$$12000,\\ 13000,\\ 13000,\\ 14000,\\ 15000,\\ 16000,\\ 17000,\\ 200000$$\n\nFind the mean and the median, and state with a reason which better represents a typical salary at the firm.",
+      "solution": "**Mean.** Add all eight and divide:\n\n$12000 + 13000 + 13000 + 14000 + 15000 + 16000 + 17000 + 200000 = 300000$\n\n$\\bar{x} = \\dfrac{300000}{8} = ₹37{,}500$\n\n**Median.** The data is already in order and $n = 8$ is even, so the median is the average of the 4th and 5th values:\n\n$\\dfrac{14000 + 15000}{2} = ₹14{,}500$\n\n**Which represents a typical salary?** The **median**.\n\nSeven of the eight employees earn between ₹12,000 and ₹17,000. The mean of ₹37,500 is higher than *every one of those seven* — it describes nobody at the firm. It has been dragged up by the single salary of ₹200,000, an **outlier**.\n\nThe median is unmoved by that outlier: change ₹200,000 to ₹500,000 and the median stays at ₹14,500, while the mean leaps to ₹75,000.\n\nThat is the practical difference between the two. The mean uses the *size* of every value, so one extreme figure can swamp it; the median uses only the *order*, so an extreme value counts for no more than any other single observation.\n\nIt is why house prices and incomes are almost always reported as medians.",
+      "chapter": "Statistics"
+    }
+  ]
+}

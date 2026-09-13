@@ -1,0 +1,203 @@
+{
+  "id": "lib-c10-coordinate-geometry",
+  "title": "Class 10 · Coordinate Geometry — Chapter Test 7",
+  "chapter": "Coordinate Geometry",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "cg-001",
+      "topic": "Distance formula with trigonometric coordinates",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The distance between the points $(a\\cos\\theta,\\ -a\\sin\\theta)$ and $(a\\sin\\theta,\\ a\\cos\\theta)$ is:",
+      "options": [
+        "$a$",
+        "$a\\sqrt{2}$",
+        "$0$",
+        "$2a$"
+      ],
+      "answer": 1,
+      "solution": "Apply the distance formula and let the identity do the work.\n\n$d^{2} = (a\\sin\\theta - a\\cos\\theta)^{2} + (a\\cos\\theta + a\\sin\\theta)^{2}$\n\nTake out $a^{2}$ and expand both brackets:\n\n$= a^{2}\\big[(\\sin^{2}\\theta - 2\\sin\\theta\\cos\\theta + \\cos^{2}\\theta) + (\\cos^{2}\\theta + 2\\sin\\theta\\cos\\theta + \\sin^{2}\\theta)\\big]$\n\nThe two $2\\sin\\theta\\cos\\theta$ terms cancel — one is negative, one positive:\n\n$= a^{2}\\big[2\\sin^{2}\\theta + 2\\cos^{2}\\theta\\big] = a^{2} \\times 2(\\sin^{2}\\theta + \\cos^{2}\\theta) = 2a^{2}$\n\nSo $d = \\mathbf{a\\sqrt{2}}$.\n\nThe distance does not depend on $\\theta$ at all, which is the clue that something tidy is coming. Both points lie on a circle of radius $a$ about the origin, and they are always a quarter-turn apart — so the chord joining them is the side of a square inscribed in that circle, of length $a\\sqrt{2}$.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-002",
+      "topic": "Mid-point formula",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The mid-point of the line segment joining the points $P(-4,\\ 5)$ and $Q(4,\\ 6)$ lies on:",
+      "options": [
+        "the $x$-axis",
+        "the $y$-axis",
+        "the origin",
+        "neither the $x$-axis nor the $y$-axis"
+      ],
+      "answer": 1,
+      "solution": "The mid-point is the average of the two coordinates:\n\n$M = \\left(\\dfrac{-4 + 4}{2},\\ \\dfrac{5 + 6}{2}\\right) = \\left(0,\\ \\dfrac{11}{2}\\right)$\n\nIts $x$-coordinate is $0$. A point with $x = 0$ sits on the **$y$-axis**.\n\nNot the origin — that would need $y = 0$ as well, and here $y = 5.5$.\n\nThe rule to keep straight: **$x = 0$ means the $y$-axis; $y = 0$ means the $x$-axis.** It reads backwards at first glance, but think of it as \"the coordinate that has died tells you which axis you are standing on\": with no sideways displacement you must be on the vertical axis.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-003",
+      "topic": "Section formula — assertion and reason",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "**Assertion (A):** The mid-point of a line segment divides the line segment in the ratio $1 : 1$.\n\n**Reason (R):** The ratio in which the point $(-3,\\ k)$ divides the line segment joining the points $(-5,\\ 4)$ and $(-2,\\ 3)$ is $1 : 2$.",
+      "options": [
+        "Both Assertion (A) and Reason (R) are true, and Reason (R) is the correct explanation of Assertion (A).",
+        "Both Assertion (A) and Reason (R) are true, but Reason (R) is not the correct explanation of Assertion (A).",
+        "Assertion (A) is true, but Reason (R) is false.",
+        "Assertion (A) is false, but Reason (R) is true."
+      ],
+      "answer": 2,
+      "solution": "**Check (A).** The mid-point is by definition equidistant from both ends, so it divides the segment $1 : 1$. **(A) is true.**\n\n**Check (R).** Let the ratio be $m : n$. Using the $x$-coordinates in the section formula:\n\n$-3 = \\dfrac{m(-2) + n(-5)}{m + n}$\n\n$-3m - 3n = -2m - 5n$\n\n$-3m + 2m = -5n + 3n$\n\n$-m = -2n \\Rightarrow m = 2n$\n\nSo the ratio is $2 : 1$, **not** $1 : 2$. **(R) is false.**\n\nThe answer is **(C)**: Assertion true, Reason false.\n\nA quick way to see it without algebra: from $-5$ to $-3$ is 2 units, and from $-3$ to $-2$ is 1 unit. The point sits twice as far from the first end as from the second — $2 : 1$. Order matters in a ratio, and reversing it is the single most common slip in this topic.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-004",
+      "topic": "Distance from the origin",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The distance of the point $(-6,\\ 8)$ from the origin is:",
+      "options": [
+        "$2$",
+        "$10$",
+        "$14$",
+        "$\\sqrt{2}$"
+      ],
+      "answer": 1,
+      "solution": "Distance from the origin $(0, 0)$ to $(x, y)$ is $\\sqrt{x^{2} + y^{2}}$:\n\n$d = \\sqrt{(-6)^{2} + 8^{2}} = \\sqrt{36 + 64} = \\sqrt{100} = \\mathbf{10}$\n\nThe minus sign disappears when squared, so a point in the second quadrant is exactly as far from the origin as $(6, 8)$ in the first.\n\nThis is Pythagoras wearing different clothes: drop a vertical from the point to the $x$-axis and you have a right triangle with legs 6 and 8 — and $6, 8, 10$ is the triple every student already knows.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-005",
+      "topic": "Points on an axis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the point $P(x,\\ 0)$ is equidistant from $A(-1,\\ 0)$ and $B(5,\\ 0)$, then $x$ is:",
+      "options": [
+        "$2$",
+        "$3$",
+        "$4$",
+        "$-2$"
+      ],
+      "answer": 0,
+      "solution": "All three points lie on the $x$-axis, so \"equidistant\" simply means $P$ is the **mid-point** of $AB$:\n\n$x = \\dfrac{-1 + 5}{2} = \\mathbf{2}$\n\nBy the distance formula if you prefer: $PA = |x + 1|$ and $PB = |x - 5|$; setting them equal gives $x + 1 = 5 - x$, so $2x = 4$ and $x = 2$.\n\n**Check:** from $2$ to $-1$ is 3 units; from $2$ to $5$ is 3 units ✓\n\nWhen every point shares a coordinate, the problem collapses onto a number line and the two-dimensional machinery is not needed.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-006",
+      "topic": "Distance formula",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The distance between the points $(2,\\ 3)$ and $(4,\\ 1)$ is:",
+      "options": [
+        "$2\\sqrt{2}$",
+        "$4$",
+        "$2$",
+        "$\\sqrt{2}$"
+      ],
+      "answer": 0,
+      "solution": "$d = \\sqrt{(4 - 2)^{2} + (1 - 3)^{2}} = \\sqrt{2^{2} + (-2)^{2}} = \\sqrt{4 + 4} = \\sqrt{8} = \\mathbf{2\\sqrt{2}}$\n\nAlways simplify the surd: $\\sqrt{8} = \\sqrt{4 \\times 2} = 2\\sqrt{2}$. Leaving it as $\\sqrt{8}$ is not wrong, but it usually will not match the option printed.\n\nIt does not matter which point you subtract from which — the differences would be $-2$ and $+2$ instead, and squaring erases the sign either way.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-007",
+      "topic": "Length of a median",
+      "source": "CBSE 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the length of the median $AD$ of $\\triangle ABC$ having vertices $A(0,\\ -1)$, $B(2,\\ 1)$ and $C(0,\\ 3)$.\n\nGive your answer correct to two decimal places.",
+      "answer": 3.16,
+      "tolerance": 0.01,
+      "solution": "**Step 1 — find $D$.** A median runs from a vertex to the **mid-point of the opposite side**, so $D$ is the mid-point of $BC$:\n\n$D = \\left(\\dfrac{2 + 0}{2},\\ \\dfrac{1 + 3}{2}\\right) = (1,\\ 2)$\n\n**Step 2 — find $AD$** with the distance formula, from $A(0, -1)$ to $D(1, 2)$:\n\n$AD = \\sqrt{(1 - 0)^{2} + (2 - (-1))^{2}} = \\sqrt{1 + 9} = \\sqrt{10} \\approx \\mathbf{3.16}$\n\nWatch the double negative in $2 - (-1) = 3$; writing $2 - 1 = 1$ there is the usual way this question goes wrong.\n\nEvery median question is these same two steps: mid-point first, then distance. The word \"median\" is really an instruction to find a mid-point.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-008",
+      "topic": "Length of a median",
+      "source": "CBSE 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$A(3,\\ 0)$, $B(6,\\ 4)$ and $C(-1,\\ 3)$ are the vertices of a triangle $ABC$. Find the length of its median $BE$.\n\nGive your answer correct to two decimal places.",
+      "answer": 5.59,
+      "tolerance": 0.01,
+      "solution": "**Step 1 — find $E$.** The median $BE$ goes from $B$ to the mid-point of the opposite side $AC$:\n\n$E = \\left(\\dfrac{3 + (-1)}{2},\\ \\dfrac{0 + 3}{2}\\right) = \\left(1,\\ \\dfrac{3}{2}\\right)$\n\n**Step 2 — find $BE$**, from $B(6, 4)$ to $E\\left(1, \\tfrac{3}{2}\\right)$:\n\n$BE = \\sqrt{(6 - 1)^{2} + \\left(4 - \\dfrac{3}{2}\\right)^{2}} = \\sqrt{25 + \\left(\\dfrac{5}{2}\\right)^{2}} = \\sqrt{25 + \\dfrac{25}{4}} = \\sqrt{\\dfrac{125}{4}}$\n\n$= \\dfrac{5\\sqrt{5}}{2} \\approx \\mathbf{5.59}$\n\nThe naming tells you where to go: in median $BE$, the letter $B$ is a vertex of the triangle and $E$ is a new point — so $E$ must be the mid-point of the side that does not contain $B$, namely $AC$.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-009",
+      "topic": "Distance formula",
+      "type": "numeric",
+      "marks": 1,
+      "q": "Find the value of $y$ for which the distance between the points $P(2,\\ -3)$ and $Q(10,\\ y)$ is $10$ units, given that $y > 0$.",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "Set the distance formula equal to 10 and square both sides:\n\n$(10 - 2)^{2} + (y + 3)^{2} = 10^{2}$\n\n$64 + (y + 3)^{2} = 100$\n\n$(y + 3)^{2} = 36$\n\n$y + 3 = \\pm 6$\n\nso $y = 3$ or $y = -9$. The question asks for the positive value, so $y = \\mathbf{3}$.\n\n**Check:** from $(2, -3)$ to $(10, 3)$: $\\sqrt{8^{2} + 6^{2}} = \\sqrt{100} = 10$ ✓\n\nSquaring always opens two doors — one point above the line through $P$ and one below, both exactly 10 units away. The extra condition in the question is what closes one of them.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-010",
+      "topic": "Finding the ratio from the section formula",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 2,
+      "q": "Find the ratio in which the point $P(-4,\\ 6)$ divides the line segment joining the points $A(-6,\\ 10)$ and $B(3,\\ -8)$.",
+      "solution": "Let $P$ divide $AB$ in the ratio $k : 1$. By the section formula, the $x$-coordinate of $P$ is\n\n$x = \\dfrac{k(3) + 1(-6)}{k + 1}$\n\nSet this equal to $-4$:\n\n$\\dfrac{3k - 6}{k + 1} = -4$\n\n$3k - 6 = -4k - 4$\n\n$7k = 2 \\Rightarrow k = \\dfrac{2}{7}$\n\nSo the ratio is $\\dfrac{2}{7} : 1$, that is **$2 : 7$**.\n\n**Check with the $y$-coordinate** — always worth the extra line:\n\n$y = \\dfrac{2(-8) + 7(10)}{2 + 7} = \\dfrac{-16 + 70}{9} = \\dfrac{54}{9} = 6$ ✓\n\nTaking the ratio as $k : 1$ rather than $m : n$ leaves you with **one** unknown instead of two, and any ratio can be written that way. Just remember to clear the fraction at the end: $\\tfrac{2}{7} : 1$ is the same as $2 : 7$.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-011",
+      "topic": "Proving a triangle is isosceles",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 2,
+      "q": "Prove that the points $(3,\\ 0)$, $(6,\\ 4)$ and $(-1,\\ 3)$ are the vertices of an isosceles triangle.",
+      "solution": "Call them $A(3,0)$, $B(6,4)$ and $C(-1,3)$, and find all three side lengths.\n\n$AB = \\sqrt{(6-3)^{2} + (4-0)^{2}} = \\sqrt{9 + 16} = \\sqrt{25} = 5$\n\n$BC = \\sqrt{(-1-6)^{2} + (3-4)^{2}} = \\sqrt{49 + 1} = \\sqrt{50} = 5\\sqrt{2}$\n\n$CA = \\sqrt{(3-(-1))^{2} + (0-3)^{2}} = \\sqrt{16 + 9} = \\sqrt{25} = 5$\n\nSince $AB = CA = 5$ while $BC = 5\\sqrt{2}$ is different, exactly two sides are equal — so $\\triangle ABC$ is **isosceles**. ∎\n\nTwo details earn the marks. First, you must compute **all three** sides: showing two are equal is not enough without confirming the third differs (otherwise it could be equilateral). Second, say the conclusion in words.\n\nA bonus worth noticing: $5^{2} + 5^{2} = 50 = (5\\sqrt{2})^{2}$, so this triangle is right-angled at $A$ as well — an isosceles right triangle.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-012",
+      "topic": "Where an axis cuts a segment",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "In what ratio does the $X$-axis divide the line segment joining the points $(2,\\ -3)$ and $(5,\\ 6)$? Also find the coordinates of the point of intersection.",
+      "solution": "**The key fact:** every point on the $X$-axis has $y = 0$. That is the equation you need.\n\nLet the ratio be $k : 1$. By the section formula, the $y$-coordinate of the dividing point is\n\n$y = \\dfrac{k(6) + 1(-3)}{k + 1}$\n\nSet it to zero:\n\n$\\dfrac{6k - 3}{k + 1} = 0 \\Rightarrow 6k - 3 = 0 \\Rightarrow k = \\dfrac{1}{2}$\n\nSo the ratio is $\\tfrac{1}{2} : 1$, that is **$1 : 2$**.\n\n**Now the point.** Put $k = \\tfrac{1}{2}$ into the $x$-coordinate:\n\n$x = \\dfrac{\\frac{1}{2}(5) + 1(2)}{\\frac{1}{2} + 1} = \\dfrac{2.5 + 2}{1.5} = \\dfrac{4.5}{1.5} = 3$\n\nThe point of intersection is **$(3,\\ 0)$**.\n\n**Check:** $(3, 0)$ lies on the $X$-axis ✓, and it is $1$ part of the way from $(2,-3)$ towards $(5,6)$ out of 3 parts: $2 + \\tfrac{1}{3}(3) = 3$ ✓\n\nThe whole question turns on one substitution. \"Divided by the $X$-axis\" is a geometric sentence; \"$y = 0$\" is the same sentence in algebra, and once written the section formula does the rest.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-013",
+      "topic": "Where an axis cuts a segment",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 3,
+      "q": "Find the ratio in which the $y$-axis divides the line segment joining the points $(5,\\ -6)$ and $(-1,\\ -4)$. Also find the point of intersection.",
+      "solution": "**The key fact:** every point on the $y$-axis has $x = 0$.\n\nLet the ratio be $k : 1$. The $x$-coordinate of the dividing point is\n\n$x = \\dfrac{k(-1) + 1(5)}{k + 1}$\n\nSet it to zero:\n\n$\\dfrac{-k + 5}{k + 1} = 0 \\Rightarrow -k + 5 = 0 \\Rightarrow k = 5$\n\nSo the ratio is **$5 : 1$**.\n\n**Now the point.** Put $k = 5$ into the $y$-coordinate:\n\n$y = \\dfrac{5(-4) + 1(-6)}{5 + 1} = \\dfrac{-20 - 6}{6} = \\dfrac{-26}{6} = -\\dfrac{13}{3}$\n\nThe point of intersection is $\\left(0,\\ -\\dfrac{13}{3}\\right)$.\n\n**Sanity check on the ratio:** the $x$-coordinates run from $5$ down to $-1$, and the crossing at $x = 0$ is much nearer the $-1$ end — $5$ units travelled against $1$ remaining. A ratio of $5 : 1$ is exactly what the picture predicts.\n\nCompare this with the $X$-axis version: same method, but $x = 0$ instead of $y = 0$. Decide which coordinate dies, and the rest is arithmetic.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-014",
+      "topic": "Where a line cuts a segment",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 2,
+      "q": "In what ratio is the line segment joining the points $(3,\\ -5)$ and $(-1,\\ 6)$ divided by the line $y = x$?",
+      "solution": "Let the ratio be $k : 1$. By the section formula the dividing point is\n\n$\\left(\\dfrac{-k + 3}{k + 1},\\ \\dfrac{6k - 5}{k + 1}\\right)$\n\n**The key fact:** a point lies on the line $y = x$ exactly when its two coordinates are equal. Set them equal:\n\n$\\dfrac{-k + 3}{k + 1} = \\dfrac{6k - 5}{k + 1}$\n\nThe denominators match, so\n\n$-k + 3 = 6k - 5$\n\n$8 = 7k \\Rightarrow k = \\dfrac{8}{7}$\n\nThe ratio is **$8 : 7$**.\n\n**Check:** $x = \\dfrac{-\\frac{8}{7} + 3}{\\frac{8}{7} + 1} = \\dfrac{13/7}{15/7} = \\dfrac{13}{15}$ and $y = \\dfrac{6 \\cdot \\frac{8}{7} - 5}{\\frac{15}{7}} = \\dfrac{13/7}{15/7} = \\dfrac{13}{15}$ ✓ — equal, so the point is on $y = x$.\n\nThe pattern across all three of these questions is the same: turn the line into a condition on the coordinates. The $X$-axis says $y = 0$; the $y$-axis says $x = 0$; the line $y = x$ says the two are equal. Write the condition, and the section formula finishes it.",
+      "chapter": "Coordinate Geometry"
+    },
+    {
+      "id": "cg-015",
+      "topic": "Collinear points",
+      "type": "long",
+      "marks": 3,
+      "q": "Find the value of $k$ for which the points $(1,\\ 2)$, $(-1,\\ k)$ and $(-3,\\ -4)$ are collinear.",
+      "solution": "**Collinear** means all three lie on one straight line — so no triangle is formed and the area they enclose is zero.\n\nArea $= \\dfrac{1}{2}\\big|x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)\\big| = 0$\n\nWith $(1, 2)$, $(-1, k)$ and $(-3, -4)$:\n\n$1\\big(k - (-4)\\big) + (-1)\\big(-4 - 2\\big) + (-3)\\big(2 - k\\big) = 0$\n\n$(k + 4) + 6 + (-6 + 3k) = 0$\n\n$4k + 4 = 0$\n\n$k = \\mathbf{-1}$\n\n**Check by mid-point.** With $k = -1$ the middle point is $(-1, -1)$, and the mid-point of $(1,2)$ and $(-3,-4)$ is $\\left(\\tfrac{1-3}{2}, \\tfrac{2-4}{2}\\right) = (-1, -1)$ ✓ — so it not only lies on the line, it is exactly halfway along.\n\nThe idea to hold on to: **collinear ⟺ zero area.** Three points always determine a triangle unless they are in a row, and then the triangle has been flattened to nothing.",
+      "chapter": "Coordinate Geometry"
+    }
+  ]
+}

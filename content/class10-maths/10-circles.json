@@ -1,0 +1,198 @@
+{
+  "id": "lib-c10-circles",
+  "title": "Class 10 · Circles — Chapter Test 10",
+  "chapter": "Circles",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "ci-001",
+      "topic": "Chord subtending a right angle",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A chord of a circle of radius 10 cm subtends a right angle at its centre. The length of the chord (in cm) is:",
+      "options": [
+        "$5\\sqrt{2}$",
+        "$10\\sqrt{2}$",
+        "$\\dfrac{5}{\\sqrt{2}}$",
+        "$10\\sqrt{3}$"
+      ],
+      "answer": 1,
+      "solution": "Join the centre $O$ to the two ends $A$ and $B$ of the chord. Both $OA$ and $OB$ are radii, so\n\n$OA = OB = 10$ cm and $\\angle AOB = 90°$\n\nThat makes $\\triangle OAB$ a right-angled triangle with the chord as its hypotenuse. By Pythagoras:\n\n$AB = \\sqrt{10^{2} + 10^{2}} = \\sqrt{200} = \\mathbf{10\\sqrt{2}}$ cm\n\nNo circle theorem is needed — the two radii and the chord simply *are* a right triangle, and an isosceles one at that.\n\nA quick check on size: the chord must be shorter than the diameter (20 cm) and longer than the radius. $10\\sqrt{2} \\approx 14.1$ sits nicely between.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-002",
+      "topic": "Tangents from an external point",
+      "source": "CBSE 2026",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $PQ$ and $PR$ are tangents to a circle with centre $O$ and radius 4 cm such that $\\angle QPR = 90°$, then the length $OP$ is:",
+      "options": [
+        "$4$ cm",
+        "$4\\sqrt{2}$ cm",
+        "$8$ cm",
+        "$2\\sqrt{2}$ cm"
+      ],
+      "answer": 1,
+      "solution": "**A tangent is perpendicular to the radius at the point of contact**, so\n\n$\\angle OQP = \\angle ORP = 90°$\n\nIn quadrilateral $OQPR$ the four angles add to $360°$, and three of them are $90°$ ($\\angle Q$, $\\angle R$ and $\\angle QPR$). So $\\angle QOR = 90°$ too — all four angles are right angles, and since $OQ = OR = 4$ (both radii), $OQPR$ is a **square** of side 4.\n\n$OP$ is its diagonal:\n\n$OP = 4\\sqrt{2}$ cm\n\nOr straight from $\\triangle OQP$, right-angled at $Q$ with $\\angle OPQ = 45°$ (the $90°$ at $P$ is split equally by $OP$):\n\n$\\sin 45° = \\dfrac{4}{OP} \\Rightarrow OP = 4\\sqrt{2}$ cm ✓\n\nThe fact that unlocks nearly every tangent question is the right angle at the point of contact. Draw the radii to the contact points first, before anything else.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-003",
+      "topic": "Length of a tangent",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The length of the tangent drawn from a point 13 cm away from the centre of a circle of radius 5 cm is:",
+      "options": [
+        "$12$ cm",
+        "$8$ cm",
+        "$18$ cm",
+        "$\\sqrt{194}$ cm"
+      ],
+      "answer": 0,
+      "solution": "Let $P$ be the external point, $O$ the centre and $T$ the point of contact. The radius $OT$ meets the tangent at right angles, so $\\triangle OTP$ is right-angled **at $T$** — with $OP = 13$ as the hypotenuse.\n\n$PT = \\sqrt{OP^{2} - OT^{2}} = \\sqrt{13^{2} - 5^{2}} = \\sqrt{169 - 25} = \\sqrt{144} = \\mathbf{12}$ cm\n\nOption (D), $\\sqrt{194}$, is what you get by **adding** the squares — treating $OP$ as a leg instead of the hypotenuse. The distance from the external point to the centre is always the longest side, because it faces the right angle.\n\n$5, 12, 13$ again: the same triple that turns up throughout this syllabus.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-004",
+      "topic": "Number of tangents",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of tangents that can be drawn to a circle from a point lying **inside** the circle is:",
+      "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "infinitely many"
+      ],
+      "answer": 0,
+      "solution": "A tangent touches a circle at exactly one point and never enters it. A line through a point *inside* the circle must cut straight across and come out the other side — so it meets the circle **twice**, which makes it a secant, not a tangent.\n\nSo the answer is **$0$**: no tangent can be drawn from an interior point.\n\nThe full picture is worth holding as a set of three:\n\n- point **inside** the circle → **0** tangents\n- point **on** the circle → **1** tangent (at that very point)\n- point **outside** the circle → **2** tangents, and they are equal in length\n\nEach case follows from the same idea: how many lines through the point can touch without crossing.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-005",
+      "topic": "Equal tangents",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$PA$ and $PB$ are two tangents drawn from an external point $P$ to a circle with centre $O$. If $\\angle APB = 60°$, then $\\angle AOB$ is:",
+      "options": [
+        "$60°$",
+        "$90°$",
+        "$120°$",
+        "$30°$"
+      ],
+      "answer": 2,
+      "solution": "Draw the radii to the two points of contact. Since a tangent meets the radius at right angles,\n\n$\\angle OAP = \\angle OBP = 90°$\n\nIn quadrilateral $OAPB$ the angles add to $360°$:\n\n$\\angle AOB + 90° + 60° + 90° = 360°$\n\n$\\angle AOB = \\mathbf{120°}$\n\nThe general rule falls straight out of that: $\\angle AOB$ and $\\angle APB$ always add to $180°$ — they are **supplementary**. Squeeze the tangents together and the angle at the centre opens up, and vice versa.\n\nA useful special case to remember: if the tangents are perpendicular ($\\angle APB = 90°$), then $\\angle AOB = 90°$ as well, and the figure is a square — which is exactly the earlier question about $OP = 4\\sqrt{2}$.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-006",
+      "topic": "Tangent and radius",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The angle between a tangent to a circle and the radius drawn at the point of contact is:",
+      "options": [
+        "$0°$",
+        "$45°$",
+        "$90°$",
+        "$180°$"
+      ],
+      "answer": 2,
+      "solution": "The answer is **$90°$** — this is the single most-used fact in the whole chapter.\n\nWhy it must be so: of all the lines from the centre to the tangent line, the radius to the point of contact is the **shortest**, because every other point of the tangent lies outside the circle and is therefore further than one radius away. And the shortest line from a point to a line is always the perpendicular.\n\nEverything else in this chapter is built on it — equal tangent lengths, the supplementary-angle result, the perpendicular bisector property. When a tangent appears, draw that radius.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-007",
+      "topic": "Chord tangent to an inner circle",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Two concentric circles have radii 5 cm and 3 cm. Find the length, in centimetres, of a chord of the larger circle which touches the smaller circle.",
+      "answer": 8,
+      "tolerance": 0,
+      "solution": "Let $O$ be the common centre, $AB$ the chord of the larger circle, and $P$ the point where it touches the smaller one.\n\n**Use the tangent property.** $AB$ is a tangent to the small circle at $P$, so $OP \\perp AB$ and $OP = 3$ cm.\n\n**Use the chord property.** A perpendicular from the centre to a chord **bisects** it, so $P$ is the mid-point of $AB$.\n\nNow in the right triangle $OPA$, with $OA = 5$ (radius of the larger circle):\n\n$AP = \\sqrt{5^{2} - 3^{2}} = \\sqrt{25 - 9} = 4$ cm\n\nand the whole chord is twice that:\n\n$AB = 2 \\times 4 = \\mathbf{8}$ cm\n\nTwo facts meet at the point $P$ — it is both the point of contact (so the radius is perpendicular) and the mid-point of the chord (so the halves are equal). Forgetting to double $AP$ at the end is the usual slip.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-008",
+      "topic": "Tangents from an external point",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A circle is inscribed in a triangle $ABC$ touching $AB$, $BC$ and $CA$ at $P$, $Q$ and $R$ respectively. If $AP = 4$ cm, $BP = 6$ cm and $CR = 5$ cm, find the perimeter of the triangle in centimetres.",
+      "answer": 30,
+      "tolerance": 0,
+      "solution": "**The key fact:** the two tangents drawn to a circle from the same external point are **equal in length**.\n\nApply it at each vertex:\n\nFrom $A$: $AP = AR = 4$ cm\n\nFrom $B$: $BP = BQ = 6$ cm\n\nFrom $C$: $CR = CQ = 5$ cm\n\nNow build the three sides:\n\n$AB = AP + PB = 4 + 6 = 10$ cm\n\n$BC = BQ + QC = 6 + 5 = 11$ cm\n\n$CA = CR + RA = 5 + 4 = 9$ cm\n\n**Perimeter** $= 10 + 11 + 9 = \\mathbf{30}$ cm\n\nNotice the shortcut hiding in it: the perimeter is $2(4 + 6 + 5) = 30$, because every tangent length gets counted exactly twice as you walk round the triangle.\n\nThe picture is a piece of string wrapped tight around a circle: each straight run appears once on the way out from a corner and once on the way back to the next.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-009",
+      "topic": "Tangents at the ends of a chord",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that the tangents drawn at the end points of a chord of a circle make equal angles with the chord.",
+      "solution": "**Given.** A circle with centre $O$ and a chord $AB$. Tangents at $A$ and $B$ meet at $P$.\n\n**To prove.** $\\angle PAB = \\angle PBA$\n\n**Proof.** The two tangents are drawn from the same external point $P$, and tangents from an external point are equal in length:\n\n$PA = PB$\n\nSo $\\triangle PAB$ is **isosceles**, with $PA$ and $PB$ as its equal sides.\n\nIn an isosceles triangle the angles opposite the equal sides are equal. The angle opposite $PA$ is $\\angle PBA$, and the angle opposite $PB$ is $\\angle PAB$. Therefore\n\n$\\angle PAB = \\angle PBA$ ∎\n\nThose are exactly the angles the two tangents make with the chord $AB$.\n\nThe proof is three lines long because all the work is in the first one. \"Tangents from an external point are equal\" turns a circle problem into an isosceles-triangle problem, and the rest is a fact from Class 9.\n\n(If the tangents are parallel — when $AB$ is a diameter — there is no point $P$, but then both angles are $90°$ and the result still holds.)",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-010",
+      "topic": "Parallelogram circumscribing a circle",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that the parallelogram circumscribing a circle is a rhombus.",
+      "solution": "**Given.** A parallelogram $ABCD$ circumscribing a circle, touching $AB$, $BC$, $CD$, $DA$ at $P$, $Q$, $R$, $S$ respectively.\n\n**To prove.** $ABCD$ is a rhombus, i.e. all four sides are equal.\n\n**Proof.** Tangents from an external point are equal, so at each vertex:\n\n$AP = AS$ … (1)\n\n$BP = BQ$ … (2)\n\n$CR = CQ$ … (3)\n\n$DR = DS$ … (4)\n\nAdd all four:\n\n$AP + BP + CR + DR = AS + BQ + CQ + DS$\n\nGroup them into whole sides:\n\n$(AP + PB) + (CR + RD) = (AS + SD) + (BQ + QC)$\n\n$AB + CD = AD + BC$ … (5)\n\nNow use the parallelogram. Opposite sides are equal:\n\n$AB = CD$ and $AD = BC$\n\nSubstituting into (5):\n\n$2AB = 2AD \\Rightarrow AB = AD$\n\nSo two adjacent sides are equal, and with $AB = CD$ and $AD = BC$ that makes **all four sides equal**. A parallelogram with all sides equal is a rhombus. ∎\n\nStep (5) is worth remembering on its own: **in any quadrilateral circumscribing a circle, the two pairs of opposite sides have equal sums.** The parallelogram condition is then just what collapses that into all-sides-equal.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-011",
+      "topic": "Perpendicular bisector of a chord",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "From an external point $P$, two tangents $PA$ and $PB$ are drawn to a circle with centre $O$. Prove that $OP$ is the perpendicular bisector of the chord $AB$.",
+      "solution": "**Given.** Tangents $PA$ and $PB$ from an external point $P$ to a circle with centre $O$. Let $OP$ meet $AB$ at $M$.\n\n**To prove.** $AM = MB$ and $OP \\perp AB$.\n\n**Proof.** Compare $\\triangle PAM$ and $\\triangle PBM$:\n\n$PA = PB$ (tangents from an external point) … (1)\n\n$\\angle APM = \\angle BPM$ ($OP$ bisects the angle between the tangents, since $\\triangle OAP \\cong \\triangle OBP$ by RHS: $OA = OB$ as radii, $OP$ common, and right angles at $A$ and $B$) … (2)\n\n$PM = PM$ (common) … (3)\n\nBy **SAS**, $\\triangle PAM \\cong \\triangle PBM$.\n\nTherefore, by CPCT:\n\n$AM = MB$ … so $M$ is the mid-point of $AB$\n\nand\n\n$\\angle AMP = \\angle BMP$\n\nBut these two angles sit on the straight line $AB$, so they add to $180°$. Being equal, each must be $90°$:\n\n$OP \\perp AB$\n\nHence $OP$ is the perpendicular bisector of $AB$. ∎\n\nThe pattern is worth naming: prove two triangles congruent, then read off *both* conclusions from CPCT. The equal halves give the bisector; the equal angles on a straight line give the perpendicular.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-012",
+      "topic": "Quadrilateral circumscribing a circle",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that the opposite sides of a quadrilateral circumscribing a circle subtend supplementary angles at the centre of the circle.",
+      "solution": "**Given.** Quadrilateral $ABCD$ circumscribing a circle with centre $O$, touching $AB$, $BC$, $CD$, $DA$ at $P$, $Q$, $R$, $S$.\n\n**To prove.** $\\angle AOB + \\angle COD = 180°$ (and likewise $\\angle BOC + \\angle AOD = 180°$).\n\n**Proof.** Join $O$ to $A$, $B$, $C$, $D$ and to $P$, $Q$, $R$, $S$.\n\nFrom vertex $A$ the tangents are $AP$ and $AS$, and\n\n$\\triangle OAP \\cong \\triangle OAS$ (RHS: $OP = OS$ radii, $OA$ common, right angles at $P$ and $S$)\n\nso $\\angle AOP = \\angle AOS$. Call each of these $\\angle 1$; similarly write the eight small angles at $O$ as $\\angle 1, \\angle 1, \\angle 2, \\angle 2, \\angle 3, \\angle 3, \\angle 4, \\angle 4$ going round.\n\nAll eight fill a complete turn:\n\n$2(\\angle 1 + \\angle 2 + \\angle 3 + \\angle 4) = 360°$\n\n$\\angle 1 + \\angle 2 + \\angle 3 + \\angle 4 = 180°$ … (∗)\n\nNow, $\\angle AOB$ is made of the two angles either side of the contact point $P$, and $\\angle COD$ of the two either side of $R$. Between them they account for one of each pair:\n\n$\\angle AOB + \\angle COD = (\\angle 1 + \\angle 2) + (\\angle 3 + \\angle 4) = 180°$ by (∗) ∎\n\nThe same counting gives $\\angle BOC + \\angle AOD = 180°$.\n\nThe engine of the proof is that each vertex's two tangents are mirror images in the line joining the vertex to the centre — so the eight little angles at $O$ come in four equal pairs, and a full turn splits neatly in half.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-013",
+      "topic": "Angle between two tangents",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that the angle between the two tangents drawn from an external point to a circle is supplementary to the angle subtended by the line segment joining the points of contact at the centre.",
+      "solution": "**Given.** A circle with centre $O$; tangents from an external point $P$ touch it at $A$ and $B$.\n\n**To prove.** $\\angle APB + \\angle AOB = 180°$\n\n**Proof.** A tangent is perpendicular to the radius at the point of contact, so\n\n$\\angle OAP = 90°$ and $\\angle OBP = 90°$\n\nNow look at quadrilateral $OAPB$. The angles of any quadrilateral add to $360°$:\n\n$\\angle AOB + \\angle OAP + \\angle APB + \\angle PBO = 360°$\n\n$\\angle AOB + 90° + \\angle APB + 90° = 360°$\n\n$\\angle AOB + \\angle APB = 180°$ ∎\n\nSo the two angles are supplementary.\n\n**Sanity check with a picture.** Stand far from the circle and the two tangents are nearly parallel — $\\angle APB$ is tiny, and the chord $AB$ (almost a diameter) subtends nearly $180°$ at the centre. Walk closer and $\\angle APB$ opens up while $\\angle AOB$ closes down, the two always totalling a straight angle.\n\nThe whole proof rests on the two right angles. Draw the radii to the points of contact and the quadrilateral does the arithmetic for you.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-014",
+      "topic": "Tangent length and a right triangle",
+      "type": "long",
+      "marks": 3,
+      "q": "A tangent $PQ$ at a point $P$ of a circle of radius 5 cm meets a line through the centre $O$ at a point $Q$ such that $OQ = 13$ cm. Find the length of $PQ$.",
+      "solution": "**Draw the radius to the point of contact.** $OP$ is a radius and $PQ$ is a tangent at $P$, so\n\n$OP \\perp PQ$, i.e. $\\angle OPQ = 90°$\n\nThat makes $\\triangle OPQ$ right-angled at $P$, with $OQ$ as the hypotenuse.\n\n**Apply Pythagoras:**\n\n$OQ^{2} = OP^{2} + PQ^{2}$\n\n$13^{2} = 5^{2} + PQ^{2}$\n\n$169 = 25 + PQ^{2}$\n\n$PQ^{2} = 144 \\Rightarrow PQ = \\mathbf{12}$ cm\n\n**Check the sides make sense:** $5, 12, 13$ is a right triangle ✓ and the hypotenuse $OQ = 13$ is the longest, as it must be.\n\nThe one decision in this question is *where* the right angle is. It is at $P$, the point of contact — not at $Q$ and not at $O$. Get that right and Pythagoras finishes it in one line.",
+      "chapter": "Circles"
+    },
+    {
+      "id": "ci-015",
+      "topic": "Equal tangents in a quadrilateral",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that in any quadrilateral $ABCD$ circumscribing a circle, $AB + CD = AD + BC$.",
+      "solution": "**Given.** Quadrilateral $ABCD$ circumscribing a circle, touching $AB$, $BC$, $CD$, $DA$ at $P$, $Q$, $R$, $S$ respectively.\n\n**To prove.** $AB + CD = AD + BC$\n\n**Proof.** Tangents drawn from an external point are equal, so at each of the four vertices:\n\n$AP = AS$ … (1)\n\n$BP = BQ$ … (2)\n\n$CR = CQ$ … (3)\n\n$DR = DS$ … (4)\n\nAdd (1), (2), (3) and (4):\n\n$AP + BP + CR + DR = AS + BQ + CQ + DS$\n\nRegroup the left side into two whole sides, and the right side into the other two:\n\n$(AP + PB) + (CR + RD) = (AS + SD) + (BQ + QC)$\n\n$AB + CD = AD + BC$ ∎\n\n**A way to see it without algebra.** Walk around the quadrilateral, and mark each tangent segment with the vertex it comes from: $a, a, b, b, c, c, d, d$. One pair of opposite sides collects $a + b$ and $c + d$; the other pair collects $a + d$ and $b + c$. Both totals come to $a + b + c + d$ — every tangent length counted exactly once.\n\nThis is the result that made the rhombus proof work, and it is worth knowing on its own.",
+      "chapter": "Circles"
+    }
+  ]
+}

@@ -151,6 +151,8 @@ export interface Subject {
   klass: string;
   subject: string;
   title: string;
+  /** A built-in library shelf: every teacher sees it, only an admin owns it. */
+  platform?: boolean;
   ownerSub: string;
   collaborators: string[];
   testCount?: number;
@@ -246,10 +248,11 @@ export async function assignTest(
 }
 
 /** The built-in library: published master tests any teacher may copy. */
-export async function fetchLibrary(): Promise<ServerTestMeta[] | null> {
+export async function fetchLibrary(subjectId?: string): Promise<ServerTestMeta[] | null> {
   if (!isLoggedIn()) return null;
   try {
-    const res = await apiFetch("/api/tests?library=1", { headers: authHeader() });
+    const q = subjectId ? `&subjectId=${encodeURIComponent(subjectId)}` : "";
+    const res = await apiFetch(`/api/tests?library=1${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     return (await res.json()).tests as ServerTestMeta[];
   } catch {

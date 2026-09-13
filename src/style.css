@@ -3247,3 +3247,26 @@ body.modal-open {
 @media (prefers-reduced-motion: reduce) {
   .ed-tree, .ed-scrim { transition: none; }
 }
+
+/* The built-in library: a chapter read read-only, answers shown as facts
+   rather than as choices — the teacher is reading, not sitting the test. */
+.lib-options { display: grid; gap: 8px; margin-top: 12px; }
+.lib-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.lib-option.lib-correct { border-color: var(--green); background: var(--green-bg); }
+.lib-letter {
+  flex: none; width: 24px; height: 24px; border-radius: 6px;
+  display: grid; place-items: center;
+  background: var(--bg); font-weight: 600; font-size: 0.85rem;
+}
+.lib-option .status-chip { margin-left: auto; }
+
+/* The crumb's way back names the shelf when there is room and says "Back" when
+   there is not: at 390px the full title pushed the action off the screen. */
+.crumb-tight { display: none; }
+@media (max-width: 720px) {
+  .crumb-wide { display: none; }
+  .crumb-tight { display: inline; }
+}
