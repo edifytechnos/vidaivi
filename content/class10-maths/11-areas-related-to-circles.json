@@ -1,0 +1,199 @@
+{
+  "id": "lib-c10-areas-related-to-circles",
+  "title": "Class 10 · Areas Related to Circles — Chapter Test 11",
+  "chapter": "Areas Related to Circles",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "ar-001",
+      "topic": "Central angle from sector area",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The area of the sector of a circle of radius 12 cm is $60\\pi$ cm². The central angle of this sector is:",
+      "options": [
+        "$120°$",
+        "$6°$",
+        "$75°$",
+        "$150°$"
+      ],
+      "answer": 3,
+      "solution": "A sector is a slice of the whole circle, and the slice's share of the area equals the angle's share of $360°$:\n\n$\\text{area of sector} = \\dfrac{\\theta}{360°} \\times \\pi r^{2}$\n\n$60\\pi = \\dfrac{\\theta}{360} \\times \\pi \\times 144$\n\nDivide both sides by $\\pi$:\n\n$60 = \\dfrac{144\\theta}{360}$\n\n$\\theta = \\dfrac{60 \\times 360}{144} = \\mathbf{150°}$\n\nLeaving $\\pi$ as a symbol until it cancels saves all the arithmetic — the question gave the area as $60\\pi$ precisely so that it would.\n\n**Sanity check:** the whole circle has area $144\\pi$, and $60\\pi$ is a little under half of it. A little under $180°$ is $150°$ ✓",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-002",
+      "topic": "Central angle from arc length",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The length of an arc of a circle with radius 12 cm is $10\\pi$ cm. The angle subtended by the arc at the centre of the circle is:",
+      "options": [
+        "$120°$",
+        "$6°$",
+        "$75°$",
+        "$150°$"
+      ],
+      "answer": 3,
+      "solution": "The arc is the same fraction of the circumference that the angle is of $360°$:\n\n$\\text{arc length} = \\dfrac{\\theta}{360°} \\times 2\\pi r$\n\n$10\\pi = \\dfrac{\\theta}{360} \\times 2\\pi \\times 12$\n\nCancel $\\pi$:\n\n$10 = \\dfrac{24\\theta}{360} = \\dfrac{\\theta}{15}$\n\n$\\theta = \\mathbf{150°}$\n\nNotice this is the same answer as the sector-area question with the same radius — and that is no coincidence. Arc length and sector area are both just \"$\\dfrac{\\theta}{360}$ of the whole thing\", one applied to the circumference and one to the area.\n\nLearn the single idea rather than two formulas: **a sector is a fraction of a circle, and the fraction is $\\dfrac{\\theta}{360}$.**",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-003",
+      "topic": "Arc length from sector area",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the area of a sector of a circle of radius 36 cm is $54\\pi$ cm², then the length of the corresponding arc of the sector is:",
+      "options": [
+        "$8\\pi$ cm",
+        "$6\\pi$ cm",
+        "$4\\pi$ cm",
+        "$3\\pi$ cm"
+      ],
+      "answer": 3,
+      "solution": "There is a shortcut that avoids finding the angle at all:\n\n$\\text{area of sector} = \\dfrac{1}{2} \\times r \\times (\\text{arc length})$\n\n$54\\pi = \\dfrac{1}{2} \\times 36 \\times l$\n\n$54\\pi = 18l \\Rightarrow l = \\mathbf{3\\pi}$ cm\n\n**The long way, as a check.** From the area, $\\dfrac{\\theta}{360} \\times \\pi \\times 36^{2} = 54\\pi$, so $\\dfrac{\\theta}{360} = \\dfrac{54}{1296} = \\dfrac{1}{24}$. Then the arc is $\\dfrac{1}{24} \\times 2\\pi \\times 36 = 3\\pi$ cm ✓\n\nWhy the shortcut works: a thin sector is very nearly a triangle with base $l$ (the arc) and height $r$, and area $\\tfrac{1}{2} \\times$ base $\\times$ height. Remarkably, the formula is exact for a sector of any size.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-004",
+      "topic": "Area of a circle",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The area of a circle of radius 14 cm is: (Take $\\pi = \\dfrac{22}{7}$)",
+      "options": [
+        "$88$ cm²",
+        "$154$ cm²",
+        "$616$ cm²",
+        "$308$ cm²"
+      ],
+      "answer": 2,
+      "solution": "$A = \\pi r^{2} = \\dfrac{22}{7} \\times 14 \\times 14$\n\nCancel the 7 into one of the 14s first — always easier than multiplying then dividing:\n\n$= 22 \\times 2 \\times 14 = \\mathbf{616}$ cm²\n\nOption (A), $88$ cm, is the **circumference** $2\\pi r = 2 \\times \\tfrac{22}{7} \\times 14$ — the classic mix-up.\n\nA quick way to tell them apart: area is measured in **square** centimetres and involves $r^{2}$; circumference is a plain length and involves $r$ to the first power. If your answer's units do not match what was asked, you have used the wrong formula.\n\nRadii of $7$, $14$, $21$ and $28$ appear constantly in this chapter because they cancel neatly with $\\tfrac{22}{7}$.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-005",
+      "topic": "Radius from circumference",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the circumference of a circle is 176 cm, then its radius is: (Take $\\pi = \\dfrac{22}{7}$)",
+      "options": [
+        "$14$ cm",
+        "$28$ cm",
+        "$56$ cm",
+        "$7$ cm"
+      ],
+      "answer": 1,
+      "solution": "$C = 2\\pi r$\n\n$176 = 2 \\times \\dfrac{22}{7} \\times r = \\dfrac{44r}{7}$\n\n$r = \\dfrac{176 \\times 7}{44} = 4 \\times 7 = \\mathbf{28}$ cm\n\n**Check:** $2 \\times \\tfrac{22}{7} \\times 28 = 2 \\times 22 \\times 4 = 176$ ✓\n\nThe division $\\tfrac{176}{44} = 4$ is the whole calculation; everything else is bookkeeping. When $\\pi = \\tfrac{22}{7}$, look for the 22 and the 7 to cancel before reaching for a calculator.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-006",
+      "topic": "Area of a quadrant",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The area of a quadrant of a circle of radius 7 cm is: (Take $\\pi = \\dfrac{22}{7}$)",
+      "options": [
+        "$154$ cm²",
+        "$77$ cm²",
+        "$38.5$ cm²",
+        "$11$ cm²"
+      ],
+      "answer": 2,
+      "solution": "A **quadrant** is a quarter of the circle — a sector with a $90°$ angle.\n\nWhole circle: $\\pi r^{2} = \\dfrac{22}{7} \\times 49 = 154$ cm²\n\nQuadrant: $\\dfrac{154}{4} = \\mathbf{38.5}$ cm²\n\nOr in one step: $\\dfrac{90}{360} \\times \\dfrac{22}{7} \\times 49 = \\dfrac{1}{4} \\times 154 = 38.5$ cm².\n\nThe words are worth collecting, since the papers use them without explanation:\n\n- **semicircle** — half the circle, angle $180°$\n- **quadrant** — a quarter, angle $90°$\n- **sector** — any slice, angle $\\theta$\n- **segment** — the region between a chord and its arc (not a slice from the centre)",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-007",
+      "topic": "Area of each of many sectors",
+      "source": "CBSE 2026",
+      "type": "numeric",
+      "marks": 1,
+      "q": "A circle is divided into 16 identical sectors. If the radius of the circle is 7 cm, find the area of each sector in cm². (Take $\\pi = \\dfrac{22}{7}$)\n\nGive your answer correct to two decimal places.",
+      "answer": 9.63,
+      "tolerance": 0.01,
+      "solution": "**Whole circle first:**\n\n$A = \\pi r^{2} = \\dfrac{22}{7} \\times 7 \\times 7 = 154$ cm²\n\n**Sixteen identical sectors** share that area equally:\n\n$\\text{each} = \\dfrac{154}{16} = \\dfrac{77}{8} = 9.625 \\approx \\mathbf{9.63}$ cm²\n\nYou never need the angle, though it is $\\dfrac{360°}{16} = 22.5°$ if you want to check the long way:\n\n$\\dfrac{22.5}{360} \\times 154 = \\dfrac{1}{16} \\times 154 = 9.625$ ✓\n\n\"Identical sectors\" is doing the work here. Equal slices means equal areas, so the problem is just a division — the same as cutting a pizza.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-008",
+      "topic": "Perimeter of a quadrant",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the perimeter of a quadrant of a circle of radius 7 cm, in centimetres. (Take $\\pi = \\dfrac{22}{7}$)",
+      "answer": 25,
+      "tolerance": 0.01,
+      "solution": "The perimeter of a quadrant is **not** just the curved part. Walking around it you travel along three edges: two straight radii and one arc.\n\n**The arc** is a quarter of the circumference:\n\n$\\dfrac{1}{4} \\times 2\\pi r = \\dfrac{1}{4} \\times 2 \\times \\dfrac{22}{7} \\times 7 = \\dfrac{44}{4} = 11$ cm\n\n**The two radii:** $7 + 7 = 14$ cm\n\n**Total perimeter:** $11 + 14 = \\mathbf{25}$ cm\n\nThis is the most common mistake in the chapter — answering $11$ cm, the arc alone. Trace the boundary with your finger: you cannot get back to where you started without walking along both straight edges.\n\nThe same applies to a sector of any angle: perimeter $= \\text{arc} + 2r$.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-009",
+      "topic": "Area of a sector",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the area, in cm², of a sector of a circle of radius 6 cm whose central angle is $60°$. (Take $\\pi = \\dfrac{22}{7}$)\n\nGive your answer correct to two decimal places.",
+      "answer": 18.86,
+      "tolerance": 0.01,
+      "solution": "$\\text{area} = \\dfrac{\\theta}{360} \\times \\pi r^{2}$\n\n$= \\dfrac{60}{360} \\times \\dfrac{22}{7} \\times 36$\n\n$= \\dfrac{1}{6} \\times \\dfrac{792}{7}$\n\n$= \\dfrac{132}{7} \\approx \\mathbf{18.86}$ cm²\n\nSimplify $\\dfrac{60}{360}$ to $\\dfrac{1}{6}$ before multiplying — it turns an awkward calculation into a short one.\n\n**Sanity check:** the whole circle is $\\tfrac{22}{7} \\times 36 \\approx 113.1$ cm², and a $60°$ sector is one sixth of that, about $18.9$ ✓",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-010",
+      "topic": "Area between two circles",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A circular ring is formed between two concentric circles of radii 7 cm and 3.5 cm. Find the area of the ring in cm². (Take $\\pi = \\dfrac{22}{7}$)\n\nGive your answer correct to two decimal places.",
+      "answer": 115.5,
+      "tolerance": 0.01,
+      "solution": "The ring (an **annulus**) is the big circle with the small one punched out of it:\n\n$\\text{area} = \\pi R^{2} - \\pi r^{2} = \\pi(R^{2} - r^{2})$\n\n$= \\dfrac{22}{7}\\big(7^{2} - 3.5^{2}\\big) = \\dfrac{22}{7}\\big(49 - 12.25\\big) = \\dfrac{22}{7} \\times 36.75$\n\n$= \\mathbf{115.5}$ cm²\n\nFactoring out the $\\pi$ before subtracting means one multiplication instead of two.\n\n**Sanity check:** the big circle is $154$ cm² and the small one is $38.5$ cm² — a quarter of the big one, since halving the radius quarters the area. $154 - 38.5 = 115.5$ ✓\n\nThat last point is worth keeping: **halve the radius and the area drops to a quarter**, because area depends on $r^{2}$.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-011",
+      "topic": "Area of a segment",
+      "type": "long",
+      "marks": 3,
+      "q": "A chord of a circle of radius 10 cm subtends a right angle at the centre. Find the area of the corresponding **minor segment**. (Use $\\pi = 3.14$)",
+      "solution": "A **segment** is what is left when you cut the triangle off a sector — the region between the chord and its arc.\n\n$\\text{area of segment} = \\text{area of sector} - \\text{area of triangle}$\n\n**Area of the sector** ($\\theta = 90°$, $r = 10$):\n\n$\\dfrac{90}{360} \\times 3.14 \\times 100 = \\dfrac{1}{4} \\times 314 = 78.5$ cm²\n\n**Area of the triangle.** The two radii are perpendicular, so it is right-angled with both legs equal to the radius:\n\n$\\dfrac{1}{2} \\times 10 \\times 10 = 50$ cm²\n\n**Area of the minor segment:**\n\n$78.5 - 50 = \\mathbf{28.5}$ cm²\n\nThe picture is a slice of pizza with the crust-side piece torn off: the sector is the whole slice, the triangle is the pointed part, and the segment is the curved offcut.\n\nWhen the angle is $90°$ the triangle is easy — half of $r^{2}$. At $60°$ the triangle is equilateral, area $\\tfrac{\\sqrt{3}}{4}r^{2}$; those two cases cover almost every board question on segments.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-012",
+      "topic": "A grazing-area problem",
+      "type": "long",
+      "marks": 3,
+      "q": "A horse is tied to a peg at one corner of a square grassy field of side 15 m by means of a 5 m long rope. Find the area of the field that the horse can graze. (Use $\\pi = 3.14$)",
+      "solution": "**Picture the region the horse can reach.** The rope sweeps out a circle of radius 5 m, but the two fences meeting at that corner are at right angles — so the horse can only cover the **quarter** of that circle lying inside the field.\n\n$\\text{grazed area} = \\dfrac{90}{360} \\times \\pi r^{2} = \\dfrac{1}{4} \\times 3.14 \\times 5^{2}$\n\n$= \\dfrac{1}{4} \\times 3.14 \\times 25 = \\dfrac{78.5}{4} = \\mathbf{19.625}$ m²\n\nThe side of the field, 15 m, is deliberately much longer than the rope. It is there to tell you the horse never reaches another corner — so the grazed region is a clean quarter-circle and nothing is cut off.\n\nIf the rope were longer than the side, parts of the quarter-circle would spill past the far corners and would have to be subtracted. Always check the rope against the field before assuming a tidy quadrant.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-013",
+      "topic": "Areas swept by a clock hand",
+      "type": "long",
+      "marks": 3,
+      "q": "The minute hand of a clock is 14 cm long. Find the area swept by the minute hand in 5 minutes. (Take $\\pi = \\dfrac{22}{7}$)",
+      "solution": "**Turn the time into an angle.** The minute hand goes all the way round — $360°$ — in 60 minutes, so in one minute it turns $6°$, and in 5 minutes:\n\n$\\theta = 5 \\times 6° = 30°$\n\n**Now it is an ordinary sector**, with $r = 14$ cm (the length of the hand):\n\n$\\text{area} = \\dfrac{\\theta}{360} \\times \\pi r^{2} = \\dfrac{30}{360} \\times \\dfrac{22}{7} \\times 14 \\times 14$\n\n$= \\dfrac{1}{12} \\times \\dfrac{22}{7} \\times 196$\n\n$= \\dfrac{1}{12} \\times 616 = \\dfrac{154}{3} \\approx \\mathbf{51.33}$ cm²\n\nTwo things to keep straight in clock questions. The **hand's length is the radius**, and the **time converts to an angle** at $6°$ per minute for the minute hand.\n\n(The hour hand is slower: $360°$ in 12 hours, so $30°$ per hour or $0.5°$ per minute.)",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-014",
+      "topic": "Perimeter of a semicircular shape",
+      "type": "long",
+      "marks": 3,
+      "q": "Find the perimeter and the area of a semicircular protractor of diameter 14 cm. (Take $\\pi = \\dfrac{22}{7}$)",
+      "solution": "Diameter 14 cm means radius $r = 7$ cm.\n\n**Area.** A semicircle is half a circle:\n\n$\\dfrac{1}{2}\\pi r^{2} = \\dfrac{1}{2} \\times \\dfrac{22}{7} \\times 49 = \\dfrac{154}{2} = \\mathbf{77}$ cm²\n\n**Perimeter.** Walk around the edge: half the circumference, *then back along the straight diameter*.\n\ncurved part $= \\dfrac{1}{2} \\times 2\\pi r = \\pi r = \\dfrac{22}{7} \\times 7 = 22$ cm\n\nstraight part $= $ diameter $= 14$ cm\n\n$\\text{perimeter} = 22 + 14 = \\mathbf{36}$ cm\n\nThe area really is half the circle's, but the perimeter is **not** half the circumference — cutting a circle in two creates a new straight edge that was not there before.\n\nSame lesson as the quadrant: for area you take a fraction, for perimeter you trace the boundary.",
+      "chapter": "Areas Related to Circles"
+    },
+    {
+      "id": "ar-015",
+      "topic": "Combining circles",
+      "type": "long",
+      "marks": 3,
+      "q": "The circumferences of two circles are in the ratio $2 : 3$. Find the ratio of their areas.",
+      "solution": "**Circumference is proportional to the radius**, since $C = 2\\pi r$. So if the circumferences are in the ratio $2 : 3$, the radii are too:\n\n$\\dfrac{r_1}{r_2} = \\dfrac{2}{3}$\n\n**Area is proportional to the radius squared**, since $A = \\pi r^{2}$:\n\n$\\dfrac{A_1}{A_2} = \\dfrac{\\pi r_1^{2}}{\\pi r_2^{2}} = \\left(\\dfrac{r_1}{r_2}\\right)^{2} = \\left(\\dfrac{2}{3}\\right)^{2} = \\mathbf{\\dfrac{4}{9}}$\n\nSo the areas are in the ratio $4 : 9$.\n\n**Check with real numbers:** take $r_1 = 2$ and $r_2 = 3$. Circumferences $4\\pi$ and $6\\pi$ — ratio $2:3$ ✓. Areas $4\\pi$ and $9\\pi$ — ratio $4:9$ ✓\n\nThe general rule, and it holds for every similar shape, not just circles: **lengths scale by $k$, areas scale by $k^{2}$.** It is the same fact behind similar triangles' areas being in the ratio of the squares of their sides.",
+      "chapter": "Areas Related to Circles"
+    }
+  ]
+}
