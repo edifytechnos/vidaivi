@@ -55,9 +55,34 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   issues the certificate — until then HTTPS fails), and `https://<host>` added to
   **Authorised JavaScript origins** on the Google OAuth client.
 - Every push to `main` auto-deploys via `.github/workflows/azure-static-web-apps.yml`
-  (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret).
-- PRs against `main` get a preview URL posted on the PR — use it for teacher approval
-  of new question sets before merging.
+  (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret). That workflow has
+  **two jobs on purpose** — `production` (push/dispatch) and `qa` (pull request).
+  A single job with a conditional environment could land a push to `main`
+  somewhere other than production; two jobs cannot.
+
+### QA is one fixed URL, not a URL per PR
+
+**https://ambitious-plant-03e9c0f00-qa.eastasia.5.azurestaticapps.net** — every
+PR against `main` deploys here (`deployment_environment: qa`, an Azure *named
+environment*). Use it for teacher approval of new question sets before merging.
+
+The URL is fixed **because Google sign-in is bound to an origin**. Per-PR
+previews (`…-<PR number>.…`) each have a new origin, so nobody can sign in to
+one, which makes them useless for testing anything behind a login. This host is
+an authorised JavaScript origin on the OAuth client, alongside
+`https://vidai.seyali.app`.
+
+- **One PR under test at a time** — they share the environment, so the newest
+  push wins. Azure's Free plan allows 3 named environments per app if that ever
+  needs to become two.
+- **`vidai.qa.seyali.app` is not possible here.** Azure does not support custom
+  domains on preview environments, only on an app's *production* environment
+  ([docs](https://learn.microsoft.com/en-us/azure/static-web-apps/custom-domain)).
+  A real QA hostname would need a **second Static Web App** — its own deploy
+  token, its own custom domain, and (the actual prize) its own app settings, so
+  QA could point at a separate storage account instead of the live one.
+- **QA shares production's API and database.** Students and tests created while
+  testing are the live ones, exactly as in local dev.
 - Analytics: Azure Application Insights (optional). Activates only when the
   `APPINSIGHTS_CONNECTION_STRING` repo secret is set (passed to the build as
   `VITE_APPINSIGHTS_CONNECTION_STRING`); without it `src/analytics.ts` no-ops.
