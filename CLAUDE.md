@@ -654,8 +654,10 @@ asserts it.
 - The auth header is `X-Vidai-Auth`. For one release the client sends **both**
   names and `getBearer()` in `api/shared/core.js` accepts both, because the
   deploy is not atomic. Drop both fallbacks once the renamed API is everywhere.
-- **`vidai.seyali.app` must be an authorised JavaScript origin on the Google
-  OAuth client**, or Google sign-in fails there. Student and admin logins are
+- **`vidai.seyali.app` is an authorised JavaScript origin on the Google OAuth
+  client** — done, and Google sign-in works there. Recorded because it is a
+  requirement of the rename, not an open task: any *new* host needs the same
+  entry or Google sign-in fails on it, while student and admin logins are
   unaffected.
 
 ## An expired session says so (`apiFetch` in `src/auth.ts`)
