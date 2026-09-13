@@ -712,7 +712,7 @@ const COUNT_BACKFILL_BUDGET = 25;
 
 const SUBJECT_SELECT = [
   "PartitionKey", "RowKey", "board", "klass", "subject", "title", "ownerSub",
-  "collaborators", "createdAt",
+  "collaborators", "createdAt", "platform",
 ];
 
 const Q_CHUNK = 30000;
@@ -1269,6 +1269,7 @@ handlers.tests = async (context, req) => {
   // The library: every published master, for a teacher to take a copy of.
   if (String((req.query && req.query.library) || "") === "1") {
     if (!isStaff) return json(context, 403, { error: "Teachers only" });
+    const onlySubject = String((req.query && req.query.subjectId) || "").trim();
     const masters = [];
     const mine = new Set();
     const budget = { left: COUNT_BACKFILL_BUDGET };
@@ -1276,8 +1277,11 @@ handlers.tests = async (context, req) => {
       queryOptions: { filter: `PartitionKey eq 'test'`, select: TEST_META_SELECT },
     });
     for await (const e of it) {
-      if (e.platform && e.status === "published") masters.push(testMeta(await backfillCounts(tests, e, budget)));
-      else if (e.ownerSub === who.id && e.copiedFrom) mine.add(e.copiedFrom);
+      if (e.platform && e.status === "published") {
+        if (!onlySubject || (e.subjectId || "") === onlySubject) {
+          masters.push(testMeta(await backfillCounts(tests, e, budget)));
+        }
+      } else if (e.ownerSub === who.id && e.copiedFrom) mine.add(e.copiedFrom);
     }
     for (const m of masters) m.adopted = mine.has(m.id);
     masters.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
@@ -1336,6 +1340,7 @@ function subjectOut(e) {
     klass: e.klass || "",
     subject: e.subject || "",
     title: e.title || subjectTitle(e.board, e.klass, e.subject),
+    platform: !!e.platform,
     ownerSub: e.ownerSub || "",
     collaborators,
     createdAt: e.createdAt,
@@ -1361,7 +1366,9 @@ async function listOwnedSubjects(who) {
     queryOptions: { filter: `PartitionKey eq 'subject'`, select: SUBJECT_SELECT },
   });
   for await (const e of iter) {
-    if (canUseSubject(who, e)) out.push(e);
+    // A platform subject is the library shelf: every teacher sees it, nobody
+    // but an admin owns it. Students never reach here.
+    if (e.platform || canUseSubject(who, e)) out.push(e);
     if (out.length >= 200) break;
   }
   return out;
@@ -1399,6 +1406,7 @@ handlers.subjects = async (context, req) => {
         klass,
         subject,
         title: subjectTitle(board, klass, subject),
+        platform: !!body.platform && who.role === "admin",
         ownerSub: who.id,
         ownerEmail: who.email || "",
         collaborators: "[]",
@@ -1416,7 +1424,9 @@ handlers.subjects = async (context, req) => {
     } catch {
       return json(context, 404, { error: "Subject not found" });
     }
-    if (entity.ownerSub !== who.id) return json(context, 403, { error: "Not your subject" });
+    // Same rule as canManageTest: the library shelf is the admins' to curate.
+    const mayManage = entity.platform ? who.role === "admin" : entity.ownerSub === who.id;
+    if (!mayManage) return json(context, 403, { error: "Not your subject" });
 
     if (action === "update") {
       if (board) entity.board = board;

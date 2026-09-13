@@ -1,0 +1,200 @@
+{
+  "id": "lib-c10-trigonometry",
+  "title": "Class 10 · Introduction to Trigonometry — Chapter Test 8",
+  "chapter": "Introduction to Trigonometry",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tg-001",
+      "topic": "Special angles",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\sin\\theta = \\cos\\theta$, where $0° < \\theta < 90°$, then the value of $(\\sec\\theta \\cdot \\sin\\theta)$ is:",
+      "options": [
+        "$\\dfrac{1}{\\sqrt{2}}$",
+        "$\\sqrt{2}$",
+        "$1$",
+        "$0$"
+      ],
+      "answer": 2,
+      "solution": "**Find $\\theta$ first.** Divide $\\sin\\theta = \\cos\\theta$ by $\\cos\\theta$:\n\n$\\tan\\theta = 1 \\Rightarrow \\theta = 45°$ (the only angle between $0°$ and $90°$ that works)\n\n**Now evaluate:**\n\n$\\sec 45° \\cdot \\sin 45° = \\sqrt{2} \\times \\dfrac{1}{\\sqrt{2}} = \\mathbf{1}$\n\nThere is a slicker route that skips $\\theta$ altogether. Since $\\sec\\theta = \\dfrac{1}{\\cos\\theta}$,\n\n$\\sec\\theta \\cdot \\sin\\theta = \\dfrac{\\sin\\theta}{\\cos\\theta} = \\tan\\theta = 1$\n\nAt $45°$ the right triangle is isosceles — the two legs are equal, so \"opposite\" and \"adjacent\" are the same length and their ratio is 1. That single fact is behind every $45°$ value you will ever need.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-002",
+      "topic": "From one ratio to another",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $4\\sec\\theta - 5 = 0$, then the value of $\\cot\\theta$ is:",
+      "options": [
+        "$\\dfrac{3}{4}$",
+        "$\\dfrac{4}{5}$",
+        "$\\dfrac{5}{3}$",
+        "$\\dfrac{4}{3}$"
+      ],
+      "answer": 3,
+      "solution": "**Read off what you are given.**\n\n$4\\sec\\theta = 5 \\Rightarrow \\sec\\theta = \\dfrac{5}{4} \\Rightarrow \\cos\\theta = \\dfrac{4}{5}$\n\n**Draw the triangle.** $\\cos\\theta = \\dfrac{\\text{adjacent}}{\\text{hypotenuse}} = \\dfrac{4}{5}$, so take adjacent $= 4$ and hypotenuse $= 5$. By Pythagoras the opposite side is\n\n$\\sqrt{5^{2} - 4^{2}} = \\sqrt{25 - 16} = 3$\n\n**Now read off the answer.**\n\n$\\cot\\theta = \\dfrac{\\text{adjacent}}{\\text{opposite}} = \\mathbf{\\dfrac{4}{3}}$\n\nDrawing the 3-4-5 triangle is faster and safer than juggling identities. One sketch gives you all six ratios at once — and option (A), $\\tfrac{3}{4}$, is $\\tan\\theta$, the answer to the question that was not asked.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-003",
+      "topic": "The Pythagorean identity in disguise",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $x = a\\cos\\theta$ and $y = b\\sin\\theta$, then the value of $b^{2}x^{2} + a^{2}y^{2}$ is:",
+      "options": [
+        "$a^{2}b^{2}$",
+        "$ab$",
+        "$a^{4}b^{4}$",
+        "$a^{2} + b^{2}$"
+      ],
+      "answer": 0,
+      "solution": "Substitute and watch the identity appear.\n\n$b^{2}x^{2} + a^{2}y^{2} = b^{2}(a\\cos\\theta)^{2} + a^{2}(b\\sin\\theta)^{2}$\n\n$= a^{2}b^{2}\\cos^{2}\\theta + a^{2}b^{2}\\sin^{2}\\theta$\n\n$= a^{2}b^{2}\\big(\\cos^{2}\\theta + \\sin^{2}\\theta\\big)$\n\n$= a^{2}b^{2} \\times 1 = \\mathbf{a^{2}b^{2}}$\n\nThe whole question is engineered so that both terms come out with the same coefficient $a^{2}b^{2}$ — that is why $b^{2}$ multiplies $x^{2}$ and $a^{2}$ multiplies $y^{2}$, crossed over.\n\nWhenever you see $\\sin^{2}$ and $\\cos^{2}$ added with matching coefficients, stop expanding and factor: $\\sin^{2}\\theta + \\cos^{2}\\theta = 1$ is the identity that makes almost every question of this shape collapse in one line.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-004",
+      "topic": "Solving for an angle",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\theta$ is an acute angle and $7 + 4\\sin\\theta = 9$, then the value of $\\theta$ is:",
+      "options": [
+        "$90°$",
+        "$30°$",
+        "$45°$",
+        "$60°$"
+      ],
+      "answer": 1,
+      "solution": "Treat $\\sin\\theta$ as the unknown and solve the ordinary equation first:\n\n$7 + 4\\sin\\theta = 9$\n\n$4\\sin\\theta = 2$\n\n$\\sin\\theta = \\dfrac{1}{2}$\n\nNow ask which acute angle has sine $\\tfrac{1}{2}$:\n\n$\\theta = \\mathbf{30°}$\n\nThe three values worth knowing cold are $\\sin 30° = \\tfrac{1}{2}$, $\\sin 45° = \\tfrac{1}{\\sqrt{2}}$ and $\\sin 60° = \\tfrac{\\sqrt{3}}{2}$ — they climb as the angle grows, which is a useful check: a sine of only $\\tfrac{1}{2}$ must belong to the *smallest* of the three.\n\nThe word **acute** matters. Without it, $150°$ would also have sine $\\tfrac{1}{2}$.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-005",
+      "topic": "Complementary angles",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of $\\dfrac{\\sin 32°}{\\cos 58°}$ is:",
+      "options": [
+        "$0$",
+        "$1$",
+        "$\\dfrac{1}{2}$",
+        "$\\sqrt{3}$"
+      ],
+      "answer": 1,
+      "solution": "Notice that $32° + 58° = 90°$ — the two angles are **complementary**.\n\nThe complementary rule says $\\cos(90° - \\theta) = \\sin\\theta$, so\n\n$\\cos 58° = \\cos(90° - 32°) = \\sin 32°$\n\nTherefore\n\n$\\dfrac{\\sin 32°}{\\cos 58°} = \\dfrac{\\sin 32°}{\\sin 32°} = \\mathbf{1}$\n\nWhy it works: in a right triangle the two acute angles add to $90°$, and the side that is *opposite* one of them is *adjacent* to the other. So one angle's sine is the other's cosine — the same ratio seen from the other corner.\n\nWhenever two angles in a question add to $90°$, that is the hint. Convert one into the other and watch things cancel.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-006",
+      "topic": "Values at special angles",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of $\\sin^{2} 30° + \\cos^{2} 60°$ is:",
+      "options": [
+        "$1$",
+        "$\\dfrac{1}{2}$",
+        "$\\dfrac{1}{4}$",
+        "$\\dfrac{3}{4}$"
+      ],
+      "answer": 1,
+      "solution": "Careful — this is **not** the Pythagorean identity, because the two angles are different.\n\n$\\sin 30° = \\dfrac{1}{2}$, so $\\sin^{2} 30° = \\dfrac{1}{4}$\n\n$\\cos 60° = \\dfrac{1}{2}$, so $\\cos^{2} 60° = \\dfrac{1}{4}$\n\n$\\sin^{2} 30° + \\cos^{2} 60° = \\dfrac{1}{4} + \\dfrac{1}{4} = \\mathbf{\\dfrac{1}{2}}$\n\nOption (A) is the trap: $\\sin^{2}\\theta + \\cos^{2}\\theta = 1$ only when **both angles are the same**. Here they are $30°$ and $60°$, so the identity does not apply and you must evaluate each term.\n\nRead the angles before reaching for an identity. $\\sin^{2}30° + \\cos^{2}30°$ would indeed be 1 — one small change and the answer doubles.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-007",
+      "topic": "Simplifying with identities",
+      "type": "numeric",
+      "marks": 1,
+      "q": "Find the value of $9\\sec^{2} A - 9\\tan^{2} A$.",
+      "answer": 9,
+      "tolerance": 0,
+      "solution": "Take out the common factor first — do not evaluate anything:\n\n$9\\sec^{2}A - 9\\tan^{2}A = 9\\big(\\sec^{2}A - \\tan^{2}A\\big)$\n\nThe identity $1 + \\tan^{2}A = \\sec^{2}A$ rearranges to\n\n$\\sec^{2}A - \\tan^{2}A = 1$\n\nSo the expression is $9 \\times 1 = \\mathbf{9}$ — whatever $A$ happens to be.\n\nThat the answer does not depend on $A$ is the point of the question. There are three Pythagorean identities worth knowing as a set:\n\n$\\sin^{2}\\theta + \\cos^{2}\\theta = 1$,  $\\sec^{2}\\theta - \\tan^{2}\\theta = 1$,  $\\csc^{2}\\theta - \\cot^{2}\\theta = 1$\n\nThe first one comes from Pythagoras directly; the other two are the same equation divided through by $\\cos^{2}\\theta$ and by $\\sin^{2}\\theta$.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-008",
+      "topic": "Building a ratio from a triangle",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In a right triangle $ABC$, right-angled at $B$, if $\\tan A = \\dfrac{5}{12}$, find the value of $\\sin A + \\cos A$.\n\nGive your answer correct to two decimal places.",
+      "answer": 1.31,
+      "tolerance": 0.01,
+      "solution": "**Build the triangle.** $\\tan A = \\dfrac{\\text{opposite}}{\\text{adjacent}} = \\dfrac{5}{12}$, so take the opposite side as $5$ and the adjacent as $12$.\n\n**Find the hypotenuse** by Pythagoras:\n\n$h = \\sqrt{5^{2} + 12^{2}} = \\sqrt{25 + 144} = \\sqrt{169} = 13$\n\n**Read off both ratios:**\n\n$\\sin A = \\dfrac{5}{13}$ and $\\cos A = \\dfrac{12}{13}$\n\n$\\sin A + \\cos A = \\dfrac{5}{13} + \\dfrac{12}{13} = \\dfrac{17}{13} \\approx \\mathbf{1.31}$\n\nA sanity check worth doing: $\\sin A$ and $\\cos A$ are each less than 1, so their sum must be under 2 — and since $\\sin^{2} + \\cos^{2} = 1$, the sum is always between 1 and $\\sqrt{2} \\approx 1.41$. Our $1.31$ sits comfortably inside that range.\n\n$5, 12, 13$ is worth memorising alongside $3, 4, 5$: examiners reach for these triples precisely because the hypotenuse comes out whole.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-009",
+      "topic": "Evaluating an expression",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Evaluate $\\dfrac{\\tan 60°}{\\sin 60°}$.\n\nGive your answer correct to two decimal places.",
+      "answer": 2,
+      "tolerance": 0.01,
+      "solution": "Substitute the standard values:\n\n$\\tan 60° = \\sqrt{3}$ and $\\sin 60° = \\dfrac{\\sqrt{3}}{2}$\n\n$\\dfrac{\\tan 60°}{\\sin 60°} = \\dfrac{\\sqrt{3}}{\\frac{\\sqrt{3}}{2}} = \\sqrt{3} \\times \\dfrac{2}{\\sqrt{3}} = \\mathbf{2}$\n\nThe $\\sqrt{3}$ cancels completely, which you could have predicted: $\\dfrac{\\tan\\theta}{\\sin\\theta} = \\dfrac{\\sin\\theta/\\cos\\theta}{\\sin\\theta} = \\dfrac{1}{\\cos\\theta} = \\sec\\theta$, and $\\sec 60° = \\dfrac{1}{1/2} = 2$.\n\nSimplifying the *expression* before putting numbers in usually turns a messy surd calculation into a single lookup. It is worth a moment's thought before you start substituting.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-010",
+      "topic": "Proving an identity",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that $\\sin^{6}\\theta + \\cos^{6}\\theta = 1 - 3\\sin^{2}\\theta\\cos^{2}\\theta$.",
+      "solution": "**Recognise the shape.** $\\sin^{6}\\theta + \\cos^{6}\\theta$ is a **sum of cubes** in disguise:\n\n$\\sin^{6}\\theta + \\cos^{6}\\theta = \\big(\\sin^{2}\\theta\\big)^{3} + \\big(\\cos^{2}\\theta\\big)^{3}$\n\nUse $a^{3} + b^{3} = (a + b)^{3} - 3ab(a + b)$ with $a = \\sin^{2}\\theta$ and $b = \\cos^{2}\\theta$:\n\n$= \\big(\\sin^{2}\\theta + \\cos^{2}\\theta\\big)^{3} - 3\\sin^{2}\\theta\\cos^{2}\\theta\\big(\\sin^{2}\\theta + \\cos^{2}\\theta\\big)$\n\n**Now use the identity** $\\sin^{2}\\theta + \\cos^{2}\\theta = 1$ — twice:\n\n$= (1)^{3} - 3\\sin^{2}\\theta\\cos^{2}\\theta(1)$\n\n$= 1 - 3\\sin^{2}\\theta\\cos^{2}\\theta$\n\nwhich is the right-hand side. ∎\n\n**Check at $\\theta = 45°$:** LHS $= 2\\left(\\tfrac{1}{\\sqrt{2}}\\right)^{6} = 2 \\times \\tfrac{1}{8} = \\tfrac{1}{4}$; RHS $= 1 - 3\\left(\\tfrac{1}{2}\\right)\\left(\\tfrac{1}{2}\\right) = 1 - \\tfrac{3}{4} = \\tfrac{1}{4}$ ✓\n\nThe trick is seeing sixth powers as cubes of squares. Once $\\sin^{2}\\theta$ and $\\cos^{2}\\theta$ are treated as single objects $a$ and $b$, it becomes an ordinary algebra identity — and the fact that $a + b = 1$ does the rest.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-011",
+      "topic": "Proving an identity",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that $\\sqrt{\\sec^{2}\\theta + \\operatorname{cosec}^{2}\\theta} = \\tan\\theta + \\cot\\theta$.",
+      "solution": "Work on the **left-hand side** and turn everything into sines and cosines.\n\n$\\sec^{2}\\theta + \\operatorname{cosec}^{2}\\theta = \\dfrac{1}{\\cos^{2}\\theta} + \\dfrac{1}{\\sin^{2}\\theta}$\n\nPut over a common denominator:\n\n$= \\dfrac{\\sin^{2}\\theta + \\cos^{2}\\theta}{\\sin^{2}\\theta\\cos^{2}\\theta} = \\dfrac{1}{\\sin^{2}\\theta\\cos^{2}\\theta}$\n\nTake the square root:\n\n$\\sqrt{\\sec^{2}\\theta + \\operatorname{cosec}^{2}\\theta} = \\dfrac{1}{\\sin\\theta\\cos\\theta}$\n\n**Now the right-hand side:**\n\n$\\tan\\theta + \\cot\\theta = \\dfrac{\\sin\\theta}{\\cos\\theta} + \\dfrac{\\cos\\theta}{\\sin\\theta} = \\dfrac{\\sin^{2}\\theta + \\cos^{2}\\theta}{\\sin\\theta\\cos\\theta} = \\dfrac{1}{\\sin\\theta\\cos\\theta}$\n\nBoth sides equal $\\dfrac{1}{\\sin\\theta\\cos\\theta}$, so they are equal. ∎\n\n**Check at $\\theta = 45°$:** LHS $= \\sqrt{2 + 2} = 2$; RHS $= 1 + 1 = 2$ ✓\n\nWhen an identity looks unfamiliar, converting everything to $\\sin$ and $\\cos$ is the reliable opening move. It is rarely the shortest proof, but it almost always works — and here both sides land on the same simple fraction.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-012",
+      "topic": "Proving a relation between two expressions",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "If $\\sin\\theta + \\cos\\theta = p$ and $\\sec\\theta + \\operatorname{cosec}\\theta = q$, then prove that $q(p^{2} - 1) = 2p$.",
+      "solution": "**Simplify $q$ first.**\n\n$q = \\sec\\theta + \\operatorname{cosec}\\theta = \\dfrac{1}{\\cos\\theta} + \\dfrac{1}{\\sin\\theta} = \\dfrac{\\sin\\theta + \\cos\\theta}{\\sin\\theta\\cos\\theta} = \\dfrac{p}{\\sin\\theta\\cos\\theta}$\n\n**Now simplify $p^{2} - 1$.**\n\n$p^{2} = (\\sin\\theta + \\cos\\theta)^{2} = \\sin^{2}\\theta + 2\\sin\\theta\\cos\\theta + \\cos^{2}\\theta = 1 + 2\\sin\\theta\\cos\\theta$\n\nso\n\n$p^{2} - 1 = 2\\sin\\theta\\cos\\theta$\n\n**Multiply them together:**\n\n$q(p^{2} - 1) = \\dfrac{p}{\\sin\\theta\\cos\\theta} \\times 2\\sin\\theta\\cos\\theta = 2p$ ∎\n\n**Check at $\\theta = 45°$:** $p = \\sqrt{2}$, $q = 2\\sqrt{2}$; LHS $= 2\\sqrt{2}(2 - 1) = 2\\sqrt{2}$ and RHS $= 2\\sqrt{2}$ ✓\n\nThe two halves are built to cancel: $\\sin\\theta\\cos\\theta$ sits in the denominator of $q$ and appears in the numerator of $p^{2} - 1$. Simplify each side on its own before multiplying — trying to attack $q(p^{2}-1)$ in one go is much harder work.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-013",
+      "topic": "Proving an identity",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that $\\dfrac{1 + \\cos\\theta}{\\sin\\theta} = \\dfrac{\\sin\\theta}{1 - \\cos\\theta}$.",
+      "solution": "**Cross-multiplying** turns the claim into something to verify:\n\nwe must show $(1 + \\cos\\theta)(1 - \\cos\\theta) = \\sin^{2}\\theta$.\n\nThe left side is a difference of squares:\n\n$(1 + \\cos\\theta)(1 - \\cos\\theta) = 1 - \\cos^{2}\\theta$\n\nand by the Pythagorean identity $\\sin^{2}\\theta + \\cos^{2}\\theta = 1$:\n\n$1 - \\cos^{2}\\theta = \\sin^{2}\\theta$ ✓\n\nSo the two sides are equal. ∎\n\n**A cleaner write-up** for the exam, starting from the left-hand side and multiplying top and bottom by $(1 - \\cos\\theta)$:\n\n$\\dfrac{1 + \\cos\\theta}{\\sin\\theta} \\times \\dfrac{1 - \\cos\\theta}{1 - \\cos\\theta} = \\dfrac{1 - \\cos^{2}\\theta}{\\sin\\theta(1 - \\cos\\theta)} = \\dfrac{\\sin^{2}\\theta}{\\sin\\theta(1 - \\cos\\theta)} = \\dfrac{\\sin\\theta}{1 - \\cos\\theta}$ ∎\n\nMultiplying by the **conjugate** — the same expression with the sign flipped — is the standard move whenever you see $1 \\pm \\cos\\theta$ or $1 \\pm \\sin\\theta$. It converts the awkward sum into a difference of squares, and the Pythagorean identity is waiting on the other side.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-014",
+      "topic": "Complementary angles in a proof",
+      "type": "long",
+      "marks": 2,
+      "q": "If $\\sin 3A = \\cos(A - 26°)$, where $3A$ is an acute angle, find the value of $A$.",
+      "solution": "Both sides must be expressed with the **same** ratio before the angles can be compared. Use $\\sin\\theta = \\cos(90° - \\theta)$ on the left:\n\n$\\sin 3A = \\cos(90° - 3A)$\n\nSo the equation becomes\n\n$\\cos(90° - 3A) = \\cos(A - 26°)$\n\nSince $3A$ is acute, both angles here are in the range where cosine takes each value once, so the angles themselves must be equal:\n\n$90° - 3A = A - 26°$\n\n$116° = 4A$\n\n$A = \\mathbf{29°}$\n\n**Check:** $3A = 87°$ (acute ✓) and $A - 26° = 3°$. Now $\\sin 87° = \\cos 3°$ because $87° + 3° = 90°$ ✓\n\nThe method in one sentence: **you cannot equate angles across different ratios.** Convert the sine into a cosine (or the cosine into a sine) first, and only then compare.",
+      "chapter": "Introduction to Trigonometry"
+    },
+    {
+      "id": "tg-015",
+      "topic": "Proving an identity",
+      "type": "long",
+      "marks": 3,
+      "q": "Prove that $(\\operatorname{cosec}\\theta - \\cot\\theta)^{2} = \\dfrac{1 - \\cos\\theta}{1 + \\cos\\theta}$.",
+      "solution": "Start with the left-hand side and write both terms over $\\sin\\theta$:\n\n$\\operatorname{cosec}\\theta - \\cot\\theta = \\dfrac{1}{\\sin\\theta} - \\dfrac{\\cos\\theta}{\\sin\\theta} = \\dfrac{1 - \\cos\\theta}{\\sin\\theta}$\n\nSquare it:\n\n$(\\operatorname{cosec}\\theta - \\cot\\theta)^{2} = \\dfrac{(1 - \\cos\\theta)^{2}}{\\sin^{2}\\theta}$\n\nNow replace $\\sin^{2}\\theta$ using the Pythagorean identity, and factor:\n\n$\\sin^{2}\\theta = 1 - \\cos^{2}\\theta = (1 - \\cos\\theta)(1 + \\cos\\theta)$\n\nso\n\n$= \\dfrac{(1 - \\cos\\theta)^{2}}{(1 - \\cos\\theta)(1 + \\cos\\theta)} = \\dfrac{1 - \\cos\\theta}{1 + \\cos\\theta}$ ∎\n\n**Check at $\\theta = 60°$:** LHS $= \\left(\\tfrac{2}{\\sqrt{3}} - \\tfrac{1}{\\sqrt{3}}\\right)^{2} = \\tfrac{1}{3}$; RHS $= \\dfrac{1 - 0.5}{1 + 0.5} = \\dfrac{0.5}{1.5} = \\tfrac{1}{3}$ ✓\n\nThe move that finishes it is factoring $\\sin^{2}\\theta$ as $(1-\\cos\\theta)(1+\\cos\\theta)$ rather than leaving it alone. Whenever the target has $1 \\pm \\cos\\theta$ in it, that factorisation is what you are aiming for — it puts a matching bracket on top and bottom, ready to cancel.",
+      "chapter": "Introduction to Trigonometry"
+    }
+  ]
+}

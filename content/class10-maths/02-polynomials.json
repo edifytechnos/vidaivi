@@ -1,0 +1,207 @@
+{
+  "id": "lib-c10-polynomials",
+  "title": "Class 10 · Polynomials — Chapter Test 2",
+  "chapter": "Polynomials",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "pl-001",
+      "topic": "Building a polynomial from its zeroes",
+      "source": "CBSE 2026",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the zeroes of a polynomial $p(x)$ are $-3$ and $8$, then $p(x)$ equals:",
+      "options": [
+        "$x^{2} + 5x - 4$",
+        "$(x + 3)(-x + 8)$",
+        "$a(x^{2} + 5x - 24)$",
+        "$x^{2} - 24$"
+      ],
+      "answer": 1,
+      "solution": "A zero is an $x$ that makes the polynomial **zero**. So the quickest test is to substitute.\n\nTry **(B)** $(x+3)(-x+8)$:\n\nat $x = -3$: $(-3+3)(3+8) = 0 \\times 11 = 0$ ✓\n\nat $x = 8$: $(8+3)(-8+8) = 11 \\times 0 = 0$ ✓\n\nBoth work, so **(B)** is the answer.\n\nWhy the others fail: a polynomial with zeroes $-3$ and $8$ has sum of zeroes $5$ and product $-24$, so it must be a multiple of $x^{2} - 5x - 24$. Option (C) has $+5x$, giving zeroes $3$ and $-8$ — the right numbers with the wrong signs.\n\nThink of a factor as a switch: $(x + 3)$ is a switch that flips off at $x = -3$. Multiply switches together and the whole product goes off whenever *any one* of them does.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-002",
+      "topic": "Zeroes in conjugate pairs",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A quadratic polynomial, one of whose zeroes is $2 + \\sqrt{5}$ and the sum of whose zeroes is $4$, is:",
+      "options": [
+        "$x^{2} + 4x - 1$",
+        "$x^{2} - 4x - 1$",
+        "$x^{2} - 4x + 1$",
+        "$x^{2} + 4x + 1$"
+      ],
+      "answer": 1,
+      "solution": "The sum of the two zeroes is $4$ and one of them is $2 + \\sqrt{5}$, so the other is\n\n$4 - (2 + \\sqrt{5}) = 2 - \\sqrt{5}$\n\nNow the product:\n\n$(2 + \\sqrt{5})(2 - \\sqrt{5}) = 2^{2} - (\\sqrt{5})^{2} = 4 - 5 = -1$\n\nA quadratic with sum $S$ and product $P$ is $x^{2} - Sx + P$:\n\n$x^{2} - 4x + (-1) = \\mathbf{x^{2} - 4x - 1}$\n\nNotice how the two surds came in as a **mirror pair** — $2 + \\sqrt{5}$ and $2 - \\sqrt{5}$. Multiply a pair like that and the messy $\\sqrt{5}$ cancels itself out, leaving a whole number. That is why board questions with one surd zero almost always hand you its mirror image.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-003",
+      "topic": "Difference of the zeroes",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\alpha$ and $\\beta$ (with $\\alpha > \\beta$) are the zeroes of the polynomial $-x^{2} + 8x + 9$, then $(\\alpha - \\beta)$ is:",
+      "options": [
+        "$-10$",
+        "$10$",
+        "$\\pm 10$",
+        "$8$"
+      ],
+      "answer": 1,
+      "solution": "Multiply through by $-1$ (this does not move the zeroes): $x^{2} - 8x - 9$.\n\n$\\alpha + \\beta = 8$ and $\\alpha\\beta = -9$.\n\nYou are asked for the **difference**, and there is an identity that turns a sum and a product into one:\n\n$(\\alpha - \\beta)^{2} = (\\alpha + \\beta)^{2} - 4\\alpha\\beta = 64 - 4(-9) = 64 + 36 = 100$\n\nSo $\\alpha - \\beta = \\pm 10$ — but the question says $\\alpha > \\beta$, which makes the difference **positive**: $\\mathbf{10}$.\n\n(Check by factorising: $x^{2} - 8x - 9 = (x-9)(x+1)$, so the zeroes are $9$ and $-1$, and $9 - (-1) = 10$.)\n\nThat $\\alpha > \\beta$ is not decoration — it is what rules out option (C).",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-004",
+      "topic": "Finding an unknown coefficient",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If one zero of the quadratic polynomial $x^{2} + 3x + k$ is $2$, then the value of $k$ is:",
+      "options": [
+        "$10$",
+        "$-10$",
+        "$5$",
+        "$-5$"
+      ],
+      "answer": 1,
+      "solution": "\"$2$ is a zero\" means exactly one thing: putting $x = 2$ into the polynomial gives $0$.\n\n$(2)^{2} + 3(2) + k = 0$\n\n$4 + 6 + k = 0$\n\n$k = \\mathbf{-10}$\n\nCheck: $x^{2} + 3x - 10 = (x - 2)(x + 5)$, so the zeroes are $2$ and $-5$. ✓\n\nA zero is a key that opens the lock. If you are told the key fits, you can turn the statement round and use it to work out what the lock was made of.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-005",
+      "topic": "How many polynomials share the same zeroes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of quadratic polynomials having zeroes $-2$ and $5$ is:",
+      "options": [
+        "$1$",
+        "$2$",
+        "$3$",
+        "more than $3$"
+      ],
+      "answer": 3,
+      "solution": "Any polynomial with those zeroes must have $(x + 2)$ and $(x - 5)$ as factors, so it looks like\n\n$p(x) = a(x + 2)(x - 5) = a(x^{2} - 3x - 10)$\n\nand $a$ can be **any** non-zero number: $a = 1$, $a = 2$, $a = -7$, $a = \\tfrac{1}{2}$ …\n\nEach choice of $a$ gives a different polynomial with the same two zeroes. So there are infinitely many — certainly **more than 3**.\n\nPicture the graph: the zeroes are where the curve crosses the $x$-axis. Stretching the curve vertically, or flipping it upside down, moves every other point but leaves the crossing points exactly where they were.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-006",
+      "topic": "Polynomial from sum and product",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A quadratic polynomial whose sum of zeroes is $3$ and product of zeroes is $-10$ is:",
+      "options": [
+        "$x^{2} + 3x - 10$",
+        "$x^{2} - 3x - 10$",
+        "$x^{2} - 3x + 10$",
+        "$x^{2} + 3x + 10$"
+      ],
+      "answer": 1,
+      "solution": "The standard form is\n\n$x^{2} - (\\text{sum})x + (\\text{product})$\n\nSo with sum $3$ and product $-10$:\n\n$x^{2} - 3x + (-10) = \\mathbf{x^{2} - 3x - 10}$\n\nCheck by factorising: $x^{2} - 3x - 10 = (x - 5)(x + 2)$, giving zeroes $5$ and $-2$. Their sum is $3$ ✓ and their product is $-10$ ✓.\n\nThe minus sign in front of the sum catches people out every time. Remember it as: *the sum comes in wearing the opposite sign, the product comes in as it is.*",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-007",
+      "topic": "Symmetric expressions in the zeroes",
+      "source": "CBSE 2026",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$\\alpha$ and $\\beta$ are the zeroes of the polynomial $5x^{2} - 16x - 10$. Find the value of $\\dfrac{\\alpha}{\\beta} + \\dfrac{\\beta}{\\alpha}$.",
+      "answer": -7.12,
+      "tolerance": 0.01,
+      "solution": "You never need the zeroes themselves — only their sum and product.\n\n$\\alpha + \\beta = -\\dfrac{-16}{5} = \\dfrac{16}{5}$ and $\\alpha\\beta = \\dfrac{-10}{5} = -2$\n\nPut the two fractions over a common denominator:\n\n$\\dfrac{\\alpha}{\\beta} + \\dfrac{\\beta}{\\alpha} = \\dfrac{\\alpha^{2} + \\beta^{2}}{\\alpha\\beta}$\n\nand use $\\alpha^{2} + \\beta^{2} = (\\alpha + \\beta)^{2} - 2\\alpha\\beta$:\n\n$= \\dfrac{\\left(\\frac{16}{5}\\right)^{2} - 2(-2)}{-2} = \\dfrac{\\frac{256}{25} + 4}{-2} = \\dfrac{\\frac{356}{25}}{-2} = -\\dfrac{178}{25} = \\mathbf{-7.12}$\n\nThe trick is worth keeping: **any** symmetric expression in $\\alpha$ and $\\beta$ can be rebuilt out of $(\\alpha + \\beta)$ and $\\alpha\\beta$, which the coefficients hand you for free. You are never asked to solve the quadratic at all.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-008",
+      "topic": "Sum of squares of the zeroes",
+      "source": "CBSE 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If $\\alpha$ and $\\beta$ are the zeroes of the polynomial $2x^{2} - 9x + 5$, find the value of $\\alpha^{2} + \\beta^{2}$.",
+      "answer": 15.25,
+      "tolerance": 0.01,
+      "solution": "From the coefficients:\n\n$\\alpha + \\beta = \\dfrac{9}{2}$ and $\\alpha\\beta = \\dfrac{5}{2}$\n\nSquaring the sum brings in an extra $2\\alpha\\beta$ that has to be taken back out:\n\n$(\\alpha + \\beta)^{2} = \\alpha^{2} + 2\\alpha\\beta + \\beta^{2}$\n\n$\\alpha^{2} + \\beta^{2} = (\\alpha + \\beta)^{2} - 2\\alpha\\beta = \\left(\\dfrac{9}{2}\\right)^{2} - 2\\left(\\dfrac{5}{2}\\right) = \\dfrac{81}{4} - 5 = \\dfrac{61}{4} = \\mathbf{15.25}$\n\nPicture a square of side $(\\alpha + \\beta)$. It is made of two smaller squares, $\\alpha^{2}$ and $\\beta^{2}$, plus **two** rectangles of area $\\alpha\\beta$. Take those two rectangles away and only the squares are left.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-009",
+      "topic": "An expression in the zeroes",
+      "source": "CBSE 2025",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If $p$ and $q$ are the zeroes of the polynomial $21y^{2} - y - 2$, find the value of $(1 - p)(1 - q)$.\n\nGive your answer correct to two decimal places.",
+      "answer": 0.86,
+      "tolerance": 0.01,
+      "solution": "From the coefficients:\n\n$p + q = \\dfrac{1}{21}$ and $pq = \\dfrac{-2}{21}$\n\nExpand the bracket before substituting anything:\n\n$(1 - p)(1 - q) = 1 - p - q + pq = 1 - (p + q) + pq$\n\n$= 1 - \\dfrac{1}{21} + \\left(-\\dfrac{2}{21}\\right) = 1 - \\dfrac{3}{21} = 1 - \\dfrac{1}{7} = \\dfrac{6}{7} \\approx \\mathbf{0.86}$\n\nExpanding *first* is the whole method. It turns an expression about the individual zeroes into one about their sum and product — and those two are sitting in the coefficients, waiting.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-010",
+      "topic": "Sum of the zeroes from the coefficients",
+      "source": "CBSE 2025",
+      "type": "numeric",
+      "marks": 1,
+      "q": "Find the sum of the zeroes of the polynomial $p(x) = 5x - 7x^{2} + 3$.\n\nGive your answer correct to two decimal places.",
+      "answer": 0.71,
+      "tolerance": 0.01,
+      "solution": "First put it in standard order — this is the step the question is really testing:\n\n$p(x) = -7x^{2} + 5x + 3$\n\nSo $a = -7$, $b = 5$, $c = 3$.\n\nSum of zeroes $= -\\dfrac{b}{a} = -\\dfrac{5}{-7} = \\dfrac{5}{7} \\approx \\mathbf{0.71}$\n\nWritten out of order, $5x - 7x^{2} + 3$ tempts you to read $a = 5$ and $b = -7$. Always line the powers up highest-first before you touch the formula — the same way you would line up digits before adding two numbers.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-011",
+      "topic": "Finding zeroes and verifying the relationship",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "Find the zeroes of the quadratic polynomial $x^{2} - 15$ and verify the relationship between the zeroes and the coefficients of the polynomial.",
+      "solution": "**Finding the zeroes.** Set the polynomial to zero:\n\n$x^{2} - 15 = 0 \\Rightarrow x^{2} = 15 \\Rightarrow x = \\pm\\sqrt{15}$\n\nSo the zeroes are $\\alpha = \\sqrt{15}$ and $\\beta = -\\sqrt{15}$.\n\n**Verifying.** Write the polynomial in full as $x^{2} + 0x - 15$, so $a = 1$, $b = 0$, $c = -15$.\n\nSum of zeroes: $\\sqrt{15} + (-\\sqrt{15}) = 0$, and $-\\dfrac{b}{a} = -\\dfrac{0}{1} = 0$ ✓\n\nProduct of zeroes: $\\sqrt{15} \\times (-\\sqrt{15}) = -15$, and $\\dfrac{c}{a} = \\dfrac{-15}{1} = -15$ ✓\n\nBoth relationships hold.\n\nThe missing $x$ term is the clue: a **zero** sum means the two zeroes are equal and opposite, sitting the same distance either side of the origin — a see-saw balanced at 0.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-012",
+      "topic": "Finding zeroes and verifying the relationship",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 3,
+      "q": "Find the zeroes of the polynomial $4x^{2} + 4x - 3$ and verify the relationship between the zeroes and the coefficients of the polynomial.",
+      "solution": "**Finding the zeroes** by splitting the middle term. We need two numbers that multiply to $4 \\times (-3) = -12$ and add to $+4$: those are $+6$ and $-2$.\n\n$4x^{2} + 6x - 2x - 3$\n\n$= 2x(2x + 3) - 1(2x + 3)$\n\n$= (2x + 3)(2x - 1)$\n\nSo the zeroes are $\\alpha = -\\dfrac{3}{2}$ and $\\beta = \\dfrac{1}{2}$.\n\n**Verifying.** Here $a = 4$, $b = 4$, $c = -3$.\n\nSum: $-\\dfrac{3}{2} + \\dfrac{1}{2} = -1$, and $-\\dfrac{b}{a} = -\\dfrac{4}{4} = -1$ ✓\n\nProduct: $-\\dfrac{3}{2} \\times \\dfrac{1}{2} = -\\dfrac{3}{4}$, and $\\dfrac{c}{a} = \\dfrac{-3}{4}$ ✓\n\nSplitting the middle term is really un-multiplying. The $4$ in the middle got there as $6 - 2$; your job is to guess which two numbers were added, and the product $ac$ is the clue that narrows the guess to one pair.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-013",
+      "topic": "Zeroes in a given ratio",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 2,
+      "q": "If the zeroes of the polynomial $x^{2} + ax + b$ are in the ratio $3 : 4$, then prove that $12a^{2} = 49b$.",
+      "solution": "**Name the zeroes using the ratio.** \"In the ratio $3 : 4$\" means they are $3k$ and $4k$ for some number $k$ — one unknown instead of two.\n\nFrom the coefficients of $x^{2} + ax + b$:\n\nSum: $3k + 4k = -a \\Rightarrow 7k = -a \\Rightarrow k = -\\dfrac{a}{7}$\n\nProduct: $(3k)(4k) = b \\Rightarrow 12k^{2} = b$\n\n**Substitute $k$ into the second equation:**\n\n$12\\left(-\\dfrac{a}{7}\\right)^{2} = b$\n\n$12 \\cdot \\dfrac{a^{2}}{49} = b$\n\n$12a^{2} = 49b$ ∎\n\nThe whole move is that first line. A ratio is a licence to write both quantities in terms of a single letter, and the two coefficient relations then have just enough information to eliminate it.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-014",
+      "topic": "Polynomial from given zeroes",
+      "source": "CBSE 2025",
+      "type": "long",
+      "marks": 2,
+      "q": "Find a quadratic polynomial whose zeroes are $2$ and $-\\dfrac{7}{5}$.",
+      "solution": "Sum of zeroes: $2 + \\left(-\\dfrac{7}{5}\\right) = \\dfrac{10 - 7}{5} = \\dfrac{3}{5}$\n\nProduct of zeroes: $2 \\times \\left(-\\dfrac{7}{5}\\right) = -\\dfrac{14}{5}$\n\nThe polynomial is $x^{2} - (\\text{sum})x + (\\text{product})$:\n\n$x^{2} - \\dfrac{3}{5}x - \\dfrac{14}{5}$\n\nMultiplying through by $5$ clears the fractions and gives the tidier form usually written down:\n\n$\\mathbf{5x^{2} - 3x - 14}$\n\nCheck: $5x^{2} - 3x - 14 = (x - 2)(5x + 7)$, whose zeroes are $2$ and $-\\tfrac{7}{5}$ ✓\n\nBoth answers are correct — they differ only by the factor $5$, which stretches the graph without moving where it crosses the axis.",
+      "chapter": "Polynomials"
+    },
+    {
+      "id": "pl-015",
+      "topic": "Polynomial from surd zeroes",
+      "source": "CBSE 2026",
+      "type": "long",
+      "marks": 2,
+      "q": "Find a quadratic polynomial whose zeroes are $5 - 2\\sqrt{3}$ and $5 + 2\\sqrt{3}$.",
+      "solution": "Let $\\alpha = 5 - 2\\sqrt{3}$ and $\\beta = 5 + 2\\sqrt{3}$.\n\n**Sum:** $\\alpha + \\beta = (5 - 2\\sqrt{3}) + (5 + 2\\sqrt{3}) = 10$ — the surds cancel.\n\n**Product:** use $(x - y)(x + y) = x^{2} - y^{2}$:\n\n$\\alpha\\beta = 5^{2} - (2\\sqrt{3})^{2} = 25 - 4 \\times 3 = 25 - 12 = 13$\n\nSo the polynomial is\n\n$x^{2} - (\\text{sum})x + (\\text{product}) = \\mathbf{x^{2} - 10x + 13}$\n\nThis is the mirror-pair idea again, and it is why irrational zeroes of a whole-number polynomial always arrive in twos: added, the surds cancel; multiplied, they square away. Either way the coefficients come out as whole numbers.",
+      "chapter": "Polynomials"
+    }
+  ]
+}

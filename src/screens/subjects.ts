@@ -11,21 +11,13 @@ import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
 import { showEditorForSubject } from "./editor";
+import { showLibrary } from "./library";
 import { setSubject, showHome } from "./home";
 import { isStudentViewer, showStudentSubject } from "./student";
 
 const BOARDS = ["CBSE", "ICSE", "State Board", "IGCSE"];
 const CLASSES = ["8", "9", "10", "11", "12"];
 const SUBJECTS = ["Maths", "Physics", "Chemistry", "Biology", "English", "Computer Science"];
-
-/** The built-in tests that ship with the app, shown as a subject of their own. */
-export const BUILT_IN_SUBJECT = {
-  id: "builtin",
-  title: "CBSE Class 12 Maths",
-  board: "CBSE",
-  klass: "12",
-  subject: "Maths",
-};
 
 export async function showSubjects() {
   setUrl();
@@ -54,10 +46,10 @@ async function refresh(): Promise<void> {
   if (!grid) return;
   await seedSamplesOnce(grid);
   const subjects = (await fetchSubjects()) ?? [];
-  // The built-in card is the bundled demo tests, which belong to nobody. A
-  // student's subjects are their own teacher's — including the teacher's copies
-  // of the library tests — so they never see it.
-  const cards = [...subjects.map(cardFor), ...(isStudentViewer() ? [] : [builtInCard()])];
+  // The hardcoded "built in" card is gone: the library is a real platform
+  // subject now, served to every teacher by /api/subjects. A student never gets
+  // one — their subjects are their own teacher's.
+  const cards = subjects.map(cardFor);
   grid.innerHTML = cards.length
     ? `<div class="subject-grid">${cards.join("")}</div>`
     : `<p class="hint">No subjects yet — your teacher will share tests with you here.</p>`;
@@ -66,14 +58,20 @@ async function refresh(): Promise<void> {
     el.addEventListener("click", () => {
       const id = el.dataset.subject!;
       track("subject_open", { subject: id });
-      const subjectId = id === BUILT_IN_SUBJECT.id ? null : id;
-      setSubject(subjectId);
+      // A built-in shelf is never authorable: the editor autosaves into one
+      // shared working copy, and a master is nobody's to change. It opens
+      // read-only instead, with Use this test on every chapter.
+      if (el.dataset.platform === "1") {
+        void showLibrary(id, el.dataset.title || undefined);
+        return;
+      }
+      setSubject(id);
       // A teacher goes where they build tests — the editor, scoped to this
       // subject. A student goes to their tests tree: the same shape, read-only,
-      // one question at a time. The built-in subject is never authorable.
-      if (isTeacher() && subjectId) void showEditorForSubject(subjectId, () => void showSubjects());
-      else if (isStudentViewer()) void showStudentSubject(subjectId, el.dataset.title || undefined);
-      else showHome(subjectId);
+      // one question at a time.
+      if (isTeacher()) void showEditorForSubject(id, () => void showSubjects());
+      else if (isStudentViewer()) void showStudentSubject(id, el.dataset.title || undefined);
+      else showHome(id);
     })
   );
   grid.querySelectorAll<HTMLButtonElement>(".subject-del").forEach((el) =>
@@ -108,24 +106,15 @@ async function seedSamplesOnce(grid: HTMLElement): Promise<void> {
 
 function cardFor(s: Subject): string {
   const count = s.testCount ?? 0;
+  // A built-in shelf is not the teacher's to remove, and says what it is.
+  const built = !!s.platform;
   return `
-    <button class="subject-card" data-subject="${escapeHtml(s.id)}" data-title="${escapeHtml(s.title)}">
+    <button class="subject-card${built ? " subject-card-builtin" : ""}" data-subject="${escapeHtml(s.id)}" data-title="${escapeHtml(s.title)}"${built ? ` data-platform="1"` : ""}>
       <span class="subject-mark">${escapeHtml(initials(s))}</span>
       <span class="subject-name">${escapeHtml(s.title)}</span>
       <span class="subject-meta">
-        <span class="subject-count">${count} test${count === 1 ? "" : "s"}</span>
-        ${isTeacher() ? `<span class="btn-link subject-del" data-subject="${escapeHtml(s.id)}" role="button">Remove</span>` : ""}
-      </span>
-    </button>`;
-}
-
-function builtInCard(): string {
-  return `
-    <button class="subject-card subject-card-builtin" data-subject="${BUILT_IN_SUBJECT.id}" data-title="${escapeHtml(BUILT_IN_SUBJECT.title)}">
-      <span class="subject-mark">${escapeHtml(BUILT_IN_SUBJECT.board.slice(0, 2))}</span>
-      <span class="subject-name">${escapeHtml(BUILT_IN_SUBJECT.title)}</span>
-      <span class="subject-meta">
-        <span class="subject-count">Built in</span>
+        <span class="subject-count">${built ? "Built in" : `${count} test${count === 1 ? "" : "s"}`}</span>
+        ${isTeacher() && !built ? `<span class="btn-link subject-del" data-subject="${escapeHtml(s.id)}" role="button">Remove</span>` : ""}
       </span>
     </button>`;
 }

@@ -1,0 +1,215 @@
+{
+  "id": "lib-c10-triangles",
+  "title": "Class 10 · Triangles — Chapter Test 6",
+  "chapter": "Triangles",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tr-001",
+      "topic": "Perimeters of similar triangles",
+      "source": "CBSE 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The perimeters of two similar triangles $ABC$ and $PQR$ are 56 cm and 48 cm respectively. $\\dfrac{PQ}{AB}$ is equal to:",
+      "options": [
+        "$\\dfrac{7}{8}$",
+        "$\\dfrac{6}{7}$",
+        "$\\dfrac{7}{6}$",
+        "$\\dfrac{8}{7}$"
+      ],
+      "answer": 1,
+      "solution": "In similar triangles **every** length scales by the same factor — sides, perimeters, medians, altitudes, all of them. So the ratio of perimeters *is* the ratio of corresponding sides:\n\n$\\dfrac{PQ}{AB} = \\dfrac{\\text{perimeter of } PQR}{\\text{perimeter of } ABC} = \\dfrac{48}{56} = \\mathbf{\\dfrac{6}{7}}$\n\nThe one thing to be careful about is **which way up**. The question asks for $PQ$ over $AB$, so $PQR$'s perimeter goes on top. Writing $\\tfrac{7}{6}$ — option (C) — is the same arithmetic with the triangles swapped.\n\nThink of a photocopier set to 86%. Every line on the page shrinks by the same factor, so the border round the whole page shrinks by that factor too. (Areas are the exception: they scale by the factor *squared*.)",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-002",
+      "topic": "What similarity does and does not mean",
+      "source": "CBSE 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following statements is **incorrect**?",
+      "options": [
+        "Two congruent figures are always similar.",
+        "A square and a rhombus of the same area are always similar.",
+        "Two equilateral triangles are always similar.",
+        "Two similar triangles need not be congruent."
+      ],
+      "answer": 1,
+      "solution": "Similar means **same shape**: equal angles, and sides in the same ratio.\n\n(A) Congruent figures are identical, so they are similar with ratio $1:1$. **True.**\n\n(B) A square has four right angles; a rhombus in general does not. Same area says nothing about shape — a very flat rhombus can have the same area as a square. **Incorrect** ✓\n\n(C) Every equilateral triangle has three $60°$ angles, so any two of them have equal angles and their sides are in a fixed ratio. **True.**\n\n(D) Similar triangles have the same shape but may differ in size, so they need not be congruent. **True.**\n\nThe answer is **(B)**.\n\nEqual area is not equal shape. Take a $6 \\times 6$ square and a rhombus of side 9 squashed until its area is also 36 — the same amount of ink, completely different figures.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-003",
+      "topic": "Criteria for similarity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In $\\triangle ABC$ and $\\triangle DEF$, $\\angle B = \\angle E$ and $\\dfrac{AB}{DE} = \\dfrac{BC}{EF}$. The two triangles are similar by the criterion:",
+      "options": [
+        "AAA",
+        "SSS",
+        "SAS",
+        "RHS"
+      ],
+      "answer": 2,
+      "solution": "Look at what you have been given:\n\n- **two pairs of sides** in the same ratio ($AB:DE$ and $BC:EF$), and\n- the **angle between them** equal ($\\angle B$ sits between $AB$ and $BC$; $\\angle E$ sits between $DE$ and $EF$).\n\nSide, Angle, Side — that is the **SAS similarity** criterion.\n\nWhy the others do not apply: AAA needs two or three pairs of *angles*, and only one is given. SSS needs all three pairs of sides in ratio, and only two are. RHS is a *congruence* rule for right triangles, and no right angle is mentioned.\n\nThe word doing the work is **included**. The equal angle has to sit between the two proportional sides. If the given angle were $\\angle A$ instead of $\\angle B$, the two triangles need not be similar at all.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-004",
+      "topic": "Ratio of areas of similar triangles",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\triangle ABC \\sim \\triangle PQR$ and $AB : PQ = 3 : 4$, then the ratio of their areas is:",
+      "options": [
+        "$3 : 4$",
+        "$4 : 3$",
+        "$9 : 16$",
+        "$16 : 9$"
+      ],
+      "answer": 2,
+      "solution": "The areas of two similar triangles are in the ratio of the **squares** of their corresponding sides:\n\n$\\dfrac{\\text{ar}(ABC)}{\\text{ar}(PQR)} = \\left(\\dfrac{AB}{PQ}\\right)^{2} = \\left(\\dfrac{3}{4}\\right)^{2} = \\mathbf{\\dfrac{9}{16}}$\n\nSo the ratio is $9 : 16$.\n\nHere is why the square appears. Area is length **times** length. If every length grows by a factor of $\\tfrac{4}{3}$, then the area grows by $\\tfrac{4}{3} \\times \\tfrac{4}{3}$.\n\nA tile picture makes it stick: a triangle scaled up 3 times fits 9 copies of the original inside it, not 3.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-005",
+      "topic": "Basic Proportionality Theorem",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In $\\triangle ABC$, $D$ and $E$ are points on $AB$ and $AC$ respectively such that $DE \\parallel BC$. If $AD = 3$ cm, $DB = 5$ cm and $AE = 6$ cm, then $EC$ is:",
+      "options": [
+        "$8$ cm",
+        "$10$ cm",
+        "$3.6$ cm",
+        "$9$ cm"
+      ],
+      "answer": 1,
+      "solution": "Because $DE \\parallel BC$, the Basic Proportionality Theorem (Thales' theorem) applies:\n\n$\\dfrac{AD}{DB} = \\dfrac{AE}{EC}$\n\n$\\dfrac{3}{5} = \\dfrac{6}{EC}$\n\nCross-multiply: $3 \\times EC = 30$, so $EC = \\mathbf{10}$ cm.\n\nThe common slip is to write $\\dfrac{AD}{AB} = \\dfrac{AE}{EC}$ — mixing a *part-to-whole* ratio on one side with a *part-to-part* ratio on the other. Keep both sides the same kind: either $\\tfrac{AD}{DB} = \\tfrac{AE}{EC}$ or $\\tfrac{AD}{AB} = \\tfrac{AE}{AC}$.\n\nA line drawn parallel to one side cuts the other two sides in the same proportion — like drawing a line across a ladder: it divides both rails identically.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-006",
+      "topic": "Similar triangles and congruence",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If two triangles are similar and their corresponding sides are in the ratio $1 : 1$, then the triangles are:",
+      "options": [
+        "congruent",
+        "equilateral",
+        "isosceles",
+        "right-angled"
+      ],
+      "answer": 0,
+      "solution": "Similar means same shape; a side ratio of $1 : 1$ means the same size as well. Same shape **and** same size is exactly what **congruent** means.\n\nThe other options describe particular kinds of triangle, and nothing here says the triangles are any of them — two similar scalene triangles with ratio $1:1$ are congruent scalene triangles.\n\nThe relationship worth keeping straight: **every congruent pair is similar, but not every similar pair is congruent.** Congruence is the special case of similarity where the scale factor happens to be 1.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-007",
+      "topic": "Angles in similar triangles",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\triangle ABC \\sim \\triangle DEF$ with $\\angle A = 50°$ and $\\angle B = 60°$, then $\\angle F$ is:",
+      "options": [
+        "$50°$",
+        "$60°$",
+        "$70°$",
+        "$110°$"
+      ],
+      "answer": 2,
+      "solution": "First find $\\angle C$ from the angle sum of $\\triangle ABC$:\n\n$\\angle C = 180° - 50° - 60° = 70°$\n\nNow use the similarity. In $\\triangle ABC \\sim \\triangle DEF$ the letters correspond **in order**: $A \\leftrightarrow D$, $B \\leftrightarrow E$, $C \\leftrightarrow F$.\n\nSo $\\angle F = \\angle C = \\mathbf{70°}$.\n\nThe order of the letters in a similarity statement is not decoration — it tells you which vertex matches which. Written $\\triangle ABC \\sim \\triangle EFD$, the same triangles would give $\\angle F = \\angle B = 60°$ instead.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-008",
+      "topic": "Similar figures scale by one factor",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\triangle ABC \\sim \\triangle PQR$. If the altitude from $A$ is 6 cm and the altitude from $P$ is 9 cm, then $\\dfrac{BC}{QR}$ is:",
+      "options": [
+        "$\\dfrac{2}{3}$",
+        "$\\dfrac{3}{2}$",
+        "$\\dfrac{4}{9}$",
+        "$\\dfrac{9}{4}$"
+      ],
+      "answer": 0,
+      "solution": "In similar triangles, corresponding **altitudes** are in the same ratio as corresponding **sides** — as are the medians, the angle bisectors and the perimeters.\n\n$\\dfrac{BC}{QR} = \\dfrac{\\text{altitude from } A}{\\text{altitude from } P} = \\dfrac{6}{9} = \\mathbf{\\dfrac{2}{3}}$\n\nOptions (C) and (D) are the *area* ratio, $\\left(\\tfrac{2}{3}\\right)^{2} = \\tfrac{4}{9}$ — right idea, wrong quantity.\n\nOne scale factor governs everything about a similar figure. Every straight line you can draw inside it — side, height, median — shrinks or grows by that same factor. Only areas take the square.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-009",
+      "topic": "Basic Proportionality Theorem",
+      "source": "CBSE 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In $\\triangle ABC$, $D$ lies on $AB$ and $E$ lies on $AC$ with $DE \\parallel BC$. If $AD = 4$ cm, $AB = 9$ cm and $AC = 13.5$ cm, find the length of $EC$ in centimetres.",
+      "answer": 7.5,
+      "tolerance": 0.01,
+      "solution": "$DE \\parallel BC$, so by the Basic Proportionality Theorem the two sides are cut in the same proportion. Here $AB$ and $AC$ are the **whole** sides, so use the part-to-whole form:\n\n$\\dfrac{AD}{AB} = \\dfrac{AE}{AC}$\n\n$\\dfrac{4}{9} = \\dfrac{AE}{13.5}$\n\n$AE = \\dfrac{4 \\times 13.5}{9} = 6$ cm\n\nThe question asks for $EC$, which is the rest of $AC$:\n\n$EC = AC - AE = 13.5 - 6 = \\mathbf{7.5}$ cm\n\n**Check** with the part-to-part form: $\\dfrac{AD}{DB} = \\dfrac{4}{5}$ and $\\dfrac{AE}{EC} = \\dfrac{6}{7.5} = \\dfrac{4}{5}$ ✓\n\nTwo steps, and the second is the one people forget. Finding $AE$ feels like finishing, but the question asked for the *other* piece.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-010",
+      "topic": "Corresponding sides in similar triangles",
+      "source": "CBSE 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$\\triangle AHK \\sim \\triangle ABC$. If $AK = 8$ cm, $BC = 3.2$ cm and $HK = 6.4$ cm, find the length of $AC$ in centimetres.",
+      "answer": 4,
+      "tolerance": 0.01,
+      "solution": "Read the correspondence off the similarity statement $\\triangle AHK \\sim \\triangle ABC$: $A \\leftrightarrow A$, $H \\leftrightarrow B$, $K \\leftrightarrow C$.\n\nSo the matching pairs of sides are $HK \\leftrightarrow BC$ and $AK \\leftrightarrow AC$, and their ratios are equal:\n\n$\\dfrac{HK}{BC} = \\dfrac{AK}{AC}$\n\n$\\dfrac{6.4}{3.2} = \\dfrac{8}{AC}$\n\n$2 = \\dfrac{8}{AC} \\Rightarrow AC = \\mathbf{4}$ cm\n\nNotice $\\triangle AHK$ is the **larger** triangle here (its side $HK$ is twice $BC$), even though it is named first and sits inside. Never judge which is bigger by the picture — let the numbers say.\n\nThe safe habit: write the correspondence down before writing any ratio. $A$ under $A$, $H$ under $B$, $K$ under $C$, and the matching sides read straight off.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-011",
+      "topic": "Basic Proportionality Theorem",
+      "source": "CBSE 2024",
+      "type": "numeric",
+      "marks": 1,
+      "q": "In $\\triangle ABC$, $DE \\parallel BC$ with $D$ on $AB$ and $E$ on $AC$. If $AD = 2.4$ cm, $DB = 4$ cm and $AE = 2$ cm, find the length of $AC$ in centimetres.\n\nGive your answer correct to two decimal places.",
+      "answer": 5.33,
+      "tolerance": 0.01,
+      "solution": "By the Basic Proportionality Theorem:\n\n$\\dfrac{AD}{DB} = \\dfrac{AE}{EC}$\n\n$\\dfrac{2.4}{4} = \\dfrac{2}{EC}$\n\n$2.4 \\times EC = 8 \\Rightarrow EC = \\dfrac{8}{2.4} = \\dfrac{10}{3}$ cm\n\nThen\n\n$AC = AE + EC = 2 + \\dfrac{10}{3} = \\dfrac{16}{3} \\approx \\mathbf{5.33}$ cm\n\nAgain the last step is the one that carries the mark: the theorem gives you $EC$, and $AC$ is $AE$ plus $EC$.\n\nA quick sanity check: $AD$ is a little smaller than $AE$… no — $AD = 2.4$, $DB = 4$, so $D$ sits nearer $A$ than the midpoint. $E$ should sit nearer $A$ too, and indeed $AE = 2$ against $EC = 3.33$. The proportions agree.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-012",
+      "topic": "Proving the Basic Proportionality Theorem",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 5,
+      "q": "State and prove the Basic Proportionality Theorem.",
+      "solution": "**Statement.** If a line is drawn parallel to one side of a triangle to intersect the other two sides at distinct points, then the other two sides are divided in the same ratio.\n\n**Given.** $\\triangle ABC$ with $DE \\parallel BC$, where $D$ lies on $AB$ and $E$ lies on $AC$.\n\n**To prove.** $\\dfrac{AD}{DB} = \\dfrac{AE}{EC}$\n\n**Construction.** Join $BE$ and $CD$. Draw $EM \\perp AB$ and $DN \\perp AC$.\n\n**Proof.** Using area $= \\tfrac{1}{2} \\times$ base $\\times$ height:\n\n$\\dfrac{\\text{ar}(\\triangle ADE)}{\\text{ar}(\\triangle DBE)} = \\dfrac{\\frac{1}{2} \\times AD \\times EM}{\\frac{1}{2} \\times DB \\times EM} = \\dfrac{AD}{DB}$ … (1)\n\n(both triangles share the same height $EM$ from $E$ to the line $AB$)\n\n$\\dfrac{\\text{ar}(\\triangle ADE)}{\\text{ar}(\\triangle DEC)} = \\dfrac{\\frac{1}{2} \\times AE \\times DN}{\\frac{1}{2} \\times EC \\times DN} = \\dfrac{AE}{EC}$ … (2)\n\n(both share the same height $DN$ from $D$ to the line $AC$)\n\nNow $\\triangle DBE$ and $\\triangle DEC$ stand on the **same base** $DE$ and lie **between the same parallels** $DE$ and $BC$, so they have equal areas:\n\n$\\text{ar}(\\triangle DBE) = \\text{ar}(\\triangle DEC)$ … (3)\n\nFrom (1), (2) and (3), the two left-hand sides are equal, therefore\n\n$\\dfrac{AD}{DB} = \\dfrac{AE}{EC}$ ∎\n\n**Where the parallel condition is used:** only in step (3). Take away $DE \\parallel BC$ and those two triangles no longer have equal areas, and the whole result collapses — which is exactly why the theorem needs it.\n\nThe idea in one line: two triangles with the same height have areas in the ratio of their bases, so an area comparison quietly becomes a length comparison.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-013",
+      "topic": "Similarity in a parallelogram",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 5,
+      "q": "$E$ is a point on the side $AD$ produced of a parallelogram $ABCD$, and $BE$ intersects $CD$ at $F$. Show that $\\triangle ABE \\sim \\triangle CFB$.",
+      "solution": "**Given.** $ABCD$ is a parallelogram, $E$ is on $AD$ produced, and $BE$ meets $CD$ at $F$.\n\n**To prove.** $\\triangle ABE \\sim \\triangle CFB$\n\n**Proof.** Take the angles one at a time.\n\n**First pair.** In a parallelogram, opposite angles are equal:\n\n$\\angle A = \\angle C$ … (1)\n\n(that is, $\\angle DAB = \\angle BCD$, and $\\angle EAB$ is the same angle as $\\angle DAB$ since $E$ lies on ray $AD$)\n\n**Second pair.** $AE \\parallel BC$ (because $AD \\parallel BC$ and $E$ is on $AD$ produced), and $BE$ is a transversal cutting them. Alternate interior angles are therefore equal:\n\n$\\angle AEB = \\angle CBF$ … (2)\n\n**Conclude.** In $\\triangle ABE$ and $\\triangle CFB$ two pairs of angles are equal, so by the **AA criterion**\n\n$\\triangle ABE \\sim \\triangle CFB$ ∎\n\n(The third pair, $\\angle ABE = \\angle CFB$, then follows automatically from the angle sum — which is why AA is enough and there is no separate \"AAA\" work to do.)\n\nThe move that unlocks it is spotting the **transversal**. \"Produced\" means the side has been extended, and extending $AD$ is what creates a line parallel to $BC$ for $BE$ to cut across.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-014",
+      "topic": "Similarity from medians",
+      "source": "CBSE 2024",
+      "type": "long",
+      "marks": 5,
+      "q": "Sides $AB$, $BC$ and the median $AD$ of $\\triangle ABC$ are respectively proportional to sides $PQ$, $QR$ and the median $PM$ of another $\\triangle PQR$. Prove that $\\triangle ABC \\sim \\triangle PQR$.",
+      "solution": "**Given.** $\\dfrac{AB}{PQ} = \\dfrac{BC}{QR} = \\dfrac{AD}{PM}$, where $AD$ is the median to $BC$ and $PM$ the median to $QR$.\n\n**To prove.** $\\triangle ABC \\sim \\triangle PQR$\n\n**Proof.** A median goes to the **midpoint**, so\n\n$BD = \\dfrac{1}{2}BC$ and $QM = \\dfrac{1}{2}QR$\n\nTherefore\n\n$\\dfrac{BD}{QM} = \\dfrac{\\frac{1}{2}BC}{\\frac{1}{2}QR} = \\dfrac{BC}{QR}$\n\nSubstituting this into what we were given:\n\n$\\dfrac{AB}{PQ} = \\dfrac{BD}{QM} = \\dfrac{AD}{PM}$\n\nThose are the three sides of $\\triangle ABD$ against the three sides of $\\triangle PQM$, all in the same ratio. By the **SSS similarity criterion**,\n\n$\\triangle ABD \\sim \\triangle PQM$\n\nCorresponding angles of similar triangles are equal, so\n\n$\\angle B = \\angle Q$ … (1)\n\nNow look at the original triangles. From the given,\n\n$\\dfrac{AB}{PQ} = \\dfrac{BC}{QR}$ … (2)\n\nand $\\angle B$ is the angle *included* between $AB$ and $BC$, while $\\angle Q$ is included between $PQ$ and $QR$. With (1) and (2), the **SAS similarity criterion** gives\n\n$\\triangle ABC \\sim \\triangle PQR$ ∎\n\nThe strategy is worth naming: the medians are not part of either triangle's sides, so they cannot be used directly. Instead they are used to build a **smaller pair** of triangles ($ABD$ and $PQM$) that *can* be matched by SSS — and the angle that falls out of that is exactly the one needed to finish the original pair by SAS.",
+      "chapter": "Triangles"
+    },
+    {
+      "id": "tr-015",
+      "topic": "Areas of similar triangles",
+      "type": "long",
+      "marks": 3,
+      "q": "The areas of two similar triangles are $81$ cm² and $49$ cm². If the median of the first triangle is $4.5$ cm, find the corresponding median of the second triangle.",
+      "solution": "**Step 1 — from areas to the scale factor.** For similar triangles the areas are in the ratio of the squares of corresponding lengths:\n\n$\\dfrac{\\text{ar}_1}{\\text{ar}_2} = \\left(\\dfrac{\\text{median}_1}{\\text{median}_2}\\right)^{2}$\n\n$\\dfrac{81}{49} = \\left(\\dfrac{4.5}{m}\\right)^{2}$\n\n**Step 2 — take the square root of both sides:**\n\n$\\dfrac{9}{7} = \\dfrac{4.5}{m}$\n\n**Step 3 — solve:**\n\n$9m = 7 \\times 4.5 = 31.5$\n\n$m = \\mathbf{3.5}$ cm\n\n**Check:** the length ratio is $4.5 : 3.5 = 9 : 7$, and $9^{2} : 7^{2} = 81 : 49$ ✓\n\nMedians behave like sides — one scale factor governs every length in the figure. The only step that needs care is the square root: areas live in the *squared* world, so you must come back down to lengths before comparing the medians.",
+      "chapter": "Triangles"
+    }
+  ]
+}

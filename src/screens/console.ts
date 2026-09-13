@@ -20,18 +20,12 @@ import { TESTS, testTitle } from "../data";
 import { copyText, escapeHtml, pct, setUrl } from "../dom";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
-import {
-  adoptTest,
-  createParentInvite,
-  fetchLibrary,
-  fetchTestList,
-  mutateTest,
-  setTestStatus,
-} from "../api";
+import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
 import { currentSubject } from "./home";
 import { showBuilder } from "./builder";
 import { createTestAndEdit, showEditor } from "./editor";
 import { audienceLabel, openAssign } from "./assign";
+import { showSubjects } from "./subjects";
 
 type ConsolePage = "admin" | "students" | "report" | "tests";
 
@@ -83,12 +77,15 @@ export function showMyTests() {
           <button id="mt-open-import" class="btn btn-ghost">Import JSON instead</button>
         </div>
       </div>
-      <div class="card roster-card">
+      <div class="card">
         <div class="solution-title">Built-in tests</div>
-        <p class="hint">Ready-made tests from the Vidai library. Take a copy to
-        make it yours — edit it however you like, then publish it to your class.
-        The library copy never changes.</p>
-        <div id="mt-library">${skeleton.table(2, 4)}</div>
+        <p class="hint">Ready-made chapter tests live in the built-in subjects on
+        <strong>Your subjects</strong>. Open one to read a chapter, then take your
+        own copy — you can change anything in the copy before publishing it to
+        your class. The library copy never changes.</p>
+        <div class="actions">
+          <button id="mt-library-open" class="btn btn-ghost">Browse built-in tests</button>
+        </div>
       </div>
       <div class="card roster-card">
         <div class="solution-title">Your tests</div>
@@ -102,13 +99,15 @@ export function showMyTests() {
   const jsonEl = document.getElementById("mt-json") as HTMLTextAreaElement;
   const errEl = document.getElementById("mt-error") as HTMLElement;
   const listEl = document.getElementById("mt-list")!;
-  const libEl = document.getElementById("mt-library")!;
 
   document.getElementById("mt-new")!.addEventListener("click", () => {
     void createTestAndEdit(showMyTests);
   });
   document.getElementById("mt-quick")!.addEventListener("click", () => {
     void showBuilder(null, showMyTests);
+  });
+  document.getElementById("mt-library-open")!.addEventListener("click", () => {
+    void showSubjects();
   });
   document.getElementById("mt-open-import")!.addEventListener("click", () => {
     importBox.style.display = "";
@@ -205,53 +204,6 @@ export function showMyTests() {
     );
   }
 
-  async function refreshLibrary() {
-    const masters = await fetchLibrary();
-    if (!masters) {
-      libEl.innerHTML = `<p class="login-error">Could not load the library — refresh to retry.</p>`;
-      return;
-    }
-    if (!masters.length) {
-      libEl.innerHTML = `<p class="hint">The library is empty for now.</p>`;
-      return;
-    }
-    libEl.innerHTML = `
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead><tr><th>Title</th><th>Chapter</th><th>Questions</th><th>Marks</th><th></th></tr></thead>
-          <tbody>
-            ${masters
-              .map(
-                (t) => `<tr>
-                  <td class="cell-strong">${escapeHtml(t.title)}</td>
-                  <td>${escapeHtml(t.chapter || "—")}</td>
-                  <td>${t.questionCount}</td>
-                  <td class="cell-mono">${t.totalMarks}</td>
-                  <td class="cell-actions">
-                    <button class="btn-link mt-adopt" data-id="${escapeHtml(t.id)}">Use this test</button>
-                    ${t.adopted ? `<span class="cell-quiet">already copied</span>` : ""}
-                  </td>
-                </tr>`
-              )
-              .join("")}
-          </tbody>
-        </table>
-      </div>`;
-    libEl.querySelectorAll<HTMLButtonElement>(".mt-adopt").forEach((btn) =>
-      btn.addEventListener("click", async () => {
-        btn.textContent = "…";
-        const result = await adoptTest(btn.dataset.id!);
-        if (!result.ok || !result.test) {
-          alert(result.message || "Could not copy this test");
-          void refreshLibrary();
-          return;
-        }
-        track("test_adopted", { test: btn.dataset.id! });
-        void showEditor(result.test.id, null, showMyTests);
-      })
-    );
-  }
-
   document.getElementById("mt-create")!.addEventListener("click", async () => {
     errEl.hidden = true;
     let parsed: unknown;
@@ -276,7 +228,6 @@ export function showMyTests() {
   });
 
   void refresh();
-  void refreshLibrary();
 }
 
 // ---------- Admin: teacher allowlist ----------
