@@ -152,6 +152,52 @@ list skips platform tests for the same reason.
 - Nothing syncs after the copy is made. `copiedFrom` records the parent so a
   later slice can say "the master has been updated"; a teacher's copy is theirs.
 
+## The library has shelves: platform subjects (`src/screens/library.ts`)
+
+A **shelf** is a subject row carrying `platform: true` — "CBSE Class 10 Maths",
+holding one master test per NCERT chapter. It is the shape a teacher already
+thinks in, and it is what they meet on **Your subjects**, badged *Built in*
+beside their own subjects.
+
+- Every teacher sees every shelf (`listOwnedSubjects` lets a `platform` row
+  through regardless of owner); only an **admin** may rename or delete one
+  (`mayManage` in the subjects POST, the same rule `canManageTest` uses).
+  `create` honours `platform` only for an admin.
+- **A shelf never reaches a student**, and needs no rule of its own: a student's
+  subject list is derived from the tests they can see, and platform tests are
+  already skipped there.
+- `GET /api/tests?library=1&subjectId=<id>` is one shelf's chapters.
+- Opening a shelf goes to `showLibrary`, **never** the authoring editor:
+  `editor/state.ts` is one shared working copy that autosaves, so browsing a
+  master through it would queue writes against a test nobody may change.
+  `src/screens/library.ts` is read-only and reuses the editor's *layout* only,
+  exactly as `src/screens/review.ts` does — `.ed-cols` / `.ed-tree*` /
+  `.ed-panel` under `.ed-readonly`, with `bindTreeDrawer` for the phone drawer.
+  **Use this test** in the crumb row adopts the chapter and opens the editor on
+  the copy.
+- `?library=<id>` survives a refresh (`src/main.ts`). The chapter is deliberately
+  *not* in the URL: a `test=` param there would be caught by the shared-link
+  route and open the test player instead.
+- The crumb's back link names the shelf on a wide screen and reads "‹ Back"
+  below 720px (`.crumb-wide` / `.crumb-tight`) — the full title pushed **Use
+  this test** off the edge of a 390px screen.
+
+### Where chapter content lives
+
+Chapter JSON lives in **`content/<shelf>/*.json`** — `content/class10-maths/`,
+`content/class12-maths/` — and is pushed into Table Storage as masters by
+`node scripts/seed-library.mjs content/class10-maths` (`VIDAI_BASE`,
+`VIDAI_ADMIN_USER`, `VIDAI_ADMIN_PASS` from the environment; never hardcode
+credentials). The script creates the shelf if it is missing, then for each file
+unpublishes → deletes → creates → publishes, so **editing a JSON file and
+re-running is how a question is corrected**.
+
+**Not `src/tests/`.** Everything there is picked up by `import.meta.glob` and
+becomes a guest-visible bundled demo test. `src/tests/` is the guest demo and
+nothing else; the library is `content/`.
+
+`order` on each chapter is its NCERT chapter number, so the tree reads 1…14.
+
 ## Authoring editor (`src/screens/editor/`)
 
 A **full-bleed application shell** from the approved design canvas — not a page

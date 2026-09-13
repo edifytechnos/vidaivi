@@ -3262,3 +3262,11 @@ body.modal-open {
   background: var(--bg); font-weight: 600; font-size: 0.85rem;
 }
 .lib-option .status-chip { margin-left: auto; }
+
+/* The crumb's way back names the shelf when there is room and says "Back" when
+   there is not: at 390px the full title pushed the action off the screen. */
+.crumb-tight { display: none; }
+@media (max-width: 720px) {
+  .crumb-wide { display: none; }
+  .crumb-tight { display: inline; }
+}

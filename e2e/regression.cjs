@@ -1378,7 +1378,7 @@ function check(ok, label) {
           // The taxonomy is deliberately unique, so the copy lands in a subject
           // of its own that cleanup can remove without touching a real one.
           const libSubject = await post("/api/subjects", {
-            action: "create", board: "CBSE", klass: "12", subject: "E2ELibrary",
+            action: "create", platform: true, board: "CBSE", klass: "12", subject: "E2ELibrary",
           });
           const libSubjectId = libSubject.data.subject?.id;
           const masterId = "e2e-master-" + Math.random().toString(36).slice(2, 7);
@@ -1391,6 +1391,13 @@ function check(ok, label) {
           const listed = await get("/api/tests?library=1");
           const inLibrary = (listed.data.tests || []).find((t) => t.id === masterId) || null;
 
+          // The shelf itself: it lists for staff, it filters, and it is not
+          // the teacher's to rename.
+          const staffSubjects = (await get("/api/subjects")).data.subjects || [];
+          const shelfRow = staffSubjects.find((x) => x.id === libSubjectId) || null;
+          const filtered = await get(`/api/tests?library=1&subjectId=${libSubjectId}`);
+          const otherShelf = await get("/api/tests?library=1&subjectId=nosuchsubject");
+
           const adopted = await post("/api/tests", { action: "adopt", id: masterId });
           const copy = adopted.data.test || null;
           const masterAfter = await get(`/api/tests?id=${masterId}`);
@@ -1401,9 +1408,16 @@ function check(ok, label) {
             body: JSON.stringify({ username: student.username, password: student.password }),
           }).then((r) => r.json());
           const studentSees = login.token ? await get(`/api/tests?id=${masterId}`, login.token) : { status: 0 };
+          const studentSubjects = login.token
+            ? ((await get("/api/subjects", login.token)).data.subjects || []).map((x) => x.id)
+            : [];
 
           return {
-            masterId, libSubjectId, published: pub.status, inLibrary,
+            masterId, libSubjectId, shelfRow,
+            filteredIds: (filtered.data.tests || []).map((t) => t.id),
+            otherShelfCount: (otherShelf.data.tests || []).length,
+            studentSubjects,
+            published: pub.status, inLibrary,
             copy, adoptStatus: adopted.status,
             masterQuestions: (masterAfter.data.test?.questions || []).length,
             masterStatus: masterAfter.data.test?.status,
@@ -1425,6 +1439,16 @@ function check(ok, label) {
             check(lib.copySource === "CBSE 2026", `the board-year tags survive the copy ("${lib.copySource}")`);
           }
           check(lib.masterQuestions === 3 && lib.masterStatus === "published", "the master itself is untouched");
+          check(!!lib.shelfRow && lib.shelfRow.platform === true, "the shelf lists for staff as a platform subject");
+          check(
+            lib.filteredIds.length === 1 && lib.filteredIds[0] === lib.masterId,
+            `?library=1&subjectId= returns only that shelf's chapters (${lib.filteredIds.length})`
+          );
+          check(lib.otherShelfCount === 0, `and nothing for a shelf with no chapters (${lib.otherShelfCount})`);
+          check(
+            !lib.studentSubjects.includes(lib.libSubjectId),
+            "a student never sees the shelf among their subjects"
+          );
           check(lib.studentStatus === 403, `a student cannot open the master directly (${lib.studentStatus})`);
         } finally {
           await page.evaluate(async ({ masterId, copyId, subjectId }) => {

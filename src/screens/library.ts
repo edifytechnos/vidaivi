@@ -114,8 +114,10 @@ function renderOverview(): void {
           <div class="ed-crumbrow">
             ${drawerToggleMarkup("Chapters")}
             <button class="ed-crumb-link" id="lib-back">Subjects</button>
-            <span class="ed-crumb-sep">›</span>
-            <span class="ed-crumb-test">${escapeHtml(shelfTitle)}</span>
+            <span class="ed-crumb-mid">
+              <span class="ed-crumb-sep">›</span>
+              <span class="ed-crumb-test">${escapeHtml(shelfTitle)}</span>
+            </span>
           </div>
           <div class="ed-body">
             <section class="ed-panel">
@@ -176,7 +178,10 @@ function renderChapter(test: Test, index: number): void {
         <div class="ed-center">
           <div class="ed-crumbrow">
             ${drawerToggleMarkup("Chapters")}
-            <button class="ed-crumb-link" id="lib-back">${escapeHtml(shelfTitle)}</button>
+            <button class="ed-crumb-link" id="lib-back">
+              <span class="crumb-wide">${escapeHtml(shelfTitle)}</span>
+              <span class="crumb-tight">‹ Back</span>
+            </button>
             <span class="ed-crumb-mid">
               <span class="ed-crumb-sep">›</span>
               <span class="ed-crumb-test">${escapeHtml(test.title)}</span>
