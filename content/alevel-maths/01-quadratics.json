@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-quadratics",
+  "title": "Quadratics",
+  "chapter": "Topic Test 1",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm1-001",
+      "chapter": "Quadratics",
+      "topic": "Discriminant",
+      "type": "mcq",
+      "q": "The equation $x^{2} + kx + 9 = 0$ has equal roots when $k$ equals:",
+      "solution": "Equal roots need the discriminant to vanish: $b^{2} - 4ac = 0$.\n\n$k^{2} - 36 = 0 \\Rightarrow k = \\mathbf{\\pm 6}$.\n\n$b^{2} - 4ac > 0$ gives two distinct real roots, $= 0$ gives a repeated root, $< 0$ gives none.",
+      "marks": 1,
+      "options": [
+        "$\\pm 3$",
+        "$\\pm 6$",
+        "$\\pm 9$",
+        "$0$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm1-002",
+      "chapter": "Quadratics",
+      "topic": "Completing the square",
+      "type": "mcq",
+      "q": "Written in the form $(x + p)^{2} + q$, the expression $x^{2} + 6x + 1$ is:",
+      "solution": "Halve the coefficient of $x$: $(x + 3)^{2} = x^{2} + 6x + 9$, which is $8$ too much.\n\n$x^{2} + 6x + 1 = \\mathbf{(x + 3)^{2} - 8}$.\n\nThe completed square hands you the vertex at once: $(-3, -8)$.",
+      "marks": 1,
+      "options": [
+        "$(x + 3)^{2} - 8$",
+        "$(x + 3)^{2} + 10$",
+        "$(x + 6)^{2} - 35$",
+        "$(x - 3)^{2} - 8$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm1-003",
+      "chapter": "Quadratics",
+      "topic": "Roots",
+      "type": "mcq",
+      "q": "If $\\alpha$ and $\\beta$ are the roots of $2x^{2} - 6x + 1 = 0$, then $\\alpha + \\beta$ equals:",
+      "solution": "$\\alpha + \\beta = -\\dfrac{b}{a} = \\dfrac{6}{2} = \\mathbf{3}$, and $\\alpha\\beta = \\dfrac{c}{a} = \\dfrac12$.\n\nWorth knowing: these let you answer questions about the roots without ever solving the equation.",
+      "marks": 1,
+      "options": [
+        "3",
+        "-3",
+        "$\\dfrac12$",
+        "6"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm1-004",
+      "chapter": "Quadratics",
+      "topic": "Quadratic inequalities",
+      "type": "mcq",
+      "q": "The solution of $x^{2} - 5x + 6 < 0$ is:",
+      "solution": "$(x-2)(x-3) < 0$, so the roots are $2$ and $3$.\n\nThe parabola opens **upwards**, so it is **below** the axis **between** the roots: $\\mathbf{2 < x < 3}$.\n\nA sketch settles this instantly, and guessing rarely does.",
+      "marks": 1,
+      "options": [
+        "$x < 2$ or $x > 3$",
+        "$2 < x < 3$",
+        "$x < 3$",
+        "all real $x$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm1-005",
+      "chapter": "Quadratics",
+      "topic": "Disguised quadratics",
+      "type": "mcq",
+      "q": "The equation $x^{4} - 5x^{2} + 4 = 0$ has how many real roots?",
+      "solution": "Put $u = x^{2}$: $u^{2} - 5u + 4 = 0 \\Rightarrow (u-1)(u-4) = 0$, so $u = 1$ or $4$.\n\nThen $x^{2} = 1$ gives $x = \\pm1$, and $x^{2} = 4$ gives $x = \\pm2$ — **4** real roots.\n\nEvery positive value of $u$ contributes two values of $x$; a negative one contributes none.",
+      "marks": 1,
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "alm1-006",
+      "chapter": "Quadratics",
+      "topic": "Discriminant",
+      "type": "numeric",
+      "q": "Find the value of the discriminant of $3x^{2} - 5x + 1 = 0$.",
+      "solution": "$b^{2} - 4ac = 25 - 12 = \\mathbf{13}$.\n\nPositive and not a perfect square, so the roots are real, distinct and irrational — the equation does not factorise.",
+      "marks": 2,
+      "answer": 13,
+      "tolerance": 0
+    },
+    {
+      "id": "alm1-007",
+      "chapter": "Quadratics",
+      "topic": "Vertex",
+      "type": "numeric",
+      "q": "Find the minimum value of $x^{2} - 4x + 7$.",
+      "solution": "$(x - 2)^{2} + 3$, and a square is never negative, so the least value is $\\mathbf{3}$, at $x = 2$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm1-008",
+      "chapter": "Quadratics",
+      "topic": "Sum and product of roots",
+      "type": "numeric",
+      "q": "If $\\alpha$ and $\\beta$ are the roots of $x^{2} - 7x + 12 = 0$, find $\\alpha^{2} + \\beta^{2}$.",
+      "solution": "$\\alpha + \\beta = 7$ and $\\alpha\\beta = 12$.\n\n$\\alpha^{2} + \\beta^{2} = (\\alpha + \\beta)^{2} - 2\\alpha\\beta = 49 - 24 = \\mathbf{25}$.\n\nThe identity avoids finding the roots at all — useful when they are not whole numbers.",
+      "marks": 2,
+      "answer": 25,
+      "tolerance": 0
+    },
+    {
+      "id": "alm1-009",
+      "chapter": "Quadratics",
+      "topic": "Equal roots",
+      "type": "numeric",
+      "q": "Find the positive value of $k$ for which $kx^{2} + 4x + 1 = 0$ has equal roots.",
+      "solution": "$b^{2} - 4ac = 16 - 4k = 0 \\Rightarrow k = \\mathbf{4}$.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm1-010",
+      "chapter": "Quadratics",
+      "topic": "Intersection",
+      "type": "numeric",
+      "q": "The line $y = 2x + 3$ meets the curve $y = x^{2}$ at two points. Find the sum of their $x$-coordinates.",
+      "solution": "$x^{2} = 2x + 3 \\Rightarrow x^{2} - 2x - 3 = 0$.\n\nSum of roots $= -\\dfrac{b}{a} = \\mathbf{2}$ (the roots are $3$ and $-1$).",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alm1-011",
+      "chapter": "Quadratics",
+      "topic": "Completing the square",
+      "type": "long",
+      "q": "Express $2x^{2} - 12x + 23$ in the form $a(x + b)^{2} + c$, and hence state the minimum value and where it occurs.",
+      "solution": "**Take the 2 out of the first two terms** — never out of the constant:\n\n$2\\left(x^{2} - 6x\\right) + 23$\n\n**Complete the square inside:**\n\n$x^{2} - 6x = (x - 3)^{2} - 9$\n\n**Substitute back:**\n\n$2\\left[(x-3)^{2} - 9\\right] + 23 = 2(x-3)^{2} - 18 + 23$\n\n$= \\mathbf{2(x - 3)^{2} + 5}$\n\n**Minimum value.** $(x-3)^{2} \\ge 0$ always, and is zero only at $x = 3$.\n\nSo the minimum is $\\mathbf{5}$, at $\\mathbf{x = 3}$.\n\n**Check:** $2(9) - 36 + 23 = 18 - 36 + 23 = 5$ ✓\n\nThe completed square also shows the curve never crosses the $x$-axis, since $2(x-3)^{2} + 5$ can never be zero — and the discriminant confirms it: $144 - 184 < 0$.",
+      "marks": 3
+    },
+    {
+      "id": "alm1-012",
+      "chapter": "Quadratics",
+      "topic": "Simultaneous equations with a quadratic",
+      "type": "long",
+      "q": "Find the coordinates of the points where the line $y = x + 1$ meets the curve $x^{2} + y^{2} = 25$.",
+      "solution": "**Substitute** the line into the circle:\n\n$x^{2} + (x + 1)^{2} = 25$\n\n$x^{2} + x^{2} + 2x + 1 = 25$\n\n$2x^{2} + 2x - 24 = 0$\n\n$x^{2} + x - 12 = 0$\n\n$(x + 4)(x - 3) = 0$, so $x = -4$ or $x = 3$.\n\n**Find $y$ from the simpler equation** (the line, always):\n\n$x = -4 \\Rightarrow y = -3$\n\n$x = 3 \\Rightarrow y = 4$\n\n**Points: $\\mathbf{(-4, -3)}$ and $\\mathbf{(3, 4)}$.**\n\n**Check both in the circle:** $16 + 9 = 25$ ✓ and $9 + 16 = 25$ ✓\n\n**Two warnings.** Substitute the **linear** equation into the quadratic, never the other way. And find each $y$ from the line — going back to the circle would give spurious extra points.",
+      "marks": 3
+    },
+    {
+      "id": "alm1-013",
+      "chapter": "Quadratics",
+      "topic": "Discriminant and tangency",
+      "type": "long",
+      "q": "Find the values of $m$ for which the line $y = mx + 2$ is a tangent to the curve $y = x^{2} + 3x + 4$.",
+      "solution": "**A tangent meets the curve exactly once**, so the resulting quadratic must have a **repeated root** — discriminant zero. That translation is the whole method.\n\n**Set them equal:**\n\n$mx + 2 = x^{2} + 3x + 4$\n\n$x^{2} + (3 - m)x + 2 = 0$\n\n**Discriminant zero:**\n\n$(3 - m)^{2} - 4(1)(2) = 0$\n\n$(3 - m)^{2} = 8$\n\n$3 - m = \\pm 2\\sqrt2$\n\n$\\mathbf{m = 3 \\pm 2\\sqrt{2}}$, that is $m \\approx 5.83$ or $m \\approx 0.17$.\n\n**Why two answers.** The point $(0, 2)$ lies **outside** the parabola, and from any external point exactly two tangents can be drawn — one touching on each side.\n\n**Reading the discriminant generally:** $> 0$ means the line cuts the curve twice, $= 0$ means it is a tangent, $< 0$ means they never meet. One inequality answers all three questions.",
+      "marks": 5
+    },
+    {
+      "id": "alm1-014",
+      "chapter": "Quadratics",
+      "topic": "Quadratic inequalities",
+      "type": "long",
+      "q": "Solve $2x^{2} - 7x - 15 \\ge 0$, showing your reasoning.",
+      "solution": "**Factorise.** Look for two numbers multiplying to $2 \\times (-15) = -30$ and adding to $-7$: they are $-10$ and $3$.\n\n$2x^{2} - 10x + 3x - 15 = 2x(x - 5) + 3(x - 5) = (2x + 3)(x - 5)$\n\n**Critical values:** $x = -\\dfrac32$ and $x = 5$.\n\n**Sketch.** The parabola opens **upwards** (positive $x^{2}$ coefficient), crossing the axis at those two points.\n\nIt is **above or on** the axis **outside** the roots.\n\n$\\mathbf{x \\le -\\dfrac{3}{2} \\quad\\text{or}\\quad x \\ge 5}$\n\n**Check with $x = 0$**, which is between the roots: $-15 \\ge 0$ is false ✓ — so the middle region is correctly excluded.\n\n**The reliable rule.** For an upward parabola, $\\ge 0$ means **outside** the roots and $\\le 0$ means **between** them; reverse it for a downward one. Sketching takes five seconds and removes all doubt — dividing an inequality by a bracket, by contrast, is a good way to lose half the solution.",
+      "marks": 3
+    },
+    {
+      "id": "alm1-015",
+      "chapter": "Quadratics",
+      "topic": "Disguised quadratics",
+      "type": "long",
+      "q": "Solve $2^{2x} - 5(2^{x}) + 4 = 0$.",
+      "solution": "**Spot the structure.** $2^{2x} = \\left(2^{x}\\right)^{2}$, so with $u = 2^{x}$ the equation is an ordinary quadratic:\n\n$u^{2} - 5u + 4 = 0$\n\n$(u - 1)(u - 4) = 0$, so $u = 1$ or $u = 4$.\n\n**Substitute back:**\n\n$2^{x} = 1 \\Rightarrow x = 0$\n\n$2^{x} = 4 \\Rightarrow x = 2$\n\n$\\mathbf{x = 0 \\text{ or } x = 2}$\n\n**Check:** at $x = 2$, $16 - 20 + 4 = 0$ ✓; at $x = 0$, $1 - 5 + 4 = 0$ ✓\n\n**A crucial point.** If a value of $u$ had come out **negative**, it would have to be **rejected** — $2^{x}$ is positive for every real $x$. Forgetting that check is the standard way to lose a mark here.\n\nThe same substitution handles $x^{4} - 5x^{2} + 4 = 0$ (with $u = x^{2}$), $e^{2x} - 3e^{x} + 2 = 0$, and equations in $\\tan^{2}\\theta$.",
+      "marks": 2
+    }
+  ]
+}

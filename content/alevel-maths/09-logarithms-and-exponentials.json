@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-logarithms",
+  "title": "Logarithms and Exponentials",
+  "chapter": "Topic Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm9-001",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Definition",
+      "type": "mcq",
+      "q": "$\\log_{a}b = c$ means:",
+      "solution": "A logarithm **is** an index: $\\log_{a}b = c$ says exactly that $\\mathbf{a^{c} = b}$.\n\n'What power of $a$ gives $b$?' — that question is the whole definition.",
+      "marks": 1,
+      "options": [
+        "$a^{c} = b$",
+        "$b^{c} = a$",
+        "$c^{a} = b$",
+        "$ac = b$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm9-002",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Laws of logarithms",
+      "type": "mcq",
+      "q": "$\\log x + \\log y$ equals:",
+      "solution": "$\\log x + \\log y = \\mathbf{\\log(xy)}$ — logs turn multiplication into addition.\n\nThat property is why logarithms were invented, and why slide rules worked. $\\log(x+y)$ cannot be simplified at all.",
+      "marks": 1,
+      "options": [
+        "$\\log(x + y)$",
+        "$\\log(xy)$",
+        "$\\log\\left(\\dfrac{x}{y}\\right)$",
+        "$(\\log x)(\\log y)$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm9-003",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Special values",
+      "type": "mcq",
+      "q": "$\\log_{a}1$ equals:",
+      "solution": "$a^{0} = 1$ for every $a$, so $\\log_{a}1 = \\mathbf{0}$.\n\nAlso $\\log_{a}a = 1$. And $\\log$ of a **negative** number or of zero is undefined, since no power of a positive base gives either.",
+      "marks": 1,
+      "options": [
+        "0",
+        "1",
+        "$a$",
+        "undefined"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm9-004",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Exponential growth",
+      "type": "mcq",
+      "q": "The graph of $y = e^{x}$:",
+      "solution": "$e^{0} = 1$, so the curve passes through $(0, 1)$, and $e^{x} > 0$ for **every** real $x$ — it never touches the $x$-axis.\n\nThe $x$-axis is a horizontal asymptote as $x \\to -\\infty$.",
+      "marks": 1,
+      "options": [
+        "crosses the $x$-axis at 1",
+        "passes through $(0,1)$ and is always positive",
+        "has a maximum",
+        "is a straight line"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm9-005",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Differentiation",
+      "type": "mcq",
+      "q": "$\\dfrac{d}{dx}\\left(\\ln x\\right)$ equals:",
+      "solution": "$\\dfrac{d}{dx}\\ln x = \\mathbf{\\dfrac{1}{x}}$ — which is the missing case of the integration power rule, appearing here from the other direction.\n\nAnd $\\dfrac{d}{dx}e^{x} = e^{x}$: the only function that is its own derivative.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{1}{x}$",
+        "$\\ln x$",
+        "$x$",
+        "$e^{x}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm9-006",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Evaluating logarithms",
+      "type": "numeric",
+      "q": "Find $\\log_{2}32$.",
+      "solution": "$2^{5} = 32$, so $\\log_{2}32 = \\mathbf{5}$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "alm9-007",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Laws of logarithms",
+      "type": "numeric",
+      "q": "Find the value of $\\log_{10}4 + \\log_{10}25$.",
+      "solution": "$\\log 4 + \\log 25 = \\log 100 = \\mathbf{2}$.\n\nCombining first turns an awkward pair into a trivial one — always worth trying before reaching for a calculator.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alm9-008",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Solving exponential equations",
+      "type": "numeric",
+      "q": "Solve $3^{x} = 81$.",
+      "solution": "$81 = 3^{4}$, so $x = \\mathbf{4}$.\n\nMatching the bases is quicker than taking logs whenever the numbers allow it.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alm9-009",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Natural logarithm",
+      "type": "numeric",
+      "q": "Solve $e^{x} = 1$.",
+      "solution": "$e^{0} = 1$, so $x = \\mathbf{0}$.",
+      "marks": 2,
+      "answer": 0,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alm9-010",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Change of base",
+      "type": "numeric",
+      "q": "Find $\\log_{4}64$.",
+      "solution": "$4^{3} = 64$, so the answer is $\\mathbf{3}$.\n\nOr by change of base: $\\dfrac{\\log 64}{\\log 4} = \\dfrac{1.806}{0.602} = 3$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alm9-011",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Laws of logarithms",
+      "type": "long",
+      "q": "State the three laws of logarithms and use them to solve $\\log_{2}x + \\log_{2}(x - 2) = 3$.",
+      "solution": "**The three laws:**\n\n1. $\\log a + \\log b = \\log(ab)$\n\n2. $\\log a - \\log b = \\log\\left(\\dfrac{a}{b}\\right)$\n\n3. $n\\log a = \\log\\left(a^{n}\\right)$\n\n**Solving.** Combine the left-hand side with the first law:\n\n$\\log_{2}\\left[x(x - 2)\\right] = 3$\n\n**Undo the logarithm:**\n\n$x(x - 2) = 2^{3} = 8$\n\n$x^{2} - 2x - 8 = 0$\n\n$(x - 4)(x + 2) = 0$, so $x = 4$ or $x = -2$.\n\n**Check both in the original equation** — this step is essential.\n\n$x = -2$ would require $\\log_{2}(-2)$, which is **undefined**. Reject it.\n\n$x = 4$: $\\log_{2}4 + \\log_{2}2 = 2 + 1 = 3$ ✓\n\n$\\mathbf{x = 4}$\n\n**Why a spurious root appeared.** Combining the logs produced the equation $x(x-2) = 8$, which has a wider domain than the original — the product is positive when **both** factors are negative, but the separate logarithms are not defined there. Combining logs can gain solutions, so every answer must be tested.",
+      "marks": 3
+    },
+    {
+      "id": "alm9-012",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Exponential equations",
+      "type": "long",
+      "q": "Solve $5^{2x} = 3^{x+1}$, giving the answer to three significant figures.",
+      "solution": "**Take logarithms of both sides** — the only way when the bases cannot be matched:\n\n$\\log\\left(5^{2x}\\right) = \\log\\left(3^{x+1}\\right)$\n\n**Bring the powers down** using the third law:\n\n$2x\\log 5 = (x + 1)\\log 3$\n\n**Now it is a linear equation in $x$.** Expand and collect:\n\n$2x\\log 5 - x\\log 3 = \\log 3$\n\n$x\\left(2\\log 5 - \\log 3\\right) = \\log 3$\n\n$x = \\dfrac{\\log 3}{2\\log 5 - \\log 3}$\n\n**Evaluate:** $\\log 3 = 0.4771$, $\\log 5 = 0.6990$.\n\n$x = \\dfrac{0.4771}{1.3980 - 0.4771} = \\dfrac{0.4771}{0.9209} = \\mathbf{0.518}$\n\n**Check:** $5^{1.036} = 5.39$ and $3^{1.518} = 5.39$ ✓\n\n**The key move** is bringing the power down to the front, which turns an exponential equation into a linear one. Either base of logarithm works — the answer is the same, and natural logs are just as good here.",
+      "marks": 3
+    },
+    {
+      "id": "alm9-013",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Modelling with exponentials",
+      "type": "long",
+      "q": "A radioactive sample decays according to $m = 50e^{-0.03t}$, where $m$ is the mass in grams and $t$ the time in years. Find the initial mass, the mass after 20 years, and the half-life.",
+      "solution": "**Initial mass.** At $t = 0$, $e^{0} = 1$:\n\n$m = \\mathbf{50}$ g.\n\n**After 20 years:**\n\n$m = 50e^{-0.6} = 50 \\times 0.5488 = \\mathbf{27.4}$ g.\n\n**Half-life** — the time for the mass to fall to 25 g:\n\n$25 = 50e^{-0.03t}$\n\n$0.5 = e^{-0.03t}$\n\n**Take natural logs of both sides:**\n\n$\\ln 0.5 = -0.03t$\n\n$t = \\dfrac{-0.6931}{-0.03} = \\mathbf{23.1}$ years.\n\n**Why the half-life does not depend on the starting mass.** The 50 cancels at the second line. Start with $50$ g or $50$ kg and the halving time is identical — which is the defining property of exponential decay.\n\n**In general** $t_{1/2} = \\dfrac{\\ln 2}{k}$, where $k$ is the decay constant.\n\n**The same model, with $k$ positive**, describes compound interest, population growth and the spread of an epidemic in its early stages — which is why $e$ turns up so far outside pure mathematics.",
+      "marks": 5
+    },
+    {
+      "id": "alm9-014",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "Reducing to linear form",
+      "type": "long",
+      "q": "Explain how to test whether data fit a relationship of the form $y = ax^{n}$, and how to find $a$ and $n$ from a straight-line graph.",
+      "solution": "**The problem.** A curve is hard to identify by eye, and hard to fit accurately. A straight line is easy to do both with.\n\n**Take logarithms of both sides:**\n\n$y = ax^{n}$\n\n$\\log y = \\log a + n\\log x$\n\n**Compare with $Y = mX + c$:**\n\n• Plot $\\log y$ (vertical) against $\\log x$ (horizontal)\n\n• The **gradient** is $n$\n\n• The **intercept** is $\\log a$, so $a = 10^{\\text{intercept}}$\n\n**If the plotted points lie on a straight line**, the relationship $y = ax^{n}$ is confirmed; if they curve, it is the wrong model.\n\n**The other common case.** For $y = ab^{x}$:\n\n$\\log y = \\log a + x\\log b$\n\n— so plot $\\log y$ against **$x$ itself**, not against $\\log x$. The gradient is then $\\log b$.\n\n**Telling the two apart:** a power law needs $\\log y$ against $\\log x$; an exponential law needs $\\log y$ against $x$. Trying both and seeing which straightens the data is itself a way of identifying the model.\n\nThis is how physicists find the exponent in an inverse-square law from experimental data — and getting $-2.01$ rather than $-2$ is how you know the experiment worked.",
+      "marks": 3
+    },
+    {
+      "id": "alm9-015",
+      "chapter": "Logarithms and Exponentials",
+      "topic": "The number e",
+      "type": "long",
+      "q": "Explain what makes $e$ special, and differentiate $y = e^{3x}$ and $y = \\ln(2x)$.",
+      "solution": "**What makes $e$ special.** It is the unique base for which the exponential function is **its own derivative**:\n\n$\\dfrac{d}{dx}e^{x} = e^{x}$\n\nFor any other base, $\\dfrac{d}{dx}a^{x} = a^{x}\\ln a$ — a stray constant that never quite goes away. Only at $a = e$ does $\\ln a = 1$.\n\nThe gradient of $y = e^{x}$ at any point equals the height of the curve there, which is why $e$ describes every process whose rate of growth is proportional to its current size.\n\n$e \\approx 2.71828$, and it is irrational.\n\n**Differentiating $y = e^{3x}$** — chain rule, inside derivative 3:\n\n$\\dfrac{dy}{dx} = \\mathbf{3e^{3x}}$\n\n**Differentiating $y = \\ln(2x)$:**\n\n$\\dfrac{dy}{dx} = \\dfrac{1}{2x} \\times 2 = \\mathbf{\\dfrac{1}{x}}$\n\n**Worth noticing:** the answer is the same as for $\\ln x$. That is because $\\ln(2x) = \\ln 2 + \\ln x$, and $\\ln 2$ is a constant, which differentiates to zero.\n\nMultiplying the inside of a logarithm by a constant only shifts the graph vertically; it does not change its shape at all.",
+      "marks": 2
+    }
+  ]
+}

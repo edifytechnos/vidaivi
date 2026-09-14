@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-vectors",
+  "title": "Vectors",
+  "chapter": "Topic Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm10-001",
+      "chapter": "Vectors",
+      "topic": "Magnitude",
+      "type": "mcq",
+      "q": "The magnitude of $2\\mathbf{i} - 3\\mathbf{j} + 6\\mathbf{k}$ is:",
+      "solution": "$\\sqrt{4 + 9 + 36} = \\sqrt{49} = \\mathbf{7}$.",
+      "marks": 1,
+      "options": [
+        "5",
+        "7",
+        "11",
+        "$\\sqrt{11}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm10-002",
+      "chapter": "Vectors",
+      "topic": "Scalar product",
+      "type": "mcq",
+      "q": "The scalar (dot) product $\\mathbf{a}\\cdot\\mathbf{b}$ equals:",
+      "solution": "$\\mathbf{a}\\cdot\\mathbf{b} = \\mathbf{|\\mathbf{a}||\\mathbf{b}|\\cos\\theta}$, and it is a **scalar** — a number, not a vector.\n\nIt is also the sum of the products of corresponding components, which is what makes it so easy to compute.",
+      "marks": 1,
+      "options": [
+        "$|\\mathbf{a}||\\mathbf{b}|\\cos\\theta$",
+        "$|\\mathbf{a}||\\mathbf{b}|\\sin\\theta$",
+        "$|\\mathbf{a}| + |\\mathbf{b}|$",
+        "$\\dfrac{|\\mathbf{a}|}{|\\mathbf{b}|}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm10-003",
+      "chapter": "Vectors",
+      "topic": "Perpendicular vectors",
+      "type": "mcq",
+      "q": "Two non-zero vectors are perpendicular if their scalar product is:",
+      "solution": "$\\cos 90° = 0$, so the scalar product of perpendicular vectors is $\\mathbf{0}$.\n\nA **negative** scalar product means the angle is obtuse — the dot product's sign is itself informative.",
+      "marks": 1,
+      "options": [
+        "1",
+        "0",
+        "-1",
+        "equal to their magnitudes"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm10-004",
+      "chapter": "Vectors",
+      "topic": "Vector equation of a line",
+      "type": "mcq",
+      "q": "The vector equation of a line through $\\mathbf{a}$ in the direction $\\mathbf{b}$ is:",
+      "solution": "$\\mathbf{r} = \\mathbf{a} + \\lambda\\mathbf{b}$ — stand at $\\mathbf{a}$, face along $\\mathbf{b}$, and walk any distance $\\lambda$, forwards or backwards.",
+      "marks": 1,
+      "options": [
+        "$\\mathbf{r} = \\mathbf{a} + \\lambda\\mathbf{b}$",
+        "$\\mathbf{r} = \\mathbf{a}\\cdot\\mathbf{b}$",
+        "$\\mathbf{r} = \\lambda(\\mathbf{a} + \\mathbf{b})$",
+        "$\\mathbf{r} = \\mathbf{a} - \\mathbf{b}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm10-005",
+      "chapter": "Vectors",
+      "topic": "Unit vector",
+      "type": "mcq",
+      "q": "A unit vector in the direction of $\\mathbf{a}$ is:",
+      "solution": "Divide the vector by its own magnitude: $\\hat{\\mathbf{a}} = \\dfrac{\\mathbf{a}}{|\\mathbf{a}|}$.\n\nIt keeps the direction and discards the length — a signpost rather than a journey.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\mathbf{a}}{|\\mathbf{a}|}$",
+        "$|\\mathbf{a}|\\mathbf{a}$",
+        "$\\mathbf{a}^{2}$",
+        "$\\dfrac{1}{\\mathbf{a}}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm10-006",
+      "chapter": "Vectors",
+      "topic": "Scalar product",
+      "type": "numeric",
+      "q": "Find $\\mathbf{a}\\cdot\\mathbf{b}$ where $\\mathbf{a} = 2\\mathbf{i} + 3\\mathbf{j} - \\mathbf{k}$ and $\\mathbf{b} = \\mathbf{i} - \\mathbf{j} + 4\\mathbf{k}$.",
+      "solution": "$(2)(1) + (3)(-1) + (-1)(4) = 2 - 3 - 4 = \\mathbf{-5}$.\n\nNegative, so the angle between them is obtuse.",
+      "marks": 2,
+      "answer": -5,
+      "tolerance": 0
+    },
+    {
+      "id": "alm10-007",
+      "chapter": "Vectors",
+      "topic": "Perpendicular vectors",
+      "type": "numeric",
+      "q": "Find $\\lambda$ such that $\\mathbf{a} = 3\\mathbf{i} + \\lambda\\mathbf{j}$ and $\\mathbf{b} = 2\\mathbf{i} - 6\\mathbf{j}$ are perpendicular.",
+      "solution": "$6 - 6\\lambda = 0 \\Rightarrow \\lambda = \\mathbf{1}$.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alm10-008",
+      "chapter": "Vectors",
+      "topic": "Angle between vectors",
+      "type": "numeric",
+      "q": "Find the angle (in degrees) between $\\mathbf{a} = \\mathbf{i} + \\mathbf{j}$ and $\\mathbf{b} = \\mathbf{i}$.",
+      "solution": "$\\cos\\theta = \\dfrac{\\mathbf{a}\\cdot\\mathbf{b}}{|\\mathbf{a}||\\mathbf{b}|} = \\dfrac{1}{\\sqrt2 \\times 1} = \\dfrac{1}{\\sqrt2}$.\n\n$\\theta = \\mathbf{45°}$.",
+      "marks": 2,
+      "answer": 45,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alm10-009",
+      "chapter": "Vectors",
+      "topic": "Distance between points",
+      "type": "numeric",
+      "q": "Find the distance between the points with position vectors $(1, 2, 3)$ and $(4, 6, 3)$.",
+      "solution": "The displacement is $(3, 4, 0)$, so the distance is $\\sqrt{9 + 16} = \\mathbf{5}$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm10-010",
+      "chapter": "Vectors",
+      "topic": "Unit vector",
+      "type": "numeric",
+      "q": "For $\\mathbf{a} = 3\\mathbf{i} + 4\\mathbf{j}$, find $|\\mathbf{a}|$.",
+      "solution": "$\\sqrt{9 + 16} = \\mathbf{5}$, so the unit vector is $\\dfrac{3}{5}{\\mathbf{i}} + \\dfrac{4}{5}{\\mathbf{j}}$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm10-011",
+      "chapter": "Vectors",
+      "topic": "Angle between vectors",
+      "type": "long",
+      "q": "Find the angle between $\\mathbf{a} = 2\\mathbf{i} - \\mathbf{j} + 2\\mathbf{k}$ and $\\mathbf{b} = \\mathbf{i} + 2\\mathbf{j} + 2\\mathbf{k}$.",
+      "solution": "**Scalar product:**\n\n$\\mathbf{a}\\cdot\\mathbf{b} = (2)(1) + (-1)(2) + (2)(2) = 2 - 2 + 4 = 4$\n\n**Magnitudes:**\n\n$|\\mathbf{a}| = \\sqrt{4 + 1 + 4} = 3$\n\n$|\\mathbf{b}| = \\sqrt{1 + 4 + 4} = 3$\n\n**Apply the formula:**\n\n$\\cos\\theta = \\dfrac{4}{3 \\times 3} = \\dfrac49$\n\n$\\theta = \\cos^{-1}(0.444) = \\mathbf{63.6°}$\n\n**Sanity checks.** $\\cos\\theta$ must lie between $-1$ and $1$; a value outside that range means an arithmetic slip. And a **positive** value means an acute angle, which $63.6°$ is ✓\n\n**Why this is so much easier than geometry.** Finding the angle between two directions in three dimensions by construction would be laborious; the scalar product reduces it to three multiplications and a division. That is the real power of the vector method.",
+      "marks": 3
+    },
+    {
+      "id": "alm10-012",
+      "chapter": "Vectors",
+      "topic": "Vector equation of a line",
+      "type": "long",
+      "q": "Find the vector equation of the line through $A(1, 2, 3)$ and $B(4, 8, 6)$, and determine whether $C(7, 14, 9)$ lies on it.",
+      "solution": "**Direction:**\n\n$\\vec{AB} = \\mathbf{b} - \\mathbf{a} = 3\\mathbf{i} + 6\\mathbf{j} + 3\\mathbf{k}$\n\nThis simplifies to $3\\left(\\mathbf{i} + 2\\mathbf{j} + \\mathbf{k}\\right)$, and any multiple serves as the direction, so use $\\mathbf{i} + 2\\mathbf{j} + \\mathbf{k}$.\n\n**Equation:**\n\n$\\mathbf{r} = \\left(\\mathbf{i} + 2\\mathbf{j} + 3\\mathbf{k}\\right) + \\lambda\\left(\\mathbf{i} + 2\\mathbf{j} + \\mathbf{k}\\right)$\n\n**Testing $C(7, 14, 9)$.** Each coordinate must give the **same** $\\lambda$:\n\n$x$: $1 + \\lambda = 7 \\Rightarrow \\lambda = 6$\n\n$y$: $2 + 2\\lambda = 14 \\Rightarrow \\lambda = 6$ ✓\n\n$z$: $3 + \\lambda = 9 \\Rightarrow \\lambda = 6$ ✓\n\nAll three agree, so **$C$ does lie on the line**.\n\n**The test is the whole point.** If even one coordinate gave a different $\\lambda$, the point would be off the line. In three dimensions that is entirely possible — two of the three matching proves nothing.\n\n**Note also** that $\\lambda = 3$ gives $B$, so $C$ is twice as far along from $A$ as $B$ is, and the three points are collinear in that order.",
+      "marks": 3
+    },
+    {
+      "id": "alm10-013",
+      "chapter": "Vectors",
+      "topic": "Intersection of lines",
+      "type": "long",
+      "q": "Determine whether the lines $\\mathbf{r} = \\mathbf{i} + \\mathbf{j} + \\lambda\\left(2\\mathbf{i} + \\mathbf{j} + \\mathbf{k}\\right)$ and $\\mathbf{r} = 3\\mathbf{i} + 2\\mathbf{j} + \\mu\\left(\\mathbf{i} - \\mathbf{j} + 2\\mathbf{k}\\right)$ intersect.",
+      "solution": "**Set the two position vectors equal**, component by component:\n\n$x$: $1 + 2\\lambda = 3 + \\mu$\n\n$y$: $1 + \\lambda = 2 - \\mu$\n\n$z$: $\\lambda = 2\\mu$\n\n**Solve two of them and test in the third** — this is the essential step.\n\nFrom the third equation, $\\lambda = 2\\mu$. Substituting into the second:\n\n$1 + 2\\mu = 2 - \\mu \\Rightarrow 3\\mu = 1 \\Rightarrow \\mu = \\dfrac13$, and $\\lambda = \\dfrac23$.\n\n**Test in the first equation:**\n\nLeft: $1 + 2\\left(\\tfrac23\\right) = \\dfrac73$\n\nRight: $3 + \\dfrac13 = \\dfrac{10}{3}$\n\n$\\dfrac73 \\ne \\dfrac{10}{3}$, so the equations are **inconsistent** and the lines do **not** intersect.\n\n**Are they parallel?** $\\left(2, 1, 1\\right)$ is not a multiple of $\\left(1, -1, 2\\right)$, so no.\n\n**They are therefore skew** — neither parallel nor intersecting, passing each other at different depths like a road and a flyover.\n\n**Why the third equation must be checked.** Two equations in two unknowns will nearly always have a solution; it is the **third** that decides whether the lines really meet. In two dimensions this cannot happen — non-parallel lines always cross — which is why skew lines are a genuinely three-dimensional phenomenon.",
+      "marks": 5
+    },
+    {
+      "id": "alm10-014",
+      "chapter": "Vectors",
+      "topic": "Perpendicular distance",
+      "type": "long",
+      "q": "Find the value of $\\lambda$ for which the point on the line $\\mathbf{r} = \\left(\\mathbf{i} + 2\\mathbf{j}\\right) + \\lambda\\left(2\\mathbf{i} + \\mathbf{j} + 2\\mathbf{k}\\right)$ is closest to the origin.",
+      "solution": "**The general point on the line:**\n\n$P = \\left(1 + 2\\lambda,\\; 2 + \\lambda,\\; 2\\lambda\\right)$\n\n**The key idea.** $OP$ is shortest exactly when it is **perpendicular to the line**, so its scalar product with the direction vector is zero.\n\n$\\vec{OP}\\cdot\\left(2, 1, 2\\right) = 0$\n\n$2(1 + 2\\lambda) + 1(2 + \\lambda) + 2(2\\lambda) = 0$\n\n$2 + 4\\lambda + 2 + \\lambda + 4\\lambda = 0$\n\n$9\\lambda + 4 = 0 \\Rightarrow \\lambda = \\mathbf{-\\dfrac49}$\n\n**The closest point** is then $\\left(\\dfrac19, \\dfrac{14}{9}, -\\dfrac89\\right)$, at a distance\n\n$\\sqrt{\\dfrac{1 + 196 + 64}{81}} = \\sqrt{\\dfrac{261}{81}} \\approx 1.80$.\n\n**The alternative** is to write $\\left|\\vec{OP}\\right|^{2}$ as a quadratic in $\\lambda$ and minimise it by differentiation — which gives the same answer, as it must.\n\n**Why the perpendicular route is better:** it needs no calculus, and it generalises immediately to the distance from a point to a plane, or between two skew lines. 'Shortest means perpendicular' is one of the most useful ideas in the whole of geometry.",
+      "marks": 3
+    },
+    {
+      "id": "alm10-015",
+      "chapter": "Vectors",
+      "topic": "Vector geometry",
+      "type": "long",
+      "q": "$OABC$ is a parallelogram with $\\vec{OA} = \\mathbf{a}$ and $\\vec{OC} = \\mathbf{c}$. $M$ is the midpoint of $AB$. Express $\\vec{OM}$ and $\\vec{CM}$ in terms of $\\mathbf{a}$ and $\\mathbf{c}$.",
+      "solution": "**First locate $B$.** In the parallelogram, $\\vec{AB} = \\vec{OC} = \\mathbf{c}$, so\n\n$\\vec{OB} = \\mathbf{a} + \\mathbf{c}$.\n\n**$\\vec{OM}$.** $M$ is halfway along $AB$, so from $O$ go to $A$ and then half of $\\vec{AB}$:\n\n$\\vec{OM} = \\mathbf{a} + \\tfrac12\\mathbf{c}$\n\n**$\\vec{CM}$.** Travel from $C$ back to $O$, then out to $M$:\n\n$\\vec{CM} = \\vec{CO} + \\vec{OM} = -\\mathbf{c} + \\mathbf{a} + \\tfrac12\\mathbf{c} = \\mathbf{a} - \\tfrac12\\mathbf{c}$\n\n**The method.** Every vector question of this kind is a journey broken into steps you already know. Going **backwards** along a vector means **subtracting** it, and a midpoint means taking **half**.\n\n**A useful consequence.** The midpoint of $OB$ is $\\tfrac12(\\mathbf{a} + \\mathbf{c})$, and the midpoint of $AC$ is $\\mathbf{a} + \\tfrac12(\\mathbf{c} - \\mathbf{a}) = \\tfrac12(\\mathbf{a} + \\mathbf{c})$ — the same point.\n\nSo **the diagonals of a parallelogram bisect each other**, proved in two lines of vector algebra. Doing it by congruent triangles takes considerably longer.",
+      "marks": 2
+    }
+  ]
+}

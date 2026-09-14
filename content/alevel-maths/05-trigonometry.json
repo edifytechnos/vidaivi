@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-trigonometry",
+  "title": "Trigonometry",
+  "chapter": "Topic Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm5-001",
+      "chapter": "Trigonometry",
+      "topic": "Identities",
+      "type": "mcq",
+      "q": "$\\sin^{2}\\theta + \\cos^{2}\\theta$ equals:",
+      "solution": "The Pythagorean identity: $\\sin^{2}\\theta + \\cos^{2}\\theta = \\mathbf{1}$, for every $\\theta$.\n\nDividing through by $\\cos^{2}\\theta$ gives $\\tan^{2}\\theta + 1 = \\sec^{2}\\theta$, and by $\\sin^{2}\\theta$ gives $1 + \\cot^{2}\\theta = \\operatorname{cosec}^{2}\\theta$.",
+      "marks": 1,
+      "options": [
+        "0",
+        "1",
+        "$\\tan^{2}\\theta$",
+        "$2$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm5-002",
+      "chapter": "Trigonometry",
+      "topic": "Exact values",
+      "type": "mcq",
+      "q": "$\\cos\\dfrac{\\pi}{6}$ equals:",
+      "solution": "$\\cos 30° = \\mathbf{\\dfrac{\\sqrt3}{2}}$.\n\nThese come from two triangles: half an equilateral triangle gives the $30$–$60$ values, and a right-angled isosceles triangle gives the $45$ ones.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac12$",
+        "$\\dfrac{\\sqrt3}{2}$",
+        "$\\dfrac{1}{\\sqrt2}$",
+        "1"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm5-003",
+      "chapter": "Trigonometry",
+      "topic": "Period",
+      "type": "mcq",
+      "q": "The period of $y = \\sin 2x$ is:",
+      "solution": "$y = \\sin kx$ has period $\\dfrac{2\\pi}{k}$, so here it is $\\mathbf{\\pi}$.\n\nThe wave is squashed horizontally by a factor of 2, fitting two complete cycles into the usual $2\\pi$.",
+      "marks": 1,
+      "options": [
+        "$\\pi$",
+        "$2\\pi$",
+        "$4\\pi$",
+        "$\\dfrac{\\pi}{2}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm5-004",
+      "chapter": "Trigonometry",
+      "topic": "Solving equations",
+      "type": "mcq",
+      "q": "How many solutions does $\\sin\\theta = 0.5$ have for $0 \\le \\theta \\le 2\\pi$?",
+      "solution": "**Two** — at $\\theta = \\dfrac{\\pi}{6}$ and $\\theta = \\dfrac{5\\pi}{6}$.\n\nA calculator gives only the first. The sine is positive in the first **and second** quadrants, and missing the second solution is the standard error in this topic.",
+      "marks": 1,
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm5-005",
+      "chapter": "Trigonometry",
+      "topic": "Double angle",
+      "type": "mcq",
+      "q": "$\\sin 2\\theta$ equals:",
+      "solution": "$\\sin 2\\theta = \\mathbf{2\\sin\\theta\\cos\\theta}$.\n\n$\\cos 2\\theta$ has three equivalent forms: $\\cos^{2}\\theta - \\sin^{2}\\theta$, $2\\cos^{2}\\theta - 1$ and $1 - 2\\sin^{2}\\theta$ — choose whichever leaves you with the function you want.",
+      "marks": 1,
+      "options": [
+        "$2\\sin\\theta$",
+        "$2\\sin\\theta\\cos\\theta$",
+        "$\\sin^{2}\\theta$",
+        "$1 - 2\\sin^{2}\\theta$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm5-006",
+      "chapter": "Trigonometry",
+      "topic": "Exact values",
+      "type": "numeric",
+      "q": "Find the value of $\\tan\\dfrac{\\pi}{4}$.",
+      "solution": "$\\tan 45° = \\mathbf{1}$ — the right-angled isosceles triangle has equal opposite and adjacent sides.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alm5-007",
+      "chapter": "Trigonometry",
+      "topic": "Identity",
+      "type": "numeric",
+      "q": "If $\\sin\\theta = 0.6$ and $\\theta$ is acute, find $\\cos\\theta$.",
+      "solution": "$\\cos^{2}\\theta = 1 - 0.36 = 0.64$, so $\\cos\\theta = \\mathbf{0.8}$ (positive, since $\\theta$ is acute).\n\nThe familiar $3$–$4$–$5$ triangle again.",
+      "marks": 2,
+      "answer": 0.8,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alm5-008",
+      "chapter": "Trigonometry",
+      "topic": "Amplitude",
+      "type": "numeric",
+      "q": "Find the maximum value of $3\\sin x + 2$.",
+      "solution": "$\\sin x$ reaches $1$, so the maximum is $3(1) + 2 = \\mathbf{5}$ (and the minimum is $-1$).",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm5-009",
+      "chapter": "Trigonometry",
+      "topic": "Solving equations",
+      "type": "numeric",
+      "q": "Solve $\\cos\\theta = 0$ for $0 \\le \\theta \\le \\pi$, giving the answer as $\\dfrac{k\\pi}{2}$. Find $k$.",
+      "solution": "$\\cos\\theta = 0$ at $\\theta = \\dfrac{\\pi}{2}$ in this range, so $k = \\mathbf{1}$.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "alm5-010",
+      "chapter": "Trigonometry",
+      "topic": "Double angle",
+      "type": "numeric",
+      "q": "If $\\sin\\theta = 0.6$ and $\\cos\\theta = 0.8$, find $\\sin 2\\theta$.",
+      "solution": "$\\sin 2\\theta = 2\\sin\\theta\\cos\\theta = 2(0.6)(0.8) = \\mathbf{0.96}$.",
+      "marks": 2,
+      "answer": 0.96,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alm5-011",
+      "chapter": "Trigonometry",
+      "topic": "Solving trigonometric equations",
+      "type": "long",
+      "q": "Solve $2\\sin^{2}\\theta - \\sin\\theta - 1 = 0$ for $0° \\le \\theta \\le 360°$.",
+      "solution": "**It is a quadratic in $\\sin\\theta$.** Put $s = \\sin\\theta$:\n\n$2s^{2} - s - 1 = 0$\n\n$(2s + 1)(s - 1) = 0$\n\n$s = -\\dfrac12$ or $s = 1$.\n\n**Case 1: $\\sin\\theta = 1$.**\n\n$\\theta = 90°$ — only one solution in the range, since the sine reaches its maximum just once.\n\n**Case 2: $\\sin\\theta = -\\dfrac12$.**\n\nThe reference angle is $30°$, and the sine is negative in the **third and fourth** quadrants:\n\n$\\theta = 180 + 30 = 210°$\n\n$\\theta = 360 - 30 = 330°$\n\n**Solutions: $\\mathbf{\\theta = 90°, 210°, 330°}$.**\n\n**The method in two steps:** find the **reference angle** from the positive value, then use the quadrant rule (**A**ll, **S**in, **T**an, **C**os) to place every solution in the range.\n\nA calculator alone would have given $-30°$, which is outside the range and only one of the three answers.",
+      "marks": 3
+    },
+    {
+      "id": "alm5-012",
+      "chapter": "Trigonometry",
+      "topic": "Proving identities",
+      "type": "long",
+      "q": "Prove that $\\dfrac{1 - \\cos 2\\theta}{\\sin 2\\theta} = \\tan\\theta$.",
+      "solution": "**Start with the left-hand side** and use the double angle formulae — always work on one side only, never across the equals sign.\n\n$\\cos 2\\theta = 1 - 2\\sin^{2}\\theta$, so $1 - \\cos 2\\theta = 2\\sin^{2}\\theta$.\n\n(Choosing this form of $\\cos 2\\theta$ is the key step: it makes the numerator a single term.)\n\n$\\sin 2\\theta = 2\\sin\\theta\\cos\\theta$.\n\n**Substituting:**\n\n$\\dfrac{2\\sin^{2}\\theta}{2\\sin\\theta\\cos\\theta} = \\dfrac{\\sin\\theta}{\\cos\\theta} = \\tan\\theta$ ∎\n\n**Two pieces of advice for identity proofs.**\n\n1. **Start with the more complicated side** — there is more to simplify and fewer choices to make.\n\n2. When $\\cos 2\\theta$ appears, pick whichever of its three forms produces the function the other side needs. Here we wanted $\\sin$, so $1 - 2\\sin^{2}\\theta$ was the right choice; $2\\cos^{2}\\theta - 1$ would have gone nowhere.\n\n**A caution:** the identity fails where $\\sin 2\\theta = 0$, since the left side is then undefined while $\\tan\\theta$ may not be.",
+      "marks": 3
+    },
+    {
+      "id": "alm5-013",
+      "chapter": "Trigonometry",
+      "topic": "R formula",
+      "type": "long",
+      "q": "Express $3\\sin\\theta + 4\\cos\\theta$ in the form $R\\sin(\\theta + \\alpha)$, and hence find the maximum value and the value of $\\theta$ at which it occurs.",
+      "solution": "**Expand the target form:**\n\n$R\\sin(\\theta + \\alpha) = R\\sin\\theta\\cos\\alpha + R\\cos\\theta\\sin\\alpha$\n\n**Compare coefficients:**\n\n$R\\cos\\alpha = 3$ and $R\\sin\\alpha = 4$\n\n**Find $R$** by squaring and adding — the $\\sin^{2} + \\cos^{2} = 1$ identity does the work:\n\n$R^{2} = 9 + 16 = 25 \\Rightarrow R = 5$\n\n**Find $\\alpha$** by dividing:\n\n$\\tan\\alpha = \\dfrac43 \\Rightarrow \\alpha = 0.927$ rad $(53.1°)$\n\n$\\mathbf{3\\sin\\theta + 4\\cos\\theta = 5\\sin(\\theta + 0.927)}$\n\n**Maximum value.** A sine never exceeds 1, so the maximum is $\\mathbf{5}$.\n\nIt occurs when $\\sin(\\theta + 0.927) = 1$, that is $\\theta + 0.927 = \\dfrac{\\pi}{2}$:\n\n$\\theta = 1.571 - 0.927 = \\mathbf{0.644}$ rad $(36.9°)$.\n\n**Why this form is so useful.** $3\\sin\\theta + 4\\cos\\theta$ has no obvious maximum; $5\\sin(\\theta + 0.927)$ has an obvious one. Two waves of the same frequency always add to a single wave, of amplitude $\\sqrt{3^{2} + 4^{2}}$ — **not** $3 + 4$, because they never peak together.\n\nIt also turns an equation such as $3\\sin\\theta + 4\\cos\\theta = 2$ into one that can actually be solved.",
+      "marks": 5
+    },
+    {
+      "id": "alm5-014",
+      "chapter": "Trigonometry",
+      "topic": "Graphs of trigonometric functions",
+      "type": "long",
+      "q": "Describe the graph of $y = 2\\sin\\left(3x\\right) + 1$, giving its amplitude, period, maximum and minimum.",
+      "solution": "**Start from $y = \\sin x$** and apply each change.\n\n**Amplitude 2** — the factor outside stretches it vertically, so it swings $2$ either side of its centre line.\n\n**Period $\\dfrac{2\\pi}{3}$** — the $3$ inside squashes it horizontally, fitting three complete cycles into the usual $2\\pi$.\n\n**Translated 1 up** — the centre line is $y = 1$, not $y = 0$.\n\n**Maximum:** $2(1) + 1 = \\mathbf{3}$, first at $3x = \\dfrac{\\pi}{2}$, i.e. $x = \\dfrac{\\pi}{6}$.\n\n**Minimum:** $2(-1) + 1 = \\mathbf{-1}$, at $x = \\dfrac{\\pi}{2}$.\n\n**Range:** $-1 \\le y \\le 3$.\n\n**The general form $y = a\\sin(bx + c) + d$:**\n\n• $a$ — amplitude\n\n• $\\dfrac{2\\pi}{b}$ — period\n\n• $d$ — vertical shift, the centre line\n\n• $-\\dfrac{c}{b}$ — horizontal shift\n\n**Note the asymmetry:** the number **outside** ($a$) multiplies the amplitude directly, but the number **inside** ($b$) **divides** the period. Anything inside the bracket works in reverse.",
+      "marks": 3
+    },
+    {
+      "id": "alm5-015",
+      "chapter": "Trigonometry",
+      "topic": "Trigonometric identities in problems",
+      "type": "long",
+      "q": "Given that $\\tan\\theta = \\dfrac{3}{4}$ and $\\theta$ is acute, find $\\sin\\theta$, $\\cos\\theta$ and $\\sin 2\\theta$ without a calculator.",
+      "solution": "**Draw the triangle.** $\\tan\\theta = \\dfrac{\\text{opposite}}{\\text{adjacent}} = \\dfrac34$, so take opposite $= 3$ and adjacent $= 4$.\n\n**Hypotenuse:** $\\sqrt{9 + 16} = 5$.\n\n**Read off the ratios:**\n\n$\\sin\\theta = \\mathbf{\\dfrac35}$, $\\quad \\cos\\theta = \\mathbf{\\dfrac45}$\n\nBoth positive, since $\\theta$ is acute.\n\n**Double angle:**\n\n$\\sin 2\\theta = 2\\sin\\theta\\cos\\theta = 2 \\times \\dfrac35 \\times \\dfrac45 = \\mathbf{\\dfrac{24}{25}}$\n\n**And for completeness:**\n\n$\\cos 2\\theta = 1 - 2\\sin^{2}\\theta = 1 - \\dfrac{18}{25} = \\dfrac{7}{25}$\n\n**Check:** $\\left(\\dfrac{24}{25}\\right)^{2} + \\left(\\dfrac{7}{25}\\right)^{2} = \\dfrac{576 + 49}{625} = 1$ ✓\n\n**The triangle is the fastest route** to every other ratio once one is known — far quicker than working through the identities, and it keeps the answers exact.\n\n**If $\\theta$ were not acute**, the magnitudes would be the same but the signs would follow the quadrant, so the range of $\\theta$ must always be checked.",
+      "marks": 2
+    }
+  ]
+}

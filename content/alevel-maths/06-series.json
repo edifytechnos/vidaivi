@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-series",
+  "title": "Series",
+  "chapter": "Topic Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm6-001",
+      "chapter": "Series",
+      "topic": "Arithmetic progression",
+      "type": "mcq",
+      "q": "The $n$th term of an arithmetic progression with first term $a$ and common difference $d$ is:",
+      "solution": "$u_{n} = \\mathbf{a + (n-1)d}$ — you take $n - 1$ steps to reach the $n$th term, not $n$.\n\n$ar^{n-1}$ is the geometric version.",
+      "marks": 1,
+      "options": [
+        "$a + nd$",
+        "$a + (n-1)d$",
+        "$an + d$",
+        "$ad^{n-1}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm6-002",
+      "chapter": "Series",
+      "topic": "Sum of an AP",
+      "type": "mcq",
+      "q": "The sum of the first $n$ terms of an arithmetic progression is:",
+      "solution": "$S_{n} = \\mathbf{\\dfrac{n}{2}\\left[2a + (n-1)d\\right]}$, equivalently $\\dfrac{n}{2}(a + l)$ where $l$ is the last term.\n\nThe second form is the more revealing: the number of terms times the **average** of the first and last.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{n}{2}\\left[2a + (n-1)d\\right]$",
+        "$\\dfrac{a(1 - r^{n})}{1 - r}$",
+        "$na$",
+        "$\\dfrac{a}{1-r}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm6-003",
+      "chapter": "Series",
+      "topic": "Geometric progression",
+      "type": "mcq",
+      "q": "A geometric progression has a sum to infinity only if:",
+      "solution": "The sum to infinity exists only when $\\mathbf{|r| < 1}$, and then $S_{\\infty} = \\dfrac{a}{1 - r}$.\n\nThe terms must shrink towards zero fast enough; otherwise the sum grows without limit.",
+      "marks": 1,
+      "options": [
+        "$r > 1$",
+        "$|r| < 1$",
+        "$r = 1$",
+        "always"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm6-004",
+      "chapter": "Series",
+      "topic": "Binomial expansion",
+      "type": "mcq",
+      "q": "In the expansion of $(1 + x)^{n}$, the coefficient of $x^{2}$ is:",
+      "solution": "$\\binom{n}{2} = \\mathbf{\\dfrac{n(n-1)}{2}}$.\n\nThe expansion begins $1 + nx + \\dfrac{n(n-1)}{2}x^{2} + \\ldots$",
+      "marks": 1,
+      "options": [
+        "$n$",
+        "$\\dfrac{n(n-1)}{2}$",
+        "$n^{2}$",
+        "$2n$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm6-005",
+      "chapter": "Series",
+      "topic": "Sum to infinity",
+      "type": "mcq",
+      "q": "The sum to infinity of $1 + \\dfrac12 + \\dfrac14 + \\dfrac18 + \\ldots$ is:",
+      "solution": "$a = 1$, $r = \\tfrac12$, so $S_{\\infty} = \\dfrac{1}{1 - \\tfrac12} = \\mathbf{2}$.\n\nInfinitely many terms, a finite total — each step covers half the remaining distance to 2, so the total never passes it.",
+      "marks": 1,
+      "options": [
+        "1",
+        "2",
+        "4",
+        "infinite"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm6-006",
+      "chapter": "Series",
+      "topic": "AP term",
+      "type": "numeric",
+      "q": "An AP has first term $5$ and common difference $3$. Find the $10$th term.",
+      "solution": "$u_{10} = 5 + 9(3) = \\mathbf{32}$.\n\nNine steps of 3, not ten — the first term takes no step at all.",
+      "marks": 2,
+      "answer": 32,
+      "tolerance": 0
+    },
+    {
+      "id": "alm6-007",
+      "chapter": "Series",
+      "topic": "Sum of an AP",
+      "type": "numeric",
+      "q": "Find the sum of the first $20$ terms of the AP $2, 5, 8, \\ldots$",
+      "solution": "$a = 2$, $d = 3$, $n = 20$:\n\n$S_{20} = \\dfrac{20}{2}\\left[4 + 19(3)\\right] = 10(61) = \\mathbf{610}$.",
+      "marks": 2,
+      "answer": 610,
+      "tolerance": 1
+    },
+    {
+      "id": "alm6-008",
+      "chapter": "Series",
+      "topic": "GP term",
+      "type": "numeric",
+      "q": "A GP has first term $3$ and common ratio $2$. Find the $6$th term.",
+      "solution": "$u_{6} = 3 \\times 2^{5} = 3 \\times 32 = \\mathbf{96}$.",
+      "marks": 2,
+      "answer": 96,
+      "tolerance": 0
+    },
+    {
+      "id": "alm6-009",
+      "chapter": "Series",
+      "topic": "Sum to infinity",
+      "type": "numeric",
+      "q": "Find the sum to infinity of the GP with first term $8$ and common ratio $0.5$.",
+      "solution": "$S_{\\infty} = \\dfrac{8}{1 - 0.5} = \\mathbf{16}$.",
+      "marks": 2,
+      "answer": 16,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alm6-010",
+      "chapter": "Series",
+      "topic": "Binomial coefficient",
+      "type": "numeric",
+      "q": "Find the coefficient of $x^{3}$ in the expansion of $(1 + x)^{6}$.",
+      "solution": "$\\binom{6}{3} = \\dfrac{6 \\times 5 \\times 4}{3 \\times 2 \\times 1} = \\mathbf{20}$.\n\nIt is also the middle entry of the seventh row of Pascal's triangle.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0
+    },
+    {
+      "id": "alm6-011",
+      "chapter": "Series",
+      "topic": "Arithmetic progressions",
+      "type": "long",
+      "q": "The 4th term of an AP is $11$ and the 9th term is $26$. Find the first term, the common difference, and the sum of the first $20$ terms.",
+      "solution": "**Write both terms in terms of $a$ and $d$:**\n\n$u_{4} = a + 3d = 11$\n\n$u_{9} = a + 8d = 26$\n\n**Subtract** — the $a$ terms cancel:\n\n$5d = 15 \\Rightarrow d = \\mathbf{3}$\n\n**Substitute back:**\n\n$a + 9 = 11 \\Rightarrow a = \\mathbf{2}$\n\n**Sum of the first 20 terms:**\n\n$S_{20} = \\dfrac{20}{2}\\left[2(2) + 19(3)\\right] = 10\\left[4 + 57\\right] = \\mathbf{610}$\n\n**Check:** the sequence is $2, 5, 8, 11, \\ldots$, and the 4th term is indeed $11$ ✓\n\n**The shortcut worth knowing:** between the 4th and 9th terms there are **five** steps, so $d = \\dfrac{26 - 11}{5} = 3$ straight away. Counting the steps rather than the terms is what keeps this right.",
+      "marks": 3
+    },
+    {
+      "id": "alm6-012",
+      "chapter": "Series",
+      "topic": "Geometric progressions",
+      "type": "long",
+      "q": "A geometric progression has second term $6$ and fifth term $48$. Find the first term, the common ratio, and the sum of the first 8 terms.",
+      "solution": "**Write both terms in terms of $a$ and $r$:**\n\n$ar = 6$\n\n$ar^{4} = 48$\n\n**Divide** — the $a$ cancels, which is the geometric equivalent of subtracting:\n\n$r^{3} = \\dfrac{48}{6} = 8 \\Rightarrow r = \\mathbf{2}$\n\n**Substitute back:**\n\n$a(2) = 6 \\Rightarrow a = \\mathbf{3}$\n\n**Sum of the first 8 terms:**\n\n$S_{8} = \\dfrac{a\\left(r^{n} - 1\\right)}{r - 1} = \\dfrac{3\\left(256 - 1\\right)}{1} = \\mathbf{765}$\n\n**Check:** the sequence is $3, 6, 12, 24, 48, \\ldots$ — the fifth term is $48$ ✓\n\n**Note there is no sum to infinity here**, since $|r| = 2 > 1$ and the terms grow without limit.\n\n**The method throughout:** in an AP you **subtract** to eliminate $a$; in a GP you **divide**. Everything that is added in one is multiplied in the other.",
+      "marks": 3
+    },
+    {
+      "id": "alm6-013",
+      "chapter": "Series",
+      "topic": "Binomial expansion",
+      "type": "long",
+      "q": "Expand $(2 + 3x)^{4}$ completely, and find the coefficient of $x^{2}$ in $(1 - 2x)^{5}$.",
+      "solution": "**First expansion.** Using $\\binom{4}{r}a^{4-r}b^{r}$ with $a = 2$, $b = 3x$, and the row $1, 4, 6, 4, 1$:\n\n$\\binom40 2^{4} = 16$\n\n$\\binom41 2^{3}(3x) = 4 \\times 8 \\times 3x = 96x$\n\n$\\binom42 2^{2}(3x)^{2} = 6 \\times 4 \\times 9x^{2} = 216x^{2}$\n\n$\\binom43 2(3x)^{3} = 4 \\times 2 \\times 27x^{3} = 216x^{3}$\n\n$\\binom44 (3x)^{4} = 81x^{4}$\n\n$\\mathbf{(2 + 3x)^{4} = 16 + 96x + 216x^{2} + 216x^{3} + 81x^{4}}$\n\n**Check with $x = 1$:** the expansion gives $16 + 96 + 216 + 216 + 81 = 625$, and $(2+3)^{4} = 5^{4} = 625$ ✓\n\nThat substitution is the best possible check, and it takes a few seconds.\n\n**Second part.** The $x^{2}$ term of $(1 - 2x)^{5}$:\n\n$\\binom52 (1)^{3}(-2x)^{2} = 10 \\times 4x^{2} = \\mathbf{40x^{2}}$\n\n**Note the sign.** $(-2x)^{2}$ is **positive**, because the square kills the minus. The $x^{3}$ term would be negative. The whole bracket, including its sign, must be raised to the power — bracketing it properly is what prevents the error.",
+      "marks": 5
+    },
+    {
+      "id": "alm6-014",
+      "chapter": "Series",
+      "topic": "Sum to infinity",
+      "type": "long",
+      "q": "A geometric progression has first term $12$ and sum to infinity $18$. Find the common ratio and the fourth term.",
+      "solution": "**Use the sum to infinity:**\n\n$S_{\\infty} = \\dfrac{a}{1 - r} \\Rightarrow 18 = \\dfrac{12}{1 - r}$\n\n$18(1 - r) = 12$\n\n$1 - r = \\dfrac{12}{18} = \\dfrac23$\n\n$r = \\mathbf{\\dfrac13}$\n\n**Check the condition:** $\\left|\\tfrac13\\right| < 1$ ✓, so the sum to infinity genuinely exists.\n\n**Fourth term:**\n\n$u_{4} = ar^{3} = 12 \\times \\dfrac{1}{27} = \\mathbf{\\dfrac49}$\n\n**The sequence:** $12, 4, \\dfrac43, \\dfrac49, \\ldots$ — and the partial sums $12, 16, 17.33, 17.78, \\ldots$ creep towards 18 without ever reaching it.\n\n**Always check $|r| < 1$** when a sum to infinity is involved. The formula will return a number for any $r$ — for $r = 2$ it gives $-12$, which is not merely wrong but absurd, since every term is positive.",
+      "marks": 3
+    },
+    {
+      "id": "alm6-015",
+      "chapter": "Series",
+      "topic": "Applications of series",
+      "type": "long",
+      "q": "A person saves $\\$100$ in the first month and increases the amount by $\\$20$ each month. Find the total saved in two years. If instead they increased it by $5\\%$ each month, find the total.",
+      "solution": "**Part 1 — an arithmetic progression.** $a = 100$, $d = 20$, $n = 24$.\n\n$S_{24} = \\dfrac{24}{2}\\left[2(100) + 23(20)\\right] = 12\\left[200 + 460\\right] = 12(660) = \\mathbf{\\$7920}$\n\nThe final month's saving is $100 + 23(20) = \\$560$.\n\n**Part 2 — a geometric progression.** $a = 100$, $r = 1.05$, $n = 24$.\n\n$S_{24} = \\dfrac{100\\left(1.05^{24} - 1\\right)}{0.05}$\n\n$1.05^{24} \\approx 3.225$, so\n\n$S_{24} = \\dfrac{100(2.225)}{0.05} = \\mathbf{\\$4450}$\n\n**The comparison is the interesting part.** The arithmetic plan saves far more over two years — $\\$7920$ against $\\$4450$ — even though $5\\%$ growth sounds impressive against a flat $\\$20$.\n\nEarly on, $5\\%$ of $\\$100$ is only $\\$5$, well short of $\\$20$, and the monthly geometric payment does not even catch the arithmetic one until around month 50 — long after the two years are up.\n\n**Over a longer period the answer reverses completely:** exponential growth always defeats linear growth eventually — the only question is when.",
+      "marks": 2
+    }
+  ]
+}
