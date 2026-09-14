@@ -683,6 +683,25 @@ export async function fetchReleased(testId: string, student?: string): Promise<b
   }
 }
 
+/**
+ * The same question for several papers at once, for the results list. One
+ * request rather than one per test; fails closed the same way, so a network
+ * error shows every paper as still shut.
+ */
+export async function fetchReleasedMany(testIds: string[]): Promise<Record<string, boolean>> {
+  const ids = [...new Set(testIds)].slice(0, 50);
+  if (!ids.length) return {};
+  try {
+    const res = await apiFetch(`/api/release?testIds=${encodeURIComponent(ids.join(","))}`, {
+      headers: authHeader(),
+    });
+    if (!res.ok) return {};
+    return ((await res.json()).released ?? {}) as Record<string, boolean>;
+  } catch {
+    return {};
+  }
+}
+
 /** Teacher/admin: who this test is open for. */
 export async function fetchReleaseState(testId: string): Promise<ReleaseState | null> {
   try {

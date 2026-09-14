@@ -1,7 +1,13 @@
 // Home screen: test list, profile row, cloud-saved results.
 
 import { track } from "../analytics";
-import { authEnabled, fetchGrading, fetchMyAttempts, getProfile, isLoggedIn } from "../auth";
+import {
+  authEnabled,
+  fetchMyAttempts,
+  fetchReleasedMany,
+  getProfile,
+  isLoggedIn,
+} from "../auth";
 import { fetchTestList } from "../api";
 import { loadAttempt, requiresLogin, setGuest } from "../attempts";
 import { TESTS, totalMarks } from "../data";
@@ -41,8 +47,13 @@ let activeSubject: string | null = null;
 const serverScores = new Map<string, { score: number; total: number }>();
 /** Server-side progress, so an unfinished test reads as in progress anywhere. */
 const serverProgress = new Map<string, number>();
-/** testId → long answers still with the teacher. */
-const serverPending = new Map<string, number>();
+/**
+ * Which papers the teacher has opened. A mark is the teacher's to give, so a
+ * score is shown only once they release it — before that a student sees that
+ * the paper is in, and nothing that could be mistaken for a result.
+ * Absent means shut: this fails closed like `fetchReleased` itself.
+ */
+const releasedTests = new Set<string>();
 
 /**
  * The status chip for one test. localStorage knows about a half-finished
@@ -50,16 +61,18 @@ const serverPending = new Map<string, number>();
  * was taken — so the server wins for "done" and local fills in progress.
  */
 function statusChip(testId: string, questionCount: number, total: number): string {
-  const pending = serverPending.get(testId) ?? 0;
   const done = serverScores.get(testId);
+  const open = releasedTests.has(testId);
   if (done) {
-    return pending
-      ? `<span class="status-chip status-progress">Awaiting review · ${done.score}/${done.total} so far</span>`
-      : `<span class="status-chip status-done">Score ${done.score}/${done.total}</span>`;
+    return open
+      ? `<span class="status-chip status-done">Score ${done.score}/${done.total}</span>`
+      : `<span class="status-chip status-progress">Handed in</span>`;
   }
   const attempt = loadAttempt(testId);
   if (attempt?.completed) {
-    return `<span class="status-chip status-done">Score ${attempt.score}/${total}</span>`;
+    return open
+      ? `<span class="status-chip status-done">Score ${attempt.score}/${total}</span>`
+      : `<span class="status-chip status-progress">Handed in</span>`;
   }
   const at = attempt && attempt.index > 0 ? attempt.index : serverProgress.get(testId) ?? 0;
   if (at > 0) {
@@ -167,12 +180,10 @@ function refreshStatusChips(): void {
     const chip = card.querySelector(".status-chip");
     if (!chip) return;
     const done = serverScores.get(id);
-    const pending = serverPending.get(id) ?? 0;
     if (done) {
-      chip.className = `status-chip ${pending ? "status-progress" : "status-done"}`;
-      chip.textContent = pending
-        ? `Awaiting review · ${done.score}/${done.total} so far`
-        : `Score ${done.score}/${done.total}`;
+      const open = releasedTests.has(id);
+      chip.className = `status-chip ${open ? "status-done" : "status-progress"}`;
+      chip.textContent = open ? `Score ${done.score}/${done.total}` : "Handed in";
       return;
     }
     // Only the server knows a test started on another device.
@@ -187,12 +198,12 @@ function refreshStatusChips(): void {
 // Cloud-saved results for the logged-in student, appended under the test list.
 async function renderServerResults(): Promise<void> {
   if (!authEnabled || !isLoggedIn()) return;
-  const [attempts, grading] = await Promise.all([fetchMyAttempts(), fetchGrading()]);
-  serverPending.clear();
-  for (const row of grading) {
-    if (row.status === "submitted") {
-      serverPending.set(row.testId, (serverPending.get(row.testId) ?? 0) + 1);
-    }
+  const attempts = await fetchMyAttempts();
+  // One request for every paper's release state, not one per paper.
+  releasedTests.clear();
+  const finished = (attempts ?? []).filter((a) => a.status !== "progress").map((a) => a.testId);
+  for (const [id, open] of Object.entries(await fetchReleasedMany(finished))) {
+    if (open) releasedTests.add(id);
   }
   const slot = document.getElementById("server-results");
   if (!attempts?.length) {
@@ -220,13 +231,36 @@ async function renderServerResults(): Promise<void> {
         ${attempts
           .filter((a) => a.status !== "progress")
           .slice(0, 10)
-          .map(
-            (a) => `<li>
+          .map((a) => {
+            const when = new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+            // A score only once the teacher has opened the paper. Until then
+            // the row says the work is in, which is all a student can know.
+            // A released paper is the thing to open: answers, correct answers
+            // and worked solutions. One that is still shut opens nothing.
+            const open = releasedTests.has(a.testId);
+            return `<li class="${open ? "res-open" : "row-pending"}"${
+              open ? ` data-result="${escapeHtml(a.testId)}" role="button" tabindex="0"` : ""
+            }>
               <span>${escapeHtml(titleOf(a.testId))}</span>
-              <span>${a.score}/${a.total} · ${new Date(a.completedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>
-            </li>`
-          )
+              <span>${
+                open
+                  ? `${a.score}/${a.total} · ${when} ${ICONS.chevron}`
+                  : `Handed in ${when} · waiting for your teacher`
+              }</span>
+            </li>`;
+          })
           .join("")}
       </ul>
     </div>`;
+
+  document.querySelectorAll<HTMLElement>("[data-result]").forEach((row) => {
+    const open = () => gotoTest(row.dataset.result!);
+    row.addEventListener("click", open);
+    row.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        open();
+      }
+    });
+  });
 }

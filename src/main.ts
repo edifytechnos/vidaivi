@@ -59,8 +59,12 @@ if (editId && authEnabled && isLoggedIn()) {
 // A student refreshing inside a subject stays in that subject's tests tree.
 const subjectId = (new URLSearchParams(location.search).get("subject") ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
 
-// A teacher refreshing inside a built-in shelf stays on the shelf.
-const libraryId = (new URLSearchParams(location.search).get("library") ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
+// A teacher refreshing inside Browse stays there: ?browse with no value is the
+// shelf list, ?browse=<id> is one shelf. Old ?library=<id> links land the same
+// place, which is where reading a built-in lives now.
+const params = new URLSearchParams(location.search);
+const browsing = params.has("browse") || params.has("library");
+const browseId = ((params.get("browse") || params.get("library")) ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
 
 // A teacher refreshing the marking queue stays on it.
 const markMode = new URLSearchParams(location.search).get("mark") === "1";
@@ -73,11 +77,9 @@ if (editId) {
   // handled above
 } else if (subjectId && !rawTestId && authEnabled && isLoggedIn() && isStudentViewer()) {
   void showStudentSubject(subjectId);
-} else if (libraryId && authEnabled && isLoggedIn()) {
-  // A built-in shelf is an ordinary subject in the editor now. Old ?library=
-  // links keep working by landing in the same place.
-  void import("./screens/editor").then((m) =>
-    m.showEditorForSubject(libraryId, () => void import("./screens/subjects").then((x) => x.showSubjects()))
+} else if (browsing && authEnabled && isLoggedIn()) {
+  void import("./screens/browse").then((m) =>
+    browseId ? m.showShelf(browseId) : m.showBrowse()
   );
 } else if (markMode && authEnabled && isLoggedIn()) {
   void showMarking();
