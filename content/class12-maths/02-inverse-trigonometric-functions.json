@@ -1,0 +1,197 @@
+{
+  "id": "lib-c12-inverse-trigonometry",
+  "title": "Inverse Trigonometric Functions",
+  "chapter": "Chapter Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "itf-001",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Principal values",
+      "type": "mcq",
+      "q": "The principal value of $\\sin^{-1}\\left(-\\tfrac{1}{2}\\right)$ is:",
+      "solution": "$\\sin^{-1}$ is only allowed to answer from $\\left[-\\tfrac{\\pi}{2}, \\tfrac{\\pi}{2}\\right]$.\n\n$\\sin\\left(-\\tfrac{\\pi}{6}\\right) = -\\tfrac{1}{2}$, and $-\\tfrac{\\pi}{6}$ lies in that window, so the answer is $\\mathbf{-\\tfrac{\\pi}{6}}$.\n\n$\\tfrac{7\\pi}{6}$ and $\\tfrac{11\\pi}{6}$ also have sine $-\\tfrac12$, but they are outside the window. Think of a shop that is open only from $-\\tfrac{\\pi}{2}$ to $\\tfrac{\\pi}{2}$: the right goods may exist elsewhere, but you can only be served inside opening hours.",
+      "marks": 1,
+      "options": [
+        "$-\\dfrac{\\pi}{6}$",
+        "$\\dfrac{7\\pi}{6}$",
+        "$\\dfrac{11\\pi}{6}$",
+        "$\\dfrac{5\\pi}{6}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "itf-002",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Principal value branches",
+      "type": "mcq",
+      "q": "The principal value branch of $\\cos^{-1}x$ is:",
+      "solution": "$\\cos$ is one-to-one on $[0, \\pi]$ — it slides steadily from $1$ down to $-1$ with no repeats — so that is the stretch kept as the principal branch of $\\cos^{-1}$.\n\nThe ends are **included**, because $\\cos^{-1}(1) = 0$ and $\\cos^{-1}(-1) = \\pi$ both have to be answerable.",
+      "marks": 1,
+      "options": [
+        "$\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$",
+        "$[0, \\pi]$",
+        "$(0, \\pi)$",
+        "$[-\\pi, \\pi]$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "itf-003",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "sin inverse of sin",
+      "type": "mcq",
+      "q": "$\\sin^{-1}\\left(\\sin \\tfrac{3\\pi}{4}\\right)$ equals:",
+      "solution": "$\\sin^{-1}(\\sin\\theta) = \\theta$ **only** when $\\theta$ already lies in $\\left[-\\tfrac{\\pi}{2}, \\tfrac{\\pi}{2}\\right]$. Here $\\tfrac{3\\pi}{4}$ does not.\n\nSo first find an angle that is in range with the same sine: $\\sin\\tfrac{3\\pi}{4} = \\sin\\left(\\pi - \\tfrac{3\\pi}{4}\\right) = \\sin\\tfrac{\\pi}{4}$.\n\n$\\tfrac{\\pi}{4}$ **is** in range, so the answer is $\\mathbf{\\tfrac{\\pi}{4}}$.\n\nIt is like being asked for a phone number in the local format: same person, but you must give the number the way the form accepts it.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{3\\pi}{4}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$-\\dfrac{\\pi}{4}$",
+        "$\\dfrac{\\pi}{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "itf-004",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Domain",
+      "type": "mcq",
+      "q": "The domain of $\\sec^{-1}x$ is:",
+      "solution": "$\\sec\\theta = \\dfrac{1}{\\cos\\theta}$, and $|\\cos\\theta| \\le 1$, so $|\\sec\\theta| \\ge 1$ always.\n\nA secant value can therefore never land strictly between $-1$ and $1$ — those inputs have no angle to come from, so they are cut out of the domain: $\\mathbb{R} - (-1, 1)$.",
+      "marks": 1,
+      "options": [
+        "$[-1, 1]$",
+        "$\\mathbb{R}$",
+        "$\\mathbb{R} - (-1, 1)$",
+        "$(-1, 1)$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "itf-005",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Combining principal values",
+      "type": "mcq",
+      "q": "$\\tan^{-1}\\left(\\sqrt{3}\\right) - \\sec^{-1}(-2)$ equals:",
+      "solution": "$\\tan^{-1}\\sqrt{3} = \\tfrac{\\pi}{3}$ (in $\\left(-\\tfrac{\\pi}{2}, \\tfrac{\\pi}{2}\\right)$).\n\n$\\sec^{-1}(-2)$ asks for the angle in $[0, \\pi]$ with $\\cos\\theta = -\\tfrac12$, which is $\\tfrac{2\\pi}{3}$.\n\n$\\tfrac{\\pi}{3} - \\tfrac{2\\pi}{3} = \\mathbf{-\\tfrac{\\pi}{3}}$.",
+      "marks": 1,
+      "options": [
+        "$\\pi$",
+        "$-\\dfrac{\\pi}{3}$",
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{2\\pi}{3}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "itf-006",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Sum of principal values",
+      "type": "mcq",
+      "q": "$\\tan^{-1}(1) + \\cos^{-1}\\left(-\\tfrac{1}{2}\\right)$ equals:",
+      "solution": "$\\tan^{-1}(1) = \\tfrac{\\pi}{4}$ and $\\cos^{-1}\\left(-\\tfrac12\\right) = \\tfrac{2\\pi}{3}$.\n\n$\\tfrac{\\pi}{4} + \\tfrac{2\\pi}{3} = \\tfrac{3\\pi + 8\\pi}{12} = \\mathbf{\\tfrac{11\\pi}{12}}$.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{11\\pi}{12}$",
+        "$\\dfrac{5\\pi}{12}$",
+        "$\\dfrac{\\pi}{2}$",
+        "$\\dfrac{13\\pi}{12}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "itf-007",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Composite of two functions",
+      "type": "numeric",
+      "q": "Find the value of $\\cos\\left(\\sin^{-1}\\tfrac{3}{5}\\right)$, correct to two decimal places.",
+      "solution": "Let $\\theta = \\sin^{-1}\\tfrac{3}{5}$, so $\\sin\\theta = \\tfrac{3}{5}$ with $\\theta$ in the first quadrant.\n\nDraw the right triangle: opposite $3$, hypotenuse $5$, so adjacent $= \\sqrt{25 - 9} = 4$.\n\n$\\cos\\theta = \\tfrac{4}{5} = \\mathbf{0.8}$.\n\nThe inverse function hands you an angle; the triangle is the quickest place to read every other ratio of that same angle off.",
+      "marks": 2,
+      "answer": 0.8,
+      "tolerance": 0.01
+    },
+    {
+      "id": "itf-008",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "A classic sum",
+      "type": "numeric",
+      "q": "It is given that $\\tan^{-1}(1) + \\tan^{-1}(2) + \\tan^{-1}(3) = k\\pi$. Find $k$.",
+      "solution": "Take the first two: $\\tan^{-1}1 + \\tan^{-1}2$. Since $1 \\times 2 > 1$, the formula carries a $\\pi$:\n\n$\\tan^{-1}1 + \\tan^{-1}2 = \\pi + \\tan^{-1}\\dfrac{1 + 2}{1 - 2} = \\pi + \\tan^{-1}(-3) = \\pi - \\tan^{-1}3$.\n\nAdding $\\tan^{-1}3$ gives $\\pi$, so $k = \\mathbf{1}$.\n\nThe $1 \\times 2 > 1$ check is the bit most students drop — it is the equivalent of noticing the clock has gone past midnight and the date must change too.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "itf-009",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Double angle",
+      "type": "numeric",
+      "q": "Find the value of $\\sin\\left(2\\sin^{-1}\\tfrac{3}{5}\\right)$, correct to two decimal places.",
+      "solution": "Let $\\theta = \\sin^{-1}\\tfrac35$, so $\\sin\\theta = \\tfrac35$ and (from the $3$–$4$–$5$ triangle) $\\cos\\theta = \\tfrac45$.\n\n$\\sin 2\\theta = 2\\sin\\theta\\cos\\theta = 2 \\times \\tfrac35 \\times \\tfrac45 = \\tfrac{24}{25} = \\mathbf{0.96}$.",
+      "marks": 2,
+      "answer": 0.96,
+      "tolerance": 0.01
+    },
+    {
+      "id": "itf-010",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Principal value",
+      "type": "numeric",
+      "q": "The principal value of $\\cot^{-1}\\left(-\\tfrac{1}{\\sqrt{3}}\\right)$ is $\\dfrac{k\\pi}{3}$. Find $k$.",
+      "solution": "$\\cot^{-1}$ answers from $(0, \\pi)$.\n\n$\\cot\\theta = -\\tfrac{1}{\\sqrt3}$ means $\\tan\\theta = -\\sqrt3$, and the angle in $(0, \\pi)$ with that tangent is $\\tfrac{2\\pi}{3}$.\n\nSo the principal value is $\\tfrac{2\\pi}{3}$ and $k = \\mathbf{2}$.\n\nNote $\\cot^{-1}$ of a negative number is **obtuse**, never negative — unlike $\\tan^{-1}$. The two look alike and behave differently.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "itf-011",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Addition formula",
+      "type": "numeric",
+      "q": "If $\\tan^{-1}\\tfrac{1}{2} + \\tan^{-1}\\tfrac{1}{3} = \\dfrac{k\\pi}{4}$, find $k$.",
+      "solution": "Here $xy = \\tfrac12 \\times \\tfrac13 = \\tfrac16 < 1$, so the plain formula applies:\n\n$\\tan^{-1}x + \\tan^{-1}y = \\tan^{-1}\\dfrac{x + y}{1 - xy} = \\tan^{-1}\\dfrac{\\tfrac12 + \\tfrac13}{1 - \\tfrac16} = \\tan^{-1}\\dfrac{\\tfrac56}{\\tfrac56} = \\tan^{-1}1 = \\tfrac{\\pi}{4}$.\n\nSo $k = \\mathbf{1}$.",
+      "marks": 3,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "itf-012",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Simplify",
+      "type": "long",
+      "q": "Simplify: $\\tan^{-1}\\left(\\sqrt{\\dfrac{1 - \\cos x}{1 + \\cos x}}\\right)$, where $0 < x < \\pi$.",
+      "solution": "Use the half-angle identities $1 - \\cos x = 2\\sin^{2}\\tfrac{x}{2}$ and $1 + \\cos x = 2\\cos^{2}\\tfrac{x}{2}$:\n\n$\\sqrt{\\dfrac{2\\sin^{2}\\tfrac{x}{2}}{2\\cos^{2}\\tfrac{x}{2}}} = \\left|\\tan\\tfrac{x}{2}\\right|$.\n\nFor $0 < x < \\pi$ we have $0 < \\tfrac{x}{2} < \\tfrac{\\pi}{2}$, so $\\tan\\tfrac{x}{2} > 0$ and the modulus drops away.\n\n$\\tan^{-1}\\left(\\tan\\tfrac{x}{2}\\right) = \\mathbf{\\dfrac{x}{2}}$, since $\\tfrac{x}{2}$ is inside the principal branch.\n\nThe half-angle substitution is the crowbar for anything under a square root with $1 \\pm \\cos x$ in it — it turns a root into a ratio.",
+      "marks": 3
+    },
+    {
+      "id": "itf-013",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Values outside the branch",
+      "type": "long",
+      "q": "Evaluate: $\\sin^{-1}\\left(\\sin\\tfrac{5\\pi}{6}\\right) + \\cos^{-1}\\left(\\cos\\tfrac{13\\pi}{6}\\right)$.",
+      "solution": "**First term.** $\\tfrac{5\\pi}{6}$ is outside $\\left[-\\tfrac{\\pi}{2}, \\tfrac{\\pi}{2}\\right]$, so replace it:\n\n$\\sin\\tfrac{5\\pi}{6} = \\sin\\left(\\pi - \\tfrac{5\\pi}{6}\\right) = \\sin\\tfrac{\\pi}{6}$, and $\\tfrac{\\pi}{6}$ **is** in range, so $\\sin^{-1}\\left(\\sin\\tfrac{5\\pi}{6}\\right) = \\tfrac{\\pi}{6}$.\n\n**Second term.** $\\tfrac{13\\pi}{6} = 2\\pi + \\tfrac{\\pi}{6}$, so $\\cos\\tfrac{13\\pi}{6} = \\cos\\tfrac{\\pi}{6}$, and $\\tfrac{\\pi}{6} \\in [0, \\pi]$, giving $\\tfrac{\\pi}{6}$.\n\n**Total:** $\\tfrac{\\pi}{6} + \\tfrac{\\pi}{6} = \\mathbf{\\dfrac{\\pi}{3}}$.",
+      "marks": 3
+    },
+    {
+      "id": "itf-014",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Solving an equation",
+      "type": "long",
+      "q": "Solve for $x$: $\\tan^{-1}\\left(\\dfrac{x - 1}{x - 2}\\right) + \\tan^{-1}\\left(\\dfrac{x + 1}{x + 2}\\right) = \\dfrac{\\pi}{4}$.",
+      "solution": "Apply $\\tan^{-1}a + \\tan^{-1}b = \\tan^{-1}\\dfrac{a + b}{1 - ab}$ and set the result equal to $\\tan^{-1}1$:\n\n$\\dfrac{\\dfrac{x-1}{x-2} + \\dfrac{x+1}{x+2}}{1 - \\dfrac{(x-1)(x+1)}{(x-2)(x+2)}} = 1$\n\n**Numerator:** $\\dfrac{(x-1)(x+2) + (x+1)(x-2)}{(x-2)(x+2)} = \\dfrac{(x^{2}+x-2) + (x^{2}-x-2)}{x^{2}-4} = \\dfrac{2x^{2}-4}{x^{2}-4}$.\n\n**Denominator:** $1 - \\dfrac{x^{2}-1}{x^{2}-4} = \\dfrac{(x^{2}-4) - (x^{2}-1)}{x^{2}-4} = \\dfrac{-3}{x^{2}-4}$.\n\nDividing, the $(x^{2}-4)$ cancels: $\\dfrac{2x^{2}-4}{-3} = 1 \\Rightarrow 2x^{2} - 4 = -3 \\Rightarrow x^{2} = \\tfrac12$.\n\n$x = \\mathbf{\\pm\\dfrac{1}{\\sqrt{2}}}$. Both values keep every denominator non-zero, so both are accepted.",
+      "marks": 5
+    },
+    {
+      "id": "itf-015",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Simplest form",
+      "type": "long",
+      "q": "Write $\\tan^{-1}\\left(\\dfrac{\\cos x - \\sin x}{\\cos x + \\sin x}\\right)$ in its simplest form, where $0 < x < \\dfrac{\\pi}{2}$.",
+      "solution": "Divide the top and bottom by $\\cos x$:\n\n$\\dfrac{1 - \\tan x}{1 + \\tan x}$.\n\nThat is exactly $\\tan\\left(\\tfrac{\\pi}{4} - x\\right)$, because $\\tan\\tfrac{\\pi}{4} = 1$.\n\nSo the expression is $\\tan^{-1}\\left(\\tan\\left(\\tfrac{\\pi}{4} - x\\right)\\right) = \\mathbf{\\dfrac{\\pi}{4} - x}$, valid since $0 < x < \\tfrac{\\pi}{2}$ keeps $\\tfrac{\\pi}{4} - x$ inside the principal branch.\n\nDividing through by $\\cos x$ is the standard move: it turns a stranger into $\\tan$, which the inverse can then cancel.",
+      "marks": 2
+    }
+  ]
+}

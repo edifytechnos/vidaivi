@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12-application-of-derivatives",
+  "title": "Application of Derivatives",
+  "chapter": "Chapter Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "aod-001",
+      "chapter": "Application of Derivatives",
+      "topic": "Rate of change",
+      "type": "mcq",
+      "q": "The radius of a circle is increasing at $3$ cm/s. When the radius is $10$ cm, the area is increasing at:",
+      "solution": "$A = \\pi r^{2}$, so $\\dfrac{dA}{dt} = 2\\pi r \\dfrac{dr}{dt}$.\n\n$= 2\\pi (10)(3) = \\mathbf{60\\pi}$ cm$^{2}$/s.\n\nNotice the area grows faster the bigger the circle already is: new area is added around the **rim**, and a longer rim takes more of it.",
+      "marks": 1,
+      "options": [
+        "$30\\pi$ cm$^{2}$/s",
+        "$60\\pi$ cm$^{2}$/s",
+        "$100\\pi$ cm$^{2}$/s",
+        "$20\\pi$ cm$^{2}$/s"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "aod-002",
+      "chapter": "Application of Derivatives",
+      "topic": "Increasing functions",
+      "type": "mcq",
+      "q": "A differentiable function $f$ is strictly increasing on an interval if, throughout that interval:",
+      "solution": "The derivative is the slope. A positive slope everywhere means the graph climbs everywhere — that is exactly strictly increasing.\n\n$f''(x) > 0$ is a different statement: it says the climb is getting steeper (the curve bends upwards), which can happen while the function is still falling.",
+      "marks": 1,
+      "options": [
+        "$f'(x) < 0$",
+        "$f'(x) > 0$",
+        "$f''(x) > 0$",
+        "$f(x) > 0$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "aod-003",
+      "chapter": "Application of Derivatives",
+      "topic": "Slope of a tangent",
+      "type": "mcq",
+      "q": "The slope of the tangent to the curve $y = x^{3} - 3x$ at $x = 2$ is:",
+      "solution": "$\\dfrac{dy}{dx} = 3x^{2} - 3$.\n\nAt $x = 2$: $3(4) - 3 = \\mathbf{9}$.\n\nThe derivative is a speedometer for the curve — read it at the moment you care about.",
+      "marks": 1,
+      "options": [
+        "3",
+        "6",
+        "9",
+        "12"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "aod-004",
+      "chapter": "Application of Derivatives",
+      "topic": "Maximum value",
+      "type": "mcq",
+      "q": "The maximum value of $\\sin x + \\cos x$ is:",
+      "solution": "Write it as a single wave: $\\sin x + \\cos x = \\sqrt{2}\\,\\sin\\left(x + \\tfrac{\\pi}{4}\\right)$.\n\nA sine never exceeds $1$, so the maximum is $\\mathbf{\\sqrt{2}}$, reached at $x = \\tfrac{\\pi}{4}$.\n\nTwo waves of equal height a quarter-turn apart add up to one wave, taller by a factor of $\\sqrt{2}$ — never to twice the height, because they never peak together.",
+      "marks": 1,
+      "options": [
+        "1",
+        "2",
+        "$\\sqrt{2}$",
+        "$\\dfrac{1}{\\sqrt{2}}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "aod-005",
+      "chapter": "Application of Derivatives",
+      "topic": "Second derivative test",
+      "type": "mcq",
+      "q": "If $f'(c) = 0$ and $f''(c) > 0$, then at $x = c$ the function $f$ has:",
+      "solution": "$f'(c) = 0$ says the tangent is flat; $f''(c) > 0$ says the curve is bending upwards there — a valley floor.\n\nSo $f$ has a **local minimum** at $c$. (Bending downwards, $f''(c) < 0$, would make it a peak.)",
+      "marks": 1,
+      "options": [
+        "a local maximum",
+        "a local minimum",
+        "a point of inflection",
+        "no conclusion possible"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "aod-006",
+      "chapter": "Application of Derivatives",
+      "topic": "Related rates",
+      "type": "numeric",
+      "q": "The side of a square is increasing at $4$ cm/s. Find the rate (in cm$^{2}$/s) at which its area increases when the side is $8$ cm.",
+      "solution": "$A = x^{2}$, so $\\dfrac{dA}{dt} = 2x\\dfrac{dx}{dt} = 2(8)(4) = \\mathbf{64}$ cm$^{2}$/s.\n\nThe new area is a thin strip along two sides of the square, so it grows in proportion to the side length.",
+      "marks": 2,
+      "answer": 64,
+      "tolerance": 0
+    },
+    {
+      "id": "aod-007",
+      "chapter": "Application of Derivatives",
+      "topic": "Local minimum",
+      "type": "numeric",
+      "q": "Find the value of $x$ at which $f(x) = x^{2} - 4x + 5$ has its local minimum.",
+      "solution": "$f'(x) = 2x - 4 = 0 \\Rightarrow x = 2$.\n\n$f''(x) = 2 > 0$, so it is a minimum. $x = \\mathbf{2}$ (where $f = 1$).\n\nFor a parabola this is just the vertex, exactly halfway between the roots.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "aod-008",
+      "chapter": "Application of Derivatives",
+      "topic": "Maximum value",
+      "type": "numeric",
+      "q": "Find the maximum value of $f(x) = -x^{2} + 4x + 5$.",
+      "solution": "$f'(x) = -2x + 4 = 0 \\Rightarrow x = 2$, and $f''(x) = -2 < 0$, so it is a maximum.\n\n$f(2) = -4 + 8 + 5 = \\mathbf{9}$.",
+      "marks": 2,
+      "answer": 9,
+      "tolerance": 0
+    },
+    {
+      "id": "aod-009",
+      "chapter": "Application of Derivatives",
+      "topic": "Approximation using differentials",
+      "type": "numeric",
+      "q": "Use differentials to find the approximate value of $\\sqrt{36.6}$, correct to three decimal places.",
+      "solution": "Take $y = \\sqrt{x}$ with $x = 36$ and $\\Delta x = 0.6$.\n\n$\\dfrac{dy}{dx} = \\dfrac{1}{2\\sqrt{x}} = \\dfrac{1}{12}$.\n\n$\\Delta y \\approx \\dfrac{1}{12} \\times 0.6 = 0.05$, so $\\sqrt{36.6} \\approx 6 + 0.05 = \\mathbf{6.05}$.\n\n(The true value is $6.0498\\ldots$) The tangent line is a good stand-in for the curve as long as you do not walk far from the point of contact.",
+      "marks": 2,
+      "answer": 6.05,
+      "tolerance": 0.005
+    },
+    {
+      "id": "aod-010",
+      "chapter": "Application of Derivatives",
+      "topic": "The sliding ladder",
+      "type": "numeric",
+      "q": "A $5$ m ladder leans against a wall. Its foot slides away from the wall at $2$ cm/s. How fast (in cm/s) is the top sliding down when the foot is $3$ m from the wall?",
+      "solution": "With $x$ along the ground and $y$ up the wall, $x^{2} + y^{2} = 25$.\n\nDifferentiate with respect to time: $2x\\dfrac{dx}{dt} + 2y\\dfrac{dy}{dt} = 0 \\Rightarrow \\dfrac{dy}{dt} = -\\dfrac{x}{y}\\dfrac{dx}{dt}$.\n\nWhen $x = 3$, $y = 4$. So $\\dfrac{dy}{dt} = -\\dfrac{3}{4}(2) = -1.5$ cm/s.\n\nThe top slides **down** at $\\mathbf{1.5}$ cm/s — the minus sign is the direction, the number is the speed.",
+      "marks": 2,
+      "answer": 1.5,
+      "tolerance": 0.01
+    },
+    {
+      "id": "aod-011",
+      "chapter": "Application of Derivatives",
+      "topic": "Increasing and decreasing intervals",
+      "type": "long",
+      "q": "Find the intervals on which $f(x) = 2x^{3} - 3x^{2} - 36x + 7$ is increasing and on which it is decreasing.",
+      "solution": "$f'(x) = 6x^{2} - 6x - 36 = 6\\left(x^{2} - x - 6\\right) = 6(x - 3)(x + 2)$.\n\nThe critical points are $x = -2$ and $x = 3$; test the sign of $f'$ in each stretch:\n\n• $x < -2$: both factors negative → product positive → **increasing**.\n\n• $-2 < x < 3$: one negative, one positive → **decreasing**.\n\n• $x > 3$: both positive → **increasing**.\n\n**Increasing on** $(-\\infty, -2) \\cup (3, \\infty)$; **decreasing on** $(-2, 3)$.\n\nThe cubic climbs to a local peak at $x = -2$, dips to a local trough at $x = 3$, and climbs away.",
+      "marks": 3
+    },
+    {
+      "id": "aod-012",
+      "chapter": "Application of Derivatives",
+      "topic": "Tangent and normal",
+      "type": "long",
+      "q": "Find the equations of the tangent and the normal to the curve $y = x^{2} - 2x + 7$ at the point $(2, 7)$.",
+      "solution": "**Check the point is on the curve:** $4 - 4 + 7 = 7$. ✓\n\n$\\dfrac{dy}{dx} = 2x - 2$, which at $x = 2$ is $2$ — the slope of the tangent.\n\n**Tangent:** $y - 7 = 2(x - 2) \\Rightarrow \\mathbf{y = 2x + 3}$.\n\n**Normal** is perpendicular, so its slope is $-\\tfrac12$:\n\n$y - 7 = -\\tfrac12(x - 2) \\Rightarrow \\mathbf{x + 2y = 16}$.\n\nPerpendicular slopes multiply to $-1$ — that single fact turns every tangent question into a normal question.",
+      "marks": 3
+    },
+    {
+      "id": "aod-013",
+      "chapter": "Application of Derivatives",
+      "topic": "Maxima and minima in a real problem",
+      "type": "long",
+      "q": "A square sheet of side $18$ cm has a small square cut from each corner, and the flaps are folded up to make an open box. Find the side of the cut square that gives the box its greatest volume.",
+      "solution": "Let the cut have side $x$. The base is then $(18 - 2x)$ by $(18 - 2x)$ and the height is $x$:\n\n$V = x\\left(18 - 2x\\right)^{2}$, valid for $0 < x < 9$.\n\n$\\dfrac{dV}{dx} = \\left(18 - 2x\\right)^{2} + x \\cdot 2(18 - 2x)(-2) = (18 - 2x)\\left[(18 - 2x) - 4x\\right] = (18 - 2x)(18 - 6x)$.\n\nSetting this to zero gives $x = 9$ (rejected — no box left) or $x = \\mathbf{3}$ cm.\n\n$\\dfrac{d^{2}V}{dx^{2}} = 24x - 144$, which at $x = 3$ is $-72 < 0$: a maximum. ✓\n\nThe box is then $12 \\times 12 \\times 3$, with volume $432$ cm$^{3}$.\n\nCut too little and the box is shallow; cut too much and the base is tiny. The derivative finds the balance point.",
+      "marks": 5
+    },
+    {
+      "id": "aod-014",
+      "chapter": "Application of Derivatives",
+      "topic": "Absolute maximum and minimum",
+      "type": "long",
+      "q": "Find the absolute maximum and absolute minimum values of $f(x) = x^{3} - 3x$ on the interval $[-2, 3]$.",
+      "solution": "On a closed interval the extremes can only sit at a critical point or at an endpoint, so check all of them.\n\n$f'(x) = 3x^{2} - 3 = 0 \\Rightarrow x = \\pm 1$, and both lie inside $[-2, 3]$.\n\n$f(-2) = -8 + 6 = -2$\n\n$f(-1) = -1 + 3 = 2$\n\n$f(1) = 1 - 3 = -2$\n\n$f(3) = 27 - 9 = 18$\n\n**Absolute maximum $= 18$ at $x = 3$; absolute minimum $= -2$, reached at both $x = -2$ and $x = 1$.**\n\nThe local peak at $x = -1$ is not the highest point on the interval — a local champion need not be the national one.",
+      "marks": 3
+    },
+    {
+      "id": "aod-015",
+      "chapter": "Application of Derivatives",
+      "topic": "Approximate change",
+      "type": "long",
+      "q": "The radius of a sphere is measured as $9$ cm with an error of $0.03$ cm. Find the approximate error in its calculated surface area.",
+      "solution": "$S = 4\\pi r^{2}$, so $\\dfrac{dS}{dr} = 8\\pi r$.\n\n$\\Delta S \\approx 8\\pi r\\,\\Delta r = 8\\pi(9)(0.03) = \\mathbf{2.16\\pi}$ cm$^{2} \\approx 6.79$ cm$^{2}$.\n\nA small slip in the radius is magnified about $8\\pi r$ times in the surface area — which is why measuring the radius carefully matters far more than it looks.",
+      "marks": 2
+    }
+  ]
+}

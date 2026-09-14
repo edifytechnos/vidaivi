@@ -1,9 +1,9 @@
 {
   "id": "lib-relations-functions",
   "title": "Relations and Functions",
-  "chapter": "Test 1",
+  "chapter": "Chapter Test 1",
   "teacher": null,
-  "order": 2,
+  "order": 1,
   "access": "login",
   "questions": [
     {

@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12-continuity",
+  "title": "Continuity and Differentiability",
+  "chapter": "Chapter Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "cd-001",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Continuity and differentiability",
+      "type": "mcq",
+      "q": "At $x = 0$, the function $f(x) = |x|$ is:",
+      "solution": "**Continuous:** the left limit, the right limit and $f(0)$ are all $0$ — you can draw the graph without lifting the pen.\n\n**Not differentiable:** approaching from the left the slope is $-1$; from the right it is $+1$. The two do not agree, so there is no single tangent.\n\nA sharp corner in a road: the road is unbroken, but at the corner there is no one direction you are travelling in.",
+      "marks": 1,
+      "options": [
+        "neither continuous nor differentiable",
+        "continuous but not differentiable",
+        "differentiable but not continuous",
+        "both continuous and differentiable"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cd-002",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Chain rule",
+      "type": "mcq",
+      "q": "$\\dfrac{d}{dx}\\sin\\left(x^{2}\\right)$ equals:",
+      "solution": "Outer function $\\sin$, inner function $x^{2}$. Differentiate the outer, keep the inner, then multiply by the inner's derivative:\n\n$\\cos\\left(x^{2}\\right) \\times 2x = \\mathbf{2x\\cos\\left(x^{2}\\right)}$.\n\nGears in a bicycle: the pedal turns the chain and the chain turns the wheel, so the wheel's rate is the product of the two rates.",
+      "marks": 1,
+      "options": [
+        "$\\cos\\left(x^{2}\\right)$",
+        "$2x\\cos\\left(x^{2}\\right)$",
+        "$2x\\sin\\left(x^{2}\\right)$",
+        "$-2x\\cos\\left(x^{2}\\right)$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cd-003",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Logarithmic differentiation",
+      "type": "mcq",
+      "q": "If $y = x^{x}$ $(x > 0)$, then $\\dfrac{dy}{dx}$ is:",
+      "solution": "Neither the power rule nor the exponential rule applies — the base **and** the index both move.\n\nTake logs: $\\log y = x\\log x$. Differentiate both sides: $\\dfrac{1}{y}\\dfrac{dy}{dx} = \\log x + 1$.\n\nSo $\\dfrac{dy}{dx} = \\mathbf{x^{x}\\left(1 + \\log x\\right)}$.\n\nLogs turn a product into a sum and an index into a multiplier — they flatten the problem before you differentiate it.",
+      "marks": 1,
+      "options": [
+        "$x\\,x^{x-1}$",
+        "$x^{x}\\log x$",
+        "$x^{x}\\left(1 + \\log x\\right)$",
+        "$x^{x}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "cd-004",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Rolle's theorem",
+      "type": "mcq",
+      "q": "Rolle's theorem is applicable to $f$ on $[a, b]$ only if, in addition to $f$ being continuous on $[a, b]$ and differentiable on $(a, b)$:",
+      "solution": "Rolle's theorem needs the curve to come back to the same height: $f(a) = f(b)$.\n\nIt then guarantees some $c \\in (a, b)$ with $f'(c) = 0$.\n\nThrow a ball up and catch it at the same height: somewhere in between it must have stopped rising — that instant is $c$.",
+      "marks": 1,
+      "options": [
+        "$f(a) = f(b)$",
+        "$f(a) = 0$",
+        "$f'(a) = f'(b)$",
+        "$f$ is increasing"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "cd-005",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Derivative of an inverse function",
+      "type": "mcq",
+      "q": "$\\dfrac{d}{dx}\\left(\\tan^{-1}x\\right)$ equals:",
+      "solution": "Let $y = \\tan^{-1}x$, so $\\tan y = x$. Differentiate: $\\sec^{2}y \\dfrac{dy}{dx} = 1$.\n\nSince $\\sec^{2}y = 1 + \\tan^{2}y = 1 + x^{2}$, we get $\\dfrac{dy}{dx} = \\mathbf{\\dfrac{1}{1 + x^{2}}}$.\n\nNote it is never negative and never larger than $1$ — $\\tan^{-1}$ climbs, but ever more gently.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{1}{1 + x^{2}}$",
+        "$\\dfrac{1}{\\sqrt{1 - x^{2}}}$",
+        "$\\dfrac{-1}{1 + x^{2}}$",
+        "$\\sec^{2}x$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "cd-006",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Continuity at a point",
+      "type": "numeric",
+      "q": "Find the value of $k$ that makes $f(x) = \\begin{cases} kx^{2}, & x \\le 2 \\\\ 3, & x > 2 \\end{cases}$ continuous at $x = 2$.",
+      "solution": "Continuity at $x = 2$ needs the two sides and the value to agree.\n\nFrom the left and at the point: $f(2) = 4k$. From the right: $3$.\n\n$4k = 3 \\Rightarrow k = \\tfrac34 = \\mathbf{0.75}$.\n\nTwo lengths of pipe joined at a wall: continuity is simply insisting both ends arrive at the same height.",
+      "marks": 2,
+      "answer": 0.75,
+      "tolerance": 0.001
+    },
+    {
+      "id": "cd-007",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Derivative at a point",
+      "type": "numeric",
+      "q": "If $y = e^{x}\\sin x$, find $\\dfrac{dy}{dx}$ at $x = 0$.",
+      "solution": "Product rule: $\\dfrac{dy}{dx} = e^{x}\\sin x + e^{x}\\cos x = e^{x}\\left(\\sin x + \\cos x\\right)$.\n\nAt $x = 0$: $e^{0}(0 + 1) = \\mathbf{1}$.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "cd-008",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Parametric differentiation",
+      "type": "numeric",
+      "q": "If $x = t^{2}$ and $y = t^{3}$, find $\\dfrac{dy}{dx}$ at $t = 2$.",
+      "solution": "$\\dfrac{dx}{dt} = 2t$ and $\\dfrac{dy}{dt} = 3t^{2}$.\n\n$\\dfrac{dy}{dx} = \\dfrac{dy/dt}{dx/dt} = \\dfrac{3t^{2}}{2t} = \\dfrac{3t}{2}$.\n\nAt $t = 2$: $\\dfrac{6}{2} = \\mathbf{3}$.\n\nThe parameter $t$ is the clock; divide how fast $y$ changes by how fast $x$ changes and the clock cancels out.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "cd-009",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Second derivative",
+      "type": "numeric",
+      "q": "If $y = \\sin 3x$, find the value of $\\dfrac{d^{2}y}{dx^{2}}$ at $x = 0$.",
+      "solution": "$\\dfrac{dy}{dx} = 3\\cos 3x$ and $\\dfrac{d^{2}y}{dx^{2}} = -9\\sin 3x$.\n\nAt $x = 0$: $-9\\sin 0 = \\mathbf{0}$.\n\nEvery differentiation of $\\sin 3x$ pulls out another factor of $3$ and steps the wave a quarter-turn along.",
+      "marks": 2,
+      "answer": 0,
+      "tolerance": 0
+    },
+    {
+      "id": "cd-010",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Implicit differentiation",
+      "type": "numeric",
+      "q": "If $x^{2} + y^{2} = 25$, find the value of $\\dfrac{dy}{dx}$ at the point $(3, 4)$.",
+      "solution": "Differentiate both sides with respect to $x$, remembering $y$ is a function of $x$:\n\n$2x + 2y\\dfrac{dy}{dx} = 0 \\Rightarrow \\dfrac{dy}{dx} = -\\dfrac{x}{y}$.\n\nAt $(3, 4)$: $-\\tfrac34 = \\mathbf{-0.75}$.\n\nThe answer is the negative reciprocal of the radius' slope — the tangent to a circle is always perpendicular to the radius.",
+      "marks": 2,
+      "answer": -0.75,
+      "tolerance": 0.001
+    },
+    {
+      "id": "cd-011",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Logarithmic differentiation",
+      "type": "long",
+      "q": "Find $\\dfrac{dy}{dx}$ if $y = \\left(\\sin x\\right)^{\\cos x}$, for $0 < x < \\dfrac{\\pi}{2}$.",
+      "solution": "Both the base and the index vary, so take logarithms first:\n\n$\\log y = \\cos x \\cdot \\log\\left(\\sin x\\right)$.\n\nDifferentiate both sides (product rule on the right):\n\n$\\dfrac{1}{y}\\dfrac{dy}{dx} = -\\sin x \\cdot \\log\\left(\\sin x\\right) + \\cos x \\cdot \\dfrac{\\cos x}{\\sin x}$.\n\n$\\dfrac{dy}{dx} = \\left(\\sin x\\right)^{\\cos x}\\left[\\dfrac{\\cos^{2}x}{\\sin x} - \\sin x\\,\\log\\left(\\sin x\\right)\\right]$.\n\nThe restriction $0 < x < \\tfrac{\\pi}{2}$ matters: it keeps $\\sin x$ positive so the logarithm is defined.",
+      "marks": 3
+    },
+    {
+      "id": "cd-012",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Continuity of a piecewise function",
+      "type": "long",
+      "q": "Find the values of $a$ and $b$ for which $f(x) = \\begin{cases} 5, & x \\le 2 \\\\ ax + b, & 2 < x < 10 \\\\ 21, & x \\ge 10 \\end{cases}$ is continuous everywhere.",
+      "solution": "The only places continuity can fail are the two joins, $x = 2$ and $x = 10$.\n\n**At $x = 2$:** the left value is $5$, the right limit is $2a + b$, so $2a + b = 5$.\n\n**At $x = 10$:** the left limit is $10a + b$, the right value is $21$, so $10a + b = 21$.\n\nSubtract: $8a = 16 \\Rightarrow a = 2$, and then $b = 5 - 4 = 1$.\n\n$\\mathbf{a = 2,\\; b = 1}$ — the middle piece is the straight line $y = 2x + 1$, the only line that joins the height $5$ at $x=2$ to the height $21$ at $x=10$.",
+      "marks": 3
+    },
+    {
+      "id": "cd-013",
+      "chapter": "Continuity and Differentiability",
+      "topic": "A second-order relation",
+      "type": "long",
+      "q": "If $y = \\left(\\tan^{-1}x\\right)^{2}$, show that $\\left(1 + x^{2}\\right)^{2}\\dfrac{d^{2}y}{dx^{2}} + 2x\\left(1 + x^{2}\\right)\\dfrac{dy}{dx} = 2$.",
+      "solution": "**First derivative.** $\\dfrac{dy}{dx} = 2\\tan^{-1}x \\cdot \\dfrac{1}{1 + x^{2}}$.\n\nClear the fraction: $\\left(1 + x^{2}\\right)\\dfrac{dy}{dx} = 2\\tan^{-1}x$.\n\n**Differentiate again**, product rule on the left:\n\n$\\left(1 + x^{2}\\right)\\dfrac{d^{2}y}{dx^{2}} + 2x\\dfrac{dy}{dx} = \\dfrac{2}{1 + x^{2}}$.\n\n**Multiply through by $\\left(1 + x^{2}\\right)$:**\n\n$\\left(1 + x^{2}\\right)^{2}\\dfrac{d^{2}y}{dx^{2}} + 2x\\left(1 + x^{2}\\right)\\dfrac{dy}{dx} = 2$. ∎\n\nThe move that makes it work is clearing the denominator **before** differentiating a second time — it keeps the algebra from exploding.",
+      "marks": 5
+    },
+    {
+      "id": "cd-014",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Mean value theorem",
+      "type": "long",
+      "q": "Verify the Mean Value Theorem for $f(x) = x^{2} + 2x - 8$ on $[-4, 2]$, and find the value of $c$ it produces.",
+      "solution": "$f$ is a polynomial, so it is continuous on $[-4, 2]$ and differentiable on $(-4, 2)$ — both conditions hold.\n\n$f(-4) = 16 - 8 - 8 = 0$ and $f(2) = 4 + 4 - 8 = 0$.\n\nAverage rate of change $= \\dfrac{f(2) - f(-4)}{2 - (-4)} = \\dfrac{0}{6} = 0$.\n\n$f'(x) = 2x + 2$, so $f'(c) = 0 \\Rightarrow c = \\mathbf{-1}$, which lies inside $(-4, 2)$. ✓\n\nSince the endpoints happen to be at the same height, this is Rolle's theorem — the vertex of the parabola is the point where the tangent is flat.",
+      "marks": 3
+    },
+    {
+      "id": "cd-015",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Differentiability",
+      "type": "long",
+      "q": "Show that $f(x) = \\begin{cases} x^{2}, & x \\le 1 \\\\ 2x - 1, & x > 1 \\end{cases}$ is differentiable at $x = 1$.",
+      "solution": "**Continuity first** — a function that jumps cannot be differentiable.\n\nLeft value $= 1^{2} = 1$; right limit $= 2(1) - 1 = 1$. They agree, so $f$ is continuous at $x = 1$.\n\n**Left derivative:** for $x \\le 1$, $f'(x) = 2x$, giving $2$ at $x = 1$.\n\n**Right derivative:** for $x > 1$, $f'(x) = 2$.\n\nThe two agree, so $f$ is differentiable at $x = 1$ with $f'(1) = \\mathbf{2}$.\n\nThe line $y = 2x - 1$ is the tangent to $y = x^{2}$ at that point, which is why the join is smooth rather than a corner.",
+      "marks": 2
+    }
+  ]
+}
