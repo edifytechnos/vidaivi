@@ -93,7 +93,11 @@ function fieldMarkup(f: ModalField): string {
       </fieldset>`;
   }
   return `
-    <label class="modal-field" data-field="${escapeHtml(f.name)}">
+    <label class="modal-field" data-field="${escapeHtml(f.name)}"${
+      f.showWhen
+        ? ` data-when-field="${escapeHtml(f.showWhen.field)}" data-when-value="${escapeHtml(f.showWhen.value)}"`
+        : ""
+    }${hidden}>
       <span class="modal-label">${escapeHtml(f.label)}${
         f.required ? ` <span class="modal-req" aria-hidden="true">*</span>` : ""
       }</span>

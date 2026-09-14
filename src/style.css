@@ -2911,6 +2911,12 @@ body.modal-open {
   gap: 5px;
 }
 
+/* A `display` rule on the class outranks the UA's [hidden], so showWhen needs
+   this to actually hide anything. */
+.modal-field[hidden] {
+  display: none;
+}
+
 .modal-label {
   font-size: 12px;
   font-weight: 600;
