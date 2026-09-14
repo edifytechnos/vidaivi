@@ -2,7 +2,7 @@
 // the document is still the simplest way to bind it: nothing to re-bind, ever.
 
 import { track } from "../analytics";
-import { signOut } from "../auth";
+import { endSession } from "../auth";
 import { setGuest } from "../attempts";
 import { railExpanded, setRailExpanded } from "../shell";
 import { showWelcome } from "./auth";
@@ -62,9 +62,20 @@ export function installShell(): void {
     else if (to === "students") showTeacher();
     else if (to === "mytests") showMyTests();
     else if (to === "admin") showAdmin();
-    else if (to === "signout") {
-      track("sign_out");
-      signOut();
+    else if (to === "signout" || to === "signout-all") {
+      const everywhere = to === "signout-all";
+      // "Everywhere" ends the session on every device by moving the account's
+      // token epoch. Await it — a person doing this has lost a phone and needs
+      // to know it actually happened — but sign this device out either way.
+      track("sign_out", { everywhere: everywhere ? "1" : "" });
+      if (everywhere) {
+        void endSession(true).then(() => {
+          setGuest(false);
+          showWelcome();
+        });
+        return;
+      }
+      void endSession();
       setGuest(false);
       showWelcome();
     }

@@ -57,17 +57,41 @@ http
         if (req.headers["content-type"]) headers["content-type"] = req.headers["content-type"];
         if (req.headers["authorization"]) headers["authorization"] = req.headers["authorization"];
         if (req.headers["x-vidai-auth"]) headers["x-vidai-auth"] = req.headers["x-vidai-auth"];
-  // The pre-rename header, still accepted by the API for one release.
-  if (req.headers["x-vidaivi-auth"]) headers["x-vidaivi-auth"] = req.headers["x-vidaivi-auth"];
+        // The pre-rename header, still accepted by the API for one release.
+        if (req.headers["x-vidaivi-auth"]) headers["x-vidaivi-auth"] = req.headers["x-vidaivi-auth"];
+        // The session is a cookie now, so it has to make the round trip or
+        // every authenticated flow in the suite signs in and is immediately a
+        // stranger again.
+        if (req.headers["cookie"]) headers["cookie"] = req.headers["cookie"];
         const upstream = await fetch(API + req.url, {
           method: req.method,
           headers,
           body: chunks.length ? Buffer.concat(chunks) : undefined,
         });
         const body = Buffer.from(await upstream.arrayBuffer());
-        res.writeHead(upstream.status, {
+        const out = {
           "content-type": upstream.headers.get("content-type") || "application/json",
-        });
+        };
+        // The throttle answers 429 with Retry-After, and the suite reads it.
+        // Dropping it here made the API look like it had forgotten to send one.
+        const retryAfter = upstream.headers.get("retry-after");
+        if (retryAfter) out["retry-after"] = retryAfter;
+        const setCookie = upstream.headers.getSetCookie
+          ? upstream.headers.getSetCookie()
+          : [upstream.headers.get("set-cookie")].filter(Boolean);
+        if (setCookie.length) {
+          // This server is plain http on localhost, and the cookie comes back
+          // scoped to the deployed host. Keep HttpOnly and SameSite — those are
+          // what the suite is here to exercise — and drop only the two
+          // attributes that would make the browser discard it locally.
+          out["set-cookie"] = setCookie.map((c) =>
+            c
+              .split(";")
+              .filter((a) => !/^\s*(secure|domain=)/i.test(a))
+              .join(";")
+          );
+        }
+        res.writeHead(upstream.status, out);
         res.end(body);
         return;
       }

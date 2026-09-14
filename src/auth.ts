@@ -1,8 +1,17 @@
 // Two kinds of signed-in identity:
 //  - "google": teachers and parents, via Google Identity Services popup.
-//  - "student": teacher-issued username/password, via /api/studentauth,
-//    kept alive by a signed session token (~30 days).
+//  - "student": teacher-issued username/password, via /api/studentauth.
 // Auth is disabled entirely when VITE_GOOGLE_CLIENT_ID is unset (local dev).
+//
+// THE PAGE NEVER HOLDS THE SESSION TOKEN. It lives in an httpOnly cookie the
+// server sets and the browser attaches to every same-origin request on its own,
+// so script -- ours or an injected one -- cannot read it. What is kept here is
+// the profile: a name, a role, a picture. Losing it costs a sign-in screen,
+// never an account.
+//
+// The server also re-issues the cookie once a session is past halfway, so
+// signing in lasts until someone signs out rather than until Google's token
+// expires an hour later.
 
 import type { StoredAnswer } from "./types";
 
@@ -20,9 +29,16 @@ export interface Profile {
 
 interface AuthState {
   kind: "google" | "student" | "admin";
-  credential: string; // Google ID token or student session token
   profile: Profile;
   savedAt: number;
+  /**
+   * Pre-cookie sessions only. A tab that signed in before the cookie shipped
+   * still has its token here, and the API accepts it in the header for one
+   * release so that tab keeps working. Nothing writes this any more — delete
+   * the field, and the header path in `api/shared/core.js`, once everyone has
+   * reloaded.
+   */
+  credential?: string;
 }
 
 export interface ServerAttempt {
@@ -170,20 +186,49 @@ export function sessionIsExpired(): boolean {
   return expiring;
 }
 
+/** Forget the profile. Local only — see `endSession` for the cookie. */
 export function signOut(): void {
   try {
     localStorage.removeItem(AUTH_KEY);
   } catch {}
 }
 
+/**
+ * Sign out properly: the server clears the session cookie, then the profile
+ * goes. `everywhere` moves the account's token epoch instead, which ends every
+ * session on every device — the answer to a lost phone.
+ *
+ * The local half runs whatever the network did. A sign-out that left the user
+ * apparently signed in because the request failed would be the worse outcome.
+ */
+export async function endSession(everywhere = false): Promise<void> {
+  try {
+    await fetch("/api/signout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify(everywhere ? { everywhere: true } : {}),
+    });
+  } catch {}
+  signOut();
+}
+
+/**
+ * The header that goes out with every API call.
+ *
+ * It no longer carries the session — the cookie does. What it carries now is a
+ * marker, and the marker is the CSRF defence: a cross-origin page cannot set a
+ * custom header without a CORS preflight this API never answers, so a request
+ * that arrives without it is not one of ours. `SameSite=Strict` on the cookie
+ * is the first lock; this is the second.
+ *
+ * A session from before the cookie still sends its token here (see AuthState).
+ */
 export function authHeader(): Record<string, string> {
-  const auth = getAuth();
-  if (!auth) return {};
-  // Custom header: SWA strips/replaces Authorization before it reaches the API.
-  // Both names go out for one release: this bundle may be talking to an API
-  // that predates the Vidaivi → Vidai rename, and the deploy is not atomic.
-  // Drop X-Vidaivi-Auth once the renamed API is live everywhere.
-  return { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
+  const legacy = getAuth()?.credential;
+  const value = legacy || "1";
+  // Both names for one release: this bundle may be talking to an API that
+  // predates the Vidaivi → Vidai rename, and the deploy is not atomic.
+  return { "X-Vidai-Auth": value, "X-Vidaivi-Auth": value };
 }
 
 // ---------- Google Identity Services (teachers / parents) ----------
@@ -204,13 +249,21 @@ function loadGis(): Promise<void> {
   return gisLoading;
 }
 
-async function apiLogin(credential: string, phone?: string): Promise<Profile> {
+/**
+ * Exchange a Google ID token for a Vidai session, or — with no credential —
+ * update the signed-in profile using the session already in the cookie.
+ *
+ * The Google token is handed over exactly once and never stored: the response
+ * carries the session as a cookie the page cannot read.
+ */
+async function apiLogin(credential: string | null, phone?: string): Promise<Profile> {
   const res = await apiFetch("/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Vidai-Auth": credential,
-      "X-Vidaivi-Auth": credential,
+      ...(credential
+        ? { "X-Vidai-Auth": credential, "X-Vidaivi-Auth": credential }
+        : authHeader()),
     },
     body: JSON.stringify(phone ? { phone } : {}),
   });
@@ -236,12 +289,7 @@ export async function renderGoogleButton(
     callback: async (response: { credential: string }) => {
       try {
         const profile = await apiLogin(response.credential);
-        saveAuth({
-          kind: "google",
-          credential: response.credential,
-          profile,
-          savedAt: Date.now(),
-        });
+        saveAuth({ kind: "google", profile, savedAt: Date.now() });
         void flushPendingAttempts();
         onLogin(profile);
       } catch {
@@ -261,7 +309,7 @@ export async function savePhone(phone: string): Promise<boolean> {
   const auth = getAuth();
   if (!auth || auth.kind !== "google") return false;
   try {
-    const profile = await apiLogin(auth.credential, phone);
+    const profile = await apiLogin(auth.credential ?? null, phone);
     saveAuth({ ...auth, profile });
     return true;
   } catch {
@@ -288,7 +336,6 @@ export async function studentLogin(
     const data = await res.json();
     saveAuth({
       kind: "student",
-      credential: data.token,
       profile: {
         kind: "student",
         sub: data.student.username,
@@ -322,10 +369,9 @@ export async function adminLogin(
       const data = await res.json().catch(() => ({}));
       return { ok: false, message: data.error || "Login failed" };
     }
-    const data = await res.json();
+    await res.json().catch(() => ({}));
     saveAuth({
       kind: "admin",
-      credential: data.token,
       profile: { kind: "admin", sub: username, name: "Admin", role: "admin" },
       savedAt: Date.now(),
     });

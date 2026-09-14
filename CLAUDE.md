@@ -528,14 +528,60 @@ serves both — **never narrow it again**.
 - Authorization fails **closed**: `assignedTo`, `fetchReleased`, `canSeeStudent`.
 - Login says "Wrong username or password" for both halves.
 
+### The session is a cookie the page cannot read
+
+The token used to live in `localStorage`, where any script could read it: an XSS
+past the CSP took the account outright. It is now an **httpOnly + Secure +
+SameSite=Strict cookie** (`vidai_session`), and the client holds nothing but a
+profile — a name, a role, a picture. Losing that costs a sign-in screen.
+
+- **One token shape for all three kinds**: `<prefix>.<payload>.<hmac>`, with
+  `vst` student, `vad` admin and `vgo` teacher/parent. **A Google ID token is
+  now accepted in exactly one place** — `/api/login`, where it is exchanged for
+  a Vidai session and never held by the client again.
+- **Silent renewal.** `renewIfStale` re-issues a session past the halfway point
+  of its life; `json()` picks the new cookie off `context.__renewCookie`, so
+  every handler renews without knowing about it. Signing in lasts until someone
+  signs out, instead of until Google expires the ID token an hour later. There
+  is no refresh token to store, leak or revoke.
+- **CSRF is two locks.** `SameSite=Strict` keeps the cookie off every cross-site
+  request; on top of that `csrfRefused` requires a custom header on any
+  state-changing call, which a cross-origin page cannot set without a CORS
+  preflight this API never answers. **The guard wraps every handler at export
+  time**, not handler by handler — that is the only way a rule like this
+  survives a new endpoint.
+- SWA's edge rewrites the cookie's domain to the request host and passes the
+  `Cookie` header back in unchanged. Both were **verified against a deployed
+  preview** before the design was written, because the same edge replaces
+  `Authorization`.
+- **Local dev needs `cookieDomainRewrite: ""`** in `vite.config.ts` — the API is
+  proxied from the deployed host, and a browser on localhost would throw the
+  cookie away.
+- For one release the API still accepts the token in `X-Vidai-Auth`, for tabs
+  opened before this shipped. Drop that path, `getBearer`, and `AuthState.credential`
+  once everyone has reloaded.
+
+### Sign out everywhere (`tokenEpoch`, `POST /api/signout`)
+
+Every account carries a `tokenEpoch`, stamped into each token at issue and
+checked on every request. Bumping it invalidates every token ever minted for
+that account, on every device at once — no token list to walk, nothing stored
+per device.
+
+- `POST /api/signout` clears the cookie; `{everywhere: true}` bumps the epoch
+  first. The cookie is cleared **either way**: a failed revoke must not leave
+  the caller apparently signed in.
+- Where the epoch lives: on the `students` row (free — `identify` already reads
+  it), on the `profiles` row for Google accounts, and in the `authstate` table
+  for the admin, who signs in against environment variables and so has no row.
+- **Resetting a student's password bumps their epoch**, so the devices that had
+  the old password lose access instead of keeping it for a month.
+- `EPOCH_TTL_MS` is 30s: the instance that did the revoking is correct at once,
+  another warm instance catches up within 30 seconds. That window is how long a
+  stolen session still works — **shorten it before lengthening it**.
+
 ### Known and not yet done
 
-- **The session token lives in `localStorage`**, so an XSS that gets past the
-  CSP could still take an account. The fix is an httpOnly + Secure +
-  SameSite cookie, which also delivers silent renewal; the custom auth header
-  stays as the CSRF defence.
-- **No token revocation** — no "sign out everywhere". A `tokenEpoch` on the
-  profile row, embedded in the token, buys it.
 - **Admin is one shared password with no second factor.** Throttled now, but the
   blast radius is the whole platform.
 - `authattempts` rows are never swept. They are tiny and point-keyed, so this is
@@ -548,7 +594,8 @@ serves both — **never narrow it again**.
 - `data.ts` — TESTS registry (`import.meta.glob` over `src/tests/*.json`), `totalMarks`, `testTitle`.
 - `dom.ts` — `app` root, `escapeHtml`/`formatText`/`renderMath`, ICONS, topbar/brand, `copyText`, `pct`.
 - `attempts.ts` — localStorage attempt store, guest mode, `requiresLogin`.
-- `auth.ts` — auth state + all API fetch calls. `analytics.ts` — App Insights.
+- `auth.ts` — auth state + all API fetch calls. The page never holds the session
+  token; `authHeader()` sends a CSRF marker, not a secret. `analytics.ts` — App Insights.
 - `screens/auth.ts` — welcome, student login, admin login, phone capture.
 - `screens/home.ts` — home test list, profile row, cloud-saved results.
 - `api.ts` — fetch client for the DB-backed tests API.
@@ -568,7 +615,13 @@ Full product roadmap lives in `docs/PRODUCT-PLAN.md`.
 ## E2E regression (`e2e/`)
 
 `node e2e/serve.cjs` serves the built `dist/` on :4400 with `/api/*` proxied to
-production; `node e2e/regression.cjs` runs the Playwright suite (guest flows always;
+production — **forwarding cookies both ways**, and stripping only `Secure` and
+`Domain` on the way back so a session set by the deployed host survives on
+`http://localhost`. A browser context holds **one** session cookie, where a
+header used to let one tab hold three identities at once, so the suite has
+`keepSession`/`putSession` to park and restore a jar, and `signInStudent`/
+`asStudent` to run a second identity from Node. `node e2e/regression.cjs` runs
+the Playwright suite (guest flows always;
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
 hardcode credentials). `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the

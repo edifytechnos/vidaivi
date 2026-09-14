@@ -109,6 +109,7 @@ function profileMarkup(): string {
           <span>${escapeHtml(profile.email || profile.sub)}${role ? ` · ${role}` : ""}</span>
         </div>
         <button class="pm-item" data-rail="signout" role="menuitem">${ICONS.logout}Sign out</button>
+        <button class="pm-item pm-quiet" data-rail="signout-all" role="menuitem">${ICONS.logout}Sign out everywhere</button>
       </div>
     </div>`;
 }
