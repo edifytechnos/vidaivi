@@ -2366,6 +2366,16 @@ body {
   font-size: 13px;
   line-height: 1.55;
 }
+/* The one-render confirmation after handing a paper in: green rather than the
+   note's usual purple, because it is reporting something finished. */
+.note.st-handed {
+  margin-top: 0;
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: #065f46;
+}
+.note.st-handed .icon { color: var(--green); }
+
 .note .icon {
   flex: none;
   width: 16px;
@@ -2812,6 +2822,15 @@ body {
 .rv-pending {
   background: var(--amber);
 }
+/* Before the teacher releases a paper there is no right and wrong to colour:
+   a dot says the question was answered, an empty ring says it was not. */
+.rv-given {
+  background: var(--primary);
+}
+.rv-blank {
+  background: transparent;
+  border: 1.5px solid var(--border-strong);
+}
 
 .rv-nav {
   display: flex;
@@ -2824,10 +2843,6 @@ body {
 }
 .rv-nav .btn[disabled] {
   opacity: 0.4;
-}
-
-.locked-page {
-  text-align: center;
 }
 
 /* An expired sign-in is ordinary and hourly — inform, do not alarm. */
@@ -3697,6 +3712,22 @@ body.modal-open {
   color: var(--muted);
 }
 .score-answered { margin: 6px 0 0; font-size: 0.9rem; color: var(--muted); }
+
+/* A released result opens; one still with the teacher does not. */
+.score-breakdown .res-open {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.score-breakdown .res-open:hover { background: var(--primary-soft); }
+.score-breakdown .res-open .icon {
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  vertical-align: -2px;
+  color: var(--faint);
+  transform: rotate(-90deg);
+}
+.score-breakdown .row-pending { color: var(--muted); }
 
 /* Browse: the catalogue row. Everything that will vary between authors later —
    a byline, a price, whether you already hold it — has a slot here already, so

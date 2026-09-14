@@ -775,19 +775,53 @@ useful as a demo.)
 - `GET /api/release?testId=` → `{released}` for a student; add `&student=` for a
   teacher, admin or linked parent asking about one student; a teacher asking
   without `student` gets `{classWide, students[]}` for the whole test.
+- `GET /api/release?testIds=a,b,c` → `{released: {id: bool}}` — the same
+  question for up to 50 papers at once, because the results list asks about
+  every paper a student has handed in and one request per paper is an N+1 from
+  a phone. Still only point reads (`isReleased` twice per id, `inBatches`).
 - `POST {action:"release"|"unrelease", testId, username?}` — teachers/admins,
   gated by `canSeeStudent`. Omit `username` to open it for everyone.
 - Client: `fetchReleased` / `fetchReleaseState` / `setReleased` in `src/auth.ts`.
   `fetchReleased` **fails closed** — a network error keeps the paper shut.
 
-## The test is silent until the teacher releases it
+## The test is silent until the teacher releases it — marks included
 
-A signed-in student submits and **nothing comes back** — no verdict, no correct
-answer, no worked solution, for any question type (`finishQuestion` in
-`src/screens/test.ts`). The score screen shows their marks but locks the
-question-by-question detail. **Guests keep the old instant feedback**: a guest
-has no teacher to release anything, and the demo has to stay worth sharing.
-`canHandIn()` is the one test for "is this a real student with a teacher".
+A signed-in student submits and **nothing comes back**: no verdict, no correct
+answer, no worked solution, **and no score**. **`showScore` is the guest's
+screen and only the guest's.** It used to show a student their marks with the
+detail behind a padlock and *Try again* beside it, which is three wrong things
+at once — a number that is a half-truth while every long answer is unmarked, a
+padlock where an answer should be, and an invitation to retake a paper the
+teacher has not finished with.
+
+What a student gets instead, in order:
+
+1. **Hand in → back to their subject.** `handIn` in `src/screens/student.ts`
+   goes to `showStudentSubject`, with one green note (`.st-handed`,
+   `takeHandedIn()`) saying the paper is in and what happens next. It is a note
+   for one render, not state: a reload has nothing to say about it.
+2. **The paper stays open to them, read-only and silent.** `showReview` has one
+   flag, `open`, and it is the whole difference between the two screens it is:
+   `false` renders what they answered and nothing else — two columns, no
+   explanation, no correct answer, no marks in the tree, no *Try again*, and a
+   chip that says only *Answered* / *Not answered*. A blank "not released yet"
+   page used to stand here, which left a student unable to see what they had
+   handed in.
+3. **Released → the result.** The same screen with `open` true: marks, correct
+   answers, the worked solution beside each question, and *Try again*. It is
+   reachable from the subject tree and from the row in **Your saved results**,
+   which is a button once the paper is open and reads *"Handed in 14 Sep ·
+   waiting for your teacher"* before that.
+
+**No score reaches a student anywhere before release.** `statusChip` and
+`refreshStatusChips` in `src/screens/home.ts` read `releasedTests`, filled by
+one `fetchReleasedMany` call; an unreleased paper's chip says *Handed in*. That
+set **fails closed**: absent means shut, so a failed request cannot leak a mark.
+
+**Guests keep the old instant feedback** — verdict, solution, score screen and
+all. A guest has no teacher to release anything, and the demo has to stay worth
+sharing. `canHandIn()` is the one test for "is this a real student with a
+teacher".
 
 Release is per student *and* per class — see `/api/release` above. The teacher
 presses it from the marking queue (`src/screens/marking.ts`) or from a student's
@@ -978,7 +1012,7 @@ chapter test is for.
   someone else's paper is open (`owner` in `review.ts`, set from
   `opts.studentName`).
 
-## The score is marks, and says so
+## The score is marks, and says so (the guest's screen)
 
 The big number on the score screen is **marks**, and it was read as questions
 answered: `4 / 14` on a paper of 15 questions, because 12 of the 26 marks were
@@ -986,6 +1020,10 @@ still with the teacher and the denominator is deliberately what has been graded
 so far. The number now carries a `marks` unit and the count it was mistaken for
 is its own line underneath — *"15 of 15 questions answered"*. Keep both: either
 alone is ambiguous the moment a long answer is outstanding.
+
+That screen is **the guest's** now — a student never reaches it (see above).
+The misreading is what started the change; it is kept because the demo still
+shows it.
 
 ## Review: one question per page (`src/screens/review.ts`)
 

@@ -1373,20 +1373,44 @@ function check(ok, label) {
         await page.waitForSelector("#st-submit", { timeout: 20000 });
         page.once("dialog", (d) => d.accept());
         await page.click("#st-submit");
-        await page.waitForSelector(".score-card", { timeout: 20000 });
-        const scoreBig = (await page.textContent(".score-big")).replace(/\s+/g, " ").trim();
+        // A student gets no score screen. Handing in returns them to their
+        // subject, with the paper readable but silent: marks are the teacher's
+        // to give, and a number on the way out is a half-truth while every
+        // long answer is unmarked.
+        await page.waitForSelector(".st-workspace .test-list", { timeout: 25000 });
         check(
-          scoreBig.replace(/\s/g, "").startsWith("3/"),
-          "handing in scores only what is auto-graded"
+          !(await page.$(".score-card")),
+          "handing in shows no score screen"
         );
-        // "4 / 14" was read as four of fourteen questions answered. The number
-        // is marks; the count it was mistaken for is now its own line.
-        check(/marks$/i.test(scoreBig), `the big number says what it counts ("${scoreBig}")`);
         check(
-          /\d+ of \d+ questions? answered/.test(await page.textContent(".score-answered")),
-          "and how many questions were answered is stated separately"
+          await page.isVisible(".st-handed"),
+          "it lands back on the subject, saying the paper is in"
         );
-        check(await page.isVisible(".locked-title"), "the detail stays locked until the teacher releases it");
+        // The paper opens read-only: what they answered, and nothing else.
+        await page.click(`#st-tree .st-test[data-test='${wsTests[0].id}']`);
+        await page.waitForSelector(".review-item", { timeout: 25000 });
+        const shut = await page.evaluate(() => ({
+          cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
+          solution: !!document.querySelector(".solution"),
+          correct: !!document.querySelector(".review-correct"),
+          retake: !!document.querySelector("#retake-btn"),
+          given: (document.querySelector(".review-given") || {}).textContent || "",
+          chips: [...document.querySelectorAll(".ed-panel-head .status-chip")].map((c) => c.textContent.trim()),
+          marks: [...document.querySelectorAll("#rv-tree .ed-tree-marks")].map((m) => m.textContent.trim()),
+        }));
+        check(shut.cols === 2, `a handed-in paper has no explanation column (${shut.cols})`);
+        check(!shut.solution, "and no worked solution");
+        check(!shut.correct, "and never says what the correct answer was");
+        check(!shut.retake, "and offers no Try again until the teacher releases it");
+        check(/answer/i.test(shut.given), `but does show what was answered ("${shut.given.slice(0, 40)}")`);
+        check(
+          shut.chips.every((c) => /answered/i.test(c)),
+          `no verdict on any question, only whether it was answered (${shut.chips.join(", ")})`
+        );
+        check(
+          shut.marks.every((m) => !m.includes("/")),
+          `and no marks in the question list (${shut.marks.join(" ")})`
+        );
 
         // Released, the result view is the three-column one, explanation and all.
         const studentJar = await keepSession();
@@ -1409,6 +1433,16 @@ function check(ok, label) {
         }));
         check(wsResult.cols === 3, `the result view brings back the third column (${wsResult.cols})`);
         check(wsResult.solution, "and shows the explanation beside the question");
+        // Release is also what puts the marks and Try again back.
+        const nowOpen = await page.evaluate(() => ({
+          retake: !!document.querySelector("#retake-btn"),
+          marks: [...document.querySelectorAll("#rv-tree .ed-tree-marks")].map((m) => m.textContent.trim()),
+        }));
+        check(
+          nowOpen.marks.some((m) => m.includes("/")),
+          `the released paper shows the marks (${nowOpen.marks.join(" ")})`
+        );
+        check(nowOpen.retake, "and Try again is offered once it is open");
 
         // The result screen used to have no way to reach the question list on a
         // phone at all: its bottom tabs switch panes, and nothing opened the tree.

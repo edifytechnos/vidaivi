@@ -3007,6 +3007,33 @@ handlers.release = async (context, req) => {
 
   if (req.method === "GET") {
     const q = req.query || {};
+
+    // ?testIds=a,b,c — "which of these papers are open for me". The results
+    // list asks about every test a student has handed in, and one request per
+    // test would be an N+1 from a phone. Still only point reads: isReleased is
+    // two getEntity calls against the test's own partition, run a few at a
+    // time and capped, so this can never become a scan.
+    const many = String(q.testIds || "").trim();
+    if (many) {
+      const ids = many
+        .split(",")
+        .map((id) => safeId(id, 60))
+        .filter(Boolean)
+        .slice(0, 50);
+      const student =
+        who.kind === "student" ? who.username : String(q.student || "").trim().toLowerCase();
+      if (who.kind !== "student") {
+        if (!student) return json(context, 400, { error: "student is required" });
+        const refusal = await canSeeStudent(who, student);
+        if (refusal) return refuse(context, refusal);
+      }
+      const released = {};
+      await inBatches(ids, 10, async (id) => {
+        released[id] = await isReleased(id, student);
+      });
+      return json(context, 200, { released });
+    }
+
     const testId = safeId(q.testId, 60);
     if (!testId) return json(context, 400, { error: "testId is required" });
 

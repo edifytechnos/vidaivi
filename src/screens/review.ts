@@ -65,7 +65,15 @@ function correctLine(q: Question, a: StoredAnswer | undefined): string {
   return "";
 }
 
-function marksChip(q: Question, a: StoredAnswer | undefined): string {
+function marksChip(q: Question, a: StoredAnswer | undefined, open: boolean): string {
+  // Before the teacher releases the paper there is no verdict to give — not a
+  // tick, not a mark, not "awaiting review" on one question and a cross on the
+  // next. All a student sees is whether they answered it.
+  if (!open) {
+    return a
+      ? `<span class="status-chip status-done">Answered</span>`
+      : `<span class="status-chip status-new">Not answered</span>`;
+  }
   if (a?.review === "pending") {
     return `<span class="status-chip status-progress">Awaiting review</span>`;
   }
@@ -73,19 +81,22 @@ function marksChip(q: Question, a: StoredAnswer | undefined): string {
   return `<span class="status-chip ${ok ? "status-done" : "status-wrong"}">${ok ? `✓ ${a?.earned ?? 0}` : "✗ 0"}/${q.marks}</span>`;
 }
 
-function treeMarkup(test: Test, attempt: Attempt, selected: number): string {
+function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolean): string {
   const rows = test.questions
     .map((q, i) => {
       const a = attempt.answers[q.id];
       const pending = a?.review === "pending";
       const ok = a?.correct ?? false;
-      const state = pending ? "pending" : ok ? "done" : "wrong";
+      const state = !open ? (a ? "given" : "blank") : pending ? "pending" : ok ? "done" : "wrong";
+      const dot = !open ? (a ? "•" : "") : pending ? "…" : ok ? "✓" : "✗";
       return `
         <div class="ed-tree-row">
           <button class="ed-tree-q${i === selected ? " active" : ""}" data-i="${i}">
-            <span class="rv-dot rv-${state}">${pending ? "…" : ok ? "✓" : "✗"}</span>
+            <span class="rv-dot rv-${state}">${dot}</span>
             <span class="ed-tree-name">${i + 1}. ${escapeHtml(q.topic)}</span>
-            <span class="ed-tree-marks">${pending ? `—/${q.marks}` : `${a?.earned ?? 0}/${q.marks}`}</span>
+            <span class="ed-tree-marks">${
+              !open ? `${q.marks}` : pending ? `—/${q.marks}` : `${a?.earned ?? 0}/${q.marks}`
+            }</span>
           </button>
         </div>`;
     })
@@ -99,26 +110,17 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number): string {
           <div class="ed-node-head">
             <span class="ed-tree-test">
               <span class="ed-tree-name">${testLabelMarkup(test.title, test.chapter)}</span>
-              <span class="status-chip status-done">${attempt.score}/${totalMarks(test)}</span>
+              ${
+                open
+                  ? `<span class="status-chip status-done">${attempt.score}/${totalMarks(test)}</span>`
+                  : `<span class="status-chip status-progress">Handed in</span>`
+              }
             </span>
           </div>
           <div class="ed-tree-questions">${rows}</div>
         </div>
       </div>
     </aside>`;
-}
-
-function lockedMarkup(test: Test): string {
-  return `
-    <main class="card locked-page">
-      <div class="locked">
-        ${ICONS.lock}
-        <span class="locked-title">Your teacher has not opened this paper yet</span>
-        <span class="locked-hint">You handed in ${escapeHtml(test.title)} and your marks are
-        saved. The answers and worked solutions appear here once your teacher releases
-        them — usually after the whole class has sat the test.</span>
-      </div>
-    </main>`;
 }
 
 /**
@@ -137,18 +139,14 @@ export async function showReview(
   // them: a teacher marking the class needs to see what was answered *before*
   // deciding to open it. Only the student and their parent wait.
   const gated = !isTeacher() && (viewerIsStudent || !!opts.student);
-  const released = gated ? await fetchReleased(test.id, opts.student) : true;
-
-  if (!released) {
-    mount(lockedMarkup(test), {
-      title: test.title,
-      sub: "Handed in",
-      active: "results",
-      width: "narrow",
-    });
-    document.getElementById("review-back")?.addEventListener("click", opts.back ?? (() => {}));
-    return;
-  }
+  // `open` is the whole difference between the two things this screen is:
+  //   false — a handed-in paper, read-only. What they put down, and nothing
+  //           else: no verdict, no marks, no correct answer, no explanation,
+  //           no retake. The teacher has not released it yet.
+  //   true  — the result. Marks, correct answers, worked solutions, retake.
+  // A blank page used to stand in for the first of these, which left a student
+  // with no way to see what they had handed in.
+  const open = gated ? await fetchReleased(test.id, opts.student) : true;
 
   owner = opts.student ? `${opts.studentName || opts.student}'s` : "Your";
 
@@ -163,8 +161,8 @@ export async function showReview(
     mount(
       `
       <div class="editor ed-readonly" data-pane="question">
-        <div class="ed-cols review-item">
-          ${treeMarkup(test, attempt, index)}
+        <div class="ed-cols review-item${open ? "" : " overview"}">
+          ${treeMarkup(test, attempt, index, open)}
           <div class="ed-center">
             <div class="ed-crumbrow">
               ${drawerToggleMarkup()}
@@ -177,7 +175,9 @@ export async function showReview(
               ${
                 opts.back
                   ? `<button id="review-back" class="btn btn-ghost st-handin">Back</button>`
-                  : `<button id="retake-btn" class="btn btn-primary st-handin">Retake<span class="st-long"> test</span></button>`
+                  : open
+                    ? `<button id="retake-btn" class="btn btn-primary st-handin">Retake<span class="st-long"> test</span></button>`
+                    : ""
               }
             </div>
             <div class="ed-body">
@@ -195,15 +195,22 @@ export async function showReview(
                 <div class="ed-panel-head">
                   <span class="ed-panel-label">${escapeHtml(owner)} answer</span>
                   <div class="ed-spacer"></div>
-                  ${marksChip(q, a)}
+                  ${marksChip(q, a, open)}
                 </div>
                 <p class="review-given">${describeGiven(q, a)}</p>
-                ${correctLine(q, a)}
+                ${open ? correctLine(q, a) : ""}
                 ${photoStrip(a?.images ?? [], "Handed-in working")}
                 ${
                   a?.review === "marked" && a.comment
                     ? `<p class="review-comment"><strong>Your teacher:</strong> ${escapeHtml(a.comment)}</p>`
                     : ""
+                }
+                ${
+                  open
+                    ? ""
+                    : `<p class="hint quiet-note">${ICONS.lock} Handed in. Your marks, the correct
+                       answers and the worked solutions appear here once your teacher releases
+                       them — usually after the whole class has sat the test.</p>`
                 }
                 <div class="st-navrow">
                   <button class="btn btn-ghost st-step" id="rv-prev"${index === 0 ? " disabled" : ""}>‹ Previous</button>
@@ -214,21 +221,25 @@ export async function showReview(
               </section>
             </div>
           </div>
-          <aside class="ed-explain">
+          ${
+            open
+              ? `<aside class="ed-explain">
             <section class="ed-panel">
               <div class="ed-panel-head"><span class="ed-panel-label">Explanation</span></div>
               <div class="solution">${formatText(q.solution)}</div>
             </section>
-          </aside>
+          </aside>`
+              : ""
+          }
         </div>
         <div class="ed-scrim"></div>
         <div class="ed-tabs">
           <button class="ed-tab active" data-pane="question">Question</button>
           <button class="ed-tab" data-pane="answer">${escapeHtml(owner)} answer</button>
-          <button class="ed-tab" data-pane="explain">Explanation</button>
+          ${open ? `<button class="ed-tab" data-pane="explain">Explanation</button>` : ""}
         </div>
       </div>`,
-      { title: test.title, sub: "Review", active: "results", full: true }
+      { title: test.title, sub: open ? "Review" : "Handed in", active: "results", full: true }
     );
 
     document.getElementById("rv-tree")!.addEventListener("click", (e) => {
@@ -264,8 +275,12 @@ export async function showReview(
 
   render();
 
-  // Marks the teacher has awarded since this device last looked.
-  void hydrateMarks(test, attempt, opts.student).then((changed) => {
-    if (changed && document.querySelector(".ed-readonly")) render();
-  });
+  // Marks the teacher has awarded since this device last looked. Only worth
+  // asking once the paper is open — while it is shut nothing on screen would
+  // change, and a student refreshing a closed paper should not cost a fetch.
+  if (open) {
+    void hydrateMarks(test, attempt, opts.student).then((changed) => {
+      if (changed && document.querySelector(".ed-readonly")) render();
+    });
+  }
 }

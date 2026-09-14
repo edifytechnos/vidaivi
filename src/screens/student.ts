@@ -24,7 +24,6 @@ import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup
 import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
 import type { Attempt, Question, Test } from "../types";
 import { showReview } from "./review";
-import { showScore } from "./test";
 import { showSubjects } from "./subjects";
 
 /** One test as the tree knows it, before its questions are fetched. */
@@ -210,6 +209,8 @@ async function loadWorkTests(): Promise<void> {
 /** Nothing picked yet: the tree, and a panel that says what to do with it. */
 function renderOverview(): void {
   const busy = openTestId();
+  const justHandedIn = takeHandedIn();
+  const handedTitle = workTests.find((t) => t.id === justHandedIn)?.title ?? "";
   mount(
     `
     <div class="editor ed-readonly ed-student" data-pane="question">
@@ -221,6 +222,16 @@ function renderOverview(): void {
             <span class="ed-crumb-test">${escapeHtml(subjectTitle)}</span>
           </div>
           <div class="ed-body">
+            ${
+              justHandedIn
+                ? `<div class="note st-handed">
+                     ${ICONS.check}
+                     <span><strong>Handed in${handedTitle ? ` — ${escapeHtml(handedTitle)}` : ""}.</strong>
+                     Your teacher marks it next. You can open it here any time to see what you
+                     answered; the marks and worked solutions appear once they release it.</span>
+                   </div>`
+                : ""
+            }
             <section class="ed-panel">
               <div class="ed-panel-head"><span class="ed-panel-label">Your tests</span></div>
               <p class="hint">Pick a test on the left. Questions open one at a time,
@@ -630,7 +641,25 @@ function handIn(test: Test, attempt: Attempt): void {
     completedAt: attempt.completedAt,
     answers: JSON.stringify(attempt.answers),
   });
-  showScore(test, attempt);
+  // No score screen. A student hands the paper in and goes back to their
+  // subject: marks are the teacher's to give, and a number on the way out
+  // would be a half-truth anyway while every long answer is still unmarked.
+  // The test stays open to them read-only — what they answered, nothing more.
+  handedIn = test.id;
+  void showStudentSubject(subjectId, subjectTitle);
+}
+
+/**
+ * The test just handed in, for the one render of the subject page that
+ * follows. It is a note on a screen, not state worth keeping: a reload has
+ * nothing to say about it, and the tree already says "Done".
+ */
+let handedIn = "";
+
+export function takeHandedIn(): string {
+  const id = handedIn;
+  handedIn = "";
+  return id;
 }
 
 /** Small screens: the tree slides in from the left over the question. */

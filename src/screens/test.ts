@@ -5,7 +5,6 @@ import {
   authEnabled,
   fetchGrading,
   fetchMyAttempt,
-  fetchReleased,
   getProfile,
   isLoggedIn,
   renderGoogleButton,
@@ -494,12 +493,17 @@ export async function hydrateMarks(
   return changed;
 }
 
-export function showScore(test: Test, attempt: Attempt, released?: boolean) {
+/**
+ * The guest's score screen, and only the guest's. A signed-in student never
+ * lands here: they hand the paper in and go back to their subject, because a
+ * mark is the teacher's to give and a number on the way out would be a
+ * half-truth while every long answer is unmarked. The locked variant this used
+ * to render — a score with the detail behind a padlock, and Try again beside
+ * it — is what that replaced.
+ */
+export function showScore(test: Test, attempt: Attempt) {
   const total = totalMarks(test);
   const waiting = pendingMarks(test, attempt);
-  // A signed-in student sees nothing question-by-question until the teacher
-  // releases the paper. Guests have no teacher, so theirs is always open.
-  const locked = canHandIn() && released !== true;
   // With marks still out, the percentage would be a lie — the denominator is
   // what has actually been graded, and the pill says what is missing.
   const graded = total - waiting.marks;
@@ -530,16 +534,7 @@ export function showScore(test: Test, attempt: Attempt, released?: boolean) {
              ${waiting.count} long answer${waiting.count > 1 ? "s" : ""}</span></div>`
           : ""
       }
-      ${
-        locked
-          ? `<div class="locked">
-               ${ICONS.lock}
-               <span class="locked-title">Question-by-question results are locked</span>
-               <span class="locked-hint">Your teacher opens the answers and worked
-               solutions once the class has sat the test. You will see which questions
-               you got right, the correct answers and the explanations, all in one go.</span>
-             </div>`
-          : `<ul class="score-breakdown">
+      <ul class="score-breakdown">
         ${test.questions
           .map((q, i) => {
             const a = attempt.answers[q.id];
@@ -551,11 +546,10 @@ export function showScore(test: Test, attempt: Attempt, released?: boolean) {
             </li>`;
           })
           .join("")}
-      </ul>`
-      }
+      </ul>
       <p class="hint">Your result is saved on this phone — open this link again any time to review the questions and solutions.</p>
       <div class="actions">
-        ${locked ? "" : `<button id="review-btn" class="btn btn-primary">Review answers</button>`}
+        <button id="review-btn" class="btn btn-primary">Review answers</button>
         <button id="restart-btn" class="btn btn-ghost">Try again</button>
       </div>
     </main>`,
@@ -570,16 +564,6 @@ export function showScore(test: Test, attempt: Attempt, released?: boolean) {
     clearAttempt(test.id);
     startTest(test, newAttempt());
   });
-  // Marks awarded, or the paper opened, since this device last looked.
-  if (locked || waiting.count) {
-    void Promise.all([
-      waiting.count ? hydrateMarks(test, attempt) : Promise.resolve(false),
-      locked ? fetchReleased(test.id) : Promise.resolve(true),
-    ]).then(([changed, open]) => {
-      if (!document.querySelector(".score-card")) return;
-      if (changed || open !== !locked) showScore(test, attempt, open);
-    });
-  }
 }
 
 /**
