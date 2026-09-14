@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-circuits",
+  "title": "Current, Resistance and DC Circuits",
+  "chapter": "Topic Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp8-001",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Current",
+      "type": "mcq",
+      "q": "Electric current is defined as:",
+      "solution": "$I = \\dfrac{Q}{t}$ — charge per second, in amperes.\n\nFor a conductor it can also be written $I = nAvq$, in terms of the number density of carriers, the area, the drift velocity and the charge on each.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{Q}{t}$",
+        "$Qt$",
+        "$\\dfrac{t}{Q}$",
+        "$QV$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp8-002",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Potential difference",
+      "type": "mcq",
+      "q": "The potential difference between two points is:",
+      "solution": "$V = \\dfrac{W}{Q}$ — the **energy transferred per coulomb**, in volts.\n\nAn **emf** is the same ratio for a source: the energy **given** to each coulomb, rather than taken from it.",
+      "marks": 1,
+      "options": [
+        "the charge per unit energy",
+        "the energy transferred per unit charge",
+        "the current per unit resistance",
+        "the power per unit current"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp8-003",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Resistivity",
+      "type": "mcq",
+      "q": "The resistance of a uniform wire is:",
+      "solution": "$R = \\mathbf{\\dfrac{\\rho L}{A}}$.\n\nNote that doubling the **diameter** quadruples the area, so it quarters the resistance — the area, not the diameter, is what appears in the formula.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\rho L}{A}$",
+        "$\\dfrac{\\rho A}{L}$",
+        "$\\rho L A$",
+        "$\\dfrac{L}{\\rho A}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp8-004",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Internal resistance",
+      "type": "mcq",
+      "q": "The terminal potential difference of a cell is less than its emf because of:",
+      "solution": "$V = \\varepsilon - Ir$ — some of the emf is spent driving the current through the cell itself.\n\nThe 'lost volts' $Ir$ grow with current, which is why a torch battery reads lower under load, and why an old battery with a high $r$ sags badly.",
+      "marks": 1,
+      "options": [
+        "the external resistance",
+        "the internal resistance",
+        "the current direction",
+        "the cell's size"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp8-005",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Potential divider",
+      "type": "mcq",
+      "q": "In a potential divider with resistors $R_{1}$ and $R_{2}$ across a supply $V$, the voltage across $R_{2}$ is:",
+      "solution": "The voltage divides in proportion to resistance:\n\n$V_{2} = \\mathbf{\\dfrac{R_{2}}{R_{1} + R_{2}}V}$.\n\nReplacing one resistor with a thermistor or an LDR turns this into a sensing circuit whose output voltage varies with temperature or light.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{R_{2}}{R_{1} + R_{2}}V$",
+        "$\\dfrac{R_{1}}{R_{1} + R_{2}}V$",
+        "$\\dfrac{R_{1} + R_{2}}{R_{2}}V$",
+        "$\\dfrac{V}{R_{2}}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp8-006",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Charge",
+      "type": "numeric",
+      "q": "Find the charge (in C) passing when a current of $3$ A flows for $2$ minutes.",
+      "solution": "$Q = It = 3 \\times 120 = \\mathbf{360}$ C.",
+      "marks": 2,
+      "answer": 360,
+      "tolerance": 1
+    },
+    {
+      "id": "alp8-007",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Resistivity",
+      "type": "numeric",
+      "q": "A wire of length $2$ m and cross-sectional area $0.5$ mm$^{2}$ has resistivity $1.7 \\times 10^{-8}\\,\\Omega$ m. Find its resistance, in m$\\Omega$.",
+      "solution": "$R = \\dfrac{\\rho L}{A} = \\dfrac{1.7 \\times 10^{-8} \\times 2}{0.5 \\times 10^{-6}} = 6.8 \\times 10^{-2}\\,\\Omega = \\mathbf{68}$ m$\\Omega$.\n\nThe area must be converted from mm$^{2}$ to m$^{2}$ — a factor of $10^{-6}$, and the usual place this goes wrong.",
+      "marks": 2,
+      "answer": 68,
+      "tolerance": 1
+    },
+    {
+      "id": "alp8-008",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Internal resistance",
+      "type": "numeric",
+      "q": "A cell of emf $1.5$ V and internal resistance $0.5\\,\\Omega$ drives a current of $0.6$ A. Find the terminal potential difference, in V.",
+      "solution": "$V = \\varepsilon - Ir = 1.5 - (0.6)(0.5) = \\mathbf{1.2}$ V.",
+      "marks": 2,
+      "answer": 1.2,
+      "tolerance": 0.02
+    },
+    {
+      "id": "alp8-009",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Power",
+      "type": "numeric",
+      "q": "Find the power (in W) dissipated in a $20\\,\\Omega$ resistor carrying $0.5$ A.",
+      "solution": "$P = I^{2}R = 0.25 \\times 20 = \\mathbf{5}$ W.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp8-010",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Potential divider",
+      "type": "numeric",
+      "q": "A $12$ V supply is across resistors of $3\\,\\Omega$ and $9\\,\\Omega$ in series. Find the voltage (in V) across the $9\\,\\Omega$ resistor.",
+      "solution": "$V = \\dfrac{9}{12} \\times 12 = \\mathbf{9}$ V.\n\nThe larger resistance takes the larger share, in direct proportion.",
+      "marks": 2,
+      "answer": 9,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp8-011",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Drift velocity",
+      "type": "long",
+      "q": "Derive $I = nAvq$ and use it to explain why a lamp lights instantly even though the drift velocity is only about $10^{-4}$ m/s.",
+      "solution": "**Derivation.** Let $n$ be the number of free charge carriers per unit volume, $A$ the cross-sectional area, $v$ the drift velocity and $q$ the charge on each carrier.\n\nIn time $t$, every carrier moves a distance $vt$, so all the carriers within a cylinder of length $vt$ pass a chosen cross-section.\n\n**Volume of that cylinder:** $Avt$\n\n**Number of carriers in it:** $nAvt$\n\n**Charge passing:** $Q = nAvtq$\n\n$I = \\dfrac{Q}{t} = \\mathbf{nAvq}$\n\n**Why the lamp lights at once.** The wire is **already full of free electrons**, everywhere along its length, before the switch is closed.\n\nClosing the switch sets up an **electric field** along the wire, and that field propagates at close to the speed of light. Every electron in the circuit — including those already inside the lamp filament — begins to drift almost simultaneously.\n\nNo electron has to travel from the battery to the lamp for the lamp to light.\n\n**The analogy:** a hosepipe already full of water. Turn on the tap and water comes out of the far end immediately, though any particular molecule takes a long time to make the journey.\n\n**A consequence of the formula:** at a constriction in a wire, $A$ falls, so $v$ must rise to keep $I$ constant — which is why a thin fuse wire heats up far more than the cable it protects.",
+      "marks": 3
+    },
+    {
+      "id": "alp8-012",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Internal resistance",
+      "type": "long",
+      "q": "Explain what is meant by internal resistance, describe an experiment to measure it and the emf of a cell, and say how the results are analysed.",
+      "solution": "**Internal resistance** is the resistance of the cell's own materials — its electrolyte and electrodes. The current has to be driven through these as well as through the external circuit.\n\n$\\varepsilon = I(R + r)$, so the terminal voltage is $V = \\varepsilon - Ir$.\n\nThe $Ir$ term is the 'lost volts', and it grows with the current drawn.\n\n**The experiment.**\n\n1. Connect the cell to a **variable resistor**, with an ammeter in series and a voltmeter across the cell's terminals.\n\n2. Vary the resistance and record several pairs of $V$ and $I$.\n\n3. Work quickly and open the switch between readings, so the cell does not warm up or run down — $r$ increases as a cell discharges.\n\n**The analysis.** Compare $V = \\varepsilon - Ir$ with $y = mx + c$:\n\nPlot **$V$ (vertical) against $I$ (horizontal)**, giving a straight line.\n\n• **Intercept on the $V$-axis** $= \\varepsilon$, the emf — the terminal voltage when no current flows.\n\n• **Gradient** $= -r$, so the internal resistance is the magnitude of the gradient.\n\n**Why a graph rather than one reading.** A single pair of values would give $\\varepsilon$ and $r$ only if a second pair were also taken, and the line averages out random errors while revealing any non-linearity.\n\n**Why $r$ matters practically.** Maximum **power** is delivered to the load when $R = r$, and the cell's efficiency is then only $50\\%$ — which is why a car battery is built with a very low internal resistance to deliver hundreds of amps to the starter motor.",
+      "marks": 3
+    },
+    {
+      "id": "alp8-013",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Potential dividers",
+      "type": "long",
+      "q": "Explain how a potential divider works, and describe how to use one with a thermistor to switch on a heater when the temperature falls.",
+      "solution": "**The principle.** Two resistors in series across a supply share the voltage in proportion to their resistances:\n\n$V_{2} = \\dfrac{R_{2}}{R_{1} + R_{2}}V$\n\nThe same current flows through both, so $V = IR$ makes the voltages proportional to the resistances.\n\n**A temperature-sensing circuit.** Replace $R_{1}$ with a **thermistor** (an NTC type, whose resistance **falls** as temperature rises), and take the output across the fixed resistor $R_{2}$.\n\n**When the temperature falls:**\n\n1. The thermistor's resistance **rises**.\n\n2. It therefore takes a larger share of the supply voltage.\n\n3. The voltage across $R_{2}$ — the output — **falls**.\n\n**To switch a heater on when it is cold**, that falling output is fed to a comparator or transistor arranged to trigger below a set threshold, which energises a **relay** carrying the heater's much larger current.\n\n**Alternatively**, swapping the two components makes the output **rise** as it gets colder, which suits a circuit that triggers on a rising voltage. Which way round they go is decided by the switching electronics.\n\n**Choosing $R_{2}$.** Make it comparable to the thermistor's resistance at the switching temperature, so the output changes most rapidly there.\n\n**The same circuit with an LDR** in place of the thermistor switches a light on at dusk — one arrangement, two applications.",
+      "marks": 5
+    },
+    {
+      "id": "alp8-014",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Kirchhoff's laws",
+      "type": "long",
+      "q": "State Kirchhoff's two laws, say what each expresses physically, and apply them to a circuit with two cells of emf $6$ V and $4$ V (internal resistances negligible) connected in parallel across a $2\\,\\Omega$ resistor.",
+      "solution": "**First law (junction).** The sum of the currents entering a junction equals the sum leaving.\n\n*Physically:* **conservation of charge** — charge cannot accumulate at a point.\n\n**Second law (loop).** Around any closed loop, the sum of the emfs equals the sum of the $IR$ products.\n\n*Physically:* **conservation of energy** — go round a loop and return to the same potential.\n\n**The circuit.** Both cells are connected across the same $2\\,\\Omega$ resistor, so the potential difference across it is the same as across each cell.\n\nWith no internal resistance, the two cells would be forcing **different** potentials — $6$ V and $4$ V — across the same pair of points, which is impossible.\n\n**That contradiction is itself the answer:** ideal cells of different emf cannot be connected in parallel. In practice the internal resistances are what make the situation physically consistent.\n\n**With internal resistances $r_{1}$ and $r_{2}$**, letting $V$ be the common terminal voltage:\n\n$\\dfrac{6 - V}{r_{1}} + \\dfrac{4 - V}{r_{2}} = \\dfrac{V}{2}$\n\nFor $r_{1} = r_{2} = 1\\,\\Omega$ this gives $V = 4$ V, a current of $2$ A through the resistor, $2$ A from the $6$ V cell and **zero** from the $4$ V cell.\n\n**Push $r$ lower still** and the $4$ V cell begins to be **charged** by the $6$ V one — which is precisely why mismatched cells should never be paralleled, and why it is dangerous with rechargeable ones.",
+      "marks": 3
+    },
+    {
+      "id": "alp8-015",
+      "chapter": "Current, Resistance and DC Circuits",
+      "topic": "Resistivity and temperature",
+      "type": "long",
+      "q": "Explain why the resistance of a metal increases with temperature while that of a thermistor decreases, and describe the $I$-$V$ characteristic of a filament lamp.",
+      "solution": "**In a metal.** The number of free electrons is essentially fixed. Heating makes the lattice ions vibrate more violently, so electrons collide with them more often and the mean time between collisions falls.\n\n$\\rho = \\dfrac{m}{ne^{2}\\tau}$ — a smaller $\\tau$ means a larger $\\rho$, so **resistance rises**, roughly linearly over ordinary ranges.\n\n**In a thermistor (NTC).** It is a semiconductor, and heating **liberates far more charge carriers** — the number density $n$ rises **exponentially**.\n\nThat swamps the increased scattering, so **resistance falls**, and steeply: a thermistor's resistance may change by a factor of ten over $50$°C, which is what makes it a sensitive temperature sensor.\n\n**The filament lamp's $I$-$V$ characteristic.**\n\nAt low voltages the filament is cool and the graph is nearly **straight** — it behaves ohmically.\n\nAs the voltage rises the filament heats up, sometimes to $2500$°C, and its resistance climbs. The current therefore rises **less than proportionally**, so the graph **curves towards the voltage axis**.\n\nThe gradient $\\dfrac{I}{V}$ decreases, meaning the resistance increases — by a factor of about ten between cold and operating temperature.\n\n**A practical consequence:** the surge of current at switch-on, when the filament is still cold and its resistance low, is what usually destroys the bulb. Filament lamps nearly always fail at the moment they are switched on.",
+      "marks": 2
+    }
+  ]
+}

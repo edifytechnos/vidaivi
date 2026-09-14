@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-thermal",
+  "title": "Thermal Physics and Ideal Gases",
+  "chapter": "Topic Test 11",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp11-001",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Absolute zero",
+      "type": "mcq",
+      "q": "Absolute zero is:",
+      "solution": "$0$ K $= \\mathbf{-273}$°C (more precisely $-273.15$°C).\n\nIt is the temperature at which the particles have their **minimum** possible energy, and it cannot be reached — only approached.",
+      "marks": 1,
+      "options": [
+        "0°C",
+        "-273°C",
+        "-100°C",
+        "273 K"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp11-002",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Specific heat capacity",
+      "type": "mcq",
+      "q": "The specific heat capacity of a substance is the energy needed to raise:",
+      "solution": "Energy to raise **$1$ kg by $1$ K**, in J kg$^{-1}$K$^{-1}$.\n\n$E = mc\\Delta\\theta$. Water's is unusually high at $4200$, which is why it makes a good coolant and why coastal climates are mild.",
+      "marks": 1,
+      "options": [
+        "1 kg by 1 K",
+        "1 g by 1 K",
+        "any mass by 1 K",
+        "1 kg to 1 K"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp11-003",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Latent heat",
+      "type": "mcq",
+      "q": "During melting, the temperature of a substance:",
+      "solution": "It stays **constant**. The energy supplied goes into breaking the bonds holding the particles in place, not into increasing their kinetic energy.\n\nThat is why a temperature-time graph has a **plateau** at each change of state, and why the energy is called **latent** — hidden.",
+      "marks": 1,
+      "options": [
+        "rises",
+        "falls",
+        "stays constant",
+        "fluctuates"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alp11-004",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Ideal gas equation",
+      "type": "mcq",
+      "q": "The ideal gas equation is:",
+      "solution": "$pV = nRT$, with $T$ in **kelvin** — always.\n\nIt combines Boyle's law ($p \\propto \\frac1V$), Charles's law ($V \\propto T$) and the pressure law into one relation.",
+      "marks": 1,
+      "options": [
+        "$pV = nRT$",
+        "$pV = nRT^{2}$",
+        "$\\dfrac{p}{V} = nRT$",
+        "$pVT = nR$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp11-005",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Kinetic theory",
+      "type": "mcq",
+      "q": "The mean kinetic energy of a gas molecule is proportional to:",
+      "solution": "$\\overline{E_{k}} = \\tfrac32 kT$ — proportional to the **absolute temperature** and to nothing else.\n\nAt the same temperature, a heavy molecule and a light one have the **same** average kinetic energy, so the lighter one moves faster. That is what temperature *is*, microscopically.",
+      "marks": 1,
+      "options": [
+        "pressure",
+        "volume",
+        "absolute temperature",
+        "molar mass"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alp11-006",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Specific heat capacity",
+      "type": "numeric",
+      "q": "Find the energy (in kJ) needed to raise $2$ kg of water by $10$ K. Take $c = 4200$ J kg$^{-1}$K$^{-1}$.",
+      "solution": "$E = mc\\Delta\\theta = 2 \\times 4200 \\times 10 = 84\\,000$ J $= \\mathbf{84}$ kJ.",
+      "marks": 2,
+      "answer": 84,
+      "tolerance": 1
+    },
+    {
+      "id": "alp11-007",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Latent heat",
+      "type": "numeric",
+      "q": "Find the energy (in kJ) needed to melt $0.5$ kg of ice. Take the specific latent heat of fusion as $334$ kJ/kg.",
+      "solution": "$E = mL = 0.5 \\times 334 = \\mathbf{167}$ kJ, all of it at $0$°C with no temperature change.",
+      "marks": 2,
+      "answer": 167,
+      "tolerance": 2
+    },
+    {
+      "id": "alp11-008",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Temperature conversion",
+      "type": "numeric",
+      "q": "Convert $27$°C to kelvin.",
+      "solution": "$T = 27 + 273 = \\mathbf{300}$ K.\n\nEvery gas law calculation needs kelvin; using celsius gives nonsense, including negative 'absolute' temperatures.",
+      "marks": 2,
+      "answer": 300,
+      "tolerance": 1
+    },
+    {
+      "id": "alp11-009",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Boyle's law",
+      "type": "numeric",
+      "q": "A gas at $2 \\times 10^{5}$ Pa occupies $3$ m$^{3}$. At constant temperature, find its volume (in m$^{3}$) at $6 \\times 10^{5}$ Pa.",
+      "solution": "$p_{1}V_{1} = p_{2}V_{2} \\Rightarrow V_{2} = \\dfrac{2 \\times 3}{6} = \\mathbf{1}$ m$^{3}$.\n\nTreble the pressure, and the volume falls to a third.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp11-010",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Ideal gas",
+      "type": "numeric",
+      "q": "Find the volume (in m$^{3}$) of $2$ mol of an ideal gas at $300$ K and $10^{5}$ Pa. Take $R = 8.31$ J mol$^{-1}$K$^{-1}$, correct to three decimal places.",
+      "solution": "$V = \\dfrac{nRT}{p} = \\dfrac{2 \\times 8.31 \\times 300}{10^{5}} = \\dfrac{4986}{10^{5}} = \\mathbf{0.0499}$ m$^{3}$, about $50$ litres.",
+      "marks": 2,
+      "answer": 0.05,
+      "tolerance": 0.002
+    },
+    {
+      "id": "alp11-011",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Specific heat and latent heat",
+      "type": "long",
+      "q": "Distinguish between specific heat capacity and specific latent heat, and describe how to find the specific heat capacity of a metal block experimentally.",
+      "solution": "**Specific heat capacity $c$** — the energy to raise $1$ kg by $1$ K **without a change of state**.\n\n$E = mc\\Delta\\theta$, in J kg$^{-1}$K$^{-1}$. The temperature **rises**.\n\n**Specific latent heat $L$** — the energy to change the state of $1$ kg **at constant temperature**.\n\n$E = mL$, in J kg$^{-1}$. The temperature does **not** change; the energy goes into breaking bonds rather than speeding particles up.\n\n**The experiment — method of mixtures, or electrical heating.**\n\n1. Weigh the metal block and record its mass $m$.\n\n2. Insert an **electrical immersion heater** and a thermometer into the drilled holes, using a little oil for good thermal contact.\n\n3. Record the initial temperature, then switch on and record the ammeter, voltmeter and a stopwatch.\n\n4. After a measured time $t$, switch off and record the **maximum** temperature — it continues rising for a while as heat spreads through the block.\n\n**Calculation:**\n\n$VIt = mc\\Delta\\theta \\Rightarrow c = \\dfrac{VIt}{m\\Delta\\theta}$\n\n**The main source of error is heat lost to the surroundings**, which makes $\\Delta\\theta$ too small and $c$ too **large**.\n\n**Reducing it:** lag the block well, start below room temperature and end an equal amount above it (so that heat gained early cancels heat lost late), and avoid a large temperature rise.",
+      "marks": 3
+    },
+    {
+      "id": "alp11-012",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Kinetic theory of gases",
+      "type": "long",
+      "q": "State the assumptions of the kinetic theory of an ideal gas, and explain how the model accounts for pressure.",
+      "solution": "**The assumptions.**\n\n1. A gas consists of a very large number of **identical molecules** in **random** motion.\n\n2. The molecules' **own volume is negligible** compared with the volume of the container.\n\n3. There are **no intermolecular forces** except during collisions.\n\n4. All collisions — with each other and with the walls — are **perfectly elastic**.\n\n5. The **duration of a collision** is negligible compared with the time between collisions.\n\n6. Newton's laws apply.\n\n**How pressure arises.** A molecule striking a wall perpendicularly at speed $v$ rebounds at $v$, so its momentum changes by $2mv$.\n\nBy Newton's second law, that momentum change requires a force from the wall, and by the third law the molecule pushes back on the wall.\n\n**Countless such collisions per second**, averaged over the whole surface, give a steady force — and force per unit area is **pressure**.\n\nThe result is\n\n$pV = \\tfrac13 Nm\\overline{c^{2}}$\n\n**Comparing with $pV = NkT$** gives $\\tfrac12 m\\overline{c^{2}} = \\tfrac32 kT$: mean kinetic energy is proportional to absolute temperature.\n\n**Where real gases depart from the model.** At high pressure the molecules' own volume is no longer negligible, and at low temperature the intermolecular forces matter — which is precisely why real gases can be liquefied and an ideal gas cannot.",
+      "marks": 3
+    },
+    {
+      "id": "alp11-013",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "The gas laws",
+      "type": "long",
+      "q": "State Boyle's law, Charles's law and the pressure law, explain each in terms of molecules, and combine them into the ideal gas equation.",
+      "solution": "**Boyle's law.** At constant temperature, $p \\propto \\dfrac{1}{V}$, so $pV$ is constant.\n\n*Molecular explanation:* halve the volume and the molecules hit each square metre of wall **twice as often** — the collision rate doubles, so the pressure doubles. Their speed is unchanged, since the temperature is.\n\n**Charles's law.** At constant pressure, $V \\propto T$.\n\n*Molecular explanation:* heating makes the molecules move faster, so they would hit harder and more often. To keep the pressure fixed, the volume must expand until the collision rate per unit area falls back.\n\n**Pressure law.** At constant volume, $p \\propto T$.\n\n*Molecular explanation:* faster molecules hit the walls harder and more frequently, in a container that cannot expand — so the pressure rises. This is why an aerosol can must never be thrown on a fire.\n\n**Combining them:**\n\n$\\dfrac{pV}{T} = \\text{constant}$, or $\\mathbf{pV = nRT}$\n\n**Why $T$ must be in kelvin.** Charles's law says the volume is **proportional** to temperature, and proportionality requires a scale whose zero is a genuine zero.\n\nOn the celsius scale, doubling from $10$°C to $20$°C would have to double the volume, which it plainly does not. Extrapolating the volume-temperature graph back to zero volume gives $-273$°C — which is how absolute zero was first identified, from the behaviour of gases.",
+      "marks": 5
+    },
+    {
+      "id": "alp11-014",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Internal energy",
+      "type": "long",
+      "q": "Define internal energy, state the first law of thermodynamics, and explain what happens to the internal energy of an ideal gas during an isothermal compression.",
+      "solution": "**Internal energy** is the sum of the **random** kinetic and potential energies of all the molecules in a body.\n\nIt does **not** include the kinetic energy of the body as a whole — a moving cricket ball has no more internal energy than a stationary one at the same temperature.\n\nFor an **ideal gas** there are no intermolecular forces, so there is no potential energy term. The internal energy is purely kinetic, and therefore depends **only on the temperature**.\n\n**First law of thermodynamics:**\n\n$\\Delta U = q + W$\n\n— the increase in internal energy equals the heat supplied **to** the gas plus the work done **on** it. It is conservation of energy, stated for thermal processes.\n\n**Isothermal compression of an ideal gas.**\n\n*Isothermal* means the temperature is constant. For an ideal gas, internal energy depends only on temperature, so\n\n$\\Delta U = 0$\n\nBut work **is** being done on the gas as it is compressed, $W > 0$. The first law then requires\n\n$q = -W$\n\n**So the gas must give out exactly as much heat as the work done on it.** Compress it without letting that heat escape and the temperature would rise — which is why a bicycle pump gets hot.\n\n**Keeping it isothermal in practice** means compressing very slowly, in good thermal contact with the surroundings. Compressing **quickly** is nearly adiabatic ($q = 0$), and then all the work goes into internal energy and the temperature rises sharply — the principle of the diesel engine, which ignites its fuel by compression alone.",
+      "marks": 3
+    },
+    {
+      "id": "alp11-015",
+      "chapter": "Thermal Physics and Ideal Gases",
+      "topic": "Thermometry",
+      "type": "long",
+      "q": "Explain what is needed for a physical property to serve as a thermometer, and compare two types of thermometer.",
+      "solution": "**The requirement.** The property must **vary measurably, reproducibly and preferably linearly** with temperature, over the range of interest.\n\nIt must also be **single-valued** — one reading, one temperature. Water's volume fails this test badly between $0$ and $8$°C, since it contracts and then expands, so a water thermometer would be ambiguous.\n\n**Liquid-in-glass (mercury or alcohol).**\n\n*Property:* the expansion of a liquid in a narrow capillary.\n\n*Advantages:* cheap, direct reading, needs no power, portable.\n\n*Disadvantages:* limited range (mercury freezes at $-39$°C; alcohol boils at $78$°C), slow to respond because of the bulb's heat capacity, not very precise, and it cannot be read remotely or automatically.\n\n**Thermistor or thermocouple.**\n\n*Property:* resistance, or the emf generated at a junction of two metals.\n\n*Advantages:* very wide range (a thermocouple works from $-200$°C to over $1500$°C), **fast response** because the junction has a tiny heat capacity, small enough to measure the temperature at a point, and the output is **electrical** — so it can be logged, displayed remotely, or used to control a heater.\n\n*Disadvantages:* needs calibration and a power supply, and a thermistor's response is markedly non-linear.\n\n**The choice depends on the job.** For a fever, a clinical thermometer; for a furnace, a thermocouple; for a laboratory experiment needing a reading every second, a thermistor with a datalogger.",
+      "marks": 2
+    }
+  ]
+}

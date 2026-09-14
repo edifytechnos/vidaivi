@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-fields",
+  "title": "Electric and Gravitational Fields",
+  "chapter": "Topic Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp9-001",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Coulomb's law",
+      "type": "mcq",
+      "q": "The force between two point charges varies as:",
+      "solution": "$F = \\dfrac{Q_{1}Q_{2}}{4\\pi\\varepsilon_{0}r^{2}}$ — an **inverse square** law, exactly like gravity.\n\nThe field lines spread over a sphere whose area grows as $r^{2}$, which is the geometric reason behind both.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{1}{r}$",
+        "$\\dfrac{1}{r^{2}}$",
+        "$r$",
+        "$r^{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp9-002",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Field strength",
+      "type": "mcq",
+      "q": "Electric field strength is defined as:",
+      "solution": "$E = \\dfrac{F}{Q}$ — **force per unit positive charge**, in N/C or V/m.\n\n$\\dfrac{W}{Q}$ is the **potential**, a scalar. Field is a vector; potential is not.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{F}{Q}$",
+        "$FQ$",
+        "$\\dfrac{Q}{F}$",
+        "$\\dfrac{W}{Q}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp9-003",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Gravitational field",
+      "type": "mcq",
+      "q": "The gravitational field strength at the surface of a planet of mass $M$ and radius $R$ is:",
+      "solution": "$g = \\mathbf{\\dfrac{GM}{R^{2}}}$.\n\nIt is the same $g$ that appears in $W = mg$ — the field strength and the acceleration of free fall are the same quantity.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{GM}{R}$",
+        "$\\dfrac{GM}{R^{2}}$",
+        "$\\dfrac{GM^{2}}{R}$",
+        "$GMR$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp9-004",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Potential",
+      "type": "mcq",
+      "q": "The gravitational potential at infinity is taken to be:",
+      "solution": "Zero at infinity, so all gravitational potentials are **negative**: $V = -\\dfrac{GM}{r}$.\n\nThe negative sign means work must be **done** to escape, and it is what makes escape velocity a finite, calculable quantity.",
+      "marks": 1,
+      "options": [
+        "zero",
+        "infinite",
+        "negative",
+        "equal to $g$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp9-005",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Uniform field",
+      "type": "mcq",
+      "q": "The field between two parallel plates a distance $d$ apart at potential difference $V$ is:",
+      "solution": "$E = \\dfrac{V}{d}$, uniform between the plates and directed from positive to negative.\n\nThis is why field strength can be quoted in V/m as readily as in N/C — the two units are identical.",
+      "marks": 1,
+      "options": [
+        "$Vd$",
+        "$\\dfrac{V}{d}$",
+        "$\\dfrac{d}{V}$",
+        "$V + d$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp9-006",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Coulomb's law",
+      "type": "numeric",
+      "q": "Find the force (in N) between charges of $2\\,\\mu$C and $3\\,\\mu$C, $0.1$ m apart. Take $\\dfrac{1}{4\\pi\\varepsilon_{0}} = 9 \\times 10^{9}$.",
+      "solution": "$F = 9 \\times 10^{9} \\times \\dfrac{6 \\times 10^{-12}}{0.01} = \\mathbf{5.4}$ N, repulsive.",
+      "marks": 2,
+      "answer": 5.4,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp9-007",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Field between plates",
+      "type": "numeric",
+      "q": "Find the field strength (in V/m) between plates $2$ mm apart with a potential difference of $500$ V.",
+      "solution": "$E = \\dfrac{V}{d} = \\dfrac{500}{0.002} = \\mathbf{250\\,000}$ V/m.",
+      "marks": 2,
+      "answer": 250000,
+      "tolerance": 1000
+    },
+    {
+      "id": "alp9-008",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Gravitational field",
+      "type": "numeric",
+      "q": "Find $g$ (in m/s$^{2}$) at the surface of a planet with $\\dfrac{GM}{R^{2}} = 3.7$ SI units.",
+      "solution": "$g = \\mathbf{3.7}$ m/s$^{2}$ — about the value on Mars, roughly $38\\%$ of Earth's.",
+      "marks": 2,
+      "answer": 3.7,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp9-009",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Force on a charge",
+      "type": "numeric",
+      "q": "Find the force (in N) on a charge of $4\\,\\mu$C in a field of $2 \\times 10^{5}$ V/m.",
+      "solution": "$F = EQ = 2 \\times 10^{5} \\times 4 \\times 10^{-6} = \\mathbf{0.8}$ N.",
+      "marks": 2,
+      "answer": 0.8,
+      "tolerance": 0.02
+    },
+    {
+      "id": "alp9-010",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Orbital period",
+      "type": "numeric",
+      "q": "A satellite orbits at radius $r$ where $\\dfrac{4\\pi^{2}r^{3}}{GM} = 7.2 \\times 10^{7}$ s$^{2}$. Find its period, in hours, correct to one decimal place.",
+      "solution": "$T = \\sqrt{7.2 \\times 10^{7}} = 8485$ s $= \\mathbf{2.4}$ hours.\n\nThis is Kepler's third law, $T^{2} \\propto r^{3}$, in the form that follows from Newton's law of gravitation.",
+      "marks": 2,
+      "answer": 2.4,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp9-011",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Comparing the two fields",
+      "type": "long",
+      "q": "Compare gravitational and electric fields, listing their similarities and their differences.",
+      "solution": "**Similarities.**\n\n1. Both are **inverse square** laws: $F = \\dfrac{GMm}{r^{2}}$ and $F = \\dfrac{Q_{1}Q_{2}}{4\\pi\\varepsilon_{0}r^{2}}$.\n\n2. Both define **field strength** as force per unit mass or charge.\n\n3. Both have a **potential** defined as energy per unit mass or charge, with zero taken at infinity.\n\n4. Both have field strength as the **negative gradient of potential**: $g = -\\dfrac{dV}{dr}$.\n\n5. For both, potential $\\propto \\dfrac1r$ while field $\\propto \\dfrac{1}{r^{2}}$.\n\n**Differences.**\n\n1. **Gravity is always attractive**; electric forces may attract or repel, because charge comes in two signs and mass in only one.\n\n2. **Electric fields can be shielded** — a Faraday cage excludes them entirely. Gravity cannot be screened by anything.\n\n3. **Electric forces depend on the medium** (through $\\varepsilon_{r}$); gravity does not.\n\n4. **Gravity is astonishingly weaker.** Between two protons the electrostatic repulsion exceeds the gravitational attraction by a factor of about $10^{36}$.\n\n**Why gravity dominates the universe despite being so weak.** Charges cancel: bulk matter is almost exactly neutral, so electric forces cancel over large distances. Mass never cancels, so gravity accumulates — and at astronomical scales it is the only force left standing.",
+      "marks": 3
+    },
+    {
+      "id": "alp9-012",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Satellites",
+      "type": "long",
+      "q": "Derive the relation between orbital period and radius for a satellite, and explain what makes an orbit geostationary.",
+      "solution": "**Derivation.** Gravity supplies the centripetal force:\n\n$\\dfrac{GMm}{r^{2}} = \\dfrac{mv^{2}}{r}$\n\n$v^{2} = \\dfrac{GM}{r}$\n\nFor a circular orbit, $v = \\dfrac{2\\pi r}{T}$:\n\n$\\dfrac{4\\pi^{2}r^{2}}{T^{2}} = \\dfrac{GM}{r}$\n\n$\\mathbf{T^{2} = \\dfrac{4\\pi^{2}r^{3}}{GM}}$\n\nSo $T^{2} \\propto r^{3}$ — **Kepler's third law**, derived rather than merely observed.\n\n**Note the satellite's mass cancels**: every satellite at a given radius has the same speed and period, whatever its size.\n\n**A geostationary orbit** requires three conditions:\n\n1. **Period exactly $24$ hours**, matching the Earth's rotation.\n\n2. **Directly above the equator** — any other orbit would carry the satellite north and south each day.\n\n3. **Moving west to east**, in the direction of the Earth's spin.\n\nPutting $T = 86\\,400$ s into the formula gives $r \\approx 42\\,000$ km from the Earth's centre, or about $36\\,000$ km above the surface.\n\n**Why it matters.** Such a satellite hangs permanently over one point, so a receiving dish can be bolted in place and never moved. It is how satellite television and much intercontinental communication works — and it is why every such dish in a country points the same way.",
+      "marks": 3
+    },
+    {
+      "id": "alp9-013",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Field and potential",
+      "type": "long",
+      "q": "Define electric potential, explain why it is negative for gravity but may be either sign for electric fields, and calculate the escape velocity from a planet.",
+      "solution": "**Electric potential** at a point is the **work done per unit positive charge** in bringing a small test charge from infinity to that point.\n\n$V = \\dfrac{W}{Q}$, in volts. It is a **scalar**, which makes it much easier to combine than field strength — potentials from several charges simply add algebraically.\n\n**Why gravitational potential is always negative.** Gravity is always attractive, so a mass brought in from infinity **gains** kinetic energy and its potential energy falls below the zero taken at infinity.\n\n$V = -\\dfrac{GM}{r}$ — negative everywhere, approaching zero only at infinity.\n\n**Why electric potential may be either sign.** Near a **positive** charge, work must be done **against** repulsion to bring a positive test charge in, so $V$ is positive. Near a **negative** charge the test charge is attracted, so $V$ is negative.\n\n**Escape velocity.** An object escapes if its kinetic energy is at least equal to the depth of the potential well:\n\n$\\tfrac12 mv^{2} = \\dfrac{GMm}{R}$\n\n$\\mathbf{v = \\sqrt{\\dfrac{2GM}{R}} = \\sqrt{2gR}}$\n\n**For Earth:** $v = \\sqrt{2 \\times 9.81 \\times 6.4 \\times 10^{6}} = 11.2$ km/s.\n\n**Two things to notice.** The escaping object's **mass cancels** — a pebble and a spacecraft need the same speed. And the escape velocity does not depend on direction, only on speed, since energy is a scalar.\n\n**Why the Moon has no atmosphere:** its escape velocity is only $2.4$ km/s, which the faster gas molecules exceed, so over billions of years the atmosphere has leaked away.",
+      "marks": 5
+    },
+    {
+      "id": "alp9-014",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Field lines and equipotentials",
+      "type": "long",
+      "q": "Describe the field lines and equipotential surfaces for an isolated point charge and for two parallel plates, and state the relation between them.",
+      "solution": "**Isolated point charge.**\n\n• **Field lines:** straight lines radiating outward from a positive charge, inward to a negative one. They crowd together near the charge, where the field is strongest.\n\n• **Equipotentials:** concentric **spheres** centred on the charge. They are drawn at equal intervals of potential, so they get **further apart** as you move away — potential changes more slowly where the field is weaker.\n\n**Parallel plates.**\n\n• **Field lines:** straight, parallel and evenly spaced, running from the positive to the negative plate — a **uniform** field, except for slight bulging at the edges.\n\n• **Equipotentials:** flat planes parallel to the plates, **evenly spaced** because the field is uniform.\n\n**The relation between them.**\n\n1. Field lines are always **perpendicular** to equipotential surfaces.\n\n2. $E = -\\dfrac{dV}{dx}$ — the field is the **negative potential gradient**, pointing the way potential falls fastest.\n\n3. **No work is done** moving a charge along an equipotential, since $\\Delta V = 0$.\n\n**Why perpendicular.** If the field had any component along an equipotential, work would be done in moving along it — contradicting the definition. So nothing is left but the perpendicular component.\n\n**The map analogy:** contour lines are equipotentials and water runs at right angles to them, straight down the steepest slope. Closely spaced contours mean a steep hillside — and closely spaced equipotentials mean a strong field.",
+      "marks": 3
+    },
+    {
+      "id": "alp9-015",
+      "chapter": "Electric and Gravitational Fields",
+      "topic": "Motion of charges in fields",
+      "type": "long",
+      "q": "Describe the path of a charged particle entering a uniform electric field perpendicular to the field lines, and compare it with a projectile in a gravitational field.",
+      "solution": "**The two components.**\n\n**Along the original direction:** no force, so the velocity is **constant**: $x = vt$.\n\n**Along the field:** a constant force $F = EQ$, so a constant acceleration $a = \\dfrac{EQ}{m}$, and $y = \\tfrac12 at^{2}$.\n\n**Eliminating $t$:**\n\n$y = \\dfrac{EQ}{2mv^{2}}x^{2}$\n\n— a **parabola**, exactly as for a projectile under gravity.\n\n**The comparison.**\n\n• Both have constant velocity in one direction and constant acceleration perpendicular to it.\n\n• Both give parabolic paths.\n\n• **But gravity accelerates every mass equally** ($a = g$, independent of $m$), while an electric field accelerates particles according to their **charge-to-mass ratio** $\\dfrac{Q}{m}$.\n\n**That difference is what makes the technique useful.** Particles of different $\\dfrac{Q}{m}$ deflect by different amounts and can be separated and identified.\n\n**Where it is used.** J. J. Thomson measured the electron's charge-to-mass ratio exactly this way, and so discovered the electron. The same principle deflects the beam in an oscilloscope, sorts ions in a mass spectrometer, and steers the droplets in an inkjet printer.\n\n**A magnetic field behaves quite differently:** its force is perpendicular to the velocity, so it curves the path into a **circle** rather than a parabola, and does no work at all.",
+      "marks": 2
+    }
+  ]
+}

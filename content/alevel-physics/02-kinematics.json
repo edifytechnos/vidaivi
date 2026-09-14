@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-kinematics",
+  "title": "Kinematics",
+  "chapter": "Topic Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp2-001",
+      "chapter": "Kinematics",
+      "topic": "Displacement and distance",
+      "type": "mcq",
+      "q": "A runner completes one lap of a $400$ m track. Their displacement is:",
+      "solution": "**Displacement** is the straight-line change in position, and the runner ends where they started — so it is **zero**.\n\nThe **distance** travelled is $400$ m. Displacement is a vector; distance is a scalar.",
+      "marks": 1,
+      "options": [
+        "400 m",
+        "0",
+        "200 m",
+        "800 m"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp2-002",
+      "chapter": "Kinematics",
+      "topic": "Equations of motion",
+      "type": "mcq",
+      "q": "Which equation does **not** involve time?",
+      "solution": "$\\mathbf{v^{2} = u^{2} + 2as}$ contains no $t$ — which is exactly why it is useful when the time is neither known nor wanted.\n\nAll four hold only for **constant** acceleration.",
+      "marks": 1,
+      "options": [
+        "$v = u + at$",
+        "$s = ut + \\tfrac12 at^{2}$",
+        "$v^{2} = u^{2} + 2as$",
+        "$s = \\tfrac12(u+v)t$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alp2-003",
+      "chapter": "Kinematics",
+      "topic": "Projectiles",
+      "type": "mcq",
+      "q": "For a projectile with no air resistance, the horizontal velocity:",
+      "solution": "With no air resistance there is no horizontal force, so the horizontal velocity is **constant** throughout.\n\nOnly the vertical component changes, under gravity. The two are entirely independent — which is why a bullet fired horizontally and one dropped at the same instant hit the ground together.",
+      "marks": 1,
+      "options": [
+        "increases",
+        "decreases",
+        "stays constant",
+        "becomes zero at the top"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alp2-004",
+      "chapter": "Kinematics",
+      "topic": "Free fall",
+      "type": "mcq",
+      "q": "Two objects of different mass are dropped in a vacuum. They:",
+      "solution": "**The same rate.** A heavier object is pulled harder but has proportionally more inertia:\n\n$a = \\dfrac{F}{m} = \\dfrac{mg}{m} = g$ — the mass cancels.\n\nIn air a feather falls slowly because of air resistance, not because of its mass, which the vacuum demonstration on the Moon settled for good.",
+      "marks": 1,
+      "options": [
+        "fall at the same rate",
+        "the heavier falls faster",
+        "the lighter falls faster",
+        "neither falls"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp2-005",
+      "chapter": "Kinematics",
+      "topic": "Velocity-time graphs",
+      "type": "mcq",
+      "q": "The area under a velocity-time graph gives:",
+      "solution": "Area $=$ velocity $\\times$ time $=$ **displacement**.\n\nThe **gradient** gives acceleration. Area below the axis counts as negative displacement, which is how a graph distinguishes displacement from distance.",
+      "marks": 1,
+      "options": [
+        "acceleration",
+        "displacement",
+        "force",
+        "speed"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp2-006",
+      "chapter": "Kinematics",
+      "topic": "Equations of motion",
+      "type": "numeric",
+      "q": "A car accelerates from rest at $3$ m/s$^{2}$ for $4$ s. Find its final velocity, in m/s.",
+      "solution": "$v = u + at = 0 + 3(4) = \\mathbf{12}$ m/s.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp2-007",
+      "chapter": "Kinematics",
+      "topic": "Distance travelled",
+      "type": "numeric",
+      "q": "An object starting from rest accelerates at $2$ m/s$^{2}$ for $5$ s. Find the distance travelled, in m.",
+      "solution": "$s = ut + \\tfrac12 at^{2} = 0 + \\tfrac12(2)(25) = \\mathbf{25}$ m.",
+      "marks": 2,
+      "answer": 25,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alp2-008",
+      "chapter": "Kinematics",
+      "topic": "Free fall",
+      "type": "numeric",
+      "q": "An object is dropped from rest. Find its speed (in m/s) after falling $20$ m. Take $g = 10$ m/s$^{2}$.",
+      "solution": "$v^{2} = u^{2} + 2as = 0 + 2(10)(20) = 400$, so $v = \\mathbf{20}$ m/s.\n\nUsing the equation without $t$ avoids finding the time at all.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alp2-009",
+      "chapter": "Kinematics",
+      "topic": "Projectile motion",
+      "type": "numeric",
+      "q": "A ball is thrown horizontally from a cliff $45$ m high. Find the time (in s) to reach the ground. Take $g = 10$ m/s$^{2}$.",
+      "solution": "Consider the **vertical** motion alone: $u = 0$.\n\n$45 = \\tfrac12(10)t^{2} \\Rightarrow t^{2} = 9 \\Rightarrow t = \\mathbf{3}$ s.\n\nThe horizontal speed has no effect on the time of fall — which is the whole point of independent components.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp2-010",
+      "chapter": "Kinematics",
+      "topic": "Average velocity",
+      "type": "numeric",
+      "q": "A car travels $60$ m in $4$ s, accelerating uniformly from $10$ m/s. Find its final velocity, in m/s.",
+      "solution": "$s = \\tfrac12(u + v)t \\Rightarrow 60 = \\tfrac12(10 + v)(4)$\n\n$30 = 10 + v \\Rightarrow v = \\mathbf{20}$ m/s.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.2
+    },
+    {
+      "id": "alp2-011",
+      "chapter": "Kinematics",
+      "topic": "Equations of motion",
+      "type": "long",
+      "q": "Derive the equation $s = ut + \\tfrac12 at^{2}$ from a velocity-time graph, and state the assumption it depends on.",
+      "solution": "**The graph.** For constant acceleration, the velocity-time graph is a **straight line** from $u$ at $t = 0$ to $v$ at time $t$.\n\n**The displacement is the area** under it, which is a trapezium — or, more conveniently, a rectangle plus a triangle.\n\n**Rectangle:** height $u$, width $t$, area $ut$. This is the distance that would have been covered at the original speed.\n\n**Triangle:** base $t$, height $(v - u) = at$, area $\\tfrac12 t(at) = \\tfrac12 at^{2}$. This is the extra distance gained by accelerating.\n\n**Total:**\n\n$s = ut + \\tfrac12 at^{2}$ ∎\n\n**The assumption: the acceleration must be constant.** Otherwise the graph is not a straight line and the area is not a trapezium.\n\nAll four equations of motion share this restriction, and applying them to a car in real traffic, or to any motion with significant air resistance, is simply wrong.\n\n**For non-uniform acceleration** the area is still the displacement — but it must be found by integration, $s = \\displaystyle\\int v\\,dt$, of which this derivation is the simplest case.",
+      "marks": 3
+    },
+    {
+      "id": "alp2-012",
+      "chapter": "Kinematics",
+      "topic": "Projectile motion",
+      "type": "long",
+      "q": "A ball is projected at $20$ m/s at $30°$ above the horizontal. Find the time of flight, the maximum height and the range. Take $g = 10$ m/s$^{2}$.",
+      "solution": "**Resolve the initial velocity:**\n\n$u_{x} = 20\\cos 30° = 17.3$ m/s (constant throughout)\n\n$u_{y} = 20\\sin 30° = 10$ m/s\n\n**Time to the top.** At the highest point the **vertical** velocity is zero:\n\n$0 = 10 - 10t \\Rightarrow t = 1$ s.\n\n**Total time of flight** — the path is symmetrical, so it is twice that:\n\n$T = \\mathbf{2}$ s.\n\n**Maximum height:**\n\n$h = u_{y}t - \\tfrac12 gt^{2} = 10(1) - 5(1) = \\mathbf{5}$ m.\n\n**Range** — horizontal velocity times total time:\n\n$R = 17.3 \\times 2 = \\mathbf{34.6}$ m.\n\n**The method throughout:** treat the two directions **separately**. Horizontally there is no acceleration, so distance is simply speed times time; vertically the motion is free fall with $u_{y}$ as the initial velocity.\n\n**Two useful facts.** The horizontal velocity is never zero, even at the top — only the vertical one is. And the maximum range for a given speed occurs at $45°$, where $\\sin 2\\theta$ reaches 1.",
+      "marks": 3
+    },
+    {
+      "id": "alp2-013",
+      "chapter": "Kinematics",
+      "topic": "Motion graphs",
+      "type": "long",
+      "q": "Describe how to obtain displacement, velocity and acceleration from one another using graphs, and sketch in words the three graphs for a ball thrown vertically upwards and caught again.",
+      "solution": "**The relationships.**\n\n• **Gradient** of a displacement-time graph $=$ velocity\n\n• **Gradient** of a velocity-time graph $=$ acceleration\n\n• **Area** under a velocity-time graph $=$ displacement\n\n• **Area** under an acceleration-time graph $=$ change in velocity\n\nDifferentiating moves one way down the list; integrating moves back up.\n\n**For a ball thrown up at $u$ and caught at the same height.**\n\n**Displacement-time:** an inverted parabola. It rises, flattens at the top, and falls back to zero. The gradient is positive, then zero, then negative.\n\n**Velocity-time:** a **straight line** of constant negative gradient, starting at $+u$, crossing zero at the top of the flight, and reaching $-u$ on being caught.\n\nThe area above the axis equals the area below, so the **total displacement is zero** — while the total **distance** is twice the height.\n\n**Acceleration-time:** a **horizontal line** at $-g$ throughout, including at the very top.\n\n**The point students find hardest:** at the highest point the velocity is zero but the acceleration is **still $g$**.\n\nIf the acceleration were zero there, the ball would stop and hang in mid-air. It is momentarily at rest and still being pulled downwards — which is precisely why it comes back.",
+      "marks": 5
+    },
+    {
+      "id": "alp2-014",
+      "chapter": "Kinematics",
+      "topic": "Terminal velocity",
+      "type": "long",
+      "q": "Explain, in terms of forces, why an object falling through air reaches a terminal velocity, and sketch in words its velocity-time graph.",
+      "solution": "**At the moment of release.** The only force is the weight $mg$, so the acceleration is $g$ — the greatest it will ever be.\n\n**As the speed increases.** Air resistance grows with speed (roughly as $v^{2}$ for a large object). The resultant force\n\n$F = mg - R$\n\ngets smaller, so the object is still speeding up, but **less and less rapidly**.\n\n**At terminal velocity.** Air resistance has grown until $R = mg$. The resultant force is **zero**, so by Newton's first law the object continues at **constant velocity**.\n\nIt is not that the forces have stopped acting — they are balanced.\n\n**The velocity-time graph.** A curve starting at the origin with gradient $g$, becoming progressively shallower, and levelling off asymptotically at the terminal velocity. The gradient is the acceleration, and it falls to zero without the velocity ever falling at all.\n\n**A skydiver in practice.** Terminal velocity is about $55$ m/s spread-eagled, and up to $90$ m/s head-down, since $R$ depends on the area presented.\n\n**Opening the parachute** increases $R$ enormously, so for a while $R > mg$ and the resultant force is **upwards** — the diver **decelerates**, settling at a new, much lower terminal velocity of about $5$ m/s.\n\nThe same analysis explains why a raindrop does not arrive at lethal speed, and why dust hangs in the air.",
+      "marks": 3
+    },
+    {
+      "id": "alp2-015",
+      "chapter": "Kinematics",
+      "topic": "Relative velocity",
+      "type": "long",
+      "q": "Explain what is meant by relative velocity, and find the velocity of a boat that heads north at $4$ m/s across a river flowing east at $3$ m/s.",
+      "solution": "**Relative velocity** is the velocity of one object as measured by an observer moving with another:\n\n$\\mathbf{v}_{AB} = \\mathbf{v}_{A} - \\mathbf{v}_{B}$\n\n**The boat.** Its velocity relative to the water is $4$ m/s north; the water's velocity relative to the bank is $3$ m/s east. The boat's velocity relative to the **bank** is the vector sum:\n\n$v = \\sqrt{4^{2} + 3^{2}} = \\mathbf{5}$ m/s\n\n**Direction:** $\\tan\\theta = \\dfrac34$, so $\\theta = 36.9°$ **east of north**.\n\n**What this means in practice.** The boat points north but travels north-east, and lands downstream of the point opposite.\n\n**A striking consequence:** the time to cross depends **only** on the $4$ m/s northward component. A river $80$ m wide takes $20$ s whatever the current — the flow carries the boat sideways without delaying it at all.\n\n**To land directly opposite**, the boat must head **upstream** at an angle, so that the westward component of its heading cancels the current.\n\nThat crossing takes longer, because part of the boat's speed is being spent fighting the river rather than crossing it.",
+      "marks": 2
+    }
+  ]
+}

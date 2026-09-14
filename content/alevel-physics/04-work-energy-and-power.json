@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-energy",
+  "title": "Work, Energy and Power",
+  "chapter": "Topic Test 4",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp4-001",
+      "chapter": "Work, Energy and Power",
+      "topic": "Work",
+      "type": "mcq",
+      "q": "Work done by a force $F$ moving an object a distance $s$ at angle $\\theta$ to the force is:",
+      "solution": "$W = \\mathbf{Fs\\cos\\theta}$ — only the component of the force **along** the displacement does work.\n\nA force perpendicular to the motion does **no** work at all, which is why carrying a bag horizontally does no work against gravity.",
+      "marks": 1,
+      "options": [
+        "$Fs$",
+        "$Fs\\cos\\theta$",
+        "$Fs\\sin\\theta$",
+        "$\\dfrac{F}{s}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp4-002",
+      "chapter": "Work, Energy and Power",
+      "topic": "Kinetic energy",
+      "type": "mcq",
+      "q": "The kinetic energy of a body of mass $m$ moving at speed $v$ is:",
+      "solution": "$E_{k} = \\mathbf{\\tfrac12 mv^{2}}$ — proportional to the **square** of the speed.\n\nDoubling the speed **quadruples** the energy, which is why braking distance grows so alarmingly with speed.",
+      "marks": 1,
+      "options": [
+        "$mv$",
+        "$\\tfrac12 mv^{2}$",
+        "$mv^{2}$",
+        "$\\tfrac12 mv$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp4-003",
+      "chapter": "Work, Energy and Power",
+      "topic": "Power",
+      "type": "mcq",
+      "q": "Power is:",
+      "solution": "$P = \\dfrac{W}{t}$ — the **rate** of transferring energy, in watts.\n\nFor a constant force at constant speed, $P = Fv$, which is the form used for vehicles.",
+      "marks": 1,
+      "options": [
+        "force times distance",
+        "the rate of doing work",
+        "energy times time",
+        "force times time"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp4-004",
+      "chapter": "Work, Energy and Power",
+      "topic": "Efficiency",
+      "type": "mcq",
+      "q": "The efficiency of a machine is:",
+      "solution": "Efficiency $= \\dfrac{\\text{useful energy out}}{\\text{total energy in}} \\times 100\\%$.\n\nIt is always **less than $100\\%$** for any real machine — some energy always ends up as heat. Nothing is lost; it is simply no longer useful.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\text{useful output}}{\\text{total input}} \\times 100\\%$",
+        "$\\dfrac{\\text{input}}{\\text{output}} \\times 100\\%$",
+        "output $-$ input",
+        "always 100%"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp4-005",
+      "chapter": "Work, Energy and Power",
+      "topic": "Conservation of energy",
+      "type": "mcq",
+      "q": "A ball falls from a height $h$. Ignoring air resistance, its speed on reaching the ground is:",
+      "solution": "$mgh = \\tfrac12 mv^{2}$, and the mass cancels:\n\n$v = \\mathbf{\\sqrt{2gh}}$ — independent of mass, which is why all objects fall alike in a vacuum.",
+      "marks": 1,
+      "options": [
+        "$\\sqrt{2gh}$",
+        "$2gh$",
+        "$gh$",
+        "$\\sqrt{gh}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp4-006",
+      "chapter": "Work, Energy and Power",
+      "topic": "Work done",
+      "type": "numeric",
+      "q": "Find the work done (in J) by a force of $25$ N moving an object $4$ m in the direction of the force.",
+      "solution": "$W = Fs = 25 \\times 4 = \\mathbf{100}$ J.",
+      "marks": 2,
+      "answer": 100,
+      "tolerance": 1
+    },
+    {
+      "id": "alp4-007",
+      "chapter": "Work, Energy and Power",
+      "topic": "Kinetic energy",
+      "type": "numeric",
+      "q": "Find the kinetic energy (in J) of a $1200$ kg car at $10$ m/s.",
+      "solution": "$E_{k} = \\tfrac12(1200)(100) = \\mathbf{60\\,000}$ J $= 60$ kJ.",
+      "marks": 2,
+      "answer": 60000,
+      "tolerance": 100
+    },
+    {
+      "id": "alp4-008",
+      "chapter": "Work, Energy and Power",
+      "topic": "Potential energy",
+      "type": "numeric",
+      "q": "Find the gain in potential energy (in J) of a $50$ kg person climbing $4$ m. Take $g = 10$ m/s$^{2}$.",
+      "solution": "$E_{p} = mgh = 50 \\times 10 \\times 4 = \\mathbf{2000}$ J.",
+      "marks": 2,
+      "answer": 2000,
+      "tolerance": 10
+    },
+    {
+      "id": "alp4-009",
+      "chapter": "Work, Energy and Power",
+      "topic": "Power",
+      "type": "numeric",
+      "q": "A crane lifts a $500$ kg load $12$ m in $20$ s. Find the useful power, in W. Take $g = 10$ m/s$^{2}$.",
+      "solution": "Work $= mgh = 500 \\times 10 \\times 12 = 60\\,000$ J.\n\n$P = \\dfrac{60\\,000}{20} = \\mathbf{3000}$ W $= 3$ kW.",
+      "marks": 2,
+      "answer": 3000,
+      "tolerance": 10
+    },
+    {
+      "id": "alp4-010",
+      "chapter": "Work, Energy and Power",
+      "topic": "Efficiency",
+      "type": "numeric",
+      "q": "A motor takes in $800$ J and delivers $600$ J of useful work. Find its efficiency as a percentage.",
+      "solution": "$\\dfrac{600}{800} \\times 100 = \\mathbf{75}\\%$.\n\nThe other $200$ J has become heat in the windings and bearings.",
+      "marks": 2,
+      "answer": 75,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alp4-011",
+      "chapter": "Work, Energy and Power",
+      "topic": "Work-energy theorem",
+      "type": "long",
+      "q": "State the work-energy theorem and use it to find the braking distance of a $1000$ kg car travelling at $20$ m/s if the braking force is $5000$ N.",
+      "solution": "**The theorem.** The work done by the resultant force equals the change in kinetic energy:\n\n$W = \\Delta E_{k} = \\tfrac12 mv^{2} - \\tfrac12 mu^{2}$\n\n**The braking distance.** All the kinetic energy must be removed by the braking force:\n\n$Fs = \\tfrac12 mu^{2}$\n\n$5000 \\times s = \\tfrac12(1000)(400) = 200\\,000$ J\n\n$s = \\dfrac{200\\,000}{5000} = \\mathbf{40}$ m\n\n**Now double the speed to $40$ m/s.** The kinetic energy becomes $800\\,000$ J and the braking distance becomes **$160$ m** — four times as far, for twice the speed.\n\n**This is the single most important consequence of $E_{k} \\propto v^{2}$.** Driving at $60$ km/h instead of $30$ does not double the stopping distance; it quadruples it.\n\n**And the total stopping distance is worse still**, since the thinking distance (reaction time $\\times$ speed) must be added, and that grows in proportion to $v$.\n\nIt is why urban speed limits are set where they are, and why the difference between $30$ and $40$ km/h is so decisive for a pedestrian.",
+      "marks": 3
+    },
+    {
+      "id": "alp4-012",
+      "chapter": "Work, Energy and Power",
+      "topic": "Conservation of energy",
+      "type": "long",
+      "q": "A pendulum bob of mass $0.5$ kg is released from a height of $0.2$ m above its lowest point. Find its speed at the lowest point, and explain what happens to the energy over many swings.",
+      "solution": "**Energy conservation from the release point to the bottom:**\n\n$mgh = \\tfrac12 mv^{2}$\n\n**The mass cancels**, so the answer does not depend on it at all:\n\n$v = \\sqrt{2gh} = \\sqrt{2 \\times 9.81 \\times 0.2} = \\sqrt{3.92} = \\mathbf{1.98}$ m/s\n\n**Over the swing.** At the extremes the bob is momentarily at rest with maximum potential energy; at the lowest point it has maximum kinetic energy and minimum potential. The total stays constant, and energy shuttles back and forth.\n\n**Over many swings.** Air resistance and friction at the pivot transfer a little energy to the surroundings as **heat and sound** on every pass, so the amplitude decays and the bob eventually stops.\n\n**Energy is still conserved.** It has not been destroyed — it has been **dissipated**, spread through the air and the support as a tiny temperature rise, too dilute ever to be gathered back.\n\n**Worth noticing:** the **period** hardly changes as the amplitude decays, which is exactly what makes a pendulum usable as a clock. The escapement's only job is to return the small amount lost on each swing.\n\nIn a vacuum, with a frictionless pivot, the pendulum would swing forever.",
+      "marks": 3
+    },
+    {
+      "id": "alp4-013",
+      "chapter": "Work, Energy and Power",
+      "topic": "Power and efficiency",
+      "type": "long",
+      "q": "A car of mass $1000$ kg climbs a slope inclined at $10°$ at a steady $15$ m/s against a resistive force of $500$ N. Find the power output of the engine. If the engine is $25\\%$ efficient, find the rate at which fuel energy is used.",
+      "solution": "**At steady speed the forces balance**, so the driving force equals the total opposing force.\n\n**Component of weight down the slope:**\n\n$mg\\sin\\theta = 1000 \\times 9.81 \\times \\sin 10° = 9810 \\times 0.1736 = 1703$ N\n\n**Total force to be overcome:**\n\n$F = 1703 + 500 = 2203$ N\n\n**Power output:**\n\n$P = Fv = 2203 \\times 15 = \\mathbf{33\\,045}$ W $\\approx 33$ kW\n\n**Fuel energy rate.** At $25\\%$ efficiency, the useful output is a quarter of the input:\n\n$P_{\\text{in}} = \\dfrac{33\\,045}{0.25} = \\mathbf{132}$ kW\n\n**Where the other $99$ kW goes:** almost entirely to heat — in the exhaust gases, the cylinder walls and the radiator.\n\n**That $25\\%$ is realistic** for a petrol engine, and it is not merely poor engineering: the second law of thermodynamics sets a hard ceiling on the efficiency of any heat engine, determined by the temperatures it works between.\n\n**Note the use of $P = Fv$** rather than $\\dfrac{W}{t}$. At constant speed it goes straight to the answer without needing a distance or a time.",
+      "marks": 5
+    },
+    {
+      "id": "alp4-014",
+      "chapter": "Work, Energy and Power",
+      "topic": "Energy transfers",
+      "type": "long",
+      "q": "Describe the energy transfers in a hydroelectric power station, and explain why no power station can be $100\\%$ efficient.",
+      "solution": "**The chain of transfers.**\n\n1. **Gravitational potential energy** of water held high in a reservoir.\n\n2. As the water falls through the pipes it becomes **kinetic energy**.\n\n3. The moving water turns a **turbine** — kinetic energy of the water to kinetic energy of the rotor.\n\n4. The turbine drives a **generator** — kinetic to **electrical** energy, by electromagnetic induction.\n\n5. Transformers step the voltage up for transmission.\n\n**Losses at every stage:** friction in the pipes, turbulence in the water, friction in the bearings, resistive heating in the generator windings and the transmission lines.\n\nHydroelectric plants are nonetheless among the most efficient, reaching about $90\\%$ — far above a thermal station's $35$–$40\\%$.\n\n**Why $100\\%$ is impossible.**\n\n1. **Friction is unavoidable** wherever parts move or fluid flows, and it always produces heat.\n\n2. **Resistance** in every conductor dissipates $I^{2}R$.\n\n3. For any station burning fuel, the **second law of thermodynamics** sets an absolute limit: a heat engine working between temperatures $T_{H}$ and $T_{C}$ cannot exceed an efficiency of $1 - \\dfrac{T_{C}}{T_{H}}$, however perfectly it is built.\n\nThat last point is the deepest: it is not an engineering shortcoming but a law of nature. Energy is always conserved, but its **usefulness** is not.",
+      "marks": 3
+    },
+    {
+      "id": "alp4-015",
+      "chapter": "Work, Energy and Power",
+      "topic": "Force-distance graphs",
+      "type": "long",
+      "q": "Explain how the work done by a varying force is found from a force-distance graph, with the example of stretching a spring.",
+      "solution": "**The principle.** $W = Fs$ holds only for a constant force. For a varying one, the work done is the **area under the force-distance graph**.\n\nThe reasoning is the same as for any integral: divide the motion into slices so short that the force is effectively constant within each, multiply, and add. In the limit, that is the area.\n\n**A spring.** By Hooke's law, $F = kx$ — the force grows in proportion to the extension, so the graph is a **straight line through the origin** of gradient $k$.\n\n**The work done** is the area of the triangle:\n\n$W = \\tfrac12 \\times \\text{base} \\times \\text{height} = \\tfrac12 x(kx) = \\mathbf{\\tfrac12 kx^{2}}$\n\nThis is the **elastic potential energy** stored, and it is recoverable if the spring has not been stretched past its elastic limit.\n\n**Where the $\\tfrac12$ comes from.** The force starts at zero and ends at $kx$, so the **average** force is $\\tfrac12 kx$. It is the same $\\tfrac12$ that appears in $\\tfrac12 CV^{2}$ for a capacitor, and for exactly the same reason.\n\n**Beyond the elastic limit**, the loading and unloading curves no longer coincide, and the area **between** them is energy lost as heat in permanently deforming the material — which is what makes a bent paperclip warm.",
+      "marks": 2
+    }
+  ]
+}

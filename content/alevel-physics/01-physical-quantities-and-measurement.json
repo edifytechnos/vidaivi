@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-measurement",
+  "title": "Physical Quantities and Measurement",
+  "chapter": "Topic Test 1",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp1-001",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Base quantities",
+      "type": "mcq",
+      "q": "Which of these is **not** an SI base quantity?",
+      "solution": "The seven base quantities are mass, length, time, current, temperature, amount of substance and luminous intensity.\n\n**Force** is derived: $1$ N $= 1$ kg m s$^{-2}$.",
+      "marks": 1,
+      "options": [
+        "Mass",
+        "Length",
+        "Force",
+        "Time"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alp1-002",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Homogeneity",
+      "type": "mcq",
+      "q": "An equation is homogeneous if:",
+      "solution": "Homogeneity means **every term has the same base units** — you cannot add a length to a time.\n\nA homogeneous equation may still be **wrong** (a missing factor of $\\tfrac12$ passes the test), but a non-homogeneous one is certainly wrong. It is a filter, not a proof.",
+      "marks": 1,
+      "options": [
+        "it is correct",
+        "every term has the same base units",
+        "it contains only base quantities",
+        "it has no constants"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp1-003",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Errors",
+      "type": "mcq",
+      "q": "A systematic error:",
+      "solution": "A systematic error displaces **every** reading the same way — a zero error on an ammeter, or a mis-calibrated scale.\n\n**Repeating and averaging does not help**, which is exactly what distinguishes it from a random error. It affects **accuracy**, not precision.",
+      "marks": 1,
+      "options": [
+        "varies randomly",
+        "shifts every reading in the same direction",
+        "is reduced by repeating readings",
+        "is always small"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp1-004",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Vectors and scalars",
+      "type": "mcq",
+      "q": "Which of these is a vector?",
+      "solution": "**Momentum** has both magnitude and direction, so it is a vector.\n\nOther vectors: displacement, velocity, acceleration, force. Scalars: mass, energy, temperature, speed, time.",
+      "marks": 1,
+      "options": [
+        "Mass",
+        "Energy",
+        "Momentum",
+        "Temperature"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alp1-005",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Prefixes",
+      "type": "mcq",
+      "q": "$1$ nanometre equals:",
+      "solution": "nano $= \\mathbf{10^{-9}}$.\n\nThe scale worth memorising: pico $10^{-12}$, nano $10^{-9}$, micro $10^{-6}$, milli $10^{-3}$, kilo $10^{3}$, mega $10^{6}$, giga $10^{9}$.",
+      "marks": 1,
+      "options": [
+        "$10^{-6}$ m",
+        "$10^{-9}$ m",
+        "$10^{-12}$ m",
+        "$10^{9}$ m"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp1-006",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Unit conversion",
+      "type": "numeric",
+      "q": "Express $72$ km/h in m/s.",
+      "solution": "$72 \\times \\dfrac{1000}{3600} = \\mathbf{20}$ m/s.\n\nDividing by $3.6$ is the shortcut in either direction.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp1-007",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Percentage uncertainty",
+      "type": "numeric",
+      "q": "A length is measured as $25.0 \\pm 0.5$ cm. Find the percentage uncertainty.",
+      "solution": "$\\dfrac{0.5}{25.0} \\times 100 = \\mathbf{2}\\%$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp1-008",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Combining uncertainties",
+      "type": "numeric",
+      "q": "A square has side $10 \\pm 0.2$ cm. Find the percentage uncertainty in its area.",
+      "solution": "For a **product** (or a power), the percentage uncertainties **add**.\n\nSide: $\\dfrac{0.2}{10} \\times 100 = 2\\%$. Area $= s^{2}$, so the uncertainty doubles: $\\mathbf{4}\\%$.\n\nIn general, the percentage uncertainty in $x^{n}$ is $n$ times that in $x$.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp1-009",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Significant figures",
+      "type": "numeric",
+      "q": "How many significant figures are there in $0.00430$?",
+      "solution": "$\\mathbf{3}$ — the digits $4$, $3$ and the **trailing zero**.\n\nLeading zeros are only placeholders and never count; a trailing zero after the decimal point does count, because it was deliberately recorded.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alp1-010",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Base units",
+      "type": "numeric",
+      "q": "The unit of force is kg m s$^{-n}$. Find $n$.",
+      "solution": "$F = ma$, so N $=$ kg $\\times$ m s$^{-2}$, giving $n = \\mathbf{2}$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alp1-011",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Homogeneity of equations",
+      "type": "long",
+      "q": "Use base units to check whether $v^{2} = u^{2} + 2as$ is homogeneous, and explain what the check can and cannot tell you.",
+      "solution": "**Take each term in turn.**\n\n$v^{2}$: $\\left(\\text{m s}^{-1}\\right)^{2} = \\text{m}^{2}\\text{s}^{-2}$\n\n$u^{2}$: $\\text{m}^{2}\\text{s}^{-2}$\n\n$2as$: $\\left(\\text{m s}^{-2}\\right)\\left(\\text{m}\\right) = \\text{m}^{2}\\text{s}^{-2}$\n\nAll three terms have the same base units, so the equation **is homogeneous**.\n\n(The $2$ is a pure number and has no units, which is why it can be ignored.)\n\n**What the check can tell you.** If the units do **not** match, the equation is certainly **wrong** — no amount of algebra can add a metre to a second. It catches a great many errors quickly.\n\n**What it cannot tell you.** A homogeneous equation may still be wrong.\n\n$v^{2} = u^{2} + 4as$ and $v^{2} = u^{2} + as$ are both homogeneous, and both wrong. **Dimensionless constants are invisible** to the method.\n\n**Its other use** is deducing the units of an unknown constant. In $F = 6\\pi\\eta r v$, making the units balance gives $\\eta$ in kg m$^{-1}$s$^{-1}$ — which is how the unit of viscosity is arrived at.",
+      "marks": 3
+    },
+    {
+      "id": "alp1-012",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Errors and uncertainties",
+      "type": "long",
+      "q": "Distinguish between random and systematic errors, and between accuracy and precision, giving an example of each.",
+      "solution": "**Random errors** vary unpredictably from one reading to the next — a fluctuating meter, judging when a moving object passes a mark, or reading a scale at a slightly different angle each time.\n\n*Reduced by:* taking **many readings and averaging**, and by plotting a graph and drawing a line of best fit.\n\nThey affect **precision**.\n\n**Systematic errors** shift every reading in the same direction by the same amount or proportion — a zero error on a micrometer, a wrongly calibrated scale, or a thermometer reading $2$°C high.\n\n*Not reduced by repeating.* They must be found and corrected, by checking the zero and calibrating against a known standard.\n\nThey affect **accuracy**.\n\n**Accuracy** — how close a reading is to the **true** value.\n\n**Precision** — how close repeated readings are to **each other**, regardless of whether they are right.\n\n**The target analogy.** Shots scattered widely around the bullseye are accurate but not precise. Shots clustered tightly in one corner are precise but not accurate — and that is the more dangerous case, because the consistency looks like reliability.\n\nA tightly clustered set of wrong readings is the signature of a systematic error, and the only cure is to find it.",
+      "marks": 3
+    },
+    {
+      "id": "alp1-013",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Combining uncertainties",
+      "type": "long",
+      "q": "State the rules for combining uncertainties, and find the uncertainty in the density of a cube of mass $240 \\pm 2$ g and side $6.0 \\pm 0.1$ cm.",
+      "solution": "**The rules.**\n\n1. **Adding or subtracting:** the **absolute** uncertainties add.\n\n2. **Multiplying or dividing:** the **percentage** uncertainties add.\n\n3. **Raising to a power $n$:** the percentage uncertainty is multiplied by $n$.\n\n**Note rule 1 applies to subtraction too** — uncertainties never cancel, which is why finding a small difference between two large measurements is so unreliable.\n\n**The calculation.**\n\nMass: $\\dfrac{2}{240} \\times 100 = 0.83\\%$\n\nSide: $\\dfrac{0.1}{6.0} \\times 100 = 1.67\\%$\n\nVolume $= s^{3}$, so its uncertainty is $3 \\times 1.67 = 5.0\\%$\n\nDensity $= \\dfrac{m}{V}$, so the percentage uncertainties add:\n\n$0.83 + 5.0 = \\mathbf{5.8\\%}$\n\n**The value.** $V = 216$ cm$^{3}$, so $\\rho = \\dfrac{240}{216} = 1.11$ g/cm$^{3}$.\n\n$5.8\\%$ of $1.11$ is $0.06$, giving $\\rho = \\mathbf{1.11 \\pm 0.06}$ g/cm$^{3}$.\n\n**What this tells the experimenter.** The side measurement dominates the uncertainty, because it is cubed. Improving the balance would barely help; measuring the side more carefully would help a great deal.\n\nThat is the practical value of this analysis — it says where to spend your effort.",
+      "marks": 5
+    },
+    {
+      "id": "alp1-014",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Vectors",
+      "type": "long",
+      "q": "Explain how to add two vectors and how to resolve a vector into components, with an example of each.",
+      "solution": "**Adding vectors — three methods.**\n\n1. **Triangle rule:** draw the first vector, then the second from its tip; the resultant runs from the start of the first to the tip of the second.\n\n2. **Parallelogram rule:** draw both from a common point and complete the parallelogram; the resultant is the diagonal.\n\n3. **By components**, which is the reliable method for anything beyond two perpendicular vectors.\n\n**Example.** Forces of $3$ N east and $4$ N north:\n\n$R = \\sqrt{9 + 16} = 5$ N, at $\\tan^{-1}\\left(\\tfrac43\\right) = 53°$ north of east.\n\n**Note the resultant is 5 N, not 7 N.** Vectors at an angle never add arithmetically.\n\n**Resolving into components.** Any vector $F$ at angle $\\theta$ to the horizontal splits into:\n\n$F_{x} = F\\cos\\theta$, $\\quad F_{y} = F\\sin\\theta$\n\n**Example.** A $20$ N force at $30°$ to the horizontal has $F_{x} = 20\\cos 30° = 17.3$ N and $F_{y} = 20\\sin 30° = 10$ N.\n\n**Why resolving matters.** Perpendicular components are **independent** — they can be handled as two separate one-dimensional problems.\n\nThat is the whole basis of projectile motion: the horizontal velocity is unchanged while the vertical one accelerates under gravity, and neither affects the other.\n\n**A warning on the angle:** $\\cos$ goes with the component **along** the angle's arm and $\\sin$ with the one across it. Measuring the angle from the other axis swaps them.",
+      "marks": 3
+    },
+    {
+      "id": "alp1-015",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Measurement techniques",
+      "type": "long",
+      "q": "Describe how you would measure the diameter of a wire accurately, and how to reduce the uncertainty in the result.",
+      "solution": "**Instrument.** A **micrometer screw gauge**, which reads to $0.01$ mm — a ruler's $1$ mm would be useless on a wire perhaps $0.3$ mm across.\n\n**Procedure.**\n\n1. **Check the zero error** first: close the jaws and note any reading. Subtract it from every measurement afterwards. This removes the main **systematic** error.\n\n2. Close the jaws on the wire using the **ratchet**, which applies a consistent pressure and stops the wire being squashed.\n\n3. Take readings at **several points along the wire** — it may not be uniform.\n\n4. At each point take a second reading with the wire **rotated through $90°$**, since the cross-section may not be circular.\n\n5. **Average** all the readings.\n\n**Reducing the uncertainty further.** Wind the wire in **many tight turns** around a pencil, measure the total length of $n$ turns with a ruler, and divide by $n$.\n\nMeasuring $20$ turns spanning $6.0 \\pm 0.1$ mm gives a diameter of $0.30$ mm with a percentage uncertainty of $1.7\\%$ — instead of the $33\\%$ that measuring one diameter with the same ruler would give.\n\n**The general principle:** measure many together and divide. The same trick gives the thickness of a sheet of paper from a ream, and the period of a pendulum from twenty swings rather than one.",
+      "marks": 2
+    }
+  ]
+}

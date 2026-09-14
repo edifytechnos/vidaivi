@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-waves",
+  "title": "Waves and Superposition",
+  "chapter": "Topic Test 7",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp7-001",
+      "chapter": "Waves and Superposition",
+      "topic": "Wave equation",
+      "type": "mcq",
+      "q": "For a wave of speed $v$, frequency $f$ and wavelength $\\lambda$:",
+      "solution": "$v = \\mathbf{f\\lambda}$.\n\nWhen a wave enters a new medium its **frequency is unchanged** — it is set by the source — so a change in speed forces a change in wavelength.",
+      "marks": 1,
+      "options": [
+        "$v = f\\lambda$",
+        "$v = \\dfrac{f}{\\lambda}$",
+        "$f = v\\lambda$",
+        "$\\lambda = vf$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp7-002",
+      "chapter": "Waves and Superposition",
+      "topic": "Intensity",
+      "type": "mcq",
+      "q": "The intensity of a wave is proportional to:",
+      "solution": "$I \\propto A^{2}$.\n\nDoubling the amplitude gives **four times** the intensity. Intensity also falls as $\\dfrac{1}{r^{2}}$ from a point source, since the energy spreads over a sphere.",
+      "marks": 1,
+      "options": [
+        "amplitude",
+        "the square of the amplitude",
+        "frequency",
+        "wavelength"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp7-003",
+      "chapter": "Waves and Superposition",
+      "topic": "Polarisation",
+      "type": "mcq",
+      "q": "Polarisation is possible only for:",
+      "solution": "Only a **transverse** wave has a vibration direction across its line of travel that can be filtered.\n\nSound, being longitudinal, cannot be polarised — which is how it was established that light is transverse.",
+      "marks": 1,
+      "options": [
+        "longitudinal waves",
+        "transverse waves",
+        "sound waves",
+        "all waves"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp7-004",
+      "chapter": "Waves and Superposition",
+      "topic": "Stationary waves",
+      "type": "mcq",
+      "q": "In a stationary wave, the distance between adjacent nodes is:",
+      "solution": "Adjacent nodes are $\\mathbf{\\dfrac{\\lambda}{2}}$ apart, and so are adjacent antinodes.\n\nA node and its neighbouring antinode are $\\dfrac{\\lambda}{4}$ apart.",
+      "marks": 1,
+      "options": [
+        "$\\lambda$",
+        "$\\dfrac{\\lambda}{2}$",
+        "$\\dfrac{\\lambda}{4}$",
+        "$2\\lambda$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp7-005",
+      "chapter": "Waves and Superposition",
+      "topic": "Coherence",
+      "type": "mcq",
+      "q": "Two sources are coherent if they have:",
+      "solution": "Coherence requires the **same frequency** and a **constant phase difference**.\n\nWithout it the interference pattern shifts faster than it can be observed and blurs into uniform illumination — which is why Young fed both slits from a single source.",
+      "marks": 1,
+      "options": [
+        "the same amplitude",
+        "a constant phase difference and the same frequency",
+        "the same intensity",
+        "the same direction"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp7-006",
+      "chapter": "Waves and Superposition",
+      "topic": "Wave equation",
+      "type": "numeric",
+      "q": "A wave of frequency $500$ Hz has wavelength $0.68$ m. Find its speed, in m/s.",
+      "solution": "$v = f\\lambda = 500 \\times 0.68 = \\mathbf{340}$ m/s — the speed of sound in air.",
+      "marks": 2,
+      "answer": 340,
+      "tolerance": 2
+    },
+    {
+      "id": "alp7-007",
+      "chapter": "Waves and Superposition",
+      "topic": "Double slit",
+      "type": "numeric",
+      "q": "In a double-slit experiment, $\\lambda = 600$ nm, $d = 0.5$ mm and $D = 2$ m. Find the fringe spacing, in mm.",
+      "solution": "$x = \\dfrac{\\lambda D}{d} = \\dfrac{600 \\times 10^{-9} \\times 2}{0.5 \\times 10^{-3}} = 2.4 \\times 10^{-3}$ m $= \\mathbf{2.4}$ mm.",
+      "marks": 2,
+      "answer": 2.4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp7-008",
+      "chapter": "Waves and Superposition",
+      "topic": "Diffraction grating",
+      "type": "numeric",
+      "q": "A grating has $500$ lines per mm. Find the slit spacing, in nm.",
+      "solution": "$d = \\dfrac{1\\text{ mm}}{500} = 2 \\times 10^{-6}$ m $= \\mathbf{2000}$ nm.\n\nThe spacing is only a few wavelengths of light, which is exactly why a grating diffracts so strongly.",
+      "marks": 2,
+      "answer": 2000,
+      "tolerance": 20
+    },
+    {
+      "id": "alp7-009",
+      "chapter": "Waves and Superposition",
+      "topic": "Stationary waves",
+      "type": "numeric",
+      "q": "A stationary wave on a string has nodes $0.4$ m apart. Find the wavelength, in m.",
+      "solution": "Node spacing is half a wavelength, so $\\lambda = \\mathbf{0.8}$ m.",
+      "marks": 2,
+      "answer": 0.8,
+      "tolerance": 0.02
+    },
+    {
+      "id": "alp7-010",
+      "chapter": "Waves and Superposition",
+      "topic": "Phase difference",
+      "type": "numeric",
+      "q": "Two points on a wave are $\\dfrac{\\lambda}{4}$ apart. Find the phase difference in degrees.",
+      "solution": "A full wavelength is $360°$, so a quarter is $\\mathbf{90°}$ (or $\\dfrac{\\pi}{2}$ radians).",
+      "marks": 2,
+      "answer": 90,
+      "tolerance": 1
+    },
+    {
+      "id": "alp7-011",
+      "chapter": "Waves and Superposition",
+      "topic": "Young's double slit",
+      "type": "long",
+      "q": "Derive the fringe spacing formula for a double-slit experiment, and explain what each of the conditions on the apparatus is for.",
+      "solution": "**Set-up.** Two slits $d$ apart, a screen $D$ away, and $x$ measured on the screen from the central fringe.\n\n**Path difference.** For $D \\gg d$, the two paths are nearly parallel and\n\n$\\Delta = d\\sin\\theta \\approx d\\tan\\theta = \\dfrac{dx}{D}$\n\n**Bright fringes** need the path difference to be a whole number of wavelengths:\n\n$\\dfrac{dx}{D} = n\\lambda \\Rightarrow x_{n} = \\dfrac{n\\lambda D}{d}$\n\n**Fringe spacing** — the gap between consecutive bright fringes:\n\n$\\mathbf{x = \\dfrac{\\lambda D}{d}}$\n\n**What each condition is for.**\n\n• **Coherent sources** — otherwise the pattern shifts and blurs away. Achieved by illuminating both slits from one source.\n\n• **Narrow slits** — so that each diffracts widely enough for the two beams to overlap.\n\n• **Slits close together** — $d$ is in the denominator, so a small $d$ gives wider, measurable fringes.\n\n• **Large $D$** — again to widen the fringes.\n\n• **Monochromatic light** — each wavelength makes its own set of fringes, and white light gives coloured, overlapping bands beyond the first few.\n\n**The historical importance.** Fringes can only arise from **superposition**, which particles cannot do. Young's experiment settled the wave nature of light — and, when repeated with single photons and electrons, became the central puzzle of quantum mechanics.",
+      "marks": 3
+    },
+    {
+      "id": "alp7-012",
+      "chapter": "Waves and Superposition",
+      "topic": "Stationary waves",
+      "type": "long",
+      "q": "Explain how a stationary wave is formed, describe its features, and compare it with a progressive wave.",
+      "solution": "**Formation.** Two waves of the **same frequency and amplitude** travel in **opposite directions** along the same line and superpose.\n\nIn practice this is usually a wave and its own reflection from a fixed end.\n\n**Features.**\n\n• **Nodes** — points of permanently zero displacement, where the two waves always cancel. Spaced $\\dfrac{\\lambda}{2}$ apart.\n\n• **Antinodes** — points of maximum oscillation, where they always reinforce. Also $\\dfrac{\\lambda}{2}$ apart, midway between nodes.\n\n• All points **between** two nodes vibrate **in phase**, though with different amplitudes; on opposite sides of a node they are exactly out of phase.\n\n**Comparison with a progressive wave.**\n\n• **Energy:** transferred along the wave | stored, not transferred\n\n• **Amplitude:** the same for every point | varies from zero at a node to a maximum at an antinode\n\n• **Phase:** changes continuously along the wave | constant between adjacent nodes, reversing across each node\n\n• **Waveform:** moves along | stays put\n\n**Why no energy is transferred.** A node never moves, so no energy can cross it. The energy sloshes between kinetic and potential within each loop.\n\n**Where they occur:** a guitar string, an organ pipe, a microwave oven (the hot spots are antinodes, which is why the turntable exists), and the standing wave patterns that determine the allowed energy levels of an electron in an atom.",
+      "marks": 3
+    },
+    {
+      "id": "alp7-013",
+      "chapter": "Waves and Superposition",
+      "topic": "Diffraction grating",
+      "type": "long",
+      "q": "Derive $d\\sin\\theta = n\\lambda$ for a diffraction grating, and explain why a grating gives sharper maxima than a double slit.",
+      "solution": "**Derivation.** Parallel light falls normally on a grating of slit spacing $d$. Consider the rays leaving at angle $\\theta$ from adjacent slits.\n\nThe path difference between them is $d\\sin\\theta$.\n\nFor constructive interference this must be a whole number of wavelengths:\n\n$\\mathbf{d\\sin\\theta = n\\lambda}$\n\nwhere $n$ is the order of the maximum.\n\n**Note $\\sin\\theta \\le 1$**, so only orders up to $n = \\dfrac{d}{\\lambda}$ exist — a grating cannot produce arbitrarily many.\n\n**Why the maxima are sharper.** With **two** slits, moving slightly off the exact angle leaves the two beams only slightly out of step, so the intensity falls gradually — broad fringes.\n\nWith **thousands** of slits, a small change in angle puts the outermost slits many wavelengths out of step with the first. Their contributions cancel in pairs almost completely, and the intensity collapses.\n\nSo the maxima are **very narrow and very bright**, with almost complete darkness between them.\n\n**The practical consequence.** A grating separates wavelengths precisely, which is why spectrometers use gratings rather than prisms or double slits.\n\nTwo spectral lines a fraction of a nanometre apart can be resolved — and that is how the composition of stars is determined from their light.",
+      "marks": 5
+    },
+    {
+      "id": "alp7-014",
+      "chapter": "Waves and Superposition",
+      "topic": "Polarisation",
+      "type": "long",
+      "q": "Explain polarisation, state Malus's law, and give two applications.",
+      "solution": "**What it is.** In an unpolarised transverse wave the vibrations occur in **every** direction perpendicular to the travel. In a **plane-polarised** wave they are confined to one plane.\n\nA **polaroid** transmits only the component along its transmission axis, and absorbs the rest.\n\n**Unpolarised light through one polaroid** loses exactly half its intensity, since averaging $\\cos^{2}\\theta$ over all directions gives $\\tfrac12$.\n\n**Malus's law.** For already-polarised light of intensity $I_{0}$ meeting an analyser at angle $\\theta$:\n\n$I = I_{0}\\cos^{2}\\theta$\n\nAt $\\theta = 90°$ the polaroids are **crossed** and nothing is transmitted.\n\n**Applications.**\n\n1. **Polarising sunglasses.** Light reflected from water or a wet road is partly polarised **horizontally**, so a lens with a vertical axis blocks most of the glare while passing ordinary light.\n\n2. **Stress analysis.** Transparent plastic models placed between crossed polaroids show coloured fringes wherever the material is stressed, revealing where an engineering component will fail.\n\n3. **LCD screens**, which work by rotating the plane of polarisation between two crossed polarisers.\n\n4. **3D cinema**, projecting two images polarised at right angles so that each eye sees only one.\n\n**A curiosity worth knowing:** three polaroids at $0°$, $45°$ and $90°$ transmit light, whereas the first and last alone transmit none. Adding a filter lets more light through — which is genuinely startling until Malus's law is applied twice.",
+      "marks": 3
+    },
+    {
+      "id": "alp7-015",
+      "chapter": "Waves and Superposition",
+      "topic": "Intensity and the inverse square law",
+      "type": "long",
+      "q": "Explain why intensity falls as the inverse square of distance from a point source, and find the intensity at $6$ m if it is $100$ W/m$^{2}$ at $2$ m.",
+      "solution": "**The reasoning.** A point source radiates equally in all directions, so at a distance $r$ the energy is spread over the surface of a sphere of area $4\\pi r^{2}$.\n\n$I = \\dfrac{P}{4\\pi r^{2}}$\n\nThe power is fixed; only the area over which it is spread changes.\n\n**So $I \\propto \\dfrac{1}{r^{2}}$** — triple the distance and the same energy covers nine times the area, leaving a ninth of the intensity.\n\n**The calculation.** Going from $2$ m to $6$ m is a factor of 3 in distance, so a factor of 9 in area:\n\n$I = \\dfrac{100}{9} = \\mathbf{11.1}$ W/m$^{2}$\n\n**Or formally:** $I_{1}r_{1}^{2} = I_{2}r_{2}^{2}$, giving $I_{2} = \\dfrac{100 \\times 4}{36} = 11.1$ ✓\n\n**The assumption that must hold.** The source must be effectively a **point**, radiating uniformly, with no absorption or reflection on the way. A laser beam, which does not spread, obeys no such law.\n\n**Where the same law appears:** gravitational and electrostatic fields, sound intensity, and radiation dose — which is why stepping back from a radioactive source is such an effective precaution. Doubling your distance quarters the dose.\n\n**And since $I \\propto A^{2}$**, the amplitude itself falls as $\\dfrac{1}{r}$, not $\\dfrac{1}{r^{2}}$.",
+      "marks": 2
+    }
+  ]
+}
