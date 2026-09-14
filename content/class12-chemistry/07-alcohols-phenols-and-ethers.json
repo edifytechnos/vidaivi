@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12c-alcohols",
+  "title": "Alcohols, Phenols and Ethers",
+  "chapter": "Chapter Test 7",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc-001",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Acidity",
+      "type": "mcq",
+      "q": "Phenol is more acidic than ethanol because:",
+      "solution": "On losing a proton, phenol gives the **phenoxide ion**, whose negative charge is delocalised over the ring by resonance.\n\nEthoxide has no such escape route — the charge sits entirely on one oxygen, and the electron-releasing ethyl group makes matters worse.\n\nA stabilised conjugate base means a stronger acid: $\\text{p}K_{a}$ about $10$ for phenol against $16$ for ethanol.",
+      "marks": 1,
+      "options": [
+        "it has more hydrogen atoms",
+        "the phenoxide ion is stabilised by resonance",
+        "it is aromatic",
+        "it has a higher boiling point"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc-002",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Lucas test",
+      "type": "mcq",
+      "q": "The Lucas reagent distinguishes primary, secondary and tertiary alcohols by the:",
+      "solution": "Lucas reagent is concentrated HCl with anhydrous $\\text{ZnCl}_{2}$. The alkyl chloride formed is insoluble, so the solution goes **turbid**.\n\n**Tertiary:** immediately. **Secondary:** in about 5 minutes. **Primary:** only on heating.\n\nThe order follows carbocation stability, since the reaction goes by $\\text{S}_{\\text{N}}1$.",
+      "marks": 1,
+      "options": [
+        "colour produced",
+        "time taken for turbidity to appear",
+        "gas evolved",
+        "smell of the product"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc-003",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Williamson synthesis",
+      "type": "mcq",
+      "q": "Williamson's synthesis of ethers works best with:",
+      "solution": "The alkoxide is both a good nucleophile and a strong base. With a **primary** halide it substitutes cleanly ($\\text{S}_{\\text{N}}2$).\n\nWith a tertiary halide it acts as a base instead and **eliminates**, giving an alkene rather than the ether.\n\nSo to make *tert*-butyl methyl ether, use *tert*-butoxide with methyl iodide — put the bulk on the alkoxide, never on the halide.",
+      "marks": 1,
+      "options": [
+        "a tertiary alkyl halide",
+        "a primary alkyl halide",
+        "an aryl halide",
+        "any halide equally"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc-004",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Kolbe reaction",
+      "type": "mcq",
+      "q": "Phenol treated with $\\text{CO}_{2}$ and $\\text{NaOH}$ under pressure, then acid, gives:",
+      "solution": "This is the **Kolbe–Schmitt reaction**, giving **salicylic acid** (2-hydroxybenzoic acid).\n\nThe phenoxide ion is electron-rich enough to attack carbon dioxide, and the ortho position is favoured because the sodium ion holds the $\\text{CO}_{2}$ close to the oxygen.\n\nAcetylating the product gives aspirin.",
+      "marks": 1,
+      "options": [
+        "benzoic acid",
+        "salicylic acid",
+        "picric acid",
+        "benzaldehyde"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc-005",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Oxidation of alcohols",
+      "type": "mcq",
+      "q": "A secondary alcohol on oxidation gives:",
+      "solution": "A secondary alcohol has one hydrogen on the carbinol carbon, so it stops at the **ketone** — there is no further hydrogen to remove.\n\nA primary alcohol gives an aldehyde and then, with a strong oxidant, a carboxylic acid. A tertiary alcohol has no such hydrogen at all and resists oxidation, unless the conditions are harsh enough to break the carbon skeleton.",
+      "marks": 1,
+      "options": [
+        "an aldehyde",
+        "a ketone",
+        "a carboxylic acid",
+        "an ester"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc-006",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Isomers",
+      "type": "numeric",
+      "q": "How many structural isomeric alcohols are possible for $\\text{C}_{4}\\text{H}_{9}\\text{OH}$?",
+      "solution": "Butan-1-ol, butan-2-ol, 2-methylpropan-1-ol and 2-methylpropan-2-ol — $\\mathbf{4}$.\n\nTwo primary, one secondary and one tertiary, which makes this set the standard demonstration of the Lucas test.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alc-007",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of phenol, $\\text{C}_{6}\\text{H}_{5}\\text{OH}$, in g/mol. (C $= 12$, H $= 1$, O $= 16$.)",
+      "solution": "$6(12) + 6(1) + 16 = 72 + 6 + 16 = \\mathbf{94}$ g/mol.",
+      "marks": 2,
+      "answer": 94,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alc-008",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Number of ether isomers",
+      "type": "numeric",
+      "q": "How many isomeric ethers are possible with the formula $\\text{C}_{4}\\text{H}_{10}\\text{O}$?",
+      "solution": "Methoxypropane, 2-methoxypropane (methyl isopropyl ether) and ethoxyethane — $\\mathbf{3}$.\n\n$\\text{C}_{4}\\text{H}_{10}\\text{O}$ also has four alcohol isomers, making seven in all — ethers and alcohols are **functional isomers** of one another.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc-009",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Degree of unsaturation",
+      "type": "numeric",
+      "q": "Find the degree of unsaturation for phenol, $\\text{C}_{6}\\text{H}_{6}\\text{O}$.",
+      "solution": "Degree of unsaturation $= \\dfrac{2(6) + 2 - 6}{2} = \\dfrac{8}{2} = \\mathbf{4}$.\n\nThree from the ring's double bonds and one from the ring itself — exactly what a benzene ring always contributes.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alc-010",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Bromination of phenol",
+      "type": "numeric",
+      "q": "How many bromine atoms are introduced when phenol reacts with excess bromine water?",
+      "solution": "Phenol gives an immediate white precipitate of **2,4,6-tribromophenol**, so $\\mathbf{3}$.\n\nNo catalyst is needed — the $-\\text{OH}$ group activates the ring so strongly that all three available positions substitute at once. Benzene itself would need a Lewis acid and would stop at one.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc-011",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Preparation of phenol",
+      "type": "long",
+      "q": "Describe two industrial methods of preparing phenol, with equations.",
+      "solution": "**1. From cumene (the main industrial route).**\n\nCumene (isopropylbenzene) is oxidised by air to cumene hydroperoxide, which is then treated with dilute acid:\n\n$\\text{C}_{6}\\text{H}_{5}\\text{CH}(\\text{CH}_{3})_{2} + \\text{O}_{2} \\to \\text{C}_{6}\\text{H}_{5}\\text{C}(\\text{CH}_{3})_{2}\\text{OOH}$\n\n$\\text{C}_{6}\\text{H}_{5}\\text{C}(\\text{CH}_{3})_{2}\\text{OOH} \\xrightarrow{\\text{H}^{+}} \\text{C}_{6}\\text{H}_{5}\\text{OH} + (\\text{CH}_{3})_{2}\\text{CO}$\n\nIt is the dominant process because **acetone** — a valuable solvent — comes out as the co-product, so nothing is wasted.\n\n**2. From chlorobenzene (the Dow process).**\n\n$\\text{C}_{6}\\text{H}_{5}\\text{Cl} + \\text{NaOH} \\xrightarrow{623\\text{ K},\\;300\\text{ atm}} \\text{C}_{6}\\text{H}_{5}\\text{ONa} \\xrightarrow{\\text{H}^{+}} \\text{C}_{6}\\text{H}_{5}\\text{OH}$\n\nThe extreme conditions are the price of the C–Cl bond's resonance stabilisation.\n\n**3. From benzenesulphonic acid** — fusion with molten NaOH, then acidification.\n\n**4. In the laboratory,** from aniline via the diazonium salt, warmed with water.",
+      "marks": 3
+    },
+    {
+      "id": "alc-012",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Acidity of phenols",
+      "type": "long",
+      "q": "Explain why phenol is a stronger acid than ethanol but weaker than carboxylic acids, and how substituents on the ring change its acidity.",
+      "solution": "**Phenol vs ethanol.** The phenoxide ion delocalises its negative charge over the ortho and para positions of the ring, which stabilises it. Ethoxide cannot do this, and the electron-releasing ethyl group intensifies the charge.\n\n$\\text{p}K_{a}$: phenol $10$, ethanol $16$.\n\n**Phenol vs carboxylic acids.** In a carboxylate ion the charge is shared between **two equivalent oxygen atoms** — both resonance structures are identical and equally good. In phenoxide the charge is pushed onto **carbon** atoms, which are far less able to hold it, and those structures also destroy the ring's aromaticity.\n\n$\\text{p}K_{a}$ of acetic acid is about $4.7$ — roughly a hundred thousand times more acidic than phenol.\n\n**Substituent effects.**\n\n• **Electron-withdrawing groups** ($-\\text{NO}_{2}$, $-\\text{CN}$, halogens) spread the charge further and **increase** acidity. Picric acid (2,4,6-trinitrophenol) is as strong as a mineral acid.\n\n• **Electron-releasing groups** ($-\\text{CH}_{3}$, $-\\text{OCH}_{3}$) push charge onto the oxygen and **decrease** acidity. Cresol is weaker than phenol.\n\nThe effect is strongest from the **ortho and para** positions, where resonance can reach; a meta substituent works only by induction and matters far less.",
+      "marks": 3
+    },
+    {
+      "id": "alc-013",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Reactions of alcohols",
+      "type": "long",
+      "q": "Describe the dehydration of alcohols to alkenes, with the mechanism and the order of reactivity.",
+      "solution": "**Reaction.** With concentrated $\\text{H}_{2}\\text{SO}_{4}$ at $443$ K, ethanol gives ethene:\n\n$\\text{C}_{2}\\text{H}_{5}\\text{OH} \\xrightarrow{\\text{conc. H}_{2}\\text{SO}_{4},\\;443\\text{ K}} \\text{CH}_{2}{=}\\text{CH}_{2} + \\text{H}_{2}\\text{O}$\n\n**Mechanism (E1, three steps).**\n\n**Step 1 — protonation.** The acid protonates the $-\\text{OH}$, turning a terrible leaving group ($\\text{OH}^{-}$) into an excellent one ($\\text{H}_{2}\\text{O}$). This is the whole purpose of the acid.\n\n**Step 2 — loss of water** gives a carbocation. Slow, and rate-determining.\n\n**Step 3 — loss of a proton** from the adjacent carbon forms the double bond.\n\n**Order of reactivity:** tertiary $>$ secondary $>$ primary, following carbocation stability. Tertiary alcohols dehydrate at $360$ K with dilute acid; primary ones need $443$ K and concentrated acid.\n\n**Orientation:** Saytzeff's rule — the more substituted alkene dominates.\n\n**A warning:** carbocations rearrange. 3,3-dimethylbutan-2-ol dehydrates to 2,3-dimethylbut-2-ene, because a methyl group shifts to give a more stable cation before the proton is lost.",
+      "marks": 5
+    },
+    {
+      "id": "alc-014",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Distinguishing tests",
+      "type": "long",
+      "q": "How would you distinguish between (a) phenol and ethanol, (b) primary and tertiary alcohols?",
+      "solution": "**(a) Phenol from ethanol.**\n\n1. **Neutral $\\text{FeCl}_{3}$:** phenol gives a **violet** colour (an iron–phenoxide complex); ethanol gives nothing.\n\n2. **Bromine water:** phenol gives an immediate **white precipitate** of 2,4,6-tribromophenol; ethanol does not react.\n\n3. **$\\text{NaOH}$ solution:** phenol dissolves as sodium phenoxide (it is acidic enough); ethanol does not.\n\n4. **Litmus:** phenol is weakly acidic; ethanol is neutral.\n\n**(b) Primary from tertiary alcohol.**\n\n1. **Lucas test:** the tertiary alcohol turns the solution turbid **at once**; the primary one only on heating.\n\n2. **Victor Meyer test:** primary gives a **blood-red** colour, secondary blue, tertiary **colourless**.\n\n3. **Oxidation with acidified $\\text{K}_{2}\\text{Cr}_{2}\\text{O}_{7}$:** the primary alcohol turns the orange solution green (giving an aldehyde, then an acid); the tertiary alcohol leaves it orange.\n\nFor a written answer, give the reagent, what you see, and what it means — all three.",
+      "marks": 3
+    },
+    {
+      "id": "alc-015",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Ethers",
+      "type": "long",
+      "q": "Describe the reaction of ethers with HI, and explain why the products differ between an alkyl ether and an aryl alkyl ether.",
+      "solution": "**With an alkyl ether.** Ethers are cleaved by hot concentrated HI:\n\n$\\text{R–O–R}' + \\text{HI} \\to \\text{R–I} + \\text{R}'\\text{–OH}$\n\nThe iodide attacks the **smaller, less hindered** alkyl group ($\\text{S}_{\\text{N}}2$), so methyl ethyl ether gives methyl iodide and ethanol.\n\nWith a **tertiary** group the mechanism switches to $\\text{S}_{\\text{N}}1$ and the tertiary halide forms instead, since its carbocation is so stable.\n\n**With an aryl alkyl ether — anisole.**\n\n$\\text{C}_{6}\\text{H}_{5}\\text{–O–CH}_{3} + \\text{HI} \\to \\text{C}_{6}\\text{H}_{5}\\text{OH} + \\text{CH}_{3}\\text{I}$\n\nThe products are **always phenol and the alkyl iodide**, never iodobenzene and methanol.\n\n**Why.** The bond between oxygen and the aromatic carbon has partial double-bond character from resonance and is far too strong to break; and the $sp^{2}$ carbon cannot undergo $\\text{S}_{\\text{N}}2$ attack at all. The iodide has only one bond it can reach, so it takes the methyl group every time.",
+      "marks": 2
+    }
+  ]
+}

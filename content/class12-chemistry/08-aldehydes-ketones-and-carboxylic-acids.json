@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12c-carbonyls",
+  "title": "Aldehydes, Ketones and Carboxylic Acids",
+  "chapter": "Chapter Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "ald-001",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Nucleophilic addition",
+      "type": "mcq",
+      "q": "Aldehydes are more reactive than ketones towards nucleophilic addition because:",
+      "solution": "Two effects work the same way. A ketone has **two** alkyl groups releasing electrons to the carbonyl carbon, reducing its positive character; and those two groups **crowd** the approaching nucleophile.\n\nAn aldehyde has one alkyl group and one hydrogen, so it is both more electrophilic and more accessible.",
+      "marks": 1,
+      "options": [
+        "they are smaller molecules",
+        "of less steric hindrance and less electron release to the carbonyl carbon",
+        "they are more acidic",
+        "they have higher boiling points"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ald-002",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Tollens test",
+      "type": "mcq",
+      "q": "Tollens' reagent distinguishes aldehydes from ketones by forming:",
+      "solution": "An aldehyde reduces ammoniacal silver nitrate to metallic silver, which deposits as a **silver mirror** on the tube wall.\n\nKetones do not react, because oxidising them would mean breaking a carbon–carbon bond.\n\nFehling's solution is the other classic test, giving a red-brown $\\text{Cu}_{2}\\text{O}$ precipitate — but aromatic aldehydes do not respond to it.",
+      "marks": 1,
+      "options": [
+        "a red precipitate",
+        "a silver mirror",
+        "a blue solution",
+        "a yellow precipitate"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ald-003",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Iodoform test",
+      "type": "mcq",
+      "q": "The iodoform test is given by:",
+      "solution": "A yellow precipitate of $\\text{CHI}_{3}$ forms with $\\text{I}_{2}$/NaOH from a **methyl ketone** or a methyl carbinol (which is oxidised to one in the conditions).\n\nSo ethanal and acetone give it, but propanal and propanone's higher homologues do not. Ethanol gives it; methanol does not.\n\nIt is a test for a particular *fragment*, not a functional group — which is why it is so useful in structure determination.",
+      "marks": 1,
+      "options": [
+        "all aldehydes",
+        "compounds containing the $\text{CH}_{3}\text{CO}-$ group or $\text{CH}_{3}\text{CH(OH)}-$ group",
+        "all ketones",
+        "carboxylic acids"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ald-004",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Acidity of carboxylic acids",
+      "type": "mcq",
+      "q": "Which of these is the strongest acid?",
+      "solution": "Each chlorine withdraws electrons inductively, spreading the carboxylate's negative charge and stabilising it.\n\nThree chlorines do this three times over, so **trichloroacetic acid** is the strongest ($\\text{p}K_{a}$ $0.7$, against acetic acid's $4.76$ — nearly ten thousand times stronger).\n\nThe effect falls off sharply with distance: a chlorine three carbons away barely matters.",
+      "marks": 1,
+      "options": [
+        "$\\text{CH}_{3}\\text{COOH}$",
+        "$\\text{ClCH}_{2}\\text{COOH}$",
+        "$\\text{Cl}_{2}\\text{CHCOOH}$",
+        "$\\text{Cl}_{3}\\text{CCOOH}$"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "ald-005",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Cannizzaro reaction",
+      "type": "mcq",
+      "q": "The Cannizzaro reaction is given by aldehydes that:",
+      "solution": "An aldehyde **without an $\\alpha$-hydrogen** cannot undergo aldol condensation, so with concentrated alkali it **disproportionates** instead — one molecule is oxidised to the acid, another reduced to the alcohol.\n\n$2\\text{HCHO} + \\text{NaOH} \\to \\text{CH}_{3}\\text{OH} + \\text{HCOONa}$\n\nBenzaldehyde and formaldehyde are the standard examples.",
+      "marks": 1,
+      "options": [
+        "have alpha hydrogens",
+        "have no alpha hydrogen",
+        "are aromatic only",
+        "contain a methyl group"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ald-006",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of acetic acid, $\\text{CH}_{3}\\text{COOH}$, in g/mol. (C $= 12$, H $= 1$, O $= 16$.)",
+      "solution": "$2(12) + 4(1) + 2(16) = 24 + 4 + 32 = \\mathbf{60}$ g/mol.",
+      "marks": 2,
+      "answer": 60,
+      "tolerance": 0.5
+    },
+    {
+      "id": "ald-007",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Isomers",
+      "type": "numeric",
+      "q": "How many aldehyde and ketone isomers together are possible for $\\text{C}_{4}\\text{H}_{8}\\text{O}$ (open chain, carbonyl compounds only)?",
+      "solution": "Butanal, 2-methylpropanal and butanone — $\\mathbf{3}$.\n\nTwo aldehydes and one ketone. Aldehydes and ketones of the same formula are **functional isomers**.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "ald-008",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Degree of unsaturation",
+      "type": "numeric",
+      "q": "Find the degree of unsaturation for benzoic acid, $\\text{C}_{7}\\text{H}_{6}\\text{O}_{2}$.",
+      "solution": "$\\dfrac{2(7) + 2 - 6}{2} = \\dfrac{10}{2} = \\mathbf{5}$.\n\nFour from the benzene ring and one from the $\\text{C}{=}\\text{O}$ of the acid group.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "ald-009",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Neutralisation",
+      "type": "numeric",
+      "q": "How many moles of NaOH are needed to neutralise one mole of oxalic acid, $\\text{HOOC–COOH}$?",
+      "solution": "Oxalic acid is **dibasic** — two $-\\text{COOH}$ groups, so $\\mathbf{2}$ moles of NaOH.\n\nCounting the acidic hydrogens rather than the total is the point of the question.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "ald-010",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Silver mirror",
+      "type": "numeric",
+      "q": "How many of these give a positive Tollens test: ethanal, propanone, benzaldehyde, methanoic acid?",
+      "solution": "**Ethanal** ✓ (an aldehyde), **benzaldehyde** ✓ (an aldehyde), **methanoic acid** ✓ (it contains a $-\\text{CHO}$ group and is the one carboxylic acid that reduces Tollens').\n\n**Propanone** ✗ — a ketone.\n\nSo $\\mathbf{3}$. Formic acid's dual character catches most students out.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "ald-011",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Aldol condensation",
+      "type": "long",
+      "q": "Explain the aldol condensation with a mechanism, and state which compounds can undergo it.",
+      "solution": "**Which compounds.** Any aldehyde or ketone with at least one **$\\alpha$-hydrogen**.\n\n**Reaction.** With dilute alkali, two molecules of ethanal give a $\\beta$-hydroxy aldehyde (an 'aldol'), which loses water on warming:\n\n$2\\text{CH}_{3}\\text{CHO} \\xrightarrow{\\text{dil. NaOH}} \\text{CH}_{3}\\text{CH(OH)CH}_{2}\\text{CHO} \\xrightarrow{\\Delta} \\text{CH}_{3}\\text{CH}{=}\\text{CHCHO} + \\text{H}_{2}\\text{O}$\n\n**Mechanism.**\n\n**Step 1.** The hydroxide removes an $\\alpha$-hydrogen, giving a **carbanion** stabilised by resonance with the carbonyl (an enolate). This is why the $\\alpha$-hydrogen is essential — and why it is acidic at all.\n\n**Step 2.** The carbanion attacks the carbonyl carbon of a second molecule.\n\n**Step 3.** Protonation gives the aldol.\n\n**Step 4.** On heating, dehydration gives a conjugated $\\alpha,\\beta$-unsaturated carbonyl compound — the extra stability of the conjugation is the driving force.\n\n**Cross aldol** between two different carbonyl compounds gives four products and is only useful when one partner has no $\\alpha$-hydrogen.",
+      "marks": 3
+    },
+    {
+      "id": "ald-012",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Tests to distinguish",
+      "type": "long",
+      "q": "How would you distinguish between: (a) an aldehyde and a ketone, (b) acetaldehyde and acetone, (c) a carboxylic acid and a phenol?",
+      "solution": "**(a) Aldehyde from ketone.**\n\n**Tollens' reagent:** the aldehyde gives a silver mirror; the ketone does not.\n\n**Fehling's solution:** the aliphatic aldehyde gives a red-brown precipitate of $\\text{Cu}_{2}\\text{O}$; the ketone gives nothing. (Aromatic aldehydes do not respond.)\n\n**(b) Acetaldehyde from acetone.** Both are methyl compounds, so both give iodoform — that test will not separate them.\n\nUse **Tollens' or Fehling's**: acetaldehyde reacts, acetone does not.\n\n**(c) Carboxylic acid from phenol.**\n\n**Sodium bicarbonate:** the acid gives brisk **effervescence** of $\\text{CO}_{2}$; phenol does not, being too weak an acid to displace carbonic acid.\n\n**Neutral $\\text{FeCl}_{3}$:** phenol gives a violet colour; most carboxylic acids give a buff precipitate.\n\nThe bicarbonate test is the cleanest single distinction in organic chemistry: it separates acids stronger than carbonic acid from everything weaker.",
+      "marks": 3
+    },
+    {
+      "id": "ald-013",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Preparation and reactions",
+      "type": "long",
+      "q": "Describe three methods of preparing carboxylic acids, and three of their important reactions.",
+      "solution": "**Preparation.**\n\n1. **Oxidation of primary alcohols or aldehydes** with acidified $\\text{KMnO}_{4}$ or $\\text{K}_{2}\\text{Cr}_{2}\\text{O}_{7}$:\n\n$\\text{RCH}_{2}\\text{OH} \\to \\text{RCHO} \\to \\text{RCOOH}$\n\n2. **Hydrolysis of nitriles:**\n\n$\\text{RCN} + 2\\text{H}_{2}\\text{O} \\xrightarrow{\\text{H}^{+}} \\text{RCOOH} + \\text{NH}_{3}$\n\nUseful because it **adds a carbon atom** to the chain.\n\n3. **From Grignard reagents:**\n\n$\\text{RMgX} + \\text{CO}_{2} \\to \\text{RCOOMgX} \\xrightarrow{\\text{H}^{+}} \\text{RCOOH}$\n\nAlso chain-lengthening, and it works where nitrile hydrolysis will not (tertiary and aryl acids).\n\n4. **Oxidation of an alkyl benzene** side chain: toluene gives benzoic acid, whatever the chain length.\n\n**Reactions.**\n\n1. **With bicarbonate** — $\\text{CO}_{2}$ evolved (the identifying test).\n\n2. **Esterification** with an alcohol and a trace of acid — a reversible reaction driven by removing water.\n\n3. **Reduction** with $\\text{LiAlH}_{4}$ to the primary alcohol. $\\text{NaBH}_{4}$ is not strong enough.\n\n4. **Hell–Volhard–Zelinsky reaction** — $\\text{Cl}_{2}/\\text{red P}$ substitutes at the $\\alpha$-carbon, giving $\\alpha$-halo acids, the gateway to $\\alpha$-amino acids.\n\n5. **Decarboxylation** — the sodium salt heated with soda lime loses $\\text{CO}_{2}$ to give an alkane one carbon shorter.",
+      "marks": 5
+    },
+    {
+      "id": "ald-014",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Nucleophilic addition mechanism",
+      "type": "long",
+      "q": "Write the mechanism of the addition of HCN to a carbonyl compound, and explain the role of the base.",
+      "solution": "**Step 1 — generating the nucleophile.** A trace of base converts HCN into the cyanide ion, which is a far better nucleophile:\n\n$\\text{HCN} + \\text{OH}^{-} \\rightleftharpoons \\text{CN}^{-} + \\text{H}_{2}\\text{O}$\n\n**Step 2 — attack.** $\\text{CN}^{-}$ attacks the electrophilic carbonyl carbon. The carbon changes from $sp^{2}$ to $sp^{3}$ and the $\\pi$ electrons move onto the oxygen, giving an alkoxide.\n\n**Step 3 — protonation.** The alkoxide takes a proton from HCN, giving the cyanohydrin and regenerating $\\text{CN}^{-}$.\n\n$\\text{R}_{2}\\text{C}{=}\\text{O} + \\text{HCN} \\to \\text{R}_{2}\\text{C}(\\text{OH})\\text{CN}$\n\n**The base's role.** Pure HCN reacts extremely slowly; adding base speeds it up enormously, because the reaction depends on $[\\text{CN}^{-}]$, not on $[\\text{HCN}]$.\n\nThat kinetic observation is the evidence for the mechanism — the nucleophile is the ion, not the molecule.\n\n**Why cyanohydrins matter:** the nitrile can be hydrolysed to an $\\alpha$-hydroxy acid or reduced to an amine, so this one step lengthens the carbon chain and installs a new functional group.",
+      "marks": 3
+    },
+    {
+      "id": "ald-015",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Acidity",
+      "type": "long",
+      "q": "Explain why carboxylic acids are more acidic than phenols and alcohols.",
+      "solution": "**The comparison.** $\\text{p}K_{a}$: acetic acid $4.76$, phenol $10$, ethanol $16$.\n\n**Carboxylate resonance.** On losing a proton, the carboxylate's charge is shared between **two equivalent oxygen atoms**. The two resonance structures are identical, which gives the maximum possible stabilisation, and both C–O bonds become the same length — confirmed by X-ray measurements.\n\n**Phenoxide** delocalises its charge too, but onto **carbon** atoms of the ring, which hold a negative charge far less willingly, and those structures disrupt the aromatic sextet. The stabilisation is real but much weaker.\n\n**Alkoxide** has no delocalisation at all, and the alkyl group actually pushes electrons towards the already-negative oxygen, making things worse.\n\n**The principle.** The more the conjugate base is stabilised, the more readily the acid gives up its proton. Acidity is decided by what is left behind, not by the O–H bond itself.",
+      "marks": 2
+    }
+  ]
+}

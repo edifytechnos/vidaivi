@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12c-d-and-f-block",
+  "title": "The d- and f-Block Elements",
+  "chapter": "Chapter Test 4",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "dfb-001",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Transition elements",
+      "type": "mcq",
+      "q": "A transition element is defined as one that has:",
+      "solution": "A transition element has a **partly filled d subshell**, either in the atom or in a common ion.\n\nThis is why zinc, cadmium and mercury ($d^{10}s^{2}$, and $d^{10}$ in their only common oxidation state) are **not** counted as true transition metals — and why they are colourless and poorly catalytic.",
+      "marks": 1,
+      "options": [
+        "a completely filled d subshell",
+        "a partially filled d subshell in its ground state or in a common oxidation state",
+        "only s electrons",
+        "an empty d subshell"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "dfb-002",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Colour of transition metal ions",
+      "type": "mcq",
+      "q": "Transition metal ions are usually coloured because of:",
+      "solution": "In a ligand field the five d orbitals split, and an electron can absorb visible light to jump between them — a **d–d transition**. The colour seen is the complement of what is absorbed.\n\nIons with $d^{0}$ or $d^{10}$ configurations ($\\text{Sc}^{3+}$, $\\text{Zn}^{2+}$) have no such jump available and are **colourless**.",
+      "marks": 1,
+      "options": [
+        "s-s transitions",
+        "d-d transitions",
+        "nuclear transitions",
+        "their large size"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "dfb-003",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Lanthanoid contraction",
+      "type": "mcq",
+      "q": "The lanthanoid contraction is the:",
+      "solution": "Across the lanthanoids, electrons enter the inner **4f** orbitals, which shield the nuclear charge very poorly. The effective nuclear charge therefore grows and the radius **steadily shrinks**.\n\n**The consequence that matters:** Zr and Hf, and Nb and Ta, end up almost identical in size and are notoriously hard to separate. It also makes the third-row transition metals unexpectedly dense.",
+      "marks": 1,
+      "options": [
+        "increase in size across the lanthanoid series",
+        "steady decrease in size across the lanthanoid series",
+        "contraction of the nucleus",
+        "decrease in oxidation state"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "dfb-004",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Oxidation states",
+      "type": "mcq",
+      "q": "The highest oxidation state shown by manganese is:",
+      "solution": "Manganese is $3d^{5}4s^{2}$ — seven electrons available, so the maximum is $\\mathbf{+7}$, as in $\\text{KMnO}_{4}$.\n\nVariable oxidation states are a hallmark of the d block, because the $3d$ and $4s$ energies are so close that electrons can be removed from either.",
+      "marks": 1,
+      "options": [
+        "+2",
+        "+4",
+        "+7",
+        "+6"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "dfb-005",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Catalytic property",
+      "type": "mcq",
+      "q": "Transition metals are good catalysts mainly because they:",
+      "solution": "Two reasons, both structural: **variable oxidation states** let the metal accept and donate electrons in intermediate steps, and their surfaces **adsorb** reactants, holding them close and weakening their bonds.\n\nIron in the Haber process and vanadium pentoxide in the Contact process both work this way.",
+      "marks": 1,
+      "options": [
+        "are hard and dense",
+        "show variable oxidation states and provide a surface for adsorption",
+        "have high melting points",
+        "are coloured"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "dfb-006",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Unpaired electrons",
+      "type": "numeric",
+      "q": "Find the number of unpaired electrons in the $\\text{Fe}^{3+}$ ion. (Atomic number of Fe $= 26$.)",
+      "solution": "Fe is $[\\text{Ar}]3d^{6}4s^{2}$. Losing three electrons — $4s$ first, then one $3d$ — gives $\\text{Fe}^{3+} = [\\text{Ar}]3d^{5}$.\n\nFive d electrons occupy five orbitals singly (Hund's rule), so there are $\\mathbf{5}$ unpaired electrons.\n\nA half-filled $d^{5}$ shell is unusually stable, which is why $\\text{Fe}^{3+}$ is more stable than $\\text{Fe}^{2+}$ in aqueous solution.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "dfb-007",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Magnetic moment",
+      "type": "numeric",
+      "q": "Find the spin-only magnetic moment (in Bohr magnetons) for an ion with $2$ unpaired electrons, correct to two decimal places. Use $\\mu = \\sqrt{n(n+2)}$.",
+      "solution": "$\\mu = \\sqrt{2 \\times 4} = \\sqrt{8} = \\mathbf{2.83}$ BM.\n\nThe measured moment is how the number of unpaired electrons is found experimentally — and hence the oxidation state and geometry.",
+      "marks": 2,
+      "answer": 2.83,
+      "tolerance": 0.03
+    },
+    {
+      "id": "dfb-008",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Oxidation state",
+      "type": "numeric",
+      "q": "Find the oxidation state of manganese in $\\text{KMnO}_{4}$.",
+      "solution": "$\\text{K}$ is $+1$ and each $\\text{O}$ is $-2$.\n\n$1 + x + 4(-2) = 0 \\Rightarrow x = \\mathbf{+7}$ — the highest manganese reaches, which is why permanganate is such a strong oxidising agent.",
+      "marks": 2,
+      "answer": 7,
+      "tolerance": 0
+    },
+    {
+      "id": "dfb-009",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Oxidation state",
+      "type": "numeric",
+      "q": "Find the oxidation state of chromium in the dichromate ion $\\text{Cr}_{2}\\text{O}_{7}^{2-}$.",
+      "solution": "$2x + 7(-2) = -2 \\Rightarrow 2x = 12 \\Rightarrow x = \\mathbf{+6}$.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "dfb-010",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Unpaired electrons",
+      "type": "numeric",
+      "q": "Find the number of unpaired electrons in $\\text{Cu}^{2+}$. (Atomic number of Cu $= 29$.)",
+      "solution": "Cu is $[\\text{Ar}]3d^{10}4s^{1}$ (the anomalous configuration — a full d shell is worth the promotion).\n\n$\\text{Cu}^{2+}$ is $[\\text{Ar}]3d^{9}$, so one orbital holds a single electron: $\\mathbf{1}$ unpaired.\n\nThat single electron is why copper(II) salts are blue and copper(I) salts are colourless ($d^{10}$).",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "dfb-011",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "General properties",
+      "type": "long",
+      "q": "Explain why transition metals have high melting points, show variable oxidation states, and form coloured compounds.",
+      "solution": "**High melting points.** Both the $ns$ and the $(n-1)d$ electrons take part in metallic bonding, so the bonds are strong and numerous. The more unpaired d electrons, the stronger the bonding — which is why the melting points peak in the middle of each series (tungsten, at $3683$ K, is the highest of any metal).\n\nZinc, cadmium and mercury, with no unpaired d electrons, are the exceptions: mercury is liquid at room temperature.\n\n**Variable oxidation states.** The $3d$ and $4s$ energies are very close, so electrons can be removed from either shell with little difference in cost. The states differ by one unit, unlike the p block where they differ by two.\n\n**Coloured compounds.** In a complex the d orbitals split by an energy corresponding to visible light. An electron absorbs a photon and jumps the gap; the transmitted light is the complement of what was absorbed.\n\nThe size of the gap depends on the ligand, which is why the same metal gives different colours with different ligands — $[\\text{Cu}(\\text{H}_{2}\\text{O})_{4}]^{2+}$ is pale blue while $[\\text{Cu}(\\text{NH}_{3})_{4}]^{2+}$ is deep blue.",
+      "marks": 3
+    },
+    {
+      "id": "dfb-012",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Lanthanoid contraction",
+      "type": "long",
+      "q": "What is lanthanoid contraction? State its cause and two of its consequences.",
+      "solution": "**What it is.** A steady decrease in atomic and ionic radii from La to Lu across the lanthanoid series, in spite of the growing number of electrons.\n\n**Cause.** The added electrons go into **4f** orbitals, which are diffuse and shield the nucleus very poorly. Each step adds a proton whose pull is barely offset, so the effective nuclear charge rises and every shell is drawn in.\n\n**Consequences.**\n\n1. **Second and third transition series resemble each other closely.** Zr ($160$ pm) and Hf ($159$ pm) are almost the same size and chemically near-identical, and separating them is one of the harder problems in inorganic chemistry. The same holds for Nb/Ta and Mo/W.\n\n2. **Basicity of the hydroxides falls** from $\\text{La}(\\text{OH})_{3}$ to $\\text{Lu}(\\text{OH})_{3}$, as the smaller, more charge-dense ions hold the hydroxide more tightly.\n\n3. The small, regular size difference is what makes **ion-exchange separation** of the individual lanthanoids possible at all.",
+      "marks": 3
+    },
+    {
+      "id": "dfb-013",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Potassium permanganate",
+      "type": "long",
+      "q": "Describe the preparation of potassium permanganate from pyrolusite, and write its reaction with acidified ferrous sulphate.",
+      "solution": "**Step 1 — fusion.** Pyrolusite ($\\text{MnO}_{2}$) is fused with $\\text{KOH}$ in the presence of air or an oxidising agent such as $\\text{KNO}_{3}$, giving green potassium manganate:\n\n$2\\text{MnO}_{2} + 4\\text{KOH} + \\text{O}_{2} \\to 2\\text{K}_{2}\\text{MnO}_{4} + 2\\text{H}_{2}\\text{O}$\n\n**Step 2 — oxidation.** The manganate(VI) is oxidised to permanganate(VII), electrolytically or with chlorine or ozone:\n\n$3\\text{MnO}_{4}^{2-} + 4\\text{H}^{+} \\to 2\\text{MnO}_{4}^{-} + \\text{MnO}_{2} + 2\\text{H}_{2}\\text{O}$\n\n(a disproportionation: manganese goes both up to $+7$ and down to $+4$). The purple solution is crystallised out.\n\n**With acidified ferrous sulphate.** In acid, permanganate is reduced to $\\text{Mn}^{2+}$ and takes five electrons:\n\n$\\text{MnO}_{4}^{-} + 8\\text{H}^{+} + 5e^{-} \\to \\text{Mn}^{2+} + 4\\text{H}_{2}\\text{O}$\n\n$\\text{Fe}^{2+} \\to \\text{Fe}^{3+} + e^{-}$\n\n**Overall:**\n\n$\\text{MnO}_{4}^{-} + 5\\text{Fe}^{2+} + 8\\text{H}^{+} \\to \\text{Mn}^{2+} + 5\\text{Fe}^{3+} + 4\\text{H}_{2}\\text{O}$\n\nThe purple colour vanishes as $\\text{Mn}^{2+}$ forms, which is why permanganate is a **self-indicating** titrant — the first drop of excess turns the flask pink.",
+      "marks": 5
+    },
+    {
+      "id": "dfb-014",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Actinoids",
+      "type": "long",
+      "q": "Give three ways in which the actinoids differ from the lanthanoids.",
+      "solution": "1. **Range of oxidation states.** Lanthanoids are overwhelmingly $+3$; actinoids show $+3$ to $+7$ (uranium reaches $+6$, neptunium $+7$), because the $5f$, $6d$ and $7s$ energies are much closer together than the corresponding lanthanoid levels.\n\n2. **Radioactivity.** All actinoids are radioactive, and those beyond uranium do not occur in nature at all; the lanthanoids (bar promethium) are stable.\n\n3. **Greater tendency to complex formation,** because the actinoid ions are larger and more highly charged.\n\n4. **Actinoid contraction is sharper** than the lanthanoid contraction, since $5f$ electrons shield even more poorly than $4f$.\n\n5. Their chemistry is far harder to study — the elements are scarce, intensely radioactive and often available only in microgram quantities.",
+      "marks": 3
+    },
+    {
+      "id": "dfb-015",
+      "chapter": "The d- and f-Block Elements",
+      "topic": "Interstitial compounds",
+      "type": "long",
+      "q": "What are interstitial compounds? Why are transition metals so good at forming them, and how does this change their properties?",
+      "solution": "**What they are.** Compounds in which small atoms — H, C, N, B — occupy the **gaps (interstices)** in the metal's crystal lattice, without changing its basic structure.\n\nThey are usually **non-stoichiometric**, with formulae such as $\\text{TiC}$, $\\text{Fe}_{3}\\text{H}$, $\\text{VH}_{0.56}$ — a sign that they are not ordinary valence compounds.\n\n**Why transition metals.** Their lattices have interstices of just the right size, and their metallic bonding is unaffected by a guest atom slipping in.\n\n**Changed properties.**\n\n1. **Much harder** — the trapped atoms block the planes from sliding over one another. Steel is iron with carbon in the interstices, and tungsten carbide cuts steel.\n\n2. **Higher melting point** than the pure metal.\n\n3. **Metallic conductivity is retained**, unlike in a salt.\n\n4. **Chemically inert.**\n\nInterstitial hydrides are also the reason some transition metals catalyse hydrogenation: the hydrogen is taken into the surface and its bond weakened before it ever meets the substrate.",
+      "marks": 2
+    }
+  ]
+}

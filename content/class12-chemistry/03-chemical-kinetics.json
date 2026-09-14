@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12c-kinetics",
+  "title": "Chemical Kinetics",
+  "chapter": "Chapter Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "kin-001",
+      "chapter": "Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "mcq",
+      "q": "The order of a reaction is:",
+      "solution": "Order is the **sum of the exponents** in the experimentally determined rate law.\n\nIt can be zero, fractional or even negative, and it is found by experiment — never read off the balanced equation. **Molecularity**, by contrast, is a theoretical count for a single elementary step and must be a whole number.",
+      "marks": 1,
+      "options": [
+        "always equal to the molecularity",
+        "the sum of the powers of the concentration terms in the rate law",
+        "always a whole number",
+        "the number of reactant molecules"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "kin-002",
+      "chapter": "Chemical Kinetics",
+      "topic": "First order reactions",
+      "type": "mcq",
+      "q": "For a first order reaction, the half-life:",
+      "solution": "$t_{1/2} = \\dfrac{0.693}{k}$ — no concentration term at all.\n\nStart with a kilogram or a milligram and half of it is gone in the same time. This is what makes radioactive decay (first order) so useful for dating.",
+      "marks": 1,
+      "options": [
+        "depends on the initial concentration",
+        "is independent of the initial concentration",
+        "doubles with concentration",
+        "is zero"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "kin-003",
+      "chapter": "Chemical Kinetics",
+      "topic": "Units of rate constant",
+      "type": "mcq",
+      "q": "The units of the rate constant for a first order reaction are:",
+      "solution": "For order $n$, the units of $k$ are $\\left(\\text{mol L}^{-1}\\right)^{1-n}\\text{s}^{-1}$.\n\nFor $n = 1$ this is simply $\\mathbf{\\text{s}^{-1}}$ — which is a quick way to identify the order from a given rate constant.",
+      "marks": 1,
+      "options": [
+        "mol L$^{-1}$s$^{-1}$",
+        "s$^{-1}$",
+        "L mol$^{-1}$s$^{-1}$",
+        "L$^{2}$mol$^{-2}$s$^{-1}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "kin-004",
+      "chapter": "Chemical Kinetics",
+      "topic": "Arrhenius equation",
+      "type": "mcq",
+      "q": "According to the Arrhenius equation, the rate constant increases with temperature because:",
+      "solution": "$k = Ae^{-E_{a}/RT}$.\n\nHeating does not lower $E_{a}$; it shifts the **Maxwell–Boltzmann distribution** so that a far larger fraction of molecules carries enough energy to get over the barrier.\n\nThat exponential is why a $10$ K rise roughly doubles many reaction rates, while the collision frequency itself rises only a few per cent.",
+      "marks": 1,
+      "options": [
+        "the activation energy decreases",
+        "a larger fraction of molecules has energy above the activation energy",
+        "the collision frequency doubles",
+        "the order of the reaction changes"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "kin-005",
+      "chapter": "Chemical Kinetics",
+      "topic": "Catalyst",
+      "type": "mcq",
+      "q": "A catalyst increases the rate of a reaction by:",
+      "solution": "A catalyst offers a **different route with a lower $E_{a}$**, so more molecules can make the journey.\n\nIt does **not** move the equilibrium position: it lowers the barrier for both the forward and the reverse reaction equally, so equilibrium is reached sooner but at the same place. $\\Delta G$ is untouched.",
+      "marks": 1,
+      "options": [
+        "increasing the energy of the reactants",
+        "providing an alternative path of lower activation energy",
+        "shifting the equilibrium to the right",
+        "raising the temperature"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "kin-006",
+      "chapter": "Chemical Kinetics",
+      "topic": "First order half-life",
+      "type": "numeric",
+      "q": "A first order reaction has $k = 0.0693$ min$^{-1}$. Find its half-life, in minutes.",
+      "solution": "$t_{1/2} = \\dfrac{0.693}{k} = \\dfrac{0.693}{0.0693} = \\mathbf{10}$ minutes.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.1
+    },
+    {
+      "id": "kin-007",
+      "chapter": "Chemical Kinetics",
+      "topic": "Fraction remaining",
+      "type": "numeric",
+      "q": "A first order reaction has a half-life of $20$ minutes. What fraction of the reactant remains after $60$ minutes?",
+      "solution": "Three half-lives: $1 \\to \\tfrac12 \\to \\tfrac14 \\to \\tfrac18 = \\mathbf{0.125}$.",
+      "marks": 2,
+      "answer": 0.125,
+      "tolerance": 0.005
+    },
+    {
+      "id": "kin-008",
+      "chapter": "Chemical Kinetics",
+      "topic": "Rate law",
+      "type": "numeric",
+      "q": "For a reaction, rate $= k[A]^{2}[B]$. If $[A]$ is doubled and $[B]$ is halved, by what factor does the rate change?",
+      "solution": "Rate $\\propto [A]^{2}[B]$.\n\n$[A]$ doubled contributes $2^{2} = 4$; $[B]$ halved contributes $\\tfrac12$.\n\n$4 \\times \\tfrac12 = \\mathbf{2}$ — the rate doubles.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "kin-009",
+      "chapter": "Chemical Kinetics",
+      "topic": "Zero order",
+      "type": "numeric",
+      "q": "A zero order reaction has $k = 0.02$ mol L$^{-1}$s$^{-1}$ and an initial concentration of $0.5$ mol/L. Find the time (in s) for the reaction to go to completion.",
+      "solution": "For zero order, the concentration falls linearly: $[A] = [A]_{0} - kt$.\n\nCompletion means $[A] = 0$, so $t = \\dfrac{[A]_{0}}{k} = \\dfrac{0.5}{0.02} = \\mathbf{25}$ s.\n\nA zero order reaction is the only kind that truly finishes — a first order one only approaches zero.",
+      "marks": 2,
+      "answer": 25,
+      "tolerance": 0.5
+    },
+    {
+      "id": "kin-010",
+      "chapter": "Chemical Kinetics",
+      "topic": "Order from units",
+      "type": "numeric",
+      "q": "The rate constant of a reaction has units L mol$^{-1}$s$^{-1}$. What is the order of the reaction?",
+      "solution": "The general form is $\\left(\\text{mol L}^{-1}\\right)^{1-n}\\text{s}^{-1}$.\n\nMatching $\\text{L mol}^{-1}$ means $1 - n = -1$, so $n = \\mathbf{2}$ — second order.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "kin-011",
+      "chapter": "Chemical Kinetics",
+      "topic": "First order integrated rate law",
+      "type": "long",
+      "q": "Derive the integrated rate equation for a first order reaction and show that its half-life is independent of the initial concentration.",
+      "solution": "**Rate law.** $-\\dfrac{d[A]}{dt} = k[A]$.\n\n**Separate and integrate** from $[A]_{0}$ at $t = 0$ to $[A]$ at time $t$:\n\n$\\displaystyle\\int_{[A]_{0}}^{[A]}\\dfrac{d[A]}{[A]} = -k\\int_{0}^{t}dt$\n\n$\\log_{e}\\dfrac{[A]}{[A]_{0}} = -kt$, or\n\n$\\mathbf{k = \\dfrac{2.303}{t}\\log\\dfrac{[A]_{0}}{[A]}}$.\n\n**Half-life.** Put $[A] = \\dfrac{[A]_{0}}{2}$:\n\n$k = \\dfrac{2.303}{t_{1/2}}\\log 2 = \\dfrac{0.693}{t_{1/2}} \\Rightarrow t_{1/2} = \\dfrac{0.693}{k}$.\n\n$[A]_{0}$ has cancelled out entirely, so the half-life does not depend on how much you started with. ∎\n\nA plot of $\\log[A]$ against $t$ is a straight line of slope $-\\dfrac{k}{2.303}$ — which is how first order kinetics is confirmed in practice.",
+      "marks": 3
+    },
+    {
+      "id": "kin-012",
+      "chapter": "Chemical Kinetics",
+      "topic": "Order and molecularity",
+      "type": "long",
+      "q": "Distinguish between order and molecularity of a reaction, with an example of a reaction whose order is not equal to its molecularity.",
+      "solution": "**Order** — experimental, the sum of the powers in the rate law. May be zero, fractional or negative. Applies to an overall reaction.\n\n**Molecularity** — theoretical, the number of species colliding in **one elementary step**. Always a positive whole number, and never more than 3 in practice (a four-body collision is vanishingly unlikely).\n\n**Example — acid hydrolysis of an ester:**\n\n$\\text{CH}_{3}\\text{COOC}_{2}\\text{H}_{5} + \\text{H}_{2}\\text{O} \\to \\text{CH}_{3}\\text{COOH} + \\text{C}_{2}\\text{H}_{5}\\text{OH}$\n\nTwo molecules react, so the molecularity is 2, but water is present in such vast excess that its concentration never measurably changes. The rate depends only on the ester:\n\nrate $= k'[\\text{ester}]$ — **order 1**, a *pseudo first order* reaction.\n\nFor a multi-step reaction, molecularity has no meaning at all for the overall change; only the individual steps have one. The order comes from the **slowest** step.",
+      "marks": 3
+    },
+    {
+      "id": "kin-013",
+      "chapter": "Chemical Kinetics",
+      "topic": "Arrhenius equation",
+      "type": "long",
+      "q": "State the Arrhenius equation, explain each term, and show how $E_{a}$ can be found graphically. The rate constant doubles when the temperature rises from $300$ K to $310$ K — estimate $E_{a}$. (Take $R = 8.314$ J K$^{-1}$mol$^{-1}$, $\\log 2 = 0.301$.)",
+      "solution": "**The equation.** $k = Ae^{-E_{a}/RT}$, where $A$ is the frequency factor (collisions with the right orientation) and $e^{-E_{a}/RT}$ is the fraction of collisions energetic enough to react.\n\n**Graphical form.** Taking logarithms:\n\n$\\log k = \\log A - \\dfrac{E_{a}}{2.303RT}$.\n\nA plot of $\\log k$ against $\\dfrac{1}{T}$ is a **straight line** of slope $-\\dfrac{E_{a}}{2.303R}$ and intercept $\\log A$.\n\n**Two-temperature form:**\n\n$\\log\\dfrac{k_{2}}{k_{1}} = \\dfrac{E_{a}}{2.303R}\\left[\\dfrac{T_{2} - T_{1}}{T_{1}T_{2}}\\right]$.\n\n**Substituting** $\\dfrac{k_{2}}{k_{1}} = 2$, $T_{1} = 300$, $T_{2} = 310$:\n\n$0.301 = \\dfrac{E_{a}}{2.303 \\times 8.314} \\times \\dfrac{10}{93000}$\n\n$E_{a} = \\dfrac{0.301 \\times 2.303 \\times 8.314 \\times 93000}{10} \\approx \\mathbf{53.6}$ kJ/mol.\n\nThat is a very ordinary activation energy — and it is the reason the rough rule 'rate doubles for every $10$ K' holds so often around room temperature.",
+      "marks": 5
+    },
+    {
+      "id": "kin-014",
+      "chapter": "Chemical Kinetics",
+      "topic": "Collision theory",
+      "type": "long",
+      "q": "State the main postulates of collision theory and explain why not every collision leads to reaction.",
+      "solution": "**Postulates.**\n\n1. Molecules must **collide** for a reaction to occur.\n\n2. Only collisions with energy at least $E_{a}$ — **effective collisions** — can react.\n\n3. The colliding molecules must also be **correctly oriented** for the bonds to form and break.\n\nHence rate $= P \\times Z \\times e^{-E_{a}/RT}$, where $Z$ is the collision frequency and $P$ the steric factor.\n\n**Why most collisions fail.** At ordinary temperatures only a tiny fraction of molecules carry energy above $E_{a}$, and of those, many meet the wrong way round.\n\nThe numbers make the point: a gas undergoes about $10^{30}$ collisions per litre per second. If every one reacted, every reaction would be over instantly. Most reactions take minutes — so the overwhelming majority of collisions achieve nothing at all.\n\nTwo cars meeting is not enough for the passengers to shake hands: they must meet hard enough to stop, and be facing the right way.",
+      "marks": 3
+    },
+    {
+      "id": "kin-015",
+      "chapter": "Chemical Kinetics",
+      "topic": "Rate of reaction",
+      "type": "long",
+      "q": "For the reaction $2\\text{N}_{2}\\text{O}_{5} \\to 4\\text{NO}_{2} + \\text{O}_{2}$, write the rate of reaction in terms of each species.",
+      "solution": "Divide each rate of change by the species' stoichiometric coefficient, with a minus sign for reactants:\n\n$\\text{Rate} = -\\dfrac{1}{2}\\dfrac{d[\\text{N}_{2}\\text{O}_{5}]}{dt} = +\\dfrac{1}{4}\\dfrac{d[\\text{NO}_{2}]}{dt} = +\\dfrac{d[\\text{O}_{2}]}{dt}$.\n\n**Why the coefficients are needed:** $\\text{NO}_{2}$ appears four times as fast as $\\text{O}_{2}$, so without dividing, the same reaction would have four different 'rates'.\n\nSo if oxygen forms at $0.01$ mol L$^{-1}$s$^{-1}$, then $\\text{NO}_{2}$ forms at $0.04$ and $\\text{N}_{2}\\text{O}_{5}$ disappears at $0.02$ mol L$^{-1}$s$^{-1}$.",
+      "marks": 2
+    }
+  ]
+}

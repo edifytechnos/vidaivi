@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12c-electrochemistry",
+  "title": "Electrochemistry",
+  "chapter": "Chapter Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "ele-001",
+      "chapter": "Electrochemistry",
+      "topic": "Galvanic cell",
+      "type": "mcq",
+      "q": "In a galvanic cell, oxidation takes place at the:",
+      "solution": "Oxidation is always at the **anode**, reduction at the cathode — in every cell, galvanic or electrolytic.\n\nWhat changes is the sign: in a galvanic cell the anode is negative, in an electrolytic cell it is positive.\n\nRemember **AN OX** and **RED CAT**: ANode OXidation, REDuction at the CAThode.",
+      "marks": 1,
+      "options": [
+        "cathode",
+        "anode",
+        "salt bridge",
+        "both electrodes"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ele-002",
+      "chapter": "Electrochemistry",
+      "topic": "Standard hydrogen electrode",
+      "type": "mcq",
+      "q": "The standard electrode potential of the standard hydrogen electrode is taken as:",
+      "solution": "It is defined as exactly **zero** at all temperatures — it is the reference point, not a measurement.\n\nEvery other electrode potential is quoted relative to it, in the same way that every altitude is quoted relative to sea level.",
+      "marks": 1,
+      "options": [
+        "1 V",
+        "0 V",
+        "0.76 V",
+        "-0.76 V"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ele-003",
+      "chapter": "Electrochemistry",
+      "topic": "Nernst equation",
+      "type": "mcq",
+      "q": "The Nernst equation at $298$ K for a cell reaction involving $n$ electrons is:",
+      "solution": "$E = \\mathbf{E^{0} - \\dfrac{0.059}{n}\\log Q}$ at $298$ K.\n\nIt says how the cell voltage drifts as the reaction proceeds and the concentrations change — and when $E$ reaches zero the cell is dead, which is equilibrium.",
+      "marks": 1,
+      "options": [
+        "$E = E^{0} - \\dfrac{0.059}{n}\\log Q$",
+        "$E = E^{0} + \\dfrac{0.059}{n}\\log Q$",
+        "$E = E^{0} - 0.059\\,n\\log Q$",
+        "$E = E^{0}\\log Q$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "ele-004",
+      "chapter": "Electrochemistry",
+      "topic": "Conductivity",
+      "type": "mcq",
+      "q": "On dilution, the molar conductivity of a strong electrolyte:",
+      "solution": "Molar conductivity $\\Lambda_{m}$ **increases slightly** on dilution for a strong electrolyte, because the ions get further apart and interfere with each other less.\n\nFor a **weak** electrolyte it rises **sharply**, because dilution greatly increases the degree of dissociation — more ions, not just freer ones.\n\n**Conductivity** $\\kappa$ (as opposed to molar conductivity) always falls on dilution: fewer ions per unit volume.",
+      "marks": 1,
+      "options": [
+        "decreases",
+        "increases slightly",
+        "increases sharply",
+        "stays constant"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ele-005",
+      "chapter": "Electrochemistry",
+      "topic": "Faraday's laws",
+      "type": "mcq",
+      "q": "One faraday of charge is approximately:",
+      "solution": "$1\\text{ F} = \\mathbf{96500}$ C, the charge on one mole of electrons ($N_{A} \\times e$).\n\nIt is the exchange rate between electricity and chemistry: this many coulombs deposits exactly one mole of a singly charged metal.",
+      "marks": 1,
+      "options": [
+        "96500 C",
+        "6500 C",
+        "1600 C",
+        "9650 C"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "ele-006",
+      "chapter": "Electrochemistry",
+      "topic": "Cell potential",
+      "type": "numeric",
+      "q": "Find the standard cell potential (in V) for $\\text{Zn}\\mid\\text{Zn}^{2+}\\parallel\\text{Cu}^{2+}\\mid\\text{Cu}$, given $E^{0}_{\\text{Zn}^{2+}/\\text{Zn}} = -0.76$ V and $E^{0}_{\\text{Cu}^{2+}/\\text{Cu}} = +0.34$ V.",
+      "solution": "$E^{0}_{\\text{cell}} = E^{0}_{\\text{cathode}} - E^{0}_{\\text{anode}} = 0.34 - (-0.76) = \\mathbf{1.10}$ V.\n\nPositive, so the reaction is spontaneous — this is the Daniell cell.",
+      "marks": 2,
+      "answer": 1.1,
+      "tolerance": 0.02
+    },
+    {
+      "id": "ele-007",
+      "chapter": "Electrochemistry",
+      "topic": "Faraday's first law",
+      "type": "numeric",
+      "q": "Find the mass of copper (in g) deposited when $0.5$ F of charge passes through a $\\text{CuSO}_{4}$ solution. (Atomic mass of Cu $= 63.5$; $\\text{Cu}^{2+} + 2e^{-} \\to \\text{Cu}$.)",
+      "solution": "Two faradays deposit one mole ($63.5$ g), so one faraday deposits $31.75$ g.\n\n$0.5$ F deposits $0.5 \\times 31.75 = \\mathbf{15.875}$ g.",
+      "marks": 2,
+      "answer": 15.875,
+      "tolerance": 0.05
+    },
+    {
+      "id": "ele-008",
+      "chapter": "Electrochemistry",
+      "topic": "Gibbs energy",
+      "type": "numeric",
+      "q": "Find $\\Delta G^{0}$ (in kJ/mol, give the magnitude) for a cell with $E^{0} = 1$ V and $n = 2$. Take $F = 96500$ C/mol.",
+      "solution": "$\\Delta G^{0} = -nFE^{0} = -2 \\times 96500 \\times 1 = -193000$ J/mol $= -193$ kJ/mol.\n\nThe magnitude is $\\mathbf{193}$ kJ/mol. The negative sign says the reaction is spontaneous — a positive cell voltage and a negative $\\Delta G$ are the same statement.",
+      "marks": 2,
+      "answer": 193,
+      "tolerance": 1
+    },
+    {
+      "id": "ele-009",
+      "chapter": "Electrochemistry",
+      "topic": "Conductivity",
+      "type": "numeric",
+      "q": "A solution has conductivity $0.025$ S/cm and concentration $0.5$ mol/L. Find its molar conductivity, in S cm$^{2}$/mol.",
+      "solution": "$\\Lambda_{m} = \\dfrac{\\kappa \\times 1000}{C} = \\dfrac{0.025 \\times 1000}{0.5} = \\mathbf{50}$ S cm$^{2}$/mol.\n\nThe factor of $1000$ converts litres to cubic centimetres — the commonest slip in this calculation.",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 0.5
+    },
+    {
+      "id": "ele-010",
+      "chapter": "Electrochemistry",
+      "topic": "Charge and time",
+      "type": "numeric",
+      "q": "A current of $2$ A flows for $965$ s through an electrolyte. Find the charge passed, in coulombs.",
+      "solution": "$Q = It = 2 \\times 965 = \\mathbf{1930}$ C, which is $\\dfrac{1930}{96500} = 0.02$ F.",
+      "marks": 2,
+      "answer": 1930,
+      "tolerance": 5
+    },
+    {
+      "id": "ele-011",
+      "chapter": "Electrochemistry",
+      "topic": "Galvanic cell",
+      "type": "long",
+      "q": "Describe the construction and working of a Daniell cell, and explain the function of the salt bridge.",
+      "solution": "**Construction.** A zinc rod in $\\text{ZnSO}_{4}$ solution and a copper rod in $\\text{CuSO}_{4}$ solution, the two half-cells joined by a salt bridge and the electrodes by an external wire.\n\n**At the anode (zinc, negative):** $\\text{Zn} \\to \\text{Zn}^{2+} + 2e^{-}$ — oxidation. The rod slowly dissolves.\n\n**At the cathode (copper, positive):** $\\text{Cu}^{2+} + 2e^{-} \\to \\text{Cu}$ — reduction. Copper plates out.\n\n**Overall:** $\\text{Zn} + \\text{Cu}^{2+} \\to \\text{Zn}^{2+} + \\text{Cu}$, with $E^{0}_{\\text{cell}} = 1.10$ V.\n\nElectrons flow through the wire from zinc to copper.\n\n**The salt bridge** (a U-tube of $\\text{KCl}$ in agar) does two things:\n\n1. **Completes the circuit**, letting ions carry the current between the solutions.\n\n2. **Keeps both solutions electrically neutral.** Without it the anode compartment would build up positive charge and the cathode compartment negative charge, and the reaction would stop almost at once.\n\n$\\text{KCl}$ is chosen because $\\text{K}^{+}$ and $\\text{Cl}^{-}$ move at nearly the same speed, so the bridge introduces no extra potential of its own.",
+      "marks": 3
+    },
+    {
+      "id": "ele-012",
+      "chapter": "Electrochemistry",
+      "topic": "Nernst equation",
+      "type": "long",
+      "q": "Write the Nernst equation for the Daniell cell and find the cell potential when $[\\text{Zn}^{2+}] = 0.1$ M and $[\\text{Cu}^{2+}] = 0.01$ M.",
+      "solution": "For $\\text{Zn} + \\text{Cu}^{2+} \\to \\text{Zn}^{2+} + \\text{Cu}$ with $n = 2$:\n\n$E = E^{0} - \\dfrac{0.059}{2}\\log\\dfrac{[\\text{Zn}^{2+}]}{[\\text{Cu}^{2+}]}$.\n\nSolids do not appear in $Q$ — only the dissolved ions.\n\n$\\dfrac{[\\text{Zn}^{2+}]}{[\\text{Cu}^{2+}]} = \\dfrac{0.1}{0.01} = 10$, and $\\log 10 = 1$.\n\n$E = 1.10 - \\dfrac{0.059}{2}(1) = 1.10 - 0.0295 = \\mathbf{1.07}$ V.\n\nThe cell is slightly weaker than standard, because the product ion is already ten times more concentrated than the reactant — the reaction has less far to go.",
+      "marks": 3
+    },
+    {
+      "id": "ele-013",
+      "chapter": "Electrochemistry",
+      "topic": "Kohlrausch's law and electrolysis",
+      "type": "long",
+      "q": "State Kohlrausch's law and use it to find $\\Lambda^{0}_{m}$ for acetic acid, given $\\Lambda^{0}_{m}$ values: $\\text{HCl} = 426$, $\\text{CH}_{3}\\text{COONa} = 91$, $\\text{NaCl} = 126$ S cm$^{2}$/mol.",
+      "solution": "**Kohlrausch's law.** At infinite dilution, each ion contributes a fixed amount to the molar conductivity, independent of the other ion it came with:\n\n$\\Lambda^{0}_{m} = \\nu_{+}\\lambda^{0}_{+} + \\nu_{-}\\lambda^{0}_{-}$.\n\nThat independence is what makes the following arithmetic legal.\n\n**The combination.** Acetic acid is $\\text{H}^{+} + \\text{CH}_{3}\\text{COO}^{-}$, and these can be assembled from the three known salts:\n\n$\\Lambda^{0}(\\text{CH}_{3}\\text{COOH}) = \\Lambda^{0}(\\text{HCl}) + \\Lambda^{0}(\\text{CH}_{3}\\text{COONa}) - \\Lambda^{0}(\\text{NaCl})$\n\n**Check the ions cancel:** $(\\text{H}^{+} + \\text{Cl}^{-}) + (\\text{CH}_{3}\\text{COO}^{-} + \\text{Na}^{+}) - (\\text{Na}^{+} + \\text{Cl}^{-}) = \\text{H}^{+} + \\text{CH}_{3}\\text{COO}^{-}$. ✓\n\n$= 426 + 91 - 126 = \\mathbf{391}$ S cm$^{2}$/mol.\n\n**Why this matters.** Acetic acid is a weak electrolyte, so $\\Lambda^{0}_{m}$ can never be measured directly — the solution would have to be infinitely dilute. Kohlrausch's law reaches it by a detour through strong electrolytes, and once you have it, $\\alpha = \\dfrac{\\Lambda_{m}}{\\Lambda^{0}_{m}}$ gives the degree of dissociation at any concentration.",
+      "marks": 5
+    },
+    {
+      "id": "ele-014",
+      "chapter": "Electrochemistry",
+      "topic": "Electrolysis",
+      "type": "long",
+      "q": "State Faraday's two laws of electrolysis and calculate the mass of silver deposited by a current of $1.5$ A flowing for $10$ minutes through $\\text{AgNO}_{3}$ solution. (Atomic mass of Ag $= 108$.)",
+      "solution": "**First law.** The mass deposited is proportional to the quantity of charge passed: $w \\propto Q = It$.\n\n**Second law.** When the same charge is passed through different electrolytes, the masses deposited are in the ratio of their equivalent masses.\n\n**Calculation.**\n\n$Q = It = 1.5 \\times 600 = 900$ C.\n\n$\\text{Ag}^{+} + e^{-} \\to \\text{Ag}$, so one faraday deposits one mole:\n\n$w = \\dfrac{Q}{F} \\times M = \\dfrac{900}{96500} \\times 108 = \\mathbf{1.007}$ g.\n\nSilver is the convenient case because $n = 1$; for copper ($n = 2$) you would divide by two as well.",
+      "marks": 3
+    },
+    {
+      "id": "ele-015",
+      "chapter": "Electrochemistry",
+      "topic": "Corrosion",
+      "type": "long",
+      "q": "Explain the electrochemical theory of the rusting of iron and give two methods of preventing it.",
+      "solution": "**The mechanism.** A drop of water on iron sets up a tiny galvanic cell on the surface.\n\n**Anode** (a strained or impure spot): $\\text{Fe} \\to \\text{Fe}^{2+} + 2e^{-}$.\n\n**Cathode** (where oxygen reaches the surface, at the drop's edge):\n\n$\\text{O}_{2} + 4\\text{H}^{+} + 4e^{-} \\to 2\\text{H}_{2}\\text{O}$.\n\nThe $\\text{Fe}^{2+}$ is then oxidised further by atmospheric oxygen to hydrated ferric oxide, $\\text{Fe}_{2}\\text{O}_{3}\\cdot x\\text{H}_{2}\\text{O}$ — rust.\n\nRust is flaky rather than adherent, so it does not protect the metal beneath, and the attack continues inwards. (Aluminium's oxide, by contrast, is coherent and protects it.)\n\n**Prevention.**\n\n1. **Barrier coatings** — paint, grease, or electroplating, which keep water and oxygen away.\n\n2. **Galvanising / cathodic protection** — a coating of zinc, or a block of zinc or magnesium bolted to the structure. These metals are more easily oxidised than iron, so they corrode instead and the iron is kept cathodic. The **sacrificial anode** protects even where the coating is scratched, which is why galvanising beats painting for ships and pipelines.",
+      "marks": 2
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12c-solutions",
+  "title": "Solutions",
+  "chapter": "Chapter Test 1",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "sol-001",
+      "chapter": "Solutions",
+      "topic": "Concentration terms",
+      "type": "mcq",
+      "q": "Molality is defined as the number of moles of solute per:",
+      "solution": "Molality $= \\dfrac{\\text{moles of solute}}{\\text{kg of \\textbf{solvent}}}$.\n\nUnlike molarity it uses **mass**, not volume, so it does not change with temperature — which is why every colligative-property formula is written in molality.",
+      "marks": 1,
+      "options": [
+        "litre of solution",
+        "kilogram of solvent",
+        "litre of solvent",
+        "kilogram of solution"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "sol-002",
+      "chapter": "Solutions",
+      "topic": "Raoult's law",
+      "type": "mcq",
+      "q": "For an ideal solution of two volatile liquids, the total vapour pressure is:",
+      "solution": "Raoult's law: each component contributes in proportion to its **own** mole fraction in the liquid.\n\n$p_{\\text{total}} = \\mathbf{p_{A}^{0}x_{A} + p_{B}^{0}x_{B}}$.\n\nA room half full of people from each of two towns: each town contributes its share of the noise.",
+      "marks": 1,
+      "options": [
+        "$p_{A}^{0}x_{A} + p_{B}^{0}x_{B}$",
+        "$p_{A}^{0} + p_{B}^{0}$",
+        "$p_{A}^{0}x_{B} + p_{B}^{0}x_{A}$",
+        "$\\dfrac{p_{A}^{0}p_{B}^{0}}{x_{A} + x_{B}}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "sol-003",
+      "chapter": "Solutions",
+      "topic": "Colligative properties",
+      "type": "mcq",
+      "q": "Which of these is **not** a colligative property?",
+      "solution": "Colligative properties depend only on the **number** of solute particles, not on what they are: relative lowering of vapour pressure, elevation of boiling point, depression of freezing point, osmotic pressure.\n\n**Optical rotation** depends entirely on the identity and structure of the molecule, so it is not colligative.",
+      "marks": 1,
+      "options": [
+        "Elevation of boiling point",
+        "Depression of freezing point",
+        "Optical rotation",
+        "Osmotic pressure"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "sol-004",
+      "chapter": "Solutions",
+      "topic": "van't Hoff factor",
+      "type": "mcq",
+      "q": "The van't Hoff factor for $\\text{NaCl}$ in dilute aqueous solution, assuming complete dissociation, is:",
+      "solution": "$\\text{NaCl} \\to \\text{Na}^{+} + \\text{Cl}^{-}$ — one formula unit gives **two** particles, so $i = \\mathbf{2}$.\n\nFor $\\text{CaCl}_{2}$ it would be 3. Association, as with acetic acid in benzene, makes $i$ **less** than 1.",
+      "marks": 1,
+      "options": [
+        "1",
+        "2",
+        "3",
+        "0.5"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "sol-005",
+      "chapter": "Solutions",
+      "topic": "Henry's law",
+      "type": "mcq",
+      "q": "According to Henry's law, the solubility of a gas in a liquid:",
+      "solution": "$p = K_{H}x$ — the partial pressure of the gas is proportional to its mole fraction in solution.\n\nIt is why a fizzy drink releases gas the moment the cap is opened, and why divers get the bends coming up too fast.\n\nSolubility of a gas **decreases** with temperature, which is why warm soda goes flat quickly.",
+      "marks": 1,
+      "options": [
+        "increases with temperature",
+        "is proportional to its partial pressure",
+        "is independent of pressure",
+        "is proportional to the square of pressure"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "sol-006",
+      "chapter": "Solutions",
+      "topic": "Molarity",
+      "type": "numeric",
+      "q": "Find the molarity of a solution containing $4$ g of $\\text{NaOH}$ in $500$ mL of solution. (Molar mass of $\\text{NaOH} = 40$ g/mol.)",
+      "solution": "Moles $= \\dfrac{4}{40} = 0.1$ mol.\n\nMolarity $= \\dfrac{0.1\\text{ mol}}{0.5\\text{ L}} = \\mathbf{0.2}$ M.",
+      "marks": 2,
+      "answer": 0.2,
+      "tolerance": 0.01
+    },
+    {
+      "id": "sol-007",
+      "chapter": "Solutions",
+      "topic": "Mole fraction",
+      "type": "numeric",
+      "q": "A solution contains $2$ mol of solute and $8$ mol of solvent. Find the mole fraction of the solute.",
+      "solution": "$x_{\\text{solute}} = \\dfrac{2}{2 + 8} = \\mathbf{0.2}$.\n\nThe two mole fractions always add to 1, so the solvent's is $0.8$.",
+      "marks": 2,
+      "answer": 0.2,
+      "tolerance": 0.01
+    },
+    {
+      "id": "sol-008",
+      "chapter": "Solutions",
+      "topic": "Elevation of boiling point",
+      "type": "numeric",
+      "q": "Find the elevation in boiling point (in K) when $0.5$ mol of a non-electrolyte is dissolved in $1$ kg of water. ($K_{b} = 0.52$ K kg/mol.)",
+      "solution": "$\\Delta T_{b} = K_{b}\\,m = 0.52 \\times 0.5 = \\mathbf{0.26}$ K.\n\nThe solute particles occupy part of the surface, so fewer solvent molecules escape and a higher temperature is needed to reach atmospheric pressure.",
+      "marks": 2,
+      "answer": 0.26,
+      "tolerance": 0.01
+    },
+    {
+      "id": "sol-009",
+      "chapter": "Solutions",
+      "topic": "Depression of freezing point",
+      "type": "numeric",
+      "q": "Find the freezing point (in °C) of a solution of molality $0.2$ m in water. ($K_{f} = 1.86$ K kg/mol.)",
+      "solution": "$\\Delta T_{f} = K_{f}\\,m = 1.86 \\times 0.2 = 0.372$ K.\n\nThe solution freezes **below** $0$ °C: $\\mathbf{-0.372}$ °C.\n\nIt is why salt is spread on icy roads, and why antifreeze works.",
+      "marks": 2,
+      "answer": -0.372,
+      "tolerance": 0.005
+    },
+    {
+      "id": "sol-010",
+      "chapter": "Solutions",
+      "topic": "Osmotic pressure",
+      "type": "numeric",
+      "q": "Find the osmotic pressure (in atm) of a $0.1$ M solution at $300$ K. Take $R = 0.0821$ L atm K$^{-1}$mol$^{-1}$, correct to two decimal places.",
+      "solution": "$\\pi = CRT = 0.1 \\times 0.0821 \\times 300 = \\mathbf{2.46}$ atm.\n\nOsmotic pressure is the largest of the colligative effects by far, which is why it is the one used to find the molar mass of proteins — a measurable pressure from a tiny concentration.",
+      "marks": 2,
+      "answer": 2.46,
+      "tolerance": 0.05
+    },
+    {
+      "id": "sol-011",
+      "chapter": "Solutions",
+      "topic": "Raoult's law and its deviations",
+      "type": "long",
+      "q": "State Raoult's law for a solution of two volatile liquids and explain positive and negative deviations with one example each.",
+      "solution": "**Raoult's law.** For each component, the partial vapour pressure is its pure vapour pressure times its mole fraction in the liquid:\n\n$p_{A} = p_{A}^{0}x_{A}$, $\\quad p_{B} = p_{B}^{0}x_{B}$, $\\quad p_{\\text{total}} = p_{A} + p_{B}$.\n\nAn **ideal solution** obeys this at every composition, with $\\Delta H_{\\text{mix}} = 0$ and $\\Delta V_{\\text{mix}} = 0$ — the A–B forces are the same strength as A–A and B–B.\n\n**Positive deviation.** A–B attraction is **weaker** than A–A and B–B, so molecules escape more readily than expected: vapour pressure higher than Raoult predicts, $\\Delta H_{\\text{mix}} > 0$ (endothermic), volume increases.\n\n*Example: ethanol + water.* Ethanol's hydrogen bonds to water are weaker than water's to itself. These mixtures form a **minimum-boiling azeotrope**.\n\n**Negative deviation.** A–B attraction is **stronger**, so molecules are held back: vapour pressure lower than predicted, $\\Delta H_{\\text{mix}} < 0$ (exothermic), volume decreases.\n\n*Example: chloroform + acetone*, which hydrogen-bond to each other. These form a **maximum-boiling azeotrope**.\n\nAn azeotrope boils without changing composition, which is exactly why fractional distillation cannot produce absolute alcohol from a water mixture.",
+      "marks": 3
+    },
+    {
+      "id": "sol-012",
+      "chapter": "Solutions",
+      "topic": "Colligative properties and molar mass",
+      "type": "long",
+      "q": "Explain how the depression of freezing point is used to determine the molar mass of a solute, and derive the working formula.",
+      "solution": "$\\Delta T_{f} = K_{f}\\,m$, and molality is\n\n$m = \\dfrac{w_{2}/M_{2}}{w_{1}\\text{ (in kg)}}$\n\nwhere $w_{2}$ is the solute mass, $M_{2}$ its molar mass, $w_{1}$ the solvent mass.\n\nSubstituting and rearranging:\n\n$\\mathbf{M_{2} = \\dfrac{K_{f} \\times w_{2} \\times 1000}{\\Delta T_{f} \\times w_{1}\\text{(g)}}}$.\n\n**In practice:** measure the pure solvent's freezing point, dissolve a weighed sample, measure again, and put the numbers in.\n\n**The catch.** The method counts *particles*, so for anything that dissociates (a salt) or associates (a carboxylic acid in benzene) it returns an **apparent** molar mass, and the van't Hoff factor $i$ must be put in:\n\n$M_{2} = \\dfrac{i\\,K_{f}w_{2} \\times 1000}{\\Delta T_{f}w_{1}}$.\n\nA measured molar mass half the true value is the classic sign of complete dissociation into two ions.",
+      "marks": 3
+    },
+    {
+      "id": "sol-013",
+      "chapter": "Solutions",
+      "topic": "Numerical on colligative properties",
+      "type": "long",
+      "q": "$1.8$ g of glucose is dissolved in $250$ g of water. Find the boiling point of the solution. ($K_{b} = 0.52$ K kg/mol, molar mass of glucose $= 180$ g/mol.)",
+      "solution": "**Moles of glucose:**\n\n$n = \\dfrac{1.8}{180} = 0.01$ mol.\n\n**Molality:**\n\n$m = \\dfrac{0.01\\text{ mol}}{0.250\\text{ kg}} = 0.04$ mol/kg.\n\n**Elevation:**\n\n$\\Delta T_{b} = K_{b}m = 0.52 \\times 0.04 = 0.0208$ K.\n\n**Boiling point:**\n\n$T_{b} = 373.15 + 0.021 = \\mathbf{373.17}$ K, or about $100.02$ °C.\n\nGlucose is a non-electrolyte, so $i = 1$ and no correction is needed.\n\nNotice how small the effect is: a hundredth of a degree for a gram and a half. That is why freezing-point depression ($K_{f}$ is more than three times larger, and easier to measure precisely) is preferred in the laboratory.",
+      "marks": 5
+    },
+    {
+      "id": "sol-014",
+      "chapter": "Solutions",
+      "topic": "Abnormal molar mass",
+      "type": "long",
+      "q": "What is the van't Hoff factor? Explain abnormal molar mass with one example of dissociation and one of association.",
+      "solution": "**Definition.**\n\n$i = \\dfrac{\\text{observed colligative property}}{\\text{calculated (assuming no change)}} = \\dfrac{\\text{particles after}}{\\text{particles before}}$.\n\nEquivalently, $i = \\dfrac{\\text{normal molar mass}}{\\text{observed molar mass}}$.\n\n**Dissociation ($i > 1$).** $\\text{KCl}$ in water gives $\\text{K}^{+}$ and $\\text{Cl}^{-}$, so $i \\approx 2$. The solution behaves as though it held twice as many particles, and the molar mass calculated from a colligative property comes out at about **half** the true value.\n\n**Association ($i < 1$).** Acetic acid in benzene forms hydrogen-bonded **dimers**, so $i \\approx 0.5$ and the apparent molar mass is about $120$ instead of $60$.\n\nNeither is an error in the experiment. The experiment counts particles honestly; it is the assumption 'one molecule dissolved = one particle' that is wrong.",
+      "marks": 3
+    },
+    {
+      "id": "sol-015",
+      "chapter": "Solutions",
+      "topic": "Henry's law",
+      "type": "long",
+      "q": "State Henry's law and give two applications.",
+      "solution": "**The law.** At constant temperature, the partial pressure of a gas above a solution is proportional to its mole fraction in the solution:\n\n$p = K_{H}x$.\n\nA **large** $K_{H}$ means a **low** solubility, and $K_{H}$ increases with temperature — gases dissolve less in warm liquids.\n\n**Applications.**\n\n1. **Fizzy drinks** are bottled under high $\\text{CO}_{2}$ pressure. Opening the bottle drops the pressure, the solubility falls, and the gas comes out of solution.\n\n2. **Deep-sea divers.** At depth, more nitrogen dissolves in the blood. Surfacing too fast releases it as bubbles in the bloodstream — decompression sickness, or 'the bends'. Diving cylinders therefore use helium in place of some of the nitrogen, since it is far less soluble.\n\n3. **Climbers at high altitude** suffer anoxia because the low partial pressure of oxygen means less of it dissolves in the blood.\n\nThe same one line of algebra explains a soda bottle, a diver and a mountaineer.",
+      "marks": 2
+    }
+  ]
+}
