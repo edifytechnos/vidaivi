@@ -124,7 +124,7 @@
       "chapter": "Functions",
       "topic": "Self-inverse",
       "type": "numeric",
-      "q": "If $f(x) = \\dfrac{1}{x}$ for $x \\ne 0$, find $ff(3)$.",
+      "q": "If $f(x) = \\dfrac{1}{x}$ for $x \ne 0$, find $ff(3)$.",
       "solution": "$f(3) = \\tfrac13$, and $f\\left(\\tfrac13\\right) = \\mathbf{3}$.\n\n$f$ is its own inverse — a **self-inverse** function, and its graph is symmetrical about the line $y = x$.",
       "marks": 2,
       "answer": 3,
@@ -174,7 +174,7 @@
       "topic": "Domain and range",
       "type": "long",
       "q": "For $f(x) = \\dfrac{1}{x - 2}$, state the largest possible domain and the corresponding range, and describe the graph.",
-      "solution": "**Domain.** The denominator must not be zero:\n\n$x - 2 \\ne 0$, so the domain is $\\mathbf{x \\in \\mathbb{R},\\; x \\ne 2}$.\n\n**Range.** A fraction with a non-zero numerator can never itself be zero, however large $x$ becomes.\n\nRange: $\\mathbf{f(x) \\in \\mathbb{R},\\; f(x) \\ne 0}$.\n\n**The graph** is the standard hyperbola $y = \\dfrac1x$ translated **2 units right**.\n\n• **Vertical asymptote** at $x = 2$ — as $x$ approaches 2 from above, $f(x) \\to +\\infty$; from below, $f(x) \\to -\\infty$.\n\n• **Horizontal asymptote** at $y = 0$ — the curve approaches the $x$-axis but never touches it.\n\nTwo branches, in opposite quadrants about the point $(2, 0)$.\n\n**Notice the symmetry between domain and range:** the excluded input corresponds to the vertical asymptote, and the excluded output to the horizontal one. That is not a coincidence — this function is self-inverse up to the translation.",
+      "solution": "**Domain.** The denominator must not be zero:\n\n$x - 2 \ne 0$, so the domain is $\\mathbf{x \\in \\mathbb{R},\\; x \ne 2}$.\n\n**Range.** A fraction with a non-zero numerator can never itself be zero, however large $x$ becomes.\n\nRange: $\\mathbf{f(x) \\in \\mathbb{R},\\; f(x) \ne 0}$.\n\n**The graph** is the standard hyperbola $y = \\dfrac1x$ translated **2 units right**.\n\n• **Vertical asymptote** at $x = 2$ — as $x$ approaches 2 from above, $f(x) \\to +\\infty$; from below, $f(x) \\to -\\infty$.\n\n• **Horizontal asymptote** at $y = 0$ — the curve approaches the $x$-axis but never touches it.\n\nTwo branches, in opposite quadrants about the point $(2, 0)$.\n\n**Notice the symmetry between domain and range:** the excluded input corresponds to the vertical asymptote, and the excluded output to the horizontal one. That is not a coincidence — this function is self-inverse up to the translation.",
       "marks": 3
     },
     {

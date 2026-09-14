@@ -12,7 +12,7 @@
       "topic": "Corner point method",
       "type": "mcq",
       "q": "The corner points of the feasible region in the graphical representation of a linear programming problem are $(2, 72)$, $(15, 20)$ and $(40, 15)$. If $z = 18x + 9y$ is the objective function, then :",
-      "solution": "By the corner point method, the optimum of a linear objective over a bounded feasible region occurs at one of its corners — so simply evaluate $z = 18x + 9y$ at each.\\n\\n**At $(2, 72)$ :**\\n\\n$$z = 18(2) + 9(72) = 36 + 648 = 684.$$\\n\\n**At $(15, 20)$ :**\\n\\n$$z = 18(15) + 9(20) = 270 + 180 = 450.$$\\n\\n**At $(40, 15)$ :**\\n\\n$$z = 18(40) + 9(15) = 720 + 135 = 855.$$\\n\\nComparing $684$, $450$ and $855$ :\\n\\n- the **maximum** is $855$, at $(40, 15)$;\\n- the **minimum** is $450$, at $(15, 20)$.\\n\\nNote that the largest $y$-value does not give the largest $z$ — the coefficient of $x$ is twice that of $y$, so $x$ carries more weight.",
+      "solution": "By the corner point method, the optimum of a linear objective over a bounded feasible region occurs at one of its corners — so simply evaluate $z = 18x + 9y$ at each.\n\n**At $(2, 72)$ :**\n\n$$z = 18(2) + 9(72) = 36 + 648 = 684.$$\n\n**At $(15, 20)$ :**\n\n$$z = 18(15) + 9(20) = 270 + 180 = 450.$$\n\n**At $(40, 15)$ :**\n\n$$z = 18(40) + 9(15) = 720 + 135 = 855.$$\n\nComparing $684$, $450$ and $855$ :\n\n- the **maximum** is $855$, at $(40, 15)$;\n- the **minimum** is $450$, at $(15, 20)$.\n\nNote that the largest $y$-value does not give the largest $z$ — the coefficient of $x$ is twice that of $y$, so $x$ carries more weight.",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -29,7 +29,7 @@
       "topic": "What an LPP is",
       "type": "mcq",
       "q": "A linear programming problem deals with the optimization of a/an :",
-      "solution": "The name says it. A linear programming problem consists of :\\n\\n- an **objective function** that is linear in the decision variables, such as $Z = ax + by$ — this is what is maximised or minimised;\\n- a set of **linear constraints**, written as inequalities such as $2x + 3y \\leq 12$;\\n- usually non-negativity conditions $x \\geq 0$, $y \\geq 0$.\\n\\nBoth the thing being optimised and the region it is optimised over are linear, which is exactly why the optimum can always be found at a **corner point** of the feasible region. If the objective were quadratic or exponential, that corner-point method would fail.",
+      "solution": "The name says it. A linear programming problem consists of :\n\n- an **objective function** that is linear in the decision variables, such as $Z = ax + by$ — this is what is maximised or minimised;\n- a set of **linear constraints**, written as inequalities such as $2x + 3y \\leq 12$;\n- usually non-negativity conditions $x \\geq 0$, $y \\geq 0$.\n\nBoth the thing being optimised and the region it is optimised over are linear, which is exactly why the optimum can always be found at a **corner point** of the feasible region. If the objective were quadratic or exponential, that corner-point method would fail.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [

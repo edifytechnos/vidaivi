@@ -172,7 +172,7 @@
       "topic": "Photoelectric effect",
       "type": "mcq",
       "q": "The stopping potential in a photoelectric experiment depends on:",
-      "solution": "$eV_{0} = h\\nu - \\phi$, so it depends on the **frequency** and the work function — never on intensity.\n\nDoubling the intensity doubles the current and leaves $V_{0}$ exactly where it was. That single observation is what defeated the wave theory.",
+      "solution": "$eV_{0} = h\nu - \\phi$, so it depends on the **frequency** and the work function — never on intensity.\n\nDoubling the intensity doubles the current and leaves $V_{0}$ exactly where it was. That single observation is what defeated the wave theory.",
       "marks": 4,
       "options": [
         "the intensity of light",

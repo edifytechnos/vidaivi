@@ -12,7 +12,7 @@
       "topic": "Photoelectric effect",
       "type": "mcq",
       "q": "A photon of energy $7$ eV is incident on a metal surface having a work function of $3 \\cdot 75$ eV. The stopping potential is :",
-      "solution": "Einstein's photoelectric equation gives the maximum kinetic energy of the emitted electrons :\\n\\n$$K_{\\max} = hf - \\phi_0 = 7\\ \\text{eV} - 3 \\cdot 75\\ \\text{eV} = 3 \\cdot 25\\ \\text{eV}.$$\\n\\nThe stopping potential $V_0$ is the retarding voltage that just halts the fastest electron, so\\n\\n$$eV_0 = K_{\\max} \\quad\\Longrightarrow\\quad V_0 = 3 \\cdot 25\\ \\text{V}.$$\\n\\nWorking in electron-volts is what makes this a one-line subtraction: because $K_{\\max}$ comes out in eV, the stopping potential in volts is the same number.",
+      "solution": "Einstein's photoelectric equation gives the maximum kinetic energy of the emitted electrons :\n\n$$K_{\\max} = hf - \\phi_0 = 7\\ \\text{eV} - 3 \\cdot 75\\ \\text{eV} = 3 \\cdot 25\\ \\text{eV}.$$\n\nThe stopping potential $V_0$ is the retarding voltage that just halts the fastest electron, so\n\n$$eV_0 = K_{\\max} \\quad\\Longrightarrow\\quad V_0 = 3 \\cdot 25\\ \\text{V}.$$\n\nWorking in electron-volts is what makes this a one-line subtraction: because $K_{\\max}$ comes out in eV, the stopping potential in volts is the same number.",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -29,7 +29,7 @@
       "topic": "Photoelectric effect",
       "type": "numeric",
       "q": "Light of frequency $6 \\cdot 4 \\times 10^{14}$ Hz is incident on a metal of work function $2 \\cdot 14$ eV. Find the maximum kinetic energy of the emitted electrons, in eV, correct to two decimal places. (Take $h = 6 \\cdot 626 \\times 10^{-34}$ J s.)",
-      "solution": "**Step 1 — energy of the incident photon.**\\n\\n$$E = hf = \\left(6 \\cdot 626 \\times 10^{-34}\\right)\\left(6 \\cdot 4 \\times 10^{14}\\right) = 4 \\cdot 241 \\times 10^{-19}\\ \\text{J}.$$\\n\\n**Step 2 — convert to electron-volts**, dividing by $e = 1 \\cdot 602 \\times 10^{-19}$ C :\\n\\n$$E = \\frac{4 \\cdot 241 \\times 10^{-19}}{1 \\cdot 602 \\times 10^{-19}} = 2 \\cdot 65\\ \\text{eV}.$$\\n\\n**Step 3 — subtract the work function.**\\n\\n$$K_{\\max} = E - \\phi_0 = 2 \\cdot 65 - 2 \\cdot 14 = \\mathbf{0 \\cdot 51\\ \\text{eV}}.$$\\n\\nThe photon energy only just exceeds the work function, so the electrons come off slowly — the usual situation near the threshold frequency.",
+      "solution": "**Step 1 — energy of the incident photon.**\n\n$$E = hf = \\left(6 \\cdot 626 \\times 10^{-34}\\right)\\left(6 \\cdot 4 \\times 10^{14}\\right) = 4 \\cdot 241 \\times 10^{-19}\\ \\text{J}.$$\n\n**Step 2 — convert to electron-volts**, dividing by $e = 1 \\cdot 602 \\times 10^{-19}$ C :\n\n$$E = \\frac{4 \\cdot 241 \\times 10^{-19}}{1 \\cdot 602 \\times 10^{-19}} = 2 \\cdot 65\\ \\text{eV}.$$\n\n**Step 3 — subtract the work function.**\n\n$$K_{\\max} = E - \\phi_0 = 2 \\cdot 65 - 2 \\cdot 14 = \\mathbf{0 \\cdot 51\\ \\text{eV}}.$$\n\nThe photon energy only just exceeds the work function, so the electrons come off slowly — the usual situation near the threshold frequency.",
       "marks": 2,
       "source": "CBSE 2023",
       "answer": 0.51,
@@ -41,7 +41,7 @@
       "topic": "Threshold frequency",
       "type": "mcq",
       "q": "Photoelectric emission does not occur at all below the threshold frequency, no matter how intense the light. This shows that:",
-      "solution": "A wave theory says a dim light should eventually deliver enough energy if you wait. It does not — **emission is instantaneous above threshold and absent below it**.\n\nThat is only explicable if a single photon of energy $h\\nu$ must do the whole job in one go.\n\nIt is what won Einstein the Nobel Prize, and it is why light has to be granular.",
+      "solution": "A wave theory says a dim light should eventually deliver enough energy if you wait. It does not — **emission is instantaneous above threshold and absent below it**.\n\nThat is only explicable if a single photon of energy $h\nu$ must do the whole job in one go.\n\nIt is what won Einstein the Nobel Prize, and it is why light has to be granular.",
       "marks": 1,
       "options": [
         "light is a wave",
@@ -73,7 +73,7 @@
       "topic": "Stopping potential",
       "type": "mcq",
       "q": "The stopping potential in a photoelectric experiment depends on:",
-      "solution": "$eV_{0} = h\\nu - \\phi$, so the stopping potential depends on the **frequency** and the metal's **work function** only.\n\nDoubling the intensity doubles the current but leaves $V_{0}$ exactly where it was — the single most telling result of the whole experiment.",
+      "solution": "$eV_{0} = h\nu - \\phi$, so the stopping potential depends on the **frequency** and the metal's **work function** only.\n\nDoubling the intensity doubles the current but leaves $V_{0}$ exactly where it was — the single most telling result of the whole experiment.",
       "marks": 1,
       "options": [
         "the intensity of light",
@@ -89,7 +89,7 @@
       "topic": "Work function",
       "type": "mcq",
       "q": "The work function of a metal is:",
-      "solution": "$\\phi$ is the **minimum energy** to pull an electron out of the metal surface.\n\nIt fixes the threshold frequency, $\\nu_{0} = \\dfrac{\\phi}{h}$ — the price of admission that every photon has to pay before anything is left over as kinetic energy.",
+      "solution": "$\\phi$ is the **minimum energy** to pull an electron out of the metal surface.\n\nIt fixes the threshold frequency, $\nu_{0} = \\dfrac{\\phi}{h}$ — the price of admission that every photon has to pay before anything is left over as kinetic energy.",
       "marks": 1,
       "options": [
         "the energy of the incident photon",
@@ -116,7 +116,7 @@
       "topic": "Stopping potential",
       "type": "numeric",
       "q": "Photons of energy $4$ eV fall on a metal of work function $1.5$ eV. Find the stopping potential, in volts.",
-      "solution": "$eV_{0} = h\\nu - \\phi = 4 - 1.5 = 2.5$ eV, so $V_{0} = \\mathbf{2.5}$ V.\n\nWorking in electron-volts makes the arithmetic trivial: the number of eV *is* the number of volts.",
+      "solution": "$eV_{0} = h\nu - \\phi = 4 - 1.5 = 2.5$ eV, so $V_{0} = \\mathbf{2.5}$ V.\n\nWorking in electron-volts makes the arithmetic trivial: the number of eV *is* the number of volts.",
       "marks": 2,
       "answer": 2.5,
       "tolerance": 0.05
@@ -149,7 +149,7 @@
       "topic": "Einstein's photoelectric equation",
       "type": "long",
       "q": "State Einstein's photoelectric equation and use it to explain the existence of a threshold frequency and the instantaneous nature of emission.",
-      "solution": "**The equation.**\n\n$h\\nu = \\phi + K_{\\max}$, or $K_{\\max} = h\\nu - \\phi$.\n\nA photon delivers all its energy $h\\nu$ to **one** electron; $\\phi$ is spent escaping the surface, the rest is kinetic energy.\n\n**Threshold frequency.** $K_{\\max}$ cannot be negative, so emission needs $h\\nu \\ge \\phi$, that is $\\nu \\ge \\nu_{0} = \\dfrac{\\phi}{h}$.\n\nBelow that frequency no photon, however many arrive, has enough energy — and intensity cannot help, because energy from two photons is not pooled.\n\n**Instantaneous emission.** The whole transaction is one photon and one electron, so there is no waiting for energy to accumulate: emission begins within about $10^{-9}$ s.\n\nWave theory predicted a delay of minutes for faint light. None is observed. That is the experiment deciding between two theories.",
+      "solution": "**The equation.**\n\n$h\nu = \\phi + K_{\\max}$, or $K_{\\max} = h\nu - \\phi$.\n\nA photon delivers all its energy $h\nu$ to **one** electron; $\\phi$ is spent escaping the surface, the rest is kinetic energy.\n\n**Threshold frequency.** $K_{\\max}$ cannot be negative, so emission needs $h\nu \\ge \\phi$, that is $\nu \\ge \nu_{0} = \\dfrac{\\phi}{h}$.\n\nBelow that frequency no photon, however many arrive, has enough energy — and intensity cannot help, because energy from two photons is not pooled.\n\n**Instantaneous emission.** The whole transaction is one photon and one electron, so there is no waiting for energy to accumulate: emission begins within about $10^{-9}$ s.\n\nWave theory predicted a delay of minutes for faint light. None is observed. That is the experiment deciding between two theories.",
       "marks": 3
     },
     {
@@ -167,7 +167,7 @@
       "topic": "Photoelectric experiment",
       "type": "long",
       "q": "Describe how the photoelectric effect is studied experimentally, and explain the three graphs: current against intensity, current against potential, and stopping potential against frequency.",
-      "solution": "**Apparatus.** An evacuated tube with a photosensitive plate and a collector, a variable potential between them, a microammeter for the current, and monochromatic light of controllable frequency and intensity.\n\n**Current against intensity** (frequency and potential fixed): a **straight line through the origin**. More photons per second means proportionally more electrons per second.\n\n**Current against collector potential** (fixed frequency, two intensities): the current rises with potential and then **saturates** — every emitted electron is being collected. The saturation current is higher for greater intensity. Going negative, the current falls to zero at the **same** stopping potential for both intensities.\n\nThat last point is the crucial one: $V_{0}$ does not depend on intensity.\n\n**Stopping potential against frequency:** a **straight line**,\n\n$V_{0} = \\dfrac{h}{e}\\nu - \\dfrac{\\phi}{e}$.\n\nIts slope is $\\dfrac{h}{e}$ — the **same for every metal**, which is how Millikan measured Planck's constant — and its intercept on the frequency axis is the threshold $\\nu_{0}$, which differs from metal to metal.\n\nThree graphs, one conclusion: light arrives in quanta.",
+      "solution": "**Apparatus.** An evacuated tube with a photosensitive plate and a collector, a variable potential between them, a microammeter for the current, and monochromatic light of controllable frequency and intensity.\n\n**Current against intensity** (frequency and potential fixed): a **straight line through the origin**. More photons per second means proportionally more electrons per second.\n\n**Current against collector potential** (fixed frequency, two intensities): the current rises with potential and then **saturates** — every emitted electron is being collected. The saturation current is higher for greater intensity. Going negative, the current falls to zero at the **same** stopping potential for both intensities.\n\nThat last point is the crucial one: $V_{0}$ does not depend on intensity.\n\n**Stopping potential against frequency:** a **straight line**,\n\n$V_{0} = \\dfrac{h}{e}\nu - \\dfrac{\\phi}{e}$.\n\nIts slope is $\\dfrac{h}{e}$ — the **same for every metal**, which is how Millikan measured Planck's constant — and its intercept on the frequency axis is the threshold $\nu_{0}$, which differs from metal to metal.\n\nThree graphs, one conclusion: light arrives in quanta.",
       "marks": 5
     },
     {

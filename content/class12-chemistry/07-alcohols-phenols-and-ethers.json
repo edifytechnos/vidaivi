@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12alc-101",
+      "chapter": "Alcohols, Phenols and Ethers",
+      "topic": "Acidity of phenols",
+      "type": "long",
+      "q": "Give a reason for the following: $p$-nitrophenol is more acidic than $p$-methylphenol.",
+      "solution": "The acidity of a phenol is decided by how **stable** its conjugate base, the phenoxide ion, is. Anything that spreads the negative charge away from the oxygen makes the phenoxide more stable and the phenol more acidic.\n\n**$p$-nitrophenol.** The nitro group is strongly **electron-withdrawing**, both by the inductive effect ($-I$) and, more importantly, by resonance ($-R$). Being in the *para* position, it is perfectly placed to accept the negative charge through the ring: the charge can be delocalised right onto the oxygen atoms of the $-\\text{NO}_2$ group.\n\nThe $p$-nitrophenoxide ion is therefore **strongly stabilised**, and $p$-nitrophenol readily gives up its proton.\n\n**$p$-methylphenol.** The methyl group is **electron-releasing** ($+I$ and hyperconjugation). It pushes electron density **into** the ring, intensifying the negative charge on the phenoxide oxygen rather than relieving it.\n\nThat **destabilises** the conjugate base, so $p$-methylphenol holds on to its proton more tightly.\n\n**Conclusion.** An electron-withdrawing substituent stabilises the phenoxide and raises acidity; an electron-releasing one does the opposite. Hence $p$-nitrophenol ($\\text{p}K_a \\approx 7 \\cdot 1$) is far more acidic than $p$-methylphenol ($\\text{p}K_a \\approx 10 \\cdot 2$), with phenol itself ($\\approx 10 \\cdot 0$) in between.",
+      "marks": 2,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "alc-001",
       "chapter": "Alcohols, Phenols and Ethers",
       "topic": "Acidity",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 3,
       "tolerance": 0
-    },
-    {
-      "id": "alc-011",
-      "chapter": "Alcohols, Phenols and Ethers",
-      "topic": "Preparation of phenol",
-      "type": "long",
-      "q": "Describe two industrial methods of preparing phenol, with equations.",
-      "solution": "**1. From cumene (the main industrial route).**\n\nCumene (isopropylbenzene) is oxidised by air to cumene hydroperoxide, which is then treated with dilute acid:\n\n$\\text{C}_{6}\\text{H}_{5}\\text{CH}(\\text{CH}_{3})_{2} + \\text{O}_{2} \\to \\text{C}_{6}\\text{H}_{5}\\text{C}(\\text{CH}_{3})_{2}\\text{OOH}$\n\n$\\text{C}_{6}\\text{H}_{5}\\text{C}(\\text{CH}_{3})_{2}\\text{OOH} \\xrightarrow{\\text{H}^{+}} \\text{C}_{6}\\text{H}_{5}\\text{OH} + (\\text{CH}_{3})_{2}\\text{CO}$\n\nIt is the dominant process because **acetone** — a valuable solvent — comes out as the co-product, so nothing is wasted.\n\n**2. From chlorobenzene (the Dow process).**\n\n$\\text{C}_{6}\\text{H}_{5}\\text{Cl} + \\text{NaOH} \\xrightarrow{623\\text{ K},\\;300\\text{ atm}} \\text{C}_{6}\\text{H}_{5}\\text{ONa} \\xrightarrow{\\text{H}^{+}} \\text{C}_{6}\\text{H}_{5}\\text{OH}$\n\nThe extreme conditions are the price of the C–Cl bond's resonance stabilisation.\n\n**3. From benzenesulphonic acid** — fusion with molten NaOH, then acidification.\n\n**4. In the laboratory,** from aniline via the diazonium salt, warmed with water.",
-      "marks": 3
     },
     {
       "id": "alc-012",

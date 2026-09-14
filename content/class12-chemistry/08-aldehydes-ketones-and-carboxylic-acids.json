@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12ald-101",
+      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+      "topic": "Aldol condensation",
+      "type": "long",
+      "q": "Why does $(\\text{CH}_3)_3\\text{C}-\\text{CHO}$ not undergo aldol condensation?",
+      "solution": "An aldol condensation needs an **$\\alpha$-hydrogen** — a hydrogen on the carbon **next to** the carbonyl group.\n\n**The mechanism requires it.** The first step is removal of an $\\alpha$-hydrogen by a base to form a **carbanion (enolate)**, which is stabilised by resonance with the carbonyl. That carbanion then attacks the carbonyl carbon of a second molecule. No $\\alpha$-hydrogen means no enolate, and the reaction cannot start.\n\n**Look at the structure.** In $(\\text{CH}_3)_3\\text{C}-\\text{CHO}$ (2,2-dimethylpropanal, or trimethylacetaldehyde), the carbon adjacent to the $-\\text{CHO}$ group is a **quaternary** carbon: it is bonded to three methyl groups and to the carbonyl carbon.\n\nThat leaves it with **no hydrogen at all**. The nine hydrogens present are all on the methyl groups, which are $\\beta$ to the carbonyl, not $\\alpha$.\n\n**So there is no $\\alpha$-hydrogen, no enolate, and no aldol condensation.**\n\nIt does, however, undergo the **Cannizzaro reaction** — the disproportionation reserved for exactly those aldehydes that lack an $\\alpha$-hydrogen, such as HCHO and $\\text{C}_6\\text{H}_5\\text{CHO}$.",
+      "marks": 2,
+      "source": "CBSE 2022"
+    },
+    {
       "id": "ald-001",
       "chapter": "Aldehydes, Ketones and Carboxylic Acids",
       "topic": "Nucleophilic addition",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 3,
       "tolerance": 0
-    },
-    {
-      "id": "ald-011",
-      "chapter": "Aldehydes, Ketones and Carboxylic Acids",
-      "topic": "Aldol condensation",
-      "type": "long",
-      "q": "Explain the aldol condensation with a mechanism, and state which compounds can undergo it.",
-      "solution": "**Which compounds.** Any aldehyde or ketone with at least one **$\\alpha$-hydrogen**.\n\n**Reaction.** With dilute alkali, two molecules of ethanal give a $\\beta$-hydroxy aldehyde (an 'aldol'), which loses water on warming:\n\n$2\\text{CH}_{3}\\text{CHO} \\xrightarrow{\\text{dil. NaOH}} \\text{CH}_{3}\\text{CH(OH)CH}_{2}\\text{CHO} \\xrightarrow{\\Delta} \\text{CH}_{3}\\text{CH}{=}\\text{CHCHO} + \\text{H}_{2}\\text{O}$\n\n**Mechanism.**\n\n**Step 1.** The hydroxide removes an $\\alpha$-hydrogen, giving a **carbanion** stabilised by resonance with the carbonyl (an enolate). This is why the $\\alpha$-hydrogen is essential — and why it is acidic at all.\n\n**Step 2.** The carbanion attacks the carbonyl carbon of a second molecule.\n\n**Step 3.** Protonation gives the aldol.\n\n**Step 4.** On heating, dehydration gives a conjugated $\\alpha,\\beta$-unsaturated carbonyl compound — the extra stability of the conjugation is the driving force.\n\n**Cross aldol** between two different carbonyl compounds gives four products and is only useful when one partner has no $\\alpha$-hydrogen.",
-      "marks": 3
     },
     {
       "id": "ald-012",

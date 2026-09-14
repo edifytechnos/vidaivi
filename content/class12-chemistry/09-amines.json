@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12ami-101",
+      "chapter": "Amines",
+      "topic": "Hinsberg test",
+      "type": "long",
+      "q": "How will you distinguish between $\\text{CH}_3\\text{CH}_2\\text{NH}_2$ and $(\\text{CH}_3\\text{CH}_2)_2\\text{NH}$ by the Hinsberg test?",
+      "solution": "The Hinsberg test treats the amine with **benzenesulphonyl chloride** ($\\text{C}_6\\text{H}_5\\text{SO}_2\\text{Cl}$, Hinsberg's reagent) and then with aqueous KOH. The two amines behave differently at the second stage.\n\n**Ethylamine (primary, $\\text{CH}_3\\text{CH}_2\\text{NH}_2$).**\n\nIt has **two** hydrogens on nitrogen. One is replaced by the sulphonyl group :\n\n$$\\text{C}_6\\text{H}_5\\text{SO}_2\\text{Cl} + \\text{H}_2\\text{N}\\text{C}_2\\text{H}_5 \\longrightarrow \\text{C}_6\\text{H}_5\\text{SO}_2\\text{NH}\\text{C}_2\\text{H}_5$$\n\nThe product still has an **N–H** hydrogen, and it is acidic because the strongly electron-withdrawing $-\\text{SO}_2-$ group stabilises the resulting anion. So the product **dissolves in alkali**, giving a clear solution.\n\n**Diethylamine (secondary, $(\\text{CH}_3\\text{CH}_2)_2\\text{NH}$).**\n\nIt has only **one** hydrogen on nitrogen, and that one is replaced :\n\n$$\\text{C}_6\\text{H}_5\\text{SO}_2\\text{Cl} + \\text{HN}(\\text{C}_2\\text{H}_5)_2 \\longrightarrow \\text{C}_6\\text{H}_5\\text{SO}_2\\text{N}(\\text{C}_2\\text{H}_5)_2$$\n\nThe product has **no N–H** left, so it is not acidic and is **insoluble in alkali** — it stays as a solid or an oily layer.\n\n**The distinction, in one line.**\n\n**Amine · Product with KOH(aq)**\n$\\text{CH}_3\\text{CH}_2\\text{NH}_2$ · soluble — clear solution\n$(\\text{CH}_3\\text{CH}_2)_2\\text{NH}$ · insoluble — solid or oily layer\n\n(A tertiary amine would not react with the reagent at all, having no N–H to replace.)",
+      "marks": 3,
+      "source": "CBSE 2022"
+    },
+    {
       "id": "ami-001",
       "chapter": "Amines",
       "topic": "Basicity",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 45.2,
       "tolerance": 0.3
-    },
-    {
-      "id": "ami-011",
-      "chapter": "Amines",
-      "topic": "Preparation of amines",
-      "type": "long",
-      "q": "Describe three methods of preparing primary amines, with equations, and say which gives the purest product.",
-      "solution": "**1. Ammonolysis of alkyl halides.**\n\n$\\text{RX} + \\text{NH}_{3} \\to \\text{RNH}_{2} \\xrightarrow{\\text{RX}} \\text{R}_{2}\\text{NH} \\to \\text{R}_{3}\\text{N} \\to \\text{R}_{4}\\text{N}^{+}\\text{X}^{-}$\n\nCheap but **messy** — a mixture of all four products. A large excess of ammonia helps.\n\n**2. Reduction of nitro compounds or nitriles.**\n\n$\\text{R–NO}_{2} + 6[\\text{H}] \\xrightarrow{\\text{Sn/HCl}} \\text{R–NH}_{2} + 2\\text{H}_{2}\\text{O}$\n\n$\\text{R–CN} + 4[\\text{H}] \\xrightarrow{\\text{LiAlH}_{4}} \\text{R–CH}_{2}\\text{NH}_{2}$ (one carbon **longer**)\n\n**3. Hofmann bromamide degradation.**\n\n$\\text{RCONH}_{2} + \\text{Br}_{2} + 4\\text{NaOH} \\to \\text{RNH}_{2} + \\text{Na}_{2}\\text{CO}_{3} + 2\\text{NaBr} + 2\\text{H}_{2}\\text{O}$\n\nOne carbon **shorter**, and always primary.\n\n**4. Gabriel phthalimide synthesis** — potassium phthalimide with an alkyl halide, then hydrolysis.\n\n**The purest product** comes from **Gabriel synthesis**: the nitrogen is locked into the phthalimide ring and can pick up only one alkyl group, so no secondary or tertiary amine can form. Its one limitation is that it fails for **aryl** amines, since aryl halides will not do $\\text{S}_{\\text{N}}2$.",
-      "marks": 3
     },
     {
       "id": "ami-012",

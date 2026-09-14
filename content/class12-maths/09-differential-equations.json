@@ -12,7 +12,7 @@
       "topic": "Integrating factor",
       "type": "mcq",
       "q": "The integrating factor of the differential equation $x\\dfrac{dy}{dx} - y = x^4 - 3x$ is :",
-      "solution": "First put the equation into standard linear form $\\dfrac{dy}{dx} + Py = Q$ by dividing through by $x$ :\\n\\n$$\\frac{dy}{dx} - \\frac{1}{x}y = x^3 - 3.$$\\n\\nSo $P = -\\dfrac{1}{x}$.\\n\\nThe integrating factor is\\n\\n$$\\text{I.F.} = e^{\\int P\\,dx} = e^{\\int -\\frac{1}{x}dx} = e^{-\\log x} = e^{\\log x^{-1}} = x^{-1}.$$\\n\\nThe step that is easy to skip is the division by $x$ — reading $P$ off the equation before it is in standard form gives the wrong answer.",
+      "solution": "First put the equation into standard linear form $\\dfrac{dy}{dx} + Py = Q$ by dividing through by $x$ :\n\n$$\\frac{dy}{dx} - \\frac{1}{x}y = x^3 - 3.$$\n\nSo $P = -\\dfrac{1}{x}$.\n\nThe integrating factor is\n\n$$\\text{I.F.} = e^{\\int P\\,dx} = e^{\\int -\\frac{1}{x}dx} = e^{-\\log x} = e^{\\log x^{-1}} = x^{-1}.$$\n\nThe step that is easy to skip is the division by $x$ — reading $P$ off the equation before it is in standard form gives the wrong answer.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [
@@ -29,7 +29,7 @@
       "topic": "Integrating factor",
       "type": "mcq",
       "q": "The integrating factor of the differential equation $\\left(1 - x^2\\right)\\dfrac{dy}{dx} + xy = ax$, $-1 < x < 1$, is :",
-      "solution": "Divide through by $\\left(1 - x^2\\right)$ to reach standard form :\\n\\n$$\\frac{dy}{dx} + \\frac{x}{1 - x^2}\\,y = \\frac{ax}{1 - x^2}, \\qquad P = \\frac{x}{1 - x^2}.$$\\n\\nNow integrate $P$. Put $u = 1 - x^2$, so $du = -2x\\,dx$ and $x\\,dx = -\\tfrac12 du$ :\\n\\n$$\\int \\frac{x}{1 - x^2}dx = -\\frac12\\int\\frac{du}{u} = -\\frac12\\log u = -\\frac12\\log\\left(1 - x^2\\right).$$\\n\\n(The condition $-1 < x < 1$ is what makes $1 - x^2$ positive, so the logarithm is defined.)\\n\\nTherefore\\n\\n$$\\text{I.F.} = e^{-\\frac12\\log(1 - x^2)} = \\left(1 - x^2\\right)^{-1/2} = \\frac{1}{\\sqrt{1 - x^2}}.$$",
+      "solution": "Divide through by $\\left(1 - x^2\\right)$ to reach standard form :\n\n$$\\frac{dy}{dx} + \\frac{x}{1 - x^2}\\,y = \\frac{ax}{1 - x^2}, \\qquad P = \\frac{x}{1 - x^2}.$$\n\nNow integrate $P$. Put $u = 1 - x^2$, so $du = -2x\\,dx$ and $x\\,dx = -\\tfrac12 du$ :\n\n$$\\int \\frac{x}{1 - x^2}dx = -\\frac12\\int\\frac{du}{u} = -\\frac12\\log u = -\\frac12\\log\\left(1 - x^2\\right).$$\n\n(The condition $-1 < x < 1$ is what makes $1 - x^2$ positive, so the logarithm is defined.)\n\nTherefore\n\n$$\\text{I.F.} = e^{-\\frac12\\log(1 - x^2)} = \\left(1 - x^2\\right)^{-1/2} = \\frac{1}{\\sqrt{1 - x^2}}.$$",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [
@@ -46,7 +46,7 @@
       "topic": "Integrating factor",
       "type": "mcq",
       "q": "The integrating factor of the differential equation $\\dfrac{dy}{dx} + y\\tan x = 2x + x^2\\tan x$ is :",
-      "solution": "The equation is already in standard linear form $\\dfrac{dy}{dx} + Py = Q$, with\\n\\n$$P = \\tan x.$$\\n\\nSo\\n\\n$$\\text{I.F.} = e^{\\int \\tan x\\,dx} = e^{\\log|\\sec x|} = \\sec x.$$\\n\\n(Recall $\\int \\tan x\\,dx = \\log|\\sec x| + c$.)\\n\\nAs a check, multiplying the equation by $\\sec x$ gives $\\dfrac{d}{dx}\\left(y\\sec x\\right) = \\left(2x + x^2\\tan x\\right)\\sec x$, and the right-hand side is exactly $\\dfrac{d}{dx}\\left(x^2 \\sec x\\right)$ — so the solution is $y\\sec x = x^2\\sec x + c$, i.e. $y = x^2 + c\\cos x$.",
+      "solution": "The equation is already in standard linear form $\\dfrac{dy}{dx} + Py = Q$, with\n\n$$P = \\tan x.$$\n\nSo\n\n$$\\text{I.F.} = e^{\\int \\tan x\\,dx} = e^{\\log|\\sec x|} = \\sec x.$$\n\n(Recall $\\int \\tan x\\,dx = \\log|\\sec x| + c$.)\n\nAs a check, multiplying the equation by $\\sec x$ gives $\\dfrac{d}{dx}\\left(y\\sec x\\right) = \\left(2x + x^2\\tan x\\right)\\sec x$, and the right-hand side is exactly $\\dfrac{d}{dx}\\left(x^2 \\sec x\\right)$ — so the solution is $y\\sec x = x^2\\sec x + c$, i.e. $y = x^2 + c\\cos x$.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [

@@ -12,7 +12,7 @@
       "topic": "Differentiability",
       "type": "mcq",
       "q": "The number of points where $f(x) = [x]$, $0 < x < 3$ ($[\\cdot]$ denotes the greatest integer function) is **not** differentiable is :",
-      "solution": "The greatest integer function is a step function: it is constant on each interval between consecutive integers and jumps by 1 at every integer.\\n\\nOn the open interval $(0, 3)$ the integers present are\\n\\n$$x = 1 \\quad\\text{and}\\quad x = 2.$$\\n\\n(The endpoints 0 and 3 are excluded by $0 < x < 3$.)\\n\\nAt each of these the function jumps, so it is not even continuous there — and a function that is not continuous cannot be differentiable. Everywhere else in $(0,3)$ it is locally constant, hence differentiable with derivative 0.\\n\\nSo it fails to be differentiable at exactly **2** points.",
+      "solution": "The greatest integer function is a step function: it is constant on each interval between consecutive integers and jumps by 1 at every integer.\n\nOn the open interval $(0, 3)$ the integers present are\n\n$$x = 1 \\quad\\text{and}\\quad x = 2.$$\n\n(The endpoints 0 and 3 are excluded by $0 < x < 3$.)\n\nAt each of these the function jumps, so it is not even continuous there — and a function that is not continuous cannot be differentiable. Everywhere else in $(0,3)$ it is locally constant, hence differentiable with derivative 0.\n\nSo it fails to be differentiable at exactly **2** points.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [
@@ -29,7 +29,7 @@
       "topic": "Continuity",
       "type": "mcq",
       "q": "The function $f(x) = \\bigl|\\,1 - x + |x|\\,\\bigr|$ is :",
-      "solution": "Build the function up from pieces that are known to be continuous.\\n\\n**Step 1.** $|x|$ is continuous for every real $x$ — the corner at $x = 0$ costs differentiability, not continuity.\\n\\n**Step 2.** $1 - x + |x|$ is a sum of continuous functions, so it is continuous everywhere.\\n\\n**Step 3.** The absolute value of a continuous function is continuous, being a composition of two continuous functions.\\n\\nTherefore $f$ is **continuous everywhere**.\\n\\nIt is worth noticing what the inner expression actually is: for $x \\geq 0$ it is $1 - x + x = 1$, and for $x < 0$ it is $1 - x - x = 1 - 2x > 1$. So $f(x) \\geq 1$ always and never changes sign — the outer bars do nothing at all.",
+      "solution": "Build the function up from pieces that are known to be continuous.\n\n**Step 1.** $|x|$ is continuous for every real $x$ — the corner at $x = 0$ costs differentiability, not continuity.\n\n**Step 2.** $1 - x + |x|$ is a sum of continuous functions, so it is continuous everywhere.\n\n**Step 3.** The absolute value of a continuous function is continuous, being a composition of two continuous functions.\n\nTherefore $f$ is **continuous everywhere**.\n\nIt is worth noticing what the inner expression actually is: for $x \\geq 0$ it is $1 - x + x = 1$, and for $x < 0$ it is $1 - x - x = 1 - 2x > 1$. So $f(x) \\geq 1$ always and never changes sign — the outer bars do nothing at all.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [
@@ -46,7 +46,7 @@
       "topic": "Implicit differentiation",
       "type": "mcq",
       "q": "If $\\tan^{-1}\\left(\\dfrac{x + y}{x - y}\\right) = k$, where $k$ is a constant, then $\\dfrac{dy}{dx}$ is :",
-      "solution": "The quickest route is to see what the equation says about the curve.\\n\\nTaking $\\tan$ of both sides, $\\dfrac{x + y}{x - y} = \\tan k = c$, a constant. Cross-multiplying,\\n\\n$$x + y = c(x - y) \\quad\\Longrightarrow\\quad y(1 + c) = x(c - 1) \\quad\\Longrightarrow\\quad y = \\left(\\frac{c - 1}{c + 1}\\right) x.$$\\n\\nSo the relation describes a **straight line through the origin**, $y = mx$. For such a line\\n\\n$$\\frac{dy}{dx} = m = \\frac{y}{x}.$$\\n\\nThe gradient of a line through the origin is the same as the ratio $y/x$ at any point on it, which is exactly the answer.",
+      "solution": "The quickest route is to see what the equation says about the curve.\n\nTaking $\\tan$ of both sides, $\\dfrac{x + y}{x - y} = \\tan k = c$, a constant. Cross-multiplying,\n\n$$x + y = c(x - y) \\quad\\Longrightarrow\\quad y(1 + c) = x(c - 1) \\quad\\Longrightarrow\\quad y = \\left(\\frac{c - 1}{c + 1}\\right) x.$$\n\nSo the relation describes a **straight line through the origin**, $y = mx$. For such a line\n\n$$\\frac{dy}{dx} = m = \\frac{y}{x}.$$\n\nThe gradient of a line through the origin is the same as the ratio $y/x$ at any point on it, which is exactly the answer.",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -63,7 +63,7 @@
       "topic": "Derivative of a composite function",
       "type": "long",
       "q": "Find the differential of $e^{e^x}$ with respect to $x$.",
-      "solution": "This is a composition: the outer function is $e^{u}$ and the inner one is $u = e^{x}$. Apply the chain rule,\\n\\n$$\\frac{d}{dx}\\left(e^{u}\\right) = e^{u} \\cdot \\frac{du}{dx}.$$\\n\\nHere $\\dfrac{du}{dx} = \\dfrac{d}{dx}\\left(e^{x}\\right) = e^{x}$, so\\n\\n$$\\frac{d}{dx}\\left(e^{e^x}\\right) = e^{e^x} \\cdot e^{x}.$$\\n\\nThis can also be written as $e^{\\,x\\,+\\,e^x}$, using $e^a e^b = e^{a+b}$.\\n\\nThe common mistake is to stop at $e^{e^x}$ — forgetting that the exponent is itself a function of $x$ and must be differentiated too.",
+      "solution": "This is a composition: the outer function is $e^{u}$ and the inner one is $u = e^{x}$. Apply the chain rule,\n\n$$\\frac{d}{dx}\\left(e^{u}\\right) = e^{u} \\cdot \\frac{du}{dx}.$$\n\nHere $\\dfrac{du}{dx} = \\dfrac{d}{dx}\\left(e^{x}\\right) = e^{x}$, so\n\n$$\\frac{d}{dx}\\left(e^{e^x}\\right) = e^{e^x} \\cdot e^{x}.$$\n\nThis can also be written as $e^{\\,x\\,+\\,e^x}$, using $e^a e^b = e^{a+b}$.\n\nThe common mistake is to stop at $e^{e^x}$ — forgetting that the exponent is itself a function of $x$ and must be differentiated too.",
       "marks": 2,
       "source": "CBSE 2026"
     },
@@ -72,8 +72,8 @@
       "chapter": "Continuity and Differentiability",
       "topic": "Second order derivatives",
       "type": "long",
-      "q": "If $x = \\cos t$ and $y = \\cos mt$, prove that\\n\\n$$(1 - x^2)\\frac{d^2y}{dx^2} - x\\frac{dy}{dx} + m^2 y = 0.$$",
-      "solution": "**Step 1 — first derivative.** Differentiating each parametric equation with respect to $t$ :\\n\\n$$\\frac{dx}{dt} = -\\sin t, \\qquad \\frac{dy}{dt} = -m\\sin mt.$$\\n\\nSo\\n\\n$$\\frac{dy}{dx} = \\frac{-m\\sin mt}{-\\sin t} = \\frac{m\\sin mt}{\\sin t}.$$\\n\\n**Step 2 — clear the fraction before differentiating again.** Rearranged,\\n\\n$$\\sin t\\,\\frac{dy}{dx} = m\\sin mt.$$\\n\\nSince $x = \\cos t$, we have $\\sin^2 t = 1 - x^2$. Squaring the line above,\\n\\n$$(1 - x^2)\\left(\\frac{dy}{dx}\\right)^2 = m^2 \\sin^2 mt = m^2\\left(1 - y^2\\right),$$\\n\\nusing $y = \\cos mt$ so $\\sin^2 mt = 1 - y^2$.\\n\\n**Step 3 — differentiate with respect to $x$.** Differentiating both sides of\\n\\n$$(1 - x^2)\\left(\\frac{dy}{dx}\\right)^2 = m^2\\left(1 - y^2\\right)$$\\n\\ngives\\n\\n$$-2x\\left(\\frac{dy}{dx}\\right)^2 + (1 - x^2)\\cdot 2\\frac{dy}{dx}\\cdot\\frac{d^2y}{dx^2} = -2m^2 y\\frac{dy}{dx}.$$\\n\\n**Step 4 — divide by $2\\dfrac{dy}{dx}$** (non-zero in general) :\\n\\n$$-x\\frac{dy}{dx} + (1 - x^2)\\frac{d^2y}{dx^2} = -m^2 y.$$\\n\\nBringing everything to one side,\\n\\n$$(1 - x^2)\\frac{d^2y}{dx^2} - x\\frac{dy}{dx} + m^2 y = 0,$$\\n\\nwhich is what was required.",
+      "q": "If $x = \\cos t$ and $y = \\cos mt$, prove that\n\n$$(1 - x^2)\\frac{d^2y}{dx^2} - x\\frac{dy}{dx} + m^2 y = 0.$$",
+      "solution": "**Step 1 — first derivative.** Differentiating each parametric equation with respect to $t$ :\n\n$$\\frac{dx}{dt} = -\\sin t, \\qquad \\frac{dy}{dt} = -m\\sin mt.$$\n\nSo\n\n$$\\frac{dy}{dx} = \\frac{-m\\sin mt}{-\\sin t} = \\frac{m\\sin mt}{\\sin t}.$$\n\n**Step 2 — clear the fraction before differentiating again.** Rearranged,\n\n$$\\sin t\\,\\frac{dy}{dx} = m\\sin mt.$$\n\nSince $x = \\cos t$, we have $\\sin^2 t = 1 - x^2$. Squaring the line above,\n\n$$(1 - x^2)\\left(\\frac{dy}{dx}\\right)^2 = m^2 \\sin^2 mt = m^2\\left(1 - y^2\\right),$$\n\nusing $y = \\cos mt$ so $\\sin^2 mt = 1 - y^2$.\n\n**Step 3 — differentiate with respect to $x$.** Differentiating both sides of\n\n$$(1 - x^2)\\left(\\frac{dy}{dx}\\right)^2 = m^2\\left(1 - y^2\\right)$$\n\ngives\n\n$$-2x\\left(\\frac{dy}{dx}\\right)^2 + (1 - x^2)\\cdot 2\\frac{dy}{dx}\\cdot\\frac{d^2y}{dx^2} = -2m^2 y\\frac{dy}{dx}.$$\n\n**Step 4 — divide by $2\\dfrac{dy}{dx}$** (non-zero in general) :\n\n$$-x\\frac{dy}{dx} + (1 - x^2)\\frac{d^2y}{dx^2} = -m^2 y.$$\n\nBringing everything to one side,\n\n$$(1 - x^2)\\frac{d^2y}{dx^2} - x\\frac{dy}{dx} + m^2 y = 0,$$\n\nwhich is what was required.",
       "marks": 5,
       "source": "CBSE 2026"
     },

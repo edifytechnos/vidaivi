@@ -12,7 +12,7 @@
       "topic": "Capacitive reactance",
       "type": "mcq",
       "q": "The reactance of a capacitor of capacitance $C$ connected to an ac source of frequency $f$ is $X$. If the capacitance of the capacitor is doubled and the frequency of the source is tripled, the reactance will become :",
-      "solution": "Capacitive reactance is\\n\\n$$X_C = \\frac{1}{2\\pi f C},$$\\n\\nso it is **inversely** proportional to both the frequency and the capacitance.\\n\\nDoubling $C$ and tripling $f$ multiplies the denominator by $2 \\times 3 = 6$ :\\n\\n$$X_C' = \\frac{1}{2\\pi (3f)(2C)} = \\frac{1}{6}\\cdot\\frac{1}{2\\pi f C} = \\frac{X}{6}.$$\\n\\nBoth changes push the reactance the same way — down — which is why the factors multiply rather than partly cancelling.",
+      "solution": "Capacitive reactance is\n\n$$X_C = \\frac{1}{2\\pi f C},$$\n\nso it is **inversely** proportional to both the frequency and the capacitance.\n\nDoubling $C$ and tripling $f$ multiplies the denominator by $2 \\times 3 = 6$ :\n\n$$X_C' = \\frac{1}{2\\pi (3f)(2C)} = \\frac{1}{6}\\cdot\\frac{1}{2\\pi f C} = \\frac{X}{6}.$$\n\nBoth changes push the reactance the same way — down — which is why the factors multiply rather than partly cancelling.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [
@@ -29,7 +29,7 @@
       "topic": "Purely capacitive circuit",
       "type": "numeric",
       "q": "An ac source of voltage $v = v_m \\sin \\omega t$, where $v_m = 310$ V and $f = 50$ Hz, is connected to a pure capacitor of capacitance $15\\ \\mu$F. Calculate the reactance of the capacitor, in ohms. Give your answer to the nearest ohm.",
-      "solution": "For a pure capacitor the opposition to ac is the capacitive reactance\\n\\n$$X_C = \\frac{1}{\\omega C} = \\frac{1}{2\\pi f C}.$$\\n\\n**Substitute** $f = 50$ Hz and $C = 15\\ \\mu\\text{F} = 15 \\times 10^{-6}$ F :\\n\\n$$X_C = \\frac{1}{2\\pi \\times 50 \\times 15 \\times 10^{-6}} = \\frac{1}{4 \\cdot 712 \\times 10^{-3}}.$$\\n\\n$$X_C \\approx \\mathbf{212}\\ \\Omega.$$\\n\\n(For interest, the amplitude of the current then follows as $i_m = \\dfrac{v_m}{X_C} = \\dfrac{310}{212 \\cdot 2} \\approx 1 \\cdot 46$ A, and in a pure capacitor the current **leads** the voltage by $\\dfrac{\\pi}{2}$, so $i = 1 \\cdot 46 \\sin\\left(\\omega t + \\dfrac{\\pi}{2}\\right)$ A.)",
+      "solution": "For a pure capacitor the opposition to ac is the capacitive reactance\n\n$$X_C = \\frac{1}{\\omega C} = \\frac{1}{2\\pi f C}.$$\n\n**Substitute** $f = 50$ Hz and $C = 15\\ \\mu\\text{F} = 15 \\times 10^{-6}$ F :\n\n$$X_C = \\frac{1}{2\\pi \\times 50 \\times 15 \\times 10^{-6}} = \\frac{1}{4 \\cdot 712 \\times 10^{-3}}.$$\n\n$$X_C \\approx \\mathbf{212}\\ \\Omega.$$\n\n(For interest, the amplitude of the current then follows as $i_m = \\dfrac{v_m}{X_C} = \\dfrac{310}{212 \\cdot 2} \\approx 1 \\cdot 46$ A, and in a pure capacitor the current **leads** the voltage by $\\dfrac{\\pi}{2}$, so $i = 1 \\cdot 46 \\sin\\left(\\omega t + \\dfrac{\\pi}{2}\\right)$ A.)",
       "marks": 2,
       "source": "CBSE 2023",
       "answer": 212,

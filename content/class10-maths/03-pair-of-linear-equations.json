@@ -20,7 +20,7 @@
         "no solution"
       ],
       "answer": 3,
-      "solution": "Put the second equation in standard form first: $-3x = 6y - 1$ becomes $3x + 6y - 1 = 0$.\n\nNow compare the three ratios:\n\n$\\dfrac{a_1}{a_2} = \\dfrac{1}{3}$, $\\dfrac{b_1}{b_2} = \\dfrac{2}{6} = \\dfrac{1}{3}$, $\\dfrac{c_1}{c_2} = \\dfrac{5}{-1} = -5$\n\nThe first two are equal but the third is different:\n\n$\\dfrac{a_1}{a_2} = \\dfrac{b_1}{b_2} \\neq \\dfrac{c_1}{c_2}$\n\nThat is the **parallel lines** case, so there is **no solution**.\n\nThink of $a$ and $b$ as setting the *direction* of a line and $c$ as setting *where* it sits. Same direction, different position — two railway tracks running side by side, never meeting.",
+      "solution": "Put the second equation in standard form first: $-3x = 6y - 1$ becomes $3x + 6y - 1 = 0$.\n\nNow compare the three ratios:\n\n$\\dfrac{a_1}{a_2} = \\dfrac{1}{3}$, $\\dfrac{b_1}{b_2} = \\dfrac{2}{6} = \\dfrac{1}{3}$, $\\dfrac{c_1}{c_2} = \\dfrac{5}{-1} = -5$\n\nThe first two are equal but the third is different:\n\n$\\dfrac{a_1}{a_2} = \\dfrac{b_1}{b_2} \neq \\dfrac{c_1}{c_2}$\n\nThat is the **parallel lines** case, so there is **no solution**.\n\nThink of $a$ and $b$ as setting the *direction* of a line and $c$ as setting *where* it sits. Same direction, different position — two railway tracks running side by side, never meeting.",
       "chapter": "Pair of Linear Equations in Two Variables"
     },
     {
@@ -54,7 +54,7 @@
         "no solution"
       ],
       "answer": 3,
-      "solution": "Picture the two lines rather than reaching for a formula.\n\n$y = 0$ is the $x$-axis. $y = -7$ is a horizontal line 7 units below it.\n\nBoth are horizontal, so they never meet — and no point can have $y = 0$ and $y = -7$ at the same time. There is **no solution**.\n\nBy the ratio test with $0 \\cdot x + 1 \\cdot y + 0 = 0$ and $0 \\cdot x + 1 \\cdot y + 7 = 0$: the $y$-coefficients match, but $\\dfrac{0}{7} \\neq \\dfrac{1}{1}$ — the parallel case again.\n\nA number cannot be in two places at once. That is all this question is asking.",
+      "solution": "Picture the two lines rather than reaching for a formula.\n\n$y = 0$ is the $x$-axis. $y = -7$ is a horizontal line 7 units below it.\n\nBoth are horizontal, so they never meet — and no point can have $y = 0$ and $y = -7$ at the same time. There is **no solution**.\n\nBy the ratio test with $0 \\cdot x + 1 \\cdot y + 0 = 0$ and $0 \\cdot x + 1 \\cdot y + 7 = 0$: the $y$-coefficients match, but $\\dfrac{0}{7} \neq \\dfrac{1}{1}$ — the parallel case again.\n\nA number cannot be in two places at once. That is all this question is asking.",
       "chapter": "Pair of Linear Equations in Two Variables"
     },
     {
@@ -97,7 +97,7 @@
       "source": "CBSE 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "**Assertion (A):** The pair of linear equations $px + 3y + 59 = 0$ and $2x + 6y + 118 = 0$ will have infinitely many solutions if $p = 1$.\n\n**Reason (R):** If the pair of linear equations $px + 3y + 19 = 0$ and $2x + 6y + 157 = 0$ has a unique solution, then $p \\neq 1$.",
+      "q": "**Assertion (A):** The pair of linear equations $px + 3y + 59 = 0$ and $2x + 6y + 118 = 0$ will have infinitely many solutions if $p = 1$.\n\n**Reason (R):** If the pair of linear equations $px + 3y + 19 = 0$ and $2x + 6y + 157 = 0$ has a unique solution, then $p \neq 1$.",
       "options": [
         "Both Assertion (A) and Reason (R) are true, and Reason (R) is the correct explanation of Assertion (A).",
         "Both Assertion (A) and Reason (R) are true, but Reason (R) is not the correct explanation of Assertion (A).",
@@ -105,7 +105,7 @@
         "Assertion (A) is false, but Reason (R) is true."
       ],
       "answer": 1,
-      "solution": "**Check (A).** Infinitely many solutions needs all three ratios equal. With $p = 1$:\n\n$\\dfrac{1}{2} = \\dfrac{3}{6} = \\dfrac{59}{118}$ — all equal to $\\tfrac{1}{2}$ ✓\n\nSo **(A) is true**.\n\n**Check (R).** A unique solution needs $\\dfrac{p}{2} \\neq \\dfrac{3}{6} = \\dfrac{1}{2}$, i.e. $p \\neq 1$ ✓\n\nSo **(R) is true**.\n\n**Does (R) explain (A)?** No. (R) is about a *different* pair of equations and a *different* case — unique solutions. Knowing when lines cross once does not tell you when they lie on top of each other.\n\nAnswer: **(B)** — both true, but (R) is not the explanation.\n\nAssertion–Reason questions are two questions and then a third: is this the reason, or just another true sentence standing nearby?",
+      "solution": "**Check (A).** Infinitely many solutions needs all three ratios equal. With $p = 1$:\n\n$\\dfrac{1}{2} = \\dfrac{3}{6} = \\dfrac{59}{118}$ — all equal to $\\tfrac{1}{2}$ ✓\n\nSo **(A) is true**.\n\n**Check (R).** A unique solution needs $\\dfrac{p}{2} \neq \\dfrac{3}{6} = \\dfrac{1}{2}$, i.e. $p \neq 1$ ✓\n\nSo **(R) is true**.\n\n**Does (R) explain (A)?** No. (R) is about a *different* pair of equations and a *different* case — unique solutions. Knowing when lines cross once does not tell you when they lie on top of each other.\n\nAnswer: **(B)** — both true, but (R) is not the explanation.\n\nAssertion–Reason questions are two questions and then a third: is this the reason, or just another true sentence standing nearby?",
       "chapter": "Pair of Linear Equations in Two Variables"
     },
     {
@@ -121,7 +121,7 @@
         "no value of $k$"
       ],
       "answer": 1,
-      "solution": "A unique solution means the lines cross exactly once, and that happens when the $x$ and $y$ coefficients are **not** in the same ratio:\n\n$\\dfrac{a_1}{a_2} \\neq \\dfrac{b_1}{b_2}$\n\n$\\dfrac{k}{3} \\neq \\dfrac{2}{1}$\n\n$k \\neq 6$\n\nSo the answer is **$k \\neq 6$**.\n\nAt $k = 6$ the equations become $6x + 2y = 5$ and $3x + y = 1$; doubling the second gives $6x + 2y = 2$, which contradicts $6x + 2y = 5$ — parallel lines, no solution. Every other $k$ tilts one line relative to the other, and two lines at different angles must cross somewhere.",
+      "solution": "A unique solution means the lines cross exactly once, and that happens when the $x$ and $y$ coefficients are **not** in the same ratio:\n\n$\\dfrac{a_1}{a_2} \neq \\dfrac{b_1}{b_2}$\n\n$\\dfrac{k}{3} \neq \\dfrac{2}{1}$\n\n$k \neq 6$\n\nSo the answer is **$k \neq 6$**.\n\nAt $k = 6$ the equations become $6x + 2y = 5$ and $3x + y = 1$; doubling the second gives $6x + 2y = 2$, which contradicts $6x + 2y = 5$ — parallel lines, no solution. Every other $k$ tilts one line relative to the other, and two lines at different angles must cross somewhere.",
       "chapter": "Pair of Linear Equations in Two Variables"
     },
     {
@@ -153,7 +153,7 @@
       "type": "long",
       "marks": 2,
       "q": "Solve the linear equations $3x + y = 14$ and $y = 2$ graphically.",
-      "solution": "**Draw $y = 2$.** A horizontal line two units above the $x$-axis.\n\n**Draw $3x + y = 14$.** Two points are enough:\n\n| $x$ | $y = 14 - 3x$ |\n|---|---|\n| 0 | 14 |\n| 4 | 2 |\n\nPlot $(0, 14)$ and $(4, 2)$ and join them.\n\n**Read off the crossing point.** The two lines meet at $(4, 2)$.\n\nSo $x = 4$, $y = 2$.\n\n**Check algebraically:** substituting $y = 2$ into $3x + y = 14$ gives $3x = 12$, so $x = 4$ ✓\n\nA graph turns \"solve these together\" into something you can see: each line is the set of all points obeying its own rule, so the point where they cross is the one point obeying both.",
+      "solution": "**Draw $y = 2$.** A horizontal line two units above the $x$-axis.\n\n**Draw $3x + y = 14$.** Two points are enough:\n\n**$x$ · $y = 14 - 3x$**\n0 · 14\n4 · 2\n\nPlot $(0, 14)$ and $(4, 2)$ and join them.\n\n**Read off the crossing point.** The two lines meet at $(4, 2)$.\n\nSo $x = 4$, $y = 2$.\n\n**Check algebraically:** substituting $y = 2$ into $3x + y = 14$ gives $3x = 12$, so $x = 4$ ✓\n\nA graph turns \"solve these together\" into something you can see: each line is the set of all points obeying its own rule, so the point where they cross is the one point obeying both.",
       "chapter": "Pair of Linear Equations in Two Variables"
     },
     {
@@ -163,7 +163,7 @@
       "type": "long",
       "marks": 3,
       "q": "Solve the following system of linear equations graphically:\n\n$$x - y + 1 = 0$$\n\n$$x + y = 5$$",
-      "solution": "**Table for $x - y + 1 = 0$**, i.e. $y = x + 1$:\n\n| $x$ | 0 | 2 | 4 |\n|---|---|---|---|\n| $y$ | 1 | 3 | 5 |\n\n**Table for $x + y = 5$**, i.e. $y = 5 - x$:\n\n| $x$ | 0 | 2 | 5 |\n|---|---|---|---|\n| $y$ | 5 | 3 | 0 |\n\nPlot both lines on the same axes. They cross at $(2, 3)$.\n\nSo $x = 2$ and $y = 3$.\n\n**Check:** $2 - 3 + 1 = 0$ ✓ and $2 + 3 = 5$ ✓\n\nNotice both tables contain $(2, 3)$ — that is the crossing point showing up before you have drawn anything. In the exam, still draw the graph: the marks are for the lines as much as for the answer.",
+      "solution": "**Table for $x - y + 1 = 0$**, i.e. $y = x + 1$:\n\n**$x$ · 0 · 2 · 4**\n$y$ · 1 · 3 · 5\n\n**Table for $x + y = 5$**, i.e. $y = 5 - x$:\n\n**$x$ · 0 · 2 · 5**\n$y$ · 5 · 3 · 0\n\nPlot both lines on the same axes. They cross at $(2, 3)$.\n\nSo $x = 2$ and $y = 3$.\n\n**Check:** $2 - 3 + 1 = 0$ ✓ and $2 + 3 = 5$ ✓\n\nNotice both tables contain $(2, 3)$ — that is the crossing point showing up before you have drawn anything. In the exam, still draw the graph: the marks are for the lines as much as for the answer.",
       "chapter": "Pair of Linear Equations in Two Variables"
     },
     {

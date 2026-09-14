@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "sol-001",
+      "id": "c12sol-101",
       "chapter": "Solutions",
-      "topic": "Concentration terms",
+      "topic": "Colligative properties",
       "type": "mcq",
-      "q": "Molality is defined as the number of moles of solute per:",
-      "solution": "Molality $= \\dfrac{\\text{moles of solute}}{\\text{kg of \\textbf{solvent}}}$.\n\nUnlike molarity it uses **mass**, not volume, so it does not change with temperature — which is why every colligative-property formula is written in molality.",
+      "q": "The colligative property used for the determination of molar mass of polymers and proteins is :",
+      "solution": "Polymers and proteins have very **large** molar masses, so even a gram of them dissolved in a litre gives a tiny molality. All four colligative properties are proportional to molality, so all four give a small effect — the question is which one is still **measurable**.\n\nFor a $0 \\cdot 001$ m solution :\n\n- depression in freezing point is about $0 \\cdot 002$ K,\n- elevation in boiling point is about $0 \\cdot 0005$ K,\n\nboth far too small to measure reliably with an ordinary thermometer.\n\n**Osmotic pressure**, however, is $\\pi = CRT$, and at 300 K a $0 \\cdot 001$ M solution gives\n\n$$\\pi = 0 \\cdot 001 \\times 0 \\cdot 0821 \\times 300 \\approx 0 \\cdot 025\\ \\text{atm} \\approx 19\\ \\text{mm Hg},$$\n\nwhich is easily measured. Two further advantages: it is measured **at room temperature**, so a protein is not denatured by heating, and it uses molarity rather than molality.\n\nThat is why osmotic pressure is the method of choice for macromolecules.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "litre of solution",
-        "kilogram of solvent",
-        "litre of solvent",
-        "kilogram of solution"
+        "Osmotic pressure",
+        "Depression in freezing point",
+        "Relative lowering in vapour pressure",
+        "Elevation in boiling point"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": "sol-002",

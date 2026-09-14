@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "dfb-001",
+      "id": "c12dfb-101",
       "chapter": "The d- and f-Block Elements",
-      "topic": "Transition elements",
+      "topic": "Colour of transition metal ions",
       "type": "mcq",
-      "q": "A transition element is defined as one that has:",
-      "solution": "A transition element has a **partly filled d subshell**, either in the atom or in a common ion.\n\nThis is why zinc, cadmium and mercury ($d^{10}s^{2}$, and $d^{10}$ in their only common oxidation state) are **not** counted as true transition metals — and why they are colourless and poorly catalytic.",
+      "q": "Which ion amongst the following is colourless? (Atomic numbers: Ti = 22, V = 23, Cr = 24)",
+      "solution": "Transition metal ions are coloured because of **d–d transitions**: an electron in a partly filled $d$ sub-shell absorbs visible light and jumps to a higher $d$ orbital. An ion with an **empty** or a **completely filled** $d$ sub-shell has no such transition available, so it is colourless.\n\nWork out each configuration.\n\n**$\\text{Ti}^{4+}$** — Ti is $[\\text{Ar}]3d^2 4s^2$. Losing four electrons gives $[\\text{Ar}]3d^0$. **No $d$ electrons**, so no $d$–$d$ transition: **colourless**.\n\n**$\\text{V}^{3+}$** — V is $[\\text{Ar}]3d^3 4s^2$. Losing three gives $3d^2$ — partly filled, so coloured (green).\n\n**$\\text{Cr}^{3+}$** — Cr is $[\\text{Ar}]3d^5 4s^1$. Losing three gives $3d^3$ — partly filled, so coloured (violet).\n\nSo $\\text{Ti}^{4+}$ is the colourless one.",
       "marks": 1,
+      "source": "CBSE 2022",
       "options": [
-        "a completely filled d subshell",
-        "a partially filled d subshell in its ground state or in a common oxidation state",
-        "only s electrons",
-        "an empty d subshell"
+        "$\\text{Ti}^{4+}$",
+        "$\\text{Cr}^{3+}$",
+        "$\\text{V}^{3+}$",
+        "All three are coloured"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": "dfb-002",

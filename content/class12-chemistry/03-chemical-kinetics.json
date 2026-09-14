@@ -7,20 +7,40 @@
   "access": "login",
   "questions": [
     {
-      "id": "kin-001",
+      "id": "c12kin-101",
       "chapter": "Chemical Kinetics",
-      "topic": "Order of reaction",
-      "type": "mcq",
-      "q": "The order of a reaction is:",
-      "solution": "Order is the **sum of the exponents** in the experimentally determined rate law.\n\nIt can be zero, fractional or even negative, and it is found by experiment — never read off the balanced equation. **Molecularity**, by contrast, is a theoretical count for a single elementary step and must be a whole number.",
-      "marks": 1,
-      "options": [
-        "always equal to the molecularity",
-        "the sum of the powers of the concentration terms in the rate law",
-        "always a whole number",
-        "the number of reactant molecules"
-      ],
-      "answer": 1
+      "topic": "Order of a reaction",
+      "type": "numeric",
+      "q": "Calculate the overall order of a reaction which has the rate expression $\\text{Rate} = k[A]^{1/2}[B]^{3/2}$.",
+      "solution": "The **overall order** of a reaction is the sum of the powers to which the concentration terms are raised in the experimentally determined rate law.\n\nHere the powers are $\\dfrac{1}{2}$ for $A$ and $\\dfrac{3}{2}$ for $B$, so\n\n$$\\text{order} = \\frac{1}{2} + \\frac{3}{2} = \\frac{4}{2} = \\mathbf{2}.$$\n\nThe reaction is **second order overall**, though it is of order $\\frac12$ with respect to $A$ and order $\\frac32$ with respect to $B$.\n\nNote that order can be fractional, zero or even negative — it is found by experiment and need not match the stoichiometric coefficients, unlike molecularity, which is always a whole number.",
+      "marks": 2,
+      "source": "CBSE 2022",
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "c12kin-102",
+      "chapter": "Chemical Kinetics",
+      "topic": "First order kinetics",
+      "type": "numeric",
+      "q": "A first order reaction takes $77 \\cdot 78$ minutes for 50% completion. Calculate the time required for 30% completion of this reaction, in minutes, to the nearest minute. (Given $\\log 10 = 1$, $\\log 7 = 0 \\cdot 8450$.)",
+      "solution": "**Step 1 — find the rate constant from the half-life.** For a first order reaction,\n\n$$t_{1/2} = \\frac{0 \\cdot 693}{k} \\quad\\Longrightarrow\\quad k = \\frac{0 \\cdot 693}{77 \\cdot 78} = 8 \\cdot 91 \\times 10^{-3}\\ \\text{min}^{-1}.$$\n\n**Step 2 — apply the first order integrated rate law.**\n\n$$t = \\frac{2 \\cdot 303}{k}\\log\\frac{[A]_0}{[A]}.$$\n\nAt 30% completion, 70% of the reactant is left, so taking $[A]_0 = 100$ and $[A] = 70$ :\n\n$$t = \\frac{2 \\cdot 303}{8 \\cdot 91 \\times 10^{-3}}\\log\\frac{100}{70}.$$\n\n**Step 3 — evaluate the logarithm** using the values given :\n\n$$\\log\\frac{100}{70} = \\log 100 - \\log 70 = 2 - (1 + 0 \\cdot 8450) = 0 \\cdot 1550.$$\n\n**Step 4 — substitute.**\n\n$$t = 258 \\cdot 5 \\times 0 \\cdot 1550 \\approx \\mathbf{40}\\ \\text{minutes}.$$\n\nSensible: 30% completion is well short of the half-life, so the time must be well under $77 \\cdot 78$ minutes.",
+      "marks": 2,
+      "source": "CBSE 2022",
+      "answer": 40,
+      "tolerance": 1
+    },
+    {
+      "id": "c12kin-103",
+      "chapter": "Chemical Kinetics",
+      "topic": "First order kinetics",
+      "type": "numeric",
+      "q": "A first order reaction has a rate constant of $10^{-3}$ per second. How long will $5$ g of this reactant take to reduce to $3$ g? Give your answer in seconds, to the nearest second. (Given $\\log 3 = 0 \\cdot 4771$, $\\log 5 = 0 \\cdot 6990$.)",
+      "solution": "For a first order reaction the integrated rate law is\n\n$$t = \\frac{2 \\cdot 303}{k}\\log\\frac{[A]_0}{[A]}.$$\n\nBecause the law involves only a **ratio** of amounts, masses may be used directly — there is no need to convert to concentrations.\n\n**Substitute** $[A]_0 = 5$ g, $[A] = 3$ g and $k = 10^{-3}\\ \\text{s}^{-1}$ :\n\n$$t = \\frac{2 \\cdot 303}{10^{-3}}\\log\\frac{5}{3}.$$\n\n**Evaluate the logarithm** from the values given :\n\n$$\\log\\frac{5}{3} = \\log 5 - \\log 3 = 0 \\cdot 6990 - 0 \\cdot 4771 = 0 \\cdot 2219.$$\n\n**Finish.**\n\n$$t = 2303 \\times 0 \\cdot 2219 \\approx \\mathbf{511}\\ \\text{seconds}.$$\n\n(As a check, the half-life here is $0 \\cdot 693/10^{-3} = 693$ s, and going from 5 g to 3 g is less than halving — so a time under 693 s is right.)",
+      "marks": 2,
+      "source": "CBSE 2022",
+      "answer": 511,
+      "tolerance": 1
     },
     {
       "id": "kin-002",
@@ -85,28 +105,6 @@
         "raising the temperature"
       ],
       "answer": 1
-    },
-    {
-      "id": "kin-006",
-      "chapter": "Chemical Kinetics",
-      "topic": "First order half-life",
-      "type": "numeric",
-      "q": "A first order reaction has $k = 0.0693$ min$^{-1}$. Find its half-life, in minutes.",
-      "solution": "$t_{1/2} = \\dfrac{0.693}{k} = \\dfrac{0.693}{0.0693} = \\mathbf{10}$ minutes.",
-      "marks": 2,
-      "answer": 10,
-      "tolerance": 0.1
-    },
-    {
-      "id": "kin-007",
-      "chapter": "Chemical Kinetics",
-      "topic": "Fraction remaining",
-      "type": "numeric",
-      "q": "A first order reaction has a half-life of $20$ minutes. What fraction of the reactant remains after $60$ minutes?",
-      "solution": "Three half-lives: $1 \\to \\tfrac12 \\to \\tfrac14 \\to \\tfrac18 = \\mathbf{0.125}$.",
-      "marks": 2,
-      "answer": 0.125,
-      "tolerance": 0.005
     },
     {
       "id": "kin-008",

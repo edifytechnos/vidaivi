@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "bio-001",
+      "id": "c12bio-101",
       "chapter": "Biomolecules",
-      "topic": "Carbohydrates",
+      "topic": "Protein structure",
       "type": "mcq",
-      "q": "Glucose and fructose are:",
-      "solution": "Both are $\\text{C}_{6}\\text{H}_{12}\\text{O}_{6}$, but glucose is an **aldohexose** ($-\\text{CHO}$) and fructose a **ketohexose** ($>\\text{C}{=}\\text{O}$) — different functional groups, so **functional isomers**.",
+      "q": "An $\\alpha$-helix is a structural feature of :",
+      "solution": "The $\\alpha$-helix is a form of the **secondary structure of proteins** — the way a polypeptide chain coils up locally.\n\nIn it, the chain winds into a right-handed spiral held in place by **intramolecular hydrogen bonds** between the $\\text{C}=\\text{O}$ of one amino acid residue and the $\\text{N}-\\text{H}$ of the residue four places along the chain.\n\nChecking the others:\n\n- **Sucrose** is a disaccharide — a single small molecule of glucose and fructose, with no chain to coil.\n- **Starch** is a polysaccharide; amylose does form a helix, but it is held by a different arrangement and the $\\alpha$-helix specifically names the protein structure.\n- **Nucleotides** are the individual building blocks of nucleic acids; DNA's structure is a **double helix**, and that is a different thing again.\n\nSo the $\\alpha$-helix belongs to **polypeptides**.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "chain isomers",
-        "functional isomers",
-        "optical isomers",
-        "identical"
+        "Sucrose",
+        "Starch",
+        "Polypeptides",
+        "Nucleotides"
       ],
-      "answer": 1
+      "answer": 2
     },
     {
       "id": "bio-002",

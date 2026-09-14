@@ -12,7 +12,7 @@
       "topic": "Dielectrics",
       "type": "mcq",
       "q": "The capacitance of a parallel plate capacitor having a medium of dielectric constant $K = 4$ in between the plates is $C$. If this medium is removed, then the capacitance of the capacitor becomes :",
-      "solution": "With a dielectric of constant $K$ filling the gap, the capacitance is $K$ times the vacuum value :\\n\\n$$C_{\\text{with}} = K\\,C_0 = \\frac{K\\varepsilon_0 A}{d}.$$\\n\\nWe are told $C_{\\text{with}} = C$ with $K = 4$, so\\n\\n$$C = 4C_0 \\quad\\Longrightarrow\\quad C_0 = \\frac{C}{4}.$$\\n\\nRemoving the medium leaves the vacuum capacitance $C_0$, which is $\\dfrac{C}{4}$.\\n\\nThe dielectric always **increases** capacitance — it reduces the field between the plates for the same charge, so the potential difference falls and $C = Q/V$ rises. Taking it away must therefore make $C$ smaller, which rules out $4C$ and $2C$ before any arithmetic.",
+      "solution": "With a dielectric of constant $K$ filling the gap, the capacitance is $K$ times the vacuum value :\n\n$$C_{\\text{with}} = K\\,C_0 = \\frac{K\\varepsilon_0 A}{d}.$$\n\nWe are told $C_{\\text{with}} = C$ with $K = 4$, so\n\n$$C = 4C_0 \\quad\\Longrightarrow\\quad C_0 = \\frac{C}{4}.$$\n\nRemoving the medium leaves the vacuum capacitance $C_0$, which is $\\dfrac{C}{4}$.\n\nThe dielectric always **increases** capacitance — it reduces the field between the plates for the same charge, so the potential difference falls and $C = Q/V$ rises. Taking it away must therefore make $C$ smaller, which rules out $4C$ and $2C$ before any arithmetic.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [

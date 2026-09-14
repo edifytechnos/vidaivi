@@ -11,8 +11,8 @@
       "chapter": "Inverse Trigonometric Functions",
       "topic": "Principal value branches",
       "type": "mcq",
-      "q": "**Assertion (A):** The range of $\\left[\\sin^{-1} x + 2\\cos^{-1} x\\right]$ is $[0, \\pi]$.\\n\\n**Reason (R):** The principal value branch of $\\sin^{-1} x$ has range $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$.\\n\\nChoose the correct answer :",
-      "solution": "**Assertion.** Split the expression using $\\sin^{-1} x + \\cos^{-1} x = \\dfrac{\\pi}{2}$ :\\n\\n$$\\sin^{-1} x + 2\\cos^{-1} x = \\left(\\sin^{-1} x + \\cos^{-1} x\\right) + \\cos^{-1} x = \\frac{\\pi}{2} + \\cos^{-1} x.$$\\n\\nSince $\\cos^{-1} x$ runs over $[0, \\pi]$, the whole expression runs over\\n\\n$$\\left[\\frac{\\pi}{2},\\ \\frac{3\\pi}{2}\\right],$$\\n\\nnot $[0, \\pi]$. A is **false**.\\n\\n**Reason.** The principal value branch of $\\sin^{-1}$ is indeed $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$. R is **true**.\\n\\nSo A is false but R is true.",
+      "q": "**Assertion (A):** The range of $\\left[\\sin^{-1} x + 2\\cos^{-1} x\\right]$ is $[0, \\pi]$.\n\n**Reason (R):** The principal value branch of $\\sin^{-1} x$ has range $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$.\n\nChoose the correct answer :",
+      "solution": "**Assertion.** Split the expression using $\\sin^{-1} x + \\cos^{-1} x = \\dfrac{\\pi}{2}$ :\n\n$$\\sin^{-1} x + 2\\cos^{-1} x = \\left(\\sin^{-1} x + \\cos^{-1} x\\right) + \\cos^{-1} x = \\frac{\\pi}{2} + \\cos^{-1} x.$$\n\nSince $\\cos^{-1} x$ runs over $[0, \\pi]$, the whole expression runs over\n\n$$\\left[\\frac{\\pi}{2},\\ \\frac{3\\pi}{2}\\right],$$\n\nnot $[0, \\pi]$. A is **false**.\n\n**Reason.** The principal value branch of $\\sin^{-1}$ is indeed $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$. R is **true**.\n\nSo A is false but R is true.",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -28,8 +28,8 @@
       "chapter": "Inverse Trigonometric Functions",
       "topic": "Principal value branches",
       "type": "mcq",
-      "q": "**Assertion (A):** The range of the function $f(x) = 2\\sin^{-1} x + \\dfrac{3\\pi}{2}$, where $x \\in [-1, 1]$, is $\\left[\\dfrac{\\pi}{2}, \\dfrac{5\\pi}{2}\\right]$.\\n\\n**Reason (R):** The range of the principal value branch of $\\sin^{-1}(x)$ is $[0, \\pi]$.\\n\\nChoose the correct answer :",
-      "solution": "**Assertion.** On $[-1, 1]$ the value of $\\sin^{-1} x$ runs over $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$, so\\n\\n$$2\\sin^{-1} x \\in [-\\pi, \\pi] \\quad\\Rightarrow\\quad 2\\sin^{-1} x + \\frac{3\\pi}{2} \\in \\left[-\\pi + \\frac{3\\pi}{2},\\ \\pi + \\frac{3\\pi}{2}\\right] = \\left[\\frac{\\pi}{2},\\ \\frac{5\\pi}{2}\\right].$$\\n\\nA is **true**.\\n\\n**Reason.** The principal value branch of $\\sin^{-1}$ has range $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$, **not** $[0, \\pi]$ — that is the range of $\\cos^{-1}$. R is **false**.\\n\\nSo A is true but R is false. (Note that the assertion was worked out *using* the correct range, which is why a false reason sits beside a true assertion.)",
+      "q": "**Assertion (A):** The range of the function $f(x) = 2\\sin^{-1} x + \\dfrac{3\\pi}{2}$, where $x \\in [-1, 1]$, is $\\left[\\dfrac{\\pi}{2}, \\dfrac{5\\pi}{2}\\right]$.\n\n**Reason (R):** The range of the principal value branch of $\\sin^{-1}(x)$ is $[0, \\pi]$.\n\nChoose the correct answer :",
+      "solution": "**Assertion.** On $[-1, 1]$ the value of $\\sin^{-1} x$ runs over $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$, so\n\n$$2\\sin^{-1} x \\in [-\\pi, \\pi] \\quad\\Rightarrow\\quad 2\\sin^{-1} x + \\frac{3\\pi}{2} \\in \\left[-\\pi + \\frac{3\\pi}{2},\\ \\pi + \\frac{3\\pi}{2}\\right] = \\left[\\frac{\\pi}{2},\\ \\frac{5\\pi}{2}\\right].$$\n\nA is **true**.\n\n**Reason.** The principal value branch of $\\sin^{-1}$ has range $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$, **not** $[0, \\pi]$ — that is the range of $\\cos^{-1}$. R is **false**.\n\nSo A is true but R is false. (Note that the assertion was worked out *using* the correct range, which is why a false reason sits beside a true assertion.)",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -46,7 +46,7 @@
       "topic": "Values outside the branch",
       "type": "mcq",
       "q": "Evaluate : $\\cos^{-1}\\left(\\cos \\dfrac{7\\pi}{3}\\right)$",
-      "solution": "$\\cos^{-1}$ must return a value in its principal branch $[0, \\pi]$, and $\\dfrac{7\\pi}{3}$ is outside it. So reduce the angle first, using the $2\\pi$-periodicity of cosine:\\n\\n$$\\frac{7\\pi}{3} - 2\\pi = \\frac{7\\pi - 6\\pi}{3} = \\frac{\\pi}{3}.$$\\n\\nTherefore $\\cos\\dfrac{7\\pi}{3} = \\cos\\dfrac{\\pi}{3}$, and since $\\dfrac{\\pi}{3}$ **is** in $[0, \\pi]$,\\n\\n$$\\cos^{-1}\\left(\\cos \\frac{7\\pi}{3}\\right) = \\frac{\\pi}{3}.$$\\n\\nThe trap is answering $\\dfrac{7\\pi}{3}$ — the identity $\\cos^{-1}(\\cos\\theta) = \\theta$ only holds when $\\theta$ is already in the branch.",
+      "solution": "$\\cos^{-1}$ must return a value in its principal branch $[0, \\pi]$, and $\\dfrac{7\\pi}{3}$ is outside it. So reduce the angle first, using the $2\\pi$-periodicity of cosine:\n\n$$\\frac{7\\pi}{3} - 2\\pi = \\frac{7\\pi - 6\\pi}{3} = \\frac{\\pi}{3}.$$\n\nTherefore $\\cos\\dfrac{7\\pi}{3} = \\cos\\dfrac{\\pi}{3}$, and since $\\dfrac{\\pi}{3}$ **is** in $[0, \\pi]$,\n\n$$\\cos^{-1}\\left(\\cos \\frac{7\\pi}{3}\\right) = \\frac{\\pi}{3}.$$\n\nThe trap is answering $\\dfrac{7\\pi}{3}$ — the identity $\\cos^{-1}(\\cos\\theta) = \\theta$ only holds when $\\theta$ is already in the branch.",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -63,7 +63,7 @@
       "topic": "Composite of inverse functions",
       "type": "mcq",
       "q": "Find the value of $\\sin\\left[\\cot^{-1}\\left(\\cos\\left(\\tan^{-1} 1\\right)\\right)\\right]$.",
-      "solution": "Work from the inside out.\\n\\n**Step 1.** $\\tan^{-1} 1 = \\dfrac{\\pi}{4}$.\\n\\n**Step 2.** $\\cos\\dfrac{\\pi}{4} = \\dfrac{1}{\\sqrt{2}}$.\\n\\n**Step 3.** Let $\\theta = \\cot^{-1}\\left(\\dfrac{1}{\\sqrt{2}}\\right)$, so $\\cot\\theta = \\dfrac{1}{\\sqrt{2}}$ and therefore $\\tan\\theta = \\sqrt{2}$.\\n\\nDraw the right triangle: opposite $= \\sqrt{2}$, adjacent $= 1$, so hypotenuse $= \\sqrt{2 + 1} = \\sqrt{3}$.\\n\\n**Step 4.** Hence\\n\\n$$\\sin\\theta = \\frac{\\sqrt{2}}{\\sqrt{3}} = \\sqrt{\\frac{2}{3}} = \\frac{\\sqrt{6}}{3} \\approx 0.8165.$$",
+      "solution": "Work from the inside out.\n\n**Step 1.** $\\tan^{-1} 1 = \\dfrac{\\pi}{4}$.\n\n**Step 2.** $\\cos\\dfrac{\\pi}{4} = \\dfrac{1}{\\sqrt{2}}$.\n\n**Step 3.** Let $\\theta = \\cot^{-1}\\left(\\dfrac{1}{\\sqrt{2}}\\right)$, so $\\cot\\theta = \\dfrac{1}{\\sqrt{2}}$ and therefore $\\tan\\theta = \\sqrt{2}$.\n\nDraw the right triangle: opposite $= \\sqrt{2}$, adjacent $= 1$, so hypotenuse $= \\sqrt{2 + 1} = \\sqrt{3}$.\n\n**Step 4.** Hence\n\n$$\\sin\\theta = \\frac{\\sqrt{2}}{\\sqrt{3}} = \\sqrt{\\frac{2}{3}} = \\frac{\\sqrt{6}}{3} \\approx 0.8165.$$",
       "marks": 1,
       "source": "CBSE 2026",
       "options": [
@@ -80,7 +80,7 @@
       "topic": "Domain",
       "type": "long",
       "q": "Find the domain of $y = \\sin^{-1}\\left(x^2 - 4\\right)$.",
-      "solution": "$\\sin^{-1}(t)$ is defined only for $-1 \\leq t \\leq 1$, so the condition is\\n\\n$$-1 \\leq x^2 - 4 \\leq 1.$$\\n\\nAdd 4 throughout:\\n\\n$$3 \\leq x^2 \\leq 5.$$\\n\\nNow $x^2 \\geq 3$ means $|x| \\geq \\sqrt{3}$, and $x^2 \\leq 5$ means $|x| \\leq \\sqrt{5}$. Together,\\n\\n$$\\sqrt{3} \\leq |x| \\leq \\sqrt{5},$$\\n\\nwhich covers $x$ on both sides of zero. The domain is therefore\\n\\n$$\\left[-\\sqrt{5},\\ -\\sqrt{3}\\right] \\cup \\left[\\sqrt{3},\\ \\sqrt{5}\\right].$$\\n\\n(Numerically, about $[-2.236, -1.732] \\cup [1.732, 2.236]$.)",
+      "solution": "$\\sin^{-1}(t)$ is defined only for $-1 \\leq t \\leq 1$, so the condition is\n\n$$-1 \\leq x^2 - 4 \\leq 1.$$\n\nAdd 4 throughout:\n\n$$3 \\leq x^2 \\leq 5.$$\n\nNow $x^2 \\geq 3$ means $|x| \\geq \\sqrt{3}$, and $x^2 \\leq 5$ means $|x| \\leq \\sqrt{5}$. Together,\n\n$$\\sqrt{3} \\leq |x| \\leq \\sqrt{5},$$\n\nwhich covers $x$ on both sides of zero. The domain is therefore\n\n$$\\left[-\\sqrt{5},\\ -\\sqrt{3}\\right] \\cup \\left[\\sqrt{3},\\ \\sqrt{5}\\right].$$\n\n(Numerically, about $[-2.236, -1.732] \\cup [1.732, 2.236]$.)",
       "marks": 2,
       "source": "CBSE 2023"
     },
@@ -90,7 +90,7 @@
       "topic": "Domain and range",
       "type": "long",
       "q": "Find the domain of $f(x) = \\cos^{-1}\\left(1 - x^2\\right)$. Also, find its range.",
-      "solution": "**Domain.** $\\cos^{-1}(t)$ needs $-1 \\leq t \\leq 1$, so\\n\\n$$-1 \\leq 1 - x^2 \\leq 1.$$\\n\\nThe right inequality gives $-x^2 \\leq 0$, true for every $x$. The left gives\\n\\n$$-1 \\leq 1 - x^2 \\Rightarrow x^2 \\leq 2 \\Rightarrow -\\sqrt{2} \\leq x \\leq \\sqrt{2}.$$\\n\\nSo the domain is $\\left[-\\sqrt{2},\\ \\sqrt{2}\\right]$.\\n\\n**Range.** As $x$ runs over that interval, $x^2$ runs over $[0, 2]$, so $1 - x^2$ runs over the **whole** of $[-1, 1]$. Since $\\cos^{-1}$ maps $[-1, 1]$ onto $[0, \\pi]$ and is continuous, the range is\\n\\n$$[0, \\pi].$$",
+      "solution": "**Domain.** $\\cos^{-1}(t)$ needs $-1 \\leq t \\leq 1$, so\n\n$$-1 \\leq 1 - x^2 \\leq 1.$$\n\nThe right inequality gives $-x^2 \\leq 0$, true for every $x$. The left gives\n\n$$-1 \\leq 1 - x^2 \\Rightarrow x^2 \\leq 2 \\Rightarrow -\\sqrt{2} \\leq x \\leq \\sqrt{2}.$$\n\nSo the domain is $\\left[-\\sqrt{2},\\ \\sqrt{2}\\right]$.\n\n**Range.** As $x$ runs over that interval, $x^2$ runs over $[0, 2]$, so $1 - x^2$ runs over the **whole** of $[-1, 1]$. Since $\\cos^{-1}$ maps $[-1, 1]$ onto $[0, \\pi]$ and is continuous, the range is\n\n$$[0, \\pi].$$",
       "marks": 2,
       "source": "CBSE 2024"
     },
@@ -100,7 +100,7 @@
       "topic": "Domain and range",
       "type": "long",
       "q": "Find the domain and range of $f(x) = 2\\sin^{-1}(1 - x)$.",
-      "solution": "**Domain.** The inner value must lie in $[-1, 1]$ :\\n\\n$$-1 \\leq 1 - x \\leq 1.$$\\n\\nSubtract 1 : $-2 \\leq -x \\leq 0$. Multiply by $-1$ and turn the inequalities round :\\n\\n$$0 \\leq x \\leq 2.$$\\n\\nThe domain is $[0, 2]$.\\n\\n**Range.** Over that domain $1 - x$ takes every value in $[-1, 1]$, so $\\sin^{-1}(1 - x)$ takes every value in $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$. Doubling,\\n\\n$$f(x) \\in [-\\pi,\\ \\pi].$$",
+      "solution": "**Domain.** The inner value must lie in $[-1, 1]$ :\n\n$$-1 \\leq 1 - x \\leq 1.$$\n\nSubtract 1 : $-2 \\leq -x \\leq 0$. Multiply by $-1$ and turn the inequalities round :\n\n$$0 \\leq x \\leq 2.$$\n\nThe domain is $[0, 2]$.\n\n**Range.** Over that domain $1 - x$ takes every value in $[-1, 1]$, so $\\sin^{-1}(1 - x)$ takes every value in $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$. Doubling,\n\n$$f(x) \\in [-\\pi,\\ \\pi].$$",
       "marks": 2,
       "source": "CBSE 2024"
     },
@@ -109,8 +109,8 @@
       "chapter": "Inverse Trigonometric Functions",
       "topic": "Principal values",
       "type": "long",
-      "q": "If $\\sin^{-1}(x)$ is defined from $[-1, 1]$ to its principal value branch, find the value of\\n\\n$$\\sin^{-1}\\left(-\\frac{1}{2}\\right) - \\sin^{-1}(1).$$",
-      "solution": "Both terms must be read inside the principal branch $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$.\\n\\n**First term.** $\\sin\\theta = -\\dfrac{1}{2}$ with $\\theta$ in the branch gives $\\theta = -\\dfrac{\\pi}{6}$.\\n\\n**Second term.** $\\sin\\theta = 1$ gives $\\theta = \\dfrac{\\pi}{2}$.\\n\\nSubtracting,\\n\\n$$-\\frac{\\pi}{6} - \\frac{\\pi}{2} = -\\frac{\\pi}{6} - \\frac{3\\pi}{6} = -\\frac{4\\pi}{6} = -\\frac{2\\pi}{3}.$$\\n\\n(About $-2.094$ radians.)",
+      "q": "If $\\sin^{-1}(x)$ is defined from $[-1, 1]$ to its principal value branch, find the value of\n\n$$\\sin^{-1}\\left(-\\frac{1}{2}\\right) - \\sin^{-1}(1).$$",
+      "solution": "Both terms must be read inside the principal branch $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$.\n\n**First term.** $\\sin\\theta = -\\dfrac{1}{2}$ with $\\theta$ in the branch gives $\\theta = -\\dfrac{\\pi}{6}$.\n\n**Second term.** $\\sin\\theta = 1$ gives $\\theta = \\dfrac{\\pi}{2}$.\n\nSubtracting,\n\n$$-\\frac{\\pi}{6} - \\frac{\\pi}{2} = -\\frac{\\pi}{6} - \\frac{3\\pi}{6} = -\\frac{4\\pi}{6} = -\\frac{2\\pi}{3}.$$\n\n(About $-2.094$ radians.)",
       "marks": 2,
       "source": "CBSE 2024"
     },

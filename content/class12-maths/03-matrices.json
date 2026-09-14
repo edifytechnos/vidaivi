@@ -12,7 +12,7 @@
       "topic": "Matrix multiplication",
       "type": "mcq",
       "q": "If $A$ and $B$ are two non-zero square matrices of the same order such that $(A + B)^2 = A^2 + B^2$, then :",
-      "solution": "Expand the left side, remembering that matrix multiplication does **not** commute, so the two cross terms must be kept separate :\\n\\n$$(A + B)^2 = (A + B)(A + B) = A^2 + AB + BA + B^2.$$\\n\\nSetting this equal to $A^2 + B^2$ :\\n\\n$$A^2 + AB + BA + B^2 = A^2 + B^2 \\quad\\Longrightarrow\\quad AB + BA = O.$$\\n\\nTherefore\\n\\n$$AB = -BA.$$\\n\\nNote that $AB = O$ is **not** forced — it is one way to satisfy $AB + BA = O$, but not the only one, and the question asks what must be true.",
+      "solution": "Expand the left side, remembering that matrix multiplication does **not** commute, so the two cross terms must be kept separate :\n\n$$(A + B)^2 = (A + B)(A + B) = A^2 + AB + BA + B^2.$$\n\nSetting this equal to $A^2 + B^2$ :\n\n$$A^2 + AB + BA + B^2 = A^2 + B^2 \\quad\\Longrightarrow\\quad AB + BA = O.$$\n\nTherefore\n\n$$AB = -BA.$$\n\nNote that $AB = O$ is **not** forced — it is one way to satisfy $AB + BA = O$, but not the only one, and the question asks what must be true.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [
@@ -29,7 +29,7 @@
       "topic": "Skew-symmetric matrices",
       "type": "mcq",
       "q": "$A$ and $B$ are skew-symmetric matrices of the same order. $AB$ is symmetric, if :",
-      "solution": "Skew-symmetric means $A' = -A$ and $B' = -B$.\\n\\nTake the transpose of the product, remembering that transposing reverses the order :\\n\\n$$(AB)' = B'A' = (-B)(-A) = BA.$$\\n\\n$AB$ is symmetric exactly when $(AB)' = AB$, which by the line above means\\n\\n$$BA = AB.$$\\n\\nSo $AB$ is symmetric precisely when $A$ and $B$ commute.",
+      "solution": "Skew-symmetric means $A' = -A$ and $B' = -B$.\n\nTake the transpose of the product, remembering that transposing reverses the order :\n\n$$(AB)' = B'A' = (-B)(-A) = BA.$$\n\n$AB$ is symmetric exactly when $(AB)' = AB$, which by the line above means\n\n$$BA = AB.$$\n\nSo $AB$ is symmetric precisely when $A$ and $B$ commute.",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -46,7 +46,7 @@
       "topic": "Determinant of a skew-symmetric matrix",
       "type": "mcq",
       "q": "Let $A$ be a skew-symmetric matrix of order 3. If $|A| = x$, then $(2023)^x$ is equal to :",
-      "solution": "For a skew-symmetric matrix $A' = -A$. Take determinants of both sides, using $|A'| = |A|$ and $|kA| = k^n|A|$ for an $n \\times n$ matrix — here $n = 3$ :\\n\\n$$|A| = |A'| = |-A| = (-1)^3 |A| = -|A|.$$\\n\\nSo $|A| = -|A|$, giving $2|A| = 0$ and therefore\\n\\n$$|A| = 0 \\quad\\Rightarrow\\quad x = 0.$$\\n\\nHence $(2023)^x = (2023)^0 = \\mathbf{1}$.\\n\\n(The determinant of **every** skew-symmetric matrix of odd order is 0 — this is the argument for it.)",
+      "solution": "For a skew-symmetric matrix $A' = -A$. Take determinants of both sides, using $|A'| = |A|$ and $|kA| = k^n|A|$ for an $n \\times n$ matrix — here $n = 3$ :\n\n$$|A| = |A'| = |-A| = (-1)^3 |A| = -|A|.$$\n\nSo $|A| = -|A|$, giving $2|A| = 0$ and therefore\n\n$$|A| = 0 \\quad\\Rightarrow\\quad x = 0.$$\n\nHence $(2023)^x = (2023)^0 = \\mathbf{1}$.\n\n(The determinant of **every** skew-symmetric matrix of odd order is 0 — this is the argument for it.)",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -63,7 +63,7 @@
       "topic": "Order of a matrix product",
       "type": "mcq",
       "q": "If $A$ is a $2 \\times 3$ matrix such that $AB$ and $AB'$ both are defined, then the order of the matrix $B$ is :",
-      "solution": "Let $B$ be of order $m \\times n$.\\n\\n**$AB$ is defined.** $A$ is $2 \\times 3$, so the number of rows of $B$ must match the number of columns of $A$ :\\n\\n$$m = 3.$$\\n\\n**$AB'$ is defined.** $B'$ is $n \\times m$, and for $A\\,B'$ the rows of $B'$ must again be 3 :\\n\\n$$n = 3.$$\\n\\nSo $B$ is a $3 \\times 3$ matrix.",
+      "solution": "Let $B$ be of order $m \\times n$.\n\n**$AB$ is defined.** $A$ is $2 \\times 3$, so the number of rows of $B$ must match the number of columns of $A$ :\n\n$$m = 3.$$\n\n**$AB'$ is defined.** $B'$ is $n \\times m$, and for $A\\,B'$ the rows of $B'$ must again be 3 :\n\n$$n = 3.$$\n\nSo $B$ is a $3 \\times 3$ matrix.",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -80,7 +80,7 @@
       "topic": "Symmetric and skew-symmetric parts",
       "type": "mcq",
       "q": "If $\\begin{pmatrix} 2 & 0 \\\\ 5 & 4 \\end{pmatrix} = P + Q$, where $P$ is a symmetric and $Q$ is a skew-symmetric matrix, then $Q$ is equal to :",
-      "solution": "Any square matrix splits uniquely as\\n\\n$$A = \\underbrace{\\tfrac{1}{2}(A + A')}_{\\text{symmetric } P} + \\underbrace{\\tfrac{1}{2}(A - A')}_{\\text{skew-symmetric } Q}.$$\\n\\nHere $A = \\begin{pmatrix} 2 & 0 \\\\ 5 & 4 \\end{pmatrix}$, so $A' = \\begin{pmatrix} 2 & 5 \\\\ 0 & 4 \\end{pmatrix}$ and\\n\\n$$A - A' = \\begin{pmatrix} 0 & -5 \\\\ 5 & 0 \\end{pmatrix}.$$\\n\\nHalving,\\n\\n$$Q = \\frac{1}{2}\\begin{pmatrix} 0 & -5 \\\\ 5 & 0 \\end{pmatrix} = \\begin{pmatrix} 0 & -5/2 \\\\ 5/2 & 0 \\end{pmatrix}.$$\\n\\nCheck: the leading diagonal is zero and the off-diagonal entries are negatives of each other, as a skew-symmetric matrix requires.",
+      "solution": "Any square matrix splits uniquely as\n\n$$A = \\underbrace{\\tfrac{1}{2}(A + A')}_{\\text{symmetric } P} + \\underbrace{\\tfrac{1}{2}(A - A')}_{\\text{skew-symmetric } Q}.$$\n\nHere $A = \\begin{pmatrix} 2 & 0 \\\\ 5 & 4 \\end{pmatrix}$, so $A' = \\begin{pmatrix} 2 & 5 \\\\ 0 & 4 \\end{pmatrix}$ and\n\n$$A - A' = \\begin{pmatrix} 0 & -5 \\\\ 5 & 0 \\end{pmatrix}.$$\n\nHalving,\n\n$$Q = \\frac{1}{2}\\begin{pmatrix} 0 & -5 \\\\ 5 & 0 \\end{pmatrix} = \\begin{pmatrix} 0 & -5/2 \\\\ 5/2 & 0 \\end{pmatrix}.$$\n\nCheck: the leading diagonal is zero and the off-diagonal entries are negatives of each other, as a skew-symmetric matrix requires.",
       "marks": 1,
       "source": "CBSE 2023",
       "options": [
@@ -97,7 +97,7 @@
       "topic": "Order of a matrix",
       "type": "numeric",
       "q": "If a matrix has 36 elements, how many possible orders can it have?",
-      "solution": "An $m \\times n$ matrix has $mn$ elements, so we need every ordered pair of positive integers with\\n\\n$$m \\times n = 36.$$\\n\\nThat is one order per **divisor** of 36, taking each divisor as the number of rows. The divisors of $36 = 2^2 \\times 3^2$ are\\n\\n$$1,\\ 2,\\ 3,\\ 4,\\ 6,\\ 9,\\ 12,\\ 18,\\ 36,$$\\n\\nand there are $(2+1)(2+1) = 9$ of them. The orders are $1\\times36$, $2\\times18$, $3\\times12$, $4\\times9$, $6\\times6$, $9\\times4$, $12\\times3$, $18\\times2$, $36\\times1$.\\n\\nSo there are **9** possible orders.",
+      "solution": "An $m \\times n$ matrix has $mn$ elements, so we need every ordered pair of positive integers with\n\n$$m \\times n = 36.$$\n\nThat is one order per **divisor** of 36, taking each divisor as the number of rows. The divisors of $36 = 2^2 \\times 3^2$ are\n\n$$1,\\ 2,\\ 3,\\ 4,\\ 6,\\ 9,\\ 12,\\ 18,\\ 36,$$\n\nand there are $(2+1)(2+1) = 9$ of them. The orders are $1\\times36$, $2\\times18$, $3\\times12$, $4\\times9$, $6\\times6$, $9\\times4$, $12\\times3$, $18\\times2$, $36\\times1$.\n\nSo there are **9** possible orders.",
       "marks": 2,
       "source": "CBSE 2024",
       "answer": 9,
@@ -109,7 +109,7 @@
       "topic": "Adjoint of a matrix",
       "type": "numeric",
       "q": "If $A \\cdot (\\text{adj } A) = \\begin{pmatrix} 3 & 0 & 0 \\\\ 0 & 3 & 0 \\\\ 0 & 0 & 3 \\end{pmatrix}$, then find the value of $|A| + |\\text{adj } A|$.",
-      "solution": "**Finding $|A|$.** The defining property of the adjoint is\\n\\n$$A \\cdot (\\text{adj } A) = |A| \\, I.$$\\n\\nThe given matrix is $3I$, so $|A| = 3$.\\n\\n**Finding $|\\text{adj } A|$.** For an $n \\times n$ matrix, $|\\text{adj } A| = |A|^{\\,n-1}$. Here $n = 3$, so\\n\\n$$|\\text{adj } A| = |A|^2 = 3^2 = 9.$$\\n\\n**Adding.**\\n\\n$$|A| + |\\text{adj } A| = 3 + 9 = \\mathbf{12}.$$",
+      "solution": "**Finding $|A|$.** The defining property of the adjoint is\n\n$$A \\cdot (\\text{adj } A) = |A| \\, I.$$\n\nThe given matrix is $3I$, so $|A| = 3$.\n\n**Finding $|\\text{adj } A|$.** For an $n \\times n$ matrix, $|\\text{adj } A| = |A|^{\\,n-1}$. Here $n = 3$, so\n\n$$|\\text{adj } A| = |A|^2 = 3^2 = 9.$$\n\n**Adding.**\n\n$$|A| + |\\text{adj } A| = 3 + 9 = \\mathbf{12}.$$",
       "marks": 2,
       "source": "CBSE 2023",
       "answer": 12,

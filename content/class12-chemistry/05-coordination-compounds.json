@@ -7,20 +7,31 @@
   "access": "login",
   "questions": [
     {
-      "id": "coo-001",
+      "id": "c12coo-101",
       "chapter": "Coordination Compounds",
-      "topic": "Coordination number",
+      "topic": "Oxidation state",
       "type": "mcq",
-      "q": "The coordination number of cobalt in $[\\text{Co}(\\text{NH}_{3})_{6}]\\text{Cl}_{3}$ is:",
-      "solution": "The coordination number counts the **donor atoms bonded directly to the metal** — here six ammonia molecules, so $\\mathbf{6}$.\n\nThe chloride ions are outside the square brackets: they are counter-ions, not ligands, and they ionise in solution.",
+      "q": "The oxidation state of Fe in $[\\text{Fe}(\\text{CO})_5]$ is :",
+      "solution": "Carbon monoxide is a **neutral** ligand — it bonds through the lone pair on carbon without carrying any charge.\n\nThe complex $[\\text{Fe}(\\text{CO})_5]$ has no charge shown outside the square brackets, so the whole entity is neutral. Letting $x$ be the oxidation state of iron :\n\n$$x + 5 \\times 0 = 0 \\quad\\Longrightarrow\\quad x = \\mathbf{0}.$$\n\nMetal carbonyls are the standard example of a metal in the **zero** oxidation state. The bonding works because CO is a strong $\\pi$-acceptor: it accepts back-donation of electron density from the filled metal $d$ orbitals into its own empty $\\pi^*$ orbitals, which is what stabilises a metal that would otherwise be too electron-rich.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "3",
-        "4",
-        "6",
-        "9"
+        "$+2$",
+        "$0$",
+        "$+3$",
+        "$+5$"
       ],
-      "answer": 2
+      "answer": 1
+    },
+    {
+      "id": "c12coo-102",
+      "chapter": "Coordination Compounds",
+      "topic": "IUPAC nomenclature",
+      "type": "long",
+      "q": "Write the IUPAC name of the following complex: $[\\text{Co}(\\text{NH}_3)_4(\\text{H}_2\\text{O})\\text{Cl}]\\text{Cl}_2$",
+      "solution": "**Step 1 — split the compound.** The complex ion is $[\\text{Co}(\\text{NH}_3)_4(\\text{H}_2\\text{O})\\text{Cl}]^{2+}$ and the counter ions are two $\\text{Cl}^-$.\n\n**Step 2 — find the oxidation state of cobalt.** Ammine and aqua are neutral; the chlorido ligand inside the sphere carries $-1$. Letting the cobalt be $x$ :\n\n$$x + 4(0) + 0 + (-1) = +2 \\quad\\Longrightarrow\\quad x = +3.$$\n\n**Step 3 — name the ligands in alphabetical order**, ignoring the multiplying prefixes when alphabetising :\n\n- **ammine** ($\\text{NH}_3$), four of them → tetraammine\n- **aqua** ($\\text{H}_2\\text{O}$), one → aqua\n- **chlorido** ($\\text{Cl}^-$), one → chlorido\n\nAlphabetically: a**mm**ine before a**q**ua before **c**hlorido.\n\n**Step 4 — assemble.** Ligands first, then the metal with its oxidation state in Roman numerals, then the counter ion. The complex ion is a cation, so the metal keeps its ordinary name.\n\n$$\\textbf{Tetraammineaquachloridocobalt(III) chloride}$$",
+      "marks": 2,
+      "source": "CBSE 2022"
     },
     {
       "id": "coo-002",
@@ -140,15 +151,6 @@
       "marks": 2,
       "answer": 3,
       "tolerance": 0
-    },
-    {
-      "id": "coo-011",
-      "chapter": "Coordination Compounds",
-      "topic": "Werner's theory",
-      "type": "long",
-      "q": "State the postulates of Werner's coordination theory.",
-      "solution": "1. A metal in a complex shows **two kinds of valency**: **primary** (ionisable, satisfied by negative ions, corresponding to the oxidation state) and **secondary** (non-ionisable, satisfied by ligands, corresponding to the coordination number).\n\n2. The **primary valency is non-directional**; the **secondary valency is directional**, and it is what fixes the geometry of the complex.\n\n3. Every metal tends to satisfy **both** its primary and its secondary valencies.\n\n4. The secondary valencies are directed towards fixed positions in space — six for octahedral, four for tetrahedral or square planar.\n\n**How he proved it.** $\\text{CoCl}_{3}\\cdot 6\\text{NH}_{3}$ gives three moles of $\\text{AgCl}$ with silver nitrate, $\\text{CoCl}_{3}\\cdot 5\\text{NH}_{3}$ gives two, and $\\text{CoCl}_{3}\\cdot 4\\text{NH}_{3}$ only one — because in each case one more chloride has moved **inside** the coordination sphere and stopped being ionisable.\n\nCounting precipitates was enough to deduce a three-dimensional structure, decades before anyone could look at one.",
-      "marks": 3
     },
     {
       "id": "coo-012",

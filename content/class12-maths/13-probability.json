@@ -12,7 +12,7 @@
       "topic": "Conditional probability",
       "type": "mcq",
       "q": "If $P(A|B) = P(A'|B)$, then which of the following statements is true?",
-      "solution": "For any event $A$ and any $B$ with $P(B) > 0$, the conditional probabilities of an event and its complement must add to 1 :\\n\\n$$P(A|B) + P(A'|B) = 1.$$\\n\\nWe are told the two are **equal**, so writing each as $x$ :\\n\\n$$x + x = 1 \\quad\\Longrightarrow\\quad x = \\frac12.$$\\n\\nTherefore $P(A|B) = \\dfrac{1}{2}$.\\n\\nNothing here forces $A$ and $B$ to be independent or to have equal probabilities — the condition only fixes the conditional probability at one half.",
+      "solution": "For any event $A$ and any $B$ with $P(B) > 0$, the conditional probabilities of an event and its complement must add to 1 :\n\n$$P(A|B) + P(A'|B) = 1.$$\n\nWe are told the two are **equal**, so writing each as $x$ :\n\n$$x + x = 1 \\quad\\Longrightarrow\\quad x = \\frac12.$$\n\nTherefore $P(A|B) = \\dfrac{1}{2}$.\n\nNothing here forces $A$ and $B$ to be independent or to have equal probabilities — the condition only fixes the conditional probability at one half.",
       "marks": 1,
       "source": "CBSE 2024",
       "options": [
@@ -29,7 +29,7 @@
       "topic": "Addition theorem",
       "type": "numeric",
       "q": "For two events $A$ and $B$, if $P(A) = 0 \\cdot 4$, $P(B) = 0 \\cdot 8$ and $P(B/A) = 0 \\cdot 6$, then find $P(A \\cup B)$.",
-      "solution": "**Step 1 — find $P(A \\cap B)$ from the conditional probability.** By definition\\n\\n$$P(B/A) = \\frac{P(A \\cap B)}{P(A)} \\quad\\Longrightarrow\\quad P(A \\cap B) = P(B/A) \\times P(A).$$\\n\\nSo\\n\\n$$P(A \\cap B) = 0 \\cdot 6 \\times 0 \\cdot 4 = 0 \\cdot 24.$$\\n\\n**Step 2 — apply the addition theorem.**\\n\\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0 \\cdot 4 + 0 \\cdot 8 - 0 \\cdot 24.$$\\n\\n$$P(A \\cup B) = 1 \\cdot 2 - 0 \\cdot 24 = \\mathbf{0 \\cdot 96}.$$\\n\\n(Sensible: a probability just under 1, as it must be.)",
+      "solution": "**Step 1 — find $P(A \\cap B)$ from the conditional probability.** By definition\n\n$$P(B/A) = \\frac{P(A \\cap B)}{P(A)} \\quad\\Longrightarrow\\quad P(A \\cap B) = P(B/A) \\times P(A).$$\n\nSo\n\n$$P(A \\cap B) = 0 \\cdot 6 \\times 0 \\cdot 4 = 0 \\cdot 24.$$\n\n**Step 2 — apply the addition theorem.**\n\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0 \\cdot 4 + 0 \\cdot 8 - 0 \\cdot 24.$$\n\n$$P(A \\cup B) = 1 \\cdot 2 - 0 \\cdot 24 = \\mathbf{0 \\cdot 96}.$$\n\n(Sensible: a probability just under 1, as it must be.)",
       "marks": 2,
       "source": "CBSE 2023",
       "answer": 0.96,

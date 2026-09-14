@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12ele-101",
+      "chapter": "Electrochemistry",
+      "topic": "Molar conductivity",
+      "type": "long",
+      "q": "Define molar conductivity for the solution of an electrolyte. How does it vary with concentration for a strong electrolyte and for a weak electrolyte?",
+      "solution": "**Definition.** Molar conductivity $\\Lambda_m$ is the conductance of a solution containing **one mole** of electrolyte placed between two electrodes one unit distance apart, with an area of cross-section large enough to hold the whole volume :\n\n$$\\Lambda_m = \\frac{\\kappa}{c},$$\n\nwhere $\\kappa$ is the conductivity and $c$ the concentration. Its SI unit is $\\text{S m}^2\\,\\text{mol}^{-1}$.\n\n**Why it rises on dilution — for both kinds.** As the solution is diluted, $\\kappa$ falls (fewer ions per unit volume), but the volume $1/c$ containing one mole rises **faster**. The net effect is that $\\Lambda_m$ **increases** with dilution for every electrolyte.\n\n**A strong electrolyte.** It is fully dissociated at all concentrations, so dilution cannot increase the number of ions. The small rise in $\\Lambda_m$ comes only from the weakening of interionic attractions as the ions get further apart. The increase is therefore **gradual**, and $\\Lambda_m$ varies linearly with $\\sqrt{c}$ :\n\n$$\\Lambda_m = \\Lambda_m^{\\circ} - A\\sqrt{c}.$$\n\nExtrapolating that straight line to $c = 0$ gives $\\Lambda_m^{\\circ}$ directly.\n\n**A weak electrolyte.** It is only partly dissociated, and its degree of dissociation $\\alpha$ rises sharply on dilution. So the number of ions itself increases, and $\\Lambda_m$ rises **steeply** near infinite dilution — the curve shoots up almost vertically and never becomes linear.\n\nThat is why $\\Lambda_m^{\\circ}$ for a weak electrolyte **cannot** be found by extrapolation, and must instead be obtained from Kohlrausch's law of independent migration of ions.",
+      "marks": 3,
+      "source": "CBSE 2022"
+    },
+    {
       "id": "ele-001",
       "chapter": "Electrochemistry",
       "topic": "Galvanic cell",
@@ -142,15 +152,6 @@
       "tolerance": 5
     },
     {
-      "id": "ele-011",
-      "chapter": "Electrochemistry",
-      "topic": "Galvanic cell",
-      "type": "long",
-      "q": "Describe the construction and working of a Daniell cell, and explain the function of the salt bridge.",
-      "solution": "**Construction.** A zinc rod in $\\text{ZnSO}_{4}$ solution and a copper rod in $\\text{CuSO}_{4}$ solution, the two half-cells joined by a salt bridge and the electrodes by an external wire.\n\n**At the anode (zinc, negative):** $\\text{Zn} \\to \\text{Zn}^{2+} + 2e^{-}$ — oxidation. The rod slowly dissolves.\n\n**At the cathode (copper, positive):** $\\text{Cu}^{2+} + 2e^{-} \\to \\text{Cu}$ — reduction. Copper plates out.\n\n**Overall:** $\\text{Zn} + \\text{Cu}^{2+} \\to \\text{Zn}^{2+} + \\text{Cu}$, with $E^{0}_{\\text{cell}} = 1.10$ V.\n\nElectrons flow through the wire from zinc to copper.\n\n**The salt bridge** (a U-tube of $\\text{KCl}$ in agar) does two things:\n\n1. **Completes the circuit**, letting ions carry the current between the solutions.\n\n2. **Keeps both solutions electrically neutral.** Without it the anode compartment would build up positive charge and the cathode compartment negative charge, and the reaction would stop almost at once.\n\n$\\text{KCl}$ is chosen because $\\text{K}^{+}$ and $\\text{Cl}^{-}$ move at nearly the same speed, so the bridge introduces no extra potential of its own.",
-      "marks": 3
-    },
-    {
       "id": "ele-012",
       "chapter": "Electrochemistry",
       "topic": "Nernst equation",
@@ -165,7 +166,7 @@
       "topic": "Kohlrausch's law and electrolysis",
       "type": "long",
       "q": "State Kohlrausch's law and use it to find $\\Lambda^{0}_{m}$ for acetic acid, given $\\Lambda^{0}_{m}$ values: $\\text{HCl} = 426$, $\\text{CH}_{3}\\text{COONa} = 91$, $\\text{NaCl} = 126$ S cm$^{2}$/mol.",
-      "solution": "**Kohlrausch's law.** At infinite dilution, each ion contributes a fixed amount to the molar conductivity, independent of the other ion it came with:\n\n$\\Lambda^{0}_{m} = \\nu_{+}\\lambda^{0}_{+} + \\nu_{-}\\lambda^{0}_{-}$.\n\nThat independence is what makes the following arithmetic legal.\n\n**The combination.** Acetic acid is $\\text{H}^{+} + \\text{CH}_{3}\\text{COO}^{-}$, and these can be assembled from the three known salts:\n\n$\\Lambda^{0}(\\text{CH}_{3}\\text{COOH}) = \\Lambda^{0}(\\text{HCl}) + \\Lambda^{0}(\\text{CH}_{3}\\text{COONa}) - \\Lambda^{0}(\\text{NaCl})$\n\n**Check the ions cancel:** $(\\text{H}^{+} + \\text{Cl}^{-}) + (\\text{CH}_{3}\\text{COO}^{-} + \\text{Na}^{+}) - (\\text{Na}^{+} + \\text{Cl}^{-}) = \\text{H}^{+} + \\text{CH}_{3}\\text{COO}^{-}$. ✓\n\n$= 426 + 91 - 126 = \\mathbf{391}$ S cm$^{2}$/mol.\n\n**Why this matters.** Acetic acid is a weak electrolyte, so $\\Lambda^{0}_{m}$ can never be measured directly — the solution would have to be infinitely dilute. Kohlrausch's law reaches it by a detour through strong electrolytes, and once you have it, $\\alpha = \\dfrac{\\Lambda_{m}}{\\Lambda^{0}_{m}}$ gives the degree of dissociation at any concentration.",
+      "solution": "**Kohlrausch's law.** At infinite dilution, each ion contributes a fixed amount to the molar conductivity, independent of the other ion it came with:\n\n$\\Lambda^{0}_{m} = \nu_{+}\\lambda^{0}_{+} + \nu_{-}\\lambda^{0}_{-}$.\n\nThat independence is what makes the following arithmetic legal.\n\n**The combination.** Acetic acid is $\\text{H}^{+} + \\text{CH}_{3}\\text{COO}^{-}$, and these can be assembled from the three known salts:\n\n$\\Lambda^{0}(\\text{CH}_{3}\\text{COOH}) = \\Lambda^{0}(\\text{HCl}) + \\Lambda^{0}(\\text{CH}_{3}\\text{COONa}) - \\Lambda^{0}(\\text{NaCl})$\n\n**Check the ions cancel:** $(\\text{H}^{+} + \\text{Cl}^{-}) + (\\text{CH}_{3}\\text{COO}^{-} + \\text{Na}^{+}) - (\\text{Na}^{+} + \\text{Cl}^{-}) = \\text{H}^{+} + \\text{CH}_{3}\\text{COO}^{-}$. ✓\n\n$= 426 + 91 - 126 = \\mathbf{391}$ S cm$^{2}$/mol.\n\n**Why this matters.** Acetic acid is a weak electrolyte, so $\\Lambda^{0}_{m}$ can never be measured directly — the solution would have to be infinitely dilute. Kohlrausch's law reaches it by a detour through strong electrolytes, and once you have it, $\\alpha = \\dfrac{\\Lambda_{m}}{\\Lambda^{0}_{m}}$ gives the degree of dissociation at any concentration.",
       "marks": 5
     },
     {

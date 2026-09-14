@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12hal-101",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Substitution versus elimination",
+      "type": "long",
+      "q": "Give a reason for the following: $(\\text{CH}_3)_3\\text{C}-\\text{Br}$ on reaction with $\\text{NaOCH}_3$ gives an alkene as the main product and not an ether.",
+      "solution": "Two reactions compete here, and the structure of the substrate decides which wins.\n\n**Why substitution fails.** $(\\text{CH}_3)_3\\text{C}-\\text{Br}$ is a **tertiary** halide. The carbon bearing the bromine carries three bulky methyl groups, so it is **sterically hindered** — the methoxide ion cannot reach it from behind to attack, which rules out the $S_N2$ path.\n\n(An $S_N1$ path would be possible, but methoxide is a strong base and its basicity dominates its nucleophilicity, as below.)\n\n**Why elimination wins.** $\\text{CH}_3\\text{O}^-$ is a **strong base** as well as a nucleophile. Rather than attacking the crowded carbon, it removes a $\\beta$-hydrogen — one of the nine on the three methyl groups, all freely accessible — and the bromide leaves at the same time.\n\nThis is an **E2** elimination, and it gives 2-methylprop-1-ene :\n\n$$(\\text{CH}_3)_3\\text{C}-\\text{Br} + \\text{CH}_3\\text{O}^- \\longrightarrow (\\text{CH}_3)_2\\text{C}=\\text{CH}_2 + \\text{CH}_3\\text{OH} + \\text{Br}^-$$\n\n**In short:** the carbon is hindered but the $\\beta$-hydrogens are not, and a strong bulky base takes the accessible route. This is why Williamson's ether synthesis must be carried out with a **primary** halide and a bulky alkoxide, never the other way round.",
+      "marks": 2,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "hal-001",
       "chapter": "Haloalkanes and Haloarenes",
       "topic": "SN1 and SN2",
@@ -142,15 +152,6 @@
       "tolerance": 0
     },
     {
-      "id": "hal-011",
-      "chapter": "Haloalkanes and Haloarenes",
-      "topic": "SN1 versus SN2",
-      "type": "long",
-      "q": "Compare the $\\text{S}_{\\text{N}}1$ and $\\text{S}_{\\text{N}}2$ mechanisms in terms of kinetics, stereochemistry and the effect of substrate structure.",
-      "solution": "**$\\text{S}_{\\text{N}}2$ — one step.**\n\n• *Kinetics:* second order, rate $= k[\\text{RX}][\\text{Nu}]$ — both species are in the rate-determining step.\n\n• *Stereochemistry:* the nucleophile attacks from behind the leaving group, so the configuration is **inverted** (Walden inversion) — an umbrella blown inside out.\n\n• *Substrate:* **primary $>$ secondary $>$ tertiary**. Bulk around the carbon blocks the attack.\n\n**$\\text{S}_{\\text{N}}1$ — two steps.**\n\n• *Kinetics:* first order, rate $= k[\\text{RX}]$ — only the slow ionisation step counts, so the nucleophile's concentration is irrelevant.\n\n• *Stereochemistry:* the carbocation is planar and can be attacked from either face, giving a **racemic mixture** (in practice, partial racemisation).\n\n• *Substrate:* **tertiary $>$ secondary $>$ primary**, following carbocation stability.\n\n**One test that separates them:** doubling the nucleophile's concentration doubles an $\\text{S}_{\\text{N}}2$ rate and leaves an $\\text{S}_{\\text{N}}1$ rate unchanged.\n\nA polar protic solvent favours $\\text{S}_{\\text{N}}1$ by stabilising the carbocation; a polar aprotic solvent favours $\\text{S}_{\\text{N}}2$ by leaving the nucleophile bare and reactive.",
-      "marks": 3
-    },
-    {
       "id": "hal-012",
       "chapter": "Haloalkanes and Haloarenes",
       "topic": "Preparation of haloalkanes",
@@ -183,7 +184,7 @@
       "topic": "Environmental effects",
       "type": "long",
       "q": "Discuss the environmental effects of chlorofluorocarbons and DDT.",
-      "solution": "**Chlorofluorocarbons (freons).** Stable, non-toxic and non-flammable, they were ideal refrigerants — and that stability is the problem. Nothing destroys them in the lower atmosphere, so they drift up to the stratosphere over years.\n\nThere, ultraviolet light breaks off a chlorine radical:\n\n$\\text{CF}_{2}\\text{Cl}_{2} \\xrightarrow{\\;h\\nu\\;} \\dot{\\text{C}}\\text{F}_{2}\\text{Cl} + \\dot{\\text{Cl}}$\n\n$\\dot{\\text{Cl}} + \\text{O}_{3} \\to \\text{ClO}\\dot{} + \\text{O}_{2}$, and $\\text{ClO}\\dot{} + \\dot{\\text{O}} \\to \\dot{\\text{Cl}} + \\text{O}_{2}$\n\nThe chlorine radical is **regenerated**, so one atom destroys many thousands of ozone molecules — a chain reaction, which is why such small quantities did such damage. The Montreal Protocol phased them out.\n\n**DDT.** A cheap and effective insecticide that saved millions of lives from malaria and typhus. But it is **fat-soluble and not biodegradable**, so it accumulates in fatty tissue and concentrates up the food chain — **biomagnification**.\n\nIn birds of prey it thinned eggshells badly enough to collapse populations, and insects developed resistance. It is now banned in most countries, though the WHO still permits limited indoor use against malaria — a genuine trade-off rather than a simple verdict.",
+      "solution": "**Chlorofluorocarbons (freons).** Stable, non-toxic and non-flammable, they were ideal refrigerants — and that stability is the problem. Nothing destroys them in the lower atmosphere, so they drift up to the stratosphere over years.\n\nThere, ultraviolet light breaks off a chlorine radical:\n\n$\\text{CF}_{2}\\text{Cl}_{2} \\xrightarrow{\\;h\nu\\;} \\dot{\\text{C}}\\text{F}_{2}\\text{Cl} + \\dot{\\text{Cl}}$\n\n$\\dot{\\text{Cl}} + \\text{O}_{3} \\to \\text{ClO}\\dot{} + \\text{O}_{2}$, and $\\text{ClO}\\dot{} + \\dot{\\text{O}} \\to \\dot{\\text{Cl}} + \\text{O}_{2}$\n\nThe chlorine radical is **regenerated**, so one atom destroys many thousands of ozone molecules — a chain reaction, which is why such small quantities did such damage. The Montreal Protocol phased them out.\n\n**DDT.** A cheap and effective insecticide that saved millions of lives from malaria and typhus. But it is **fat-soluble and not biodegradable**, so it accumulates in fatty tissue and concentrates up the food chain — **biomagnification**.\n\nIn birds of prey it thinned eggshells badly enough to collapse populations, and insects developed resistance. It is now banned in most countries, though the WHO still permits limited indoor use against malaria — a genuine trade-off rather than a simple verdict.",
       "marks": 2
     }
   ]

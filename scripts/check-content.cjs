@@ -71,6 +71,40 @@ for (const dir of dirs.sort()) {
     if (!test.chapter) fail("no chapter (the subtitle)");
     if (typeof test.order !== "number") fail("no numeric order");
 
+    // What `formatText` in src/dom.ts can actually render: $…$ maths, **bold**,
+    // and a blank line as a paragraph break. Nothing else. Anything richer is
+    // escaped and shown to the student literally, pipes and all.
+    //
+    // Both of these shipped before this check existed:
+    //
+    //   - A **markdown table**. `formatText` has no table support, so a
+    //     frequency table rendered as a wall of "| 0 - 10 | 4 |" and the
+    //     "|---|---|" separator showed up as visible junk. Write one line per
+    //     row instead, with the header in bold.
+    //   - A **literal backslash-n**, from building the JSON in Python with a
+    //     raw string, where "\\n" stays two characters instead of becoming a
+    //     newline. Every paragraph break in that question then appeared on
+    //     screen as the text \n.
+    //
+    // Neither is caught by `validateQuestions` — both are perfectly valid
+    // strings. They are only wrong once a student reads them.
+    for (const q of test.questions || []) {
+      for (const field of ["q", "solution"]) {
+        const text = q[field];
+        if (typeof text !== "string") continue;
+        if (text.includes("\\n")) {
+          fail(`${q.id} — ${field} contains a literal backslash-n; it needs a real newline`);
+        }
+        for (const line of text.split("\n")) {
+          const t = line.trim();
+          if (t.startsWith("|") && t.endsWith("|")) {
+            fail(`${q.id} — ${field} has a markdown table row, which renders literally: ${t.slice(0, 40)}`);
+            break;
+          }
+        }
+      }
+    }
+
     const res = validateQuestions(test.questions, { strict: true });
     if (res.error) {
       fail(res.error);
