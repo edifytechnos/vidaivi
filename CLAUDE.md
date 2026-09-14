@@ -374,11 +374,39 @@ frequency — which survive extraction, where a matrix or a surd does not. Every
 one of its fourteen chapters has a sourced question; the Maths shelf cannot say
 that.
 
-Tagged today: Class 10 Maths (14 chapters, complete), Class 12 Maths (66 of 195,
-Relations and Functions complete at 15) and Class 12 Physics (16 of 210, every
-chapter covered). Evidence per shelf in `docs/class12-maths-sources.md`,
-`docs/class12-maths-relations-and-functions-sources.md` and
-`docs/class12-physics-sources.md`.
+Tagged today, with an evidence file per shelf under `docs/`:
+
+| Shelf | Sourced | Notes |
+|---|---|---|
+| CBSE Class 10 Maths | 14 chapters, complete | one `docs/class10-*-sources.md` per chapter |
+| CBSE Class 12 Maths | 66 of 195 | Relations and Functions complete at 15 |
+| CBSE Class 12 Physics | 16 of 210 | every chapter covered |
+| CBSE Class 12 Chemistry | 13 of 150 | every chapter covered |
+| CBSE Class 10 Science | 11 of 195 | 10 of 13 chapters |
+
+Untagged: the four Cambridge shelves (past papers are published, not yet read)
+and NEET (no public archive exists, so nothing there will ever carry a year
+until one does).
+
+### Two ways content renders wrong, and both shipped once
+
+`formatText` in `src/dom.ts` supports `$…$` maths, `**bold**`, and a blank line
+as a paragraph break. **Nothing else.** Everything is escaped first, so anything
+richer reaches the student literally.
+
+- **A markdown table** has no support at all. A frequency table rendered as a
+  wall of `| 0 – 10 | 4 |` with the `|---|---|` separator visible as junk. Six
+  questions in the live Class 10 Maths shelf had one. Write **one line per row**
+  instead, header in bold.
+- **A literal backslash-n** comes from building the JSON in Python with a *raw*
+  string, where `\n` stays two characters instead of becoming a newline. Every
+  paragraph break in that question then appears on screen as the text `\n`. 134
+  fields were affected. Before fixing any, check that no occurrence is a LaTeX
+  `\\` line break.
+
+`scripts/check-content.cjs` now rejects both. Neither is catchable by
+`validateQuestions` — both are perfectly valid strings, wrong only once a
+student reads them.
 
 ## Authoring editor (`src/screens/editor/`)
 

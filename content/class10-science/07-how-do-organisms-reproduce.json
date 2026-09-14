@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "rep-001",
+      "id": "c10rep-101",
       "chapter": "How do Organisms Reproduce?",
-      "topic": "Asexual reproduction",
+      "topic": "Unisexual flowers",
       "type": "mcq",
-      "q": "Binary fission is seen in:",
-      "solution": "**Amoeba** splits into two equal daughter cells — binary fission.\n\nHydra and yeast reproduce by **budding**, Planaria by **regeneration** (a cut piece grows into a whole animal).",
+      "q": "Plants which bear unisexual flowers are :",
+      "solution": "A **unisexual** flower contains only one of the two reproductive parts — either the stamens (male) or the carpel (female), but not both. A **bisexual** flower contains both.\n\nTaking the four plants named :\n\n- **Watermelon** — unisexual. It bears separate male and female flowers on the same plant.\n- **Papaya** — unisexual. It usually bears male and female flowers on **different** plants altogether.\n- **Mustard** — **bisexual**. Each flower has both stamens and carpel.\n- **Hibiscus** — **bisexual**, and is the standard example used to teach the parts of a flower precisely because it has both.\n\nSo the pair bearing unisexual flowers is **watermelon and papaya**.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "Hydra",
-        "Amoeba",
-        "Planaria",
-        "Yeast"
+        "Mustard and Papaya",
+        "Hibiscus and Watermelon",
+        "Mustard and Hibiscus",
+        "Watermelon and Papaya"
       ],
-      "answer": 1
+      "answer": 3
     },
     {
       "id": "rep-002",

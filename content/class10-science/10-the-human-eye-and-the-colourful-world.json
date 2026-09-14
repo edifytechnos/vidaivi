@@ -7,20 +7,31 @@
   "access": "login",
   "questions": [
     {
-      "id": "eye-001",
+      "id": "c10eye-101",
       "chapter": "The Human Eye and the Colourful World",
-      "topic": "Accommodation",
+      "topic": "Defects of vision",
       "type": "mcq",
-      "q": "The ability of the eye's lens to change its focal length is called:",
-      "solution": "**Accommodation.** The ciliary muscles change the curvature of the lens, so near and distant objects both come into focus on the retina.\n\nA camera does the same job by moving the lens; the eye instead changes its shape.",
+      "q": "**Assertion (A):** A person suffering from myopia cannot see distant objects clearly.\n\n**Reason (R):** A converging lens is used for the correction of a myopic eye, as it can form real as well as virtual images of objects placed in front of it.\n\nChoose the correct answer :",
+      "solution": "**Assertion.** Myopia, or short-sightedness, is the defect in which the eye's far point moves nearer than infinity. The image of a distant object is formed **in front of** the retina rather than on it — usually because the eyeball is too long or the lens too strongly curved. So the person sees near objects clearly but distant ones blurred.\n\nA is **true**.\n\n**Reason.** Correcting myopia means moving the image **back** onto the retina, which requires **diverging** the light before it enters the eye. That is done with a **concave** lens, of suitable negative power.\n\nThe reason claims a **converging** (convex) lens is used — that is the correction for **hypermetropia**, the opposite defect.\n\nR is **false**.\n\nSo A is true but R is false.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "persistence of vision",
-        "accommodation",
-        "dispersion",
-        "scattering"
+        "Both A and R are true, and R is the correct explanation of A",
+        "Both A and R are true, but R is not the correct explanation of A",
+        "A is true but R is false",
+        "A is false but R is true"
       ],
-      "answer": 1
+      "answer": 2
+    },
+    {
+      "id": "c10eye-102",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Scattering of light",
+      "type": "long",
+      "q": "What is scattering of light? Why does the clear sky appear blue?",
+      "solution": "**Scattering of light.** When light travelling through a medium strikes a particle — a molecule, a dust grain, a water droplet — the particle absorbs the light and re-emits it in **all directions**. That redirection of light from its original path is called scattering.\n\n**How much is scattered depends on the wavelength.** For particles much smaller than the wavelength of light, Rayleigh showed that\n\n$$\\text{amount scattered} \\propto \\frac{1}{\\lambda^4}.$$\n\nThe fourth power makes this a very strong dependence: the shorter the wavelength, the far more strongly it is scattered.\n\n**Why the clear sky is blue.**\n\nThe molecules of the air — mainly nitrogen and oxygen — are much smaller than the wavelength of visible light, so Rayleigh scattering applies.\n\nBlue light has a much shorter wavelength (about 450 nm) than red (about 700 nm). Since scattering goes as $1/\\lambda^4$, blue is scattered roughly\n\n$$\\left(\\frac{700}{450}\\right)^4 \\approx 6 \\text{ times}$$\n\nmore strongly than red.\n\nSo when sunlight passes through the atmosphere, the blue end of the spectrum is scattered in all directions by the air molecules. Looking anywhere in the sky away from the Sun, what reaches the eye is this **scattered** light — and it is predominantly blue.\n\n**The confirming case.** An astronaut above the atmosphere sees the sky as **black**, because there are no molecules to scatter the sunlight. The blue is made by the air, not by the Sun.",
+      "marks": 2,
+      "source": "CBSE 2023"
     },
     {
       "id": "eye-002",
@@ -140,15 +151,6 @@
       "marks": 2,
       "answer": 16,
       "tolerance": 0
-    },
-    {
-      "id": "eye-011",
-      "chapter": "The Human Eye and the Colourful World",
-      "topic": "Defects of vision",
-      "type": "long",
-      "q": "Describe the three common defects of vision, their causes and their correction.",
-      "solution": "**1. Myopia (short sight).** Distant objects look blurred; the far point has moved in from infinity.\n\n*Cause:* the eyeball is too long, or the lens too curved, so the image forms **in front of** the retina.\n\n*Correction:* a **concave (diverging)** lens of the right negative power.\n\n**2. Hypermetropia (long sight).** Near objects look blurred; the near point has moved out beyond $25$ cm.\n\n*Cause:* the eyeball is too short, or the lens too flat, so the image would form **behind** the retina.\n\n*Correction:* a **convex (converging)** lens of positive power.\n\n**3. Presbyopia.** Both near and distant vision are affected, and it comes with age.\n\n*Cause:* the ciliary muscles weaken and the lens stiffens, so the eye loses its power of **accommodation**.\n\n*Correction:* **bifocal** lenses — concave in the upper half for distance, convex in the lower half for reading.\n\n**Also: astigmatism**, where the cornea is not perfectly spherical, so vertical and horizontal lines cannot both be in focus at once. Corrected with a **cylindrical** lens.\n\nA cataract — the lens going cloudy — is not a refractive defect and cannot be fixed with spectacles; it needs surgery.",
-      "marks": 3
     },
     {
       "id": "eye-012",

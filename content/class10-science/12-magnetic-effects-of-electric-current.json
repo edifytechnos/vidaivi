@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "mec-001",
+      "id": "c10mec-101",
       "chapter": "Magnetic Effects of Electric Current",
-      "topic": "Oersted's discovery",
+      "topic": "Magnetic field lines",
       "type": "mcq",
-      "q": "A compass needle placed near a current-carrying wire deflects. This shows that:",
-      "solution": "This was **Oersted's discovery** in 1820: a **current produces a magnetic field** around it.\n\nIt was the first evidence that electricity and magnetism are connected at all — and the whole of electrical engineering follows from it.",
+      "q": "**Assertion (A):** Magnetic field lines do not intersect each other.\n\n**Reason (R):** Magnetic field lines are imaginary lines, the tangent to which at any point gives the direction of the field at that point.\n\nChoose the correct answer :",
+      "solution": "**Assertion.** Magnetic field lines never cross. A is **true**.\n\n**Reason.** Field lines are indeed imaginary lines drawn so that the tangent at any point gives the direction of the magnetic field there. R is **true**.\n\n**Is R the explanation of A?** Yes — and this is the whole argument.\n\nSuppose two field lines *did* cross at some point. Then at that single point you could draw **two different tangents**, and each would give a direction for the field. That would mean the magnetic field has **two directions at once** at the same place.\n\nThat is impossible: a compass needle placed there would have to point two ways at the same time. Since the field has a single, definite direction at every point, no two lines can ever intersect.\n\nSo both statements are true, and the property named in R is exactly what rules out the intersection in A.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "current produces heat",
-        "a current-carrying wire produces a magnetic field",
-        "the wire is magnetic by itself",
-        "the compass is faulty"
+        "Both A and R are true, and R is the correct explanation of A",
+        "Both A and R are true, but R is not the correct explanation of A",
+        "A is true but R is false",
+        "A is false but R is true"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": "mec-002",

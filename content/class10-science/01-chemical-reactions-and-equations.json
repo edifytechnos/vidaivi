@@ -7,6 +7,18 @@
   "access": "login",
   "questions": [
     {
+      "id": "c10cre-101",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Balancing equations",
+      "type": "numeric",
+      "q": "In order to balance the following chemical equation, find the value of $y$ :\n\n$$x\\ \\text{Pb(NO}_3)_2 \\xrightarrow{\\ \\text{Heat}\\ } 2\\ \\text{PbO} + y\\ \\text{NO}_2 + \\text{O}_2$$",
+      "solution": "Balance one element at a time, and take them in the order that leaves the fewest unknowns.\n\n**Lead.** There are 2 lead atoms on the right (in $2\\ \\text{PbO}$) and $x$ on the left, so\n\n$$x = 2.$$\n\n**Nitrogen.** With $x = 2$, the left side has $2 \\times 2 = 4$ nitrogen atoms. All of them end up in $\\text{NO}_2$, so\n\n$$y = 4.$$\n\n**Oxygen — the check.** Left side: $2 \\times 6 = 12$ oxygen atoms. Right side: $2$ (in PbO) $+\\ 4 \\times 2 = 8$ (in $\\text{NO}_2$) $+\\ 2$ (in $\\text{O}_2$) $= 12$. ✓\n\nThe balanced equation is\n\n$$2\\ \\text{Pb(NO}_3)_2 \\xrightarrow{\\ \\text{Heat}\\ } 2\\ \\text{PbO} + 4\\ \\text{NO}_2 + \\text{O}_2$$\n\nso $y = \\mathbf{4}$ (and $x = 2$).",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
       "id": "cre-001",
       "chapter": "Chemical Reactions and Equations",
       "topic": "Balancing equations",
@@ -85,17 +97,6 @@
         "bacterial growth only"
       ],
       "answer": 1
-    },
-    {
-      "id": "cre-006",
-      "chapter": "Chemical Reactions and Equations",
-      "topic": "Balancing",
-      "type": "numeric",
-      "q": "In the balanced equation $a\\,\\text{Fe} + b\\,\\text{H}_{2}\\text{O} \\to \\text{Fe}_{3}\\text{O}_{4} + c\\,\\text{H}_{2}$, find the value of $b$.",
-      "solution": "Three iron atoms are needed, so $a = 3$.\n\n$\\text{Fe}_{3}\\text{O}_{4}$ needs four oxygens, and each comes from one water molecule, so $b = \\mathbf{4}$ (and then $c = 4$).\n\nBalance the element that appears in the fewest places first — here oxygen.",
-      "marks": 2,
-      "answer": 4,
-      "tolerance": 0
     },
     {
       "id": "cre-007",

@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c10env-101",
+      "chapter": "Our Environment",
+      "topic": "Trophic levels and energy flow",
+      "type": "long",
+      "q": "(a) What is meant by a trophic level?\n\n(b) On average, what percentage of energy is transferred to the second trophic level from the first? Which category of consumers do the organisms of the second trophic level belong to?\n\n(c) Some harmful chemicals enter our bodies through the food chain. Why is their concentration found to be maximum in human beings?",
+      "solution": "**(a) Trophic level.**\n\nA trophic level is a **step in a food chain** — the position an organism occupies according to how it obtains its food, and therefore how many steps the energy has travelled from the Sun to reach it.\n\nThe first trophic level is the **producers** (green plants), the second the **herbivores**, the third the **small carnivores**, and so on.\n\n**(b) Energy transfer.**\n\nOn average only about **10%** of the energy at one trophic level passes to the next. This is the **ten per cent law**. The other 90% is lost as heat, used in the organism's own respiration and life processes, or never eaten at all.\n\nThe organisms of the second trophic level are the **herbivores**, which are the **primary consumers**.\n\n(It is this steep loss that keeps food chains short — usually three or four steps — since after four levels barely any of the original energy is left.)\n\n**(c) Why the concentration is highest in humans.**\n\nThis is **biological magnification**.\n\nCertain harmful chemicals — pesticides such as DDT, and heavy metals — are **non-biodegradable**. They are not broken down, and they are not excreted; they accumulate in the body tissues of the organism that takes them in.\n\nSo at each step of the food chain, a consumer eats **many** organisms from the level below and takes on the whole of their accumulated load. The chemical becomes progressively more concentrated the further up the chain you go, even though the **energy** available is shrinking by 90% each step.\n\nHuman beings occupy the **top** of most food chains, and eat from several chains at once — crops, herbivores and fish alike. The accumulated chemicals from all of those levels therefore end up concentrated in us, which is why the maximum concentration is found in human beings.",
+      "marks": 5,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "env-001",
       "chapter": "Our Environment",
       "topic": "Food chain",
@@ -158,15 +168,6 @@
       "q": "What is the ozone layer? Explain how it is being depleted and what is being done about it.",
       "solution": "**What it is.** A layer of ozone ($\\text{O}_{3}$) in the stratosphere, about $15$–$35$ km up. It absorbs most of the Sun's ultraviolet radiation.\n\n**How it forms:** UV light splits an oxygen molecule, and the free atoms join other $\\text{O}_{2}$ molecules:\n\n$\\text{O}_{2} \\xrightarrow{\\text{UV}} \\text{O} + \\text{O}$, then $\\text{O} + \\text{O}_{2} \\to \\text{O}_{3}$\n\n**Why it matters.** Without it, ultraviolet reaching the ground would cause skin cancer and cataracts, damage the immune system, kill plankton and reduce crop yields.\n\n**Depletion.** **Chlorofluorocarbons (CFCs)**, used in refrigerators, air conditioners and aerosol sprays, are so stable that nothing destroys them at ground level. They drift up over years, and UV light there releases chlorine atoms:\n\n$\\text{Cl} + \\text{O}_{3} \\to \\text{ClO} + \\text{O}_{2}$, then $\\text{ClO} + \\text{O} \\to \\text{Cl} + \\text{O}_{2}$\n\nThe chlorine atom comes back **unchanged** and does it again — so a single atom destroys thousands of ozone molecules.\n\nA severe thinning, the 'ozone hole', was found over Antarctica in 1985.\n\n**The response.** The **Montreal Protocol** (1987) required CFCs to be phased out worldwide, and they have been replaced by HFCs and hydrocarbons.\n\nThe layer is now slowly recovering and is expected to be back to its 1980 state around the middle of this century. It is the clearest case there is of an environmental problem identified, agreed on and actually fixed.",
       "marks": 3
-    },
-    {
-      "id": "env-013",
-      "chapter": "Our Environment",
-      "topic": "Waste management",
-      "type": "long",
-      "q": "Distinguish between biodegradable and non-biodegradable waste, describe three methods of waste disposal, and explain the three R's.",
-      "solution": "**Biodegradable** — broken down by decomposers (bacteria and fungi) into simple substances that return to the soil. *Paper, food waste, cow dung, cotton, wood.*\n\n**Non-biodegradable** — not broken down by decomposers, so they persist for decades or centuries, block drains, choke animals and poison soil. *Plastics, glass, metals, DDT, synthetic fibres.*\n\n**Disposal methods.**\n\n1. **Composting** — biodegradable waste is heaped and allowed to decompose into manure. Cheap, and it returns nutrients to the soil.\n\n2. **Recycling** — metals, glass and paper are reprocessed into new goods, saving both raw material and energy.\n\n3. **Incineration** — burning at high temperature, used for hospital and hazardous waste. It destroys pathogens, but produces ash and air pollution.\n\n4. **Sanitary landfill** — waste sealed into a lined pit. The last resort: land is used up and groundwater is at risk from leachate.\n\n**The three R's, in order of importance:**\n\n• **Reduce** — use less in the first place. Waste never created needs no handling at all, so this is by far the most effective.\n\n• **Reuse** — use an item again as it is, with no reprocessing. A glass jar becomes a container.\n\n• **Recycle** — break the material down and make something new. It works, but it still costs energy, which is why it comes last of the three.",
-      "marks": 5
     },
     {
       "id": "env-014",

@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c10mnm-101",
+      "chapter": "Metals and Non-metals",
+      "topic": "Extraction of metals",
+      "type": "long",
+      "q": "With the help of chemical equations, list the two main differences between roasting and calcination. How is the metal obtained from the product of roasting or calcination? Write the chemical equation for the reaction involved.",
+      "solution": "Both are steps that convert an ore into the **metal oxide**, because an oxide is the easiest form to reduce. They differ in which ore they are used on and in the conditions.\n\n**Roasting.** The ore is heated strongly **in the presence of excess air**. It is used for **sulphide** ores.\n\n$$2\\ \\text{ZnS} + 3\\ \\text{O}_2 \\xrightarrow{\\ \\text{Heat}\\ } 2\\ \\text{ZnO} + 2\\ \\text{SO}_2$$\n\n**Calcination.** The ore is heated strongly **in the absence or limited supply of air**. It is used for **carbonate** ores (and to drive off water from hydrated ores).\n\n$$\\text{ZnCO}_3 \\xrightarrow{\\ \\text{Heat}\\ } \\text{ZnO} + \\text{CO}_2$$\n\n**The two main differences, then :**\n\n1. Roasting is carried out in **excess air**; calcination in the **absence or limited supply** of air.\n2. Roasting is applied to **sulphide** ores and releases $\\text{SO}_2$; calcination is applied to **carbonate** ores and releases $\\text{CO}_2$.\n\n**Obtaining the metal.** The metal oxide produced by either process is then **reduced**, usually by heating with carbon (coke), which takes the oxygen away :\n\n$$\\text{ZnO} + \\text{C} \\xrightarrow{\\ \\text{Heat}\\ } \\text{Zn} + \\text{CO}$$\n\nThe zinc is obtained as a vapour and is condensed. For the most reactive metals — sodium, magnesium, aluminium — carbon is not a strong enough reducing agent, and **electrolytic reduction** of the molten ore is used instead.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "mnm-001",
       "chapter": "Metals and Non-metals",
       "topic": "Physical properties",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 2,
       "tolerance": 0
-    },
-    {
-      "id": "mnm-011",
-      "chapter": "Metals and Non-metals",
-      "topic": "Extraction of metals",
-      "type": "long",
-      "q": "Describe how metals of medium reactivity are extracted from their ores, with equations.",
-      "solution": "**Step 1 — concentration.** The ore is crushed and the gangue removed, usually by froth flotation for a sulphide ore.\n\n**Step 2 — conversion to the oxide.** Oxides are the easiest compounds to reduce, so whatever the ore, the first move is to get there.\n\n*Roasting* (sulphide ore, excess air):\n\n$2\\text{ZnS} + 3\\text{O}_{2} \\to 2\\text{ZnO} + 2\\text{SO}_{2}$\n\n*Calcination* (carbonate ore, limited air):\n\n$\\text{ZnCO}_{3} \\to \\text{ZnO} + \\text{CO}_{2}$\n\n**Step 3 — reduction to the metal**, with carbon:\n\n$\\text{ZnO} + \\text{C} \\to \\text{Zn} + \\text{CO}$\n\n**Step 4 — refining**, usually by electrolysis, with the impure metal as the anode and pure metal as the cathode.\n\n**Why the method depends on reactivity:** metals **low** in the series (gold, silver, copper) occur free or need only heating; **medium** metals (zinc, iron, lead) are reduced with carbon as above; **highly reactive** metals (sodium, magnesium, aluminium) hold their oxygen too tightly for carbon and must be won by **electrolysis** of the molten compound.\n\nThe more reactive the metal, the more energy its extraction costs — which is exactly why aluminium was once more precious than gold.",
-      "marks": 3
     },
     {
       "id": "mnm-012",

@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c10cc-101",
+      "chapter": "Control and Coordination",
+      "topic": "Hormones",
+      "type": "long",
+      "q": "Name the hormone released and the gland which secretes it in human beings during scary situations. How does the body respond to enable it to deal with the situation?",
+      "solution": "**The hormone.** **Adrenaline** (also called epinephrine).\n\n**The gland.** The **adrenal gland**, specifically the adrenal medulla. There is one adrenal gland sitting on top of each kidney.\n\n**How the body responds.** Adrenaline is secreted directly into the blood and carried to many organs at once, preparing the body for what is often called the *fight-or-flight* response :\n\n- **Heart** — beats faster and harder, so more oxygen reaches the muscles.\n- **Breathing rate** — increases, and the diaphragm and rib muscles contract more rapidly, taking in more oxygen.\n- **Blood supply is redirected.** The small arteries around the skin and the digestive system **contract**, cutting the blood flow to organs that are not needed immediately. That blood is diverted to the **skeletal muscles**, which may need to act at once. This is also why a frightened person looks pale.\n- **Liver** — breaks down stored glycogen into glucose, raising the blood sugar so the muscles have fuel available.\n- **Pupils** — dilate, letting in more light.\n\nAll of this together makes more oxygen and more glucose available to the muscles more quickly, so the body is ready either to fight the danger or to run from it.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "cc-001",
       "chapter": "Control and Coordination",
       "topic": "Neuron",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 3,
       "tolerance": 0
-    },
-    {
-      "id": "cc-011",
-      "chapter": "Control and Coordination",
-      "topic": "Reflex action",
-      "type": "long",
-      "q": "What is a reflex action? Describe the reflex arc with an example and explain why reflexes evolved.",
-      "solution": "**Definition.** A rapid, automatic response to a stimulus, not under conscious control.\n\n**The reflex arc**, taking a hand touching a hot plate:\n\n1. **Receptor** — heat receptors in the skin detect the stimulus.\n\n2. **Sensory neuron** — carries the impulse to the spinal cord.\n\n3. **Relay neuron** — in the spinal cord, passes it straight across.\n\n4. **Motor neuron** — carries the command out.\n\n5. **Effector** — the arm muscle contracts and the hand is pulled away.\n\nThe brain is informed **afterwards**, which is why the pain is felt a moment after the hand has already moved.\n\n**Why reflexes exist.** Thinking is slow. A conscious decision takes tenths of a second and the tissue would already be damaged. Evolution's answer was to complete the circuit at the spinal cord and skip the deliberation entirely.\n\n**Other examples:** blinking when something approaches the eye, the knee jerk, the pupil narrowing in bright light, salivating at the smell of food.",
-      "marks": 3
     },
     {
       "id": "cc-012",

@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c10her-101",
+      "chapter": "Heredity",
+      "topic": "Mendel's experiments",
+      "type": "long",
+      "q": "Mendel crossed a pure tall pea plant (TT) with a pure short pea plant (tt) and obtained all tall plants in the $F_1$ generation.\n\n(a) What is the gene combination present in the plants of the $F_1$ generation?\n\n(b) Give a reason why only tall plants are observed in the $F_1$ progeny.\n\n(c) What will be the ratio of the plants obtained in the $F_2$ generation when the $F_1$ plants are self-pollinated?",
+      "solution": "**(a) The $F_1$ gene combination.**\n\nThe tall parent is TT and can only give a **T** gamete. The short parent is tt and can only give a **t** gamete. Every offspring therefore receives one of each :\n\n$$\\text{TT} \\times \\text{tt} \\longrightarrow \\text{all } \\mathbf{Tt}$$\n\nSo all $F_1$ plants are **Tt** — heterozygous.\n\n**(b) Why they are all tall.**\n\nThe allele **T** (tall) is **dominant** over **t** (short), which is recessive. In a heterozygote Tt, only the dominant allele expresses itself in the appearance of the plant. The recessive t allele is present and is passed on, but it is masked and does not show.\n\nSo every Tt plant looks tall, even though it carries the gene for shortness.\n\n**(c) The $F_2$ ratio.**\n\nSelf-pollinating $\\text{Tt} \\times \\text{Tt}$: each parent gives T or t with equal chance, so the four equally likely combinations are\n\n$$\\text{TT}, \\quad \\text{Tt}, \\quad \\text{tT}, \\quad \\text{tt}.$$\n\n**Genotypic ratio:** TT : Tt : tt $=$ **1 : 2 : 1**\n\n**Phenotypic ratio:** the first three all look tall, only tt is short, so tall : short $=$ **3 : 1**\n\nThe reappearance of the short plants in $F_2$, after none appeared in $F_1$, is the observation that showed Mendel the recessive allele had been carried through unchanged rather than blended away.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "her-001",
       "chapter": "Heredity",
       "topic": "Mendel",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 50,
       "tolerance": 0.5
-    },
-    {
-      "id": "her-011",
-      "chapter": "Heredity",
-      "topic": "Mendel's laws",
-      "type": "long",
-      "q": "State Mendel's three laws of inheritance and explain each briefly.",
-      "solution": "**1. Law of Dominance.** When two contrasting factors are present, only one — the **dominant** — shows in the appearance; the other is **recessive** and hidden.\n\nThis is why the F1 of a tall $\\times$ short cross is entirely tall.\n\n**2. Law of Segregation.** The two factors of a pair **separate** during gamete formation, so each gamete carries only one of them.\n\nThis is the most fundamental of the three: it explains why the recessive trait reappears in the F2 after vanishing in the F1. Nothing was blended or lost — the factors were simply travelling together without mixing.\n\n**3. Law of Independent Assortment.** The factors for **different** characters are distributed into gametes independently of one another.\n\nA plant's height tells you nothing about its seed colour — which is why a dihybrid cross gives $9:3:3:1$ rather than $3:1$.\n\n**Why Mendel succeeded** where others had failed: he studied **one character at a time**, used pure-breeding lines, and — crucially — **counted** his offspring in the thousands. He was applying mathematics to biology, which nobody had thought to do.",
-      "marks": 3
     },
     {
       "id": "her-012",

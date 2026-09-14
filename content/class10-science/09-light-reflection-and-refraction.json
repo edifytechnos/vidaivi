@@ -7,6 +7,18 @@
   "access": "login",
   "questions": [
     {
+      "id": "c10lrr-101",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Concave mirror",
+      "type": "numeric",
+      "q": "An object of height 3 cm is placed 18 cm from a concave mirror of focal length 12 cm, forming an image on a white screen. Find the distance of the image from the mirror, in centimetres. Give the magnitude.",
+      "solution": "Use the New Cartesian Sign Convention throughout: distances are measured from the pole, and those on the same side as the incoming light are negative.\n\n**Given.** $u = -18$ cm, $f = -12$ cm (a concave mirror has a negative focal length), $h = +3$ cm.\n\n**Step 1 — the mirror formula.**\n\n$$\\frac{1}{v} + \\frac{1}{u} = \\frac{1}{f} \\quad\\Longrightarrow\\quad \\frac{1}{v} = \\frac{1}{f} - \\frac{1}{u}.$$\n\n**Step 2 — substitute.**\n\n$$\\frac{1}{v} = \\frac{1}{-12} - \\frac{1}{-18} = -\\frac{1}{12} + \\frac{1}{18}.$$\n\nTaking the common denominator 36 :\n\n$$\\frac{1}{v} = \\frac{-3 + 2}{36} = -\\frac{1}{36} \\quad\\Longrightarrow\\quad v = -36\\ \\text{cm}.$$\n\nThe image is **36 cm** in front of the mirror. The negative sign says it is on the same side as the object, which is exactly what allows it to be caught on a screen — it is **real**.\n\n**The image height, for completeness.**\n\n$$m = -\\frac{v}{u} = -\\frac{-36}{-18} = -2,$$\n\nso $h' = m \\times h = -2 \\times 3 = -6$ cm. The image is **6 cm tall and inverted**, twice the size of the object.\n\n(Sensible: the object at 18 cm lies between $f = 12$ cm and $2f = 24$ cm, and an object there always gives a real, inverted, magnified image beyond $2f$.)",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 36,
+      "tolerance": 0
+    },
+    {
       "id": "lrr-001",
       "chapter": "Light - Reflection and Refraction",
       "topic": "Laws of reflection",
@@ -85,17 +97,6 @@
         "candela"
       ],
       "answer": 1
-    },
-    {
-      "id": "lrr-006",
-      "chapter": "Light - Reflection and Refraction",
-      "topic": "Mirror formula",
-      "type": "numeric",
-      "q": "An object is placed $15$ cm from a concave mirror of focal length $10$ cm. Find the magnitude of the image distance, in cm.",
-      "solution": "$\\dfrac{1}{v} = \\dfrac{1}{f} - \\dfrac{1}{u} = \\dfrac{1}{10} - \\dfrac{1}{15} = \\dfrac{3 - 2}{30} = \\dfrac{1}{30}$.\n\n$v = \\mathbf{30}$ cm — a real, inverted image, twice the size.",
-      "marks": 2,
-      "answer": 30,
-      "tolerance": 0.5
     },
     {
       "id": "lrr-007",

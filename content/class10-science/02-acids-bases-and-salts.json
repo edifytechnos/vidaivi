@@ -7,18 +7,19 @@
   "access": "login",
   "questions": [
     {
-      "id": "abs-001",
+      "id": "c10abs-101",
       "chapter": "Acids, Bases and Salts",
-      "topic": "pH scale",
+      "topic": "Conductivity of solutions",
       "type": "mcq",
-      "q": "A solution of pH $2$ is:",
-      "solution": "pH below 7 is acidic, and the further below, the stronger. pH 2 is **strongly acidic** — about the acidity of lemon juice or gastric fluid.\n\nEach pH unit is a factor of **ten** in hydrogen-ion concentration, so pH 2 is a hundred times more acidic than pH 4.",
+      "q": "The bulb of an apparatus for testing electrical conduction will glow when the electrodes are placed in :\n\n(i) Dilute hydrochloric acid\n(ii) Dilute sulphuric acid\n(iii) Glucose solution\n(iv) Alcohol",
+      "solution": "A solution conducts electricity only if it contains **free ions** to carry the charge.\n\n**(i) Dilute hydrochloric acid.** HCl is a strong acid; in water it ionises completely :\n\n$$\\text{HCl} + \\text{H}_2\\text{O} \\longrightarrow \\text{H}_3\\text{O}^+ + \\text{Cl}^-$$\n\nPlenty of ions — **conducts**.\n\n**(ii) Dilute sulphuric acid.** Likewise a strong acid, giving $\\text{H}_3\\text{O}^+$ and $\\text{SO}_4^{2-}$ — **conducts**.\n\n**(iii) Glucose solution.** Glucose dissolves but does **not** ionise. It stays as neutral $\\text{C}_6\\text{H}_{12}\\text{O}_6$ molecules — no ions, so it does **not** conduct.\n\n**(iv) Alcohol.** A covalent compound that does not produce ions in water — does **not** conduct.\n\nSo the bulb glows for **(i) and (ii)** only.\n\nThe point of the question is that dissolving is not the same as ionising: both glucose and HCl dissolve freely, but only one of them releases ions.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "strongly basic",
-        "weakly basic",
-        "strongly acidic",
-        "neutral"
+        "(i) only",
+        "(ii) only",
+        "(i) and (ii)",
+        "(ii), (iii) and (iv)"
       ],
       "answer": 2
     },
