@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12-3d-geometry",
+  "title": "Three Dimensional Geometry",
+  "chapter": "Chapter Test 11",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "td-001",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Direction ratios",
+      "type": "mcq",
+      "q": "The direction ratios of the line joining $(1, 2, 3)$ and $(4, 5, 7)$ are:",
+      "solution": "Subtract the coordinates: $(4 - 1,\\; 5 - 2,\\; 7 - 3) = \\mathbf{3,\\,3,\\,4}$.\n\nDirection ratios are fixed only up to a common factor — $6, 6, 8$ describes the same direction. They are a heading, not a distance.",
+      "marks": 1,
+      "options": [
+        "3, 3, 4",
+        "5, 7, 10",
+        "4, 5, 7",
+        "1, 2, 3"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "td-002",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Direction cosines",
+      "type": "mcq",
+      "q": "If $l$, $m$, $n$ are the direction cosines of a line, then $l^{2} + m^{2} + n^{2}$ equals:",
+      "solution": "The direction cosines are the components of a **unit** vector along the line, so their squares add to $\\mathbf{1}$.\n\nIt is Pythagoras in three dimensions, applied to a vector of length one.",
+      "marks": 1,
+      "options": [
+        "0",
+        "1",
+        "3",
+        "depends on the line"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "td-003",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Vector equation of a line",
+      "type": "mcq",
+      "q": "The vector equation of the line through the point with position vector $\\vec{a}$ and parallel to $\\vec{b}$ is:",
+      "solution": "Start at $\\vec{a}$ and walk any distance along $\\vec{b}$: $\\mathbf{\\vec{r} = \\vec{a} + \\lambda\\vec{b}}$.\n\n$\\vec{a}$ is where you stand, $\\vec{b}$ is which way you face, and $\\lambda$ is how far you go — forwards or backwards.",
+      "marks": 1,
+      "options": [
+        "$\\vec{r} = \\vec{a} + \\lambda\\vec{b}$",
+        "$\\vec{r} = \\vec{a}\\cdot\\vec{b}$",
+        "$\\vec{r} = \\lambda\\left(\\vec{a} + \\vec{b}\\right)$",
+        "$\\vec{r} = \\vec{a} \\times \\vec{b}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "td-004",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Perpendicular lines",
+      "type": "mcq",
+      "q": "Two lines with direction ratios $a_{1}, b_{1}, c_{1}$ and $a_{2}, b_{2}, c_{2}$ are perpendicular if:",
+      "solution": "Perpendicular means the dot product of the direction vectors is zero: $\\mathbf{a_{1}a_{2} + b_{1}b_{2} + c_{1}c_{2} = 0}$.\n\nThe first option is the **parallel** condition — equal ratios mean the same heading.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{a_{1}}{a_{2}} = \\dfrac{b_{1}}{b_{2}} = \\dfrac{c_{1}}{c_{2}}$",
+        "$a_{1}a_{2} + b_{1}b_{2} + c_{1}c_{2} = 0$",
+        "$a_{1} + a_{2} = 0$",
+        "$a_{1}a_{2} = b_{1}b_{2} = c_{1}c_{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "td-005",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Skew lines",
+      "type": "mcq",
+      "q": "Two lines in space are called skew if they:",
+      "solution": "Skew lines never meet and never run parallel — they simply pass by each other at different depths, so no single plane contains both.\n\nA road and a flyover crossing above it: on a map they cross, in space they never touch.",
+      "marks": 1,
+      "options": [
+        "are parallel",
+        "intersect at right angles",
+        "are neither parallel nor intersecting",
+        "lie in the same plane"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "td-006",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Distance between points",
+      "type": "numeric",
+      "q": "Find the distance between the points $(1, 2, 3)$ and $(4, 6, 3)$.",
+      "solution": "$d = \\sqrt{(4-1)^{2} + (6-2)^{2} + (3-3)^{2}} = \\sqrt{9 + 16 + 0} = \\mathbf{5}$.\n\nThe $z$-coordinates match, so this is really a $3$–$4$–$5$ triangle lying flat in a horizontal plane.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "td-007",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Angle between lines",
+      "type": "numeric",
+      "q": "Find the angle (in degrees) between two lines whose direction ratios are $1, 1, 0$ and $0, 1, 1$.",
+      "solution": "$\\cos\\theta = \\dfrac{\\left|a_{1}a_{2} + b_{1}b_{2} + c_{1}c_{2}\\right|}{\\sqrt{a_{1}^{2}+b_{1}^{2}+c_{1}^{2}}\\,\\sqrt{a_{2}^{2}+b_{2}^{2}+c_{2}^{2}}} = \\dfrac{|0 + 1 + 0|}{\\sqrt2\\,\\sqrt2} = \\dfrac12$.\n\n$\\theta = \\mathbf{60°}$.\n\nThe modulus is there because a line has no preferred direction: the angle between two lines is always taken as the acute one.",
+      "marks": 2,
+      "answer": 60,
+      "tolerance": 0.5
+    },
+    {
+      "id": "td-008",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Perpendicular lines",
+      "type": "numeric",
+      "q": "Find $\\lambda$ if the lines with direction ratios $2, -1, 3$ and $1, \\lambda, 2$ are perpendicular.",
+      "solution": "$2(1) + (-1)(\\lambda) + 3(2) = 0 \\Rightarrow 2 - \\lambda + 6 = 0 \\Rightarrow \\lambda = \\mathbf{8}$.",
+      "marks": 2,
+      "answer": 8,
+      "tolerance": 0
+    },
+    {
+      "id": "td-009",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Direction cosine",
+      "type": "numeric",
+      "q": "A line has direction ratios $2, 3, 6$. Find its direction cosine $l$ (the one along the $x$-axis), taking the positive direction, correct to three decimal places.",
+      "solution": "The magnitude is $\\sqrt{4 + 9 + 36} = 7$.\n\n$l = \\dfrac{2}{7} \\approx \\mathbf{0.286}$ (and $m = \\tfrac37$, $n = \\tfrac67$).\n\nDividing the ratios by their magnitude is what turns a heading into cosines.",
+      "marks": 2,
+      "answer": 0.286,
+      "tolerance": 0.002
+    },
+    {
+      "id": "td-010",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Point on a line",
+      "type": "numeric",
+      "q": "The line $\\dfrac{x - 1}{2} = \\dfrac{y + 1}{3} = \\dfrac{z - 2}{4}$ passes through a point whose $y$-coordinate is $5$. Find its $x$-coordinate.",
+      "solution": "Set each ratio equal to $\\lambda$: $x = 1 + 2\\lambda$, $y = -1 + 3\\lambda$, $z = 2 + 4\\lambda$.\n\n$y = 5 \\Rightarrow -1 + 3\\lambda = 5 \\Rightarrow \\lambda = 2$.\n\nThen $x = 1 + 4 = \\mathbf{5}$ (and $z = 10$).\n\nThe parameter $\\lambda$ is a dial: turn it and you slide along the line.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "td-011",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Cartesian and vector forms",
+      "type": "long",
+      "q": "Write the line $\\dfrac{x - 2}{3} = \\dfrac{y + 1}{2} = \\dfrac{z - 4}{-1}$ in vector form, and state a point on it and its direction.",
+      "solution": "The Cartesian form hands you both pieces directly.\n\n**A point on the line:** the numbers subtracted from $x$, $y$, $z$ — namely $(2, -1, 4)$.\n\n**The direction:** the denominators — $3, 2, -1$.\n\n$\\mathbf{\\vec{r} = \\left(2\\hat{i} - \\hat{j} + 4\\hat{k}\\right) + \\lambda\\left(3\\hat{i} + 2\\hat{j} - \\hat{k}\\right)}$.\n\nWatch the signs: $y + 1$ means the point has $y = -1$, not $+1$. That sign is the single most common slip in this chapter.",
+      "marks": 3
+    },
+    {
+      "id": "td-012",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Line through two points",
+      "type": "long",
+      "q": "Find the vector and Cartesian equations of the line through $A(3, -2, 1)$ and $B(5, 1, 7)$.",
+      "solution": "**Direction:** $\\vec{AB} = (5 - 3,\\; 1 + 2,\\; 7 - 1) = (2, 3, 6)$.\n\n**Vector form:** $\\vec{r} = \\left(3\\hat{i} - 2\\hat{j} + \\hat{k}\\right) + \\lambda\\left(2\\hat{i} + 3\\hat{j} + 6\\hat{k}\\right)$.\n\n**Cartesian form:** $\\dfrac{x - 3}{2} = \\dfrac{y + 2}{3} = \\dfrac{z - 1}{6}$.\n\n**Check:** putting $\\lambda = 1$ gives $(5, 1, 7)$, which is $B$. ✓\n\nEither point may be used as the anchor — the line is the same, only the value of $\\lambda$ at each point changes.",
+      "marks": 3
+    },
+    {
+      "id": "td-013",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Shortest distance between skew lines",
+      "type": "long",
+      "q": "Find the shortest distance between the lines $\\vec{r} = \\hat{i} + \\hat{j} + \\lambda\\left(2\\hat{i} - \\hat{j} + \\hat{k}\\right)$ and $\\vec{r} = 2\\hat{i} + \\hat{j} - \\hat{k} + \\mu\\left(3\\hat{i} - 5\\hat{j} + 2\\hat{k}\\right)$.",
+      "solution": "With $\\vec{r} = \\vec{a_1} + \\lambda\\vec{b_1}$ and $\\vec{r} = \\vec{a_2} + \\mu\\vec{b_2}$:\n\n$d = \\dfrac{\\left|\\left(\\vec{a_2} - \\vec{a_1}\\right)\\cdot\\left(\\vec{b_1}\\times\\vec{b_2}\\right)\\right|}{\\left|\\vec{b_1}\\times\\vec{b_2}\\right|}$.\n\n$\\vec{a_2} - \\vec{a_1} = \\hat{i} + 0\\hat{j} - \\hat{k}$.\n\n$\\vec{b_1}\\times\\vec{b_2} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 2 & -1 & 1 \\\\ 3 & -5 & 2 \\end{vmatrix}$\n\n$= \\hat{i}\\left((-1)(2) - (1)(-5)\\right) - \\hat{j}\\left((2)(2) - (1)(3)\\right) + \\hat{k}\\left((2)(-5) - (-1)(3)\\right)$\n\n$= 3\\hat{i} - \\hat{j} - 7\\hat{k}$.\n\n**Numerator:** $(1)(3) + (0)(-1) + (-1)(-7) = 3 + 7 = 10$.\n\n**Denominator:** $\\sqrt{9 + 1 + 49} = \\sqrt{59}$.\n\n$d = \\mathbf{\\dfrac{10}{\\sqrt{59}}} \\approx 1.30$ units.\n\nThe cross product points along the one direction perpendicular to **both** lines; the numerator measures how far apart they are along exactly that direction.",
+      "marks": 5
+    },
+    {
+      "id": "td-014",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Angle between two lines",
+      "type": "long",
+      "q": "Find the angle between the lines $\\dfrac{x}{1} = \\dfrac{y}{2} = \\dfrac{z}{2}$ and $\\dfrac{x}{3} = \\dfrac{y}{-4} = \\dfrac{z}{0}$.",
+      "solution": "Direction ratios: $(1, 2, 2)$ and $(3, -4, 0)$.\n\nDot product $= 3 - 8 + 0 = -5$.\n\nMagnitudes: $\\sqrt{1 + 4 + 4} = 3$ and $\\sqrt{9 + 16 + 0} = 5$.\n\n$\\cos\\theta = \\dfrac{|-5|}{3 \\times 5} = \\dfrac{1}{3}$.\n\n$\\theta = \\mathbf{\\cos^{-1}\\dfrac13} \\approx 70.5°$.\n\nA zero in the direction ratios is fine — it simply means the line never moves in that coordinate.",
+      "marks": 3
+    },
+    {
+      "id": "td-015",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Direction cosines of a join",
+      "type": "long",
+      "q": "Find the direction cosines of the line joining $P(2, 3, 5)$ and $Q(4, 6, 11)$.",
+      "solution": "Direction ratios: $(4 - 2,\\; 6 - 3,\\; 11 - 5) = (2, 3, 6)$.\n\nMagnitude $= \\sqrt{4 + 9 + 36} = 7$.\n\nDirection cosines: $\\mathbf{\\left(\\dfrac27, \\dfrac37, \\dfrac67\\right)}$.\n\n**Check:** $\\dfrac{4 + 9 + 36}{49} = 1$. ✓",
+      "marks": 2
+    }
+  ]
+}

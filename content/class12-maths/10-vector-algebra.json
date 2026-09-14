@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12-vector-algebra",
+  "title": "Vector Algebra",
+  "chapter": "Chapter Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "vec-001",
+      "chapter": "Vector Algebra",
+      "topic": "Magnitude",
+      "type": "mcq",
+      "q": "The magnitude of $\\vec{a} = 2\\hat{i} - 3\\hat{j} + 6\\hat{k}$ is:",
+      "solution": "$\\left|\\vec{a}\\right| = \\sqrt{2^{2} + (-3)^{2} + 6^{2}} = \\sqrt{4 + 9 + 36} = \\sqrt{49} = \\mathbf{7}$.\n\nIt is Pythagoras done twice — once in the floor plane, once up the wall.",
+      "marks": 1,
+      "options": [
+        "5",
+        "7",
+        "11",
+        "$\\sqrt{11}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "vec-002",
+      "chapter": "Vector Algebra",
+      "topic": "Perpendicular vectors",
+      "type": "mcq",
+      "q": "Two non-zero vectors $\\vec{a}$ and $\\vec{b}$ are perpendicular if and only if:",
+      "solution": "$\\vec{a}\\cdot\\vec{b} = \\left|\\vec{a}\\right|\\left|\\vec{b}\\right|\\cos\\theta$, and for non-zero vectors this is zero exactly when $\\cos\\theta = 0$, i.e. $\\theta = 90°$.\n\nThe **cross** product being zero means the opposite: the vectors are parallel.\n\nDot product measures how much two vectors agree; at right angles they agree about nothing.",
+      "marks": 1,
+      "options": [
+        "$\\vec{a} \\times \\vec{b} = \\vec{0}$",
+        "$\\vec{a} \\cdot \\vec{b} = 0$",
+        "$\\left|\\vec{a}\\right| = \\left|\\vec{b}\\right|$",
+        "$\\vec{a} + \\vec{b} = \\vec{0}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "vec-003",
+      "chapter": "Vector Algebra",
+      "topic": "Cross product of unit vectors",
+      "type": "mcq",
+      "q": "$\\hat{i} \\times \\hat{j}$ equals:",
+      "solution": "The unit vectors follow the right-hand cycle $\\hat{i} \\to \\hat{j} \\to \\hat{k} \\to \\hat{i}$: each crossed with the next gives the one after.\n\nSo $\\hat{i} \\times \\hat{j} = \\mathbf{\\hat{k}}$, while $\\hat{j} \\times \\hat{i} = -\\hat{k}$ — the cross product is **not** commutative.\n\nPoint the fingers of your right hand along the first vector, curl them towards the second, and your thumb shows the answer.",
+      "marks": 1,
+      "options": [
+        "$\\hat{k}$",
+        "$-\\hat{k}$",
+        "0",
+        "$\\hat{i} + \\hat{j}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "vec-004",
+      "chapter": "Vector Algebra",
+      "topic": "Unit vector",
+      "type": "mcq",
+      "q": "A unit vector in the direction of $\\vec{a} = \\hat{i} + \\hat{j} + \\hat{k}$ is:",
+      "solution": "Divide the vector by its own magnitude. Here $\\left|\\vec{a}\\right| = \\sqrt{1 + 1 + 1} = \\sqrt3$.\n\n$\\hat{a} = \\mathbf{\\dfrac{\\hat{i} + \\hat{j} + \\hat{k}}{\\sqrt{3}}}$.\n\nA unit vector keeps the direction and throws away the length — a signpost, not a journey.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\hat{i} + \\hat{j} + \\hat{k}}{3}$",
+        "$\\dfrac{\\hat{i} + \\hat{j} + \\hat{k}}{\\sqrt{3}}$",
+        "$\\hat{i} + \\hat{j} + \\hat{k}$",
+        "$\\dfrac{\\hat{i} + \\hat{j} + \\hat{k}}{\\sqrt{2}}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "vec-005",
+      "chapter": "Vector Algebra",
+      "topic": "Projection",
+      "type": "mcq",
+      "q": "The projection of $\\vec{a}$ on $\\vec{b}$ is:",
+      "solution": "The projection of $\\vec{a}$ **on** $\\vec{b}$ is the length of $\\vec{a}$'s shadow along $\\vec{b}$:\n\n$\\left|\\vec{a}\\right|\\cos\\theta = \\dfrac{\\vec{a}\\cdot\\vec{b}}{\\left|\\vec{b}\\right|}$.\n\nDivide by the vector you are projecting **onto** — that is the half students most often get the wrong way round.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\vec{a}\\cdot\\vec{b}}{\\left|\\vec{a}\\right|}$",
+        "$\\dfrac{\\vec{a}\\cdot\\vec{b}}{\\left|\\vec{b}\\right|}$",
+        "$\\vec{a}\\cdot\\vec{b}$",
+        "$\\dfrac{\\left|\\vec{a}\\times\\vec{b}\\right|}{\\left|\\vec{b}\\right|}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "vec-006",
+      "chapter": "Vector Algebra",
+      "topic": "Dot product",
+      "type": "numeric",
+      "q": "Find $\\vec{a}\\cdot\\vec{b}$ where $\\vec{a} = \\hat{i} + 2\\hat{j} + 3\\hat{k}$ and $\\vec{b} = 2\\hat{i} - \\hat{j} + \\hat{k}$.",
+      "solution": "Multiply matching components and add:\n\n$(1)(2) + (2)(-1) + (3)(1) = 2 - 2 + 3 = \\mathbf{3}$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "vec-007",
+      "chapter": "Vector Algebra",
+      "topic": "Perpendicular condition",
+      "type": "numeric",
+      "q": "Find $\\lambda$ so that $\\vec{a} = 2\\hat{i} + \\lambda\\hat{j} + \\hat{k}$ and $\\vec{b} = \\hat{i} - 2\\hat{j} + 3\\hat{k}$ are perpendicular.",
+      "solution": "Perpendicular means the dot product vanishes:\n\n$(2)(1) + \\lambda(-2) + (1)(3) = 0 \\Rightarrow 5 - 2\\lambda = 0 \\Rightarrow \\lambda = \\mathbf{2.5}$.",
+      "marks": 2,
+      "answer": 2.5,
+      "tolerance": 0.01
+    },
+    {
+      "id": "vec-008",
+      "chapter": "Vector Algebra",
+      "topic": "Angle between vectors",
+      "type": "numeric",
+      "q": "Find the angle (in degrees) between $\\vec{a} = \\hat{i} + \\hat{j}$ and $\\vec{b} = \\hat{j} + \\hat{k}$.",
+      "solution": "$\\vec{a}\\cdot\\vec{b} = (1)(0) + (1)(1) + (0)(1) = 1$.\n\n$\\left|\\vec{a}\\right| = \\left|\\vec{b}\\right| = \\sqrt2$, so $\\cos\\theta = \\dfrac{1}{\\sqrt2 \\times \\sqrt2} = \\dfrac12$.\n\n$\\theta = \\mathbf{60°}$.",
+      "marks": 2,
+      "answer": 60,
+      "tolerance": 0.5
+    },
+    {
+      "id": "vec-009",
+      "chapter": "Vector Algebra",
+      "topic": "Area of a parallelogram",
+      "type": "numeric",
+      "q": "Find the area of the parallelogram whose adjacent sides are $\\vec{a} = \\hat{i}$ and $\\vec{b} = \\hat{j} + \\hat{k}$.",
+      "solution": "Area $= \\left|\\vec{a} \\times \\vec{b}\\right|$.\n\n$\\vec{a} \\times \\vec{b} = \\hat{i} \\times \\left(\\hat{j} + \\hat{k}\\right) = \\hat{k} - \\hat{j}$.\n\nIts magnitude is $\\sqrt{1 + 1} = \\sqrt2 \\approx \\mathbf{1.414}$ square units.\n\nThe cross product's **length** is the area of the parallelogram; its **direction** is the normal to that parallelogram. One product, two pieces of information.",
+      "marks": 2,
+      "answer": 1.414,
+      "tolerance": 0.01
+    },
+    {
+      "id": "vec-010",
+      "chapter": "Vector Algebra",
+      "topic": "Collinear vectors",
+      "type": "numeric",
+      "q": "If $\\vec{a} = 2\\hat{i} + 3\\hat{j} + 4\\hat{k}$ and $\\vec{b} = 4\\hat{i} + \\mu\\hat{j} + 8\\hat{k}$ are parallel, find $\\mu$.",
+      "solution": "Parallel vectors are scalar multiples, and $\\vec{b}$ is clearly $2\\vec{a}$ in its first and third components.\n\nSo $\\mu = 2 \\times 3 = \\mathbf{6}$.\n\nEquivalently: the components must be in the same ratio, $\\dfrac{4}{2} = \\dfrac{\\mu}{3} = \\dfrac{8}{4}$.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "vec-011",
+      "chapter": "Vector Algebra",
+      "topic": "Unit vector perpendicular to two vectors",
+      "type": "long",
+      "q": "Find a unit vector perpendicular to both $\\vec{a} = \\hat{i} + \\hat{j} + \\hat{k}$ and $\\vec{b} = \\hat{i} + \\hat{j} - \\hat{k}$.",
+      "solution": "The cross product is perpendicular to both by construction:\n\n$\\vec{a}\\times\\vec{b} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 1 & 1 & 1 \\\\ 1 & 1 & -1 \\end{vmatrix}$\n\n$= \\hat{i}\\left(1(-1) - 1(1)\\right) - \\hat{j}\\left(1(-1) - 1(1)\\right) + \\hat{k}\\left(1(1) - 1(1)\\right)$\n\n$= -2\\hat{i} + 2\\hat{j} + 0\\hat{k}$.\n\nMagnitude $= \\sqrt{4 + 4} = 2\\sqrt2$.\n\nUnit vector $= \\mathbf{\\dfrac{-\\hat{i} + \\hat{j}}{\\sqrt{2}}}$ (its negative is equally valid — there are two such directions).\n\n**Check:** dot it with $\\vec{a}$: $-1 + 1 + 0 = 0$. ✓",
+      "marks": 3
+    },
+    {
+      "id": "vec-012",
+      "chapter": "Vector Algebra",
+      "topic": "Projection",
+      "type": "long",
+      "q": "Find the projection of $\\vec{a} = 2\\hat{i} + 3\\hat{j} + 2\\hat{k}$ on $\\vec{b} = \\hat{i} + 2\\hat{j} + \\hat{k}$.",
+      "solution": "Projection $= \\dfrac{\\vec{a}\\cdot\\vec{b}}{\\left|\\vec{b}\\right|}$.\n\n$\\vec{a}\\cdot\\vec{b} = 2 + 6 + 2 = 10$.\n\n$\\left|\\vec{b}\\right| = \\sqrt{1 + 4 + 1} = \\sqrt6$.\n\nProjection $= \\mathbf{\\dfrac{10}{\\sqrt6}} \\approx 4.08$.\n\nPicture the sun directly overhead of $\\vec{b}$: this is the length of $\\vec{a}$'s shadow lying along it.",
+      "marks": 3
+    },
+    {
+      "id": "vec-013",
+      "chapter": "Vector Algebra",
+      "topic": "Area of a triangle",
+      "type": "long",
+      "q": "Find the area of the triangle with vertices $A(1, 1, 1)$, $B(1, 2, 3)$ and $C(2, 3, 1)$.",
+      "solution": "Build two edge vectors from the same corner:\n\n$\\vec{AB} = \\hat{j} + 2\\hat{k}$ and $\\vec{AC} = \\hat{i} + 2\\hat{j}$.\n\n$\\vec{AB} \\times \\vec{AC} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 0 & 1 & 2 \\\\ 1 & 2 & 0 \\end{vmatrix}$\n\n$= \\hat{i}\\left(1(0) - 2(2)\\right) - \\hat{j}\\left(0(0) - 2(1)\\right) + \\hat{k}\\left(0(2) - 1(1)\\right) = -4\\hat{i} + 2\\hat{j} - \\hat{k}$.\n\nMagnitude $= \\sqrt{16 + 4 + 1} = \\sqrt{21}$.\n\nThe cross product gives the **parallelogram**, and a triangle is half of it:\n\nArea $= \\mathbf{\\dfrac{\\sqrt{21}}{2}} \\approx 2.29$ square units.",
+      "marks": 5
+    },
+    {
+      "id": "vec-014",
+      "chapter": "Vector Algebra",
+      "topic": "Section formula",
+      "type": "long",
+      "q": "Find the position vector of the point that divides the join of $A(1, 2, 3)$ and $B(4, 5, 6)$ internally in the ratio $2 : 1$.",
+      "solution": "For an internal division in the ratio $m : n$:\n\n$\\vec{r} = \\dfrac{m\\vec{b} + n\\vec{a}}{m + n}$ — note the **cross-over**: the far point gets the near weight.\n\n$\\vec{r} = \\dfrac{2\\left(4\\hat{i} + 5\\hat{j} + 6\\hat{k}\\right) + 1\\left(\\hat{i} + 2\\hat{j} + 3\\hat{k}\\right)}{3}$\n\n$= \\dfrac{9\\hat{i} + 12\\hat{j} + 15\\hat{k}}{3} = \\mathbf{3\\hat{i} + 4\\hat{j} + 5\\hat{k}}$.\n\nSo the point is $(3, 4, 5)$, two-thirds of the way from $A$ to $B$ — which a glance at the coordinates confirms. ✓",
+      "marks": 3
+    },
+    {
+      "id": "vec-015",
+      "chapter": "Vector Algebra",
+      "topic": "Direction cosines",
+      "type": "long",
+      "q": "Find the direction cosines of the vector $\\vec{a} = \\hat{i} + 2\\hat{j} + 2\\hat{k}$, and verify that their squares add to 1.",
+      "solution": "$\\left|\\vec{a}\\right| = \\sqrt{1 + 4 + 4} = 3$.\n\nThe direction cosines are the components of the unit vector:\n\n$l = \\dfrac13, \\quad m = \\dfrac23, \\quad n = \\dfrac23$.\n\n$l^{2} + m^{2} + n^{2} = \\dfrac{1 + 4 + 4}{9} = 1$. ✓\n\nThey are the cosines of the angles the vector makes with the three axes, and the identity holds for every direction in space — it *is* Pythagoras for the unit vector.",
+      "marks": 2
+    }
+  ]
+}
