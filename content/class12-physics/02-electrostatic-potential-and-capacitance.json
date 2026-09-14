@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12p-potential-capacitance",
+  "title": "Electrostatic Potential and Capacitance",
+  "chapter": "Chapter Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "epc-001",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Potential of a point charge",
+      "type": "mcq",
+      "q": "The electric potential at distance $r$ from a point charge $q$ varies as:",
+      "solution": "$V = \\dfrac{1}{4\\pi\\varepsilon_{0}}\\dfrac{q}{r}$, so $V \\propto \\mathbf{1/r}$, while the **field** falls as $1/r^{2}$.\n\nPotential is the work per unit charge to bring a charge in from infinity, and work is force $\\times$ distance — one power of $r$ is used up in the integration.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{1}{r}$",
+        "$\\dfrac{1}{r^{2}}$",
+        "$r$",
+        "$r^{2}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "epc-002",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Equipotential surfaces",
+      "type": "mcq",
+      "q": "The work done in moving a charge along an equipotential surface is:",
+      "solution": "Every point on an equipotential surface is at the same potential, so $\\Delta V = 0$ and $W = q\\Delta V = \\mathbf{0}$.\n\nThe field is always perpendicular to such a surface — moving along it is like walking around a hillside on a contour line: no climbing, no work against gravity.",
+      "marks": 1,
+      "options": [
+        "maximum",
+        "zero",
+        "equal to $qV$",
+        "infinite"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "epc-003",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Capacitance of a parallel plate capacitor",
+      "type": "mcq",
+      "q": "If the separation between the plates of a parallel plate capacitor is halved, its capacitance becomes:",
+      "solution": "$C = \\dfrac{\\varepsilon_{0}A}{d}$, so halving $d$ **doubles** $C$.\n\nBring the plates closer and each plate holds the other's charge more firmly, so the same voltage stores more charge.",
+      "marks": 1,
+      "options": [
+        "half",
+        "double",
+        "one-fourth",
+        "unchanged"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "epc-004",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Capacitors in series",
+      "type": "mcq",
+      "q": "Two capacitors of $6\\,\\mu$F and $3\\,\\mu$F are joined in series. Their effective capacitance is:",
+      "solution": "$\\dfrac{1}{C} = \\dfrac16 + \\dfrac13 = \\dfrac12 \\Rightarrow C = \\mathbf{2\\,\\mu}$F.\n\nIn series the result is always **smaller than the smallest** — the separations add up, like putting two gaps end to end.",
+      "marks": 1,
+      "options": [
+        "$9\\,\\mu$F",
+        "$2\\,\\mu$F",
+        "$18\\,\\mu$F",
+        "$4.5\\,\\mu$F"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "epc-005",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Energy stored",
+      "type": "mcq",
+      "q": "The energy stored in a capacitor of capacitance $C$ charged to potential $V$ is:",
+      "solution": "$U = \\mathbf{\\dfrac12 CV^{2}}$ (equivalently $\\tfrac12 QV$ or $\\dfrac{Q^{2}}{2C}$).\n\nThe $\\tfrac12$ is there because the capacitor's voltage rises from $0$ to $V$ as it charges — the *average* voltage doing the work is $V/2$.",
+      "marks": 1,
+      "options": [
+        "$CV$",
+        "$\\dfrac12 CV^{2}$",
+        "$CV^{2}$",
+        "$\\dfrac{C}{V}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "epc-006",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Potential",
+      "type": "numeric",
+      "q": "Find the electric potential (in volts) at a distance of $9$ m from a charge of $2\\,\\mu$C. Take $\\dfrac{1}{4\\pi\\varepsilon_{0}} = 9 \\times 10^{9}$ SI units.",
+      "solution": "$V = 9 \\times 10^{9} \\times \\dfrac{2 \\times 10^{-6}}{9} = \\mathbf{2000}$ V.\n\nPotential is a scalar — no direction to worry about, which is why it is usually the easier quantity to work with.",
+      "marks": 2,
+      "answer": 2000,
+      "tolerance": 1
+    },
+    {
+      "id": "epc-007",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Charge stored",
+      "type": "numeric",
+      "q": "A $5\\,\\mu$F capacitor is charged to $200$ V. Find the charge stored, in $\\mu$C.",
+      "solution": "$Q = CV = 5\\,\\mu\\text{F} \\times 200\\,\\text{V} = \\mathbf{1000}\\,\\mu$C $= 1$ mC.",
+      "marks": 2,
+      "answer": 1000,
+      "tolerance": 0
+    },
+    {
+      "id": "epc-008",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Energy stored",
+      "type": "numeric",
+      "q": "Find the energy stored (in joules) in a $4\\,\\mu$F capacitor charged to $1000$ V.",
+      "solution": "$U = \\tfrac12 CV^{2} = \\tfrac12 \\times 4 \\times 10^{-6} \\times \\left(10^{3}\\right)^{2} = \\tfrac12 \\times 4 \\times 10^{-6} \\times 10^{6} = \\mathbf{2}$ J.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.01
+    },
+    {
+      "id": "epc-009",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Capacitors in parallel",
+      "type": "numeric",
+      "q": "Three capacitors of $2\\,\\mu$F, $3\\,\\mu$F and $5\\,\\mu$F are connected in parallel. Find the effective capacitance in $\\mu$F.",
+      "solution": "In parallel the capacitances simply add: $2 + 3 + 5 = \\mathbf{10}\\,\\mu$F.\n\nParallel plates side by side make one bigger plate, and $C \\propto A$.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0
+    },
+    {
+      "id": "epc-010",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Dielectric",
+      "type": "numeric",
+      "q": "A parallel plate capacitor of $6\\,\\mu$F has the gap completely filled with a dielectric of constant $K = 5$. Find the new capacitance in $\\mu$F.",
+      "solution": "$C' = KC = 5 \\times 6 = \\mathbf{30}\\,\\mu$F.\n\nThe dielectric polarises and partly cancels the field between the plates, so the same charge sits at a lower voltage — and $C = Q/V$ rises.",
+      "marks": 2,
+      "answer": 30,
+      "tolerance": 0
+    },
+    {
+      "id": "epc-011",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Potential energy of a system",
+      "type": "long",
+      "q": "Derive an expression for the potential energy of a system of two point charges $q_{1}$ and $q_{2}$ separated by $r$, and find its value for $q_{1} = 2\\,\\mu$C, $q_{2} = -3\\,\\mu$C, $r = 30$ cm.",
+      "solution": "Bringing $q_{1}$ in from infinity costs nothing — there is no field yet.\n\nBringing $q_{2}$ in to a distance $r$ costs $q_{2}$ times the potential $q_{1}$ has created there:\n\n$U = q_{2}V_{1} = \\dfrac{1}{4\\pi\\varepsilon_{0}}\\dfrac{q_{1}q_{2}}{r}$.\n\n**Numerically:** $U = 9 \\times 10^{9} \\times \\dfrac{\\left(2 \\times 10^{-6}\\right)\\left(-3 \\times 10^{-6}\\right)}{0.30}$\n\n$= 9 \\times 10^{9} \\times \\dfrac{-6 \\times 10^{-12}}{0.30} = \\mathbf{-0.18}$ J.\n\nThe sign is physics, not bookkeeping: negative energy means the charges attract, and work must be done **on** the system to pull them apart.",
+      "marks": 3
+    },
+    {
+      "id": "epc-012",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Capacitance of a parallel plate capacitor",
+      "type": "long",
+      "q": "Derive the expression for the capacitance of a parallel plate capacitor with plate area $A$ and separation $d$, with vacuum between the plates.",
+      "solution": "Each plate carries surface charge density $\\sigma = \\dfrac{Q}{A}$.\n\n**Field between the plates.** Each plate alone gives $\\dfrac{\\sigma}{2\\varepsilon_{0}}$; between the plates the two fields point the same way and add:\n\n$E = \\dfrac{\\sigma}{\\varepsilon_{0}} = \\dfrac{Q}{\\varepsilon_{0}A}$.\n\n(Outside the plates they cancel, which is why the field is confined.)\n\n**Potential difference.** The field is uniform, so $V = Ed = \\dfrac{Qd}{\\varepsilon_{0}A}$.\n\n**Capacitance.** $C = \\dfrac{Q}{V} = \\mathbf{\\dfrac{\\varepsilon_{0}A}{d}}$.\n\nNote $C$ depends only on geometry, not on how much charge you put there — it is a property of the container, not the contents.",
+      "marks": 3
+    },
+    {
+      "id": "epc-013",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Combination and energy",
+      "type": "long",
+      "q": "A $3\\,\\mu$F capacitor is charged to $100$ V and then disconnected and joined to an uncharged $6\\,\\mu$F capacitor. Find the common potential and the energy lost.",
+      "solution": "**Charge is conserved** (the circuit is isolated):\n\n$Q = 3\\,\\mu\\text{F} \\times 100\\,\\text{V} = 300\\,\\mu$C.\n\n**Common potential.** The two capacitors end up in parallel:\n\n$V = \\dfrac{Q}{C_{1} + C_{2}} = \\dfrac{300\\,\\mu\\text{C}}{9\\,\\mu\\text{F}} = \\mathbf{33.3}$ V.\n\n**Energy before:** $\\tfrac12 (3 \\times 10^{-6})(100)^{2} = 1.5 \\times 10^{-2}$ J.\n\n**Energy after:** $\\tfrac12 (9 \\times 10^{-6})(33.3)^{2} = 0.5 \\times 10^{-2}$ J.\n\n**Energy lost $\\approx 1.0 \\times 10^{-2}$ J** — a full third of it.\n\nWhere did it go? Into heat in the connecting wires and a little radiation. Charge is conserved in such a sharing; energy is not.",
+      "marks": 5
+    },
+    {
+      "id": "epc-014",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Relation between field and potential",
+      "type": "long",
+      "q": "State the relation between electric field and potential, and use it to explain why the field is always perpendicular to an equipotential surface.",
+      "solution": "$E = -\\dfrac{dV}{dr}$ — the field is the **negative gradient** of potential: it points the way potential falls fastest, and its size is how steeply it falls.\n\nOn an equipotential surface $V$ does not change in any direction lying **in** the surface, so the component of $E$ along the surface is zero.\n\nEverything that is left points straight out of it — hence perpendicular. ∎\n\nOn a contour map, water runs at right angles to the contour lines, straight down the steepest slope. Same statement, different field.",
+      "marks": 3
+    },
+    {
+      "id": "epc-015",
+      "chapter": "Electrostatic Potential and Capacitance",
+      "topic": "Effect of a dielectric",
+      "type": "long",
+      "q": "A charged parallel plate capacitor is disconnected from the battery and a dielectric slab is then inserted. State what happens to the charge, the field, the potential difference and the capacitance.",
+      "solution": "Disconnected means **$Q$ is fixed** — that is the key to the whole question.\n\n• **Charge $Q$:** unchanged (nowhere for it to go).\n\n• **Capacitance $C$:** increases to $KC$.\n\n• **Potential difference $V = Q/C$:** falls to $V/K$.\n\n• **Field $E = V/d$:** falls to $E/K$, because the polarised dielectric sets up its own opposing field.\n\n• **Energy $U = Q^{2}/2C$:** falls to $U/K$ — the slab is pulled in, and the lost energy does that work.\n\nHad the battery stayed connected, $V$ would be fixed instead and $Q$ would rise. Always settle first which of $Q$ and $V$ is being held constant.",
+      "marks": 2
+    }
+  ]
+}

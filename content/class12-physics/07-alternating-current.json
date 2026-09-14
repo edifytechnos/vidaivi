@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12p-alternating-current",
+  "title": "Alternating Current",
+  "chapter": "Chapter Test 7",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "ac-001",
+      "chapter": "Alternating Current",
+      "topic": "RMS value",
+      "type": "mcq",
+      "q": "The rms value of an alternating current of peak value $I_{0}$ is:",
+      "solution": "$I_{\\text{rms}} = \\mathbf{\\dfrac{I_{0}}{\\sqrt2}} \\approx 0.707\\,I_{0}$.\n\nThe rms value is the steady current that would produce the same heat — which is why the mains is quoted as $220$ V although it peaks at about $311$ V.",
+      "marks": 1,
+      "options": [
+        "$I_{0}$",
+        "$\\dfrac{I_{0}}{\\sqrt{2}}$",
+        "$\\dfrac{I_{0}}{2}$",
+        "$\\sqrt{2}I_{0}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ac-002",
+      "chapter": "Alternating Current",
+      "topic": "Capacitive reactance",
+      "type": "mcq",
+      "q": "The reactance of a capacitor in an AC circuit:",
+      "solution": "$X_{C} = \\dfrac{1}{\\omega C}$, so it **falls** as frequency rises.\n\nAt high frequency the capacitor barely has time to charge before the voltage reverses, so it hardly opposes the current at all — and at DC ($\\omega = 0$) it blocks completely.",
+      "marks": 1,
+      "options": [
+        "increases with frequency",
+        "decreases with frequency",
+        "is independent of frequency",
+        "is zero at all frequencies"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ac-003",
+      "chapter": "Alternating Current",
+      "topic": "Power in a pure inductor",
+      "type": "mcq",
+      "q": "The average power consumed over a full cycle by a pure inductor carrying alternating current is:",
+      "solution": "In a pure inductor the current lags the voltage by exactly $90°$, so the power factor $\\cos\\phi = \\cos 90° = 0$ and the average power is **zero**.\n\nEnergy flows into the magnetic field for a quarter cycle and back out the next — it is borrowed, never spent. Such a current is called **wattless**.",
+      "marks": 1,
+      "options": [
+        "$V_{\\text{rms}}I_{\\text{rms}}$",
+        "zero",
+        "$\\dfrac{V_{\\text{rms}}I_{\\text{rms}}}{2}$",
+        "$I^{2}_{\\text{rms}}X_{L}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ac-004",
+      "chapter": "Alternating Current",
+      "topic": "Resonance",
+      "type": "mcq",
+      "q": "At resonance in a series LCR circuit:",
+      "solution": "At resonance $\\mathbf{X_{L} = X_{C}}$, so they cancel, the impedance drops to its minimum $Z = R$, and the current is at its greatest.\n\n$\\omega_{0} = \\dfrac{1}{\\sqrt{LC}}$. This is exactly how a radio is tuned: the set is made to resonate at one station's frequency.",
+      "marks": 1,
+      "options": [
+        "$X_{L} = X_{C}$",
+        "$X_{L} = 0$",
+        "$X_{C} = 0$",
+        "$R = 0$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "ac-005",
+      "chapter": "Alternating Current",
+      "topic": "Transformer",
+      "type": "mcq",
+      "q": "A step-up transformer increases the voltage. It therefore:",
+      "solution": "An ideal transformer conserves power: $V_{p}I_{p} = V_{s}I_{s}$.\n\nRaising the voltage must therefore **lower** the current in the same proportion.\n\nThat is precisely why power is transmitted at high voltage: the line loss $I^{2}R$ falls as the square of the current.",
+      "marks": 1,
+      "options": [
+        "increases the current too",
+        "decreases the current",
+        "leaves the current unchanged",
+        "increases the power"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ac-006",
+      "chapter": "Alternating Current",
+      "topic": "Peak value",
+      "type": "numeric",
+      "q": "The rms voltage of the mains is $220$ V. Find its peak value, in volts, correct to the nearest volt.",
+      "solution": "$V_{0} = \\sqrt2\\,V_{\\text{rms}} = 1.414 \\times 220 \\approx \\mathbf{311}$ V.\n\nInsulation has to withstand the **peak**, not the rms — which is why the difference matters in practice.",
+      "marks": 2,
+      "answer": 311,
+      "tolerance": 2
+    },
+    {
+      "id": "ac-007",
+      "chapter": "Alternating Current",
+      "topic": "Inductive reactance",
+      "type": "numeric",
+      "q": "Find the reactance (in ohms) of a $0.5$ H inductor at $50$ Hz. Take $\\pi = 3.14$.",
+      "solution": "$X_{L} = \\omega L = 2\\pi f L = 2 \\times 3.14 \\times 50 \\times 0.5 = \\mathbf{157}\\,\\Omega$.",
+      "marks": 2,
+      "answer": 157,
+      "tolerance": 2
+    },
+    {
+      "id": "ac-008",
+      "chapter": "Alternating Current",
+      "topic": "Impedance",
+      "type": "numeric",
+      "q": "A series circuit has $R = 3\\,\\Omega$, $X_{L} = 8\\,\\Omega$ and $X_{C} = 4\\,\\Omega$. Find the impedance, in ohms.",
+      "solution": "$Z = \\sqrt{R^{2} + \\left(X_{L} - X_{C}\\right)^{2}} = \\sqrt{9 + 16} = \\mathbf{5}\\,\\Omega$.\n\nThe reactances are subtracted first because they act in opposite directions — and only then combined with $R$ at right angles.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "ac-009",
+      "chapter": "Alternating Current",
+      "topic": "Resonant frequency",
+      "type": "numeric",
+      "q": "Find the resonant frequency (in Hz) of a series circuit with $L = 2$ H and $C = 32\\,\\mu$F. Take $\\pi = 3.14$.",
+      "solution": "$f_{0} = \\dfrac{1}{2\\pi\\sqrt{LC}}$.\n\n$LC = 2 \\times 32 \\times 10^{-6} = 6.4 \\times 10^{-5}$, so $\\sqrt{LC} = 8 \\times 10^{-3}$.\n\n$f_{0} = \\dfrac{1}{2 \\times 3.14 \\times 8 \\times 10^{-3}} = \\dfrac{1}{0.0502} \\approx \\mathbf{19.9}$ Hz.",
+      "marks": 2,
+      "answer": 19.9,
+      "tolerance": 0.5
+    },
+    {
+      "id": "ac-010",
+      "chapter": "Alternating Current",
+      "topic": "Transformer turns",
+      "type": "numeric",
+      "q": "A transformer has $100$ turns in the primary and $500$ in the secondary. If the primary voltage is $220$ V, find the secondary voltage, in volts.",
+      "solution": "$\\dfrac{V_{s}}{V_{p}} = \\dfrac{N_{s}}{N_{p}} \\Rightarrow V_{s} = 220 \\times \\dfrac{500}{100} = \\mathbf{1100}$ V.\n\nA step-up transformer, and the current in the secondary will be a fifth of that in the primary.",
+      "marks": 2,
+      "answer": 1100,
+      "tolerance": 1
+    },
+    {
+      "id": "ac-011",
+      "chapter": "Alternating Current",
+      "topic": "Series LCR circuit",
+      "type": "long",
+      "q": "For a series LCR circuit, derive the expression for the impedance and the phase angle between voltage and current.",
+      "solution": "The same current $I$ flows through all three, so take it as the reference.\n\n**The three voltages.**\n\n$V_{R} = IR$ — in phase with the current.\n\n$V_{L} = IX_{L}$ — leads the current by $90°$.\n\n$V_{C} = IX_{C}$ — lags the current by $90°$.\n\n$V_{L}$ and $V_{C}$ are exactly opposite, so they partly cancel, leaving $\\left|V_{L} - V_{C}\\right|$ at right angles to $V_{R}$.\n\n**Adding by Pythagoras:**\n\n$V = \\sqrt{V_{R}^{2} + \\left(V_{L} - V_{C}\\right)^{2}} = I\\sqrt{R^{2} + \\left(X_{L} - X_{C}\\right)^{2}}$.\n\n$\\mathbf{Z = \\sqrt{R^{2} + \\left(X_{L} - X_{C}\\right)^{2}}}$ and $\\mathbf{\\tan\\phi = \\dfrac{X_{L} - X_{C}}{R}}$.\n\nIf $X_{L} > X_{C}$ the circuit is inductive and the current lags; if $X_{C} > X_{L}$ it leads.",
+      "marks": 3
+    },
+    {
+      "id": "ac-012",
+      "chapter": "Alternating Current",
+      "topic": "Transformer",
+      "type": "long",
+      "q": "Explain the working of a transformer, write the turns relation, and give two sources of energy loss with their remedies.",
+      "solution": "**Working.** Two coils are wound on a common soft-iron core. Alternating current in the primary makes an alternating flux in the core; that flux links the secondary and induces an emf in it.\n\nA transformer therefore works on **AC only** — with DC the flux would be steady and nothing would be induced.\n\n**Turns relation** (ideal): $\\dfrac{V_{s}}{V_{p}} = \\dfrac{N_{s}}{N_{p}} = \\dfrac{I_{p}}{I_{s}}$.\n\n**Losses and remedies.**\n\n1. **Copper loss** — $I^{2}R$ heating in the windings. Remedy: thick, low-resistance wire.\n\n2. **Eddy current loss** — currents induced in the core. Remedy: laminate the core.\n\n3. **Hysteresis loss** — energy spent re-magnetising the core each cycle. Remedy: a soft magnetic material with a narrow hysteresis loop, such as silicon steel.\n\n4. **Flux leakage** — not all the flux reaches the secondary. Remedy: wind the coils one over the other on a closed core.",
+      "marks": 3
+    },
+    {
+      "id": "ac-013",
+      "chapter": "Alternating Current",
+      "topic": "Resonance and power",
+      "type": "long",
+      "q": "A series LCR circuit has $R = 10\\,\\Omega$, $L = 0.1$ H and $C = 100\\,\\mu$F, across a $220$ V AC supply. Find the resonant angular frequency, the impedance at resonance, the current, and the power factor.",
+      "solution": "**Resonant angular frequency.**\n\n$LC = 0.1 \\times 100 \\times 10^{-6} = 10^{-5}$, so $\\sqrt{LC} = 3.16 \\times 10^{-3}$.\n\n$\\omega_{0} = \\dfrac{1}{\\sqrt{LC}} = \\dfrac{1}{3.16 \\times 10^{-3}} \\approx \\mathbf{316}$ rad/s (about $50$ Hz).\n\n**Impedance at resonance.** $X_{L}$ and $X_{C}$ cancel exactly, so $Z = R = \\mathbf{10\\,\\Omega}$ — the smallest it ever gets.\n\n**Current.** $I = \\dfrac{V}{Z} = \\dfrac{220}{10} = \\mathbf{22}$ A, the largest it ever gets.\n\n**Power factor.** $\\cos\\phi = \\dfrac{R}{Z} = 1$ — the circuit behaves as if it were purely resistive.\n\nAt resonance the inductor and capacitor pass energy back and forth between them, and the supply is left doing nothing but replacing what the resistor turns into heat.",
+      "marks": 5
+    },
+    {
+      "id": "ac-014",
+      "chapter": "Alternating Current",
+      "topic": "Power factor",
+      "type": "long",
+      "q": "Define power factor and explain why a low power factor is undesirable in power transmission.",
+      "solution": "**Definition.** $\\cos\\phi$, where $\\phi$ is the phase angle between voltage and current; equivalently $\\cos\\phi = \\dfrac{R}{Z}$.\n\nThe average power is $P = V_{\\text{rms}}I_{\\text{rms}}\\cos\\phi$, so only that fraction of the apparent power does any work.\n\n**Why a low power factor is bad.** To deliver a given real power $P$ at a low $\\cos\\phi$, the current must be larger:\n\n$I = \\dfrac{P}{V\\cos\\phi}$.\n\nA larger current means larger $I^{2}R$ losses in the transmission line and thicker cables, for no extra useful power at the far end.\n\n**Remedy.** Industrial loads are mostly inductive (motors), so a capacitor bank is connected in parallel to cancel part of the inductive reactance and pull $\\cos\\phi$ back towards 1.\n\nIt is like carrying water in a bucket that sloshes: the sloshing does no good, but you still have to carry it.",
+      "marks": 3
+    },
+    {
+      "id": "ac-015",
+      "chapter": "Alternating Current",
+      "topic": "AC through a capacitor",
+      "type": "long",
+      "q": "Show that in a purely capacitive AC circuit the current leads the voltage by $90°$, and write the reactance.",
+      "solution": "Let $V = V_{0}\\sin\\omega t$ across a capacitor $C$.\n\nThe charge on it is $q = CV = CV_{0}\\sin\\omega t$.\n\nThe current is the rate at which that charge arrives:\n\n$I = \\dfrac{dq}{dt} = \\omega CV_{0}\\cos\\omega t = \\omega CV_{0}\\sin\\left(\\omega t + \\tfrac{\\pi}{2}\\right)$.\n\nSo the current reaches its peak a quarter cycle **before** the voltage does — it **leads by $90°$**.\n\nComparing with $I = I_{0}\\sin\\left(\\omega t + \\tfrac{\\pi}{2}\\right)$ gives $I_{0} = \\omega CV_{0}$, so\n\n$\\mathbf{X_{C} = \\dfrac{V_{0}}{I_{0}} = \\dfrac{1}{\\omega C}}$.\n\nThe current is largest when the voltage is changing fastest — that is, as it crosses zero — which is exactly what leading by a quarter cycle means.",
+      "marks": 2
+    }
+  ]
+}

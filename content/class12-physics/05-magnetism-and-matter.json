@@ -1,0 +1,190 @@
+{
+  "id": "lib-c12p-magnetism-matter",
+  "title": "Magnetism and Matter",
+  "chapter": "Chapter Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "mag-001",
+      "chapter": "Magnetism and Matter",
+      "topic": "Magnetic dipole",
+      "type": "mcq",
+      "q": "The magnetic field lines of a bar magnet, outside the magnet, run:",
+      "solution": "Outside the magnet the lines run from the **north pole to the south pole**; inside, they run south to north, so every line is a closed loop.\n\nThat closure is the deep point: magnetic field lines never begin or end, because there are no magnetic monopoles.",
+      "marks": 1,
+      "options": [
+        "from south to north",
+        "from north to south",
+        "in closed circles around it",
+        "radially outwards"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mag-002",
+      "chapter": "Magnetism and Matter",
+      "topic": "Gauss's law in magnetism",
+      "type": "mcq",
+      "q": "The net magnetic flux through any closed surface is:",
+      "solution": "$\\displaystyle\\oint\\vec{B}\\cdot d\\vec{A} = \\mathbf{0}$ — always.\n\nEvery field line that enters a closed surface must leave it again, because isolated magnetic poles do not exist.\n\nContrast with electricity, where a single charge inside gives a non-zero flux: you can have one charge alone, never one pole alone.",
+      "marks": 1,
+      "options": [
+        "proportional to the enclosed pole strength",
+        "always zero",
+        "$\\mu_{0}$ times the enclosed current",
+        "infinite"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mag-003",
+      "chapter": "Magnetism and Matter",
+      "topic": "Diamagnetism",
+      "type": "mcq",
+      "q": "A diamagnetic material placed in a non-uniform magnetic field moves:",
+      "solution": "Diamagnetic substances are weakly **repelled** by a magnetic field, so they drift towards the **weaker** region.\n\nTheir induced magnetisation opposes the applied field (relative permeability slightly less than 1).\n\nWater is diamagnetic, which is how a strong enough magnet can levitate a drop of it — or a frog.",
+      "marks": 1,
+      "options": [
+        "towards the stronger field",
+        "towards the weaker field",
+        "not at all",
+        "perpendicular to the field"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mag-004",
+      "chapter": "Magnetism and Matter",
+      "topic": "Ferromagnetism",
+      "type": "mcq",
+      "q": "Above the Curie temperature, a ferromagnetic material becomes:",
+      "solution": "Heat destroys the alignment of the magnetic domains. Above the **Curie temperature** the ordering is lost and the material becomes **paramagnetic**.\n\nIt is a phase change: iron loses its permanent magnetism at about $1043$ K and regains it on cooling.",
+      "marks": 1,
+      "options": [
+        "more strongly ferromagnetic",
+        "paramagnetic",
+        "diamagnetic",
+        "a perfect conductor"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mag-005",
+      "chapter": "Magnetism and Matter",
+      "topic": "Magnetic susceptibility",
+      "type": "mcq",
+      "q": "For a paramagnetic material, the magnetic susceptibility $\\chi$ is:",
+      "solution": "Paramagnetic materials are weakly attracted, so $\\chi$ is **small and positive** (typically $10^{-5}$ to $10^{-3}$).\n\nDiamagnetic: small and negative. Ferromagnetic: large and positive, and not even a constant — it depends on the field and on the sample's history.",
+      "marks": 1,
+      "options": [
+        "small and negative",
+        "small and positive",
+        "large and negative",
+        "zero"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mag-006",
+      "chapter": "Magnetism and Matter",
+      "topic": "Magnetic moment",
+      "type": "numeric",
+      "q": "A current loop of area $0.02$ m$^{2}$ carries $5$ A. Find its magnetic moment, in A m$^{2}$.",
+      "solution": "$m = IA = 5 \\times 0.02 = \\mathbf{0.1}$ A m$^{2}$, directed along the loop's normal by the right-hand rule.",
+      "marks": 2,
+      "answer": 0.1,
+      "tolerance": 0.001
+    },
+    {
+      "id": "mag-007",
+      "chapter": "Magnetism and Matter",
+      "topic": "Torque on a magnet",
+      "type": "numeric",
+      "q": "A bar magnet of magnetic moment $0.4$ A m$^{2}$ is placed at $30°$ to a uniform field of $0.5$ T. Find the torque, in N m.",
+      "solution": "$\\tau = mB\\sin\\theta = 0.4 \\times 0.5 \\times \\sin 30° = 0.4 \\times 0.5 \\times 0.5 = \\mathbf{0.1}$ N m.",
+      "marks": 2,
+      "answer": 0.1,
+      "tolerance": 0.005
+    },
+    {
+      "id": "mag-008",
+      "chapter": "Magnetism and Matter",
+      "topic": "Potential energy",
+      "type": "numeric",
+      "q": "A magnet of moment $2$ A m$^{2}$ sits in a field of $0.1$ T, aligned with it. Find its potential energy, in joules.",
+      "solution": "$U = -mB\\cos\\theta$, and aligned means $\\theta = 0$:\n\n$U = -2 \\times 0.1 \\times 1 = \\mathbf{-0.2}$ J.\n\nAligned is the **lowest**-energy position — which is exactly why a compass needle settles there and stays.",
+      "marks": 2,
+      "answer": -0.2,
+      "tolerance": 0.005
+    },
+    {
+      "id": "mag-009",
+      "chapter": "Magnetism and Matter",
+      "topic": "Angle of dip",
+      "type": "numeric",
+      "q": "At a place the horizontal component of the Earth's field is $0.34$ G and the vertical component is also $0.34$ G. Find the angle of dip, in degrees.",
+      "solution": "$\\tan\\delta = \\dfrac{B_{V}}{B_{H}} = 1 \\Rightarrow \\delta = \\mathbf{45°}$.\n\nDip is $0°$ at the magnetic equator and $90°$ at the magnetic poles, where a freely suspended needle stands vertically.",
+      "marks": 2,
+      "answer": 45,
+      "tolerance": 0.5
+    },
+    {
+      "id": "mag-010",
+      "chapter": "Magnetism and Matter",
+      "topic": "Resultant field",
+      "type": "numeric",
+      "q": "If the horizontal component of the Earth's field is $0.3$ G and the dip is $60°$, find the total field, in gauss, correct to two decimal places.",
+      "solution": "$B_{H} = B\\cos\\delta \\Rightarrow B = \\dfrac{B_{H}}{\\cos\\delta} = \\dfrac{0.3}{\\cos 60°} = \\dfrac{0.3}{0.5} = \\mathbf{0.6}$ G.",
+      "marks": 2,
+      "answer": 0.6,
+      "tolerance": 0.02
+    },
+    {
+      "id": "mag-011",
+      "chapter": "Magnetism and Matter",
+      "topic": "Bar magnet as a solenoid",
+      "type": "long",
+      "q": "Explain why a bar magnet behaves like a solenoid, and write the field on the axis of a short bar magnet at distance $r$.",
+      "solution": "Inside any magnetic material, the electrons' orbital and spin motions act as tiny current loops. In a magnetised bar these loops line up, and the loops in the body cancel pairwise, leaving an effective **surface current** circulating round the bar.\n\nThat is precisely a solenoid's current sheet — so the field patterns are identical.\n\n**Axial field of a short magnet:**\n\n$B = \\dfrac{\\mu_{0}}{4\\pi}\\dfrac{2m}{r^{3}}$\n\nand on the equatorial line, $B = \\dfrac{\\mu_{0}}{4\\pi}\\dfrac{m}{r^{3}}$ — half as much, and in the opposite direction.\n\nBoth fall as $1/r^{3}$, exactly like the electric dipole, because both are dipoles.",
+      "marks": 3
+    },
+    {
+      "id": "mag-012",
+      "chapter": "Magnetism and Matter",
+      "topic": "The three kinds of magnetic material",
+      "type": "long",
+      "q": "Distinguish between diamagnetic, paramagnetic and ferromagnetic substances on the basis of susceptibility and behaviour in a non-uniform field, with one example of each.",
+      "solution": "**Diamagnetic** — $\\chi$ small and negative, $\\mu_{r} < 1$. Weakly repelled, so they move towards weaker field. No permanent atomic dipoles; the field induces opposing ones. *Example: bismuth, copper, water.*\n\n**Paramagnetic** — $\\chi$ small and positive, $\\mu_{r}$ slightly $> 1$. Weakly attracted, moving towards stronger field. Atoms have permanent dipoles which the field partly aligns against thermal jostling. *Example: aluminium, oxygen.*\n\n**Ferromagnetic** — $\\chi$ large and positive, $\\mu_{r} \\gg 1$. Strongly attracted; can stay magnetised after the field is removed. Atomic dipoles line up in **domains**. *Example: iron, cobalt, nickel.*\n\nDiamagnetism is present in every material; it is simply drowned out whenever one of the other two effects is there.",
+      "marks": 3
+    },
+    {
+      "id": "mag-013",
+      "chapter": "Magnetism and Matter",
+      "topic": "Hysteresis",
+      "type": "long",
+      "q": "Draw in words the hysteresis loop of a ferromagnetic material, define retentivity and coercivity, and say which material suits a permanent magnet and which an electromagnet core.",
+      "solution": "**The loop.** As the applied field $H$ is raised, the magnetisation $B$ climbs to saturation. Reducing $H$ back to zero leaves $B$ at a non-zero value; reversing $H$ eventually drives $B$ to zero and then to saturation the other way. The return path does not retrace the outward one — the sample **remembers**.\n\n**Retentivity** — the magnetisation remaining when $H$ has been brought back to zero.\n\n**Coercivity** — the reverse field needed to wipe that magnetisation out.\n\n**Permanent magnet:** high retentivity **and** high coercivity, so it stays magnetised and resists being demagnetised — steel, alnico.\n\n**Electromagnet or transformer core:** high retentivity but **low** coercivity and a narrow loop, so it magnetises strongly and lets go easily — soft iron.\n\nThe loop's area is the energy lost as heat per cycle, which is why a transformer core must have a thin one.",
+      "marks": 5
+    },
+    {
+      "id": "mag-014",
+      "chapter": "Magnetism and Matter",
+      "topic": "The Earth's magnetism",
+      "type": "long",
+      "q": "Define the three elements of the Earth's magnetic field and write the relations between them.",
+      "solution": "**Declination ($\\theta$)** — the angle between the geographic meridian and the magnetic meridian; how far a compass needle points off true north.\n\n**Dip or inclination ($\\delta$)** — the angle the total field makes with the horizontal.\n\n**Horizontal component ($B_{H}$)** — the part of the field along the horizontal, which is what a compass responds to.\n\nWith $B$ the total field:\n\n$B_{H} = B\\cos\\delta$, $\\quad B_{V} = B\\sin\\delta$, $\\quad \\tan\\delta = \\dfrac{B_{V}}{B_{H}}$, $\\quad B = \\sqrt{B_{H}^{2} + B_{V}^{2}}$.\n\nThree numbers fix the field completely — one for direction in the horizontal plane, one for tilt, one for size.",
+      "marks": 3
+    },
+    {
+      "id": "mag-015",
+      "chapter": "Magnetism and Matter",
+      "topic": "Magnetic field lines",
+      "type": "long",
+      "q": "State two properties of magnetic field lines and explain why two field lines can never cross.",
+      "solution": "**Properties.**\n\n1. They form **closed loops** — from N to S outside the magnet, S to N inside — because there are no magnetic monopoles for them to start or stop at.\n\n2. The **tangent** at any point gives the field's direction there, and where the lines crowd together the field is stronger.\n\n**Why they cannot cross.** At a crossing point there would be two tangents, so two directions for the field at one place — and the field at a point has exactly one direction. ∎\n\nThe same argument rules out crossing electric field lines, and for the same reason.",
+      "marks": 2
+    }
+  ]
+}
