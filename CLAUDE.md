@@ -910,6 +910,16 @@ and there is no free-tier-trains-on-your-data question to keep an eye on.
   `/api/assess` answers **501** and the client hides the button, exactly as
   analytics no-ops without its connection string. `e2e/regression.cjs` asserts
   the 501.
+- **`AZURE_AI_ENDPOINT` is the host, and the code takes only the origin.** The
+  portal offers the *full* Responses URL to copy
+  (`https://<name>.services.ai.azure.com/openai/v1/responses`), which is the
+  obvious thing to paste — and the code appends its own path, so the first real
+  call asked for `.../openai/v1/responses/openai/v1/chat/completions`. Azure
+  answers a wrong host, path **or** deployment with the same bare
+  *"Resource not found"*, so the 404 read like a missing deployment. Two
+  defences, both now in place: the setting is normalised with `new URL().origin`
+  so either paste works, and a 404 names the deployment and URL it tried —
+  which is what turned the second attempt into a one-round diagnosis.
 - **Images go as base64 `data:` URIs at `detail: "high"`.** Not a SAS URL: the
   container is private and a link to a child's working does not belong in
   someone else's logs. And not `detail: "low"`, which reads a 512px thumbnail —
