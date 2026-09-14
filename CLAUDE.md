@@ -88,17 +88,37 @@ on QA additionally requires this host under **Authorised JavaScript origins** on
 the OAuth client — *this is a pending step, not a record of one already taken*,
 unlike the `vidai.seyali.app` entry above which is done.
 
-- **One branch under test at a time** — they share the environment, so the
-  newest push wins.
+- **QA carries every open pull request at once** — it is built as `main` with
+  every open PR merged on top, not as whichever branch pushed last. Any push to
+  any branch rebuilds it, so a session never has to wait its turn and never has
+  its test bed overwritten by someone else's push.
+  - The branch that pushed goes in **first**, even before it has a PR, so a
+    session's very first push still reaches QA with its own changes in it.
+  - **A conflict drops one branch, not QA.** The conflicting merge is aborted,
+    everything else deploys, and the run's **job summary** lists what QA carries
+    and what was left out with the conflicting files. Read that summary before
+    concluding a route is broken — a missing endpoint may simply mean your
+    branch was the one skipped.
+  - QA therefore serves a commit that exists on no branch. That is the point: it
+    is what `main` will look like once everything lands, so a conflict between
+    two sessions surfaces here instead of in production.
+  - `concurrency: qa-deploy` with `cancel-in-progress` keeps two simultaneous
+    pushes from racing to upload.
 - **Stay at or under three staging environments** — the Free plan's limit, and
   the thing that actually breaks QA. Exceeding it does **not** fail loudly: the
   surplus environment half-serves, answering roughly half of all requests with
   Azure's own 404 page while the deploy log still reports success. An afternoon
   was lost to this. A closing PR frees its own slot automatically via the
-  `close_environment` job; **Actions → Run workflow** takes a
-  `close_environment` name but Azure refuses it outside a PR event
-  (*"Request is missing the pull request id"*), so closing and reopening a PR is
-  what frees a slot by hand.
+  `close_environment` job. **There is no manual close, and the workflow no
+  longer pretends there is.** `action: close` is a pull-request operation end to
+  end — `deployment_environment` is not even a declared input on the action —
+  and Azure answers anything else with *"Request is missing the pull request
+  id"*. Three shapes were tried and rejected identically: the environment name,
+  a synthetic event naming it, and a synthetic event carrying a plain number;
+  each failed run also left a red check on whatever PR it was dispatched from.
+  **To free a slot by hand, delete the environment in the Azure portal** (Static
+  Web App → Environments), or close and reopen a PR to recycle its own.
+  **Actions → Run workflow** now takes no inputs and simply redeploys QA.
   Measured, once back to two environments: a deploy causes **no disruption at
   all** — 10/10 before, during and after, then 30/30 on `index.html` and 12/12
   on each hashed asset. While a third environment existed, fifteen quiet minutes
@@ -613,10 +633,58 @@ per device.
   another warm instance catches up within 30 seconds. That window is how long a
   stolen session still works — **shorten it before lengthening it**.
 
+### The admin has a second factor (`/api/twostep`, TOTP)
+
+The admin password is one shared string that opens every teacher, every student
+and every answer photo. Throttling only slows a guess; it does nothing about a
+password that has leaked. A time-based code makes a leaked password
+insufficient, and costs nothing.
+
+- **TOTP (RFC 6238) is hand-rolled against `node:crypto`** — it is an HMAC of a
+  counter, and a dependency for thirty lines would be a supply-chain surface on
+  the most sensitive endpoint in the product. That is only defensible because
+  `e2e/helpers.cjs` checks it against **the RFC's own test vectors**, including
+  one past 2^32 that exercises the 64-bit counter split. Keep those tests.
+- **A used code is dead.** `totpMatchStep` returns *which* step matched rather
+  than a boolean; the row stores it and refuses anything at or below it, at
+  sign-in and when switching the factor off. A code read over a shoulder cannot
+  be replayed inside its own 30 seconds.
+- **A wrong code counts against the lockout; a missing one does not.** Six
+  digits are walkable in minutes unthrottled. A *missing* code is different:
+  reaching that branch already needed the right password, and counting it would
+  lock the real admin out for filling the form in two steps.
+- **Eight single-use recovery codes**, scrypt-hashed, shown once. An admin
+  locked out of their own platform is worse than the codes existing.
+- **Turning it on ends every other admin session** (they predate the factor,
+  including one an attacker may hold) and re-issues the caller's own cookie in
+  the same response. **Turning it off needs a current code**, not just a
+  session, or a stolen session could remove it.
+- Setup is manual key entry, not a QR: a QR needs a bundled encoder, and this is
+  done once by one person. State lives in `authstate`, PK `totp`, RK `admin`.
+- **The lost-phone path**: an admin who signs in with **Google** may switch the
+  factor off without a code. That is not a hole — this factor protects the
+  shared username-and-password login, and a Google admin already holds every
+  power on the platform through an account with a second factor of its own, so
+  requiring a code from a different credential adds nothing against them. The
+  password session still has to prove a code, which is the case that matters.
+  Only a password session gets a replacement cookie: minting a `vad.` one for a
+  Google caller would hand them a second identity named after their Google sub.
+- **The backstop if there is no Google admin either**: delete that one row in
+  the Azure portal's Storage browser. Nothing else reads it.
+
+### Never name an API route `admin…`
+
+`/api/adminsecurity` returned **404 on every request** while the identical
+handler answered under another name. It is not a code problem and not a stale
+deploy: a throwaway function proved new functions register fine, and a second
+probe proved the same handler works as `zzprobe` and fails as `adminprobe`.
+**Any `/api/` route beginning with `admin` is silently not served** — Azure
+Functions reserves that namespace for its own management API. The endpoint is
+`/api/twostep` for this reason. Nothing warns you; the route simply 404s as if
+the function did not exist.
+
 ### Known and not yet done
 
-- **Admin is one shared password with no second factor.** Throttled now, but the
-  blast radius is the whole platform.
 - `authattempts` rows are never swept. They are tiny and point-keyed, so this is
   untidy rather than costly.
 
@@ -659,7 +727,9 @@ the Playwright suite (guest flows always;
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
 hardcode credentials). `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
-in-process cache, `inBatches`). Because the browser suite proxies `/api/*` to
+in-process cache, `inBatches`) **and drives the second factor through the real
+handlers against a fake Table Storage** — enabling, replay refusal, recovery
+codes, the session re-issue — so those paths are not left to be tried by hand. Because the browser suite proxies `/api/*` to
 **production**, it does not exercise unmerged API changes — point `E2E_API_BASE`
 at the PR preview for those. See `e2e/README.md`.
 

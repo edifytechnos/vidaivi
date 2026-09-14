@@ -18,12 +18,10 @@ on:
   pull_request:
     types: [closed]
     branches: [main]
+  # Run by hand to redeploy QA without inventing a commit. It takes no inputs:
+  # there used to be a `close_environment` name here and it could never work —
+  # see the close job below.
   workflow_dispatch:
-    inputs:
-      close_environment:
-        description: "Name of a staging environment to close (frees a slot)"
-        required: false
-        type: string
 
 jobs:
   production:
@@ -56,26 +54,104 @@ jobs:
           api_location: api
           skip_app_build: true
 
-  # Every branch but main deploys to ONE named environment with a stable URL,
-  # rather than a per-PR one. Google sign-in is bound to an origin, so a URL that changes with
-  # the PR number cannot be signed in to — a QA site nobody can log into is not
-  # a QA site. The hostname below is the only extra origin on the OAuth client.
+  # QA is ONE named environment with a stable URL, and it carries EVERY open
+  # pull request at once — main with all of them merged in.
   #
-  # The trade: one branch under test at a time, since they share the
-  # environment; the newest push wins.
-  # Azure's Free plan allows 3 named environments per app if that ever needs to
-  # become two. A custom domain cannot be used here — Azure does not support
-  # custom domains on preview environments, only on an app's production one.
+  # It used to deploy whichever branch pushed last, so two sessions working in
+  # parallel took turns and each overwrote the other's test bed. Worse, the URL
+  # said nothing about which branch it was serving: a route could 404 simply
+  # because someone else's branch was up, which reads exactly like a broken
+  # deploy. Integrating instead means QA shows what main will look like once
+  # everything lands, and a conflict between two branches surfaces here rather
+  # than in production.
+  #
+  # The URL is stable because Google sign-in is bound to an origin: a per-PR
+  # hostname cannot be signed in to, and a QA site nobody can log into is not a
+  # QA site. Azure's Free plan allows 3 named environments if this ever needs to
+  # become two, and a custom domain cannot be used — Azure supports those only
+  # on an app's production environment.
   qa:
-    # Also runnable by hand (Run workflow, with close_environment left empty),
-    # to redeploy QA without inventing a commit.
+    # Also runnable by hand (Actions → Run workflow) to rebuild QA without
+    # inventing a commit.
     if: >-
       (github.event_name == 'push' && github.ref != 'refs/heads/main') ||
-      (github.event_name == 'workflow_dispatch' && inputs.close_environment == '')
+      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     name: Build and deploy to QA
+    # `gh pr list` needs this; the workflow declares no permissions block
+    # otherwise, so it would inherit whatever the repo default happens to be.
+    permissions:
+      contents: read
+      pull-requests: read
+    # One QA build at a time, newest wins: two sessions pushing together would
+    # otherwise race to upload and the loser's integration would be the one left
+    # standing.
+    concurrency:
+      group: qa-deploy
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
+        with:
+          # main is the base; the open PRs are merged on top below. Full history
+          # because a shallow clone cannot merge.
+          ref: main
+          fetch-depth: 0
+
+      - name: Merge every open pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUSHED_BRANCH: ${{ github.event_name == 'push' && github.ref_name || '' }}
+        run: |
+          set -euo pipefail
+          git config user.name "vidai-qa"
+          git config user.email "qa@vidai.invalid"
+
+          # The branch that triggered this run goes in first, even if it has no
+          # pull request yet — otherwise a session's very first push would
+          # deploy a QA without its own changes in it.
+          branches=""
+          if [ -n "$PUSHED_BRANCH" ] && [ "$PUSHED_BRANCH" != "main" ]; then
+            branches="$PUSHED_BRANCH"
+          fi
+          # A failure here must not stop QA deploying at all: fall back to the
+          # branch that pushed, which is the one someone is waiting on.
+          open_prs=$(gh pr list --state open --base main --json headRefName --jq '.[].headRefName' || echo "")
+          if [ -z "$open_prs" ]; then
+            echo "note: could not list open pull requests; QA carries only $branches"
+          fi
+          for ref in $open_prs; do
+            case " $branches " in *" $ref "*) continue ;; esac
+            branches="$branches $ref"
+          done
+
+          merged=""
+          skipped=""
+          for ref in $branches; do
+            git fetch --no-tags origin "$ref" || { skipped="$skipped $ref(gone)"; continue; }
+            if git merge --no-edit -m "QA: merge $ref" FETCH_HEAD >/dev/null 2>&1; then
+              merged="$merged $ref"
+            else
+              # A conflict must not take QA down for everyone: drop that one
+              # branch, deploy the rest, and say so loudly in the summary.
+              files=$(git diff --name-only --diff-filter=U | tr '\n' ' ')
+              git merge --abort || true
+              skipped="$skipped $ref[$files]"
+            fi
+          done
+
+          {
+            echo "### QA carries"
+            for b in $merged; do echo "- ✅ \`$b\`"; done
+            if [ -n "$skipped" ]; then
+              echo ""
+              echo "### NOT in QA — conflicts with the branches above"
+              for b in $skipped; do echo "- ❌ \`$b\`"; done
+              echo ""
+              echo "Merge main into that branch and resolve it, or QA will keep testing without it."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "merged:$merged"
+          echo "skipped:$skipped"
 
       - uses: actions/setup-node@v4
         with:
@@ -101,16 +177,28 @@ jobs:
           skip_app_build: true
           deployment_environment: qa
 
-  # Free a staging environment slot: automatically when a PR closes, or by hand
-  # via workflow_dispatch when a stale one needs clearing.
+  # Free a staging environment slot when a PR closes. There is deliberately no
+  # manual path here.
+  #
+  # `action: close` is a pull-request operation end to end: the action takes the
+  # environment from the PR in the event payload, `deployment_environment` is
+  # not even a declared input, and Azure answers anything else with
+  # "Request is missing the pull request id". The workflow used to advertise a
+  # close_environment name anyway, so every manual run failed and left a red
+  # check behind.
+  #
+  # Three things were tried before giving up on it, all rejected identically:
+  # passing the environment name, feeding the action a synthetic event naming
+  # it, and feeding it one carrying a plain number. **To free a slot by hand,
+  # delete the environment in the Azure portal** (Static Web App →
+  # Environments), or close and reopen a PR to recycle its own.
   close_environment:
-    if: github.event_name == 'pull_request' || inputs.close_environment != ''
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     name: Close a staging environment
     steps:
-      - name: Close
+      - name: Close the PR's own environment
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: close
-          deployment_environment: ${{ inputs.close_environment || github.event.number }}

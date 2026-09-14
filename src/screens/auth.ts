@@ -147,6 +147,9 @@ export function showAdminLogin(next: () => void) {
              autocapitalize="none" spellcheck="false" placeholder="Username" />
       <input id="ad-pass" class="numeric-input" type="password" autocomplete="current-password"
              placeholder="Password" />
+      <input id="ad-code" class="numeric-input" type="text" inputmode="numeric"
+             autocomplete="one-time-code" autocapitalize="none" spellcheck="false"
+             placeholder="6-digit code from your authenticator" hidden />
       <p id="ad-error" class="login-error" hidden></p>
       <div class="actions">
         <button id="ad-submit" class="btn btn-primary" disabled>Login</button>
@@ -156,19 +159,22 @@ export function showAdminLogin(next: () => void) {
   const user = document.getElementById("ad-user") as HTMLInputElement;
   const pass = document.getElementById("ad-pass") as HTMLInputElement;
   const submit = document.getElementById("ad-submit") as HTMLButtonElement;
+  const code = document.getElementById("ad-code") as HTMLInputElement;
   const errEl = document.getElementById("ad-error") as HTMLElement;
   const update = () => {
     submit.disabled = !user.value.trim() || !pass.value;
   };
   user.addEventListener("input", update);
   pass.addEventListener("input", update);
-  pass.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !submit.disabled) submit.click();
-  });
+  for (const el of [pass, code]) {
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !submit.disabled) submit.click();
+    });
+  }
   submit.addEventListener("click", async () => {
     submit.disabled = true;
     submit.textContent = "Logging in…";
-    const result = await adminLogin(user.value.trim(), pass.value);
+    const result = await adminLogin(user.value.trim(), pass.value, code.value.trim() || undefined);
     if (result.ok) {
       track("admin_login_success");
       setGuest(false);
@@ -176,6 +182,13 @@ export function showAdminLogin(next: () => void) {
       // is reached from the topbar menu, not by being dropped into it.
       next();
     } else {
+      // The password was right and the second factor is next. Reveal the field
+      // and put the cursor in it rather than making them find it.
+      if (result.needsCode) {
+        code.hidden = false;
+        code.value = "";
+        code.focus();
+      }
       errEl.textContent = result.message;
       errEl.hidden = false;
       submit.disabled = false;

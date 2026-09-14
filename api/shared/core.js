@@ -394,6 +394,140 @@ async function adminEpoch() {
   return epochCache.set(key, epoch, EPOCH_TTL_MS);
 }
 
+// ---------- The admin's second factor (TOTP, RFC 6238) ----------
+//
+// The admin password is one shared string that opens the whole platform. It is
+// throttled, but throttling only slows a guess; it does nothing about a
+// password that has leaked. A time-based code from the phone in your pocket is
+// the cheapest thing that makes a leaked password insufficient.
+//
+// Hand-rolled on purpose: TOTP is an HMAC of a counter, and `crypto` already
+// has HMAC-SHA1. A dependency for thirty lines would be a supply-chain surface
+// on the most sensitive endpoint in the product, and needs asking for besides.
+// It is checked against the RFC 6238 test vectors in e2e/helpers.cjs.
+
+const TOTP_STEP_S = 30;
+const TOTP_DIGITS = 6;
+// One step either side, because the phone's clock and Azure's are not the same
+// clock. Wider than this starts to matter: each extra step is another code an
+// attacker may guess.
+const TOTP_SKEW_STEPS = 1;
+const TOTP_KEY = "admin";
+const RECOVERY_CODE_COUNT = 8;
+
+const B32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+function base32Encode(buf) {
+  let bits = 0;
+  let value = 0;
+  let out = "";
+  for (const byte of buf) {
+    value = (value << 8) | byte;
+    bits += 8;
+    while (bits >= 5) {
+      out += B32[(value >>> (bits - 5)) & 31];
+      bits -= 5;
+    }
+  }
+  if (bits > 0) out += B32[(value << (5 - bits)) & 31];
+  return out;
+}
+
+function base32Decode(str) {
+  let bits = 0;
+  let value = 0;
+  const out = [];
+  for (const ch of String(str).toUpperCase().replace(/[\s=]/g, "")) {
+    const idx = B32.indexOf(ch);
+    if (idx < 0) throw new Error("bad base32");
+    value = (value << 5) | idx;
+    bits += 5;
+    if (bits >= 8) {
+      out.push((value >>> (bits - 8)) & 255);
+      bits -= 8;
+    }
+  }
+  return Buffer.from(out);
+}
+
+/** The 6-digit code for one 30-second step. `digits` is for the RFC vectors. */
+function totpCode(secretBase32, step, digits = TOTP_DIGITS) {
+  const counter = Buffer.alloc(8);
+  counter.writeUInt32BE(Math.floor(step / 0x100000000), 0);
+  counter.writeUInt32BE(step >>> 0, 4);
+  const mac = crypto
+    .createHmac("sha1", base32Decode(secretBase32))
+    .update(counter)
+    .digest();
+  const offset = mac[mac.length - 1] & 0x0f;
+  const binary =
+    ((mac[offset] & 0x7f) << 24) |
+    (mac[offset + 1] << 16) |
+    (mac[offset + 2] << 8) |
+    mac[offset + 3];
+  return String(binary % 10 ** digits).padStart(digits, "0");
+}
+
+function currentStep(now = Date.now()) {
+  return Math.floor(now / 1000 / TOTP_STEP_S);
+}
+
+/**
+ * Which step a code belongs to, or 0 for none.
+ *
+ * Returning the step rather than a boolean is what makes replay impossible:
+ * the caller records the step it accepted and refuses anything at or below it,
+ * so a code read over a shoulder is dead the moment it is used once.
+ * Every candidate is compared, so a code that matches the first step costs
+ * exactly what one that matches the last does.
+ */
+function totpMatchStep(secretBase32, code, now = Date.now()) {
+  const given = String(code || "").replace(/\s/g, "");
+  if (!/^\d{6}$/.test(given)) return 0;
+  const here = currentStep(now);
+  let found = 0;
+  for (let d = -TOTP_SKEW_STEPS; d <= TOTP_SKEW_STEPS; d++) {
+    const step = here + d;
+    if (safeEqual(totpCode(secretBase32, step), given)) found = step;
+  }
+  return found;
+}
+
+function newTotpSecret() {
+  return base32Encode(crypto.randomBytes(20)); // 160 bits, as RFC 4226 asks
+}
+
+/**
+ * The way back in when the phone is lost. Eight single-use codes, shown once
+ * and stored as scrypt hashes like any other password — an admin locked out of
+ * their own platform is a worse outcome than the codes existing.
+ */
+function newRecoveryCodes() {
+  return Array.from({ length: RECOVERY_CODE_COUNT }, () =>
+    crypto.randomBytes(5).toString("hex").replace(/(.{4})(?=.)/g, "$1-")
+  );
+}
+
+async function adminTotp() {
+  try {
+    const row = await tableClient("authstate").getEntity("totp", TOTP_KEY);
+    return {
+      secret: String(row.secret || ""),
+      active: row.active === true,
+      lastStep: Number(row.lastStep) || 0,
+      recovery: JSON.parse(String(row.recovery || "[]")),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function writeAdminTotp(fields) {
+  const state = tableClient("authstate");
+  await ensureTable(state);
+  await state.upsertEntity({ partitionKey: "totp", rowKey: TOTP_KEY, ...fields }, "Merge");
+}
+
 /**
  * Ends every session for one account, everywhere, by moving its epoch past the
  * value stamped in the tokens already out there. The cache entry is dropped so
@@ -979,6 +1113,54 @@ handlers.adminlogin = async (context, req) => {
     await noteLoginFailure(gate);
     return json(context, 401, { error: "Wrong username or password" });
   }
+
+  // The second factor. Only read once the password is right, so an attacker
+  // walking passwords never learns whether the account has one.
+  const totp = await adminTotp();
+  if (totp && totp.active && totp.secret) {
+    const code = String(body.code || "").replace(/\s|-/g, "");
+    if (!code) {
+      // Not counted as a failure: reaching here needed the right password, and
+      // the five guesses that bought were already spent. Counting it would
+      // lock the real admin out for filling the form in two steps.
+      return json(context, 401, {
+        error: "Authentication code required",
+        needsCode: true,
+      });
+    }
+
+    const step = totpMatchStep(totp.secret, code);
+    let ok = step > 0 && step > totp.lastStep;
+    let usedRecovery = -1;
+    if (!ok) {
+      // A recovery code, for the admin whose phone is gone. Every stored hash
+      // is compared, so a wrong code costs what a right one does.
+      for (let i = 0; i < totp.recovery.length; i++) {
+        if (checkPassword(code, totp.recovery[i])) usedRecovery = i;
+      }
+      ok = usedRecovery >= 0;
+    }
+    if (!ok) {
+      // Counted, unlike a missing code: this is a guess at the code, and six
+      // digits are walkable in minutes without the lockout.
+      await noteLoginFailure(gate);
+      return json(context, 401, {
+        error: step > 0 ? "That code has already been used" : "Wrong authentication code",
+        needsCode: true,
+      });
+    }
+    if (usedRecovery >= 0) {
+      // Single use. The list shrinks; when it empties, the phone is the only
+      // way back in, which is what the count is for.
+      const left = totp.recovery.filter((_, i) => i !== usedRecovery);
+      await writeAdminTotp({ recovery: JSON.stringify(left) });
+    } else {
+      // Record the step so this exact code cannot be replayed inside its own
+      // 30 seconds by someone who read it over a shoulder.
+      await writeAdminTotp({ lastStep: step });
+    }
+  }
+
   await clearFailures(gate.table, "user", gate.user);
 
   const epoch = await adminEpoch();
@@ -1019,6 +1201,141 @@ handlers.signout = async (context, req) => {
   // The cookie goes either way: a failed revoke must still sign this device out
   // rather than leave the caller apparently signed in.
   json(context, 200, { ok: true, revoked }, { "Set-Cookie": clearedCookie() });
+};
+
+/**
+ * Turning the admin's second factor on and off.
+ *
+ * Separate from /api/manageauth on purpose: signing in has no session to abuse
+ * and is exempt from the CSRF guard, while these actions change what protects
+ * the whole platform and must not be.
+ *
+ * Disabling asks for a current code, not just a session — otherwise a stolen
+ * session could switch off the thing that makes a stolen password useless.
+ */
+handlers.twostep = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req, context);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+  if (who.role !== "admin") return json(context, 403, { error: "Admins only" });
+
+  const existing = await adminTotp();
+
+  if (req.method !== "POST") {
+    return json(context, 200, {
+      enabled: !!(existing && existing.active),
+      pending: !!(existing && !existing.active && existing.secret),
+      recoveryLeft: existing ? existing.recovery.length : 0,
+    });
+  }
+
+  const body = getBody(req);
+  const action = String(body.action || "");
+  const code = String(body.code || "").replace(/\s|-/g, "");
+
+  if (action === "init") {
+    if (existing && existing.active) {
+      return json(context, 409, { error: "Two-step verification is already on" });
+    }
+    // A fresh secret every time this is opened: an abandoned setup must not
+    // leave a working secret lying in the table.
+    const secret = newTotpSecret();
+    await writeAdminTotp({ secret, active: false, lastStep: 0, recovery: "[]" });
+    const label = encodeURIComponent(`Vidai (${ADMIN_USERNAME || "admin"})`);
+    return json(context, 200, {
+      secret,
+      uri: `otpauth://totp/${label}?secret=${secret}&issuer=Vidai&digits=${TOTP_DIGITS}&period=${TOTP_STEP_S}`,
+    });
+  }
+
+  if (action === "enable") {
+    if (!existing || !existing.secret) {
+      return json(context, 400, { error: "Start the setup again" });
+    }
+    if (existing.active) return json(context, 409, { error: "Already on" });
+    const step = totpMatchStep(existing.secret, code);
+    if (step <= 0) return json(context, 400, { error: "That code did not match. Try the next one." });
+
+    const recovery = newRecoveryCodes();
+    await writeAdminTotp({
+      active: true,
+      lastStep: step,
+      enrolledAt: new Date().toISOString(),
+      recovery: JSON.stringify(recovery.map((c) => hashPassword(c.replace(/-/g, "")))),
+    });
+    // Every other admin session predates the second factor, so end them —
+    // including any an attacker already holds. This one is re-issued below, or
+    // turning 2FA on would sign the admin out of the screen they are looking at.
+    await bumpEpoch(who);
+    const epoch = await adminEpoch();
+    return json(
+      context,
+      200,
+      { ok: true, recoveryCodes: recovery },
+      {
+        "Set-Cookie": sessionCookie(
+          signSession("vad", who.id.replace(/^adm~/, ""), ADMIN_TOKEN_TTL_MS, { ep: epoch }),
+          ADMIN_TOKEN_TTL_MS
+        ),
+      }
+    );
+  }
+
+  if (action === "disable") {
+    if (!existing || !existing.active) return json(context, 409, { error: "It is not on" });
+
+    // An admin who signed in with GOOGLE may clear this without a code.
+    //
+    // It sounds like a hole and is not: this factor protects the shared
+    // username-and-password admin login, and a Google admin already holds every
+    // power on the platform through an account with a second factor of its own.
+    // Requiring a code from a different credential adds nothing against them —
+    // while the ability to reset is the whole difference between a lost phone
+    // and a platform nobody can administer. Without it the only way back is
+    // deleting a row in the Azure portal, and an escape hatch that needs the
+    // portal is not one you can use from a phone on a Sunday.
+    //
+    // The password session (`kind: "admin"`) still has to prove a code, which
+    // is the case that matters: a stolen admin session must not be able to
+    // switch off the thing that makes the stolen password insufficient.
+    if (who.kind !== "google") {
+      // A used code is refused here as it is at sign-in. Someone who has taken
+      // a session and shoulder-surfed one code should not be able to switch the
+      // second factor off with it; the cost is waiting up to 30 seconds for a
+      // fresh one, on an action done once.
+      const step = totpMatchStep(existing.secret, code);
+      let ok = step > 0 && step > existing.lastStep;
+      if (!ok) {
+        for (const stored of existing.recovery) if (checkPassword(code, stored)) ok = true;
+      }
+      if (!ok) {
+        return json(context, 400, {
+          error: step > 0 ? "That code has already been used — wait for the next one" : "Wrong authentication code",
+        });
+      }
+    }
+    await writeAdminTotp({ secret: "", active: false, lastStep: 0, recovery: "[]" });
+    // Only the password account's sessions are ended, and only a password
+    // session gets a replacement. Minting a `vad.` cookie for a Google caller
+    // would hand them a second identity they never asked for, named after their
+    // Google sub — which is exactly what the first version of this did.
+    if (who.kind !== "admin") return json(context, 200, { ok: true });
+    await bumpEpoch(who);
+    const epoch = await adminEpoch();
+    return json(
+      context,
+      200,
+      { ok: true },
+      {
+        "Set-Cookie": sessionCookie(
+          signSession("vad", who.id.replace(/^adm~/, ""), ADMIN_TOKEN_TTL_MS, { ep: epoch }),
+          ADMIN_TOKEN_TTL_MS
+        ),
+      }
+    );
+  }
+
+  return json(context, 400, { error: `Unknown action: ${action}` });
 };
 
 handlers.teachers = async (context, req) => {

@@ -2966,6 +2966,17 @@ body.modal-open {
 }
 /* Placeholders must not read as filled-in values — that is the bug this
    modal replaces. */
+/* Something to read out and type into a phone, not to fill in. Monospaced so a
+   setup key or a recovery code cannot be misread, and visibly not an input. */
+.modal-readonly {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  background: var(--bg);
+  color: var(--text);
+  resize: none;
+}
+
 .modal-input::placeholder {
   color: var(--faint);
   opacity: 1;
