@@ -1386,6 +1386,7 @@ function check(ok, label) {
           await page.isVisible(".st-handed"),
           "it lands back on the subject, saying the paper is in"
         );
+        await shot("student-handed-in");
         // The paper opens read-only: what they answered, and nothing else.
         await page.click(`#st-tree .st-test[data-test='${wsTests[0].id}']`);
         await page.waitForSelector(".review-item", { timeout: 25000 });
@@ -1411,6 +1412,7 @@ function check(ok, label) {
           shut.marks.every((m) => !m.includes("/")),
           `and no marks in the question list (${shut.marks.join(" ")})`
         );
+        await shot("student-paper-shut");
 
         // Released, the result view is the three-column one, explanation and all.
         const studentJar = await keepSession();
@@ -1443,6 +1445,7 @@ function check(ok, label) {
           `the released paper shows the marks (${nowOpen.marks.join(" ")})`
         );
         check(nowOpen.retake, "and Try again is offered once it is open");
+        await shot("student-paper-open");
 
         // The result screen used to have no way to reach the question list on a
         // phone at all: its bottom tabs switch panes, and nothing opened the tree.
