@@ -218,8 +218,11 @@ list skips platform tests for the same reason.
 
 A **shelf** is a subject row carrying `platform: true` — "CBSE Class 10 Maths",
 holding one master test per NCERT chapter. It is the shape a teacher already
-thinks in, and it is what they meet on **Your subjects**, badged *Built in*
-beside their own subjects.
+thinks in. It is **not** on Your subjects: that grid means *subjects you own*,
+for every role, and a shelf is nobody's own work. Shelves live on **Browse
+tests** (`src/screens/browse.ts`), and they are offered where a teacher is
+already asking for something — New subject's step 1, and the **+** in the tests
+tree.
 
 - Every teacher sees every shelf (`listOwnedSubjects` lets a `platform` row
   through regardless of owner); only an **admin** may rename or delete one
@@ -229,8 +232,15 @@ beside their own subjects.
   subject list is derived from the tests they can see, and platform tests are
   already skipped there.
 - `GET /api/tests?library=1&subjectId=<id>` is one shelf's chapters.
-- **A shelf opens in the ordinary authoring editor**, like any other subject —
-  it is in the subject dropdown, badged *(built in)*. An **admin** edits a
+- **A shelf is not in the editor's subject dropdown** (`ownSubjects` filters
+  `!platform`). Shelf-ness is therefore read from a separate `shelfIds` set
+  built from the *full* subject list — `viewingShelf()`, and with it
+  `readOnly()`, `canAddHere()` and the sibling filter, would otherwise treat
+  every shelf as an ordinary subject and hand a teacher an editable master. An
+  admin arriving from Browse is *in* a shelf, so `subjectLead()` carries the
+  current shelf as a transient entry rather than showing the wrong subject.
+- **A shelf still opens in the ordinary authoring editor** when an admin asks
+  for it — from **Edit** on a Browse row. An **admin** edits a
   master there exactly as they would their own test (unpublish → edit →
   publish; unpublishing a master is safe because it reaches no student). A
   **teacher** gets it read-only.
@@ -240,10 +250,33 @@ beside their own subjects.
   server then rejects — and it is now handled at the source: **`readOnly()` in
   `src/screens/editor/index.ts` returns true for `test.platform && !isAdmin()`**,
   so the client never asks. `canManageTest` on the server is still the real
-  gate. The separate read-only browser (`src/screens/library.ts`) is deleted;
-  `?library=<id>` redirects into the editor so old links keep working.
+  gate.
 - The **+** in the tree is hidden on a shelf unless you are an admin
   (`canAddHere()`): a teacher cannot add to the library.
+
+### Browse: reading the library before you take it (`src/screens/browse.ts`)
+
+`?browse` is the shelf list, `?browse=<id>` one shelf; old `?library=<id>` links
+land in the same place. A rail item **Browse tests** (`RailKey` `"browse"`) is
+shown to teachers and admins. Three read-only levels: shelves → that shelf's
+tests as catalogue rows → one test, one question at a time with its worked
+solution, so a teacher can *judge* a test before taking it.
+
+- **Use this test** calls `adoptTest(id)` with **no `subjectId`**, so the server
+  files the copy under the caller's own matching subject (creating one if they
+  have none) and the editor opens on the copy. **Edit** is admin-only and is
+  the route by which a master is corrected — it moved here when shelves left
+  Your subjects.
+- Like `src/screens/review.ts`, this reuses the editor's **layout only**
+  (`.ed-*` under `.ed-readonly`) and never reaches into `src/screens/editor/`,
+  whose panels are inputs and whose `state.ts` autosaves a shared working copy.
+- **`rowMarkup` is the one row renderer**, and it already has slots for what
+  will vary between authors — byline badge, price, "already in your tests". The
+  catalogue wireframes (`Step2Catalogue`, `CatalogueRow`) hold that design;
+  when teacher-to-teacher sharing arrives those tests join the same list with a
+  different byline and the page does not change. Browse fetches the whole
+  library to open, which is fine at 16 masters and is the same thing that has
+  to move server-side when the catalogue grows.
 
 ### Where chapter content lives
 
@@ -599,6 +632,7 @@ per device.
 - `screens/auth.ts` — welcome, student login, admin login, phone capture.
 - `screens/home.ts` — home test list, profile row, cloud-saved results.
 - `api.ts` — fetch client for the DB-backed tests API.
+- `screens/browse.ts` — read-only catalogue of built-in shelves and their tests.
 - `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
 - `screens/builder.ts` — visual test builder (create/edit cloud tests).
 - `screens/test.ts` — test player (landing → questions → score); guests only, past the landing.

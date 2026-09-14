@@ -52,21 +52,26 @@ async function refresh(): Promise<void> {
   const grid = document.getElementById("sub-grid");
   if (!grid) return;
   await seedSamplesOnce(grid);
-  const subjects = (await fetchSubjects()) ?? [];
-  // The hardcoded "built in" card is gone: the library is a real platform
-  // subject now, served to every teacher by /api/subjects. A student never gets
-  // one — their subjects are their own teacher's.
+  const all = (await fetchSubjects()) ?? [];
+  // **Your subjects means subjects you own**, for every role — an admin
+  // included. Built-in shelves are served to every teacher by /api/subjects,
+  // but they are nobody's own work and they crowd out the one subject a teacher
+  // actually teaches. They are reachable from Browse, and selectable when
+  // creating a subject or a test; they do not belong in this grid.
+  const subjects = all.filter((x) => !x.platform);
   const cards = subjects.map(cardFor);
   // A teacher who owns nothing yet needs to be told what a subject is FOR, not
-  // shown an empty grid with a button in the corner. Built-in shelves do not
-  // count as owning one, or this would never appear.
-  const ownsNone = isTeacher() && !subjects.some((x) => !x.platform);
+  // shown an empty grid with a button in the corner.
+  const ownsNone = isTeacher() && !subjects.length;
   grid.innerHTML = ownsNone
     ? firstRunMarkup()
     : cards.length
       ? `<div class="subject-grid">${cards.join("")}</div>`
       : `<p class="hint">No subjects yet — your teacher will share tests with you here.</p>`;
   document.getElementById("sub-first")?.addEventListener("click", () => void openForm());
+  document
+    .getElementById("sub-browse")
+    ?.addEventListener("click", () => void import("./browse").then((x) => x.showBrowse()));
 
   grid.querySelectorAll<HTMLElement>(".subject-card").forEach((el) =>
     el.addEventListener("click", () => {
@@ -152,6 +157,7 @@ function firstRunMarkup(): string {
       Your tests live inside it, and your students see the ones you publish.</p>
       <button id="sub-first" class="btn btn-primary fr-cta">Create your first subject</button>
       <p class="fr-note">${ICONS.check} Ready-made CBSE tests are included — no question-writing needed to start</p>
+      <p class="fr-note"><button class="btn-link" id="sub-browse">Browse the ready-made tests first</button></p>
     </div>`;
 }
 
@@ -208,7 +214,8 @@ async function openForm(): Promise<void> {
     steps: [
       {
         title: "New subject",
-        description: "A subject is what you teach. Your tests live inside it.",
+        description:
+          "A subject is what you teach. Your tests live inside it. You can read any of the ready-made tests from Browse tests before you pick.",
         fields: [
           {
             name: "from",

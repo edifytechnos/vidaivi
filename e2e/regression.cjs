@@ -955,6 +955,41 @@ function check(ok, label) {
     await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 20000 });
     check(true, "a signed-in teacher lands on the subjects grid");
     await shot("subjects");
+    // Your subjects means subjects you own. Built-in shelves are read from
+    // Browse and picked when creating a subject or a test; they are not here,
+    // and they are not in the editor's subject picker either.
+    check(
+      (await page.$$("#sub-grid .subject-card-builtin")).length === 0,
+      "no built-in shelf on Your subjects"
+    );
+    check(await page.isVisible('[data-rail="browse"]'), "the rail offers Browse tests");
+    await page.click('[data-rail="browse"]');
+    // Wait for Browse's own loaded state: Your subjects is a ".subjects" page
+    // too, and Browse paints its title over a skeleton before the data lands.
+    await page.waitForSelector("#br-subjects", { timeout: 25000 });
+    const shelfCard = await page.$(".subjects .subject-card-builtin[data-subject]");
+    check(!!shelfCard, "Browse lists the built-in shelves");
+    if (shelfCard) {
+      await shot("browse");
+      await shelfCard.click();
+      await page.waitForSelector(".br-list .br-row, .ed-panel .hint", { timeout: 30000 });
+      const rows = await page.$$(".br-list .br-row");
+      check(rows.length >= 1, `the shelf lists its tests as catalogue rows (${rows.length})`);
+      check(await page.isVisible(".br-row .br-use"), "each row offers Use this test");
+      const admin = !!process.env.E2E_ADMIN_USER;
+      check(
+        (await page.$$(".br-row .br-edit")).length > 0 === admin,
+        admin ? "an admin gets Edit on a built-in test" : "a teacher gets no Edit on a built-in test"
+      );
+      if (rows.length) {
+        await page.click(".br-row .br-preview");
+        await page.waitForSelector(".ed-readonly .ed-explain", { timeout: 30000 });
+        check(true, "a built-in test opens read-only with its explanation");
+        await shot("browse-test");
+      }
+    }
+    await page.click('[data-rail="subjects"]');
+    await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
     const owned = await page.$(".subject-card[data-subject]:not(.subject-card-builtin)");
     if (owned) {
       await owned.click();
@@ -962,6 +997,12 @@ function check(ok, label) {
       await page.waitForSelector(".editor:not(.sk-wrap) .ed-tree", { timeout: 30000 });
       check(true, "clicking a subject opens the authoring editor");
       check(await page.isVisible("#ed-new-test"), "the editor's tree offers Create");
+      check(
+        !(await page.evaluate(() =>
+          [...document.querySelectorAll("#ed-subject option")].some((o) => /built in/i.test(o.textContent))
+        )),
+        "the editor's subject picker lists no built-in shelf"
+      );
       await page.click("#ed-exit");
       await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 20000 });
       check(true, "the editor returns to all subjects");

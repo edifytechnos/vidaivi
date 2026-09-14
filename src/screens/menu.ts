@@ -56,6 +56,7 @@ export function installShell(): void {
     const to = item.dataset.rail;
     track("rail_nav", { to: to ?? "" });
     if (to === "subjects") void showSubjects();
+    else if (to === "browse") void import("./browse").then((x) => x.showBrowse());
     else if (to === "children") void showChildren();
     else if (to === "results") showHome();
     else if (to === "mark") void showMarking();
