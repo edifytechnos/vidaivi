@@ -28,7 +28,9 @@ new Function(
     " storedCounts, countsFromQuestions, inBatches, lockMsFor, ipKey, digestKey," +
     " generatePassword, PW_WORDS, LOCK_AFTER, timingDecoyHash, checkPassword," +
     " signSession, verifySession, readCookie, sessionCookie, clearedCookie," +
-    " renewIfStale, csrfRefused, SESSION_COOKIE, STUDENT_TOKEN_TTL_MS };"
+    " renewIfStale, csrfRefused, SESSION_COOKIE, STUDENT_TOKEN_TTL_MS," +
+    " totpCode, totpMatchStep, base32Encode, base32Decode, newTotpSecret," +
+    " newRecoveryCodes, currentStep, TOTP_STEP_S };"
 )(mod, mod.exports, (id) =>
   id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)
 );
@@ -202,6 +204,74 @@ c = captured();
 check(
   h.csrfRefused(c, req("", "POST")) === false,
   "a header-authenticated POST is untouched, so old tabs keep working"
+);
+
+// --- TOTP against the RFC 6238 test vectors ---
+//
+// This is the whole reason a hand-rolled implementation is defensible: the
+// standard ships known answers, so "it agrees with my authenticator app today"
+// is not what it rests on. Secret is the RFC's ASCII "12345678901234567890";
+// the vectors are 8-digit, hence the explicit digits argument.
+const rfcSecret = h.base32Encode(Buffer.from("12345678901234567890"));
+for (const [t, want] of [
+  [59, "94287082"],
+  [1111111109, "07081804"],
+  [1111111111, "14050471"],
+  [1234567890, "89005924"],
+  [2000000000, "69279037"],
+  [20000000000, "65353130"], // past 2^32: proves the 64-bit counter split
+]) {
+  check(h.totpCode(rfcSecret, Math.floor(t / 30), 8) === want, `RFC 6238 vector at T=${t}`);
+}
+
+// --- base32 round-trips, because a mistyped key is the whole setup ---
+check(h.base32Decode(h.base32Encode(Buffer.from("abc"))).toString() === "abc", "base32 round-trips a short buffer");
+check(
+  h.base32Decode(h.base32Encode(Buffer.from("12345678901234567890"))).toString() === "12345678901234567890",
+  "and a 20-byte secret"
+);
+check(h.newTotpSecret().length === 32, `a generated secret is 160 bits (${h.newTotpSecret().length} base32 chars)`);
+check(/^[A-Z2-7]+$/.test(h.newTotpSecret()), "and is plain base32, typeable into any authenticator");
+
+// --- Matching accepts the window, and nothing outside it ---
+const mySecret = h.newTotpSecret();
+const now = Date.now();
+const step = h.currentStep(now);
+check(h.totpMatchStep(mySecret, h.totpCode(mySecret, step), now) === step, "the current code matches");
+check(
+  h.totpMatchStep(mySecret, h.totpCode(mySecret, step - 1), now) === step - 1,
+  "the previous code still matches, for a slow clock"
+);
+check(
+  h.totpMatchStep(mySecret, h.totpCode(mySecret, step + 1), now) === step + 1,
+  "and the next one, for a fast clock"
+);
+check(
+  h.totpMatchStep(mySecret, h.totpCode(mySecret, step - 2), now) === 0,
+  "two steps back is refused — the window is one, not open-ended"
+);
+// A code that is definitely none of the three valid ones. "000000" would have
+// been a one-in-a-few-hundred-thousand flake, and a test that can fail on a
+// Tuesday teaches people to ignore it.
+const valid = new Set([step - 1, step, step + 1].map((x) => h.totpCode(mySecret, x)));
+let wrong = "000000";
+for (let n = 0; valid.has(wrong); n++) wrong = String(n).padStart(6, "0");
+check(h.totpMatchStep(mySecret, wrong, now) === 0, `a wrong code is refused (${wrong})`);
+check(h.totpMatchStep(mySecret, "12345", now) === 0, "a five-digit code is refused without hashing anything");
+check(h.totpMatchStep(mySecret, "abcdef", now) === 0, "and letters are refused");
+check(h.totpMatchStep(mySecret, "", now) === 0, "and an empty code is refused");
+// Returning the step, not a boolean, is what makes replay detectable: the
+// caller stores it and refuses anything at or below it next time.
+check(h.totpMatchStep(mySecret, h.totpCode(mySecret, step), now) > 0, "a match reports which step it was");
+
+// --- Recovery codes ---
+const codes = h.newRecoveryCodes();
+check(codes.length === 8, `eight recovery codes (${codes.length})`);
+check(new Set(codes).size === 8, "all distinct");
+check(codes.every((c) => /^[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{2}$/.test(c)), "grouped so they can be read aloud");
+check(
+  codes.every((c) => c.replace(/-/g, "").length === 10),
+  "40 bits each — a guess is not worth attempting against the lockout"
 );
 
 // --- Bounded parallelism keeps input order ---

@@ -357,17 +357,20 @@ export async function studentLogin(
 
 export async function adminLogin(
   username: string,
-  password: string
-): Promise<{ ok: true } | { ok: false; message: string }> {
+  password: string,
+  code?: string
+): Promise<{ ok: true } | { ok: false; message: string; needsCode?: boolean }> {
   try {
     const res = await apiFetch("/api/manageauth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify(code ? { username, password, code } : { username, password }),
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      return { ok: false, message: data.error || "Login failed" };
+      // needsCode says the password was right and the second factor is next —
+      // the only case where the form grows a field instead of just refusing.
+      return { ok: false, message: data.error || "Login failed", needsCode: !!data.needsCode };
     }
     await res.json().catch(() => ({}));
     saveAuth({
@@ -380,6 +383,45 @@ export async function adminLogin(
     return { ok: false, message: "Network error — check your connection." };
   }
 }
+
+// ---------- The admin's second factor ----------
+
+export interface TotpState {
+  enabled: boolean;
+  pending: boolean;
+  recoveryLeft: number;
+}
+
+export async function fetchTotpState(): Promise<TotpState | null> {
+  try {
+    const res = await apiFetch("/api/adminsecurity", { headers: authHeader() });
+    if (!res.ok) return null;
+    return (await res.json()) as TotpState;
+  } catch {
+    return null;
+  }
+}
+
+async function totpAction(
+  body: Record<string, string>
+): Promise<{ ok: boolean; message?: string; secret?: string; uri?: string; recoveryCodes?: string[] }> {
+  try {
+    const res = await apiFetch("/api/adminsecurity", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Request failed" };
+    return { ok: true, ...data };
+  } catch {
+    return { ok: false, message: "Network error — check your connection." };
+  }
+}
+
+export const totpInit = () => totpAction({ action: "init" });
+export const totpEnable = (code: string) => totpAction({ action: "enable", code });
+export const totpDisable = (code: string) => totpAction({ action: "disable", code });
 
 export async function listTeachers(): Promise<{ email: string; addedAt?: string }[] | null> {
   try {
