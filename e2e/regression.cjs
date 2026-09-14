@@ -756,6 +756,27 @@ function check(ok, label) {
             }),
           })
         ).status;
+        // The AI assessor. It proposes a mark and never awards one, so the
+        // thing to prove is that a student cannot reach it at all, and that
+        // with no key configured it says so rather than 404ing.
+        const assessAsStudent = (
+          await asStudent(jar, "/api/assess", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ username: made.username, testId: photoTestId, questionId: "q1" }),
+          })
+        ).status;
+        const assessAsTeacher = await teacher("/api/assess", {
+          method: "POST",
+          body: JSON.stringify({
+            username: made.username,
+            testId: photoTestId,
+            questionId: "q1",
+            question: "Prove it.",
+            solution: "By induction.",
+          }),
+        });
+
         const paperRead = await teacher(
           `/api/attempts?testId=${photoTestId}&student=${made.username}`
         );
@@ -764,6 +785,7 @@ function check(ok, label) {
         ).status;
 
         return {
+          assess: { student: assessAsStudent, teacher: assessAsTeacher.status, data: assessAsTeacher.data },
           paper: {
             handedIn,
             status: paperRead.status,
@@ -798,6 +820,32 @@ function check(ok, label) {
         await cleanup();
       }
     })();
+
+    if (marking.assess) {
+      const a = marking.assess;
+      if (a.teacher === 404) {
+        // The endpoint is not on this environment at all; a 404 for the
+        // student says nothing about the rule, so do not claim it does.
+        console.log("SKIP  AI assessment (/api/assess is not deployed here)");
+      } else if (a.teacher === 501) {
+        check(
+          a.student === 403,
+          `a student cannot ask the AI to mark their own work (${a.student})`
+        );
+        // No GEMINI_API_KEY on this environment. That is the shipped-dormant
+        // state, and saying so is the correct answer — not a 404, not a 500.
+        check(true, "with no key configured the assessor says it is switched off (501)");
+      } else {
+        check(
+          a.student === 403,
+          `a student cannot ask the AI to mark their own work (${a.student})`
+        );
+        check(
+          a.teacher === 200 && typeof a.data.awarded === "number",
+          `the assessor proposes a mark (${a.teacher}, awarded ${a.data && a.data.awarded})`
+        );
+      }
+    }
 
     if (marking.paper) {
       const paper = marking.paper;
@@ -1003,6 +1051,47 @@ function check(ok, label) {
     const sameShell = await page.evaluate((el) => el === document.querySelector(".shell"), shellBefore);
     check(sameShell, "moving between screens keeps the same shell element (no re-layout)");
     await page.unroute("**/api/**");
+
+    // Marking: the queue is a list, and opening one lands in the ordinary
+    // paper view with marking switched on — the same screen the student reads
+    // their result on, not a pane of its own.
+    await page.goto(BASE, { waitUntil: "domcontentloaded" });
+    await page.waitForSelector('[data-rail="mark"]', { timeout: 25000 });
+    await page.click('[data-rail="mark"]');
+    await page.waitForSelector(".test-list .test-card, .empty-state", { timeout: 30000 });
+    check(
+      !(await page.$(".mark-wrap .detail")),
+      "the marking queue has no detail pane of its own any more"
+    );
+    const markCard = await page.$(".test-list .test-card[data-test]");
+    if (markCard) {
+      await markCard.click();
+      // An answer can outlive its test — old queue rows point at tests that
+      // were deleted — and then there is no paper to open. That is a real
+      // outcome, not a failure, so accept either and only assert the marking
+      // block when a paper actually opened.
+      await page.waitForSelector(".review-item, .login-error", { timeout: 30000 });
+    }
+    if (markCard && (await page.$(".review-item"))) {
+      const marking = await page.evaluate(() => ({
+        cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
+        award: !!document.querySelector("#mk-buttons"),
+        release: !!document.querySelector("#mk-release"),
+        solution: !!document.querySelector(".solution"),
+      }));
+      check(marking.cols === 3, `marking uses the three-column paper view (${marking.cols})`);
+      check(marking.award, "with the marks row under the answer it belongs to");
+      check(marking.release, "and Release on the same screen");
+      check(marking.solution, "the model solution is beside it, as the student will see it");
+      await shot("teacher-marking");
+    } else if (markCard) {
+      check(
+        await page.isVisible(".login-error"),
+        "an answer whose test is gone says so instead of opening an empty paper"
+      );
+    } else {
+      console.log("SKIP  marking queue (nothing waiting to mark)");
+    }
 
     // Subjects: a signed-in teacher lands here, and a subject card opens the
     // page where that subject's tests live.

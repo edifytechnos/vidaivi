@@ -15,6 +15,12 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
   .split(",")
   .map((e) => e.trim().toLowerCase())
   .filter(Boolean);
+// The AI marking assistant. Unset means the feature simply does not exist:
+// /api/assess answers 501 and the client hides the button, the same way
+// analytics no-ops without its connection string. Nothing else changes.
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
@@ -2663,6 +2669,9 @@ const GRADING_SELECT = [
   "PartitionKey", "RowKey", "studentName", "testId", "testTitle", "questionId",
   "questionIndex", "maxMarks", "images", "status", "submittedAt", "awarded",
   "comment", "markedAt", "markedBy",
+  // The AI's proposal. Deliberately separate from `awarded`: a suggestion is
+  // not a mark, and only the teacher's own mark action writes that one.
+  "aiAwarded", "aiComment", "aiReasoning", "aiAt", "aiModel",
 ];
 
 function gradingOut(e) {
@@ -2683,6 +2692,11 @@ function gradingOut(e) {
     comment: e.comment || "",
     markedAt: e.markedAt || "",
     markedBy: e.markedBy || "",
+    aiAwarded: typeof e.aiAwarded === "number" ? e.aiAwarded : null,
+    aiComment: e.aiComment || "",
+    aiReasoning: e.aiReasoning || "",
+    aiAt: e.aiAt || "",
+    aiModel: e.aiModel || "",
   };
 }
 
@@ -2965,6 +2979,210 @@ handlers.grading = async (context, req) => {
   );
 
   return json(context, 200, { ok: true, awarded, maxMarks });
+};
+
+// ---------- The AI marking assistant (/api/assess) ----------
+//
+// A long answer is a photograph of a child's working. The model reads it
+// against the question and the teacher's own model solution and proposes a
+// mark with a short justification. **It never awards anything**: the proposal
+// lands in aiAwarded/aiComment and only the teacher's own mark action writes
+// `awarded` and moves status to "marked". That is the whole safety property —
+// a wrong AI mark is a suggestion a teacher overrules, never a mark a student
+// receives.
+//
+// Data minimisation: the model is sent the question, the model solution, the
+// marks available and the photographs. **It is never sent the student's name,
+// username or school** — it has no use for them and they are the part that
+// would matter if the request leaked.
+//
+// Cost: one call per press of "Assess with AI", never automatic. At
+// gemini-3.5-flash-lite rates (paid tier, which is excluded from training on
+// your data) a typical answer is about two-tenths of a US cent.
+
+const AI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/interactions";
+const AI_TIMEOUT_MS = 45000;
+const AI_MAX_SOLUTION = 4000;
+
+/** The shape the model must answer in, so the reply is never free prose. */
+const AI_SCHEMA = {
+  type: "object",
+  properties: {
+    awarded: { type: "number" },
+    comment: { type: "string" },
+    reasoning: { type: "string" },
+  },
+  required: ["awarded", "comment"],
+};
+
+function aiPrompt(question, solution, maxMarks) {
+  return [
+    "You are helping a CBSE mathematics teacher mark one handwritten answer.",
+    "The photographs show a student's working. Read them and mark the answer.",
+    "",
+    `QUESTION (worth ${maxMarks} mark${maxMarks === 1 ? "" : "s"}):`,
+    question || "(the question text is unavailable — mark from the working alone)",
+    "",
+    "THE TEACHER'S MODEL SOLUTION:",
+    solution || "(none given — use standard CBSE marking)",
+    "",
+    "Mark it the way a CBSE examiner would:",
+    `- Award a whole number from 0 to ${maxMarks}.`,
+    "- Give method marks for correct working even when the final answer is wrong.",
+    "- Do not deduct for untidy handwriting, spelling, or a different but valid method.",
+    "- If the photograph is unreadable or shows no attempt, award 0 and say so in the comment.",
+    "",
+    "`comment` is written TO THE STUDENT: one or two sentences, plain, kind, and",
+    "specific about what to fix. `reasoning` is for the teacher: why this mark.",
+  ].join("\n");
+}
+
+/** Pull the answer's photographs back out of the private container. */
+async function answerImages(blobNames) {
+  const container = await answerContainer();
+  const out = [];
+  await inBatches(blobNames.slice(0, MAX_IMAGES_PER_ANSWER), 3, async (name) => {
+    try {
+      const buf = await container.getBlobClient(name).downloadToBuffer();
+      const mime = sniffImage(buf);
+      if (mime && buf.length <= MAX_IMAGE_BYTES) {
+        out.push({ type: "image", data: buf.toString("base64"), mime_type: mime });
+      }
+    } catch {
+      // A missing blob is not worth failing the whole assessment over.
+    }
+  });
+  return out;
+}
+
+/** Ask the model. Returns {awarded, comment, reasoning} or throws a message. */
+async function askAssessor(question, solution, maxMarks, images) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
+  let res;
+  try {
+    res = await fetch(AI_ENDPOINT, {
+      method: "POST",
+      signal: controller.signal,
+      headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
+      body: JSON.stringify({
+        model: GEMINI_MODEL,
+        input: [
+          { type: "text", text: aiPrompt(question, solution, maxMarks) },
+          ...images,
+        ],
+        response_format: {
+          type: "text",
+          mime_type: "application/json",
+          schema: AI_SCHEMA,
+        },
+      }),
+    });
+  } catch (e) {
+    throw new Error(
+      e && e.name === "AbortError" ? "The assessment timed out" : "Could not reach the model"
+    );
+  } finally {
+    clearTimeout(timer);
+  }
+
+  const text = await res.text();
+  if (!res.ok) {
+    // Never echo the provider's body back to the client: it can carry the
+    // request, and the request carries a child's handwriting.
+    throw new Error(`The model refused the request (${res.status})`);
+  }
+  let payload;
+  try {
+    payload = JSON.parse(text);
+  } catch {
+    throw new Error("The model sent something that was not JSON");
+  }
+  const raw =
+    (payload.interaction && payload.interaction.output_text) || payload.output_text || "";
+  let out;
+  try {
+    out = JSON.parse(raw);
+  } catch {
+    throw new Error("The model did not answer in the shape asked for");
+  }
+  const awarded = Math.max(0, Math.min(maxMarks, Math.round(Number(out.awarded))));
+  if (!Number.isFinite(awarded)) throw new Error("The model did not return a mark");
+  return {
+    awarded,
+    comment: String(out.comment || "").slice(0, 600),
+    reasoning: String(out.reasoning || "").slice(0, 600),
+  };
+}
+
+handlers.assess = async (context, req) => {
+  if (misconfigured(context)) return;
+  if (req.method !== "POST") return json(context, 405, { error: "Method not allowed" });
+  const who = await identify(req, context);
+  if (!who.kind) {
+    return json(context, 401, { error: "Invalid token", reason: who.reason });
+  }
+  if (who.role !== "teacher" && who.role !== "admin") {
+    return json(context, 403, { error: "Teachers only" });
+  }
+  if (!GEMINI_API_KEY) {
+    return json(context, 501, { error: "AI marking is not switched on for this site" });
+  }
+
+  const body = getBody(req) || {};
+  const username = String(body.username || "").trim().toLowerCase();
+  const refusal = await canSeeStudent(who, username);
+  if (refusal) return refuse(context, refusal);
+
+  const testId = safeId(body.testId, 60);
+  const questionId = safeId(body.questionId, 40);
+  const grading = await gradingTable();
+  let entity;
+  try {
+    entity = await grading.getEntity(`stu~${username}`, gradingKey(testId, questionId));
+  } catch {
+    return json(context, 404, { error: "Nothing handed in for that question" });
+  }
+
+  const images = await answerImages(parseImages(entity.images));
+  if (!images.length) {
+    return json(context, 400, { error: "There is no readable photo to assess" });
+  }
+
+  const maxMarks = typeof entity.maxMarks === "number" ? entity.maxMarks : 0;
+  let verdict;
+  try {
+    verdict = await askAssessor(
+      String(body.question || "").slice(0, AI_MAX_SOLUTION),
+      String(body.solution || "").slice(0, AI_MAX_SOLUTION),
+      maxMarks,
+      images
+    );
+  } catch (e) {
+    return json(context, 502, { error: (e && e.message) || "The assessment failed" });
+  }
+
+  // The proposal is stored beside the answer, never on top of it: `awarded`
+  // and `status` are the teacher's to move.
+  await grading.updateEntity(
+    {
+      partitionKey: entity.partitionKey,
+      rowKey: entity.rowKey,
+      aiAwarded: verdict.awarded,
+      aiComment: verdict.comment,
+      aiReasoning: verdict.reasoning,
+      aiAt: new Date().toISOString(),
+      aiModel: GEMINI_MODEL,
+    },
+    "Merge"
+  );
+
+  return json(context, 200, {
+    awarded: verdict.awarded,
+    comment: verdict.comment,
+    reasoning: verdict.reasoning,
+    model: GEMINI_MODEL,
+  });
 };
 
 // ---------- Releasing the answers ----------

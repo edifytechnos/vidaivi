@@ -128,7 +128,8 @@ unlike the `vidai.seyali.app` entry above which is done.
   `POST /api/login` verifies the Google ID token (aud + expiry via Google's
   tokeninfo endpoint) and upserts the profile (name/email/picture/phone) in
   Table Storage; `POST/GET /api/attempts` saves/lists the student's attempts.
-- SWA application settings (Azure portal, not repo): `GOOGLE_CLIENT_ID`,
+- SWA application settings (Azure portal, not repo): `GEMINI_API_KEY` (optional
+  — switches on AI marking, see below), `GOOGLE_CLIENT_ID`,
   `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`,
   `students` are auto-created), `SESSION_SECRET` (any long random string —
   signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
@@ -639,7 +640,7 @@ per device.
 - `screens/student.ts` — the student's workspace: subject → tests tree → one question.
 - `screens/assign.ts` — "Who sees this test": the audience picker, shared by the editor and My tests.
 - `screens/review.ts` — read-only review, one question per page.
-- `screens/marking.ts` — the teacher's marking queue for long answers.
+- `screens/marking.ts` — the marking queue (a list) and `openStudentPaper`, the one way into marking a paper.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
@@ -760,6 +761,59 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   `Q_CHUNK` guard that silently drops an oversized `answers` blob.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
+
+## The teacher marks on the student's own screen, with an AI first draft
+
+**Marking happens inside the paper**, not in a screen of its own. A teacher
+opens a student's paper — from the marking queue, or from **Open & mark** on an
+attempt row in their report — and gets the three-column review the student
+reads their result on, with the marks row under each long answer and **Release**
+in the crumb. The MCQs and numerics are already graded and already show their
+marks; that was the point of putting them on the same screen.
+
+- **The queue is a list now** (`src/screens/marking.ts`): one card per student
+  and test, "3 to mark". Its old detail pane is deleted. That pane could mark an
+  answer but could not show the rest of the paper — not the MCQs the student got
+  wrong, not the marks already earned — and it was laid out unlike anything else
+  in the app.
+- **`openStudentPaper` is the one way in**, exported from `marking.ts` and used
+  by the console too, so a teacher learns one screen. It sets `?review=` before
+  painting, because `showReview` reads the question from the address bar.
+- **An answer can outlive its test.** A photo reaches the queue when it is
+  uploaded, which may be long before the paper is handed in — so
+  `openStudentPaper` falls back to the in-progress row, then to an empty paper,
+  and says plainly when the test itself has been deleted.
+- `showReview({marking: true})` is the whole switch; the layout does not change.
+
+### The AI proposes; the teacher awards (`POST /api/assess`)
+
+**The model never awards a mark.** It writes `aiAwarded` / `aiComment` /
+`aiReasoning` on the grading row; only the teacher's existing
+`POST /api/grading {action:"mark"}` writes `awarded` and moves `status` to
+`marked`. A wrong AI mark is therefore a suggestion a teacher overrules, never a
+mark a student receives — and the proposal is **not** pre-filled into the marks
+row, because a number a teacher has to *choose* gets reviewed and one already in
+the box gets rubber-stamped.
+
+- **Gemini `gemini-3.5-flash-lite`**, called from the Function with plain
+  `fetch` (no new dependency): `POST /v1beta/interactions`, key in the
+  `x-goog-api-key` header, `input[]` of one text part plus the photographs, and
+  `response_format` with a JSON schema so the reply is never free prose. The
+  answer comes back at `interaction.output_text` as a JSON string.
+- **The paid tier is not optional.** Google's free tier says content *is* used
+  to improve their products; the paid tier says it is not. What is being sent is
+  a child's handwriting. Keep billing on.
+- **The model is never told who the student is** — it gets the question, the
+  teacher's model solution, the marks available and the images. Nothing else is
+  its business, and nothing else is in the request if it leaks.
+- **Set `GEMINI_API_KEY`** as an SWA application setting to switch it on
+  (`GEMINI_MODEL` overrides the model). Without it `/api/assess` answers **501**
+  and the client hides the button — dormant, exactly like analytics without its
+  connection string. `e2e/regression.cjs` asserts the 501.
+- **It runs only when the teacher presses "Assess with AI"**, one answer at a
+  time. Nothing is spent on papers nobody opens. About ₹0.15 an answer.
+- The provider's error body is never echoed to the client: it can contain the
+  request, and the request contains the handwriting.
 
 ## Releasing the answers (`/api/release`, table `releases`)
 
