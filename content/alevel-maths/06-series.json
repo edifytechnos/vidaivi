@@ -7,20 +7,52 @@
   "access": "login",
   "questions": [
     {
-      "id": "alm6-001",
+      "id": "cie9709-101",
       "chapter": "Series",
-      "topic": "Arithmetic progression",
-      "type": "mcq",
-      "q": "The $n$th term of an arithmetic progression with first term $a$ and common difference $d$ is:",
-      "solution": "$u_{n} = \\mathbf{a + (n-1)d}$ — you take $n - 1$ steps to reach the $n$th term, not $n$.\n\n$ar^{n-1}$ is the geometric version.",
-      "marks": 1,
-      "options": [
-        "$a + nd$",
-        "$a + (n-1)d$",
-        "$an + d$",
-        "$ad^{n-1}$"
-      ],
-      "answer": 1
+      "topic": "Binomial expansion",
+      "type": "numeric",
+      "q": "The coefficient of $x^3$ in the expansion of $(3 + ax)^6$ is 160. Find the value of the constant $a$, correct to three decimal places.",
+      "solution": "**Step 1 — write the general term.** By the binomial theorem the term in $x^r$ of $(3 + ax)^6$ is\n\n$$\\binom{6}{r}\\,3^{\\,6-r}\\,(ax)^r.$$\n\n**Step 2 — pick out $x^3$**, so $r = 3$ :\n\n$$\\binom{6}{3}\\,3^{3}\\,a^3 x^3 = 20 \\times 27 \\times a^3 x^3 = 540a^3 x^3.$$\n\n**Step 3 — set the coefficient equal to 160.**\n\n$$540a^3 = 160 \\quad\\Longrightarrow\\quad a^3 = \\frac{160}{540} = \\frac{8}{27}.$$\n\n**Step 4 — take the cube root.** Both 8 and 27 are perfect cubes, which is the sign the arithmetic is right :\n\n$$a = \\frac{2}{3} \\approx 0 \\cdot 667.$$\n\nThe common error is to forget that the 3 is raised to a power too — using $3^6$ instead of $3^{6-r}$ gives a quite different equation.",
+      "marks": 2,
+      "source": "Cambridge 9709 Jun 2024",
+      "answer": 0.667,
+      "tolerance": 0.002
+    },
+    {
+      "id": "cie9709-102",
+      "chapter": "Series",
+      "topic": "Binomial expansion",
+      "type": "numeric",
+      "q": "Given that the coefficient of $x^3$ in the expansion of $(3 + ax)^6$ is 160, where $a = \\dfrac{2}{3}$, find the coefficient of $x^3$ in the expansion of $(3 + ax)^6(1 - 2x)$.",
+      "solution": "Multiplying by $(1 - 2x)$ means an $x^3$ term can arise in **two** ways: the $x^3$ term times 1, and the $x^2$ term times $-2x$. So both coefficients of the original expansion are needed.\n\n**Step 1 — the $x^3$ coefficient** is given as **160**.\n\n**Step 2 — the $x^2$ coefficient.** Taking $r = 2$ in $\\binom{6}{r}3^{6-r}(ax)^r$ :\n\n$$\\binom{6}{2}\\,3^{4}\\,a^2 = 15 \\times 81 \\times \\left(\\frac{2}{3}\\right)^2 = 15 \\times 81 \\times \\frac{4}{9} = 15 \\times 36 = 540.$$\n\n**Step 3 — combine the two contributions.**\n\n$$\\underbrace{160 \\times 1}_{x^3 \\text{ term} \\times 1} \\;+\\; \\underbrace{540 \\times (-2)}_{x^2 \\text{ term} \\times (-2x)} = 160 - 1080 = \\mathbf{-920}.$$\n\nThe word *hence* in the original question is the hint: the 160 is reused rather than recomputed, and only the $x^2$ coefficient is new work.",
+      "marks": 3,
+      "source": "Cambridge 9709 Jun 2024",
+      "answer": -920,
+      "tolerance": 0
+    },
+    {
+      "id": "cie9709-103",
+      "chapter": "Series",
+      "topic": "Arithmetic progressions",
+      "type": "numeric",
+      "q": "The first three terms of an arithmetic progression are $25$, $4p - 1$ and $13 - p$, where $p$ is a constant. Find the value of the tenth term of the progression.",
+      "solution": "**Step 1 — use the defining property.** In an arithmetic progression consecutive differences are equal :\n\n$$(4p - 1) - 25 = (13 - p) - (4p - 1).$$\n\n**Step 2 — simplify each side.**\n\nLeft: $4p - 26$. Right: $13 - p - 4p + 1 = 14 - 5p$.\n\n**Step 3 — solve for $p$.**\n\n$$4p - 26 = 14 - 5p \\quad\\Longrightarrow\\quad 9p = 40 \\quad\\Longrightarrow\\quad p = \\frac{40}{9}.$$\n\nThat is not a tidy number, which is usually a sign of a slip. Here it is not, and the reason appears at the last step.\n\n**Step 4 — the common difference.**\n\n$$d = 4p - 26 = \\frac{160}{9} - \\frac{234}{9} = -\\frac{74}{9}.$$\n\n**Step 5 — the tenth term.**\n\n$$a_{10} = a + 9d = 25 + 9\\left(-\\frac{74}{9}\\right) = 25 - 74 = \\mathbf{-49}.$$\n\nThe 9 in $a + 9d$ cancels the 9 in the denominator exactly — which is why the question asks for the **tenth** term in particular, and why the untidy $p$ was nothing to worry about.",
+      "marks": 4,
+      "source": "Cambridge 9709 Jun 2024",
+      "answer": -49,
+      "tolerance": 0
+    },
+    {
+      "id": "cie9709-104",
+      "chapter": "Series",
+      "topic": "Geometric progressions",
+      "type": "numeric",
+      "q": "The first three terms of a geometric progression are $25$, $4q - 1$ and $13 - q$, where $q$ is a positive constant. Find the sum to infinity of the progression.",
+      "solution": "**Step 1 — use the defining property.** In a geometric progression consecutive **ratios** are equal, so the middle term squared equals the product of its neighbours :\n\n$$(4q - 1)^2 = 25(13 - q).$$\n\n**Step 2 — expand and collect.**\n\n$$16q^2 - 8q + 1 = 325 - 25q \\quad\\Longrightarrow\\quad 16q^2 + 17q - 324 = 0.$$\n\n**Step 3 — solve.** The discriminant is\n\n$$17^2 + 4(16)(324) = 289 + 20736 = 21025 = 145^2,$$\n\na perfect square, so\n\n$$q = \\frac{-17 \\pm 145}{32},$$\n\ngiving $q = 4$ or $q = -\\dfrac{81}{16}$. The question says $q$ is **positive**, so $q = 4$.\n\n**Step 4 — write out the progression.**\n\n$$25, \\quad 4(4) - 1 = 15, \\quad 13 - 4 = 9.$$\n\n**Step 5 — the common ratio.**\n\n$$r = \\frac{15}{25} = \\frac{3}{5}, \\qquad \\text{check : } \\frac{9}{15} = \\frac{3}{5} \\ \\checkmark$$\n\n**Step 6 — the sum to infinity.** Since $|r| < 1$ the series converges :\n\n$$S_\\infty = \\frac{a}{1 - r} = \\frac{25}{1 - \\frac{3}{5}} = \\frac{25}{\\frac{2}{5}} = \\mathbf{62 \\cdot 5}.$$",
+      "marks": 4,
+      "source": "Cambridge 9709 Jun 2024",
+      "answer": 62.5,
+      "tolerance": 0.01
     },
     {
       "id": "alm6-002",
@@ -87,28 +119,6 @@
       "answer": 1
     },
     {
-      "id": "alm6-006",
-      "chapter": "Series",
-      "topic": "AP term",
-      "type": "numeric",
-      "q": "An AP has first term $5$ and common difference $3$. Find the $10$th term.",
-      "solution": "$u_{10} = 5 + 9(3) = \\mathbf{32}$.\n\nNine steps of 3, not ten — the first term takes no step at all.",
-      "marks": 2,
-      "answer": 32,
-      "tolerance": 0
-    },
-    {
-      "id": "alm6-007",
-      "chapter": "Series",
-      "topic": "Sum of an AP",
-      "type": "numeric",
-      "q": "Find the sum of the first $20$ terms of the AP $2, 5, 8, \\ldots$",
-      "solution": "$a = 2$, $d = 3$, $n = 20$:\n\n$S_{20} = \\dfrac{20}{2}\\left[4 + 19(3)\\right] = 10(61) = \\mathbf{610}$.",
-      "marks": 2,
-      "answer": 610,
-      "tolerance": 1
-    },
-    {
       "id": "alm6-008",
       "chapter": "Series",
       "topic": "GP term",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 20,
       "tolerance": 0
-    },
-    {
-      "id": "alm6-011",
-      "chapter": "Series",
-      "topic": "Arithmetic progressions",
-      "type": "long",
-      "q": "The 4th term of an AP is $11$ and the 9th term is $26$. Find the first term, the common difference, and the sum of the first $20$ terms.",
-      "solution": "**Write both terms in terms of $a$ and $d$:**\n\n$u_{4} = a + 3d = 11$\n\n$u_{9} = a + 8d = 26$\n\n**Subtract** — the $a$ terms cancel:\n\n$5d = 15 \\Rightarrow d = \\mathbf{3}$\n\n**Substitute back:**\n\n$a + 9 = 11 \\Rightarrow a = \\mathbf{2}$\n\n**Sum of the first 20 terms:**\n\n$S_{20} = \\dfrac{20}{2}\\left[2(2) + 19(3)\\right] = 10\\left[4 + 57\\right] = \\mathbf{610}$\n\n**Check:** the sequence is $2, 5, 8, 11, \\ldots$, and the 4th term is indeed $11$ ✓\n\n**The shortcut worth knowing:** between the 4th and 9th terms there are **five** steps, so $d = \\dfrac{26 - 11}{5} = 3$ straight away. Counting the steps rather than the terms is what keeps this right.",
-      "marks": 3
     },
     {
       "id": "alm6-012",

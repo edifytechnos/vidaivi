@@ -387,10 +387,9 @@ Tagged today, with an evidence file per shelf under `docs/`:
 | Cambridge IGCSE Combined Science (0653) | 3 of 180 | from the Jun 2024 papers |
 | Cambridge A Level Physics (9702) | 3 of 180 | from the Jun 2024 papers |
 | Cambridge A Level Chemistry (9701) | 4 of 180 | from the Jun 2024 papers |
-| Cambridge A Level Maths (9709) | 0 of 150 | notation lost to extraction |
+| Cambridge A Level Maths (9709) | 4 of 150 | recovered by reading pages as images |
 
-Untagged: **A Level Maths**, for the same reason the CBSE Maths shelf is thin —
-its questions are carried by notation, and extraction drops it. And **NEET**,
+**261 of 1875 questions are evidenced.** The only shelf with nothing is **NEET**,
 because no public archive exists; nothing there will carry a year until one does.
 
 **Cambridge publishes past papers openly** at
@@ -432,9 +431,22 @@ everything** — matrices, integrals, surds, vectors, the lot.
 
 `pypdfium2` at `scale=2.0` gives a 1224x1584 PNG that is comfortably legible
 (`poppler-utils` is not installed here, and `pdftoppm` is what the Read tool
-would otherwise want). One page of a Class XII Maths paper yields six to eight
-questions. It is slower per question than a text search, so spend it on the
-chapters text cannot reach at all rather than on ones already covered.
+would otherwise want).
+
+**Yield per page varies enormously, so find the pages worth rendering first.** A
+CBSE paper packs six to eight questions onto a page; a Cambridge paper is mostly
+ruled answer space and gives about one, with whole pages carrying nothing but
+dotted lines. `scratchpad/pagemap.py` reads each page's text, strips the dotted
+rules and the footer, and lists only the pages with a real question stem left —
+which is what makes rendering Cambridge papers worth doing at all.
+
+It is slower per question than a text search, so spend it on the chapters text
+cannot reach rather than on ones already covered.
+
+**Write the JSON with ordinary Python strings, not raw strings**: `"\n"` must be
+a real newline while LaTeX needs its backslash doubled, as in `"\\binom"`. A raw
+string gets both wrong at once and is what caused the literal-backslash-n bug
+twice.
 
 ## Authoring editor (`src/screens/editor/`)
 

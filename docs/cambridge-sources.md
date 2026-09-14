@@ -31,24 +31,28 @@ other subjects use.
 
 | Shelf | Sourced | Of |
 |---|---|---|
-| Cambridge IGCSE Mathematics (0580) | 5 | 135 |
+| Cambridge IGCSE Maths (0580) | 5 | 135 |
 | Cambridge IGCSE Combined Science (0653) | 3 | 180 |
-| Cambridge A Level Mathematics (9709) | 0 | 150 |
+| Cambridge A Level Maths (9709) | 4 | 150 |
 | Cambridge A Level Physics (9702) | 3 | 180 |
 | Cambridge A Level Chemistry (9701) | 4 | 180 |
-| **Total** | **15** | **825** |
+| **Total** | **19** | **825** |
 
-**A Level Mathematics (9709) carries nothing, and the reason is the same one
-that thinned the CBSE Maths shelf.** Its questions are carried by notation, and
-notation is the first thing lost when a PDF is read as text. The first three
-terms of a progression came through as `25 4 , p 10 1- and 13 -`, which is not
-enough to reconstruct the question, let alone answer it. The sciences, whose
+**A Level Mathematics (9709) was the shelf text extraction could not reach at
+all.** Its questions are carried by notation, and the first three terms of a
+progression came through as `25 4 , p 10 1- and 13 -` — not enough to
+reconstruct the question, let alone answer it.
+
+**Reading the pages as images fixed it.** The same question renders clearly as
+`25`, `4p - 1` and `13 - p`, and four questions were recovered that way. A
+Cambridge page is mostly ruled answer space, so it yields about one question per
+page against six to eight for a CBSE paper; `scratchpad/pagemap.py` lists which
+pages carry a question stem at all, so the blank ones are never rendered. The sciences, whose
 questions are carried by words and plain numbers, came through intact — which is
 why every other Cambridge shelf has something.
 
-Recovering 9709 means reading the PDFs as pages rather than as text. That is the
-same outstanding task as for CBSE Class 12 Maths, and it is a different kind of
-work, not more of this kind.
+The sciences needed none of this — their questions came through intact, because
+they are carried by words and plain numbers.
 
 ## The tagged questions
 
