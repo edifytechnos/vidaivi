@@ -505,16 +505,38 @@ function misconfigured(context) {
 
 const handlers = {};
 
-handlers.health = async (context) => {
-  json(context, 200, {
-    hasGoogleClientId: !!GOOGLE_CLIENT_ID,
-    hasStorageConnectionString: !!STORAGE,
-    hasSessionSecret: !!SESSION_SECRET,
-    hasAdminCredentials: !!(ADMIN_USERNAME && ADMIN_PASSWORD),
-    teacherEmailsConfigured: TEACHER_EMAILS.length,
-    model: "v3",
-    node: process.version,
-  });
+handlers.health = async (context, req) => {
+  // TEMPORARY probe (removed before this branch merges): does SWA's edge let a
+  // managed Function set a cookie, and does the browser's Cookie header survive
+  // the trip back? The whole httpOnly-session design rests on both being true,
+  // so it is verified on a deployed preview rather than assumed.
+  const probe =
+    req && req.query && req.query.cookieprobe
+      ? {
+          cookieHeaderSeen: String((req.headers || {}).cookie || ""),
+          setCookieAttempted: true,
+        }
+      : null;
+  json(
+    context,
+    200,
+    {
+      hasGoogleClientId: !!GOOGLE_CLIENT_ID,
+      hasStorageConnectionString: !!STORAGE,
+      hasSessionSecret: !!SESSION_SECRET,
+      hasAdminCredentials: !!(ADMIN_USERNAME && ADMIN_PASSWORD),
+      teacherEmailsConfigured: TEACHER_EMAILS.length,
+      model: "v3",
+      node: process.version,
+      probe,
+    },
+    probe
+      ? {
+          "Set-Cookie":
+            "vidai_probe=abc123; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=600",
+        }
+      : undefined
+  );
 };
 
 handlers.login = async (context, req) => {
