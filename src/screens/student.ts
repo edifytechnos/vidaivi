@@ -335,13 +335,18 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
                   <span class="ed-panel-label">Your answer</span>
                   <div class="ed-spacer"></div>
                   ${a ? `<span class="status-chip status-done">Answered</span>` : ""}
+                  <!-- Clear acts on the answer, so it belongs with the answer's
+                       own status — not in the steps row, which is a fixed bar
+                       at the foot of a phone and has no room for a third line.
+                       It is also the one place it can never sit under a thumb
+                       aiming for Next. -->
+                  <span class="st-save" id="st-actions"></span>
                 </div>
                 <div id="st-answer"></div>
                 <div class="st-navrow">
                   <button class="btn btn-ghost st-step" id="st-prev"${index === 0 ? " disabled" : ""}>‹ Previous</button>
                   <span class="ed-hint st-count">${done} of ${test.questions.length} answered</span>
                   <span class="ed-spacer"></span>
-                  <span class="st-save" id="st-actions"></span>
                   <button class="btn btn-ghost st-step" id="st-next"${index === test.questions.length - 1 ? " disabled" : ""}>Next ›</button>
                 </div>
               </section>

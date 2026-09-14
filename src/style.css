@@ -3187,13 +3187,21 @@ body.modal-open {
 .st-navrow .ed-spacer { flex: 1; }
 .st-count { flex: none; white-space: nowrap; }
 .st-step { flex: none; }
-.st-save { display: contents; }
-.st-save .btn { flex: none; }
+
 /* Answers save themselves, so this slot holds the way back out rather than a
-   Save button: Clear is quieter than the steps beside it and disappears
-   entirely until there is something to clear. */
+   Save button: Clear is quieter than the steps and disappears entirely until
+   there is something to clear. It sits in the answer panel's own head, beside
+   the Answered chip — it acts on the answer, not on navigation, and the steps
+   row below is a fixed bar on a phone with no room for a third line. */
+.st-save { display: contents; }
+.ed-panel-head .st-clear {
+  flex: none;
+  min-width: 0;
+  padding: 4px 10px;
+  font-size: 12px;
+}
 .st-clear[hidden] { display: none; }
-.st-autosave { flex: none; white-space: nowrap; }
+.ed-panel-head .st-autosave { flex: none; white-space: nowrap; font-size: 12px; }
 
 /* The crumb row carries the one action that ends the test. */
 .ed-crumbrow .st-handin {
@@ -3217,21 +3225,15 @@ body.modal-open {
     gap: 10px 8px;
   }
   .st-navrow .btn { min-width: 0; }
-  /* The two steps first, side by side — they are what a student presses on
-     every question. Clear is the rare one, so it goes last and full width
-     rather than under a thumb that meant to press Next. */
-  .st-save .btn { grid-column: 1 / -1; order: 3; width: 100%; }
-  .st-autosave { grid-column: 1 / -1; order: 3; text-align: center; }
   .st-navrow .ed-spacer { display: none; }
   .st-step { width: 100%; }
   #st-next, #rv-next { order: 1; }
   .st-count { grid-column: 1 / -1; order: 2; text-align: center; }
 }
 
-/* In the sticky bar the count reads *above* the two steps: it is the line that
+/* In the bottom bar the count reads *above* the two steps: it is the line that
    says how far there is to go, and burying it under the buttons put it off the
-   bottom of the window. Once the page reaches its end the row is no longer
-   pinned, but the order stays — one row, read top to bottom. */
+   bottom of the window. */
 @media (max-width: 560px) {
   .shell-scroll .st-count { order: -1; }
 }
@@ -3269,9 +3271,11 @@ body.modal-open {
    Previous/Next and the progress line. Give the scrolling column room to end
    above them. */
 @media (max-width: 899px) {
-  /* Only the result screen still has the floating tabs under it; the workspace
-     lost them when the tree became a drawer. */
-  .ed-readonly:not(.ed-student) .ed-center { padding-bottom: 86px; }
+  /* Only Browse still has the floating tabs under it. The workspace lost them
+     when the tree became a drawer, and the student's paper (.ed-paper) lost
+     them because two of its three did nothing: its Question and Answer panels
+     are plain .ed-panel sections, which the [data-pane] rules never matched. */
+  .ed-readonly:not(.ed-student):not(.ed-paper) .ed-center { padding-bottom: 86px; }
 }
 
 /* ---------- The tree as a drawer on small screens ---------- */
@@ -3323,7 +3327,7 @@ body.modal-open {
 
   /* Space back. The question is what a small screen is for. */
   .ed-readonly .ed-center { padding: 12px 14px 24px; gap: 10px; }
-  .ed-readonly:not(.ed-student) .ed-center { padding-bottom: 86px; }
+  .ed-readonly:not(.ed-student):not(.ed-paper) .ed-center { padding-bottom: 86px; }
   .ed-readonly .ed-body { gap: 10px; }
   .ed-readonly .ed-panel { padding: 12px 13px 13px; }
   .shell-main { padding: 14px 14px 24px; }
@@ -3442,7 +3446,19 @@ body.modal-open {
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-rows: auto auto;
     align-items: center;
+    /* The tracks are content-height and the block centres as a whole. Without
+       this, `align-content` stretches both auto rows to fill `min-height` and
+       the two lines drift apart inside their own taller rows — the row gap
+       again, by another route. */
+    align-content: center;
     column-gap: 10px;
+    /* `column-gap` does not cancel `row-gap`, and `.shellbar` carries a `gap`
+       shorthand (12px, 8px under 600px) that sets both. That row gap was drawn
+       between the two lines as loose space — and, with no subtitle, between
+       row 1 and an empty row 2, which left the title riding a few pixels above
+       the brand beside it. The second line is spaced with a margin instead, so
+       it exists only when there is a second line. */
+    row-gap: 0;
     height: auto;
     min-height: 57px;
     padding: 8px 16px;
@@ -3453,6 +3469,7 @@ body.modal-open {
     display: block;
     grid-column: 2;
     grid-row: 2;
+    margin-top: 2px;
     font-size: 11px;
     line-height: 1.3;
     overflow: hidden;
@@ -3460,17 +3477,35 @@ body.modal-open {
   }
   .shell-scroll .tb-profile-wrap { grid-column: 3; grid-row: 1 / span 2; }
   .shell-scroll .shellbar-actions { display: none; }
+  /* The divider is the one child this grid never places. It is only hidden
+     below 600px, so between 601 and 899px it auto-placed into the free cell —
+     column 2, row 2, the subtitle's own slot — and its 22px height inflated
+     that row even with no subtitle to show. A stacked bar has nothing to
+     divide anyway. */
+  .shell-scroll .shellbar-div { display: none; }
 
-  /* Previous and Next sit on the floor of the window with the count above
-     them, until the page is scrolled to its end — then the row lands in its
-     own place and the count reads underneath, as it does on a desktop. */
+  /* Previous and Next sit on the floor of the window, always — reachable with
+     one hand on every question, not only once the paper is long enough to
+     scroll.
+     This was `position: sticky` and it could not keep that promise: sticky
+     only shifts an element within *its own containing block*, which here is
+     the answer panel the row closes. On a short paper that panel ends
+     mid-screen, so there was nothing to pull against and the row sat in the
+     middle of the window. Fixed is the only thing that always means the
+     bottom.
+     It stays *under* the drawer and its scrim (40/35): unlike the rail, this
+     row is not the way off the screen, so the question list may cover it. */
   .shell-scroll .st-navrow {
-    position: sticky;
+    position: fixed;
+    left: 0;
+    right: 0;
     bottom: 0;
     z-index: 20;
+    margin: 0;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
     background: var(--surface);
-    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-    margin-bottom: calc(-1 * env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
   }
 }
 
@@ -3478,6 +3513,17 @@ body.modal-open {
   .ed-readonly .ed-center { padding: 10px 10px 20px; }
   .ed-readonly .ed-panel { padding: 11px 11px 12px; }
   .st-drawer-btn { padding: 6px 8px; }
+}
+
+/* Room for the bottom bar, so the foot of the paper is never hidden under it.
+   Declared after the 480px block above: that block sets `padding` as a
+   shorthand at equal specificity, so a clearance written earlier would be
+   reset to 20px on the narrowest phones — the exact screens that can least
+   afford to lose the last line of an answer. */
+@media (max-width: 899px) {
+  .shell-scroll .ed-center { padding-bottom: 108px; }
+  /* The subject page has no steps row, so it has nothing to clear. */
+  .shell-scroll .st-subject .ed-center { padding-bottom: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1365,6 +1365,25 @@ function check(ok, label) {
         }));
         check(!subjPage.toggle && !subjPage.tree, "with no Tests drawer duplicating it");
         check(!subjPage.crumb, "and no crumb row repeating the subject's name");
+        // With no subtitle the app bar's second grid row must collapse. A row
+        // gap left it drawn, and the title — placed in row 1 only — rode a few
+        // pixels above the brand that spans both.
+        const barMid = await page.evaluate(() => {
+          const mid = (sel) => {
+            const r = document.querySelector(sel).getBoundingClientRect();
+            return r.top + r.height / 2;
+          };
+          return {
+            title: mid("#shellbar-title"),
+            brand: mid(".shellbar-brand"),
+            subHidden: document.querySelector("#shellbar-sub").hidden,
+          };
+        });
+        check(barMid.subHidden, "the subject's bar carries no subtitle line");
+        check(
+          Math.abs(barMid.title - barMid.brand) <= 1,
+          `and the name is centred beside the V (${barMid.title.toFixed(1)} vs ${barMid.brand.toFixed(1)})`
+        );
         // The card is a row of two, and the left half has to be able to shrink
         // or the status chip is pushed out past the card's own right edge.
         const cardFit = await page.evaluate(() => {
@@ -1413,6 +1432,7 @@ function check(ok, label) {
             handinInCrumb: !!document.querySelector(".ed-crumbrow .st-handin"),
             prev: box("#st-prev"), save: box("#st-clear"), next: box("#st-next"),
             noSave: !document.querySelector("#st-save"),
+            clearInHead: !!document.querySelector(".ed-panel-head #st-clear"),
             count: box(".st-count"),
             panel: box(".ed-body .ed-panel:last-of-type"),
           };
@@ -1420,14 +1440,18 @@ function check(ok, label) {
         check(wsButtons.handinInCrumb, "Hand in test sits on the breadcrumb row");
         check(wsButtons.noSave, "there is no Save button — answers save themselves");
         check(
-          Math.abs(wsButtons.prev.y - wsButtons.save.y) < 4 && Math.abs(wsButtons.save.y - wsButtons.next.y) < 4,
-          "Previous, Clear and Next share one row"
+          Math.abs(wsButtons.prev.y - wsButtons.next.y) < 4,
+          "Previous and Next share one row"
         );
         check(
-          wsButtons.prev.x < wsButtons.count.x &&
-            wsButtons.count.right < wsButtons.save.x &&
-            wsButtons.save.right <= wsButtons.next.x,
-          "in the order Previous · count · Clear · Next"
+          wsButtons.prev.x < wsButtons.count.x && wsButtons.count.right <= wsButtons.next.x,
+          "in the order Previous · count · Next"
+        );
+        // Clear acts on the answer, so it sits with the answer's own status
+        // rather than in the steps row — above them, never beside Next.
+        check(
+          !!wsButtons.clearInHead && wsButtons.save.bottom <= wsButtons.prev.y,
+          "and Clear answer sits up in the answer panel's head, above the steps"
         );
         check(
           wsButtons.next.right <= wsButtons.panel.right + 1 && wsButtons.prev.x >= wsButtons.panel.x - 1,
@@ -1585,6 +1609,32 @@ function check(ok, label) {
         await page.click("[data-drawer-toggle]");
         await page.waitForSelector("#rv-tree .ed-tree-q:visible", { timeout: 10000 });
         check(true, "and opens from the same Questions button");
+        await page.keyboard.press("Escape");
+        // The bottom tab bar is gone from the paper. Two of its three tabs did
+        // nothing — the [data-pane] rules only hide .ed-pane-* panels, which
+        // exist in the authoring editor and not here — and the third only
+        // un-hid the explanation, which now simply stacks under the answer.
+        const paper = await page.evaluate(() => {
+          const ex = document.querySelector(".ed-explain");
+          return {
+            tabs: !!document.querySelector(".ed-paper .ed-tabs"),
+            pane: document.querySelector(".ed-paper")?.getAttribute("data-pane"),
+            explainShown: ex ? getComputedStyle(ex).display !== "none" : null,
+            navPos: getComputedStyle(document.querySelector(".st-navrow")).position,
+            navBottom: Math.round(document.querySelector(".st-navrow").getBoundingClientRect().bottom),
+            vh: window.innerHeight,
+          };
+        });
+        check(!paper.tabs && !paper.pane, "the handed-in paper has no bottom tab bar");
+        if (paper.explainShown !== null) {
+          check(paper.explainShown, "and its explanation stacks under the answer, no tab to press");
+        }
+        // A short paper is the case sticky could not hold: its panel ends
+        // mid-screen, so there was nothing for sticky to pull against.
+        check(
+          paper.navPos === "fixed" && Math.abs(paper.navBottom - paper.vh) <= 1,
+          `Previous and Next sit on the floor even on a short paper (${paper.navBottom} of ${paper.vh})`
+        );
         await page.setViewportSize({ width: 1280, height: 900 });
 
 
@@ -1816,17 +1866,17 @@ function check(ok, label) {
                    panel: box(".ed-body .ed-panel:last-of-type"), scrollWidth: document.documentElement.scrollWidth };
         });
         check(
-          phoneRow.next.right <= phoneRow.panel.right + 1 && phoneRow.prev.x >= phoneRow.panel.x - 1,
-          "on a phone the buttons stay inside the card"
+          phoneRow.next.right <= 390 && phoneRow.prev.x >= -1,
+          "on a phone the buttons stay inside the window"
         );
         if (phoneRow.save) {
           check(
-            phoneRow.save.y > phoneRow.prev.y && phoneRow.save.width > phoneRow.prev.width,
-            "with Clear answer full width below Previous and Next"
+            phoneRow.save.y < phoneRow.prev.y,
+            "with Clear answer above them, in the answer panel's head"
           );
           check(
             phoneRow.save.right <= phoneRow.panel.right + 1,
-            "and Clear inside the card too"
+            "and Clear inside the card"
           );
         } else {
           console.log("SKIP  phone Clear layout (first question is not answerable in one tap)");
@@ -1889,6 +1939,15 @@ function check(ok, label) {
         check(
           /\S/.test(chrome.barSub) && chrome.barSubShown !== "none",
           `with its subtitle on the line under it ("${chrome.barSub.slice(0, 40)}")`
+        );
+        const barLines = await page.evaluate(() => {
+          const t = document.querySelector("#shellbar-title").getBoundingClientRect();
+          const sb = document.querySelector("#shellbar-sub").getBoundingClientRect();
+          return Math.round(sb.top - t.bottom);
+        });
+        check(
+          barLines <= 4,
+          `and the two lines read as one label, not two (${barLines}px apart)`
         );
         await page.click("[data-drawer-toggle]");
         await page.waitForSelector("#st-tree .ed-tree-q:visible", { timeout: 10000 });
@@ -1981,19 +2040,29 @@ function check(ok, label) {
           const r = row.getBoundingClientRect();
           const count = document.querySelector(".st-count").getBoundingClientRect();
           const prev = document.querySelector("#st-prev").getBoundingClientRect();
+          const last = [...document.querySelectorAll(".ed-center .ed-panel")].pop();
           return {
-            sticky: getComputedStyle(row).position,
+            position: getComputedStyle(row).position,
             bottom: Math.round(r.bottom),
+            top: Math.round(r.top),
             vh: window.innerHeight,
             countAbove: count.bottom <= prev.top + 1,
+            // Nothing may end underneath the bar.
+            lastPanelBottom: Math.round(last.getBoundingClientRect().bottom),
+            clearInNav: !!document.querySelector(".st-navrow #st-clear"),
+            clearInHead: !!document.querySelector(".ed-panel-head #st-clear"),
           };
         });
-        check(pinned.sticky === "sticky", "the steps row is pinned, not floating");
+        check(pinned.position === "fixed", "the steps row is a bottom bar, not a row in the page");
         check(
-          pinned.bottom <= pinned.vh + 1,
-          `so Previous and Next stay on screen (row ends ${pinned.bottom} of ${pinned.vh})`
+          Math.abs(pinned.bottom - pinned.vh) <= 1,
+          `Previous and Next sit on the floor of the window (row ends ${pinned.bottom} of ${pinned.vh})`
         );
         check(pinned.countAbove, "with the answered count on the line above them");
+        check(
+          !pinned.clearInNav && pinned.clearInHead,
+          "and Clear answer up with the answer it clears, never under a thumb aiming for Next"
+        );
 
         // The bottom bar itself: it belongs to the subject picker, which is the
         // one screen that is not full-bleed.

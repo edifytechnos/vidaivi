@@ -383,7 +383,7 @@ export async function showReview(
 
     mount(
       `
-      <div class="editor ed-readonly" data-pane="question">
+      <div class="editor ed-readonly ed-paper">
         <div class="ed-cols review-item${open ? "" : " overview"}">
           ${treeMarkup(test, attempt, index, open)}
           <div class="ed-center">
@@ -462,11 +462,6 @@ export async function showReview(
           }
         </div>
         <div class="ed-scrim"></div>
-        <div class="ed-tabs">
-          <button class="ed-tab active" data-pane="question">Question</button>
-          <button class="ed-tab" data-pane="answer">${escapeHtml(owner)} answer</button>
-          ${open ? `<button class="ed-tab" data-pane="explain">Explanation</button>` : ""}
-        </div>
       </div>`,
       { title: test.title, sub: test.chapter || "", active: "results", full: true, scroll: "page" }
     );
@@ -484,12 +479,6 @@ export async function showReview(
       if (index < test.questions.length - 1) { index += 1; render(); }
     });
     bindTreeDrawer(document.querySelector<HTMLElement>(".editor")!);
-    document.querySelector(".ed-tabs")!.addEventListener("click", (e) => {
-      const tab = (e.target as HTMLElement).closest<HTMLElement>("[data-pane]");
-      if (!tab) return;
-      document.querySelector(".editor")!.setAttribute("data-pane", tab.dataset.pane!);
-      document.querySelectorAll(".ed-tab").forEach((t) => t.classList.toggle("active", t === tab));
-    });
     document.getElementById("review-back")?.addEventListener("click", opts.back ?? (() => {}));
     document.getElementById("retake-btn")?.addEventListener("click", () => {
       track("test_retake", { test: test.id });

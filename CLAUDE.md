@@ -1126,17 +1126,15 @@ question scrolling to the end — that rule holds everywhere a test is shown.
   the photo *is* the answer, and the uploader's ✕ already removes it
   server-side, which a local Clear could not do.
 - **The controls follow the approved screen**: *Hand in test* sits at the right
-  of the breadcrumb row, and **Previous · progress · Clear · Next** form
-  one row at the foot of the answer card. The released result mirrors it, with
-  *Retake test* in the same place. Below 560px that row becomes a grid — the
-  two steps first, then the count, then Clear full width *last*, because Clear
-  is the rare press and must not land under a thumb aiming for Next — and
-  `.st-navrow .btn` needs `min-width: 0`, because `.btn` carries `min-width: 130px` and a bare `1fr`
-  column cannot shrink under it (the row spilled out of the card on a phone).
-  Below 720px the crumb keeps only the subject link and the action; the test
-  title is in the app bar already and wrapped onto four lines otherwise.
-  `e2e/regression.cjs` asserts the order, the single row, and that nothing
-  overflows the card at 390px.
+  of the breadcrumb row, and **Previous · progress · Next** form one row at the
+  foot of the answer card, with *Clear answer* in the answer panel's own head.
+  The released result mirrors it, with *Retake test* in the same place. Below
+  560px that row becomes a grid, and `.st-navrow .btn` needs `min-width: 0`,
+  because `.btn` carries `min-width: 130px` and a bare `1fr` column cannot
+  shrink under it (the row spilled out of the card on a phone). Below 720px the
+  crumb keeps only the action; the test title is in the app bar already and
+  wrapped onto four lines otherwise. `e2e/regression.cjs` asserts the order,
+  the single row, and that nothing overflows the window at 390px.
 - **On a phone and a tablet the chrome moves out of the way** (≤899px):
   - **The page scrolls, not a box inside it.** `mount({scroll: "page"})` puts
     `.shell-scroll` on the shell, which unwinds `height: 100dvh` and the inner
@@ -1159,10 +1157,24 @@ question scrolling to the end — that rule holds everywhere a test is shown.
     bar names the test, the panel head names the question. Back
     (`.ed-crumb-back`, an arrow) sits left of Questions and returns to the
     subject's test list with the subject back in the bar.
-  - **Previous and Next ride the floor** — `.st-navrow` is `position: sticky;
-    bottom: 0`, with the answered count on the line **above** them rather than
-    buried under a thumb. Once the page reaches its end the row lands in its
-    own place; sticky gives both states with no JS.
+  - **Previous and Next are a fixed bottom bar** — `position: fixed; bottom: 0`,
+    always on the floor of the window, with the answered count on the line
+    **above** them rather than buried under a thumb. `.ed-center` carries
+    matching bottom padding (declared *after* the ≤480px block, whose `padding`
+    shorthand would otherwise reset it on the narrowest phones).
+    It was `position: sticky` for one release and could not keep the promise:
+    sticky only shifts an element within **its own containing block**, which
+    here is the answer panel the row closes — so on a short paper the panel
+    ended mid-screen, there was nothing to pull against, and the row sat in the
+    middle of the window. Fixed is the only thing that always means the bottom.
+    The bar stays **under** the drawer and its scrim (20 against 40/35): unlike
+    the rail, it is not the way off the screen, so the question list may cover
+    it.
+  - **Clear answer sits in the answer panel's head**, beside the *Answered*
+    chip — not in the steps row. It acts on the answer rather than on
+    navigation, a fixed bar has no room for a third full-width line, and it is
+    the one place it can never land under a thumb aiming for Next, which is the
+    hazard that put it last in the row to begin with.
   - **The drawer slides from the window's own left edge, under the row whose
     button opened it** — `position: fixed`, `left: 0`, running to the floor.
     It was `absolute`, so it started wherever the page did, which on a phone
@@ -1181,6 +1193,17 @@ question scrolling to the end — that rule holds everywhere a test is shown.
     profile stay whole beside them. This is the one exception to the rule that
     the app bar is a single line: the crumb row no longer carries the test's
     name at any width, so without it a phone says nothing about what is open.
+    **Three declarations in that grid are load-bearing, and all three were
+    missing at first.** `row-gap: 0`, because `column-gap` does not cancel
+    `row-gap` and `.shellbar` carries a `gap` shorthand that sets both — the
+    lines drifted apart, and with *no* subtitle the phantom gap under row 1
+    left the title riding above the brand beside it. `align-content: center`,
+    or the two auto rows stretch to fill `min-height` and the lines drift again
+    inside their own taller rows. And `.shell-scroll .shellbar-div {display:
+    none}`, because the divider is the one child the grid never places: it is
+    hidden only below 600px, so on a tablet it auto-placed into the subtitle's
+    own cell and inflated that row with its 22px. Space it with a margin on the
+    subtitle, never with a gap.
   - **A full-bleed screen keeps its own margins.** `.shell-main-full` sets
     `padding: 0`, and the small-screen `.shell-main` rules were quietly
     overriding it — 28px of a 320px phone. They now re-assert it. Measured on
@@ -1262,8 +1285,18 @@ row, one question in the middle (the student's answer, their photos, the
 awarded mark and the teacher's comment), the explanation on the right. Prev/next
 walk the paper and `?test=<id>&review=<questionId>` carries the place.
 
+**The paper has no bottom tab bar** (`.ed-paper` on its root, and no
+`data-pane`). It had one, and two of its three tabs did nothing: the
+`[data-pane]` rules hide `.ed-pane-question` / `.ed-pane-answer`, classes that
+exist only in the authoring editor, while `review.ts` renders plain `.ed-panel`
+sections. Only the third tab acted, by un-hiding the explanation — which now
+simply stacks under the answer on a phone. Dropping the attribute is what does
+it: with no `data-pane` none of those rules match, so the editor and Browse keep
+their tabs untouched. `.ed-paper` is also excluded from the 86px clearance that
+reserves room for a bar it no longer has.
+
 It reuses the editor's **layout only** — `.ed-cols`, `.ed-tree*`, `.ed-panel`,
-`.ed-preview`, `.ed-tabs` — under an `.ed-readonly` modifier. Never change those
+`.ed-preview` — under an `.ed-readonly` modifier. Never change those
 base rules: `e2e/editor.cjs` asserts `.ed-cols` computes to exactly three columns
 at 1280px and that `.ed-tree` / `.ed-explain` sit flush to the rail and the
 window edge. Do **not** reach into `src/screens/editor/` for this: its panels are
