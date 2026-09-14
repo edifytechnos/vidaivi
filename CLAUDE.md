@@ -891,13 +891,20 @@ It is also the better home for the data. What is being sent is a photograph of
 a child's handwriting; it now stays inside Azure rather than going to Google,
 and there is no free-tier-trains-on-your-data question to keep an eye on.
 
-- **`gpt-4o-mini` on the v1 GA surface**, called with plain `fetch` (no new
+- **`gpt-4.1-mini` on the v1 GA surface**, called with plain `fetch` (no new
   dependency): `POST {endpoint}/openai/v1/chat/completions`, the key in an
   **`api-key`** header, one user message whose `content` is a text part plus the
   photographs. v1 is GA, so there is **no `api-version` to keep in step with**.
+- **Not `gpt-4o-mini`, and this is counter-intuitive enough to write down.**
+  It bills images at roughly **33x** the tokens of the other models. Marking is
+  a photograph and two sentences, so image tokens are essentially the whole
+  bill: a two-photo answer is about **Rs 0.68** on gpt-4o-mini, **Rs 0.47** on
+  gpt-4o and **Rs 0.11** on gpt-4.1-mini — the "mini" is the dearest of the
+  three here. Avoid `gpt-4.1-nano` and `gpt-5-mini`: Microsoft lists both as
+  scheduled for shutdown.
 - **Three app settings switch it on**, and both of the first two are required:
   `AZURE_AI_ENDPOINT` (`https://<resource>.openai.azure.com`), `AZURE_AI_KEY`,
-  and optionally `AZURE_AI_DEPLOYMENT` (default `gpt-4o-mini`). That last one is
+  and optionally `AZURE_AI_DEPLOYMENT` (default `gpt-4.1-mini`). That last one is
   the **deployment** name from the portal, not the model id — they are only the
   same if you left the box alone. With either of the first two missing,
   `/api/assess` answers **501** and the client hides the button, exactly as

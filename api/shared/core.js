@@ -30,7 +30,7 @@ const AZURE_AI_ENDPOINT = (process.env.AZURE_AI_ENDPOINT || "").replace(/\/+$/, 
 const AZURE_AI_KEY = process.env.AZURE_AI_KEY;
 // The *deployment* name, which is whatever it was called in the portal — not
 // the model id. It defaults to the name this was built against.
-const AZURE_AI_DEPLOYMENT = process.env.AZURE_AI_DEPLOYMENT || "gpt-4o-mini";
+const AZURE_AI_DEPLOYMENT = process.env.AZURE_AI_DEPLOYMENT || "gpt-4.1-mini";
 const aiConfigured = () => !!(AZURE_AI_ENDPOINT && AZURE_AI_KEY);
 // A loaded key is a spending limit with no brakes: at roughly fifteen paise an
 // assessment, ₹500 is about 3,300 of them. A stuck retry, a loop, or a stolen
@@ -3331,7 +3331,9 @@ handlers.grading = async (context, req) => {
 // would matter if the request leaked.
 //
 // Cost: one call per press of "Assess with AI", never automatic. At
-// gpt-4o-mini rates a typical answer is a fraction of a rupee.
+// gpt-4.1-mini rates a typical two-photo answer is about a tenth of a rupee.
+// Not gpt-4o-mini: it bills images at roughly 33x the tokens, which on a
+// photograph-only workload like this one makes it the dearest of the three.
 
 const AI_TIMEOUT_MS = 45000;
 const AI_MAX_SOLUTION = 4000;
