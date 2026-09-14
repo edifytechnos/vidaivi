@@ -18,12 +18,10 @@ on:
   pull_request:
     types: [closed]
     branches: [main]
+  # Run by hand to redeploy QA without inventing a commit. It takes no inputs:
+  # there used to be a `close_environment` name here and it could never work —
+  # see the close job below.
   workflow_dispatch:
-    inputs:
-      close_environment:
-        description: "Name of a staging environment to close (frees a slot)"
-        required: false
-        type: string
 
 jobs:
   production:
@@ -67,11 +65,11 @@ jobs:
   # become two. A custom domain cannot be used here — Azure does not support
   # custom domains on preview environments, only on an app's production one.
   qa:
-    # Also runnable by hand (Run workflow, with close_environment left empty),
-    # to redeploy QA without inventing a commit.
+    # Also runnable by hand (Actions → Run workflow) to redeploy QA without
+    # inventing a commit.
     if: >-
       (github.event_name == 'push' && github.ref != 'refs/heads/main') ||
-      (github.event_name == 'workflow_dispatch' && inputs.close_environment == '')
+      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     name: Build and deploy to QA
     steps:
@@ -101,43 +99,28 @@ jobs:
           skip_app_build: true
           deployment_environment: qa
 
-  # Free a staging environment slot: automatically when a PR closes, or by hand
-  # via workflow_dispatch when a stale one needs clearing.
+  # Free a staging environment slot when a PR closes. There is deliberately no
+  # manual path here.
+  #
+  # `action: close` is a pull-request operation end to end: the action takes the
+  # environment from the PR in the event payload, `deployment_environment` is
+  # not even a declared input, and Azure answers anything else with
+  # "Request is missing the pull request id". The workflow used to advertise a
+  # close_environment name anyway, so every manual run failed and left a red
+  # check behind.
+  #
+  # Three things were tried before giving up on it, all rejected identically:
+  # passing the environment name, feeding the action a synthetic event naming
+  # it, and feeding it one carrying a plain number. **To free a slot by hand,
+  # delete the environment in the Azure portal** (Static Web App →
+  # Environments), or close and reopen a PR to recycle its own.
   close_environment:
-    if: github.event_name == 'pull_request' || inputs.close_environment != ''
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     name: Close a staging environment
     steps:
-      # A closing PR: the action reads the environment straight off the event.
       - name: Close the PR's own environment
-        if: github.event_name == 'pull_request'
         uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          action: close
-
-      # By hand. `action: close` takes the environment from the pull request in
-      # the event payload and ignores `deployment_environment` entirely, so a
-      # manual run used to fail with "Request is missing the pull request id" —
-      # the input was advertised and could never work.
-      #
-      # The action is a container that reads the event from GITHUB_EVENT_PATH,
-      # so give it one naming the environment to close. SWA names a PR's
-      # environment after the PR number, which is the field being borrowed here.
-      - name: Name the environment in an event the action will read
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          printf '{"action":"closed","number":"%s","pull_request":{"number":"%s"}}' \
-            '${{ inputs.close_environment }}' '${{ inputs.close_environment }}' \
-            > "$GITHUB_WORKSPACE/swa-close-event.json"
-
-      - name: Close it
-        if: github.event_name == 'workflow_dispatch'
-        uses: Azure/static-web-apps-deploy@v1
-        env:
-          # The workspace is mounted at /github/workspace inside the container.
-          GITHUB_EVENT_PATH: /github/workspace/swa-close-event.json
-          GITHUB_EVENT_NAME: pull_request
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: close
