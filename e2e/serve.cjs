@@ -72,6 +72,10 @@ http
         const out = {
           "content-type": upstream.headers.get("content-type") || "application/json",
         };
+        // The throttle answers 429 with Retry-After, and the suite reads it.
+        // Dropping it here made the API look like it had forgotten to send one.
+        const retryAfter = upstream.headers.get("retry-after");
+        if (retryAfter) out["retry-after"] = retryAfter;
         const setCookie = upstream.headers.getSetCookie
           ? upstream.headers.getSetCookie()
           : [upstream.headers.get("set-cookie")].filter(Boolean);

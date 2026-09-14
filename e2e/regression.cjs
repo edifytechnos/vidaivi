@@ -1233,6 +1233,12 @@ function check(ok, label) {
         // Three identities at once — teacher, student A, student B — which one
         // cookie jar cannot hold. The teacher stays in the page; the two
         // students run from Node, each with their own jar.
+        //
+        // The page is signed in as the student who just sat the test, so the
+        // teacher's jar goes back first: without it every call below runs as
+        // that student and answers 403.
+        const wsStudentJar = await keepSession();
+        await putSession(wsAdmin);
         const audience = await (async () => {
           const tests = wsTests;
           const teacher = (path, init) =>
@@ -1372,6 +1378,7 @@ function check(ok, label) {
             publishError: publishUnmarked.data.error || "",
           };
         })();
+        await putSession(wsStudentJar);
 
         if (audience.skip) {
           check(false, "who-sees-this: the throwaway students could not sign in");
