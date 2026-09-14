@@ -3381,3 +3381,279 @@ body.modal-open {
   .shellbar-sub { display: none; }
   .shellbar-title { min-width: 60px; }
 }
+
+
+/* ---- Multi-step dialogs and card choices (src/modal.ts) ------------------ */
+
+.modal-count {
+  flex: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.modal-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-step[hidden] {
+  display: none;
+}
+
+.modal-back {
+  flex: none;
+  min-width: 0;
+  padding: 10px 16px;
+}
+
+/* A card is a radio that looks like a tile: for choices about CONTENT — which
+   subject you teach — where the point is what you get, not what it is called. */
+.modal-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.modal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
+}
+
+.modal-card:hover {
+  border-color: var(--border-strong);
+}
+
+.modal-card-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.modal-card:has(.modal-card-input:checked) {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+/* Keyboard focus has to be visible when the radio itself is not. */
+.modal-card:has(.modal-card-input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.modal-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.modal-card-label {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.modal-card-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.modal-card-badge {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.modal-card-wide { grid-column: 1 / -1; }
+
+.modal-bulk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-bulk-btn {
+  padding: 5px 11px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-bulk-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+.modal-bulk-count {
+  margin-left: auto;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+@media (max-width: 600px) {
+  .modal-cards { grid-template-columns: 1fr; }
+}
+
+
+/* ---- First run: the panel that explains what a subject is for ------------ */
+
+.first-run {
+  max-width: 620px;
+  margin: 24px auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.fr-beats {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--border-strong);
+}
+
+.fr-beat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.fr-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fr-beat:first-child .fr-icon {
+  background: var(--primary-soft);
+  border-color: var(--primary-border);
+  color: var(--primary);
+}
+
+.fr-icon .icon { width: 24px; height: 24px; }
+.fr-arrow { width: 22px; height: 14px; flex: none; }
+
+.fr-beat-text {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.fr-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.fr-text {
+  margin: 0;
+  max-width: 460px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.fr-cta { flex: none; padding: 12px 22px; font-size: 14.5px; }
+
+.fr-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--green);
+  background: var(--green-bg);
+  border-radius: 6px;
+}
+
+.fr-note .icon { width: 14px; height: 14px; flex: none; }
+
+@media (max-width: 600px) {
+  .first-run { padding: 26px 18px; }
+  .fr-beats { gap: 8px; }
+  .fr-icon { width: 44px; height: 44px; }
+}
+
+/* ---- "N tests copied" — shown once, after creating from the library ------ */
+
+.ed-welcome {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px 16px;
+  margin-bottom: 14px;
+  background: var(--green-bg);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius);
+}
+
+.ed-welcome-mark {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ed-welcome-mark .icon { width: 14px; height: 14px; }
+
+.ed-welcome-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #047857;
+}
+
+.ed-welcome-body strong { color: #065f46; }
+
+.ed-welcome-x {
+  flex: none;
+  min-width: 0;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  color: #065f46;
+  background: var(--surface);
+  border-color: #a7f3d0;
+}

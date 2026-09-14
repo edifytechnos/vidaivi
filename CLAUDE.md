@@ -669,9 +669,26 @@ answer to every question.
 
 ## The shared modal also does radios and checklists (`src/modal.ts`)
 
-`ModalField.kind` is `"text"` (the default), `"radio"` or `"checklist"`, with
-`choices` and an optional `showWhen: {field, value}` that shows a field only
-while another holds a value. A checklist's ticks arrive as the **second**
+`ModalField.kind` is `"text"` (the default), `"radio"`, `"checklist"` or
+`"cards"`, with `choices` and an optional `showWhen: {field, value}` that shows a
+field only while another holds a value.
+
+- **`"cards"`** is a radio that looks like a tile — use it when the choice is
+  about *content* (which subject you teach) rather than a setting. A choice may
+  carry a `badge` (the promise: "14 ready-made tests") and `wide: true` to span
+  the row, for an option that is deliberately the lesser one.
+- **`bulk: true`** on a checklist adds Select all / Clear and a live count.
+- **`steps: ModalStep[]`** makes it a multi-step dialog: a "Step 1 of 2"
+  counter, a **Back** button, and validation that only ever checks the step
+  being answered. `onSubmit` still receives everything from every step, so
+  callers hold no state. `fields` without `steps` behaves exactly as before —
+  the student, teacher and assign dialogs all still use it.
+- **`submitLabel` may be a function** `(values, picks) => string`, recomputed on
+  every change, which is how the button can say "Create with 3 tests".
+- **`showWhen` only works because `.modal-field[hidden]` is declared.** An
+  author `display` rule outranks the UA's `[hidden]`, so without that line the
+  attribute is set and nothing moves — it silently showed the class list under
+  "Everyone I teach" in production for a while. A checklist's ticks arrive as the **second**
 argument to `onSubmit` (`picks[name]`), since one field yields many values; a
 radio also reports its single pick in `values`. This is how "Who sees this test"
 is built — use it rather than adding another inline form.
@@ -799,6 +816,34 @@ An hour-old session looked exactly like a teacher whose data had been deleted.
   state straight over the welcome; and `sessionJustExpired()` does **not** clear
   the flag on read, because the welcome screen can render more than once around
   an expiry. Both are cleared in `saveAuth` when someone signs in again.
+
+## New subject asks one thing per step (`src/screens/subjects.ts`)
+
+**The taxonomy is a consequence, not a question.** Picking "CBSE Class 10 Maths"
+*is* the board, the class and the subject, so only **Something else** asks for
+them — and then those three fields are the only thing on screen. The dialog this
+replaced put a content choice, a taxonomy chore and a second content choice in
+one scrolling box, and asked for the taxonomy even when it already knew it.
+
+- **Step 1 — what do you teach?** One `cards` field: a tile per built-in shelf
+  badged with its test count, plus a full-width **Something else**.
+- **Step 2 — which tests?** That shelf's tests as a `bulk` checklist (Select all
+  / Clear / a live count), or the three taxonomy fields on the Something-else
+  branch. The submit label counts — **Create with 3 tests**, falling back to
+  **Create subject** at zero, which is also how a teacher starts empty. There is
+  no separate Skip button because the label already says what will happen.
+- Copies land as **drafts**, and `vidai:justCopied` carries the count to the
+  editor, which shows one dismissible banner (`copiedBanner`) saying so and then
+  clears the key. That banner is the answer to "where did my test go?".
+- **A teacher who owns no subject gets `firstRunMarkup()`** instead of an empty
+  grid: a subject → holds your tests → students sit them, one button, and a note
+  that ready-made tests are included. Built-in shelves do not count as owning
+  one, or a teacher would never see it.
+- **This is where the library grows into a catalogue.** `openForm` currently
+  fetches every subject and every built-in test to open — fine at two shelves,
+  and the first thing to change when tests come from many authors. Search moves
+  server-side and the test list loads only for the shelf actually picked; the
+  two-step shape and Step 2 are already the right seam for it.
 
 ## Small creation flows use one modal (`src/modal.ts`)
 

@@ -858,6 +858,26 @@ function check(ok, label) {
     // subject are all needed" and named no field in particular.
     await page.click("#sub-new");
     await page.waitForSelector(".modal", { timeout: 15000 });
+    // Step 1 asks what you teach; the three fields live behind "Something else".
+    check(
+      (await page.textContent("#modal-count")).trim() === "Step 1 of 2",
+      "New subject opens on step 1 of 2"
+    );
+    check(
+      (await page.$$(".modal-card")).length >= 2,
+      "the built-in subjects are offered as cards"
+    );
+    check(
+      !(await page.isVisible('.modal-input[name="subject"]')),
+      "the taxonomy fields are not asked up front"
+    );
+    await page.click('.modal-card:has(input[value="__custom__"])');
+    await page.click(".modal-submit");
+    await page.waitForSelector('.modal-input[name="subject"]:visible', { timeout: 10000 });
+    check(
+      (await page.textContent("#modal-count")).trim() === "Step 2 of 2",
+      "choosing Something else advances to the fields"
+    );
     await page.fill('.modal-input[name="klass"]', "10");
     await page.click(".modal-submit");
     await page.waitForSelector(".modal-error:not([hidden])", { timeout: 10000 });
@@ -877,6 +897,43 @@ function check(ok, label) {
     await page.click("#sub-new");
     // Creating anything small goes through the shared modal now.
     await page.waitForSelector(".modal", { timeout: 15000 });
+
+    // A built-in card leads to that shelf's tests, and the button counts them.
+    await page.click(".modal-card:has(.modal-card-badge)");
+    await page.click(".modal-submit");
+    await page.waitForSelector(".modal-bulk", { timeout: 10000 });
+    check(
+      !(await page.isVisible('.modal-input[name="subject"]')),
+      "picking a built-in subject never asks for board, class and subject"
+    );
+    const ticks = await page.$$(".modal-step[data-step='1'] fieldset:not([hidden]) .modal-choice-input");
+    check(ticks.length > 1, `that shelf's tests are listed (${ticks.length})`);
+    check(
+      (await page.textContent(".modal-submit")).trim() === "Create subject",
+      "with nothing ticked the button offers an empty subject"
+    );
+    await ticks[0].click();
+    await page.waitForTimeout(200);
+    check(
+      (await page.textContent(".modal-submit")).trim() === "Create with 1 test",
+      `the button counts what is ticked (got "${(await page.textContent(".modal-submit")).trim()}")`
+    );
+    await page.click(".modal-bulk [data-bulk-none]");
+    await page.waitForTimeout(200);
+    check(
+      (await page.textContent(".modal-submit")).trim() === "Create subject",
+      "Clear empties the selection"
+    );
+    // Back returns to step 1 with the choice intact, then take the custom path.
+    await page.click(".modal-back");
+    await page.waitForTimeout(200);
+    check(
+      (await page.textContent("#modal-count")).trim() === "Step 1 of 2",
+      "Back returns to step 1"
+    );
+    await page.click('.modal-card:has(input[value="__custom__"])');
+    await page.click(".modal-submit");
+    await page.waitForSelector('.modal-input[name="subject"]:visible', { timeout: 10000 });
     await page.fill('.modal-input[name="board"]', "CBSE");
     await page.fill('.modal-input[name="klass"]', "12");
     await page.fill('.modal-input[name="subject"]', probe);

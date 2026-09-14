@@ -117,6 +117,7 @@ export async function showEditorForSubject(
 ): Promise<void> {
   onExit = back;
   treeSubject = subjectId;
+  takeCopiedNote();
   track("editor_subject_open", { subject: subjectId ?? "" });
   mount(skeleton.editor(), { title: "Loading…", active: "subjects", full: true });
 
@@ -183,6 +184,41 @@ function renderEmptyShell(): void {
 /** Only an admin may add to the built-in library. */
 function canAddHere(): boolean {
   return !viewingShelf() || isAdmin();
+}
+
+/**
+ * A one-off greeting after a subject is created from the library: the copies
+ * are drafts, students see nothing yet, and + adds more. Written by
+ * src/screens/subjects.ts, read and cleared here so it shows exactly once —
+ * "where did my test go?" is the confusion it exists to answer.
+ */
+const COPIED_KEY = "vidai:justCopied";
+let copiedNote = 0;
+
+function takeCopiedNote(): void {
+  try {
+    const raw = localStorage.getItem(COPIED_KEY);
+    if (raw) {
+      copiedNote = Number(raw) || 0;
+      localStorage.removeItem(COPIED_KEY);
+    }
+  } catch {}
+}
+
+function copiedBanner(): string {
+  if (copiedNote < 1) return "";
+  const n = copiedNote;
+  return `
+    <div class="ed-welcome" id="ed-welcome">
+      <span class="ed-welcome-mark">${ICONS.check}</span>
+      <span class="ed-welcome-body">
+        <strong>${n} test${n === 1 ? "" : "s"} copied into this subject</strong>
+        <span>They are <strong>yours now, as drafts</strong> — change any question you like.
+        Students see nothing until you press <strong>Publish</strong>. Need another paper?
+        Use <strong>+</strong> to add one, blank or from the built-in set.</span>
+      </span>
+      <button class="btn btn-ghost ed-welcome-x" id="ed-welcome-x">Got it</button>
+    </div>`;
 }
 
 /** Is the subject in the tree a built-in shelf rather than one of your own? */
@@ -533,6 +569,7 @@ function overviewMarkup(test: Test): string {
   const problemFor = (id: string) => problems.filter((p) => p.questionId === id);
   return `
     <div class="ed-overview">
+      ${copiedBanner()}
       <section class="ed-panel">
         <div class="ed-panel-head">
           <span class="ed-panel-label">Test details</span>
@@ -623,6 +660,10 @@ function bindOverview(): void {
       render();
     })
   );
+  document.getElementById("ed-welcome-x")?.addEventListener("click", () => {
+    copiedNote = 0;
+    document.getElementById("ed-welcome")?.remove();
+  });
   document.getElementById("ov-preview")?.addEventListener("click", () => {
     window.open(`./?test=${encodeURIComponent(test.id)}`, "_blank");
   });
