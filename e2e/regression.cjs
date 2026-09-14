@@ -1374,9 +1374,17 @@ function check(ok, label) {
         page.once("dialog", (d) => d.accept());
         await page.click("#st-submit");
         await page.waitForSelector(".score-card", { timeout: 20000 });
+        const scoreBig = (await page.textContent(".score-big")).replace(/\s+/g, " ").trim();
         check(
-          (await page.textContent(".score-big")).replace(/\s/g, "").startsWith("3/"),
+          scoreBig.replace(/\s/g, "").startsWith("3/"),
           "handing in scores only what is auto-graded"
+        );
+        // "4 / 14" was read as four of fourteen questions answered. The number
+        // is marks; the count it was mistaken for is now its own line.
+        check(/marks$/i.test(scoreBig), `the big number says what it counts ("${scoreBig}")`);
+        check(
+          /\d+ of \d+ questions? answered/.test(await page.textContent(".score-answered")),
+          "and how many questions were answered is stated separately"
         );
         check(await page.isVisible(".locked-title"), "the detail stays locked until the teacher releases it");
 

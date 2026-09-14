@@ -518,7 +518,7 @@ export function showScore(test: Test, attempt: Attempt, released?: boolean) {
   mount(
     `
     <main class="card score-card">
-      <div class="score-big">${attempt.score} / ${waiting.count ? graded : total}<span class="score-unit">marks</span></div>
+      <div class="score-big">${attempt.score} / ${waiting.count ? graded : total}<span class="score-unit"> marks</span></div>
       <div class="score-pct">${pct}%${waiting.count ? " of the marks given so far" : ""}</div>
       <p class="score-answered">${answered} of ${test.questions.length} question${
         test.questions.length === 1 ? "" : "s"
