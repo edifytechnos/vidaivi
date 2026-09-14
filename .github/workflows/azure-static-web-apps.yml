@@ -108,9 +108,36 @@ jobs:
     runs-on: ubuntu-latest
     name: Close a staging environment
     steps:
-      - name: Close
+      # A closing PR: the action reads the environment straight off the event.
+      - name: Close the PR's own environment
+        if: github.event_name == 'pull_request'
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: close
-          deployment_environment: ${{ inputs.close_environment || github.event.number }}
+
+      # By hand. `action: close` takes the environment from the pull request in
+      # the event payload and ignores `deployment_environment` entirely, so a
+      # manual run used to fail with "Request is missing the pull request id" —
+      # the input was advertised and could never work.
+      #
+      # The action is a container that reads the event from GITHUB_EVENT_PATH,
+      # so give it one naming the environment to close. SWA names a PR's
+      # environment after the PR number, which is the field being borrowed here.
+      - name: Name the environment in an event the action will read
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          printf '{"action":"closed","number":"%s","pull_request":{"number":"%s"}}' \
+            '${{ inputs.close_environment }}' '${{ inputs.close_environment }}' \
+            > "$GITHUB_WORKSPACE/swa-close-event.json"
+
+      - name: Close it
+        if: github.event_name == 'workflow_dispatch'
+        uses: Azure/static-web-apps-deploy@v1
+        env:
+          # The workspace is mounted at /github/workspace inside the container.
+          GITHUB_EVENT_PATH: /github/workspace/swa-close-event.json
+          GITHUB_EVENT_NAME: pull_request
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: close
