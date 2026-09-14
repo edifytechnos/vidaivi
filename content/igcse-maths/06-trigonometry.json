@@ -1,0 +1,190 @@
+{
+  "id": "lib-ig-trigonometry",
+  "title": "Trigonometry",
+  "chapter": "Topic Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igt-001",
+      "chapter": "Trigonometry",
+      "topic": "Basic ratios",
+      "type": "mcq",
+      "q": "In a right-angled triangle, $\\sin\\theta$ equals:",
+      "solution": "**SOH-CAH-TOA:** $\\sin = \\dfrac{\\text{O}}{\\text{H}}$, $\\cos = \\dfrac{\\text{A}}{\\text{H}}$, $\\tan = \\dfrac{\\text{O}}{\\text{A}}$.\n\n'Opposite' and 'adjacent' are always relative to the angle you are working with — they swap if you change angle.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\text{opposite}}{\\text{hypotenuse}}$",
+        "$\\dfrac{\\text{adjacent}}{\\text{hypotenuse}}$",
+        "$\\dfrac{\\text{opposite}}{\\text{adjacent}}$",
+        "$\\dfrac{\\text{hypotenuse}}{\\text{opposite}}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igt-002",
+      "chapter": "Trigonometry",
+      "topic": "Exact values",
+      "type": "mcq",
+      "q": "$\\tan 45°$ equals:",
+      "solution": "In a right-angled isosceles triangle the two shorter sides are equal, so opposite $=$ adjacent and $\\tan 45° = \\mathbf{1}$.\n\nWorth knowing exactly: $\\sin 30° = \\tfrac12$, $\\cos 60° = \\tfrac12$, $\\tan 60° = \\sqrt3$, $\\sin 45° = \\tfrac{1}{\\sqrt2}$.",
+      "marks": 1,
+      "options": [
+        "0",
+        "1",
+        "$\\sqrt{3}$",
+        "$\\dfrac{1}{\\sqrt{3}}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igt-003",
+      "chapter": "Trigonometry",
+      "topic": "Sine rule",
+      "type": "mcq",
+      "q": "The sine rule states:",
+      "solution": "The **sine rule** pairs each side with the angle opposite it.\n\nUse it when you have a side and its opposite angle, plus one more piece of information. The second option is the **cosine rule**, used when you have two sides and the angle between them, or all three sides.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{a}{\\sin A} = \\dfrac{b}{\\sin B} = \\dfrac{c}{\\sin C}$",
+        "$a^{2} = b^{2} + c^{2} - 2bc\\cos A$",
+        "$a + b > c$",
+        "$\\sin^{2}A + \\cos^{2}A = 1$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igt-004",
+      "chapter": "Trigonometry",
+      "topic": "Area of a triangle",
+      "type": "mcq",
+      "q": "The area of a triangle with sides $a$ and $b$ and included angle $C$ is:",
+      "solution": "$\\text{Area} = \\mathbf{\\dfrac12 ab\\sin C}$.\n\nThe angle must be the one **between** the two sides. At $C = 90°$, $\\sin C = 1$ and it reduces to the familiar $\\tfrac12 \\times$ base $\\times$ height.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac12 ab$",
+        "$\\dfrac12 ab\\sin C$",
+        "$ab\\sin C$",
+        "$\\dfrac12 ab\\cos C$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igt-005",
+      "chapter": "Trigonometry",
+      "topic": "Angle of elevation",
+      "type": "mcq",
+      "q": "The angle of elevation of the top of a tower from a point on the ground is the angle between:",
+      "solution": "It is measured **from the horizontal, upwards** to the line of sight.\n\nThe **angle of depression** is measured from the horizontal downwards, and the two are equal for the same pair of points — alternate angles between parallel horizontals.",
+      "marks": 1,
+      "options": [
+        "the tower and the ground",
+        "the horizontal and the line of sight to the top",
+        "the vertical and the line of sight",
+        "two lines of sight"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igt-006",
+      "chapter": "Trigonometry",
+      "topic": "Finding a side",
+      "type": "numeric",
+      "q": "In a right-angled triangle, the hypotenuse is $10$ cm and one angle is $30°$. Find the side opposite that angle, in cm.",
+      "solution": "$\\sin 30° = \\dfrac{\\text{opposite}}{10} \\Rightarrow \\text{opposite} = 10 \\times 0.5 = \\mathbf{5}$ cm.\n\nIn a $30$–$60$–$90$ triangle the shortest side is always exactly half the hypotenuse.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igt-007",
+      "chapter": "Trigonometry",
+      "topic": "Finding an angle",
+      "type": "numeric",
+      "q": "In a right-angled triangle, the opposite side is $3$ cm and the adjacent $4$ cm. Find the angle, in degrees, correct to one decimal place.",
+      "solution": "$\\tan\\theta = \\dfrac34 = 0.75$\n\n$\\theta = \\tan^{-1}(0.75) = \\mathbf{36.9°}$.\n\nThe $3$–$4$–$5$ triangle has angles of about $36.9°$ and $53.1°$ — worth recognising on sight.",
+      "marks": 2,
+      "answer": 36.9,
+      "tolerance": 0.3
+    },
+    {
+      "id": "igt-008",
+      "chapter": "Trigonometry",
+      "topic": "Area of a triangle",
+      "type": "numeric",
+      "q": "Find the area (in cm$^{2}$) of a triangle with sides $6$ cm and $8$ cm and an included angle of $30°$.",
+      "solution": "$\\text{Area} = \\dfrac12 ab\\sin C = \\dfrac12 \\times 6 \\times 8 \\times 0.5 = \\mathbf{12}$ cm$^{2}$.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igt-009",
+      "chapter": "Trigonometry",
+      "topic": "Cosine rule",
+      "type": "numeric",
+      "q": "In triangle $ABC$, $b = 5$, $c = 8$ and $A = 60°$. Find $a$, correct to two decimal places.",
+      "solution": "$a^{2} = b^{2} + c^{2} - 2bc\\cos A = 25 + 64 - 2(5)(8)(0.5) = 89 - 40 = 49$.\n\n$a = \\mathbf{7}$.\n\nAt $A = 60°$, $\\cos A = \\tfrac12$, so the correction term is exactly $bc$ — one of the reasons $60°$ appears so often in textbook questions.",
+      "marks": 2,
+      "answer": 7,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igt-010",
+      "chapter": "Trigonometry",
+      "topic": "Angle of elevation",
+      "type": "numeric",
+      "q": "A tower is $30$ m tall. From a point $30$ m from its base, find the angle of elevation of its top, in degrees.",
+      "solution": "$\\tan\\theta = \\dfrac{30}{30} = 1 \\Rightarrow \\theta = \\mathbf{45°}$.\n\nEqual height and distance always gives $45°$ — worth using as a quick sanity check on any elevation answer.",
+      "marks": 2,
+      "answer": 45,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igt-011",
+      "chapter": "Trigonometry",
+      "topic": "Sine rule",
+      "type": "long",
+      "q": "In triangle $ABC$, $A = 40°$, $B = 75°$ and $a = 12$ cm. Find $b$ and the third angle.",
+      "solution": "**Third angle:**\n\n$C = 180 - 40 - 75 = \\mathbf{65°}$.\n\n**Sine rule:**\n\n$\\dfrac{a}{\\sin A} = \\dfrac{b}{\\sin B}$\n\n$b = \\dfrac{a\\sin B}{\\sin A} = \\dfrac{12 \\times \\sin 75°}{\\sin 40°} = \\dfrac{12 \\times 0.9659}{0.6428}$\n\n$b = \\mathbf{18.03}$ cm.\n\n**Sanity check:** $B$ is the largest angle, so $b$ should be the longest side — and $18.03 > 12$ ✓\n\nThe biggest side always faces the biggest angle, which catches most sine-rule slips before they cost a mark.",
+      "marks": 3
+    },
+    {
+      "id": "igt-012",
+      "chapter": "Trigonometry",
+      "topic": "Cosine rule",
+      "type": "long",
+      "q": "In triangle $PQR$, $p = 7$ cm, $q = 9$ cm and $r = 12$ cm. Find the largest angle, correct to one decimal place.",
+      "solution": "The **largest angle** is opposite the **longest side**, so it is $R$, opposite $r = 12$.\n\n**Cosine rule rearranged:**\n\n$\\cos R = \\dfrac{p^{2} + q^{2} - r^{2}}{2pq} = \\dfrac{49 + 81 - 144}{2(7)(9)} = \\dfrac{-14}{126} = -0.1111$\n\n$R = \\cos^{-1}(-0.1111) = \\mathbf{96.4°}$.\n\n**Reading the sign.** A **negative** cosine means an **obtuse** angle, so the triangle is obtuse-angled — which the numbers already hinted at, since $12^{2} = 144$ exceeds $7^{2} + 9^{2} = 130$.\n\nThat comparison is a quick test in itself: if the square of the longest side is greater than the sum of the other two squares, the triangle is obtuse; equal, and it is right-angled.",
+      "marks": 3
+    },
+    {
+      "id": "igt-013",
+      "chapter": "Trigonometry",
+      "topic": "Bearings and angles of elevation",
+      "type": "long",
+      "q": "From the top of a cliff $80$ m high, the angles of depression of two boats in line with the foot of the cliff are $30°$ and $45°$. Find the distance between the boats. Take $\\sqrt{3} = 1.732$.",
+      "solution": "Let the foot of the cliff be $F$, the top $T$, and the boats $A$ (further) and $B$ (nearer).\n\nThe angle of depression from $T$ equals the angle of elevation from the boat — alternate angles between two horizontals.\n\n**Nearer boat ($45°$):**\n\n$\\tan 45° = \\dfrac{80}{FB} \\Rightarrow FB = \\dfrac{80}{1} = 80$ m.\n\n**Further boat ($30°$):**\n\n$\\tan 30° = \\dfrac{80}{FA} \\Rightarrow FA = \\dfrac{80}{\\tan 30°} = 80\\sqrt3 = 80 \\times 1.732 = 138.56$ m.\n\n**Distance between the boats:**\n\n$AB = FA - FB = 138.56 - 80 = \\mathbf{58.56}$ m.\n\n**Which angle goes with which boat?** The **smaller** angle of depression belongs to the **further** boat — a distant object is seen closer to the horizontal. Getting that the wrong way round gives a negative distance, which is at least an obvious warning.\n\n**Check:** both boats are on the same side, so the distances subtract. Had they been on opposite sides of the cliff, they would have added.",
+      "marks": 5
+    },
+    {
+      "id": "igt-014",
+      "chapter": "Trigonometry",
+      "topic": "Three-dimensional trigonometry",
+      "type": "long",
+      "q": "A vertical mast stands at a corner of a horizontal rectangular field $30$ m by $40$ m. The angle of elevation of the top of the mast from the opposite corner is $20°$. Find the height of the mast. Take $\\tan 20° = 0.364$.",
+      "solution": "**Step 1 — find the diagonal of the field**, which is the horizontal distance from the mast's base to the opposite corner:\n\n$d = \\sqrt{30^{2} + 40^{2}} = \\sqrt{900 + 1600} = \\sqrt{2500} = 50$ m.\n\n**Step 2 — use the elevation** in the vertical triangle formed by the mast, the diagonal, and the line of sight:\n\n$\\tan 20° = \\dfrac{h}{50}$\n\n$h = 50 \\times 0.364 = \\mathbf{18.2}$ m.\n\n**The method for every 3D question:** find the right-angled triangle that contains what you want, and get whatever horizontal distance it needs from a **separate** horizontal triangle first.\n\nTwo flat triangles, taken in the right order, solve a problem that looks three-dimensional. Sketching each one separately, out of the 3D picture, is what makes it manageable.",
+      "marks": 3
+    },
+    {
+      "id": "igt-015",
+      "chapter": "Trigonometry",
+      "topic": "Trigonometric graphs",
+      "type": "long",
+      "q": "Describe the graphs of $y = \\sin x$ and $y = \\cos x$ for $0° \\le x \\le 360°$, giving their maxima, minima and zeros.",
+      "solution": "**$y = \\sin x$**\n\n• Starts at $(0, 0)$\n\n• **Maximum** $1$ at $x = 90°$\n\n• **Zero** again at $x = 180°$\n\n• **Minimum** $-1$ at $x = 270°$\n\n• Back to $0$ at $x = 360°$\n\n**$y = \\cos x$**\n\n• Starts at $(0, 1)$\n\n• **Zero** at $x = 90°$\n\n• **Minimum** $-1$ at $x = 180°$\n\n• **Zero** at $x = 270°$\n\n• Back to $1$ at $x = 360°$\n\n**Both** have amplitude $1$, period $360°$, and range $-1 \\le y \\le 1$. The cosine graph is the sine graph shifted **left by $90°$** — they are the same wave, started at different points.\n\n**Why the graphs matter:** an equation such as $\\sin x = 0.5$ has **two** solutions in $0°$ to $360°$ ($30°$ and $150°$), and a calculator gives only one. The graph shows you where the other is.",
+      "marks": 2
+    }
+  ]
+}

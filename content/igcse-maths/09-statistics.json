@@ -1,0 +1,190 @@
+{
+  "id": "lib-ig-statistics",
+  "title": "Statistics",
+  "chapter": "Topic Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igs-001",
+      "chapter": "Statistics",
+      "topic": "Averages",
+      "type": "mcq",
+      "q": "The mode of the data $3, 5, 5, 7, 9, 5, 2$ is:",
+      "solution": "The **mode** is the value that occurs most often. $5$ appears three times, so the mode is $\\mathbf{5}$.\n\nIt is the only average that can be used for non-numerical data — the most popular colour, for instance.",
+      "marks": 1,
+      "options": [
+        "3",
+        "5",
+        "7",
+        "2"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igs-002",
+      "chapter": "Statistics",
+      "topic": "Median",
+      "type": "mcq",
+      "q": "The median of $4, 8, 2, 9, 6$ is:",
+      "solution": "**Sort first** — this is where the marks are lost: $2, 4, 6, 8, 9$.\n\nThe middle value is $\\mathbf{6}$.\n\nWith an even number of values, the median is the mean of the middle two.",
+      "marks": 1,
+      "options": [
+        "6",
+        "4",
+        "8",
+        "5.8"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igs-003",
+      "chapter": "Statistics",
+      "topic": "Mean",
+      "type": "mcq",
+      "q": "The mean of $10, 12, 14, 16, 18$ is:",
+      "solution": "$\\dfrac{10 + 12 + 14 + 16 + 18}{5} = \\dfrac{70}{5} = \\mathbf{14}$.\n\nThe data are evenly spaced, so the mean equals the middle value — a useful shortcut when it applies.",
+      "marks": 1,
+      "options": [
+        "12",
+        "14",
+        "16",
+        "15"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igs-004",
+      "chapter": "Statistics",
+      "topic": "Range",
+      "type": "mcq",
+      "q": "The range of $12, 5, 19, 7, 15$ is:",
+      "solution": "Range $=$ largest $-$ smallest $= 19 - 5 = \\mathbf{14}$.\n\nThe range measures **spread**, not a typical value — and being based on just two numbers, it is badly affected by a single outlier.",
+      "marks": 1,
+      "options": [
+        "12",
+        "14",
+        "19",
+        "5"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igs-005",
+      "chapter": "Statistics",
+      "topic": "Cumulative frequency",
+      "type": "mcq",
+      "q": "On a cumulative frequency curve, the median is read off at:",
+      "solution": "Read across from **half the total frequency** and down to the horizontal axis.\n\nThe lower quartile is at a quarter of the total, the upper quartile at three quarters, and the **interquartile range** is the difference — a measure of spread that ignores the extremes altogether.",
+      "marks": 1,
+      "options": [
+        "the highest point",
+        "half the total frequency",
+        "a quarter of the total frequency",
+        "the lowest point"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igs-006",
+      "chapter": "Statistics",
+      "topic": "Mean",
+      "type": "numeric",
+      "q": "Find the mean of $7, 11, 9, 13, 15$.",
+      "solution": "$\\dfrac{7 + 11 + 9 + 13 + 15}{5} = \\dfrac{55}{5} = \\mathbf{11}$.",
+      "marks": 2,
+      "answer": 11,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igs-007",
+      "chapter": "Statistics",
+      "topic": "Median",
+      "type": "numeric",
+      "q": "Find the median of $3, 7, 8, 10, 12, 15$.",
+      "solution": "Six values, so the median is the mean of the 3rd and 4th:\n\n$\\dfrac{8 + 10}{2} = \\mathbf{9}$.\n\nThe median need not be one of the data values.",
+      "marks": 2,
+      "answer": 9,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igs-008",
+      "chapter": "Statistics",
+      "topic": "Mean from a frequency table",
+      "type": "numeric",
+      "q": "Five students scored $2$ marks, three scored $5$ marks and two scored $8$ marks. Find the mean score, correct to one decimal place.",
+      "solution": "Total marks $= 5(2) + 3(5) + 2(8) = 10 + 15 + 16 = 41$.\n\nNumber of students $= 10$.\n\nMean $= \\dfrac{41}{10} = \\mathbf{4.1}$.\n\nFor a frequency table, the mean is $\\dfrac{\\sum fx}{\\sum f}$ — never the mean of the $x$ values alone.",
+      "marks": 2,
+      "answer": 4.1,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igs-009",
+      "chapter": "Statistics",
+      "topic": "Interquartile range",
+      "type": "numeric",
+      "q": "For a data set, the lower quartile is $12$ and the upper quartile is $28$. Find the interquartile range.",
+      "solution": "$\\text{IQR} = Q_{3} - Q_{1} = 28 - 12 = \\mathbf{16}$.\n\nIt covers the **middle half** of the data and so is unaffected by outliers, which is why it is preferred to the range for skewed data.",
+      "marks": 2,
+      "answer": 16,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igs-010",
+      "chapter": "Statistics",
+      "topic": "Missing value",
+      "type": "numeric",
+      "q": "The mean of five numbers is $12$. Four of them are $8$, $10$, $14$ and $16$. Find the fifth.",
+      "solution": "Total needed $= 5 \\times 12 = 60$.\n\nSum of the four given $= 8 + 10 + 14 + 16 = 48$.\n\nFifth number $= 60 - 48 = \\mathbf{12}$.\n\nTurning 'mean' into 'total' is the move that makes every missing-value question straightforward.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igs-011",
+      "chapter": "Statistics",
+      "topic": "Mean from a grouped frequency table",
+      "type": "long",
+      "q": "Explain how to estimate the mean from a grouped frequency table, and say why the answer is only an estimate.",
+      "solution": "**Method.**\n\n1. Find the **midpoint** $x$ of each class — add the two class boundaries and halve.\n\n2. Multiply each midpoint by its frequency to get $fx$.\n\n3. Estimated mean $= \\dfrac{\\sum fx}{\\sum f}$.\n\n**Worked example.** Heights $150$–$160$ (frequency 4), $160$–$170$ (frequency 10), $170$–$180$ (frequency 6):\n\nMidpoints: $155$, $165$, $175$.\n\n$\\sum fx = 4(155) + 10(165) + 6(175) = 620 + 1650 + 1050 = 3320$\n\n$\\sum f = 20$\n\nEstimated mean $= \\dfrac{3320}{20} = \\mathbf{166}$ cm.\n\n**Why only an estimate.** Once the data are grouped, the individual values are lost. Using the midpoint assumes the values in each class are spread **evenly** about it, which is generally not quite true.\n\nIf a class is heavily weighted towards one end — as the tallest class often is — the estimate drifts. Narrower classes give a better estimate, at the cost of a longer table.",
+      "marks": 3
+    },
+    {
+      "id": "igs-012",
+      "chapter": "Statistics",
+      "topic": "Comparing distributions",
+      "type": "long",
+      "q": "Two classes sat the same test. Class A had mean $65$ and range $20$; class B had mean $65$ and range $45$. Compare the two classes.",
+      "solution": "**The averages are the same.** Both classes have a mean of $65$, so on average they performed identically — a single figure would suggest there is nothing to choose between them.\n\n**The spreads are very different.** Class A's range of $20$ against class B's $45$ means class A's marks are **clustered** near $65$, while class B's are **widely scattered**.\n\n**What that implies.** Class B contains both much stronger and much weaker students than class A. Class A is more uniform, and its mean describes the typical student well; class B's mean describes hardly anyone.\n\n**For a teacher,** that is the more useful finding. Class B needs differentiated work — the weakest students are further behind than any average suggests — while class A can be taught largely as one group.\n\n**The lesson.** Always compare **an average and a measure of spread**. An average alone can hide the whole story, and this pair of classes is the standard demonstration of it.\n\n(The interquartile range would be better still, since the range depends entirely on the two most extreme students.)",
+      "marks": 3
+    },
+    {
+      "id": "igs-013",
+      "chapter": "Statistics",
+      "topic": "Cumulative frequency",
+      "type": "long",
+      "q": "Explain how to draw a cumulative frequency curve and how to read off the median, quartiles and interquartile range. Say what a box-and-whisker plot adds.",
+      "solution": "**Drawing the curve.**\n\n1. Add the frequencies as you go down the table, giving a running total.\n\n2. Plot each cumulative frequency against the **upper class boundary** — not the midpoint, because you can only be sure that everyone in the class is below its top.\n\n3. Join the points with a smooth curve. It always rises, ending at the total frequency, and is S-shaped for a roughly symmetrical distribution.\n\n**Reading it off** — with total frequency $n$:\n\n• **Median:** read across from $\\dfrac{n}{2}$.\n\n• **Lower quartile $Q_{1}$:** from $\\dfrac{n}{4}$.\n\n• **Upper quartile $Q_{3}$:** from $\\dfrac{3n}{4}$.\n\n• **Interquartile range:** $Q_{3} - Q_{1}$.\n\nThe curve also answers questions such as 'how many scored more than 70?' — read up from 70, and subtract from the total.\n\n**Box-and-whisker plot.** It shows five figures at once: minimum, $Q_{1}$, median, $Q_{3}$, maximum.\n\nIts value is in **comparison**: two boxes drawn on the same scale show at a glance which group scored higher and which was more consistent. A box far from the middle of its whiskers reveals **skew**, which a mean and range together would never show.",
+      "marks": 5
+    },
+    {
+      "id": "igs-014",
+      "chapter": "Statistics",
+      "topic": "Choosing an average",
+      "type": "long",
+      "q": "Compare the mean, median and mode, and say which is most appropriate for: house prices, shoe sizes stocked by a shop, and test marks in a class.",
+      "solution": "**Mean** — uses every value, so it reflects all the data. But it is badly distorted by **outliers**.\n\n**Median** — the middle value. Unaffected by outliers, but ignores the actual sizes of the other values.\n\n**Mode** — the most common value. The only average available for non-numerical data, and there may be none or several.\n\n**House prices — the median.** A few enormously expensive houses drag the mean far above what a typical house costs. This is why property reports quote median prices.\n\n**Shoe sizes for a shop — the mode.** The shopkeeper needs the size that **sells most**, not an arithmetic average. A mean shoe size of $8.37$ helps nobody, and there may be no such shoe.\n\n**Test marks — the mean**, provided there are no extreme outliers. It uses every mark and responds sensitively to a whole-class improvement.\n\n**The general rule:** use the mean for fairly symmetrical numerical data, the median when the data are skewed or contain outliers, and the mode for categories or for stock decisions.",
+      "marks": 3
+    },
+    {
+      "id": "igs-015",
+      "chapter": "Statistics",
+      "topic": "Scatter diagrams",
+      "type": "long",
+      "q": "What does a scatter diagram show? Describe the types of correlation, and explain why correlation does not prove causation.",
+      "solution": "**What it shows.** A scatter diagram plots two variables against each other, one point per item, to reveal any relationship between them.\n\n**Types of correlation.**\n\n• **Positive** — as one increases, so does the other; the points slope up. *Height against arm span.*\n\n• **Negative** — as one increases, the other decreases; the points slope down. *Age of a car against its value.*\n\n• **No correlation** — the points are scattered with no pattern. *Shoe size against examination mark.*\n\nThe correlation is **strong** when the points lie close to a straight line, **weak** when they are loosely scattered about one.\n\n**Line of best fit.** Drawn through the middle of the points, passing through the mean point, with roughly equal numbers each side. It is used to **estimate** — reliably **within** the range of the data (interpolation), far less so outside it (extrapolation).\n\n**Why correlation is not causation.** Two variables can move together because:\n\n1. One really does cause the other.\n\n2. Both are caused by a **third factor**. Ice cream sales and drowning deaths correlate strongly — because hot weather raises both.\n\n3. **Coincidence**, especially with a small sample.\n\nA scatter diagram can show that two things move together. Only an experiment, or a proper causal argument, can show that one makes the other happen.",
+      "marks": 2
+    }
+  ]
+}

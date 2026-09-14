@@ -1,0 +1,190 @@
+{
+  "id": "lib-ig-mensuration",
+  "title": "Mensuration",
+  "chapter": "Topic Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igm-001",
+      "chapter": "Mensuration",
+      "topic": "Area of a circle",
+      "type": "mcq",
+      "q": "The area of a circle of radius $7$ cm, taking $\\pi = \\dfrac{22}{7}$, is:",
+      "solution": "$A = \\pi r^{2} = \\dfrac{22}{7} \\times 49 = \\mathbf{154}$ cm$^{2}$.\n\n$44$ cm is the **circumference**, not the area — check the units, since area is always in squared units.",
+      "marks": 1,
+      "options": [
+        "$44$ cm$^{2}$",
+        "$154$ cm$^{2}$",
+        "$22$ cm$^{2}$",
+        "$49$ cm$^{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igm-002",
+      "chapter": "Mensuration",
+      "topic": "Volume of a cylinder",
+      "type": "mcq",
+      "q": "The volume of a cylinder of radius $r$ and height $h$ is:",
+      "solution": "$V = \\mathbf{\\pi r^{2}h}$ — the area of the circular base times the height.\n\n$2\\pi rh$ is the **curved surface area**, and $\\tfrac13\\pi r^{2}h$ is the volume of a **cone**.",
+      "marks": 1,
+      "options": [
+        "$2\\pi rh$",
+        "$\\pi r^{2}h$",
+        "$\\dfrac13\\pi r^{2}h$",
+        "$4\\pi r^{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igm-003",
+      "chapter": "Mensuration",
+      "topic": "Surface area of a sphere",
+      "type": "mcq",
+      "q": "The surface area of a sphere of radius $r$ is:",
+      "solution": "$S = \\mathbf{4\\pi r^{2}}$ — exactly four times the area of its own great circle.\n\n$\\dfrac43\\pi r^{3}$ is the **volume**.",
+      "marks": 1,
+      "options": [
+        "$\\pi r^{2}$",
+        "$2\\pi r^{2}$",
+        "$4\\pi r^{2}$",
+        "$\\dfrac43\\pi r^{3}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igm-004",
+      "chapter": "Mensuration",
+      "topic": "Arc length",
+      "type": "mcq",
+      "q": "The length of an arc subtending an angle $\\theta$ at the centre of a circle of radius $r$ is:",
+      "solution": "An arc is a **fraction** of the whole circumference, and that fraction is $\\dfrac{\\theta}{360}$:\n\n$\\text{arc} = \\mathbf{\\dfrac{\\theta}{360} \\times 2\\pi r}$.\n\nThe same fraction of the area gives the **sector**: $\\dfrac{\\theta}{360} \\times \\pi r^{2}$.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\theta}{360} \\times 2\\pi r$",
+        "$\\dfrac{\\theta}{360} \\times \\pi r^{2}$",
+        "$\\theta r$",
+        "$2\\pi r$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igm-005",
+      "chapter": "Mensuration",
+      "topic": "Volume of a cone",
+      "type": "mcq",
+      "q": "A cone and a cylinder have the same base and the same height. The volume of the cone is:",
+      "solution": "$V_{\\text{cone}} = \\dfrac13\\pi r^{2}h$, which is **one third** of the cylinder's $\\pi r^{2}h$.\n\nIt takes exactly three coneloads of water to fill the matching cylinder — a classroom demonstration worth remembering, because it fixes the $\\tfrac13$ for good.",
+      "marks": 1,
+      "options": [
+        "the same",
+        "half the cylinder's",
+        "one third of the cylinder's",
+        "twice the cylinder's"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igm-006",
+      "chapter": "Mensuration",
+      "topic": "Circumference",
+      "type": "numeric",
+      "q": "Find the circumference (in cm) of a circle of radius $14$ cm, taking $\\pi = \\dfrac{22}{7}$.",
+      "solution": "$C = 2\\pi r = 2 \\times \\dfrac{22}{7} \\times 14 = \\mathbf{88}$ cm.",
+      "marks": 2,
+      "answer": 88,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igm-007",
+      "chapter": "Mensuration",
+      "topic": "Volume of a cylinder",
+      "type": "numeric",
+      "q": "Find the volume (in cm$^{3}$) of a cylinder of radius $7$ cm and height $10$ cm, taking $\\pi = \\dfrac{22}{7}$.",
+      "solution": "$V = \\pi r^{2}h = \\dfrac{22}{7} \\times 49 \\times 10 = \\mathbf{1540}$ cm$^{3}$.",
+      "marks": 2,
+      "answer": 1540,
+      "tolerance": 2
+    },
+    {
+      "id": "igm-008",
+      "chapter": "Mensuration",
+      "topic": "Area of a trapezium",
+      "type": "numeric",
+      "q": "Find the area (in cm$^{2}$) of a trapezium with parallel sides $8$ cm and $12$ cm, and height $5$ cm.",
+      "solution": "$A = \\dfrac12(a + b)h = \\dfrac12(8 + 12) \\times 5 = \\mathbf{50}$ cm$^{2}$.\n\nIt is the **average** of the parallel sides times the height — which is why the formula also works for a rectangle, where the two are equal.",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igm-009",
+      "chapter": "Mensuration",
+      "topic": "Volume of a sphere",
+      "type": "numeric",
+      "q": "Find the volume of a sphere of radius $3$ cm in terms of $\\pi$: the answer is $k\\pi$ cm$^{3}$. Find $k$.",
+      "solution": "$V = \\dfrac43\\pi r^{3} = \\dfrac43\\pi(27) = 36\\pi$, so $k = \\mathbf{36}$.",
+      "marks": 2,
+      "answer": 36,
+      "tolerance": 0
+    },
+    {
+      "id": "igm-010",
+      "chapter": "Mensuration",
+      "topic": "Sector area",
+      "type": "numeric",
+      "q": "Find the area (in cm$^{2}$) of a sector of angle $90°$ in a circle of radius $4$ cm, taking $\\pi = 3.14$.",
+      "solution": "A $90°$ sector is a **quarter** of the circle:\n\n$\\dfrac{90}{360} \\times 3.14 \\times 16 = \\dfrac14 \\times 50.24 = \\mathbf{12.56}$ cm$^{2}$.",
+      "marks": 2,
+      "answer": 12.56,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igm-011",
+      "chapter": "Mensuration",
+      "topic": "Compound shapes",
+      "type": "long",
+      "q": "A solid consists of a hemisphere of radius $7$ cm surmounted by a cone of the same radius and height $24$ cm. Find the total volume and the total surface area. Take $\\pi = \\dfrac{22}{7}$.",
+      "solution": "**Volume of the hemisphere:**\n\n$\\dfrac23\\pi r^{3} = \\dfrac23 \\times \\dfrac{22}{7} \\times 343 = \\dfrac{2 \\times 22 \\times 49}{3} = \\dfrac{2156}{3} \\approx 718.67$ cm$^{3}$.\n\n**Volume of the cone:**\n\n$\\dfrac13\\pi r^{2}h = \\dfrac13 \\times \\dfrac{22}{7} \\times 49 \\times 24 = \\dfrac{22 \\times 7 \\times 24}{3} = 1232$ cm$^{3}$.\n\n**Total volume $\\approx \\mathbf{1950.67}$ cm$^{3}$.**\n\n**Surface area.** The slant height of the cone:\n\n$l = \\sqrt{r^{2} + h^{2}} = \\sqrt{49 + 576} = \\sqrt{625} = 25$ cm.\n\nCurved surface of the cone $= \\pi r l = \\dfrac{22}{7} \\times 7 \\times 25 = 550$ cm$^{2}$.\n\nCurved surface of the hemisphere $= 2\\pi r^{2} = 2 \\times \\dfrac{22}{7} \\times 49 = 308$ cm$^{2}$.\n\n**Total surface area $= \\mathbf{858}$ cm$^{2}$.**\n\n**The key point:** the circular face where the two solids join is **inside** the shape and must not be counted. Only the outside surfaces belong in the total.",
+      "marks": 3
+    },
+    {
+      "id": "igm-012",
+      "chapter": "Mensuration",
+      "topic": "Area and perimeter",
+      "type": "long",
+      "q": "A rectangular field is $60$ m by $40$ m. A path $2$ m wide runs all the way round it on the inside. Find the area of the path.",
+      "solution": "**Whole field:** $60 \\times 40 = 2400$ m$^{2}$.\n\n**Inner rectangle.** The path takes $2$ m off **each** side, so $4$ m off each dimension:\n\n$(60 - 4) \\times (40 - 4) = 56 \\times 36 = 2016$ m$^{2}$.\n\n**Area of the path:**\n\n$2400 - 2016 = \\mathbf{384}$ m$^{2}$.\n\n**The classic error** is subtracting $2$ instead of $4$ from each dimension. The path runs along **both** opposite sides, so each dimension loses twice its width.\n\n**A check:** treating the path as four strips gives $2(56 \\times 2) + 2(40 \\times 2) = 224 + 160 = 384$ m$^{2}$ ✓ — using the inner length for two strips and the outer width for the other two, so no corner is counted twice.",
+      "marks": 3
+    },
+    {
+      "id": "igm-013",
+      "chapter": "Mensuration",
+      "topic": "Volume and surface area",
+      "type": "long",
+      "q": "A cylindrical tank of diameter $1.4$ m and height $2$ m is to be filled with water. Find its capacity in litres, and the cost of painting its curved outer surface at $\\$3$ per square metre. Take $\\pi = \\dfrac{22}{7}$.",
+      "solution": "**Radius** $= \\dfrac{1.4}{2} = 0.7$ m.\n\n**Volume:**\n\n$V = \\pi r^{2}h = \\dfrac{22}{7} \\times 0.49 \\times 2 = \\dfrac{22 \\times 0.49 \\times 2}{7} = 3.08$ m$^{3}$.\n\n**Capacity in litres.** $1$ m$^{3} = 1000$ litres, so\n\n$3.08 \\times 1000 = \\mathbf{3080}$ litres.\n\n**Curved surface area:**\n\n$2\\pi rh = 2 \\times \\dfrac{22}{7} \\times 0.7 \\times 2 = 8.8$ m$^{2}$.\n\n**Cost:**\n\n$8.8 \\times 3 = \\mathbf{\\$26.40}$.\n\n**Two things to watch.** Diameter is not radius — halve it first. And read whether the question wants the curved surface only, or the curved surface plus one or both circular ends. A tank being painted on the outside usually means the curved surface, and sometimes the base.",
+      "marks": 5
+    },
+    {
+      "id": "igm-014",
+      "chapter": "Mensuration",
+      "topic": "Arc and sector",
+      "type": "long",
+      "q": "A sector of a circle has radius $10$ cm and angle $72°$. Find the arc length, the area of the sector, and the perimeter of the sector. Take $\\pi = 3.14$.",
+      "solution": "The sector is $\\dfrac{72}{360} = \\dfrac15$ of the whole circle — so everything is one fifth of the corresponding whole.\n\n**Arc length:**\n\n$\\dfrac15 \\times 2\\pi r = \\dfrac15 \\times 2 \\times 3.14 \\times 10 = \\mathbf{12.56}$ cm.\n\n**Area of the sector:**\n\n$\\dfrac15 \\times \\pi r^{2} = \\dfrac15 \\times 3.14 \\times 100 = \\mathbf{62.8}$ cm$^{2}$.\n\n**Perimeter of the sector.** This is the arc **plus the two straight radii**:\n\n$12.56 + 10 + 10 = \\mathbf{32.56}$ cm.\n\nForgetting the two radii is the usual slip — a sector is bounded by three sides, not one, and it is a slice of pie, not just the crust.",
+      "marks": 3
+    },
+    {
+      "id": "igm-015",
+      "chapter": "Mensuration",
+      "topic": "Units and conversion",
+      "type": "long",
+      "q": "Explain how to convert between cm$^{2}$ and m$^{2}$, and between cm$^{3}$ and litres, with an example of each.",
+      "solution": "**Area: cm$^{2}$ to m$^{2}$.**\n\n$1$ m $= 100$ cm, so $1$ m$^{2} = 100 \\times 100 = \\mathbf{10\\,000}$ cm$^{2}$.\n\n*Example:* $25\\,000$ cm$^{2} = \\dfrac{25\\,000}{10\\,000} = 2.5$ m$^{2}$.\n\n**Volume: cm$^{3}$ to m$^{3}$.**\n\n$1$ m$^{3} = 100^{3} = \\mathbf{1\\,000\\,000}$ cm$^{3}$.\n\n**Capacity.** $1$ litre $= 1000$ cm$^{3}$, and $1$ m$^{3} = 1000$ litres.\n\n*Example:* a tank of $5000$ cm$^{3}$ holds $5$ litres.\n\n**The rule.** The conversion factor for **lengths** is $100$; **square** it for areas and **cube** it for volumes.\n\nThe commonest mistake is dividing an area by $100$ instead of $10\\,000$ — a hundredfold error, and one that never looks obviously wrong on the page. Convert all measurements to the same unit **before** starting a calculation, not after.",
+      "marks": 2
+    }
+  ]
+}

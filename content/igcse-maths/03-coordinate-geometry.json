@@ -1,0 +1,190 @@
+{
+  "id": "lib-ig-coordinate-geometry",
+  "title": "Coordinate Geometry",
+  "chapter": "Topic Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igc-001",
+      "chapter": "Coordinate Geometry",
+      "topic": "Midpoint",
+      "type": "mcq",
+      "q": "The midpoint of the line joining $(2, 5)$ and $(8, 1)$ is:",
+      "solution": "Average the coordinates: $\\left(\\dfrac{2+8}{2}, \\dfrac{5+1}{2}\\right) = \\mathbf{(5, 3)}$.",
+      "marks": 1,
+      "options": [
+        "$(5, 3)$",
+        "$(10, 6)$",
+        "$(3, 5)$",
+        "$(6, 4)$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igc-002",
+      "chapter": "Coordinate Geometry",
+      "topic": "Gradient",
+      "type": "mcq",
+      "q": "The gradient of the line joining $(1, 2)$ and $(5, 10)$ is:",
+      "solution": "$m = \\dfrac{\\text{change in } y}{\\text{change in } x} = \\dfrac{10 - 2}{5 - 1} = \\dfrac{8}{4} = \\mathbf{2}$.\n\nTake the coordinates in the same order top and bottom, or the sign will come out wrong.",
+      "marks": 1,
+      "options": [
+        "2",
+        "4",
+        "$\\dfrac12$",
+        "8"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igc-003",
+      "chapter": "Coordinate Geometry",
+      "topic": "Parallel lines",
+      "type": "mcq",
+      "q": "A line parallel to $y = 3x - 7$ has gradient:",
+      "solution": "Parallel lines have **equal gradients**, so the gradient is $\\mathbf{3}$.\n\nA **perpendicular** line would have gradient $-\\dfrac13$, the negative reciprocal.",
+      "marks": 1,
+      "options": [
+        "-3",
+        "3",
+        "$\\dfrac13$",
+        "$-\\dfrac13$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc-004",
+      "chapter": "Coordinate Geometry",
+      "topic": "Perpendicular lines",
+      "type": "mcq",
+      "q": "A line perpendicular to $y = 2x + 1$ has gradient:",
+      "solution": "Perpendicular gradients multiply to $-1$, so $m = -\\dfrac{1}{2}$.\n\n**Check:** $2 \\times \\left(-\\tfrac12\\right) = -1$ ✓ The rule is 'flip it and change the sign'.",
+      "marks": 1,
+      "options": [
+        "2",
+        "-2",
+        "$\\dfrac12$",
+        "$-\\dfrac12$"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "igc-005",
+      "chapter": "Coordinate Geometry",
+      "topic": "Length of a line segment",
+      "type": "mcq",
+      "q": "The length of the line joining $(0, 0)$ and $(3, 4)$ is:",
+      "solution": "$d = \\sqrt{3^{2} + 4^{2}} = \\sqrt{25} = \\mathbf{5}$ — Pythagoras, with the horizontal and vertical gaps as the two shorter sides.",
+      "marks": 1,
+      "options": [
+        "5",
+        "7",
+        "12",
+        "$\\sqrt{7}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igc-006",
+      "chapter": "Coordinate Geometry",
+      "topic": "Distance",
+      "type": "numeric",
+      "q": "Find the distance between $(1, 2)$ and $(4, 6)$.",
+      "solution": "$d = \\sqrt{(4-1)^{2} + (6-2)^{2}} = \\sqrt{9 + 16} = \\sqrt{25} = \\mathbf{5}$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igc-007",
+      "chapter": "Coordinate Geometry",
+      "topic": "y-intercept",
+      "type": "numeric",
+      "q": "A line has gradient $2$ and passes through $(3, 11)$. Find its $y$-intercept.",
+      "solution": "$y = 2x + c$, and $(3, 11)$ lies on it:\n\n$11 = 6 + c \\Rightarrow c = \\mathbf{5}$.\n\nThe line is $y = 2x + 5$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "igc-008",
+      "chapter": "Coordinate Geometry",
+      "topic": "Midpoint",
+      "type": "numeric",
+      "q": "The midpoint of $AB$ is $(4, 7)$ and $A$ is $(1, 3)$. Find the $x$-coordinate of $B$.",
+      "solution": "The midpoint is the average, so $\\dfrac{1 + x}{2} = 4 \\Rightarrow x = \\mathbf{7}$.\n\n(And similarly $y = 11$, so $B$ is $(7, 11)$.) Going from midpoint back to an endpoint is a matter of stepping the same distance again.",
+      "marks": 2,
+      "answer": 7,
+      "tolerance": 0
+    },
+    {
+      "id": "igc-009",
+      "chapter": "Coordinate Geometry",
+      "topic": "Gradient from an equation",
+      "type": "numeric",
+      "q": "Find the gradient of the line $2x + 4y = 8$.",
+      "solution": "Rearrange into $y = mx + c$:\n\n$4y = -2x + 8 \\Rightarrow y = -\\dfrac12 x + 2$.\n\nGradient $= \\mathbf{-0.5}$.",
+      "marks": 2,
+      "answer": -0.5,
+      "tolerance": 0.01
+    },
+    {
+      "id": "igc-010",
+      "chapter": "Coordinate Geometry",
+      "topic": "Point on a line",
+      "type": "numeric",
+      "q": "Does the point $(5, 13)$ lie on $y = 3x - 2$? Answer $1$ for yes, $0$ for no.",
+      "solution": "$3(5) - 2 = 13$ ✓, so the point **is** on the line — the answer is $\\mathbf{1}$.\n\nSubstituting is the whole test: a point lies on a line exactly when its coordinates satisfy the equation.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "igc-011",
+      "chapter": "Coordinate Geometry",
+      "topic": "Equation of a line",
+      "type": "long",
+      "q": "Find the equation of the line through $(2, 3)$ and $(6, 11)$, and the equation of the line through $(2, 3)$ perpendicular to it.",
+      "solution": "**Gradient of the first line:**\n\n$m = \\dfrac{11 - 3}{6 - 2} = \\dfrac{8}{4} = 2$.\n\n**Equation:** $y - 3 = 2(x - 2) \\Rightarrow \\mathbf{y = 2x - 1}$.\n\n**Check with $(6, 11)$:** $2(6) - 1 = 11$ ✓\n\n**Perpendicular gradient:** $-\\dfrac12$.\n\n**Perpendicular line through $(2, 3)$:**\n\n$y - 3 = -\\tfrac12(x - 2) \\Rightarrow y = -\\tfrac12 x + 4$, or $\\mathbf{x + 2y = 8}$.\n\n**Check:** $2 + 2(3) = 8$ ✓ and the gradients multiply to $2 \\times \\left(-\\tfrac12\\right) = -1$ ✓",
+      "marks": 3
+    },
+    {
+      "id": "igc-012",
+      "chapter": "Coordinate Geometry",
+      "topic": "Perpendicular bisector",
+      "type": "long",
+      "q": "Find the equation of the perpendicular bisector of the line joining $A(1, 2)$ and $B(7, 10)$.",
+      "solution": "The perpendicular bisector passes through the **midpoint** and is **perpendicular** to $AB$ — so find both.\n\n**Midpoint:** $\\left(\\dfrac{1+7}{2}, \\dfrac{2+10}{2}\\right) = (4, 6)$.\n\n**Gradient of $AB$:** $\\dfrac{10 - 2}{7 - 1} = \\dfrac{8}{6} = \\dfrac43$.\n\n**Perpendicular gradient:** $-\\dfrac34$.\n\n**Equation through $(4, 6)$:**\n\n$y - 6 = -\\tfrac34(x - 4)$\n\n$4y - 24 = -3x + 12$\n\n$\\mathbf{3x + 4y = 36}$.\n\n**Check the midpoint is on it:** $3(4) + 4(6) = 12 + 24 = 36$ ✓\n\nEvery point on this line is the same distance from $A$ as from $B$ — which is what a perpendicular bisector means, and why it locates the centre of a circle through two points.",
+      "marks": 3
+    },
+    {
+      "id": "igc-013",
+      "chapter": "Coordinate Geometry",
+      "topic": "Coordinate geometry problem",
+      "type": "long",
+      "q": "$A(0, 0)$, $B(6, 0)$ and $C(6, 8)$ are three vertices of a rectangle $ABCD$. Find the coordinates of $D$, the length of the diagonal $AC$, and the equation of the diagonal $BD$.",
+      "solution": "**Finding $D$.** In rectangle $ABCD$ the vertices go round in order, so $AD$ must be parallel and equal to $BC$.\n\n$B \\to C$ is a move of $(0, +8)$. Applying that to $A(0,0)$ gives $\\mathbf{D(0, 8)}$.\n\n**Check:** $AB$ runs from $(0,0)$ to $(6,0)$, and $DC$ from $(0,8)$ to $(6,8)$ — parallel and equal ✓\n\n**Diagonal $AC$:**\n\n$AC = \\sqrt{6^{2} + 8^{2}} = \\sqrt{100} = \\mathbf{10}$.\n\n(A $6$–$8$–$10$ triangle, which is the $3$–$4$–$5$ scaled up.)\n\n**Diagonal $BD$**, from $B(6, 0)$ to $D(0, 8)$:\n\nGradient $= \\dfrac{8 - 0}{0 - 6} = -\\dfrac43$.\n\n$y - 0 = -\\tfrac43(x - 6) \\Rightarrow \\mathbf{4x + 3y = 24}$.\n\n**Check with $D(0,8)$:** $0 + 24 = 24$ ✓\n\n**A property worth noting:** $BD$ is also $10$ long — a rectangle's diagonals are always equal, and they bisect each other at $(3, 4)$.",
+      "marks": 5
+    },
+    {
+      "id": "igc-014",
+      "chapter": "Coordinate Geometry",
+      "topic": "Intersection of lines",
+      "type": "long",
+      "q": "Find the point of intersection of $y = 2x + 1$ and $3x + y = 11$.",
+      "solution": "**Substitute** the first equation into the second — the first already gives $y$ in terms of $x$:\n\n$3x + (2x + 1) = 11$\n\n$5x + 1 = 11 \\Rightarrow x = 2$.\n\n**Then** $y = 2(2) + 1 = 5$.\n\n**Intersection: $\\mathbf{(2, 5)}$.**\n\n**Check in both:** $y = 2(2) + 1 = 5$ ✓ and $3(2) + 5 = 11$ ✓\n\nThe intersection is the one point whose coordinates satisfy **both** equations — which is exactly what solving simultaneously means. Two lines that never meet are parallel, and the algebra shows it by producing a contradiction such as $0 = 4$.",
+      "marks": 3
+    },
+    {
+      "id": "igc-015",
+      "chapter": "Coordinate Geometry",
+      "topic": "Gradient and parallel lines",
+      "type": "long",
+      "q": "Show that the line through $(1, 1)$ and $(4, 7)$ is parallel to the line $y = 2x - 5$, and find the distance between the points.",
+      "solution": "**Gradient of the line through the two points:**\n\n$m = \\dfrac{7 - 1}{4 - 1} = \\dfrac{6}{3} = 2$.\n\n**Gradient of $y = 2x - 5$:** $2$.\n\nThe gradients are **equal**, so the lines are **parallel**. ∎\n\nThey are different lines, though: substituting $(1,1)$ into $y = 2x - 5$ gives $-3$, not $1$, so the point is not on it.\n\n**Distance between the points:**\n\n$d = \\sqrt{(4-1)^{2} + (7-1)^{2}} = \\sqrt{9 + 36} = \\sqrt{45} = \\mathbf{3\\sqrt{5}} \\approx 6.71$.\n\nLeaving a surd in exact form is usually preferred unless the question asks for a decimal.",
+      "marks": 2
+    }
+  ]
+}
