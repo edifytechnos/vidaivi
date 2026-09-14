@@ -1,0 +1,190 @@
+{
+  "id": "lib-c10s-carbon",
+  "title": "Carbon and its Compounds",
+  "chapter": "Chapter Test 4",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "car-001",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Covalent bonding",
+      "type": "mcq",
+      "q": "Carbon forms covalent bonds because:",
+      "solution": "Carbon has 4 valence electrons. Losing all four would leave a $\\text{C}^{4+}$ ion with a huge charge on a tiny nucleus; gaining four would crowd four extra electrons onto one small atom.\n\nBoth cost far too much energy, so carbon **shares** — which is the definition of a covalent bond.\n\nThis one fact is the root of the whole of organic chemistry.",
+      "marks": 1,
+      "options": [
+        "it can lose 4 electrons easily",
+        "it can gain 4 electrons easily",
+        "gaining or losing 4 electrons would need too much energy, so it shares instead",
+        "it is a metal"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "car-002",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Catenation",
+      "type": "mcq",
+      "q": "The property of carbon to form long chains with itself is called:",
+      "solution": "**Catenation.** Carbon does it better than any other element because the C–C bond is unusually strong and stable.\n\nSilicon catenates too, but its chains break up after a few atoms. That difference is why there are millions of carbon compounds and life is built on carbon rather than silicon.",
+      "marks": 1,
+      "options": [
+        "isomerism",
+        "catenation",
+        "allotropy",
+        "polymerisation"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "car-003",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Homologous series",
+      "type": "mcq",
+      "q": "Two consecutive members of a homologous series differ by:",
+      "solution": "Each step up a homologous series adds one $\\mathbf{-\\text{CH}_{2}-}$ group, a difference of **14** in molar mass.\n\nAll members share the same functional group and chemistry, and their physical properties change gradually — which is why learning one member teaches you the rest.",
+      "marks": 1,
+      "options": [
+        "$\\text{CH}_{2}$",
+        "$\\text{CH}_{3}$",
+        "$\\text{C}_{2}\\text{H}_{4}$",
+        "$\\text{CH}_{4}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "car-004",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Soaps and detergents",
+      "type": "mcq",
+      "q": "Soap does not clean well in hard water because:",
+      "solution": "Hard water contains $\\text{Ca}^{2+}$ and $\\text{Mg}^{2+}$ ions, which react with soap to form an insoluble **scum**.\n\nSoap is wasted forming scum before any cleaning can begin.\n\n**Detergents** do not have this problem: their calcium and magnesium salts are soluble, which is why they work in hard water and in sea water.",
+      "marks": 1,
+      "options": [
+        "hard water is too cold",
+        "it forms an insoluble scum with calcium and magnesium ions",
+        "soap dissolves too fast",
+        "hard water has no oxygen"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "car-005",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Ethanol and ethanoic acid",
+      "type": "mcq",
+      "q": "Ethanoic acid reacts with sodium carbonate to give:",
+      "solution": "$2\\text{CH}_{3}\\text{COOH} + \\text{Na}_{2}\\text{CO}_{3} \\to 2\\text{CH}_{3}\\text{COONa} + \\text{H}_{2}\\text{O} + \\text{CO}_{2}\\uparrow$\n\nBrisk effervescence, and the gas turns limewater milky.\n\nThis is exactly how ethanoic acid is told apart from ethanol, which gives no reaction at all with carbonate.",
+      "marks": 1,
+      "options": [
+        "hydrogen gas",
+        "carbon dioxide gas",
+        "oxygen gas",
+        "no reaction"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "car-006",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Number of covalent bonds",
+      "type": "numeric",
+      "q": "How many covalent bonds are present in one molecule of methane, $\\text{CH}_{4}$?",
+      "solution": "Carbon shares one electron pair with each of four hydrogens: $\\mathbf{4}$ single covalent bonds, arranged tetrahedrally.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "car-007",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Isomers",
+      "type": "numeric",
+      "q": "How many structural isomers are possible for butane, $\\text{C}_{4}\\text{H}_{10}$?",
+      "solution": "n-butane (a straight chain) and isobutane or 2-methylpropane (branched) — $\\mathbf{2}$.\n\nButane is the first alkane to show isomerism; methane, ethane and propane have only one arrangement each.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "car-008",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Homologous series",
+      "type": "numeric",
+      "q": "The molecular formula of an alkane is $\\text{C}_{n}\\text{H}_{2n+2}$. How many hydrogen atoms are in the alkane with 5 carbon atoms?",
+      "solution": "$2(5) + 2 = \\mathbf{12}$ — pentane, $\\text{C}_{5}\\text{H}_{12}$.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0
+    },
+    {
+      "id": "car-009",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of ethanol, $\\text{C}_{2}\\text{H}_{5}\\text{OH}$, in g/mol. (C $= 12$, H $= 1$, O $= 16$.)",
+      "solution": "$2(12) + 6(1) + 16 = 24 + 6 + 16 = \\mathbf{46}$ g/mol.\n\nCount all six hydrogens — five in the ethyl group and one in the hydroxyl.",
+      "marks": 2,
+      "answer": 46,
+      "tolerance": 0.5
+    },
+    {
+      "id": "car-010",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Double bonds",
+      "type": "numeric",
+      "q": "How many double bonds are present in one molecule of ethene, $\\text{C}_{2}\\text{H}_{4}$?",
+      "solution": "One carbon–carbon **double** bond, plus four single C–H bonds: $\\mathbf{1}$.\n\nThat double bond makes ethene **unsaturated**, so it decolourises bromine water — the standard test.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "car-011",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Soap and cleaning",
+      "type": "long",
+      "q": "Explain the structure of a soap molecule and how it removes greasy dirt, including what a micelle is.",
+      "solution": "**Structure.** A soap molecule has two ends that behave quite differently:\n\n• A long **hydrocarbon tail** — non-polar, **hydrophobic** (water-hating), and attracted to oil and grease.\n\n• An ionic **head** ($-\\text{COO}^{-}\\text{Na}^{+}$) — **hydrophilic** (water-loving).\n\n**How it cleans.**\n\n1. The **tails bury themselves in the grease**, because that is the only environment they are comfortable in.\n\n2. The **heads stay in the water**, sticking out all round.\n\n3. The result is a **micelle** — a tiny ball with a drop of grease trapped inside and ionic heads facing outwards.\n\n4. Because the outside is charged, the micelles **repel each other** and stay dispersed instead of joining back together.\n\n5. Agitation lifts the micelles off the cloth, and rinsing carries them away.\n\nWater alone fails because water and grease will not mix. The soap molecule succeeds because it refuses to choose a side — it is at home in both.",
+      "marks": 3
+    },
+    {
+      "id": "car-012",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Ethanol and ethanoic acid",
+      "type": "long",
+      "q": "Give three differences between ethanol and ethanoic acid, and describe two laboratory tests to distinguish them.",
+      "solution": "**Differences.**\n\n1. **Formula and group:** ethanol is $\\text{C}_{2}\\text{H}_{5}\\text{OH}$ with an alcohol group; ethanoic acid is $\\text{CH}_{3}\\text{COOH}$ with a carboxylic acid group.\n\n2. **Acidity:** ethanoic acid turns blue litmus red; ethanol is neutral.\n\n3. **Smell and state:** ethanol has a pleasant smell; ethanoic acid smells of vinegar and freezes to an ice-like solid in cold weather — hence 'glacial' acetic acid.\n\n**Tests.**\n\n1. **Sodium carbonate or bicarbonate test.** Ethanoic acid gives **brisk effervescence** of $\\text{CO}_{2}$, which turns limewater milky. Ethanol gives no reaction at all. This is the definitive test.\n\n$2\\text{CH}_{3}\\text{COOH} + \\text{Na}_{2}\\text{CO}_{3} \\to 2\\text{CH}_{3}\\text{COONa} + \\text{H}_{2}\\text{O} + \\text{CO}_{2}$\n\n2. **Litmus test.** Ethanoic acid turns blue litmus red; ethanol leaves it unchanged.\n\nBoth react with sodium metal to give hydrogen, so **that** test does not separate them — a trap worth knowing.",
+      "marks": 3
+    },
+    {
+      "id": "car-013",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Homologous series and functional groups",
+      "type": "long",
+      "q": "What is a homologous series? Give its characteristics, and name four functional groups with their formulae.",
+      "solution": "**Definition.** A family of organic compounds with the same functional group, in which each member differs from the next by $-\\text{CH}_{2}-$.\n\n**Characteristics.**\n\n1. All members share one **general formula** — alkanes $\\text{C}_{n}\\text{H}_{2n+2}$, alkenes $\\text{C}_{n}\\text{H}_{2n}$, alkynes $\\text{C}_{n}\\text{H}_{2n-2}$.\n\n2. Consecutive members differ by $\\text{CH}_{2}$, a molar mass difference of **14**.\n\n3. All members have **similar chemical properties**, because the functional group is what reacts.\n\n4. **Physical properties change gradually** — boiling point rises steadily with chain length, because there is more surface for the molecules to attract each other along.\n\n**Functional groups.**\n\n• **Alcohol** — $-\\text{OH}$ (ethanol)\n\n• **Aldehyde** — $-\\text{CHO}$ (ethanal)\n\n• **Ketone** — $>\\text{C}{=}\\text{O}$ (propanone)\n\n• **Carboxylic acid** — $-\\text{COOH}$ (ethanoic acid)\n\n• **Halogen** — $-\\text{Cl}$, $-\\text{Br}$ (chloroethane)\n\n**Why it matters.** Learning one member of a series effectively teaches you all of them — which is the only reason the millions of carbon compounds can be studied at all.",
+      "marks": 5
+    },
+    {
+      "id": "car-014",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Saturated and unsaturated",
+      "type": "long",
+      "q": "Distinguish between saturated and unsaturated hydrocarbons, and describe a test to tell them apart.",
+      "solution": "**Saturated** — only single carbon–carbon bonds (alkanes). Every carbon holds as much hydrogen as it possibly can, which is what 'saturated' means. They are relatively **unreactive**, and undergo substitution.\n\n**Unsaturated** — containing a double bond (alkenes) or triple bond (alkynes). They are **more reactive**, and undergo **addition**.\n\n**Tests.**\n\n1. **Bromine water.** An unsaturated compound **decolourises** the orange-brown solution, because bromine adds across the double bond. A saturated compound leaves the colour unchanged.\n\n2. **Burning.** Saturated hydrocarbons burn with a **clean blue flame**; unsaturated ones burn with a **yellow, sooty** flame, because their higher proportion of carbon does not get enough oxygen.\n\nThe sooty flame test is the one you can do at home: a candle (mostly saturated) against burning rubber.",
+      "marks": 3
+    },
+    {
+      "id": "car-015",
+      "chapter": "Carbon and its Compounds",
+      "topic": "Allotropes of carbon",
+      "type": "long",
+      "q": "Name three allotropes of carbon and explain how their structures account for their very different properties.",
+      "solution": "**Diamond.** Each carbon is bonded to **four** others in a rigid three-dimensional tetrahedral network. Every one of its valence electrons is tied up in a bond.\n\n*Result:* the hardest natural substance, and a **non-conductor** — there are no free electrons at all.\n\n**Graphite.** Each carbon is bonded to **three** others in flat hexagonal sheets, and those sheets are held together only by weak forces. The **fourth electron is free** to move along the sheet.\n\n*Result:* soft and slippery (the layers slide over each other, which is why a pencil writes), and a **good conductor** of electricity.\n\n**Fullerene ($\\text{C}_{60}$).** Sixty carbon atoms arranged as a hollow ball of hexagons and pentagons, like a football. Named after the architect Buckminster Fuller, whose domes it resembles.\n\n**The lesson.** Diamond and graphite are made of nothing but carbon atoms, yet one is transparent and the hardest thing there is, and the other is black, soft and conducts electricity.\n\nSame atoms, different arrangement, completely different substance — which is the clearest demonstration in chemistry that structure is what determines properties.",
+      "marks": 2
+    }
+  ]
+}
