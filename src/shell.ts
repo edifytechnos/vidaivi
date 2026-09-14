@@ -187,6 +187,12 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
 
   const main = document.getElementById("shell-main")!;
   main.classList.toggle("shell-main-full", !!opts.full);
+  // A full-bleed screen owns the whole window, and on a phone it needs the
+  // rail's 56px too: the workspace's own crumb row already carries the way
+  // back (the subject name) and the Questions drawer, so the rail is a
+  // duplicate that costs a sixth of a 320px screen. The class is on .shell
+  // because the rail is a sibling of the page, not a descendant of it.
+  document.querySelector(".shell")?.classList.toggle("shell-full", !!opts.full);
   main.innerHTML = opts.full ? content : `<div class="page page-${opts.width ?? "narrow"}">${content}</div>`;
   main.scrollTop = 0;
   return opts.full ? main : main.querySelector<HTMLElement>(".page")!;
@@ -293,6 +299,17 @@ let escBound = false;
  */
 export function bindTreeDrawer(editor: HTMLElement): void {
   const close = (): void => editor.classList.remove("tree-open");
+
+  // The trigger stays in the crumb row, beside Hand in — the two things a
+  // student reaches for while sitting a test, in one row. The drawer then
+  // opens *under* that row rather than under the app bar, so the button and
+  // the panel it opens read as one control. The row wraps at narrow widths,
+  // so its height is measured rather than guessed.
+  const crumb = editor.querySelector<HTMLElement>(".ed-crumbrow");
+  if (crumb) {
+    const top = Math.round(crumb.getBoundingClientRect().bottom);
+    editor.style.setProperty("--drawer-top", `${top}px`);
+  }
   editor
     .querySelector("[data-drawer-toggle]")
     ?.addEventListener("click", () => editor.classList.toggle("tree-open"));

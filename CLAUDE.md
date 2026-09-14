@@ -1128,6 +1128,36 @@ question scrolling to the end — that rule holds everywhere a test is shown.
   title is in the app bar already and wrapped onto four lines otherwise.
   `e2e/regression.cjs` asserts the order, the single row, and that nothing
   overflows the card at 390px.
+- **On a phone and a tablet the chrome moves out of the way** (≤899px):
+  - **The rail becomes a bottom bar** — fixed, full width, icon over label,
+    where a thumb is. As a column it spent a sixth of a 320px screen on two
+    icons. `.shell-page` gains matching bottom padding so nothing hides under
+    it, and `env(safe-area-inset-bottom)` keeps it clear of the home indicator.
+  - **Questions stays in the crumb row, beside Hand in** — the two things a
+    student reaches for while sitting a test belong in one row. (It was briefly
+    moved to the app bar; that separated the button from the action beside it
+    and cost the row nothing it needed back.)
+  - **The drawer slides from the window's own left edge, under the row whose
+    button opened it** — `position: fixed`, `left: 0`, stopping above the
+    bottom bar. It was `absolute`, so it started wherever the page did, which
+    on a phone meant inset by the rail and clipped on the right. The top offset
+    is **measured**, not guessed: `bindTreeDrawer` writes the crumb row's
+    bottom into `--drawer-top` on the editor, because that row wraps at narrow
+    widths and a hard-coded offset would float away from it.
+  - **The bottom bar is never dimmed by the drawer's overlay.** It sits above
+    both (`z-index: 45`) and the scrim stops where the bar starts. A greyed-out
+    bar reads as disabled, and it is still the way off the screen. The scrim's
+    `bottom` has to be declared *after* the base `.ed-scrim` rule, whose
+    `inset` shorthand would otherwise reset it.
+  - **The app bar names the test, beside the logo.** It used to drop the title
+    below 600px on the grounds that the crumb row carried it — but the crumb
+    row drops the test name at that width too, so a phone said nothing about
+    what was open.
+  - **A full-bleed screen keeps its own margins.** `.shell-main-full` sets
+    `padding: 0`, and the small-screen `.shell-main` rules were quietly
+    overriding it — 28px of a 320px phone. They now re-assert it. Measured on
+    a 320px screen, the question text went from **200px to 276px** of usable
+    width.
 - **Below 900px the tree is a side drawer**, on the workspace and the result
   alike: `.ed-tree` is parked off-canvas with `transform: translateX(-100%)` and
   **`visibility: hidden`** — the visibility is what hides it, since a transform

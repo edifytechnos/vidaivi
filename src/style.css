@@ -1714,12 +1714,16 @@ body {
      element on the page as far as a test (or a screen reader) is concerned. */
   .ed-tree {
     display: flex;
-    position: absolute;
-    z-index: 7;
-    top: 57px;
+    /* Fixed, not absolute: it slides in from the window's own left edge
+       rather than from wherever the page happens to start. */
+    position: fixed;
+    z-index: 40;
+    /* Under the crumb row that holds the Questions button — measured, because
+       that row wraps at narrow widths and a guessed offset would float. */
+    top: var(--drawer-top, 91px);
     left: 0;
-    bottom: 0;
-    width: 284px;
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+    width: min(86vw, 300px);
     box-shadow: var(--shadow-lg);
     visibility: hidden;
     transform: translateX(-100%);
@@ -2219,11 +2223,16 @@ body {
   .tb-name,
   .tb-role,
   .shellbar-div,
-  .shellbar-sub,
-  /* The crumb row under the bar already names the test; on a phone the bar's
-     copy of it only crowds out the subject picker. */
-  .shellbar-title {
+  .shellbar-sub {
     display: none;
+  }
+  /* The title sits beside the logo, which is where a phone should say what
+     you have open: the crumb row below is busy carrying Questions and Hand in,
+     and it drops the test's name at this width anyway. */
+  .shellbar-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
   }
 }
 
@@ -2318,6 +2327,7 @@ body {
   .shell-main {
     padding: 16px 16px 40px;
   }
+  .shell-main-full { padding: 0; }
   .shellbar {
     padding: 0 16px;
   }
@@ -3258,13 +3268,22 @@ body.modal-open {
 /* Dimmed behind the drawer, and the tap target that closes it. */
 .ed-scrim {
   display: none;
-  position: absolute;
-  z-index: 6;
-  inset: 57px 0 0;
+  position: fixed;
+  z-index: 35;
+  inset: var(--drawer-top, 57px) 0 0;
   background: rgba(15, 23, 42, 0.32);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
+}
+
+/* The overlay stops where the bottom bar starts. The bar is opaque and sits
+   above it either way, but a sheet stretched under it is a sheet that dims
+   nothing and swallows taps meant for the bar. Declared here rather than in
+   the phone block above, because this rule's `inset` shorthand comes later in
+   the file and would reset the `bottom` a media query had set. */
+@media (max-width: 899px) {
+  .ed-scrim { bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* The button that opens it. Only where the tree is not already a column. */
@@ -3296,6 +3315,62 @@ body.modal-open {
   .ed-readonly .ed-body { gap: 10px; }
   .ed-readonly .ed-panel { padding: 12px 13px 13px; }
   .shell-main { padding: 14px 14px 24px; }
+  /* ...but never on a full-bleed screen. .shell-main-full sets padding 0 and
+     this rule, later in the file and of equal specificity, was quietly
+     undoing it — 28px of a 320px phone, outside the layout that had already
+     paid for its own margins. */
+  .shell-main-full { padding: 0; }
+}
+
+/* A phone and a tablet get the rail along the bottom, where a thumb is —
+   never as a column, which on a 320px screen spent a sixth of the width on two
+   icons. Fixed, so it stays put while the page scrolls under it, and the
+   safe-area inset keeps it clear of the home indicator. */
+@media (max-width: 899px) {
+  .rail {
+    position: fixed;
+    inset: auto 0 0 0;
+    /* Above the drawer and its scrim. The bar is never what the overlay is
+       dimming — it stays lit and usable with the question list open. */
+    z-index: 45;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+    width: 100%;
+    height: calc(56px + env(safe-area-inset-bottom, 0px));
+    padding: 0 4px env(safe-area-inset-bottom, 0px);
+    border-right: 0;
+    border-top: 1px solid var(--border);
+    transition: none;
+  }
+  /* The rail widens on a desktop; on a bottom bar there is nothing to widen. */
+  .shell.rail-open .rail { width: 100%; padding: 0 4px env(safe-area-inset-bottom, 0px); }
+  .rail-toggle, .rail-spacer { display: none; }
+  .rail-item {
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    height: 100%;
+    min-width: 0;
+    padding: 0 2px;
+    border-radius: 0;
+  }
+  .rail-item .icon { width: 20px; height: 20px; }
+  .shell.rail-open .rail-label,
+  .rail-label {
+    display: block;
+    font-size: 10px;
+    line-height: 1.1;
+    font-weight: 600;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* Nothing may hide under the bar: not the last card of a page, not the
+     foot of the answer panel. */
+  .shell-page { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
 }
 
 @media (max-width: 480px) {
