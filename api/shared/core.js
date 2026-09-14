@@ -3410,9 +3410,19 @@ async function askAssessor(question, solution, maxMarks, images) {
 
   const text = await res.text();
   if (!res.ok) {
-    // Never echo the provider's body back to the client: it can carry the
-    // request, and the request carries a child's handwriting.
-    throw new Error(`The model refused the request (${res.status})`);
+    // Never echo the provider's *body* back: it can carry the request, and the
+    // request carries a child's handwriting. The `error.message` alone is the
+    // provider describing its own complaint ("model not found", "invalid
+    // argument") and carries none of that — and without it an operator has no
+    // way to tell a bad model name from a spent quota. Staff-only endpoint.
+    let why = "";
+    try {
+      const body = JSON.parse(text);
+      why = String((body.error && body.error.message) || "").slice(0, 200);
+    } catch {}
+    throw new Error(
+      `The model refused the request (${res.status})${why ? `: ${why}` : ""}`
+    );
   }
   let payload;
   try {
