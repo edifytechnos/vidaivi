@@ -7,6 +7,18 @@
   "access": "login",
   "questions": [
     {
+      "id": "cie9701-103",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Ideal gases",
+      "type": "numeric",
+      "q": "Calculate the density of a sample of fluorine gas, $\\text{F}_2$, at $32\\ ^\\circ$C and $100\\,000$ Pa, in g dm$^{-3}$, correct to 1 decimal place. Assume fluorine behaves as an ideal gas. ($A_r$ of F $= 19 \\cdot 0$; $R = 8 \\cdot 314$ J K$^{-1}$ mol$^{-1}$.)",
+      "solution": "Start from the ideal gas equation and turn it into a density.\n\n**Step 1 — rearrange for density.** Since $n = \\dfrac{m}{M}$,\n\n$$pV = nRT = \\frac{m}{M}RT \\quad\\Longrightarrow\\quad \\rho = \\frac{m}{V} = \\frac{pM}{RT}.$$\n\n**Step 2 — collect the values in SI units.**\n\n- $p = 100\\,000$ Pa\n- $M\\left(\\text{F}_2\\right) = 2 \\times 19 \\cdot 0 = 38 \\cdot 0\\ \\text{g mol}^{-1} = 0 \\cdot 038\\ \\text{kg mol}^{-1}$\n- $T = 32 + 273 = 305$ K (the temperature **must** be absolute)\n\n**Step 3 — substitute.**\n\n$$\\rho = \\frac{100\\,000 \\times 0 \\cdot 038}{8 \\cdot 314 \\times 305} = \\frac{3800}{2536} = 1 \\cdot 498\\ \\text{kg m}^{-3}.$$\n\n**Step 4 — convert the units.** Conveniently, $1\\ \\text{kg m}^{-3} = 1\\ \\text{g dm}^{-3}$, since both are a thousandth of the other unit :\n\n$$\\rho = \\mathbf{1 \\cdot 5}\\ \\text{g dm}^{-3}.$$\n\nForgetting to convert $32\\ ^\\circ$C to kelvin is the error that wrecks this calculation — dividing by 32 instead of 305 would give an answer about ten times too large.",
+      "marks": 2,
+      "source": "Cambridge 9701 Jun 2024",
+      "answer": 1.5,
+      "tolerance": 0.05
+    },
+    {
       "id": "alc7-001",
       "chapter": "States of Matter and the Mole",
       "topic": "Avogadro constant",
@@ -85,17 +97,6 @@
         "is the catalyst"
       ],
       "answer": 1
-    },
-    {
-      "id": "alc7-006",
-      "chapter": "States of Matter and the Mole",
-      "topic": "Moles",
-      "type": "numeric",
-      "q": "Find the number of moles in $9.8$ g of $\\text{H}_{2}\\text{SO}_{4}$ ($M_{r} = 98$).",
-      "solution": "$n = \\dfrac{9.8}{98} = \\mathbf{0.1}$ mol.",
-      "marks": 2,
-      "answer": 0.1,
-      "tolerance": 0.005
     },
     {
       "id": "alc7-007",

@@ -7,20 +7,26 @@
   "access": "login",
   "questions": [
     {
-      "id": "ign-001",
+      "id": "cie0580-101",
       "chapter": "Number",
-      "topic": "Standard form",
-      "type": "mcq",
-      "q": "Write $0.00042$ in standard form.",
-      "solution": "Standard form is $a \\times 10^{n}$ with $1 \\le a < 10$.\n\nMove the point four places right to make $4.2$, so $n = -4$: $\\mathbf{4.2 \\times 10^{-4}}$.\n\n$42 \\times 10^{-5}$ is the same number but not in standard form — $42$ is not between 1 and 10.",
-      "marks": 1,
-      "options": [
-        "$4.2 \\times 10^{-4}$",
-        "$4.2 \\times 10^{-3}$",
-        "$42 \\times 10^{-5}$",
-        "$4.2 \\times 10^{4}$"
-      ],
-      "answer": 0
+      "topic": "Factors",
+      "type": "numeric",
+      "q": "Find the greatest odd number that is a factor of 140 and a factor of 210.",
+      "solution": "A number that is a factor of both 140 and 210 is a factor of their **highest common factor**, so start there.\n\n**Step 1 — prime factorise.**\n\n$$140 = 2^2 \\times 5 \\times 7, \\qquad 210 = 2 \\times 3 \\times 5 \\times 7$$\n\n**Step 2 — take the common part**, using the lowest power of each shared prime :\n\n$$\\text{HCF} = 2 \\times 5 \\times 7 = 70.$$\n\n**Step 3 — find the greatest odd factor of 70.** Strip out every factor of 2 :\n\n$$70 = 2 \\times 35,$$\n\nso the odd part is $35 = 5 \\times 7$.\n\n**Check.** $140 \\div 35 = 4$ and $210 \\div 35 = 6$ — both whole numbers, and 35 is odd. The answer is $\\mathbf{35}$.",
+      "marks": 2,
+      "source": "Cambridge 0580 Jun 2024",
+      "answer": 35,
+      "tolerance": 0
+    },
+    {
+      "id": "cie0580-105",
+      "chapter": "Number",
+      "topic": "Recurring decimals",
+      "type": "long",
+      "q": "Write $0 \\cdot 1\\dot{4}\\dot{6}$ as a fraction in its simplest form. You must show all your working.",
+      "solution": "The dots mark **46** as the repeating block, so the number is $0 \\cdot 1464646\\ldots$ — the 1 does not repeat, the 46 does.\n\n**Step 1 — name it.**\n\n$$x = 0 \\cdot 1464646\\ldots$$\n\n**Step 2 — shift past the non-repeating part.** One digit (the 1) comes before the repeat, so multiply by 10 :\n\n$$10x = 1 \\cdot 464646\\ldots$$\n\n**Step 3 — shift a whole repeat further.** The block is two digits long, so multiply by a further 100 :\n\n$$1000x = 146 \\cdot 464646\\ldots$$\n\n**Step 4 — subtract.** The tails are identical and cancel exactly :\n\n$$1000x - 10x = 146 \\cdot 4646\\ldots - 1 \\cdot 4646\\ldots$$\n$$990x = 145$$\n\n**Step 5 — solve and simplify.**\n\n$$x = \\frac{145}{990}.$$\n\nBoth are divisible by 5 :\n\n$$x = \\frac{29}{198}.$$\n\nSince $29$ is prime and does not divide $198$, this is in its simplest form.\n\n**Check.** $29 \\div 198 = 0 \\cdot 146464\\ldots$ ✓",
+      "marks": 3,
+      "source": "Cambridge 0580 Jun 2024"
     },
     {
       "id": "ign-002",
@@ -140,15 +146,6 @@
       "marks": 2,
       "answer": 12,
       "tolerance": 0
-    },
-    {
-      "id": "ign-011",
-      "chapter": "Number",
-      "topic": "Compound interest and depreciation",
-      "type": "long",
-      "q": "A car bought for $\\$18000$ depreciates by $15\\%$ each year. Find its value after 3 years, and find after how many complete years it will first be worth less than $\\$10000$.",
-      "solution": "**Value after 3 years.** The multiplier for a $15\\%$ fall is $0.85$:\n\n$18000 \\times 0.85^{3} = 18000 \\times 0.614125 = \\mathbf{\\$11054.25}$.\n\n**When does it fall below $\\$10000$?** Try successive years:\n\nAfter 3 years: $\\$11054$ — still above.\n\nAfter 4 years: $18000 \\times 0.85^{4} = \\$9396.11$ — below.\n\nSo it first falls below $\\$10000$ after **4 complete years**.\n\n**Or with logarithms:** $0.85^{n} < \\dfrac{10000}{18000} = 0.5556$, so $n > \\dfrac{\\log 0.5556}{\\log 0.85} = 3.62$, giving $n = 4$.\n\nDepreciation is compound interest with a multiplier below 1 — the same arithmetic running the other way.",
-      "marks": 3
     },
     {
       "id": "ign-012",

@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "alp2-001",
+      "id": "cie9702-102",
       "chapter": "Kinematics",
-      "topic": "Displacement and distance",
+      "topic": "Projectile motion",
       "type": "mcq",
-      "q": "A runner completes one lap of a $400$ m track. Their displacement is:",
-      "solution": "**Displacement** is the straight-line change in position, and the runner ends where they started — so it is **zero**.\n\nThe **distance** travelled is $400$ m. Displacement is a vector; distance is a scalar.",
+      "q": "A golf ball is hit and follows a curved path through the air. Which row describes the changes in the horizontal and vertical components of the golf ball's velocity when air resistance is ignored?",
+      "solution": "With air resistance ignored, the **only** force acting on the ball in flight is its weight, which acts vertically downwards. Treat the two directions separately.\n\n**Horizontal.** There is no horizontal force at all. By Newton's first law the horizontal component of velocity is therefore **constant** throughout the flight — it does not decelerate.\n\n**Vertical.** The weight produces a constant downward acceleration $g = 9 \\cdot 81\\ \\text{m s}^{-2}$. So the vertical component changes at a steady rate: the ball slows on the way up, is momentarily zero vertically at the top, then speeds up on the way down. That is **constant acceleration downwards**, not constant velocity.\n\nSo horizontal constant, vertical constant acceleration downwards.\n\nThis independence of the two components is what makes the path a parabola. Air resistance is exactly what would introduce a horizontal deceleration — which is why the question says to ignore it.",
       "marks": 1,
+      "source": "Cambridge 9702 Jun 2024",
       "options": [
-        "400 m",
-        "0",
-        "200 m",
-        "800 m"
+        "horizontal: constant; vertical: constant acceleration downwards",
+        "horizontal: constant deceleration; vertical: constant acceleration downwards",
+        "horizontal: constant; vertical: constant velocity downwards",
+        "horizontal: constant deceleration; vertical: constant velocity downwards"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": "alp2-002",

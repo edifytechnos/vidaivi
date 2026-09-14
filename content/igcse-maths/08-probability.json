@@ -7,20 +7,16 @@
   "access": "login",
   "questions": [
     {
-      "id": "igp-001",
+      "id": "cie0580-104",
       "chapter": "Probability",
-      "topic": "Basic probability",
-      "type": "mcq",
-      "q": "The probability of an impossible event is:",
-      "solution": "$P = \\mathbf{0}$ for something that cannot happen, and $1$ for something certain.\n\nEvery probability lies between the two: $0 \\le P \\le 1$. An answer outside that range is always an error.",
+      "topic": "Complementary events",
+      "type": "numeric",
+      "q": "Geetha picks a toy at random from a box. The probability that she picks a wooden toy is $0 \\cdot 6$. Work out the probability that she does **not** pick a wooden toy.",
+      "solution": "An event and its complement together cover every possibility, so their probabilities add to 1 :\n\n$$P(\\text{not wooden}) = 1 - P(\\text{wooden}).$$\n\n**Substitute.**\n\n$$P(\\text{not wooden}) = 1 - 0 \\cdot 6 = \\mathbf{0 \\cdot 4}.$$\n\nThis works however many kinds of toy are in the box — wooden, plastic, metal or anything else. Everything that is not wooden is lumped together into the one complementary event, so no further information is needed.",
       "marks": 1,
-      "options": [
-        "0",
-        "1",
-        "0.5",
-        "-1"
-      ],
-      "answer": 0
+      "source": "Cambridge 0580 Jun 2024",
+      "answer": 0.4,
+      "tolerance": 0.001
     },
     {
       "id": "igp-002",

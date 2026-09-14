@@ -7,20 +7,38 @@
   "access": "login",
   "questions": [
     {
-      "id": "igb4-001",
+      "id": "cie0653-102",
       "chapter": "Coordination, Reproduction and Inheritance",
-      "topic": "Nervous system",
+      "topic": "Hormones",
       "type": "mcq",
-      "q": "The gap between two neurons is called a:",
-      "solution": "The **synapse**. A chemical neurotransmitter crosses the gap and starts a new impulse in the next neuron.\n\nThe chemical step is what makes the signal travel in one direction only.",
+      "q": "Which statement about adrenaline is correct?",
+      "solution": "**The correct statement.** Adrenaline is a hormone, and every hormone is produced by an **endocrine gland**. Adrenaline comes from the **adrenal glands**, one sitting on top of each kidney.\n\n**Why each of the others is wrong.**\n\n*Transported in the red blood cells.* Hormones are carried **dissolved in the blood plasma**, not inside red blood cells. Red cells are packed with haemoglobin and carry oxygen.\n\n*Only one target organ.* Adrenaline is the clearest counter-example there is — it acts on the **heart** (raising the rate), the **liver** (releasing glucose), the **lungs and airways**, the **muscles**, the **skin** and the **eyes**, all at once. That breadth is what makes it useful in an emergency.\n\n*Reduces the size of the pupils.* It does the opposite: adrenaline makes the pupils **dilate**, letting in more light so the danger can be seen more clearly.",
       "marks": 1,
+      "source": "Cambridge 0653 Jun 2024",
       "options": [
-        "synapse",
-        "dendrite",
-        "axon",
-        "nerve"
+        "It is produced by a gland",
+        "It is transported in the red blood cells",
+        "It only has one target organ",
+        "It reduces the size of the pupils"
       ],
       "answer": 0
+    },
+    {
+      "id": "cie0653-103",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Sexual reproduction",
+      "type": "mcq",
+      "q": "Which statement about sexual reproduction is **always** correct?",
+      "solution": "The word **always** is doing the work here — three of the options are true only sometimes, or never.\n\n**The correct statement.** Sexual reproduction is *defined* by **fertilisation**: the fusion of the nucleus of a male gamete with the nucleus of a female gamete to form a zygote. That happens in every case without exception, which is exactly what the question asks for.\n\n**Why each of the others is wrong.**\n\n*Only one parent.* That describes **asexual** reproduction. Sexual reproduction usually involves two parents — though a self-pollinating plant is a single organism, it still produces two kinds of gamete whose nuclei fuse, which is why the fusion, not the parent count, is the defining feature.\n\n*Genetically identical offspring.* The opposite. Because the gametes are made by **meiosis** — with independent assortment and crossing over — and because which two gametes meet is random, sexual reproduction produces **variation**. Identical offspring come from asexual reproduction.\n\n*Only in animals.* Plants reproduce sexually too, which is what flowers are for. So do fungi and many single-celled organisms.",
+      "marks": 1,
+      "source": "Cambridge 0653 Jun 2024",
+      "options": [
+        "It involves only one parent",
+        "It involves the fusion of nuclei",
+        "It produces genetically identical offspring",
+        "It takes place only in animals"
+      ],
+      "answer": 1
     },
     {
       "id": "igb4-002",
@@ -69,22 +87,6 @@
         "a protein"
       ],
       "answer": 0
-    },
-    {
-      "id": "igb4-005",
-      "chapter": "Coordination, Reproduction and Inheritance",
-      "topic": "Genotype and phenotype",
-      "type": "mcq",
-      "q": "The observable characteristics of an organism make up its:",
-      "solution": "The **phenotype** is what you can see; the **genotype** is the genetic make-up behind it.\n\nTwo organisms with different genotypes ($TT$ and $Tt$) can share a phenotype, which is exactly why a recessive trait can skip a generation.",
-      "marks": 1,
-      "options": [
-        "genotype",
-        "phenotype",
-        "karyotype",
-        "allele"
-      ],
-      "answer": 1
     },
     {
       "id": "igb4-006",

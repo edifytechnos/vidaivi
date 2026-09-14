@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "alc1-001",
+      "id": "cie9701-101",
       "chapter": "Atomic Structure and the Periodic Table",
       "topic": "Subatomic particles",
       "type": "mcq",
-      "q": "Which particle has a relative mass of approximately $\\dfrac{1}{1836}$?",
-      "solution": "The **electron**. Protons and neutrons each have a relative mass of about 1.\n\nAlmost all an atom's mass is in the nucleus, and almost all its **volume** is the electron cloud.",
+      "q": "Which statement about $^{131}_{\\ 53}\\text{I}$ is correct?",
+      "solution": "Read the two numbers first. The **lower** number is the atomic number $Z = 53$ (the proton count) and the **upper** is the mass number $A = 131$ (protons plus neutrons).\n\n**Neutrons.**\n\n$$A - Z = 131 - 53 = 78.$$\n\nSo every atom or ion of this isotope has **78** neutrons. The nucleus is untouched by ion formation, so that number cannot change.\n\n**Electrons.** A neutral atom has 53 electrons, matching its 53 protons. Iodine is a group 17 element, so its **negative** ion is $\\text{I}^-$, formed by gaining **one** electron :\n\n$$53 + 1 = 54.$$\n\nSo the correct statement is **78 neutrons and 54 electrons**.\n\nThe two wrong pairs each contain a specific error: 53 neutrons confuses the neutron count with the proton count, and 53 electrons forgets that the ion has gained one.",
       "marks": 1,
+      "source": "Cambridge 9701 Jun 2024",
       "options": [
-        "Proton",
-        "Neutron",
-        "Electron",
-        "Alpha particle"
+        "A negative ion of $^{131}_{\\ 53}\\text{I}$ contains 53 neutrons and 52 electrons",
+        "A negative ion of $^{131}_{\\ 53}\\text{I}$ contains 53 neutrons and 54 electrons",
+        "A negative ion of $^{131}_{\\ 53}\\text{I}$ contains 78 neutrons and 53 electrons",
+        "A negative ion of $^{131}_{\\ 53}\\text{I}$ contains 78 neutrons and 54 electrons"
       ],
-      "answer": 2
+      "answer": 3
     },
     {
       "id": "alc1-002",

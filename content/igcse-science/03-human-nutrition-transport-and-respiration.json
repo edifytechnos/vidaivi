@@ -7,18 +7,19 @@
   "access": "login",
   "questions": [
     {
-      "id": "igb3-001",
+      "id": "cie0653-101",
       "chapter": "Human Nutrition, Transport and Respiration",
-      "topic": "Balanced diet",
+      "topic": "Blood vessels",
       "type": "mcq",
-      "q": "Which food group is the body's main source of energy?",
-      "solution": "**Carbohydrates** are broken down to glucose and respired for energy — the body's first choice of fuel.\n\nFats store more energy per gram but are used as a longer-term reserve. Proteins are for growth and repair, and are only respired when nothing else is left.",
+      "q": "Which statement about the structure and function of blood vessels is correct?",
+      "solution": "**The correct statement.** Arteries carry blood away from the heart, which has just pumped it, so the blood is at **high pressure**. Their walls are thick, muscular and elastic: the elastic tissue stretches with each surge and recoils between beats, which keeps the pressure high and the flow continuous.\n\n**Why each of the others is wrong.**\n\n*Arteries have valves and always carry oxygenated blood.* Two errors. Arteries generally have **no** valves — the pressure is high enough that backflow is not a problem (the only valves are the semilunar ones at the heart itself). And the **pulmonary artery** carries **deoxygenated** blood to the lungs, so \"always\" is false.\n\n*Veins have a narrow lumen.* The opposite — veins have a **wide** lumen, which reduces resistance to the low-pressure blood returning to the heart. They also have **valves** to stop backflow, which is the feature the first option wrongly gave to arteries.\n\n*Capillaries have a thick wall.* Capillaries are **one cell thick**, and that is the whole point of them: the short diffusion distance is what allows oxygen, glucose and carbon dioxide to be exchanged with the tissues.",
       "marks": 1,
+      "source": "Cambridge 0653 Jun 2024",
       "options": [
-        "Proteins",
-        "Carbohydrates",
-        "Vitamins",
-        "Minerals"
+        "Arteries have valves and always carry oxygenated blood",
+        "Arteries have a thick muscular wall to maintain a high blood pressure",
+        "Veins have a narrow lumen to speed up the flow of blood",
+        "Capillaries have a thick wall to withstand the pressure of the blood"
       ],
       "answer": 1
     },

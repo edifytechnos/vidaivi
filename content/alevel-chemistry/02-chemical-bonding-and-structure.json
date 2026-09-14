@@ -7,6 +7,40 @@
   "access": "login",
   "questions": [
     {
+      "id": "cie9701-102",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Shapes of molecules",
+      "type": "mcq",
+      "q": "What is the shape of the sulfur dioxide, $\\text{SO}_2$, molecule?",
+      "solution": "Use VSEPR: count the regions of electron density around the central atom, then remember that a **lone pair** shapes the molecule without being seen in its name.\n\n**Step 1 — electrons on the central atom.** Sulfur is in group 16, so it has **6** outer electrons. Two of the three regions around it are bonds to oxygen; that uses 4 electrons, leaving **2** — one **lone pair**.\n\n**Step 2 — count the regions.** Two bonding regions plus one lone pair makes **three** regions of electron density.\n\n**Step 3 — arrange them.** Three regions repel into a **trigonal planar** arrangement, about $120^\\circ$ apart.\n\n**Step 4 — name the shape by the atoms only.** The lone pair is not an atom, so what is left visible is a **bent**, or **non-linear**, molecule. The lone pair repels more strongly than a bonding pair, so the O–S–O angle is squeezed slightly below $120^\\circ$, to about $119^\\circ$.\n\nAnswering *linear* is the common error — it comes from counting only the two bonds and forgetting the lone pair, which would be right for $\\text{CO}_2$, where sulfur's extra pair has no counterpart.",
+      "marks": 1,
+      "source": "Cambridge 9701 Jun 2024",
+      "options": [
+        "linear",
+        "non-linear",
+        "pyramidal",
+        "tetrahedral"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cie9701-104",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Hydrogen bonding",
+      "type": "mcq",
+      "q": "The boiling points of $\\text{H}_2\\text{S}$, $\\text{H}_2\\text{Se}$ and $\\text{H}_2\\text{Te}$ increase down the group, but the boiling point of water is far higher than this trend predicts. Which statement correctly explains why water does not fit the trend?",
+      "solution": "**The trend first.** Going down group 16, the molecules get larger and have more electrons, so the **van der Waals** (London dispersion) forces between them get stronger. More energy is needed to separate them, and the boiling point rises steadily from $\\text{H}_2\\text{S}$ to $\\text{H}_2\\text{Se}$ to $\\text{H}_2\\text{Te}$.\n\n**Why water breaks it.** On that trend alone, water — the smallest molecule of the four — should have the **lowest** boiling point of all, somewhere near $-90\\ ^\\circ$C. It actually boils at $+100\\ ^\\circ$C.\n\nThe reason is that oxygen is **highly electronegative** and has lone pairs, so water molecules form **hydrogen bonds** with one another. A hydrogen bond is far stronger than a van der Waals force, and each water molecule can form up to four of them. Breaking that network takes much more energy than the molecule's size would suggest.\n\nSulfur, selenium and tellurium are not electronegative enough for hydrogen bonding, so their hydrides show only the size-based trend.\n\n**Why the others are wrong.** Option A describes shielding, which is about atomic properties, not intermolecular forces. Option C has it backwards — being small is exactly why water *should* boil low. Option D confuses the strength of the **covalent bond inside** the molecule with the forces **between** molecules; boiling breaks the latter, not the former.",
+      "marks": 1,
+      "source": "Cambridge 9701 Jun 2024",
+      "options": [
+        "There are fewer electrons in the oxygen atoms, so there is less shielding of the nuclear charge",
+        "There are strong hydrogen bonds between water molecules",
+        "Water molecules are smaller, so they pack more closely together",
+        "The O–H bond is stronger than the S–H, Se–H and Te–H bonds"
+      ],
+      "answer": 1
+    },
+    {
       "id": "alc2-001",
       "chapter": "Chemical Bonding and Structure",
       "topic": "Ionic bonding",
@@ -39,22 +73,6 @@
       "answer": 2
     },
     {
-      "id": "alc2-003",
-      "chapter": "Chemical Bonding and Structure",
-      "topic": "Bond angles",
-      "type": "mcq",
-      "q": "The bond angle in ammonia is about $107°$ rather than $109.5°$ because:",
-      "solution": "A **lone pair** is held by only one nucleus, so it occupies more space near the central atom and repels the bonding pairs more strongly.\n\nEach lone pair closes the angle by about $2.5°$: methane $109.5°$, ammonia $107°$, water $104.5°$ with two lone pairs.",
-      "marks": 1,
-      "options": [
-        "nitrogen is small",
-        "a lone pair repels more strongly than a bonding pair",
-        "the hydrogens repel",
-        "it is planar"
-      ],
-      "answer": 1
-    },
-    {
       "id": "alc2-004",
       "chapter": "Chemical Bonding and Structure",
       "topic": "Hydrogen bonding",
@@ -67,22 +85,6 @@
         "nitrogen, oxygen or fluorine",
         "any halogen",
         "a metal"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "alc2-005",
-      "chapter": "Chemical Bonding and Structure",
-      "topic": "Metallic bonding",
-      "type": "mcq",
-      "q": "Metals conduct electricity because they have:",
-      "solution": "A metal is a lattice of positive ions in a **sea of delocalised electrons**, free to move through the whole structure.\n\nThe same electrons make metals good thermal conductors, and the non-directional bonding is why they are malleable rather than brittle.",
-      "marks": 1,
-      "options": [
-        "ions free to move",
-        "delocalised electrons",
-        "covalent bonds",
-        "a high density"
       ],
       "answer": 1
     },

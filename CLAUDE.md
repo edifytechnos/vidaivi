@@ -383,10 +383,24 @@ Tagged today, with an evidence file per shelf under `docs/`:
 | CBSE Class 12 Physics | 16 of 210 | every chapter covered |
 | CBSE Class 12 Chemistry | 13 of 150 | every chapter covered |
 | CBSE Class 10 Science | 11 of 195 | 10 of 13 chapters |
+| Cambridge IGCSE Maths (0580) | 5 of 135 | from the Jun 2024 papers |
+| Cambridge IGCSE Combined Science (0653) | 3 of 180 | from the Jun 2024 papers |
+| Cambridge A Level Physics (9702) | 3 of 180 | from the Jun 2024 papers |
+| Cambridge A Level Chemistry (9701) | 4 of 180 | from the Jun 2024 papers |
+| Cambridge A Level Maths (9709) | 0 of 150 | notation lost to extraction |
 
-Untagged: the four Cambridge shelves (past papers are published, not yet read)
-and NEET (no public archive exists, so nothing there will ever carry a year
-until one does).
+Untagged: **A Level Maths**, for the same reason the CBSE Maths shelf is thin —
+its questions are carried by notation, and extraction drops it. And **NEET**,
+because no public archive exists; nothing there will carry a year until one does.
+
+**Cambridge publishes past papers openly** at
+`.../programmes-and-qualifications/<syllabus>/past-papers/` as direct PDF links,
+but **most of what it publishes there is specimen material** (2020, 2022, 2025),
+which is the exact counterpart of a CBSE SQP. Only the **June 2024** series in
+that corpus is a real past paper, so every Cambridge tag names it:
+`Cambridge 0580 Jun 2024`. Downloading needs `curl --http1.1`, and 0653's slug
+is `cambridge-igcse-science-combined-0653`, not the `-combined-science-` form
+every other subject uses.
 
 ### Two ways content renders wrong, and both shipped once
 

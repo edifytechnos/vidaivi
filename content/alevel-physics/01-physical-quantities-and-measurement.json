@@ -7,20 +7,33 @@
   "access": "login",
   "questions": [
     {
-      "id": "alp1-001",
+      "id": "cie9702-101",
       "chapter": "Physical Quantities and Measurement",
-      "topic": "Base quantities",
+      "topic": "Units",
       "type": "mcq",
-      "q": "Which of these is **not** an SI base quantity?",
-      "solution": "The seven base quantities are mass, length, time, current, temperature, amount of substance and luminous intensity.\n\n**Force** is derived: $1$ N $= 1$ kg m s$^{-2}$.",
+      "q": "Which of the following could have the same units as force?",
+      "solution": "Check each option by reducing it to base units, remembering that force is measured in newtons, and $1\\ \\text{N} = 1\\ \\text{kg m s}^{-2}$.\n\n**A — energy / distance.**\n\n$$\\frac{\\text{J}}{\\text{m}} = \\frac{\\text{kg m}^2\\,\\text{s}^{-2}}{\\text{m}} = \\text{kg m s}^{-2} = \\text{N}. \\quad \\checkmark$$\n\nThis is just the definition of work rearranged: $W = F \\times d$, so $F = W/d$.\n\n**B — energy × time.** $\\text{kg m}^2\\,\\text{s}^{-2} \\times \\text{s} = \\text{kg m}^2\\,\\text{s}^{-1}$. Not force (this is the unit of angular momentum, or of the Planck constant).\n\n**C — momentum × distance.** $\\text{kg m s}^{-1} \\times \\text{m} = \\text{kg m}^2\\,\\text{s}^{-1}$. Not force.\n\n**D — momentum × time.** $\\text{kg m s}^{-1} \\times \\text{s} = \\text{kg m}$. Not force.\n\nSo the answer is **A**.\n\nNote that momentum *divided* by time **would** be force — that is Newton's second law, $F = \\Delta p/\\Delta t$. The option offers multiplication, which is why it fails.",
       "marks": 1,
+      "source": "Cambridge 9702 Jun 2024",
       "options": [
-        "Mass",
-        "Length",
-        "Force",
-        "Time"
+        "$\\dfrac{\\text{energy}}{\\text{distance}}$",
+        "$\\text{energy} \\times \\text{time}$",
+        "$\\text{momentum} \\times \\text{distance}$",
+        "$\\text{momentum} \\times \\text{time}$"
       ],
-      "answer": 2
+      "answer": 0
+    },
+    {
+      "id": "cie9702-103",
+      "chapter": "Physical Quantities and Measurement",
+      "topic": "Uncertainty",
+      "type": "numeric",
+      "q": "The temperature of a liquid is measured as it rises from $40\\ ^\\circ$C to $100\\ ^\\circ$C. Each temperature is measured to within $\\pm 0 \\cdot 5\\ ^\\circ$C. Calculate the percentage uncertainty in the measurement of the temperature **rise**, correct to 1 decimal place.",
+      "solution": "The rise is a **difference** of two measurements, and for a difference the **absolute** uncertainties add — they do not cancel, because either reading could be off in either direction.\n\n**Step 1 — the rise itself.**\n\n$$\\Delta T = 100 - 40 = 60\\ ^\\circ\\text{C}.$$\n\n**Step 2 — the absolute uncertainty.** Each reading carries $\\pm 0 \\cdot 5\\ ^\\circ$C, and there are two readings :\n\n$$0 \\cdot 5 + 0 \\cdot 5 = \\pm 1 \\cdot 0\\ ^\\circ\\text{C}.$$\n\n**Step 3 — convert to a percentage.**\n\n$$\\frac{1 \\cdot 0}{60} \\times 100 = \\mathbf{1 \\cdot 7\\%}.$$\n\nThe trap is to use $0 \\cdot 5/60 = 0 \\cdot 8\\%$, forgetting that **two** measurements were taken, or to divide by 100 rather than by the rise of 60.",
+      "marks": 2,
+      "source": "Cambridge 9702 Jun 2024",
+      "answer": 1.7,
+      "tolerance": 0.05
     },
     {
       "id": "alp1-002",
@@ -85,17 +98,6 @@
         "$10^{9}$ m"
       ],
       "answer": 1
-    },
-    {
-      "id": "alp1-006",
-      "chapter": "Physical Quantities and Measurement",
-      "topic": "Unit conversion",
-      "type": "numeric",
-      "q": "Express $72$ km/h in m/s.",
-      "solution": "$72 \\times \\dfrac{1000}{3600} = \\mathbf{20}$ m/s.\n\nDividing by $3.6$ is the shortcut in either direction.",
-      "marks": 2,
-      "answer": 20,
-      "tolerance": 0.1
     },
     {
       "id": "alp1-007",

@@ -7,6 +7,18 @@
   "access": "login",
   "questions": [
     {
+      "id": "cie0580-103",
+      "chapter": "Trigonometry",
+      "topic": "Area of a triangle",
+      "type": "numeric",
+      "q": "In triangle $ABC$, $AB = 6 \\cdot 7$ cm, $BC = 5 \\cdot 9$ cm and angle $ABC = 81^\\circ$. Calculate the area of triangle $ABC$, in cm², correct to 1 decimal place.",
+      "solution": "When two sides and the **included** angle are known, use\n\n$$\\text{Area} = \\frac{1}{2}ab\\sin C.$$\n\nHere the angle $81^\\circ$ is at $B$, and the two sides forming it are $AB$ and $BC$ — so they are exactly the $a$ and $b$ the formula wants.\n\n**Substitute.**\n\n$$\\text{Area} = \\frac{1}{2} \\times 6 \\cdot 7 \\times 5 \\cdot 9 \\times \\sin 81^\\circ.$$\n\n**Evaluate.**\n\n$$= \\frac{1}{2} \\times 39 \\cdot 53 \\times 0 \\cdot 98769 = \\mathbf{19 \\cdot 5}\\ \\text{cm}^2.$$\n\n**Check.** Since $\\sin 81^\\circ$ is close to 1, the answer should be close to $\\frac12 \\times 6 \\cdot 7 \\times 5 \\cdot 9 = 19 \\cdot 8$ — and it is, slightly less. The angle must be the one **between** the two sides; using a different angle here would be the common error.",
+      "marks": 2,
+      "source": "Cambridge 0580 Jun 2024",
+      "answer": 19.5,
+      "tolerance": 0.15
+    },
+    {
       "id": "igt-001",
       "chapter": "Trigonometry",
       "topic": "Basic ratios",
@@ -85,17 +97,6 @@
         "two lines of sight"
       ],
       "answer": 1
-    },
-    {
-      "id": "igt-006",
-      "chapter": "Trigonometry",
-      "topic": "Finding a side",
-      "type": "numeric",
-      "q": "In a right-angled triangle, the hypotenuse is $10$ cm and one angle is $30°$. Find the side opposite that angle, in cm.",
-      "solution": "$\\sin 30° = \\dfrac{\\text{opposite}}{10} \\Rightarrow \\text{opposite} = 10 \\times 0.5 = \\mathbf{5}$ cm.\n\nIn a $30$–$60$–$90$ triangle the shortest side is always exactly half the hypotenuse.",
-      "marks": 2,
-      "answer": 5,
-      "tolerance": 0.05
     },
     {
       "id": "igt-007",
