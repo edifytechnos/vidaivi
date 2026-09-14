@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-human-biology",
+  "title": "Human Nutrition, Transport and Respiration",
+  "chapter": "Topic Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igb3-001",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Balanced diet",
+      "type": "mcq",
+      "q": "Which food group is the body's main source of energy?",
+      "solution": "**Carbohydrates** are broken down to glucose and respired for energy — the body's first choice of fuel.\n\nFats store more energy per gram but are used as a longer-term reserve. Proteins are for growth and repair, and are only respired when nothing else is left.",
+      "marks": 1,
+      "options": [
+        "Proteins",
+        "Carbohydrates",
+        "Vitamins",
+        "Minerals"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb3-002",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Enzymes in digestion",
+      "type": "mcq",
+      "q": "The enzyme that digests starch is:",
+      "solution": "**Amylase** breaks starch down to maltose, and it is made in the salivary glands and the pancreas.\n\nPepsin and trypsin digest proteins; lipase digests fats. The suffix **-ase** names an enzyme, and the stem usually names what it acts on.",
+      "marks": 1,
+      "options": [
+        "pepsin",
+        "amylase",
+        "lipase",
+        "trypsin"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb3-003",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Absorption",
+      "type": "mcq",
+      "q": "Most absorption of digested food takes place in the:",
+      "solution": "The **small intestine**, whose inner surface is covered in **villi** — finger-like projections, each with microvilli on its cells.\n\nThey give an enormous surface area, are one cell thick, and carry a rich blood supply and a lacteal. The large intestine absorbs **water**, not food.",
+      "marks": 1,
+      "options": [
+        "stomach",
+        "small intestine",
+        "large intestine",
+        "oesophagus"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb3-004",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Blood",
+      "type": "mcq",
+      "q": "Which blood component transports oxygen?",
+      "solution": "**Red blood cells**, using the pigment **haemoglobin**, which binds oxygen where it is plentiful and releases it where it is scarce.\n\nThey are adapted for the job: biconcave for surface area, and with **no nucleus**, leaving more room for haemoglobin.",
+      "marks": 1,
+      "options": [
+        "White blood cells",
+        "Red blood cells",
+        "Platelets",
+        "Plasma"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb3-005",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Respiration",
+      "type": "mcq",
+      "q": "Anaerobic respiration in human muscle produces:",
+      "solution": "In human muscle: glucose $\\to$ **lactic acid** $+$ a little energy.\n\nIt builds up during hard exercise and causes the burning sensation and the **oxygen debt**, repaid by panting afterwards while the liver breaks it down.\n\nYeast, by contrast, produces ethanol and carbon dioxide.",
+      "marks": 1,
+      "options": [
+        "carbon dioxide and water",
+        "lactic acid",
+        "ethanol and carbon dioxide",
+        "oxygen"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb3-006",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Chambers of the heart",
+      "type": "numeric",
+      "q": "How many chambers does the human heart have?",
+      "solution": "$\\mathbf{4}$ — two atria and two ventricles, keeping oxygenated and deoxygenated blood entirely separate.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "igb3-007",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Respiration equation",
+      "type": "numeric",
+      "q": "In the equation $\\text{C}_{6}\\text{H}_{12}\\text{O}_{6} + a\\text{O}_{2} \\to 6\\text{CO}_{2} + 6\\text{H}_{2}\\text{O}$, find $a$.",
+      "solution": "$\\mathbf{6}$ — aerobic respiration is essentially photosynthesis run backwards.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "igb3-008",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Breathing rate",
+      "type": "numeric",
+      "q": "A person takes $15$ breaths per minute. How many breaths is that in half an hour?",
+      "solution": "$15 \\times 30 = \\mathbf{450}$ breaths.\n\nDuring exercise the rate can more than double, delivering oxygen faster and clearing carbon dioxide.",
+      "marks": 2,
+      "answer": 450,
+      "tolerance": 1
+    },
+    {
+      "id": "igb3-009",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Composition of air",
+      "type": "numeric",
+      "q": "What percentage of inhaled air is oxygen (to the nearest whole number)?",
+      "solution": "About $\\mathbf{21}\\%$. Exhaled air still holds about $16\\%$ — the body takes only a fraction of what it breathes in.\n\nThat is precisely why mouth-to-mouth resuscitation works.",
+      "marks": 2,
+      "answer": 21,
+      "tolerance": 1
+    },
+    {
+      "id": "igb3-010",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Blood vessels",
+      "type": "numeric",
+      "q": "How many main types of blood vessel are there (artery, vein, capillary)?",
+      "solution": "$\\mathbf{3}$. Arteries carry blood **away** from the heart under high pressure; veins return it at low pressure, with valves to stop backflow; capillaries are one cell thick, where exchange actually happens.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "igb3-011",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Digestion",
+      "type": "long",
+      "q": "Describe the digestion of a meal containing starch, protein and fat, naming the enzymes and where each acts.",
+      "solution": "**Mouth.** Teeth grind the food, increasing the surface area for enzymes. **Salivary amylase** begins breaking starch into maltose.\n\n**Stomach.** Hydrochloric acid kills bacteria and gives pH $2$ for **pepsin**, which breaks proteins into polypeptides. Amylase is destroyed here by the acid.\n\n**Small intestine — duodenum.**\n\n• **Bile** from the liver neutralises the acid (giving the alkaline conditions pancreatic enzymes need) and **emulsifies** fat, breaking it into tiny droplets. Bile contains **no enzyme** — its action is physical.\n\n• **Pancreatic amylase** finishes the starch.\n\n• **Trypsin** breaks polypeptides into shorter chains.\n\n• **Lipase** breaks the emulsified fat into fatty acids and glycerol.\n\n**Small intestine — ileum.** Maltase, peptidases and lipase complete the job:\n\n• Starch $\\to$ **glucose**\n\n• Protein $\\to$ **amino acids**\n\n• Fat $\\to$ **fatty acids and glycerol**\n\nAbsorption then happens through the **villi**: glucose and amino acids into the blood capillaries, fatty acids and glycerol into the **lacteal** (the lymph).\n\n**Large intestine.** Water is absorbed; the rest is egested.\n\n**Why emulsification matters:** lipase can only work on the **surface** of a fat droplet, so breaking one large drop into thousands of small ones multiplies the surface area and speeds digestion enormously.",
+      "marks": 3
+    },
+    {
+      "id": "igb3-012",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Circulatory system",
+      "type": "long",
+      "q": "Describe the double circulation of blood in humans and explain why it is an advantage.",
+      "solution": "**Double circulation** means the blood passes through the heart **twice** in one complete circuit.\n\n**Pulmonary circulation (heart $\\to$ lungs $\\to$ heart).**\n\nDeoxygenated blood leaves the right ventricle by the pulmonary artery, is oxygenated in the lungs, and returns by the pulmonary vein to the left atrium.\n\n**Systemic circulation (heart $\\to$ body $\\to$ heart).**\n\nOxygenated blood leaves the left ventricle by the aorta, delivers oxygen to the tissues, and returns by the vena cava to the right atrium.\n\n**Advantages.**\n\n1. **No mixing.** Oxygenated and deoxygenated blood are kept entirely separate, so the tissues receive fully oxygenated blood.\n\n2. **High pressure for the body.** Blood is re-pressurised by the heart before the long journey round the body, so it travels fast and delivers oxygen quickly.\n\n3. **Low pressure for the lungs.** The delicate alveolar capillaries get a gentler circuit of their own — high pressure would damage them.\n\n**Why the left ventricle's wall is thickest:** it must push blood round the whole body, while the right ventricle reaches only as far as the lungs.\n\n**Compare a fish**, with a single circulation: blood leaves the gills already slowed, so oxygen reaches the tissues far less briskly. Double circulation is what makes the high metabolic rate of a mammal or bird possible.",
+      "marks": 3
+    },
+    {
+      "id": "igb3-013",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Gas exchange and respiration",
+      "type": "long",
+      "q": "Describe the structure of the alveoli and how they are adapted for gas exchange. Then compare aerobic and anaerobic respiration.",
+      "solution": "**Alveoli.** Tiny air sacs at the ends of the bronchioles — about 300 million of them, giving a surface area of roughly $80$ m$^{2}$.\n\n**Adaptations, each answering one requirement:**\n\n1. **Large surface area** — more area, more diffusion.\n\n2. **Walls one cell thick** — a very short diffusion distance.\n\n3. **Rich blood supply** — capillaries constantly remove oxygen and deliver carbon dioxide, keeping the concentration gradients steep.\n\n4. **Moist lining** — gases must dissolve before they can cross.\n\n5. **Good ventilation** — breathing keeps the air fresh, again maintaining the gradients.\n\n**Aerobic respiration**\n\n$\\text{glucose} + \\text{oxygen} \\to \\text{carbon dioxide} + \\text{water} + \\text{energy}$\n\n• Needs oxygen; releases a **large** amount of energy; glucose is broken down completely.\n\n**Anaerobic respiration (in muscle)**\n\n$\\text{glucose} \\to \\text{lactic acid} + \\text{a little energy}$\n\n• No oxygen needed; releases **much less** energy, because the glucose is only partly broken down — lactic acid still contains most of it.\n\n**Oxygen debt.** Lactic acid builds up during hard exercise, causing fatigue and burning. Afterwards you continue breathing heavily, taking in the extra oxygen needed to break it down in the liver. That is why an athlete pants long after stopping.",
+      "marks": 5
+    },
+    {
+      "id": "igb3-014",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Blood",
+      "type": "long",
+      "q": "Name the four components of blood and give the function of each.",
+      "solution": "**Red blood cells (erythrocytes)** — carry oxygen using **haemoglobin**.\n\n*Adaptations:* **biconcave** for a large surface area, **no nucleus** so there is more room for haemoglobin, and small and flexible enough to squeeze through capillaries. They live about 120 days and are replaced at roughly two million a second.\n\n**White blood cells (leucocytes)** — defence against disease.\n\n• **Phagocytes** engulf and digest bacteria.\n\n• **Lymphocytes** produce **antibodies**, each one specific to a particular pathogen, and give the body its memory of past infections — which is the basis of vaccination.\n\n**Platelets** — cell fragments that trigger **clotting** at a wound, forming a fibrin mesh that stops blood loss and keeps bacteria out.\n\n**Plasma** — the straw-coloured liquid, about $90\\%$ water, in which everything travels: the cells themselves, dissolved glucose, amino acids, carbon dioxide, urea, hormones, salts and heat.\n\nPlasma is also how the body distributes **warmth** from the liver and muscles to the rest of the body.",
+      "marks": 3
+    },
+    {
+      "id": "igb3-015",
+      "chapter": "Human Nutrition, Transport and Respiration",
+      "topic": "Balanced diet",
+      "type": "long",
+      "q": "What is a balanced diet? Name the seven components and give one source and one deficiency disease for three of them.",
+      "solution": "**A balanced diet** contains all the necessary nutrients in the right proportions for a person's age, sex and activity — enough energy, but not more than is used.\n\n**The seven components:**\n\n1. **Carbohydrates** — energy. *Source: rice, bread, potatoes.*\n\n2. **Proteins** — growth and repair. *Source: meat, fish, pulses, eggs.* *Deficiency: **kwashiorkor**, with a swollen belly and poor growth.*\n\n3. **Fats** — energy store, insulation, and the membranes of every cell. *Source: oil, butter, nuts.*\n\n4. **Vitamins** — needed in tiny amounts for particular reactions. *Vitamin C from citrus fruit; deficiency causes **scurvy**, with bleeding gums. Vitamin D from sunlight and oily fish; deficiency causes **rickets**, with soft bent bones.*\n\n5. **Minerals** — *Iron from red meat and green vegetables, for haemoglobin; deficiency causes **anaemia**, with tiredness and pallor. Calcium from milk, for bones and teeth.*\n\n6. **Fibre (roughage)** — not digested, but it gives the intestinal muscles something to push against, preventing constipation. *Source: whole grains, vegetables.*\n\n7. **Water** — the solvent for every reaction in the body, and the medium of transport. Roughly $70\\%$ of body mass.\n\n**Balance matters both ways:** too little energy leads to starvation, too much to obesity and its associated heart disease and diabetes.",
+      "marks": 2
+    }
+  ]
+}

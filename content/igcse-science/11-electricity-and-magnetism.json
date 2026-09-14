@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-electricity",
+  "title": "Electricity and Magnetism",
+  "chapter": "Topic Test 11",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igp3-001",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Current",
+      "type": "mcq",
+      "q": "Electric current is the rate of flow of:",
+      "solution": "$I = \\dfrac{Q}{t}$ — current is **charge per second**, measured in amperes.\n\nOne ampere is one coulomb per second.",
+      "marks": 1,
+      "options": [
+        "energy",
+        "charge",
+        "voltage",
+        "resistance"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp3-002",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Ohm's law",
+      "type": "mcq",
+      "q": "Ohm's law is:",
+      "solution": "$\\mathbf{V = IR}$ — and the resistance is constant only if the temperature is.\n\nA filament lamp does **not** obey Ohm's law: as it heats up its resistance rises, so its $V$–$I$ graph curves.",
+      "marks": 1,
+      "options": [
+        "$V = IR$",
+        "$V = \\dfrac{I}{R}$",
+        "$I = VR$",
+        "$R = VI$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igp3-003",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Series circuits",
+      "type": "mcq",
+      "q": "In a series circuit, the current:",
+      "solution": "One path, so the **same current** flows through every component.\n\nIt is the **voltage** that divides, in proportion to each component's resistance. Charge cannot pile up anywhere, so what goes in must come out.",
+      "marks": 1,
+      "options": [
+        "divides between components",
+        "is the same everywhere",
+        "increases along the circuit",
+        "is zero"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp3-004",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Electromagnet",
+      "type": "mcq",
+      "q": "The strength of an electromagnet can be increased by:",
+      "solution": "A **soft iron core** magnetises strongly and greatly increases the field.\n\nMore turns and more current also help. Iron is chosen over steel because it **loses** its magnetism the moment the current stops — which is what lets a scrapyard crane drop what it picked up.",
+      "marks": 1,
+      "options": [
+        "decreasing the current",
+        "using fewer turns",
+        "adding a soft iron core",
+        "using a plastic core"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igp3-005",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Motor effect",
+      "type": "mcq",
+      "q": "A current-carrying wire in a magnetic field experiences a force. Its direction is given by:",
+      "solution": "**Fleming's left-hand rule**, for the motor effect.\n\n**F**irst finger = **F**ield, se**C**ond finger = **C**urrent, thu**M**b = **M**otion.\n\nThe right-hand rule is for the **generator**, where motion produces current.",
+      "marks": 1,
+      "options": [
+        "the right-hand grip rule",
+        "Fleming's left-hand rule",
+        "Fleming's right-hand rule",
+        "Lenz's law"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp3-006",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Ohm's law",
+      "type": "numeric",
+      "q": "A resistor of $8\\,\\Omega$ carries a current of $1.5$ A. Find the voltage across it, in volts.",
+      "solution": "$V = IR = 1.5 \\times 8 = \\mathbf{12}$ V.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igp3-007",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Resistors in series",
+      "type": "numeric",
+      "q": "Resistors of $4\\,\\Omega$ and $6\\,\\Omega$ are connected in series. Find the total resistance, in ohms.",
+      "solution": "In series they add: $4 + 6 = \\mathbf{10}\\,\\Omega$.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igp3-008",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Resistors in parallel",
+      "type": "numeric",
+      "q": "Resistors of $4\\,\\Omega$ and $12\\,\\Omega$ are connected in parallel. Find the total resistance, in ohms.",
+      "solution": "$\\dfrac{1}{R} = \\dfrac14 + \\dfrac{1}{12} = \\dfrac{3 + 1}{12} = \\dfrac13$, so $R = \\mathbf{3}\\,\\Omega$.\n\nLess than the smaller of the two, as a parallel combination always is.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igp3-009",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Power",
+      "type": "numeric",
+      "q": "Find the power (in watts) of a device drawing $3$ A from a $12$ V supply.",
+      "solution": "$P = VI = 12 \\times 3 = \\mathbf{36}$ W.",
+      "marks": 2,
+      "answer": 36,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igp3-010",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Charge",
+      "type": "numeric",
+      "q": "A current of $2$ A flows for $30$ s. Find the charge that passes, in coulombs.",
+      "solution": "$Q = It = 2 \\times 30 = \\mathbf{60}$ C.",
+      "marks": 2,
+      "answer": 60,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igp3-011",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Series and parallel circuits",
+      "type": "long",
+      "q": "Compare series and parallel circuits in terms of current, voltage and resistance, and explain why houses are wired in parallel.",
+      "solution": "**Series circuit**\n\n• **Current:** the same through every component.\n\n• **Voltage:** divides between them, in proportion to resistance.\n\n• **Resistance:** $R = R_{1} + R_{2}$ — always **more** than the largest.\n\n• One break stops **everything**.\n\n**Parallel circuit**\n\n• **Current:** divides between the branches; the smallest resistance takes the most.\n\n• **Voltage:** the **same** across every branch.\n\n• **Resistance:** $\\dfrac1R = \\dfrac{1}{R_{1}} + \\dfrac{1}{R_{2}}$ — always **less** than the smallest.\n\n• One break affects **only that branch**.\n\n**Why houses are wired in parallel — three reasons:**\n\n1. **Every appliance receives the full mains voltage.** In series they would share it, and each device would run weakly.\n\n2. **Each can be switched independently.** In series, switching one off would break the circuit and everything would go out.\n\n3. **Each draws the current it needs**, from a kettle's $10$ A to a lamp's fraction of an amp, without being limited by the others.\n\nThe cost is that adding appliances lowers the total resistance and raises the total current, which is why a circuit can be **overloaded** and why fuses exist.",
+      "marks": 3
+    },
+    {
+      "id": "igp3-012",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Electromagnetism",
+      "type": "long",
+      "q": "Describe the magnetic field around a current-carrying wire and inside a solenoid, and explain how an electromagnet is used in a relay.",
+      "solution": "**Around a straight wire.** The field lines are **concentric circles** in a plane perpendicular to the wire, stronger nearer the wire.\n\nDirection from the **right-hand grip rule**: thumb along the current, fingers curl the way the field goes.\n\n**Inside a solenoid.** A coil of many turns produces a **strong, uniform** field inside with parallel field lines, and a weak field outside — exactly like a **bar magnet**, with a north and a south end.\n\nStrengthened by: more turns, more current, and a **soft iron core**.\n\n**A relay** uses a small current to switch a large one.\n\n1. A small current flows through the electromagnet's coil.\n\n2. The electromagnet attracts a pivoted **iron armature**.\n\n3. The armature closes the contacts of a **separate** circuit, switching on a much larger current.\n\n4. When the small current stops, the soft iron **loses its magnetism at once** and a spring pulls the contacts open again.\n\n**Why this matters.** The two circuits are **electrically isolated**, so a safe low voltage at a switch can control a dangerous high-current circuit — a car's starter motor, or an industrial machine.\n\nSoft iron is essential here: steel would stay magnetised and the relay would never switch off.",
+      "marks": 3
+    },
+    {
+      "id": "igp3-013",
+      "chapter": "Electricity and Magnetism",
+      "topic": "The motor effect and the generator",
+      "type": "long",
+      "q": "Explain the motor effect and the working of a d.c. motor, then explain electromagnetic induction and how a generator differs.",
+      "solution": "**The motor effect.** A current-carrying wire in a magnetic field experiences a **force**, because the field of the current interacts with the field of the magnet.\n\nDirection by **Fleming's left-hand rule**; the force is greatest when the wire is at right angles to the field, and zero when it lies along it.\n\n**The d.c. motor.**\n\n1. A coil in a magnetic field carries a current.\n\n2. The two sides carry current in opposite directions, so one is pushed **up** and the other **down** — the coil turns.\n\n3. After a half turn the sides have swapped, and the forces would now oppose the rotation.\n\n4. The **split-ring commutator** reverses the current at exactly that moment, so the push stays in step and the rotation continues.\n\n**Electromagnetic induction — the reverse process.** Moving a magnet near a coil, or a wire through a field, **induces a voltage**.\n\nThe induced voltage is larger for a faster movement, a stronger magnet or more turns — and it is zero when nothing is moving.\n\n**Lenz's law:** the induced current always **opposes** the change producing it. That is conservation of energy: the work done pushing against that opposition is exactly the electrical energy generated. If it helped instead, you would get energy from nothing.\n\n**Generator against motor.** Mechanically they are the same machine, run in opposite directions: a motor takes electrical energy and gives motion, a generator takes motion and gives electrical energy.\n\nAn a.c. generator uses **slip rings** so the output alternates; a d.c. one uses a **commutator** to keep it one way.",
+      "marks": 5
+    },
+    {
+      "id": "igp3-014",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Electrical safety",
+      "type": "long",
+      "q": "Describe the three wires in a mains cable, explain the purpose of the earth wire and the fuse, and say why double-insulated appliances need no earth.",
+      "solution": "**The three wires.**\n\n• **Live (brown)** — carries the alternating supply at $230$ V. The dangerous one.\n\n• **Neutral (blue)** — completes the circuit, at about $0$ V.\n\n• **Earth (green and yellow)** — a safety wire connected to the metal case and to the ground. Normally carries **no current at all**.\n\n**The earth wire.** If a fault lets the live wire touch the metal case, the case becomes live and anyone touching it would receive a shock.\n\nThe earth wire gives that current a path of **very low resistance** straight to the ground, so a huge current flows — which blows the fuse and disconnects the appliance.\n\nThe earth wire does not merely protect; it **reveals** the fault.\n\n**The fuse.** A thin wire that melts when the current exceeds its rating, breaking the circuit before the cable overheats. It must be fitted in the **live** wire — in the neutral, the appliance would remain connected to $230$ V after it blew.\n\nChoose the next standard rating **above** the normal working current: a $3$ A fuse for a lamp, $13$ A for a kettle.\n\n**Double insulation.** The appliance has a plastic case, or its metal parts are enclosed in an insulating layer, so **no exposed part can ever become live**.\n\nThere is nothing to earth, so these appliances have a two-core cable and are marked with a **double square** symbol. A hairdryer or an electric drill is usually of this kind.",
+      "marks": 3
+    },
+    {
+      "id": "igp3-015",
+      "chapter": "Electricity and Magnetism",
+      "topic": "Transformers",
+      "type": "long",
+      "q": "Explain how a transformer works, write the turns equation, and explain why electricity is transmitted at high voltage.",
+      "solution": "**How it works.** Two coils are wound on a common soft-iron core.\n\n1. Alternating current in the **primary** coil creates a **changing** magnetic field in the core.\n\n2. The core carries that changing field to the **secondary** coil.\n\n3. The changing field **induces** an alternating voltage in the secondary.\n\n**A transformer works on a.c. only.** With d.c. the field would be steady, nothing would change, and nothing would be induced.\n\n**Turns equation:**\n\n$\\dfrac{V_{s}}{V_{p}} = \\dfrac{N_{s}}{N_{p}}$\n\nMore turns on the secondary **steps up** the voltage; fewer **steps down**.\n\n**Power is conserved** in an ideal transformer: $V_{p}I_{p} = V_{s}I_{s}$. So stepping the voltage **up** steps the current **down** in the same proportion — a transformer gives nothing away.\n\n**Why transmit at high voltage.** Power lost as heat in the cables is $P = I^{2}R$ — proportional to the **square** of the current.\n\nStep the voltage up by a factor of 100 and the current falls by 100, so the loss falls by a factor of **10 000**.\n\nThat is why the National Grid runs at $400$ kV, and why step-down transformers are needed at every substation to bring it back to a voltage safe enough to enter a house.",
+      "marks": 2
+    }
+  ]
+}

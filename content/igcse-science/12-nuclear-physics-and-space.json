@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-nuclear-space",
+  "title": "Nuclear Physics and Space",
+  "chapter": "Topic Test 12",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igp4-001",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Radioactivity",
+      "type": "mcq",
+      "q": "Which type of radiation is stopped by a sheet of paper?",
+      "solution": "**Alpha** particles are the most strongly ionising and the least penetrating — a sheet of paper, or a few centimetres of air, stops them.\n\nBeta needs a few millimetres of aluminium; gamma needs thick lead or concrete and is never fully stopped.",
+      "marks": 1,
+      "options": [
+        "Alpha",
+        "Beta",
+        "Gamma",
+        "X-rays"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igp4-002",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Alpha particle",
+      "type": "mcq",
+      "q": "An alpha particle consists of:",
+      "solution": "An alpha particle is a **helium nucleus** — 2 protons and 2 neutrons, charge $+2$, mass $4$.\n\nEmitting one reduces the mass number by 4 and the atomic number by 2.",
+      "marks": 1,
+      "options": [
+        "2 protons and 2 neutrons",
+        "1 proton",
+        "an electron",
+        "a photon"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igp4-003",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Half-life",
+      "type": "mcq",
+      "q": "The half-life of a radioactive isotope is the time for:",
+      "solution": "The time for **half the undecayed nuclei** to decay, and equivalently for the count rate to halve.\n\nIt is constant for a given isotope and cannot be changed by heat, pressure or chemical means — it is a property of the nucleus alone.",
+      "marks": 1,
+      "options": [
+        "all the atoms to decay",
+        "half the undecayed nuclei to decay",
+        "the mass to double",
+        "the radiation to stop"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp4-004",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Beta decay",
+      "type": "mcq",
+      "q": "When a nucleus emits a beta particle, its atomic number:",
+      "solution": "A neutron turns into a proton and an electron, and the electron is emitted as the beta particle.\n\nSo the **atomic number increases by 1** while the mass number is unchanged — the element moves one place to the right in the periodic table.",
+      "marks": 1,
+      "options": [
+        "decreases by 1",
+        "increases by 1",
+        "decreases by 2",
+        "stays the same"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp4-005",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "The solar system",
+      "type": "mcq",
+      "q": "The force that keeps a planet in orbit around the Sun is:",
+      "solution": "**Gravity**, acting towards the Sun as the centripetal force.\n\nA planet is continually falling towards the Sun and continually missing it, because of its sideways speed — which is what an orbit is.",
+      "marks": 1,
+      "options": [
+        "magnetism",
+        "gravity",
+        "friction",
+        "electrostatic attraction"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp4-006",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Half-life",
+      "type": "numeric",
+      "q": "A sample has a half-life of $6$ hours. Starting with $80$ g, find the mass (in g) remaining after $18$ hours.",
+      "solution": "Three half-lives: $80 \\to 40 \\to 20 \\to \\mathbf{10}$ g.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igp4-007",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Count rate",
+      "type": "numeric",
+      "q": "A count rate falls from $800$ to $100$ counts per minute in $9$ days. Find the half-life, in days.",
+      "solution": "$800 \\to 400 \\to 200 \\to 100$ is **three** halvings in $9$ days.\n\n$\\dfrac{9}{3} = \\mathbf{3}$ days.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igp4-008",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Nuclear notation",
+      "type": "numeric",
+      "q": "An isotope is written $^{14}_{6}\\text{C}$. How many neutrons does it have?",
+      "solution": "Neutrons $= 14 - 6 = \\mathbf{8}$.\n\nCarbon-14 is the isotope used in radiocarbon dating, with a half-life of about $5700$ years.",
+      "marks": 2,
+      "answer": 8,
+      "tolerance": 0
+    },
+    {
+      "id": "igp4-009",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Alpha decay",
+      "type": "numeric",
+      "q": "A nucleus of mass number $238$ emits an alpha particle. Find the mass number of the new nucleus.",
+      "solution": "An alpha particle carries away 4 nucleons: $238 - 4 = \\mathbf{234}$.\n\nThe atomic number falls by 2 as well — uranium-238 becomes thorium-234.",
+      "marks": 2,
+      "answer": 234,
+      "tolerance": 0
+    },
+    {
+      "id": "igp4-010",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Fraction remaining",
+      "type": "numeric",
+      "q": "After $4$ half-lives, what fraction of the original sample remains? Give the answer as $1/x$: find $x$.",
+      "solution": "$\\tfrac12 \\to \\tfrac14 \\to \\tfrac18 \\to \\tfrac{1}{16}$, so $x = \\mathbf{16}$.\n\nAfter $n$ half-lives the fraction is $\\left(\\tfrac12\\right)^{n}$ — and it never quite reaches zero.",
+      "marks": 2,
+      "answer": 16,
+      "tolerance": 0
+    },
+    {
+      "id": "igp4-011",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Types of radiation",
+      "type": "long",
+      "q": "Compare alpha, beta and gamma radiation in terms of nature, charge, penetration, ionising power and deflection in a magnetic field.",
+      "solution": "**Alpha ($\\alpha$)**\n\n• Helium nucleus: 2 protons + 2 neutrons; charge $+2$; mass $4$\n\n• **Penetration:** stopped by paper or a few cm of air — the least penetrating\n\n• **Ionising power:** very high\n\n• **Deflection:** deflected, and towards the negative plate\n\n**Beta ($\\beta$)**\n\n• A fast-moving **electron** from the nucleus; charge $-1$; negligible mass\n\n• **Penetration:** stopped by a few mm of aluminium\n\n• **Ionising power:** moderate\n\n• **Deflection:** deflected the **opposite** way to alpha, and much more (being far lighter)\n\n**Gamma ($\\gamma$)**\n\n• A high-energy **electromagnetic wave**; no charge, no mass\n\n• **Penetration:** reduced by thick lead or concrete, never entirely stopped\n\n• **Ionising power:** low\n\n• **Deflection:** none\n\n**The pattern.** Ionising power and penetration run **opposite** to each other. Alpha loses its energy quickly precisely **because** it ionises so heavily — which is why it stops so soon.\n\n**The danger depends on where the source is.** Outside the body, gamma is the most dangerous, since alpha cannot even get through skin. **Swallowed or inhaled, alpha is by far the worst**, because all that ionising energy is released inside living tissue.",
+      "marks": 3
+    },
+    {
+      "id": "igp4-012",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Half-life",
+      "type": "long",
+      "q": "Define half-life, explain why radioactive decay is random, and describe how carbon dating works.",
+      "solution": "**Half-life** — the time for half the undecayed nuclei in a sample to decay, or equivalently for the count rate to fall by half.\n\nIt is **constant** for a given isotope and cannot be altered by temperature, pressure or chemical combination. Half-lives range from fractions of a second to billions of years.\n\n**Why decay is random.** It is impossible to predict **which** nucleus will decay next, or **when** any particular one will. A nucleus does not age or become 'due' — its chance of decaying in the next second is the same as it was a thousand years ago.\n\nYet with enormous numbers of nuclei, the **overall behaviour is entirely predictable**. It is the same as insurance: nobody can say who will make a claim, but the total is forecast accurately.\n\nThe randomness is directly audible on a Geiger counter — irregular clicks, never an even rhythm.\n\n**Carbon dating.**\n\n1. Cosmic rays make **carbon-14** in the atmosphere, keeping its proportion roughly constant.\n\n2. Living things constantly exchange carbon with their surroundings, so they hold the same proportion.\n\n3. **At death the exchange stops**, and the carbon-14 begins to decay with a half-life of about $5700$ years.\n\n4. Measuring how much is left gives the time since death: half the expected amount means about $5700$ years, a quarter means about $11\\,400$.\n\n**Its limit** is about $60\\,000$ years — beyond that, too little carbon-14 remains to measure. Older rocks are dated with uranium or potassium isotopes, whose half-lives run into billions of years.",
+      "marks": 3
+    },
+    {
+      "id": "igp4-013",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Uses and dangers of radiation",
+      "type": "long",
+      "q": "Give three uses of radioactivity, explain the dangers of ionising radiation, and describe three safety precautions.",
+      "solution": "**Uses.**\n\n1. **Medical tracers.** A gamma-emitting isotope with a **short** half-life is given to a patient and followed by a detector outside the body — gamma so it can escape the body, short half-life so it does not remain radioactive afterwards.\n\n2. **Sterilisation.** Gamma rays kill bacteria on surgical instruments and food without heating them, so heat-sensitive items can be sterilised in their sealed packaging.\n\n3. **Thickness control.** Beta radiation passed through paper or foil on a production line: if more gets through, the sheet is too thin, and rollers adjust automatically.\n\n4. **Dating** rocks and archaeological remains; **smoke alarms** using a weak alpha source; **treating cancer** with focused gamma beams.\n\n**The dangers.** Ionising radiation knocks electrons out of atoms in living cells.\n\n• **Low doses** can damage DNA, causing mutations that may lead to **cancer** years later.\n\n• **High doses** kill cells outright, causing radiation sickness and burns.\n\nThe damage is **cumulative**, and there is no dose so small that it is certainly safe.\n\n**Precautions.**\n\n1. **Distance** — use tongs or remote handling. Intensity falls with the square of the distance, so doubling it quarters the dose.\n\n2. **Shielding** — lead aprons, thick concrete walls, lead-lined containers.\n\n3. **Time** — keep exposure as brief as possible, and monitor workers with film badges.\n\n4. Store sources in **labelled lead containers**, and never point a source at anyone.",
+      "marks": 5
+    },
+    {
+      "id": "igp4-014",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "The solar system",
+      "type": "long",
+      "q": "Describe the solar system, explain why planets orbit the Sun, and explain why the outer planets take longer to orbit.",
+      "solution": "**The solar system.** The Sun at the centre, with eight planets in orbit: Mercury, Venus, Earth, Mars (small and rocky), then Jupiter, Saturn, Uranus and Neptune (large gas and ice giants), with an asteroid belt between Mars and Jupiter.\n\nAlso moons, dwarf planets such as Pluto, comets in long elliptical orbits, and dust.\n\n**Why planets orbit.** The Sun's **gravity** provides the **centripetal force**, pulling each planet towards the centre.\n\nA planet also has a large sideways velocity. The result is that it is permanently falling towards the Sun and permanently missing — which is exactly what an orbit is.\n\nWith no sideways motion it would fall straight in; with too much, it would escape.\n\n**Why the outer planets are slower — two reasons, both pointing the same way:**\n\n1. **The orbit is far longer.** Neptune's path is about 30 times the radius of Earth's, so there is far more distance to cover.\n\n2. **Gravity is weaker further out** (an inverse-square law), so a smaller centripetal force is available and the planet must move **more slowly** to stay in orbit.\n\nEarth takes 1 year; Jupiter about 12; Neptune about **165**. Neptune has not completed two orbits since it was discovered in 1846.\n\n**Orbits are ellipses, not circles** — usually very nearly circular for the planets, but markedly elliptical for comets, which is why a comet moves quickly near the Sun and slowly far from it.",
+      "marks": 3
+    },
+    {
+      "id": "igp4-015",
+      "chapter": "Nuclear Physics and Space",
+      "topic": "Nuclear fission",
+      "type": "long",
+      "q": "Describe nuclear fission, explain a chain reaction, and state the function of the moderator and control rods in a reactor.",
+      "solution": "**Fission.** A large unstable nucleus, typically uranium-235, absorbs a **slow neutron** and splits into two smaller nuclei, releasing two or three more neutrons and a great deal of energy:\n\n$^{235}_{92}\\text{U} + ^{1}_{0}\\text{n} \\to ^{141}_{56}\\text{Ba} + ^{92}_{36}\\text{Kr} + 3\\,^{1}_{0}\\text{n} + \\text{energy}$\n\nThe energy comes from the small loss of mass, by $E = mc^{2}$. A single fission gives about $200$ MeV — millions of times more than burning one atom of carbon.\n\n**Chain reaction.** Each fission releases neutrons that can cause further fissions, each releasing more neutrons again.\n\n• **Uncontrolled**, the number grows exponentially — a bomb.\n\n• **Controlled**, so that exactly **one** neutron from each fission goes on to cause another, the rate is steady — a power station.\n\n**The moderator** (graphite or water) **slows the neutrons down**. Fast neutrons are simply not absorbed by uranium-235; slow ones are. Without a moderator the chain reaction stops — which is a genuine safety feature, since losing the water coolant also loses the moderator.\n\n**The control rods** (boron or cadmium) **absorb neutrons**. Lowering them further into the core soaks up more neutrons and slows the reaction; raising them speeds it up.\n\nThey are what hold the reaction at exactly one-for-one, and dropping them fully in shuts the reactor down.\n\n**The waste** remains dangerously radioactive for thousands of years, and what to do with it is still the unresolved problem of nuclear power.",
+      "marks": 2
+    }
+  ]
+}

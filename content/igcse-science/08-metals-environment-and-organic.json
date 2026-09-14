@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-metals-organic",
+  "title": "Metals, the Environment and Organic Chemistry",
+  "chapter": "Topic Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igc4-001",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Reactivity series",
+      "type": "mcq",
+      "q": "Which metal can be extracted from its oxide by heating with carbon?",
+      "solution": "**Iron** sits **below** carbon in the reactivity series, so carbon can take the oxygen from it — which is exactly what happens in a blast furnace.\n\nAluminium, potassium and calcium are all **above** carbon and must be extracted by **electrolysis**, which is far more expensive.",
+      "marks": 1,
+      "options": [
+        "Aluminium",
+        "Iron",
+        "Potassium",
+        "Calcium"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc4-002",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Rusting",
+      "type": "mcq",
+      "q": "Rusting of iron requires:",
+      "solution": "**Both** are necessary. Iron does not rust in dry air, nor in boiled water with no dissolved oxygen.\n\nThe classic experiment uses three tubes: one with air and water, one with dry air and calcium chloride, one with boiled water under oil. Only the first rusts.\n\nSalt and acid speed the process up, which is why cars rust faster near the sea.",
+      "marks": 1,
+      "options": [
+        "oxygen only",
+        "water only",
+        "both oxygen and water",
+        "carbon dioxide"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igc4-003",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Air pollution",
+      "type": "mcq",
+      "q": "Which gas is mainly responsible for acid rain?",
+      "solution": "**Sulphur dioxide**, from burning fossil fuels containing sulphur, dissolves in rain to give sulphurous and sulphuric acid.\n\nOxides of nitrogen from vehicle engines contribute too. Carbon dioxide makes rain slightly acidic naturally (about pH $5.6$), but it is not what is meant by acid rain.",
+      "marks": 1,
+      "options": [
+        "Carbon dioxide",
+        "Sulphur dioxide",
+        "Nitrogen",
+        "Methane"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc4-004",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Alkanes and alkenes",
+      "type": "mcq",
+      "q": "Alkenes decolourise bromine water because they:",
+      "solution": "The **double bond** opens and bromine **adds** across it, so the orange colour disappears.\n\nAlkanes are saturated, have no double bond, and leave bromine water unchanged. This is the standard test for unsaturation.",
+      "marks": 1,
+      "options": [
+        "are saturated",
+        "contain a carbon-carbon double bond",
+        "are gases",
+        "burn easily"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc4-005",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Fractional distillation",
+      "type": "mcq",
+      "q": "In the fractional distillation of crude oil, the fraction collected nearest the top of the column is:",
+      "solution": "**Refinery gases** — the shortest molecules, with the lowest boiling points, rise furthest before condensing.\n\nBitumen, with the longest chains, hardly evaporates at all and is drawn off at the bottom. The column is simply hot at the base and cool at the top, and every fraction condenses where it can.",
+      "marks": 1,
+      "options": [
+        "bitumen",
+        "diesel",
+        "refinery gases",
+        "lubricating oil"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igc4-006",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Alkane formula",
+      "type": "numeric",
+      "q": "An alkane has the general formula $\\text{C}_{n}\\text{H}_{2n+2}$. How many hydrogen atoms are in the alkane with $4$ carbons?",
+      "solution": "$2(4) + 2 = \\mathbf{10}$ — butane, $\\text{C}_{4}\\text{H}_{10}$.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0
+    },
+    {
+      "id": "igc4-007",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Alkene formula",
+      "type": "numeric",
+      "q": "An alkene has the general formula $\\text{C}_{n}\\text{H}_{2n}$. How many hydrogen atoms are in the alkene with $3$ carbons?",
+      "solution": "$2(3) = \\mathbf{6}$ — propene, $\\text{C}_{3}\\text{H}_{6}$.\n\nAn alkene has two hydrogens fewer than the alkane of the same length, because the double bond uses up two bonding positions.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "igc4-008",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Blast furnace",
+      "type": "numeric",
+      "q": "In $\\text{Fe}_{2}\\text{O}_{3} + 3\\text{CO} \\to a\\text{Fe} + 3\\text{CO}_{2}$, find $a$.",
+      "solution": "$\\mathbf{2}$ — each formula unit of iron(III) oxide yields two iron atoms.\n\nThe carbon monoxide is the actual reducing agent in the blast furnace, made from coke burning in a limited supply of air.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "igc4-009",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Composition of air",
+      "type": "numeric",
+      "q": "What percentage of clean dry air is nitrogen (to the nearest whole number)?",
+      "solution": "About $\\mathbf{78}\\%$ nitrogen, $21\\%$ oxygen, $0.9\\%$ argon and $0.04\\%$ carbon dioxide.",
+      "marks": 2,
+      "answer": 78,
+      "tolerance": 1
+    },
+    {
+      "id": "igc4-010",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Isomers",
+      "type": "numeric",
+      "q": "How many structural isomers does butane, $\\text{C}_{4}\\text{H}_{10}$, have?",
+      "solution": "$\\mathbf{2}$ — a straight chain and a branched one (2-methylpropane).\n\nButane is the shortest alkane to show isomerism, and the number of isomers grows explosively with chain length.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "igc4-011",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Extraction of iron",
+      "type": "long",
+      "q": "Describe the extraction of iron in the blast furnace, with equations, and explain the role of limestone.",
+      "solution": "**Raw materials:** iron ore (haematite, $\\text{Fe}_{2}\\text{O}_{3}$), **coke** (carbon), **limestone** ($\\text{CaCO}_{3}$) and hot air.\n\n**Step 1 — coke burns** in the hot air blast, releasing a great deal of heat:\n\n$\\text{C} + \\text{O}_{2} \\to \\text{CO}_{2}$\n\n**Step 2 — carbon monoxide is formed** as the carbon dioxide rises past more hot coke:\n\n$\\text{CO}_{2} + \\text{C} \\to 2\\text{CO}$\n\n**Step 3 — the ore is reduced** by carbon monoxide, which is the actual reducing agent:\n\n$\\text{Fe}_{2}\\text{O}_{3} + 3\\text{CO} \\to 2\\text{Fe} + 3\\text{CO}_{2}$\n\nMolten iron runs to the bottom and is tapped off.\n\n**The role of limestone.** It **removes the sandy impurities**, which would otherwise clog the furnace.\n\nIt first decomposes in the heat:\n\n$\\text{CaCO}_{3} \\to \\text{CaO} + \\text{CO}_{2}$\n\nand the calcium oxide, a base, then reacts with the acidic silicon dioxide impurity:\n\n$\\text{CaO} + \\text{SiO}_{2} \\to \\text{CaSiO}_{3}$ (**slag**)\n\nThe molten slag is less dense than iron, so it floats on top and is drawn off separately — and it is sold for road building rather than wasted.",
+      "marks": 3
+    },
+    {
+      "id": "igc4-012",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Alkanes and alkenes",
+      "type": "long",
+      "q": "Compare alkanes and alkenes, describe the test that distinguishes them, and explain what cracking is and why it is done.",
+      "solution": "**Alkanes** — $\\text{C}_{n}\\text{H}_{2n+2}$, **saturated** (single bonds only), relatively **unreactive**, and undergo **substitution** with halogens in ultraviolet light.\n\n*Examples: methane, ethane, propane, butane.*\n\n**Alkenes** — $\\text{C}_{n}\\text{H}_{2n}$, **unsaturated** (one carbon–carbon double bond), **more reactive**, and undergo **addition**.\n\n*Examples: ethene, propene.*\n\n**The test — bromine water.** An alkene **decolourises** the orange solution as bromine adds across the double bond; an alkane leaves it orange.\n\n**Cracking.** Long-chain hydrocarbons are broken into shorter ones by heating to about $600$°C over a catalyst of aluminium oxide:\n\n$\\text{C}_{10}\\text{H}_{22} \\to \\text{C}_{8}\\text{H}_{18} + \\text{C}_{2}\\text{H}_{4}$\n\n**Why it is done — two reasons:**\n\n1. **Supply and demand.** Crude oil yields far more long-chain fractions than anyone wants, and far less petrol than the world uses. Cracking converts the surplus into the shortage.\n\n2. **It produces alkenes**, which crude oil contains almost none of, and alkenes are the starting point for **polymers** — poly(ethene), poly(propene) — and for ethanol.\n\nEvery cracking reaction produces at least one alkene, because there are not enough hydrogens to saturate both fragments.",
+      "marks": 3
+    },
+    {
+      "id": "igc4-013",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Air pollution",
+      "type": "long",
+      "q": "Name four atmospheric pollutants, giving the source, the harm caused and a method of control for each.",
+      "solution": "**1. Carbon monoxide (CO)**\n\n*Source:* incomplete combustion in engines and faulty heaters.\n\n*Harm:* binds to haemoglobin far more strongly than oxygen does, so the blood cannot carry oxygen. It is colourless and odourless, which is what makes it so dangerous.\n\n*Control:* catalytic converters; adequate ventilation.\n\n**2. Sulphur dioxide ($\\text{SO}_{2}$)**\n\n*Source:* burning fossil fuels containing sulphur, especially in power stations.\n\n*Harm:* **acid rain** — kills trees and fish, dissolves limestone buildings, and leaches aluminium from soil into rivers.\n\n*Control:* remove sulphur from fuel before burning; **flue gas desulphurisation**, spraying the waste gases with calcium oxide.\n\n**3. Oxides of nitrogen ($\\text{NO}_{x}$)**\n\n*Source:* nitrogen and oxygen combining in the heat of an engine.\n\n*Harm:* acid rain and photochemical smog; irritates the lungs.\n\n*Control:* catalytic converters, which reduce them back to nitrogen.\n\n**4. Carbon dioxide ($\\text{CO}_{2}$)**\n\n*Source:* all combustion of fossil fuels, and deforestation.\n\n*Harm:* the **enhanced greenhouse effect** and climate change — rising sea levels, shifting rainfall, more extreme weather.\n\n*Control:* renewable energy, efficiency, reforestation, carbon capture.\n\n**Note the difference.** Carbon dioxide is not toxic and is a natural part of the atmosphere; its harm comes entirely from the **quantity** now being added. The others are harmful in themselves.",
+      "marks": 5
+    },
+    {
+      "id": "igc4-014",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Rusting and its prevention",
+      "type": "long",
+      "q": "Describe an experiment to show that both air and water are needed for rusting, and give three methods of prevention.",
+      "solution": "**The experiment — three boiling tubes, each with an iron nail.**\n\n**Tube A:** nail in tap water, open to the air. Both air and water present.\n\n**Tube B:** nail in **dry air**, with anhydrous calcium chloride to absorb moisture, and sealed. Air but no water.\n\n**Tube C:** nail in **boiled** water (boiling drives out dissolved air), covered with a layer of oil to keep air out. Water but no air.\n\n**Leave for a week.**\n\n**Result:** only the nail in **tube A** rusts.\n\n**Conclusion:** rusting needs **both** oxygen and water — either alone is not enough.\n\n**A fourth tube** with salt water shows rusting is faster still, since the dissolved ions speed up the electrochemical process.\n\n**Prevention.**\n\n1. **Barrier methods** — paint, oil, grease, plastic coating. Simple, but useless once scratched.\n\n2. **Galvanising** — coating with zinc. Zinc is more reactive, so it corrodes **instead** of the iron, and it goes on protecting even where the coating is broken.\n\n3. **Sacrificial protection** — blocks of zinc or magnesium bolted to a ship's hull or a pipeline, replaced when eaten away.\n\n4. **Alloying** — stainless steel, whose chromium forms a tough protective oxide layer.\n\nGalvanising and sacrificial protection work on the same principle, and it is the one that survives damage.",
+      "marks": 3
+    },
+    {
+      "id": "igc4-015",
+      "chapter": "Metals, the Environment and Organic Chemistry",
+      "topic": "Polymers",
+      "type": "long",
+      "q": "What is a polymer? Describe addition polymerisation with an example, and discuss the environmental problems plastics cause.",
+      "solution": "**Polymer** — a very long molecule made by joining many small molecules (**monomers**) together.\n\n**Addition polymerisation.** Many alkene monomers join with **no other product** — the double bond opens and the units link up:\n\n$n\\,\\text{CH}_{2}{=}\\text{CH}_{2} \\to \\text{–(CH}_{2}\\text{–CH}_{2}\\text{)}_{n}\\text{–}$\n\nEthene $\\to$ poly(ethene), used for bags, bottles and packaging.\n\nOthers: propene $\\to$ poly(propene) (ropes, crates); chloroethene $\\to$ PVC (pipes, window frames).\n\n**The requirement:** the monomer must be **unsaturated**. Alkanes cannot polymerise this way, which is why cracking — the source of alkenes — matters so much.\n\n**Environmental problems.**\n\n1. **Non-biodegradable.** The C–C backbone is not attacked by decomposers, so plastics persist for hundreds of years, filling landfill and littering the oceans.\n\n2. **Harm to wildlife.** Animals swallow plastic or become entangled; **microplastics** have now entered the food chain.\n\n3. **Burning releases toxic gases** — PVC gives off hydrogen chloride, and incomplete combustion gives carbon monoxide.\n\n4. **Made from crude oil**, a finite resource.\n\n**Solutions:** recycling (though mixed plastics are hard to separate), biodegradable plastics made from plant starch, and above all **reducing** single-use plastic.\n\nThe property that makes plastics so useful — that nothing attacks them — is exactly the property that makes them so difficult to dispose of.",
+      "marks": 2
+    }
+  ]
+}

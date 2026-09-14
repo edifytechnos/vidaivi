@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-acids-periodic",
+  "title": "Acids, Bases and the Periodic Table",
+  "chapter": "Topic Test 7",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igc3-001",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "pH",
+      "type": "mcq",
+      "q": "A solution of pH $12$ is:",
+      "solution": "Above pH 7 is alkaline, and pH $12$ is **strongly alkaline** — about the pH of household bleach.\n\nEach unit is a factor of ten, so pH 12 has a thousand times fewer hydrogen ions than pH 9.",
+      "marks": 1,
+      "options": [
+        "strongly acidic",
+        "weakly acidic",
+        "neutral",
+        "strongly alkaline"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "igc3-002",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Acid reactions",
+      "type": "mcq",
+      "q": "Acid $+$ metal carbonate gives:",
+      "solution": "$\\text{acid} + \\text{carbonate} \\to \\text{salt} + \\text{water} + \\text{carbon dioxide}$\n\nThe effervescence and the limewater test make this the standard identification of a carbonate.\n\n(Acid $+$ metal gives salt $+$ hydrogen; acid $+$ base gives salt $+$ water.)",
+      "marks": 1,
+      "options": [
+        "salt + hydrogen",
+        "salt + water + carbon dioxide",
+        "salt + oxygen",
+        "salt only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc3-003",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Group 1",
+      "type": "mcq",
+      "q": "Going down Group 1, the elements become:",
+      "solution": "**More reactive** going down.\n\nThe outer electron is further from the nucleus and shielded by more inner shells, so it is **lost more easily** — and losing it is exactly what these metals' reactions require.\n\nGroup 7 shows the **opposite** trend, because those elements need to **gain** an electron.",
+      "marks": 1,
+      "options": [
+        "less reactive",
+        "more reactive",
+        "less metallic",
+        "heavier but unchanged in reactivity"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc3-004",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Group 7",
+      "type": "mcq",
+      "q": "Chlorine displaces bromine from potassium bromide solution because:",
+      "solution": "Chlorine is **higher** in Group 7 and therefore more reactive, so it takes the place of bromine:\n\n$\\text{Cl}_{2} + 2\\text{KBr} \\to 2\\text{KCl} + \\text{Br}_{2}$\n\nThe colourless solution turns orange as bromine is released — a clear displacement, and a direct test of the reactivity order.",
+      "marks": 1,
+      "options": [
+        "chlorine is denser",
+        "chlorine is more reactive than bromine",
+        "bromine is a liquid",
+        "chlorine is lighter"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc3-005",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Noble gases",
+      "type": "mcq",
+      "q": "The noble gases are unreactive because they have:",
+      "solution": "A **full outer shell** means there is nothing to gain by reacting — no electrons to lose easily and no space to take any in.\n\nEvery other element's chemistry is essentially an attempt to reach the same arrangement.",
+      "marks": 1,
+      "options": [
+        "no electrons",
+        "a full outer shell of electrons",
+        "very large atoms",
+        "no protons"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc3-006",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "pH scale",
+      "type": "numeric",
+      "q": "How many times more acidic is a solution of pH $2$ than one of pH $5$?",
+      "solution": "Three pH units, each a factor of ten: $10^{3} = \\mathbf{1000}$ times.",
+      "marks": 2,
+      "answer": 1000,
+      "tolerance": 1
+    },
+    {
+      "id": "igc3-007",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Groups",
+      "type": "numeric",
+      "q": "How many electrons are in the outer shell of a Group 2 element?",
+      "solution": "$\\mathbf{2}$. The group number gives the number of outer electrons for the main groups, which is why a group shares its chemistry.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "igc3-008",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Periods",
+      "type": "numeric",
+      "q": "How many elements are in Period 2 of the periodic table?",
+      "solution": "$\\mathbf{8}$ — lithium to neon, filling the second shell, which holds eight electrons.\n\nThe length of each period is set by how many electrons the shells being filled can hold.",
+      "marks": 2,
+      "answer": 8,
+      "tolerance": 0
+    },
+    {
+      "id": "igc3-009",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Neutralisation",
+      "type": "numeric",
+      "q": "How many moles of $\\text{HCl}$ are needed to neutralise $1$ mole of $\\text{Ca(OH)}_{2}$?",
+      "solution": "$\\text{Ca(OH)}_{2} + 2\\text{HCl} \\to \\text{CaCl}_{2} + 2\\text{H}_{2}\\text{O}$\n\nTwo hydroxide ions need two hydrogen ions: $\\mathbf{2}$ moles.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "igc3-010",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Group 1 reaction",
+      "type": "numeric",
+      "q": "In $2\\text{Na} + 2\\text{H}_{2}\\text{O} \\to 2\\text{NaOH} + a\\text{H}_{2}$, find $a$.",
+      "solution": "$\\mathbf{1}$ — two sodium atoms release one molecule of hydrogen.\n\nThe hydrogen is what skates the sodium about the surface of the water, and with potassium it ignites.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "igc3-011",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Acids and bases",
+      "type": "long",
+      "q": "Define an acid and a base, describe three reactions of dilute acids with equations, and explain how a soluble salt is prepared.",
+      "solution": "**Acid** — a substance that produces **hydrogen ions ($\\text{H}^{+}$)** in aqueous solution, and a proton donor.\n\n**Base** — a substance that neutralises an acid, usually a metal oxide or hydroxide. A base that **dissolves** in water is an **alkali**, producing $\\text{OH}^{-}$ ions.\n\n**Three reactions.**\n\n1. **With a metal:** $\\text{Zn} + \\text{H}_{2}\\text{SO}_{4} \\to \\text{ZnSO}_{4} + \\text{H}_{2}$\n\n2. **With a base:** $\\text{CuO} + 2\\text{HCl} \\to \\text{CuCl}_{2} + \\text{H}_{2}\\text{O}$\n\n3. **With a carbonate:** $\\text{CaCO}_{3} + 2\\text{HCl} \\to \\text{CaCl}_{2} + \\text{H}_{2}\\text{O} + \\text{CO}_{2}$\n\n**Preparing a soluble salt from an insoluble base.**\n\n1. Warm the acid and add the base (or carbonate) **in excess**, stirring, until no more dissolves.\n\n2. **Filter** to remove the unreacted excess — this is why an excess is used, since it guarantees the acid is all used up and can then be removed.\n\n3. **Evaporate** the filtrate to the point of crystallisation.\n\n4. Leave to **crystallise**, then filter off the crystals and dry them between filter papers.\n\n**If the base is soluble** (an alkali) this method will not work — the excess cannot be filtered off. A **titration** is used instead, to find the exact volume that neutralises, and the experiment is then repeated without the indicator.",
+      "marks": 3
+    },
+    {
+      "id": "igc3-012",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "The periodic table",
+      "type": "long",
+      "q": "Describe how the periodic table is arranged, and explain the trends in Group 1 and Group 7.",
+      "solution": "**Arrangement.** Elements are placed in order of increasing **atomic number** (proton number).\n\n• A **group** is a vertical column. Members share the number of **outer electrons**, and therefore their chemistry.\n\n• A **period** is a horizontal row. The period number is the number of occupied **shells**.\n\n**Group 1 — the alkali metals.**\n\nOne outer electron, lost readily to form a $1+$ ion. Soft, low density, react with water to give an alkali and hydrogen.\n\n**Going down: more reactive.** The outer electron is further from the nucleus and shielded by more inner shells, so it is lost more easily. Lithium fizzes, sodium melts into a ball and skates about, potassium bursts into a lilac flame.\n\n**Group 7 — the halogens.**\n\nSeven outer electrons, so they gain one to form a $1-$ ion. Diatomic molecules ($\\text{Cl}_{2}$, $\\text{Br}_{2}$, $\\text{I}_{2}$), coloured, and increasingly dense going down — chlorine a green gas, bromine a red-brown liquid, iodine a grey solid.\n\n**Going down: less reactive.** A larger atom attracts an incoming electron less strongly.\n\n**The two opposite trends have one explanation:** Group 1 needs to **lose** an electron and Group 7 to **gain** one, so increasing size helps the first and hinders the second.\n\n**Displacement** demonstrates the order directly: chlorine displaces bromine, and bromine displaces iodine, but never the reverse.",
+      "marks": 3
+    },
+    {
+      "id": "igc3-013",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Titration",
+      "type": "long",
+      "q": "Describe how you would carry out a titration to find the concentration of an unknown acid, and calculate the concentration if $25.0$ cm$^{3}$ of the acid needed $20.0$ cm$^{3}$ of $0.1$ mol/dm$^{3}$ NaOH. (The acid is monobasic.)",
+      "solution": "**Method.**\n\n1. **Pipette** $25.0$ cm$^{3}$ of the acid into a conical flask — a pipette because it is far more accurate than a measuring cylinder.\n\n2. Add a few drops of **indicator** (phenolphthalein or methyl orange).\n\n3. Fill a **burette** with the standard alkali and record the initial reading.\n\n4. Add the alkali, swirling constantly, until the indicator just changes colour permanently. Record the final reading.\n\n5. **Repeat** until two results agree within $0.1$ cm$^{3}$ (concordant titres), and average those.\n\n**Calculation.**\n\n$n(\\text{NaOH}) = c \\times V = 0.1 \\times \\dfrac{20.0}{1000} = 0.002$ mol.\n\nThe acid is monobasic, so the ratio is $1:1$ and $n(\\text{acid}) = 0.002$ mol.\n\n$c(\\text{acid}) = \\dfrac{n}{V} = \\dfrac{0.002}{0.025} = \\mathbf{0.08}$ mol/dm$^{3}$.\n\n**Why the first titre is discarded.** The first run is a rough one, done quickly to find the approximate end point; the accurate runs are then added dropwise near it.\n\n**Why a dibasic acid changes the answer.** Sulphuric acid would need **two** moles of NaOH per mole of acid, so the calculated concentration would be halved. The balanced equation is what supplies the ratio, and no calculation is safe without it.",
+      "marks": 5
+    },
+    {
+      "id": "igc3-014",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Transition elements",
+      "type": "long",
+      "q": "Compare the properties of transition elements with those of Group 1 metals.",
+      "solution": "**Transition elements** (the central block: iron, copper, nickel, chromium, zinc)\n\n• **High** melting points and densities\n\n• **Hard and strong**\n\n• **Variable oxidation states** — iron forms $\\text{Fe}^{2+}$ and $\\text{Fe}^{3+}$\n\n• **Coloured compounds** — copper(II) blue, iron(II) green, iron(III) orange-brown\n\n• Good **catalysts** — iron in the Haber process, nickel in hydrogenation\n\n• **React slowly**, if at all, with water and oxygen\n\n**Group 1 metals**\n\n• **Low** melting points and densities — sodium and potassium float on water, and caesium melts in the hand\n\n• **Soft** — they can be cut with a knife\n\n• **One** oxidation state only, $+1$\n\n• **White** compounds, giving colourless solutions\n\n• Poor catalysts\n\n• **React vigorously** with water and air, so they are stored under oil\n\n**The contrast in one sentence:** transition metals are what most people picture when they think 'metal' — hard, dense, durable, useful. The alkali metals are metals that behave almost nothing like it.",
+      "marks": 3
+    },
+    {
+      "id": "igc3-015",
+      "chapter": "Acids, Bases and the Periodic Table",
+      "topic": "Tests for ions",
+      "type": "long",
+      "q": "Describe the tests for carbonate ions, chloride ions and sulphate ions, and for hydrogen and carbon dioxide gas.",
+      "solution": "**Carbonate ion ($\\text{CO}_{3}^{2-}$).** Add dilute acid. **Effervescence**, and the gas turns limewater milky.\n\n**Chloride ion ($\\text{Cl}^{-}$).** Acidify with dilute nitric acid, then add silver nitrate. A **white precipitate** of AgCl.\n\n(Bromide gives cream, iodide gives yellow.)\n\n**Sulphate ion ($\\text{SO}_{4}^{2-}$).** Acidify with dilute hydrochloric acid, then add barium chloride. A **white precipitate** of $\\text{BaSO}_{4}$.\n\n**Why acidify first, in both cases?** Carbonates also give white precipitates with silver and barium ions, and would give a false positive. The acid destroys any carbonate present first — a small step that is worth a mark and is routinely forgotten.\n\n**Hydrogen gas.** A **lighted splint** burns with a squeaky **pop**.\n\n**Carbon dioxide.** Bubble through **limewater**, which turns **milky**.\n\n**Oxygen.** A **glowing** splint **relights**.\n\n**Ammonia.** Damp **red litmus turns blue**, and the gas has a sharp smell.\n\nIn an examination, give the **reagent**, the **observation** and the **conclusion** — all three are needed for full marks.",
+      "marks": 2
+    }
+  ]
+}
