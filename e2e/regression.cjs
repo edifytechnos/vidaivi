@@ -583,7 +583,14 @@ function check(ok, label) {
       // gets the same 403 for any code — it cannot probe which codes exist.
       check(links.badCode === 403, "an ineligible account learns nothing from an unknown code");
       check(links.nonGoogle === 403, "only a Google account can redeem a code");
-      check(links.unlinkedAttempts === 403, "attempts for an unlinked child are refused");
+      // Refused, but the reason depends on who is asking. /api/attempts now
+      // gates on canSeeStudent, so a parent gets 403 "Not your child" while
+      // this suite's admin — who may read any student that exists — gets 404
+      // for one who does not. Both are a refusal; neither hands back a paper.
+      check(
+        links.unlinkedAttempts === 403 || links.unlinkedAttempts === 404,
+        `attempts for an unlinked child are refused (${links.unlinkedAttempts})`
+      );
       check(links.unlinkedTests === 403, "the test list for an unlinked child is refused");
     }
 
@@ -733,7 +740,37 @@ function check(ok, label) {
         });
         const closedAgain = await studentSees();
 
+        // The teacher reads the whole paper, MCQs included. The attempt row is
+        // the student's own; GET /api/attempts?student= gates on canSeeStudent,
+        // so a teacher reaches their own student and nobody else's.
+        const handedIn = (
+          await asStudent(jar, "/api/attempts", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              testId: photoTestId,
+              score: 3,
+              total: 5,
+              completedAt: new Date().toISOString(),
+              answers: JSON.stringify({ q1: { given: 2, correct: true, earned: 3 } }),
+            }),
+          })
+        ).status;
+        const paperRead = await teacher(
+          `/api/attempts?testId=${photoTestId}&student=${made.username}`
+        );
+        const strangerPaper = (
+          await teacher(`/api/attempts?testId=${photoTestId}&student=no-such-student-xyz`)
+        ).status;
+
         return {
+          paper: {
+            handedIn,
+            status: paperRead.status,
+            error: paperRead.data?.error || "",
+            given: paperRead.data?.attempt?.answers?.q1?.given,
+            stranger: strangerPaper,
+          },
           asTeacher,
           notAnImage: notAnImage.status,
           tooBig: tooBig.status,
@@ -761,6 +798,25 @@ function check(ok, label) {
         await cleanup();
       }
     })();
+
+    if (marking.paper) {
+      const paper = marking.paper;
+      if (paper.status === 403 && /child/i.test(paper.error)) {
+        // The old parent-only rule. Point E2E_API_BASE at an environment
+        // carrying this branch to exercise it.
+        console.log(`SKIP  teacher reads a student's paper (API predates it: "${paper.error}")`);
+      } else {
+        check(paper.handedIn === 201, `a student hands a paper in (${paper.handedIn})`);
+        check(
+          paper.status === 200 && paper.given === 2,
+          `the teacher reads it back question by question (${paper.status}, answer ${paper.given})`
+        );
+        check(
+          paper.stranger === 404 || paper.stranger === 403,
+          `and cannot read a student who is not theirs (${paper.stranger})`
+        );
+      }
+    }
 
     if (marking.missing) {
       // Running against an API that predates this feature (production, before
