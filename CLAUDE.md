@@ -88,8 +88,22 @@ on QA additionally requires this host under **Authorised JavaScript origins** on
 the OAuth client — *this is a pending step, not a record of one already taken*,
 unlike the `vidai.seyali.app` entry above which is done.
 
-- **One branch under test at a time** — they share the environment, so the
-  newest push wins.
+- **QA carries every open pull request at once** — it is built as `main` with
+  every open PR merged on top, not as whichever branch pushed last. Any push to
+  any branch rebuilds it, so a session never has to wait its turn and never has
+  its test bed overwritten by someone else's push.
+  - The branch that pushed goes in **first**, even before it has a PR, so a
+    session's very first push still reaches QA with its own changes in it.
+  - **A conflict drops one branch, not QA.** The conflicting merge is aborted,
+    everything else deploys, and the run's **job summary** lists what QA carries
+    and what was left out with the conflicting files. Read that summary before
+    concluding a route is broken — a missing endpoint may simply mean your
+    branch was the one skipped.
+  - QA therefore serves a commit that exists on no branch. That is the point: it
+    is what `main` will look like once everything lands, so a conflict between
+    two sessions surfaces here instead of in production.
+  - `concurrency: qa-deploy` with `cancel-in-progress` keeps two simultaneous
+    pushes from racing to upload.
 - **Stay at or under three staging environments** — the Free plan's limit, and
   the thing that actually breaks QA. Exceeding it does **not** fail loudly: the
   surplus environment half-serves, answering roughly half of all requests with
