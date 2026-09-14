@@ -148,7 +148,9 @@ unlike the `vidai.seyali.app` entry above which is done.
   `POST /api/login` verifies the Google ID token (aud + expiry via Google's
   tokeninfo endpoint) and upserts the profile (name/email/picture/phone) in
   Table Storage; `POST/GET /api/attempts` saves/lists the student's attempts.
-- SWA application settings (Azure portal, not repo): `GOOGLE_CLIENT_ID`,
+- SWA application settings (Azure portal, not repo): `GEMINI_API_KEY` (optional
+  — switches on AI marking; `ASSESS_DAILY_CAP` bounds its spend; see below),
+  `GOOGLE_CLIENT_ID`,
   `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`,
   `students` are auto-created), `SESSION_SECRET` (any long random string —
   signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
@@ -707,7 +709,7 @@ the function did not exist.
 - `screens/student.ts` — the student's workspace: subject → tests tree → one question.
 - `screens/assign.ts` — "Who sees this test": the audience picker, shared by the editor and My tests.
 - `screens/review.ts` — read-only review, one question per page.
-- `screens/marking.ts` — the teacher's marking queue for long answers.
+- `screens/marking.ts` — the marking queue (a list) and `openStudentPaper`, the one way into marking a paper.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
@@ -830,6 +832,105 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   `Q_CHUNK` guard that silently drops an oversized `answers` blob.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
+
+## The teacher marks on the student's own screen, with an AI first draft
+
+**Marking happens inside the paper**, not in a screen of its own. A teacher
+opens a student's paper — from the marking queue, or from **Open & mark** on an
+attempt row in their report — and gets the three-column review the student
+reads their result on, with the marks row under each long answer and **Release**
+in the crumb. The MCQs and numerics are already graded and already show their
+marks; that was the point of putting them on the same screen.
+
+- **The queue is a list now** (`src/screens/marking.ts`): one card per student
+  and test, "3 to mark". Its old detail pane is deleted. That pane could mark an
+  answer but could not show the rest of the paper — not the MCQs the student got
+  wrong, not the marks already earned — and it was laid out unlike anything else
+  in the app.
+- **`openStudentPaper` is the one way in**, exported from `marking.ts` and used
+  by the console too, so a teacher learns one screen. It sets `?review=` before
+  painting, because `showReview` reads the question from the address bar.
+- **An answer can outlive its test.** A photo reaches the queue when it is
+  uploaded, which may be long before the paper is handed in — so
+  `openStudentPaper` falls back to the in-progress row, then to an empty paper,
+  and says plainly when the test itself has been deleted.
+- `showReview({marking: true})` is the whole switch; the layout does not change.
+
+### The AI proposes; the teacher awards (`POST /api/assess`)
+
+**The model never awards a mark.** It writes `aiAwarded` / `aiComment` /
+`aiReasoning` on the grading row; only the teacher's existing
+`POST /api/grading {action:"mark"}` writes `awarded` and moves `status` to
+`marked`. A wrong AI mark is therefore a suggestion a teacher overrules, never a
+mark a student receives — and the proposal is **not** pre-filled into the marks
+row, because a number a teacher has to *choose* gets reviewed and one already in
+the box gets rubber-stamped.
+
+- **Gemini `gemini-3.5-flash-lite`**, called from the Function with plain
+  `fetch` (no new dependency): `POST /v1beta/interactions`, key in the
+  `x-goog-api-key` header, `input[]` of one text part plus the photographs, and
+  `response_format` with a JSON schema so the reply is never free prose. The
+  answer comes back at `interaction.output_text` as a JSON string.
+- **The paid tier is not optional.** Google's free tier says content *is* used
+  to improve their products; the paid tier says it is not. What is being sent is
+  a child's handwriting. Keep billing on.
+- **The model is never told who the student is** — it gets the question, the
+  teacher's model solution, the marks available and the images. Nothing else is
+  its business, and nothing else is in the request if it leaks.
+- **A daily cap, not a vault.** A loaded key is money with no brakes: at ~₹0.15
+  an assessment, ₹500 is about 3,300 calls, and a stuck retry or a stolen
+  teacher session could spend it in an afternoon. `ASSESS_DAILY_CAP` (200)
+  bounds it per teacher per day — PK `assess`, RK `<digest(teacherId)>~<date>`,
+  a point read and a point write, never a scan; tomorrow is simply a different
+  key, so nothing needs sweeping. **The gate runs before the row read, the blob
+  downloads and the model call**, for the same reason `loginGate` runs before
+  scrypt: the expensive work is exactly what an abuser wants. A failed model
+  call does not consume a slot. `e2e/helpers.cjs` drives this through the real
+  handler against a fake table and asserts that a refused assessment never
+  reaches the network.
+- **Key Vault is not available here, and this is not a tier problem.** Microsoft's
+  own page says Key Vault integration is unavailable for *"static web apps using
+  managed functions"*, that *"Azure Serverless Functions do not support direct
+  Key Vault integration"*, and that managed identity is Standard-plan only. Our
+  API **is** managed functions, so `@Microsoft.KeyVault(SecretUri=…)` in an app
+  setting does nothing at any tier. Reading a vault from code needs a credential
+  to reach the vault — without managed identity that is a client secret in an
+  app setting, which moves the secret rather than protecting it, and adds a
+  round trip per cold start. Real Key Vault means **bring-your-own Functions +
+  Standard**. If that is ever done, do it for `STORAGE_CONNECTION_STRING`,
+  `SESSION_SECRET` and `ADMIN_PASSWORD` first: they are the account, the
+  sessions and the platform, while the Gemini key is capped pocket money.
+- **Harden the key at Google instead**: restrict it to the Generative Language
+  API, and set a budget alert on the project. IP restriction is not usable —
+  SWA managed Functions have no stable outbound address.
+- **It does not work from this app's region, and that is why it ships off.**
+  The Static Web App runs in Azure **East Asia, which is Hong Kong**, so its
+  Functions call out from there — and Hong Kong is on **neither** Google's
+  Gemini available-regions list **nor** Anthropic's supported-countries list.
+  Both were checked; India, where the key was created, is on both, which is why
+  the same key works from a laptop and 400s from the app. The error is
+  *"This API is not available in your current location"*, and it was only
+  visible after the provider's `error.message` was allowed through — worth
+  remembering the next time a provider call fails opaquely.
+  **Setting the key does not fix it.** The three ways out, none of them small:
+  a model deployed inside Azure (AI Foundry — the call never crosses a border),
+  moving the app to a served region such as Central India (a new Static Web App:
+  region is fixed at creation, so new deploy token, custom domain, OAuth
+  origins and QA URL — and it would also cut latency for students who are all
+  in India), or Vertex AI with a service account instead of an API key.
+  Until one of those happens the feature is **dormant on purpose**: a 400 whose
+  message names a location marks it unavailable in-process for six hours
+  (`aiUnavailableUntil`) and `/api/assess` answers **501** from then on, so the
+  button disappears instead of failing on every press. Leaving a key set in the
+  portal is therefore harmless.
+- **Set `GEMINI_API_KEY`** as an SWA application setting to switch it on
+  (`GEMINI_MODEL` overrides the model). Without it `/api/assess` answers **501**
+  and the client hides the button — dormant, exactly like analytics without its
+  connection string. `e2e/regression.cjs` asserts the 501.
+- **It runs only when the teacher presses "Assess with AI"**, one answer at a
+  time. Nothing is spent on papers nobody opens. About ₹0.15 an answer.
+- The provider's error body is never echoed to the client: it can contain the
+  request, and the request contains the handwriting.
 
 ## Releasing the answers (`/api/release`, table `releases`)
 

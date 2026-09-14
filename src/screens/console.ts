@@ -12,7 +12,6 @@ import {
   modifyTeacher,
   removeStudent,
   resetStudentPassword,
-  fetchMyAttempt,
   setReleased,
   signOut,
   fetchTotpState,
@@ -25,14 +24,13 @@ import { TESTS, testTitle } from "../data";
 import { copyText, escapeHtml, pct, setUrl } from "../dom";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
-import { createParentInvite, fetchServerTest, fetchTestList, mutateTest, setTestStatus } from "../api";
+import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
 import { currentSubject } from "./home";
 import { showBuilder } from "./builder";
 import { newTestHere, showEditor } from "./editor";
 import { audienceLabel, openAssign } from "./assign";
 import { showSubjects } from "./subjects";
-import { showReviewFor } from "./test";
-import type { Attempt } from "../types";
+import { openStudentPaper } from "./marking";
 
 type ConsolePage = "admin" | "students" | "report" | "tests";
 
@@ -461,7 +459,7 @@ export function showStudentReport(username: string) {
                       <td class="rel-cell" data-test="${escapeHtml(a.testId)}"><span class="status-chip status-new">…</span></td>
                       <td class="cell-actions">
                         <button class="btn-link rep-paper" data-test="${escapeHtml(a.testId)}"
-                                data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">View paper</button>
+                                data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Open &amp; mark</button>
                         <button class="btn-link rel-toggle" data-test="${escapeHtml(a.testId)}" data-user="${escapeHtml(s.username)}">Release</button>
                       </td>
                     </tr>`;
@@ -495,53 +493,16 @@ export function showStudentReport(username: string) {
     document.getElementById("rep-back")!.addEventListener("click", showTeacher);
     document.querySelectorAll<HTMLButtonElement>(".rep-paper").forEach((btn) =>
       btn.addEventListener("click", () =>
-        void openPaper(btn.dataset.test!, btn.dataset.user!, btn.dataset.name!, btn)
+        void openStudentPaper({
+          testId: btn.dataset.test!,
+          username: btn.dataset.user!,
+          name: btn.dataset.name,
+          back: () => showStudentReport(btn.dataset.user!),
+        })
       )
     );
     void paintRelease(s.username, [...attempted]);
   })();
-}
-
-/**
- * One student's paper, question by question — what they put down, what was
- * right, and the marks. The auto-graded questions are the point: a teacher
- * could see the long answers in the marking queue and the total on this table,
- * but never which MCQ the class got wrong.
- *
- * It is the read-only review screen the student and the parent already get
- * (src/screens/review.ts), so there is one renderer for a finished paper.
- * Release does not gate it — the teacher owns that switch.
- */
-async function openPaper(
-  testId: string,
-  username: string,
-  name: string,
-  btn: HTMLButtonElement
-): Promise<void> {
-  const was = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = "Opening…";
-  const [test, remote] = await Promise.all([
-    fetchServerTest(testId),
-    fetchMyAttempt(testId, username),
-  ]);
-  btn.disabled = false;
-  btn.textContent = was;
-  const done = remote.attempt;
-  if (!test || !done?.answers) {
-    alert("That paper could not be opened.");
-    return;
-  }
-  const attempt: Attempt = {
-    answers: done.answers,
-    index: test.questions.length,
-    completed: true,
-    score: done.score,
-    completedAt: done.completedAt,
-    updatedAt: done.completedAt,
-  };
-  track("teacher_paper_open", { test: testId });
-  showReviewFor(test, attempt, () => showStudentReport(username), username, name);
 }
 
 /**

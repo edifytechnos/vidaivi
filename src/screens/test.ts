@@ -615,7 +615,8 @@ export function showReviewFor(
   attempt: Attempt,
   back: () => void,
   student?: string,
-  studentName?: string
+  studentName?: string,
+  marking?: boolean
 ): void {
-  void showReview(test, attempt, { back, student, studentName });
+  void showReview(test, attempt, { back, student, studentName, marking });
 }

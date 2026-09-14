@@ -2678,6 +2678,7 @@ body {
   color: var(--text-secondary);
   cursor: pointer;
 }
+.mbtn.chosen,
 .mbtn.sel {
   background: var(--primary);
   border-color: var(--primary);
@@ -3739,6 +3740,50 @@ body.modal-open {
   transform: rotate(-90deg);
 }
 .score-breakdown .row-pending { color: var(--muted); }
+
+/* Marking inside the paper. A teacher evaluates on the same screen the student
+   reads their result on, so this block sits under the answer rather than in a
+   pane of its own. */
+.mk {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mk-none { margin: 14px 0 0; }
+.mk-assess { align-self: flex-start; }
+
+/* The AI's proposal. Amber, not green: it is a suggestion awaiting a teacher,
+   and it must never read like a mark that has been given. */
+.mk-ai {
+  border: 1px solid var(--amber);
+  border-radius: var(--radius-sm);
+  background: var(--amber-bg);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mk-ai-head { display: flex; align-items: center; gap: 8px; }
+.mk-ai-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--amber);
+  color: #fff;
+}
+.mk-ai-mark { font-size: 0.95rem; font-weight: 700; color: var(--amber); }
+.mk-ai-why, .mk-ai-say { margin: 0; font-size: 0.88rem; line-height: 1.5; color: var(--amber); }
+.mk-ai-say { font-style: italic; }
+.mk-ai-foot { margin: 0; font-size: 0.78rem; color: var(--amber); opacity: 0.85; }
+
+.mk-award { display: flex; flex-direction: column; gap: 8px; }
+.mk-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.mk-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
 /* Browse: the catalogue row. Everything that will vary between authors later —
    a byline, a price, whether you already hold it — has a slot here already, so

@@ -553,6 +553,12 @@ export interface GradedAnswer {
   comment: string;
   markedAt: string;
   markedBy: string;
+  /** The AI's proposal. Never a mark — only a teacher's Approve writes one. */
+  aiAwarded: number | null;
+  aiComment: string;
+  aiReasoning: string;
+  aiAt: string;
+  aiModel: string;
 }
 
 export interface UploadedAnswerImage {
@@ -655,6 +661,42 @@ export async function saveMark(payload: {
     return res.ok;
   } catch {
     return false;
+  }
+}
+
+export interface AiAssessment {
+  awarded: number;
+  comment: string;
+  reasoning: string;
+  model: string;
+}
+
+/**
+ * Ask the model to read one handwritten answer and propose a mark.
+ *
+ * Costs a fraction of a rupee and only runs when a teacher presses the button.
+ * A 501 means no key is configured for this site — the caller hides the button
+ * rather than offering something that cannot work.
+ */
+export async function assessAnswer(payload: {
+  username: string;
+  testId: string;
+  questionId: string;
+  question: string;
+  solution: string;
+}): Promise<{ ok: boolean; assessment?: AiAssessment; message?: string; off?: boolean }> {
+  try {
+    const res = await apiFetch("/api/assess", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.status === 501) return { ok: false, off: true, message: data.error };
+    if (!res.ok) return { ok: false, message: data.error || "The assessment failed" };
+    return { ok: true, assessment: data as AiAssessment };
+  } catch {
+    return { ok: false, message: "Could not reach the assessor" };
   }
 }
 

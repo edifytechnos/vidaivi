@@ -10,7 +10,18 @@
 
 import { track } from "../analytics";
 import { hydrateThumbs, photoStrip } from "../answerphotos";
-import { fetchReleased, getProfile, isLoggedIn, isTeacher } from "../auth";
+import {
+  assessAnswer,
+  fetchGrading,
+  fetchReleased,
+  fetchReleaseState,
+  getProfile,
+  isLoggedIn,
+  isTeacher,
+  saveMark,
+  setReleased,
+  type GradedAnswer,
+} from "../auth";
 import { clearAttempt, newAttempt } from "../attempts";
 import { totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
@@ -25,6 +36,13 @@ export interface ReviewOpts {
   student?: string;
   /** That student's name, for the labels that would otherwise say "Your". */
   studentName?: string;
+  /**
+   * The teacher is marking, not just reading. Turns the long answers into
+   * markable ones — the AI's proposal, the marks row, the comment — and adds
+   * Release to the crumb. The layout does not change: the whole point is that
+   * a teacher evaluates a paper on the same screen the student reads it on.
+   */
+  marking?: boolean;
 }
 
 /**
@@ -124,6 +142,205 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolea
 }
 
 /**
+ * Release, on the same screen as the marking. A teacher finishes a paper and
+ * opens it in one place; the state is read rather than assumed, because a
+ * teacher marking on a second device must not be told the wrong thing.
+ */
+async function bindRelease(testId: string, username: string): Promise<void> {
+  const btn = document.getElementById("mk-release") as HTMLButtonElement | null;
+  if (!btn || !username) return;
+  const state = await fetchReleaseState(testId);
+  let classWide = !!state?.classWide;
+  let mine = !!state?.students.some((x) => x.username === username);
+
+  const paint = (): void => {
+    btn.disabled = classWide && !mine;
+    btn.textContent = classWide
+      ? "Open to the class"
+      : mine
+        ? "Hide again"
+        : "Release to this student";
+    btn.title = classWide
+      ? "This paper is open to everyone who sat it"
+      : mine
+        ? "This student can see their marks and the solutions"
+        : "Let this student see their marks, the answers and the worked solutions";
+  };
+  paint();
+
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    const want = !mine;
+    const ok = await setReleased(testId, { username, released: want });
+    if (ok) {
+      mine = want;
+      track("answers_released", { test: testId, scope: "student", open: want });
+    }
+    paint();
+  });
+}
+
+/**
+ * Wire the marking block. Everything here writes through the endpoints that
+ * already existed: Assess with AI proposes, Save mark awards. There is no path
+ * by which the model's number reaches a student without a teacher pressing
+ * Save.
+ */
+function bindMarking(q: Question, rerender: () => void): void {
+  const row = rows.get(q.id);
+  if (!row || q.type !== "long") return;
+
+  const buttons = document.getElementById("mk-buttons");
+  const save = document.getElementById("mk-save") as HTMLButtonElement | null;
+  const state = document.getElementById("mk-state");
+  const comment = document.getElementById("mk-comment") as HTMLTextAreaElement | null;
+  let chosen: number | null = row.status === "marked" ? row.awarded : null;
+
+  const pick = (n: number): void => {
+    chosen = n;
+    buttons?.querySelectorAll(".mbtn").forEach((b) =>
+      b.classList.toggle("chosen", Number((b as HTMLElement).dataset.award) === n)
+    );
+    if (save) save.disabled = false;
+  };
+
+  buttons?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-award]");
+    if (btn) pick(Number(btn.dataset.award));
+  });
+
+  document.getElementById("mk-use")?.addEventListener("click", () => {
+    if (typeof row.aiAwarded === "number") pick(row.aiAwarded);
+    // The AI's words are a starting point for the teacher's, not a signature:
+    // they land in the box, editable, and only go to the student on Save.
+    if (comment && !comment.value.trim()) comment.value = row.aiComment || "";
+  });
+
+  save?.addEventListener("click", async () => {
+    if (chosen === null) return;
+    save.disabled = true;
+    const was = save.textContent;
+    save.textContent = "Saving…";
+    const ok = await saveMark({
+      username: row.username,
+      testId: row.testId,
+      questionId: row.questionId,
+      awarded: chosen,
+      comment: comment?.value.trim() || "",
+    });
+    save.textContent = was;
+    if (!ok) {
+      if (state) state.textContent = "That did not save — try again.";
+      save.disabled = false;
+      return;
+    }
+    track("answer_marked", { test: row.testId, awarded: String(chosen) });
+    row.status = "marked";
+    row.awarded = chosen;
+    row.comment = comment?.value.trim() || "";
+    rerender();
+  });
+
+  const assess = document.getElementById("mk-assess") as HTMLButtonElement | null;
+  assess?.addEventListener("click", async () => {
+    assess.disabled = true;
+    assess.textContent = "Reading the working…";
+    const result = await assessAnswer({
+      username: row.username,
+      testId: row.testId,
+      questionId: row.questionId,
+      question: q.q,
+      solution: q.solution,
+    });
+    if (result.ok && result.assessment) {
+      track("answer_assessed", { test: row.testId });
+      row.aiAwarded = result.assessment.awarded;
+      row.aiComment = result.assessment.comment;
+      row.aiReasoning = result.assessment.reasoning;
+      row.aiModel = result.assessment.model;
+      rerender();
+      return;
+    }
+    // No key configured: stop offering it for the rest of the session rather
+    // than letting a teacher press a button that cannot work.
+    if (result.off) aiOff = true;
+    assess.disabled = false;
+    assess.textContent = "Assess with AI";
+    if (state) state.textContent = result.message || "The assessment failed.";
+    if (result.off) rerender();
+  });
+}
+
+/** The grading rows for the paper being marked, by question id. */
+let rows = new Map<string, GradedAnswer>();
+/** Whether this site has AI marking switched on. Unknown until first asked. */
+let aiOff = false;
+
+/**
+ * The marking block under a long answer. Three things in one place, in the
+ * order a teacher uses them: what the AI thinks, what you award, what the
+ * student will read.
+ *
+ * The AI's number is deliberately never pre-filled into the marks row. A
+ * proposal a teacher has to *choose* is reviewed; a proposal already sitting
+ * in the box is rubber-stamped.
+ */
+function markingPanel(q: Question, row: GradedAnswer | undefined): string {
+  if (q.type !== "long") return "";
+  if (!row) {
+    return `<p class="hint mk-none">Nothing was handed in for this question, so there is
+      nothing to mark.</p>`;
+  }
+  const marked = row.status === "marked" && typeof row.awarded === "number";
+  const ai = typeof row.aiAwarded === "number" ? row.aiAwarded : null;
+  return `
+    <div class="mk">
+      ${
+        ai !== null
+          ? `<div class="mk-ai">
+               <div class="mk-ai-head">
+                 <span class="mk-ai-badge">AI</span>
+                 <span class="mk-ai-mark">suggests ${ai} / ${row.maxMarks}</span>
+                 <span class="ed-spacer"></span>
+                 <button class="btn-link" id="mk-use">Use this mark</button>
+               </div>
+               ${row.aiReasoning ? `<p class="mk-ai-why">${escapeHtml(row.aiReasoning)}</p>` : ""}
+               ${row.aiComment ? `<p class="mk-ai-say">For the student: “${escapeHtml(row.aiComment)}”</p>` : ""}
+               <p class="mk-ai-foot">A suggestion, not a mark. Nothing reaches
+                 ${escapeHtml(row.studentName || row.username)} until you save one.</p>
+             </div>`
+          : aiOff
+            ? ""
+            : `<button class="btn btn-ghost mk-assess" id="mk-assess">Assess with AI</button>`
+      }
+      <div class="mk-award">
+        <div class="section-label">Award marks</div>
+        <div class="mk-row" id="mk-buttons">
+          ${Array.from({ length: row.maxMarks + 1 })
+            .map(
+              (_, n) =>
+                `<button type="button" class="mbtn${
+                  marked && row.awarded === n ? " chosen" : ""
+                }" data-award="${n}">${n}</button>`
+            )
+            .join("")}
+          <span class="mof">out of ${row.maxMarks}</span>
+        </div>
+        <textarea id="mk-comment" class="ta" rows="2"
+                  placeholder="Comment for ${escapeHtml(row.studentName || row.username)} (optional)…">${escapeHtml(row.comment || "")}</textarea>
+        <div class="mk-foot">
+          <button type="button" class="btn btn-primary" id="mk-save" disabled>${
+            marked ? "Update mark" : "Save mark"
+          }</button>
+          <span class="ed-hint" id="mk-state">${
+            marked ? `Marked ${row.awarded}/${row.maxMarks}` : "Not marked yet"
+          }</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+/**
  * The review. `showReviewFor` in test.ts forwards a parent here with `back`
  * and the child's username; a student's own review passes neither.
  */
@@ -150,6 +367,16 @@ export async function showReview(
 
   owner = opts.student ? `${opts.studentName || opts.student}'s` : "Your";
 
+  // Marking needs the grading rows themselves, not just the merged marks: the
+  // AI's proposal, the photos and the teacher's own comment all live there.
+  // One fetch, before the first paint.
+  rows = new Map();
+  if (opts.marking && opts.student) {
+    for (const row of await fetchGrading({ testId: test.id, student: opts.student })) {
+      rows.set(row.questionId, row);
+    }
+  }
+
   const wanted = new URLSearchParams(location.search).get("review");
   let index = Math.max(0, test.questions.findIndex((q) => q.id === wanted));
 
@@ -172,6 +399,11 @@ export async function showReview(
               </span>
               <span class="ed-crumb-current">Question ${index + 1} of ${test.questions.length}</span>
               <span class="ed-spacer"></span>
+              ${
+                opts.marking
+                  ? `<button id="mk-release" class="btn btn-ghost st-handin" disabled>Release…</button>`
+                  : ""
+              }
               ${
                 opts.back
                   ? `<button id="review-back" class="btn btn-ghost st-handin">Back</button>`
@@ -200,9 +432,12 @@ export async function showReview(
                 <p class="review-given">${describeGiven(q, a)}</p>
                 ${open ? correctLine(q, a) : ""}
                 ${photoStrip(a?.images ?? [], "Handed-in working")}
+                ${opts.marking ? markingPanel(q, rows.get(q.id)) : ""}
                 ${
-                  a?.review === "marked" && a.comment
-                    ? `<p class="review-comment"><strong>Your teacher:</strong> ${escapeHtml(a.comment)}</p>`
+                  open && a?.review === "marked" && a.comment
+                    ? `<p class="review-comment"><strong>${
+                        opts.student ? "Teacher" : "Your teacher"
+                      }:</strong> ${escapeHtml(a.comment)}</p>`
                     : ""
                 }
                 ${
@@ -268,6 +503,11 @@ export async function showReview(
       setUrl({ test: test.id });
       startTest(test, newAttempt());
     });
+
+    if (opts.marking) {
+      bindMarking(test.questions[index], render);
+      void bindRelease(test.id, opts.student || "");
+    }
 
     renderMath(app);
     void hydrateThumbs(app);
