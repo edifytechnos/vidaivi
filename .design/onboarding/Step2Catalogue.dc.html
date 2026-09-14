@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, sans-serif; }
+    a { color: #6d28d9; } a:hover { color: #5b21b6; }
+    .row { display: flex; align-items: flex-start; gap: 11px; padding: 11px; border-radius: 8px; border: 1px solid transparent; }
+    .row.on { background: #f5f3ff; border-color: #ddd6fe; }
+    .box { flex: none; width: 17px; height: 17px; margin-top: 2px; border-radius: 5px; border: 1.5px solid #cbd5e1; background: #fff; }
+    .boxon { flex: none; width: 17px; height: 17px; margin-top: 2px; border-radius: 5px; background: #6d28d9; color: #fff; display: flex; align-items: center; justify-content: center; }
+    .mid { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .ttl { font-size: 14px; font-weight: 600; color: #0f172a; }
+    .sub { font-size: 12px; color: #64748b; }
+    .by { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #475569; flex-wrap: wrap; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.02em; padding: 2px 6px; border-radius: 4px; background: #f5f3ff; color: #6d28d9; }
+    .right { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+    .price { font-size: 13.5px; font-weight: 700; color: #0f172a; }
+    .free { font-size: 13.5px; font-weight: 700; color: #047857; }
+    .prev { font-size: 12px; font-weight: 600; color: #6d28d9; cursor: pointer; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; font-size: 12.5px; font-weight: 500; color: #475569; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; }
+    .chip.on { color: #6d28d9; background: #f5f3ff; border-color: #ddd6fe; font-weight: 600; }
+  </style>
+</helmet>
+
+<div style="width: 760px; min-height: 1180px; background: #f1f5f9; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
+
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <span style="display: inline-flex; align-self: flex-start; align-items: center; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; padding: 4px 10px; border-radius: 6px; background: #fef3c7; color: #92400e;">FUTURE · STEP 2 AS A CATALOGUE</span>
+    <div style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a;">When tests come from many authors, free and paid</div>
+  </div>
+
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(15,23,42,0.05), 0 10px 15px -3px rgba(15,23,42,0.08); padding: 22px; display: flex; flex-direction: column; gap: 14px;">
+
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <h2 style="flex: 1; margin: 0; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a;">CBSE Class 10 Maths</h2>
+      <span style="font-size: 12px; font-weight: 600; color: #64748b;">Step 2 of 2</span>
+      <div style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+
+    <div style="font-size: 15px; font-weight: 600; color: #0f172a;">Which tests do you want to start with?</div>
+
+    <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span style="font-size: 14px; color: #94a3b8; font-style: italic;">Search 412 tests — chapter, topic or author</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 7px; flex-wrap: wrap;">
+      <span class="chip on">All 412</span>
+      <span class="chip">Free 86</span>
+      <span class="chip">Paid 326</span>
+      <span style="width: 1px; height: 20px; background: #e2e8f0; margin: 0 3px;"></span>
+      <span class="chip">Chapter <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+      <span class="chip">Author <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+      <span class="chip" style="margin-left: auto;">Most used <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+    </div>
+
+    <!-- the official set stays first and free: the fast path must not get lost -->
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 0 11px 4px;">
+        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6d28d9;">Vidai official · free</span>
+        <span style="font-size: 11.5px; color: #94a3b8;">one per NCERT chapter</span>
+        <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #6d28d9; cursor: pointer;">Select all 14</span>
+      </div>
+
+      <div class="row on">
+        <span class="boxon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <span class="mid">
+          <span class="ttl">Real Numbers</span>
+          <span class="sub">Chapter Test 1 · 15 questions · 26 marks</span>
+          <span class="by"><span class="badge">VIDAI</span> ★ 4.8 · used by 2,140 classes</span>
+        </span>
+        <span class="right"><span class="free">Free</span><span class="prev">Preview</span></span>
+      </div>
+
+      <div class="row on">
+        <span class="boxon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <span class="mid">
+          <span class="ttl">Polynomials</span>
+          <span class="sub">Chapter Test 2 · 15 questions · 25 marks</span>
+          <span class="by"><span class="badge">VIDAI</span> ★ 4.7 · used by 1,905 classes</span>
+        </span>
+        <span class="right"><span class="free">Free</span><span class="prev">Preview</span></span>
+      </div>
+      <div style="font-size: 12px; color: #94a3b8; padding: 4px 11px 0 39px;">…12 more official chapter tests</div>
+    </div>
+
+    <!-- everything else, where the money is -->
+    <div style="display: flex; flex-direction: column; gap: 2px; padding-top: 6px; border-top: 1px solid #e2e8f0;">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 6px 11px 4px;">
+        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8;">From other teachers</span>
+      </div>
+
+      <div class="row">
+        <span class="box"></span>
+        <span class="mid">
+          <span class="ttl">Real Numbers — Board Pattern Mock</span>
+          <span class="sub">80 marks · 3 hours · 38 questions</span>
+          <span class="by">by <strong style="color:#0f172a;">R. Krishnan</strong> · ★ 4.9 · used by 312 classes</span>
+        </span>
+        <span class="right"><span class="price">₹99</span><span class="prev">Preview 5 free</span></span>
+      </div>
+
+      <div class="row">
+        <span class="box"></span>
+        <span class="mid">
+          <span class="ttl">Quadratic Equations — Weak-area Drill</span>
+          <span class="sub">30 questions · 30 marks</span>
+          <span class="by">by <strong style="color:#0f172a;">S. Priya</strong> · ★ 4.5 · used by 88 classes</span>
+        </span>
+        <span class="right"><span class="price">₹49</span><span class="prev">Preview 5 free</span></span>
+      </div>
+
+      <div class="row">
+        <span class="box"></span>
+        <span class="mid">
+          <span class="ttl">Trigonometry — 50 MCQ Rapid Fire</span>
+          <span class="sub">50 questions · 50 marks</span>
+          <span class="by">by <strong style="color:#0f172a;">M. Iqbal</strong> · ★ 4.6 · used by 147 classes</span>
+        </span>
+        <span class="right">
+          <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: #047857;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            OWNED
+          </span>
+          <span class="prev">Preview</span>
+        </span>
+      </div>
+
+      <div class="row" style="opacity: 0.62;">
+        <span class="box" style="border-style: dashed;"></span>
+        <span class="mid">
+          <span class="ttl">Statistics — Chapter Test</span>
+          <span class="sub">15 questions · 26 marks</span>
+          <span class="by"><span class="badge">VIDAI</span> already in this subject</span>
+        </span>
+        <span class="right"><span style="font-size: 12px; font-weight: 600; color: #64748b;">Added</span></span>
+      </div>
+    </div>
+
+    <!-- one tray, one total, one action: free and paid do not need two flows -->
+    <div style="display: flex; align-items: center; gap: 14px; padding: 13px 15px; background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 12px;">
+      <span style="display: flex; flex-direction: column; gap: 2px;">
+        <span style="font-size: 13.5px; font-weight: 700; color: #0f172a;">3 tests selected</span>
+        <span style="font-size: 12.5px; color: #475569;">2 free · 1 paid — <strong style="color:#0f172a;">₹99 total</strong></span>
+      </span>
+      <span style="margin-left: auto; display: flex; gap: 9px;">
+        <button style="padding: 10px 16px; font: inherit; font-size: 14px; font-weight: 600; color: #475569; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">Back</button>
+        <button style="padding: 10px 20px; font: inherit; font-size: 14px; font-weight: 600; color: #fff; background: #6d28d9; border: 1px solid transparent; border-radius: 8px; cursor: pointer;">Pay ₹99 &amp; create</button>
+      </span>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #92400e;">The recommendation</div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #fef3c7; color: #92400e; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">1</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">Do not make onboarding carry the shop.</strong> A teacher creating their first subject wants to start teaching, not to shop. Keep the official free set first and pre-selectable in one click; let the paid catalogue be something they scroll to, or reach later from <strong>+</strong> in the tests tree.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #fef3c7; color: #92400e; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">2</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">One tray, one total, one action.</strong> Free and paid in the same selection, summed once. Two parallel flows — tick the free ones, buy the paid ones separately — is how carts get abandoned.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #fef3c7; color: #92400e; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">3</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">Nobody buys a test they cannot see.</strong> Every paid row needs a preview of a few real questions. Without it the rating is the only signal, and a new author has none — which is how a marketplace fails to start.</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

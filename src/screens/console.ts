@@ -23,7 +23,7 @@ import { mount, skeleton } from "../shell";
 import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
 import { currentSubject } from "./home";
 import { showBuilder } from "./builder";
-import { createTestAndEdit, showEditor } from "./editor";
+import { newTestHere, showEditor } from "./editor";
 import { audienceLabel, openAssign } from "./assign";
 import { showSubjects } from "./subjects";
 
@@ -82,9 +82,10 @@ export function showMyTests() {
         <p class="hint">Ready-made chapter tests live in the built-in subjects on
         <strong>Your subjects</strong>. Open one to read a chapter, then take your
         own copy — you can change anything in the copy before publishing it to
-        your class. The library copy never changes.</p>
+        your class. The library copy never changes — pick built-in tests when you
+        create a subject, or with + in the tests tree.</p>
         <div class="actions">
-          <button id="mt-library-open" class="btn btn-ghost">Browse built-in tests</button>
+          <button id="mt-library-open" class="btn btn-ghost">See built-in subjects</button>
         </div>
       </div>
       <div class="card roster-card">
@@ -101,7 +102,7 @@ export function showMyTests() {
   const listEl = document.getElementById("mt-list")!;
 
   document.getElementById("mt-new")!.addEventListener("click", () => {
-    void createTestAndEdit(showMyTests);
+    void newTestHere(showMyTests);
   });
   document.getElementById("mt-quick")!.addEventListener("click", () => {
     void showBuilder(null, showMyTests);

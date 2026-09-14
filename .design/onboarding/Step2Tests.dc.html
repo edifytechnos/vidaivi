@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, sans-serif; }
+    a { color: #6d28d9; } a:hover { color: #5b21b6; }
+    .row { display: flex; align-items: center; gap: 11px; padding: 9px 11px; border-radius: 8px; }
+    .num { flex: none; width: 22px; font-size: 12px; font-weight: 600; color: #94a3b8; text-align: right; }
+    .box { flex: none; width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid #cbd5e1; background: #fff; }
+    .boxon { flex: none; width: 17px; height: 17px; border-radius: 5px; background: #6d28d9; color: #fff; display: flex; align-items: center; justify-content: center; }
+    .ttl { font-size: 14px; font-weight: 600; color: #0f172a; }
+    .sub { font-size: 12px; color: #64748b; }
+    .meta { margin-left: auto; font-size: 12px; color: #64748b; white-space: nowrap; }
+  </style>
+</helmet>
+
+<div style="width: 660px; min-height: 880px; background: #f1f5f9; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
+
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <span style="display: inline-flex; align-self: flex-start; align-items: center; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; padding: 4px 10px; border-radius: 6px; background: #f5f3ff; color: #6d28d9;">PROPOSED · STEP 2 — READY-MADE PATH</span>
+    <div style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a;">One question: which tests do you want?</div>
+  </div>
+
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(15,23,42,0.05), 0 10px 15px -3px rgba(15,23,42,0.08); padding: 22px; display: flex; flex-direction: column; gap: 14px;">
+
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <h2 style="flex: 1; margin: 0; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a;">CBSE Class 10 Maths</h2>
+      <span style="font-size: 12px; font-weight: 600; color: #64748b;">Step 2 of 2</span>
+      <div style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <div style="font-size: 15px; font-weight: 600; color: #0f172a;">Which tests do you want to start with?</div>
+      <div style="font-size: 13px; line-height: 1.5; color: #475569;">They arrive as your own drafts. Edit anything, delete what you don’t need, and add your own tests later.</div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 2px; border-bottom: 1px solid #e2e8f0;">
+      <button style="padding: 6px 12px; font: inherit; font-size: 12.5px; font-weight: 600; color: #6d28d9; background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 6px; cursor: pointer;">Select all 14</button>
+      <button style="padding: 6px 12px; font: inherit; font-size: 12.5px; font-weight: 600; color: #475569; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer;">Clear</button>
+      <span style="margin-left: auto; font-size: 12.5px; font-weight: 600; color: #6d28d9;">3 selected</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 1px; max-height: 330px; overflow: hidden;">
+      <div class="row" style="background: #f5f3ff;">
+        <span class="num">1</span>
+        <span class="boxon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <span style="display: flex; flex-direction: column; gap: 1px;"><span class="ttl">Real Numbers</span><span class="sub">Chapter Test 1</span></span>
+        <span class="meta">15 Q · 26 marks</span>
+      </div>
+      <div class="row" style="background: #f5f3ff;">
+        <span class="num">2</span>
+        <span class="boxon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <span style="display: flex; flex-direction: column; gap: 1px;"><span class="ttl">Polynomials</span><span class="sub">Chapter Test 2</span></span>
+        <span class="meta">15 Q · 25 marks</span>
+      </div>
+      <div class="row" style="background: #f5f3ff;">
+        <span class="num">3</span>
+        <span class="boxon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <span style="display: flex; flex-direction: column; gap: 1px;"><span class="ttl">Pair of Linear Equations</span><span class="sub">Chapter Test 3</span></span>
+        <span class="meta">15 Q · 28 marks</span>
+      </div>
+      <div class="row">
+        <span class="num">4</span><span class="box"></span>
+        <span style="display: flex; flex-direction: column; gap: 1px;"><span class="ttl">Quadratic Equations</span><span class="sub">Chapter Test 4</span></span>
+        <span class="meta">15 Q · 31 marks</span>
+      </div>
+      <div class="row">
+        <span class="num">5</span><span class="box"></span>
+        <span style="display: flex; flex-direction: column; gap: 1px;"><span class="ttl">Arithmetic Progressions</span><span class="sub">Chapter Test 5</span></span>
+        <span class="meta">15 Q · 27 marks</span>
+      </div>
+      <div class="row">
+        <span class="num">6</span><span class="box"></span>
+        <span style="display: flex; flex-direction: column; gap: 1px;"><span class="ttl">Triangles</span><span class="sub">Chapter Test 6</span></span>
+        <span class="meta">15 Q · 29 marks</span>
+      </div>
+      <div class="row">
+        <span class="num">7</span><span class="box"></span>
+        <span style="display: flex; flex-direction: column; gap: 1px;"><span class="ttl">Coordinate Geometry</span><span class="sub">Chapter Test 7</span></span>
+        <span class="meta">15 Q · 26 marks</span>
+      </div>
+      <div style="font-size: 12px; color: #94a3b8; padding: 6px 11px 0 55px;">…7 more, scrolling</div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 10px; padding-top: 6px; border-top: 1px solid #e2e8f0;">
+      <button style="padding: 10px 16px; font: inherit; font-size: 14px; font-weight: 600; color: #475569; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer;">Back</button>
+      <button style="padding: 10px 14px; font: inherit; font-size: 13px; font-weight: 500; color: #64748b; background: none; border: none; cursor: pointer; text-decoration: underline;">Skip — I’ll write my own</button>
+      <button style="margin-left: auto; padding: 10px 20px; font: inherit; font-size: 14px; font-weight: 600; color: #fff; background: #6d28d9; border: 1px solid transparent; border-radius: 8px; cursor: pointer;">Create with 3 tests</button>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #6d28d9;">Decisions worth your call</div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #fef3c7; color: #92400e; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">?</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">Nothing is ticked by default.</strong> A teacher takes the chapter they’re teaching now, not all fourteen. “Select all” is one click if they do want the lot — but say if you’d rather it started all-ticked.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #f5f3ff; color: #6d28d9; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">✓</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">The button counts.</strong> “Create with 3 tests” tells you exactly what is about to happen; it reads “Create subject” when nothing is ticked.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #f5f3ff; color: #6d28d9; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">✓</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">Reversibility is stated inline.</strong> “Edit anything, delete what you don’t need” removes the fear that makes people hesitate over a list of fourteen.</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

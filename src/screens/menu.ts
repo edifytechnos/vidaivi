@@ -18,6 +18,13 @@ export function installShell(): void {
     const target = e.target as HTMLElement | null;
     if (!target) return;
 
+    // The brand is the way home: every signed-in screen hangs off Your subjects.
+    if (target.closest("#shellbar-home")) {
+      track("brand_home");
+      void showSubjects();
+      return;
+    }
+
     if (target.closest("#rail-toggle")) {
       setRailExpanded(!railExpanded());
       return;

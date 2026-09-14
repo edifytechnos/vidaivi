@@ -1185,7 +1185,14 @@ body {
 
 .editor.tree-open .ed-tree { display: flex; }
 
-.ed-tree-head { margin-bottom: 10px; }
+.ed-tree-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ed-tree-head .ed-tree-title { flex: 1; min-width: 0; }
 
 .ed-tree-title {
   font-size: 11px;
@@ -1196,16 +1203,13 @@ body {
 }
 
 .ed-tree-add {
-  width: 100%;
+  flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  font: inherit;
-  font-size: 13.5px;
-  font-weight: 600;
+  width: 26px;
+  height: 26px;
+  padding: 0;
   color: #fff;
   background: var(--primary);
   border: 1px solid transparent;
@@ -1213,6 +1217,7 @@ body {
   cursor: pointer;
 }
 
+.ed-tree-add svg { width: 15px; height: 15px; }
 .ed-tree-add:hover { background: var(--primary-hover); }
 
 .ed-tree-test {
@@ -2063,6 +2068,12 @@ body {
 /* Brand and profile now live in the bar, which spans the whole window. */
 .shellbar-brand {
   display: flex;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
   align-items: center;
   gap: 9px;
   flex: none;
@@ -2198,11 +2209,14 @@ body {
     padding: 0 12px;
     gap: 8px;
   }
-  .shellbar-brand span:not(.brand-mark),
+  .shellbar-brand .brand-word,
   .tb-name,
   .tb-role,
   .shellbar-div,
-  .shellbar-sub {
+  .shellbar-sub,
+  /* The crumb row under the bar already names the test; on a phone the bar's
+     copy of it only crowds out the subject picker. */
+  .shellbar-title {
     display: none;
   }
 }
@@ -2897,6 +2911,12 @@ body.modal-open {
   gap: 5px;
 }
 
+/* A `display` rule on the class outranks the UA's [hidden], so showWhen needs
+   this to actually hide anything. */
+.modal-field[hidden] {
+  display: none;
+}
+
 .modal-label {
   font-size: 12px;
   font-weight: 600;
@@ -3250,18 +3270,7 @@ body.modal-open {
 
 /* The built-in library: a chapter read read-only, answers shown as facts
    rather than as choices — the teacher is reading, not sitting the test. */
-.lib-options { display: grid; gap: 8px; margin-top: 12px; }
-.lib-option {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-}
-.lib-option.lib-correct { border-color: var(--green); background: var(--green-bg); }
-.lib-letter {
-  flex: none; width: 24px; height: 24px; border-radius: 6px;
-  display: grid; place-items: center;
-  background: var(--bg); font-weight: 600; font-size: 0.85rem;
-}
-.lib-option .status-chip { margin-left: auto; }
+
 
 /* The crumb's way back names the shelf when there is room and says "Back" when
    there is not: at 390px the full title pushed the action off the screen. */
@@ -3269,4 +3278,382 @@ body.modal-open {
 @media (max-width: 720px) {
   .crumb-wide { display: none; }
   .crumb-tight { display: inline; }
+}
+
+
+/* A test's name in a list: the chapter, with the rest of the title beneath it,
+   so two tests on the same chapter are still told apart. See testLabel(). */
+.tl {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  text-align: left;
+}
+
+.tl-main {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tl-sub {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The subject this teacher is working in, in the app bar beside the brand. */
+.shellbar-lead {
+  /* Shrinkable, not fixed: on a phone the bar is brand + subject + profile, and
+     the subject is the one part that can give up width without losing meaning. */
+  /* Fixed width: the title beside it already ellipsizes, so the bar gives up
+     the test's name before it gives up the name of the subject you are in. */
+  flex: none;
+  display: flex;
+  align-items: center;
+}
+
+.shellbar-lead[hidden] { display: none; }
+
+.shellbar-select {
+  width: 168px;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+/* One row of actions at the top right of the pane — icons with tooltips, not
+   the same three buttons written out twice on one screen. */
+.ed-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: none;
+  /* Sits in the Test details panel header, which supplies its own spacing. */
+  margin: -4px 0;
+}
+
+.ed-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.ed-tool svg { width: 17px; height: 17px; }
+.ed-tool:hover { color: var(--text); border-color: var(--muted); }
+
+.ed-tool.primary {
+  color: #fff;
+  background: var(--primary);
+  border-color: transparent;
+}
+
+.ed-tool.primary:hover { background: var(--primary-hover); color: #fff; }
+.ed-tool:disabled { opacity: 0.55; cursor: default; }
+
+@media (max-width: 600px) {
+  .shellbar-select { width: 120px; }
+}
+
+/* Below 1100px the bar cannot hold brand, subject, title, note, state and
+   profile. The note goes first: the status chip carries it as a tooltip, and
+   the test's own name is what a teacher needs to see. */
+@media (max-width: 1100px) {
+  .shellbar-sub { display: none; }
+  .shellbar-title { min-width: 60px; }
+}
+
+
+/* ---- Multi-step dialogs and card choices (src/modal.ts) ------------------ */
+
+.modal-count {
+  flex: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.modal-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-step[hidden] {
+  display: none;
+}
+
+.modal-back {
+  flex: none;
+  min-width: 0;
+  padding: 10px 16px;
+}
+
+/* A card is a radio that looks like a tile: for choices about CONTENT — which
+   subject you teach — where the point is what you get, not what it is called. */
+.modal-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.modal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
+}
+
+.modal-card:hover {
+  border-color: var(--border-strong);
+}
+
+.modal-card-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.modal-card:has(.modal-card-input:checked) {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+/* Keyboard focus has to be visible when the radio itself is not. */
+.modal-card:has(.modal-card-input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.modal-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.modal-card-label {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.modal-card-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.modal-card-badge {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.modal-card-wide { grid-column: 1 / -1; }
+
+.modal-bulk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-bulk-btn {
+  padding: 5px 11px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-bulk-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+.modal-bulk-count {
+  margin-left: auto;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+@media (max-width: 600px) {
+  .modal-cards { grid-template-columns: 1fr; }
+}
+
+
+/* ---- First run: the panel that explains what a subject is for ------------ */
+
+.first-run {
+  max-width: 620px;
+  margin: 24px auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.fr-beats {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--border-strong);
+}
+
+.fr-beat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.fr-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fr-beat:first-child .fr-icon {
+  background: var(--primary-soft);
+  border-color: var(--primary-border);
+  color: var(--primary);
+}
+
+.fr-icon .icon { width: 24px; height: 24px; }
+.fr-arrow { width: 22px; height: 14px; flex: none; }
+
+.fr-beat-text {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.fr-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.fr-text {
+  margin: 0;
+  max-width: 460px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.fr-cta { flex: none; padding: 12px 22px; font-size: 14.5px; }
+
+.fr-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--green);
+  background: var(--green-bg);
+  border-radius: 6px;
+}
+
+.fr-note .icon { width: 14px; height: 14px; flex: none; }
+
+@media (max-width: 600px) {
+  .first-run { padding: 26px 18px; }
+  .fr-beats { gap: 8px; }
+  .fr-icon { width: 44px; height: 44px; }
+}
+
+/* ---- "N tests copied" — shown once, after creating from the library ------ */
+
+.ed-welcome {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px 16px;
+  margin-bottom: 14px;
+  background: var(--green-bg);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius);
+}
+
+.ed-welcome-mark {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ed-welcome-mark .icon { width: 14px; height: 14px; }
+
+.ed-welcome-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #047857;
+}
+
+.ed-welcome-body strong { color: #065f46; }
+
+.ed-welcome-x {
+  flex: none;
+  min-width: 0;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  color: #065f46;
+  background: var(--surface);
+  border-color: #a7f3d0;
 }

@@ -31,6 +31,8 @@ export interface Test {
   // Present only on tests fetched from the API; bundled JSON tests have neither.
   status?: "draft" | "published" | "archived";
   sample?: boolean;
+  /** A master in the Vidai library. Only an admin may change one. */
+  platform?: boolean;
   /** Who sits it: "class" is everyone the owner teaches; "selected" is `assignedTo`. */
   audience?: "class" | "selected";
   assignedCount?: number;

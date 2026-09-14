@@ -13,7 +13,7 @@ import { hydrateThumbs, photoStrip } from "../answerphotos";
 import { fetchReleased, getProfile, isLoggedIn } from "../auth";
 import { clearAttempt, newAttempt } from "../attempts";
 import { totalMarks } from "../data";
-import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
+import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
 import { bindTreeDrawer, drawerToggleMarkup, mount } from "../shell";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { hydrateMarks, startTest } from "./test";
@@ -89,7 +89,7 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number): string {
         <div class="ed-node open">
           <div class="ed-node-head">
             <span class="ed-tree-test">
-              <span class="ed-tree-name">${escapeHtml(test.title)}</span>
+              <span class="ed-tree-name">${testLabelMarkup(test.title, test.chapter)}</span>
               <span class="status-chip status-done">${attempt.score}/${totalMarks(test)}</span>
             </span>
           </div>

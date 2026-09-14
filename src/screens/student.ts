@@ -20,7 +20,7 @@ import { fetchMyAttempts, getProfile, isLoggedIn, saveProgress, submitAttempt } 
 import { fetchServerTest, fetchTestList } from "../api";
 import { loadAttempt, newAttempt, saveAttempt } from "../attempts";
 import { gradeAnswer, TESTS, totalMarks } from "../data";
-import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
+import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
 import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
 import type { Attempt, Question, Test } from "../types";
 import { showReview } from "./review";
@@ -31,6 +31,7 @@ import { showSubjects } from "./subjects";
 export interface WorkTest {
   id: string;
   title: string;
+  chapter: string;
   questionCount: number;
 }
 
@@ -135,7 +136,7 @@ export function studentTreeMarkup(opts: TreeOpts = {}): string {
           <div class="ed-node-head${active ? " active" : ""}">
             <button class="ed-tree-test st-test${locked ? " st-locked" : ""}" data-test="${escapeHtml(t.id)}"${locked ? " disabled" : ""}>
               ${ICONS.folder}
-              <span class="ed-tree-name">${escapeHtml(t.title)}</span>
+              <span class="ed-tree-name">${testLabelMarkup(t.title, t.chapter)}</span>
               ${chip}
             </button>
           </div>
@@ -194,7 +195,7 @@ async function loadWorkTests(): Promise<void> {
   }
   const bundled = subjectId
     ? []
-    : TESTS.map((t) => ({ id: t.id, title: t.title, questionCount: t.questions.length }));
+    : TESTS.map((t) => ({ id: t.id, title: t.title, chapter: t.chapter || "", questionCount: t.questions.length }));
   const server = (list?.tests ?? [])
     .filter(
       (t) =>
@@ -202,7 +203,7 @@ async function loadWorkTests(): Promise<void> {
         (subjectId ? t.subjectId === subjectId : !t.subjectId) &&
         !bundled.some((b) => b.id === t.id)
     )
-    .map((t) => ({ id: t.id, title: t.title, questionCount: t.questionCount }));
+    .map((t) => ({ id: t.id, title: t.title, chapter: t.chapter || "", questionCount: t.questionCount }));
   workTests = [...bundled, ...server];
 }
 
@@ -239,7 +240,7 @@ function renderOverview(): void {
                         return `
                         <button class="test-card" data-test="${escapeHtml(t.id)}"${locked ? " disabled" : ""}>
                           <div class="test-card-main">
-                            <div class="test-card-title">${locked ? ICONS.lock : ""}${escapeHtml(t.title)}</div>
+                            <div class="test-card-title">${locked ? ICONS.lock : ""}${testLabelMarkup(t.title, t.chapter)}</div>
                             <div class="test-card-sub">${t.questionCount} questions${locked ? " · finish your open test first" : ""}</div>
                           </div>
                           <span class="status-chip status-${state === "progress" ? "progress" : state === "done" ? "done" : "new"}">${
@@ -310,7 +311,7 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
   const known = workTests.some((t) => t.id === test.id);
   if (!known) {
     workTests = [
-      { id: test.id, title: test.title, questionCount: test.questions.length },
+      { id: test.id, title: test.title, chapter: test.chapter || "", questionCount: test.questions.length },
       ...workTests,
     ];
   }
@@ -411,7 +412,7 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
       if (!document.querySelector(".ed-student")) return;
       if (!workTests.some((t) => t.id === test.id)) {
         workTests = [
-          { id: test.id, title: test.title, questionCount: test.questions.length },
+          { id: test.id, title: test.title, chapter: test.chapter || "", questionCount: test.questions.length },
           ...workTests,
         ];
       }

@@ -55,9 +55,63 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   issues the certificate — until then HTTPS fails), and `https://<host>` added to
   **Authorised JavaScript origins** on the Google OAuth client.
 - Every push to `main` auto-deploys via `.github/workflows/azure-static-web-apps.yml`
-  (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret).
-- PRs against `main` get a preview URL posted on the PR — use it for teacher approval
-  of new question sets before merging.
+  (needs the `AZURE_STATIC_WEB_APPS_API_TOKEN` repo secret). That workflow has
+  **separate `production` and `qa` deploy jobs on purpose**: a single job with a
+  conditional environment could land a push to `main` somewhere other than
+  production, and two jobs cannot. Both fire on **`push`** — `production` when
+  the ref is `main`, `qa` when it is not — and a third job, `close_environment`,
+  runs on `pull_request: [closed]` and never deploys.
+
+### QA is one fixed URL, not a URL per PR
+
+**https://ambitious-plant-03e9c0f00-qa.eastasia.5.azurestaticapps.net** — every
+push to a branch that is not `main` deploys here (`deployment_environment: qa`,
+an Azure *named environment*). Use it for teacher approval of new question sets
+before merging.
+
+**It has to be a push trigger, not `pull_request`.** On a `pull_request` event
+the deploy action derives the environment from the PR number and **silently
+ignores `deployment_environment`** — the job succeeds and the log reads
+`Visit your site at: …-<PR number>.…`. That was tried and does not work;
+Microsoft's own example pairs `deployment_environment` with a push-on-branches
+trigger. The cost is that PRs no longer get an automatic preview comment, which
+is fine when the URL never changes.
+
+The URL is fixed **because Google sign-in is bound to an origin**. Per-PR
+previews (`…-<PR number>.…`) each have a new origin, so nobody can sign in to
+one, which makes them useless for testing anything behind a login.
+
+**Only Google sign-in needs that origin entry.** Admin and student logins go
+through `/api/manageauth` and `/api/studentauth`, which are not origin-bound, so
+QA is fully testable as an admin or a student today. Signing in **with Google**
+on QA additionally requires this host under **Authorised JavaScript origins** on
+the OAuth client — *this is a pending step, not a record of one already taken*,
+unlike the `vidai.seyali.app` entry above which is done.
+
+- **One branch under test at a time** — they share the environment, so the
+  newest push wins.
+- **Stay at or under three staging environments** — the Free plan's limit, and
+  the thing that actually breaks QA. Exceeding it does **not** fail loudly: the
+  surplus environment half-serves, answering roughly half of all requests with
+  Azure's own 404 page while the deploy log still reports success. An afternoon
+  was lost to this. A closing PR frees its own slot automatically via the
+  `close_environment` job; **Actions → Run workflow** takes a
+  `close_environment` name but Azure refuses it outside a PR event
+  (*"Request is missing the pull request id"*), so closing and reopening a PR is
+  what frees a slot by hand.
+  Measured, once back to two environments: a deploy causes **no disruption at
+  all** — 10/10 before, during and after, then 30/30 on `index.html` and 12/12
+  on each hashed asset. While a third environment existed, fifteen quiet minutes
+  never recovered past ~50%. So a flapping QA means **count the environments**;
+  it is not something to wait out.
+- **`vidai.qa.seyali.app` is not possible here.** Azure does not support custom
+  domains on preview environments, only on an app's *production* environment
+  ([docs](https://learn.microsoft.com/en-us/azure/static-web-apps/custom-domain)).
+  A real QA hostname would need a **second Static Web App** — its own deploy
+  token, its own custom domain, and (the actual prize) its own app settings, so
+  QA could point at a separate storage account instead of the live one.
+- **QA shares production's API and database.** Students and tests created while
+  testing are the live ones, exactly as in local dev.
 - Analytics: Azure Application Insights (optional). Activates only when the
   `APPINSIGHTS_CONNECTION_STRING` repo secret is set (passed to the build as
   `VITE_APPINSIGHTS_CONNECTION_STRING`); without it `src/analytics.ts` no-ops.
@@ -137,22 +191,30 @@ list skips platform tests for the same reason.
 
 - `GET /api/tests?library=1` → the published masters, each with `adopted: true`
   when the caller already holds a copy (matched on `copiedFrom`). Teachers only.
-- `POST /api/tests {action:"adopt", id}` copies a published master into the
-  caller's account: a **new id** (never the master's), `ownerSub` = caller,
-  `platform: false`, `status: "draft"`, `audience: "class"`, `copiedFrom` set,
-  every question carried across. It is filed under the caller's **own** subject
-  with the same board/class/subject (`subjectForAdopter`), created if they have
-  none — a copy filed under the library's subject would be invisible to them.
+- `POST /api/tests {action:"adopt", ids[], subjectId?}` copies published masters
+  into the caller's account: each gets a **new id** (never the master's),
+  `ownerSub` = caller, `platform: false`, `status: "draft"`, `audience: "class"`,
+  `copiedFrom` set, every question carried across. **`ids` is a list because a
+  teacher building a subject picks several chapters at once** — one request, not
+  one per chapter (rule 3), bounded by `inBatches(ids, 10, …)` and capped at 50.
+  `id` is still accepted for a single copy.
+  `subjectId` files the copies under a subject the caller **owns** — anything
+  else is a 403, so copies can never be dropped into someone else's subject or
+  into the library itself. Without it they land in the caller's own subject with
+  the same board/class/subject (`subjectForAdopter`), created if they have none.
 - Only an admin may create, publish or edit a master (`canManageTest` keeps
   `entity.platform ||` for admins). That is what "the built-in cannot be
   changed" means for a teacher.
-- Client: `fetchLibrary` / `adoptTest` in `src/api.ts`, and the **Built-in
-  tests** block in Console → My tests: **Use this test** adopts and opens the
-  editor on the *copy*, so the teacher lands where they can change it.
+- Client: `fetchLibrary` / `adoptTests` in `src/api.ts`. **A teacher never
+  browses the library to adopt.** They meet it at the two moments they are
+  already asking for something: **New subject** offers "start from a built-in
+  subject" with a tick list of its tests, and the **+** in the tests tree offers
+  "copy a built-in test" into the subject they are in. Both use the shared modal
+  (`src/modal.ts`).
 - Nothing syncs after the copy is made. `copiedFrom` records the parent so a
   later slice can say "the master has been updated"; a teacher's copy is theirs.
 
-## The library has shelves: platform subjects (`src/screens/library.ts`)
+## The library has shelves: platform subjects
 
 A **shelf** is a subject row carrying `platform: true` — "CBSE Class 10 Maths",
 holding one master test per NCERT chapter. It is the shape a teacher already
@@ -167,20 +229,21 @@ beside their own subjects.
   subject list is derived from the tests they can see, and platform tests are
   already skipped there.
 - `GET /api/tests?library=1&subjectId=<id>` is one shelf's chapters.
-- Opening a shelf goes to `showLibrary`, **never** the authoring editor:
-  `editor/state.ts` is one shared working copy that autosaves, so browsing a
-  master through it would queue writes against a test nobody may change.
-  `src/screens/library.ts` is read-only and reuses the editor's *layout* only,
-  exactly as `src/screens/review.ts` does — `.ed-cols` / `.ed-tree*` /
-  `.ed-panel` under `.ed-readonly`, with `bindTreeDrawer` for the phone drawer.
-  **Use this test** in the crumb row adopts the chapter and opens the editor on
-  the copy.
-- `?library=<id>` survives a refresh (`src/main.ts`). The chapter is deliberately
-  *not* in the URL: a `test=` param there would be caught by the shared-link
-  route and open the test player instead.
-- The crumb's back link names the shelf on a wide screen and reads "‹ Back"
-  below 720px (`.crumb-wide` / `.crumb-tight`) — the full title pushed **Use
-  this test** off the edge of a 390px screen.
+- **A shelf opens in the ordinary authoring editor**, like any other subject —
+  it is in the subject dropdown, badged *(built in)*. An **admin** edits a
+  master there exactly as they would their own test (unpublish → edit →
+  publish; unpublishing a master is safe because it reaches no student). A
+  **teacher** gets it read-only.
+  This reverses an earlier rule that shelves must never open in the editor. The
+  danger it guarded against was real — `editor/state.ts` autosaves ~1s after a
+  keystroke, so a teacher who could type into a master would queue writes the
+  server then rejects — and it is now handled at the source: **`readOnly()` in
+  `src/screens/editor/index.ts` returns true for `test.platform && !isAdmin()`**,
+  so the client never asks. `canManageTest` on the server is still the real
+  gate. The separate read-only browser (`src/screens/library.ts`) is deleted;
+  `?library=<id>` redirects into the editor so old links keep working.
+- The **+** in the tree is hidden on a shelf unless you are an admin
+  (`canAddHere()`): a teacher cannot add to the library.
 
 ### Where chapter content lives
 
@@ -211,10 +274,59 @@ right rather than stacked in the middle column; `e2e/editor.cjs` asserts each.
 The tree is a real tree: **every test is a root node**, its **questions are the
 level beneath it**. Any test can be expanded — another test's questions are
 fetched on demand (`loadTreeQuestions`) and clicking one switches the editor to
-that test. **Create** makes a new *test*; questions are added with the **+** that
-appears between rows on hover, inserting at that position (only the slot below
+that test. **Create** is the small **+** in the tree's header (`#ed-new-test`) and makes a
+new *test*; questions are added with the **+** that appears between rows on hover, inserting at that position (only the slot below
 the hovered question shows). Each question row has a **…** menu (duplicate,
 move, delete) and a drag handle for reordering.
+
+### The app bar names where you are; the pane holds the actions
+
+The bar reads **Vidai │ subject ▾ │ test title · status**. The brand is a button
+that goes to Your subjects (bound in `installShell()` in `src/screens/menu.ts` —
+`shell.ts` must not import `screens/subjects.ts`, which imports `mount` from it).
+`mount()`/`setShellbar()` take an optional **`lead`** slot between brand and
+title; the editor fills it with `#ed-subject`, a `<select>` of the teacher's
+**own** subjects (a platform shelf is read-only and opens on its own screen).
+The list is fetched **once when the editor opens**, in the same `Promise.all` as
+the tests, and reused on every render. Switching calls `showEditorForSubject`.
+`setShellbar` writes `lead` only when given it, so a re-render cannot wipe the
+picker out from under an open dropdown. Below 1100px the audience note drops and
+below 600px the title does: the crumb row already carries the test's name.
+
+**Every action is one icon row** (`.ed-toolbar`, `toolbarMarkup`) in the **Test
+details panel's own header**, right-aligned — Who sees this (`#ed-audience`),
+Preview (`#ov-preview`), Quick edit (`#ov-quick`, drafts only) and Publish
+(`#ov-publish`) / Move back to draft (`#ed-unpublish-bar`). It belongs to that
+panel, not to a bar floating above it. On a library master viewed by a teacher
+the row collapses to **Preview alone** — publishing, the audience picker and
+quick edit would all 403. There is no
+PUBLISHING card and no duplicate set in the app bar; the bar keeps identity and
+state only (the tree toggle and the status chip, whose `title` is
+`audienceNote()`). The read-only banner keeps its own `#ed-unpublish`, which is
+why the toolbar's is `#ed-unpublish-bar` — two of the same id would leave one
+unbindable.
+
+**A test is named on two lines wherever it is listed**: the **Title** on top and
+the **Subtitle** beneath it, smaller and lighter. `testLabel` /
+`testLabelMarkup` in `src/dom.ts` is the one implementation
+(`.tl > .tl-main + .tl-sub`), and it is deliberately trivial — line one is what
+the teacher typed in Title, line two is what they typed in Subtitle. **Nothing
+is derived, stripped or rearranged.**
+
+An earlier version put the chapter first and tried to work the rest out of the
+title by substring-matching and stripping a `Class N ·` prefix. It was clever
+and unpredictable: a teacher could not tell what either line would say without
+running it. Two boxes, two lines, in that order.
+
+The second box is **labelled Subtitle** in the editor and the card builder, but
+it is still `chapter` in the JSON and in Table Storage — the stored schema has
+not changed, only the label and where it renders. Used by the editor tree,
+`student.ts`, `review.ts` and `home.ts`. **Not** the app bar
+(`mount({title})` sets `textContent`, and a second line would grow the bar) and
+**not** the My tests table, which has its own Chapter column.
+
+**The tree rows carry no icon.** The caret already says a row opens, and the
+two-line label is the thing to read.
 
 `index.ts` is the shell (app bar, tree, overview, responsive panes), `state.ts` holds the working
 copy and autosaves ~1s after typing (saves are serialised, never concurrent),
@@ -659,9 +771,26 @@ answer to every question.
 
 ## The shared modal also does radios and checklists (`src/modal.ts`)
 
-`ModalField.kind` is `"text"` (the default), `"radio"` or `"checklist"`, with
-`choices` and an optional `showWhen: {field, value}` that shows a field only
-while another holds a value. A checklist's ticks arrive as the **second**
+`ModalField.kind` is `"text"` (the default), `"radio"`, `"checklist"` or
+`"cards"`, with `choices` and an optional `showWhen: {field, value}` that shows a
+field only while another holds a value.
+
+- **`"cards"`** is a radio that looks like a tile — use it when the choice is
+  about *content* (which subject you teach) rather than a setting. A choice may
+  carry a `badge` (the promise: "14 ready-made tests") and `wide: true` to span
+  the row, for an option that is deliberately the lesser one.
+- **`bulk: true`** on a checklist adds Select all / Clear and a live count.
+- **`steps: ModalStep[]`** makes it a multi-step dialog: a "Step 1 of 2"
+  counter, a **Back** button, and validation that only ever checks the step
+  being answered. `onSubmit` still receives everything from every step, so
+  callers hold no state. `fields` without `steps` behaves exactly as before —
+  the student, teacher and assign dialogs all still use it.
+- **`submitLabel` may be a function** `(values, picks) => string`, recomputed on
+  every change, which is how the button can say "Create with 3 tests".
+- **`showWhen` only works because `.modal-field[hidden]` is declared.** An
+  author `display` rule outranks the UA's `[hidden]`, so without that line the
+  attribute is set and nothing moves — it silently showed the class list under
+  "Everyone I teach" in production for a while. A checklist's ticks arrive as the **second**
 argument to `onSubmit` (`picks[name]`), since one field yields many values; a
 radio also reports its single pick in `values`. This is how "Who sees this test"
 is built — use it rather than adding another inline form.
@@ -789,6 +918,34 @@ An hour-old session looked exactly like a teacher whose data had been deleted.
   state straight over the welcome; and `sessionJustExpired()` does **not** clear
   the flag on read, because the welcome screen can render more than once around
   an expiry. Both are cleared in `saveAuth` when someone signs in again.
+
+## New subject asks one thing per step (`src/screens/subjects.ts`)
+
+**The taxonomy is a consequence, not a question.** Picking "CBSE Class 10 Maths"
+*is* the board, the class and the subject, so only **Something else** asks for
+them — and then those three fields are the only thing on screen. The dialog this
+replaced put a content choice, a taxonomy chore and a second content choice in
+one scrolling box, and asked for the taxonomy even when it already knew it.
+
+- **Step 1 — what do you teach?** One `cards` field: a tile per built-in shelf
+  badged with its test count, plus a full-width **Something else**.
+- **Step 2 — which tests?** That shelf's tests as a `bulk` checklist (Select all
+  / Clear / a live count), or the three taxonomy fields on the Something-else
+  branch. The submit label counts — **Create with 3 tests**, falling back to
+  **Create subject** at zero, which is also how a teacher starts empty. There is
+  no separate Skip button because the label already says what will happen.
+- Copies land as **drafts**, and `vidai:justCopied` carries the count to the
+  editor, which shows one dismissible banner (`copiedBanner`) saying so and then
+  clears the key. That banner is the answer to "where did my test go?".
+- **A teacher who owns no subject gets `firstRunMarkup()`** instead of an empty
+  grid: a subject → holds your tests → students sit them, one button, and a note
+  that ready-made tests are included. Built-in shelves do not count as owning
+  one, or a teacher would never see it.
+- **This is where the library grows into a catalogue.** `openForm` currently
+  fetches every subject and every built-in test to open — fine at two shelves,
+  and the first thing to change when tests come from many authors. Search moves
+  server-side and the test list loads only for the shelf actually picked; the
+  two-step shape and Step 2 are already the right seam for it.
 
 ## Small creation flows use one modal (`src/modal.ts`)
 

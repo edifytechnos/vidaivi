@@ -3,9 +3,21 @@
 // bottom tabs and the tree opens as a drawer.
 
 import { track } from "../../analytics";
-import { fetchServerTest, fetchTestList, mutateTest, newQuestionId, setTestStatus, type TestProblem } from "../../api";
-import { ICONS, escapeHtml, setUrl } from "../../dom";
+import {
+  adoptTests,
+  fetchLibrary,
+  fetchServerTest,
+  fetchSubjects,
+  fetchTestList,
+  mutateTest,
+  newQuestionId,
+  setTestStatus,
+  type TestProblem,
+} from "../../api";
+import { isAdmin } from "../../auth";
+import { ICONS, escapeHtml, setUrl, testLabelMarkup } from "../../dom";
 import { mount, setShellbar, skeleton } from "../../shell";
+import { openModal } from "../../modal";
 import { openAssign } from "../assign";
 import type { Test } from "../../types";
 import {
@@ -20,7 +32,7 @@ import {
   totalMarks,
 } from "./state";
 import { answerPanel, bindQuestionEditor, blankQuestion, explanationPanel, questionBody } from "./panels";
-import { currentSubject } from "../home";
+import { currentSubject, setSubject } from "../home";
 import { showBuilder } from "../builder";
 
 type Pane = "question" | "answer" | "explain";
@@ -28,7 +40,9 @@ type Pane = "question" | "answer" | "explain";
 let onExit: () => void = () => {};
 let selectedIndex = -1; // -1 = the test overview
 let pane: Pane = "question";
-let siblings: { id: string; title: string; status: string; questionCount: number }[] = [];
+let siblings: { id: string; title: string; chapter: string; status: string; questionCount: number }[] = [];
+/** The teacher's own subjects, for the app bar picker. Fetched once per open. */
+let ownSubjects: { id: string; title: string; platform: boolean }[] = [];
 const expanded = new Set<string>();
 const treeQuestions = new Map<string, { id: string; topic: string; marks: number; complete: boolean }[]>();
 let treeSubject: string | null = null;
@@ -45,9 +59,10 @@ export async function showEditor(testId: string, questionId: string | null, back
   mount(skeleton.editor(), { title: "Loading…", active: "subjects", full: true });
 
   // The tree shows the subject you came in through, not every test you own.
-  const [loaded, list] = await Promise.all([
+  const [loaded, list, subjectList] = await Promise.all([
     fetchServerTest(testId),
     fetchTestList(treeSubject ?? undefined),
+    fetchSubjects(),
   ]);
   if (!loaded) {
     mount(
@@ -59,9 +74,26 @@ export async function showEditor(testId: string, questionId: string | null, back
     document.getElementById("ed-back")!.addEventListener("click", back);
     return;
   }
+  // Built-in shelves are offered here alongside a teacher's own subjects. They
+  // open read-only unless you are an admin — see readOnly(). This must be set
+  // BEFORE viewingShelf() is asked anything, since that is what it reads.
+  ownSubjects = (subjectList ?? []).map((x) => ({
+    id: x.id,
+    title: x.title,
+    platform: !!x.platform,
+  }));
+  // A shelf's tree holds its masters; an ordinary subject's holds the teacher's
+  // own tests. Never both, or a teacher's tree fills up with library copies.
+  const shelf = viewingShelf();
   siblings = (list?.tests ?? [])
-    .filter((t) => !t.platform)
-    .map((t) => ({ id: t.id, title: t.title, status: t.status, questionCount: t.questionCount }));
+    .filter((t) => (shelf ? !!t.platform : !t.platform))
+    .map((t) => ({
+      id: t.id,
+      title: t.title,
+      chapter: t.chapter || "",
+      status: t.status,
+      questionCount: t.questionCount,
+    }));
   expanded.add(loaded.id);
   loadTest(loaded);
   problems = [];
@@ -85,11 +117,16 @@ export async function showEditorForSubject(
 ): Promise<void> {
   onExit = back;
   treeSubject = subjectId;
+  takeCopiedNote();
   track("editor_subject_open", { subject: subjectId ?? "" });
   mount(skeleton.editor(), { title: "Loading…", active: "subjects", full: true });
 
   const list = await fetchTestList(subjectId ?? undefined);
-  const mine = (list?.tests ?? []).filter((t) => !t.platform);
+  // Scoped to one subject, the tests returned all belong to it, so platform-ness
+  // follows the subject. With no subject, keep library masters out.
+  const mine = subjectId
+    ? (list?.tests ?? [])
+    : (list?.tests ?? []).filter((t) => !t.platform);
   if (!mine.length) {
     siblings = [];
     clearTest();
@@ -117,11 +154,8 @@ function renderEmptyShell(): void {
         <aside class="ed-tree" id="ed-tree">
           <div class="ed-tree-head">
             <span class="ed-tree-title">Tests &amp; questions</span>
+            ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" title="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
           </div>
-          <button class="ed-tree-add" id="ed-new-test">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-            Create
-          </button>
           <p class="ed-empty ed-tree-empty">No tests yet.</p>
         </aside>
         <div class="ed-center">
@@ -141,14 +175,72 @@ function renderEmptyShell(): void {
     { title: "New subject", sub: "No tests yet", active: "subjects", full: true }
   );
 
-  const create = () => void createTestAndEdit(onExit);
-  document.getElementById("ed-new-test")!.addEventListener("click", create);
-  document.getElementById("ed-empty-create")!.addEventListener("click", create);
+  const create = () => void newTestHere(onExit);
+  document.getElementById("ed-new-test")?.addEventListener("click", create);
+  document.getElementById("ed-empty-create")?.addEventListener("click", create);
   document.getElementById("ed-exit")!.addEventListener("click", () => onExit());
 }
 
+/** Only an admin may add to the built-in library. */
+function canAddHere(): boolean {
+  return !viewingShelf() || isAdmin();
+}
+
+/**
+ * A one-off greeting after a subject is created from the library: the copies
+ * are drafts, students see nothing yet, and + adds more. Written by
+ * src/screens/subjects.ts, read and cleared here so it shows exactly once —
+ * "where did my test go?" is the confusion it exists to answer.
+ */
+const COPIED_KEY = "vidai:justCopied";
+let copiedNote = 0;
+
+function takeCopiedNote(): void {
+  try {
+    const raw = localStorage.getItem(COPIED_KEY);
+    if (raw) {
+      copiedNote = Number(raw) || 0;
+      localStorage.removeItem(COPIED_KEY);
+    }
+  } catch {}
+}
+
+function copiedBanner(): string {
+  if (copiedNote < 1) return "";
+  const n = copiedNote;
+  return `
+    <div class="ed-welcome" id="ed-welcome">
+      <span class="ed-welcome-mark">${ICONS.check}</span>
+      <span class="ed-welcome-body">
+        <strong>${n} test${n === 1 ? "" : "s"} copied into this subject</strong>
+        <span>They are <strong>yours now, as drafts</strong> — change any question you like.
+        Students see nothing until you press <strong>Publish</strong>. Need another paper?
+        Use <strong>+</strong> to add one, blank or from the built-in set.</span>
+      </span>
+      <button class="btn btn-ghost ed-welcome-x" id="ed-welcome-x">Got it</button>
+    </div>`;
+}
+
+/** Is the subject in the tree a built-in shelf rather than one of your own? */
+function viewingShelf(): boolean {
+  const here = treeSubject ?? "";
+  return ownSubjects.some((x) => x.id === here && x.platform);
+}
+
+/**
+ * Nothing here may be edited unless it is a draft — and a library master may
+ * only ever be edited by an admin.
+ *
+ * The platform clause is the one that matters: `editor/state.ts` autosaves ~1s
+ * after a keystroke, so a teacher who could type into a master would queue
+ * writes the server then rejects with 403. The server's `canManageTest` is the
+ * real gate; this keeps the client from ever asking.
+ */
 function readOnly(): boolean {
-  return currentTest()?.status !== "draft";
+  const test = currentTest();
+  if (!test) return true;
+  if (test.platform && !isAdmin()) return true;
+  return test.status !== "draft";
 }
 
 function syncUrl(): void {
@@ -190,6 +282,7 @@ function render(): void {
       sub: audienceNote(test),
       active: "subjects",
       full: true,
+      lead: subjectLead(),
       actions: editorActions(test),
     }
   );
@@ -199,20 +292,61 @@ function render(): void {
   renderSaveState();
 }
 
-/** The editor's own app bar, as designed: identity, taxonomy, state, actions. */
+/**
+ * The subject this teacher is working in, as a picker. Switching reloads the
+ * tree through the same path Your subjects uses, so there is one way in.
+ * Only their own subjects: a built-in shelf is read-only and opens elsewhere.
+ */
+function subjectLead(): string {
+  if (ownSubjects.length < 1) return "";
+  const here = treeSubject ?? "";
+  const options = ownSubjects
+    .map(
+      (x) =>
+        `<option value="${escapeHtml(x.id)}"${x.id === here ? " selected" : ""}>${escapeHtml(
+          x.platform ? `${x.title} (built in)` : x.title
+        )}</option>`
+    )
+    .join("");
+  return `<select class="shellbar-select" id="ed-subject" aria-label="Subject">${options}</select>`;
+}
+
 /** The editor's controls sit in the shell's top bar, not in a bar of their own. */
 function editorActions(test: Test): string {
-  const published = test.status === "published";
+  // Identity and state only. Every *action* lives in the pane's toolbar, so a
+  // teacher is not choosing between two buttons that do the same thing.
   return `
-      <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.users}</button>
-      <span class="status-chip ${statusClass(test.status ?? "draft")}" title="${escapeHtml(audienceNote(test))}">${statusLabel(test)}</span>
-      <button class="ed-bar-btn" id="ed-audience">${ICONS.users}<span class="ed-bar-btn-label">Who sees this</span></button>
-      <button class="ed-bar-btn" id="ed-preview">${ICONS.eye}<span class="ed-bar-btn-label">Preview</span></button>
+      <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.menu}</button>
+      <span class="status-chip ${statusClass(test.status ?? "draft")}" title="${escapeHtml(audienceNote(test))}">${statusLabel(test)}</span>`;
+}
+
+/**
+ * The one row of actions, at the top right of the pane. Icons with tooltips:
+ * the labels said the same thing twice over, once here and once in the app bar.
+ */
+function toolbarMarkup(test: Test): string {
+  const draft = test.status === "draft";
+  const btn = (id: string, icon: string, label: string, cls = "") =>
+    `<button class="ed-tool${cls ? " " + cls : ""}" id="${id}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${icon}</button>`;
+
+  // A teacher reading a library master can only look at it. Publishing, the
+  // audience picker and quick edit would all fail at the server, so they are
+  // not offered — the copy is taken when a subject or a test is created.
+  if (test.platform && !isAdmin()) {
+    return `<div class="ed-toolbar">${btn("ov-preview", ICONS.eye, "Preview as student")}</div>`;
+  }
+
+  return `
+    <div class="ed-toolbar">
+      ${btn("ed-audience", ICONS.users, "Who sees this")}
+      ${btn("ov-preview", ICONS.eye, "Preview as student")}
+      ${draft ? btn("ov-quick", ICONS.pencil, "Quick edit (card view)") : ""}
       ${
-        published
-          ? `<button class="ed-bar-btn primary" id="ed-unpublish-bar">Unpublish</button>`
-          : `<button class="ed-bar-btn primary" id="ed-publish-bar">Publish test</button>`
-      }`;
+        draft
+          ? btn("ov-publish", ICONS.send, "Publish to students", "primary")
+          : btn("ed-unpublish-bar", ICONS.undo, "Move back to draft")
+      }
+    </div>`;
 }
 
 /**
@@ -257,28 +391,35 @@ function statusLabel(test: Test): string {
 function treeMarkup(test: Test): string {
   const rows = siblings.some((s) => s.id === test.id)
     ? siblings
-    : [...siblings, { id: test.id, title: test.title, status: test.status ?? "draft", questionCount: test.questions.length }];
+    : [
+        ...siblings,
+        {
+          id: test.id,
+          title: test.title,
+          chapter: test.chapter || "",
+          status: test.status ?? "draft",
+          questionCount: test.questions.length,
+        },
+      ];
 
   return `
     <div class="ed-tree-head">
       <span class="ed-tree-title">Tests &amp; questions</span>
+      ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" title="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
     </div>
-    <button class="ed-tree-add" id="ed-new-test">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      Create
-    </button>
     <div class="ed-tree-body">
       ${rows.map((row) => testNode(row, test)).join("")}
     </div>`;
 }
 
 function testNode(
-  row: { id: string; title: string; status: string; questionCount: number },
+  row: { id: string; title: string; chapter?: string; status: string; questionCount: number },
   test: Test
 ): string {
   const isCurrent = row.id === test.id;
   const open = expanded.has(row.id);
   const title = isCurrent ? test.title || "Untitled test" : row.title;
+  const chapter = isCurrent ? test.chapter || "" : row.chapter;
   const status = isCurrent ? test.status ?? "draft" : row.status;
   return `
     <div class="ed-node${open ? " open" : ""}" data-test="${escapeHtml(row.id)}">
@@ -287,8 +428,7 @@ function testNode(
           <svg class="ed-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
         </button>
         <button class="ed-tree-test${isCurrent ? "" : " ed-tree-other"}"${isCurrent ? ' id="ed-open-overview"' : ` data-test="${escapeHtml(row.id)}"`}>
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-          <span class="ed-tree-name">${escapeHtml(title)}</span>
+          <span class="ed-tree-name">${testLabelMarkup(title, chapter)}</span>
           <span class="status-chip ${statusClass(status)}">${status === "published" ? "Live" : status === "archived" ? "Archived" : "Draft"}</span>
         </button>
       </div>
@@ -407,6 +547,17 @@ function renderBody(): void {
 }
 
 function readOnlyBanner(): string {
+  const test = currentTest();
+  // A master is not "published to students" — it reaches no student directly,
+  // and a teacher never edits one. Saying so beats an Unpublish button that
+  // would 403.
+  if (test?.platform && !isAdmin()) {
+    return `
+      <div class="ed-banner">
+        <span>This is a built-in Vidai test, so it cannot be changed. To use it with
+        your class, pick it when you create a subject or add a test.</span>
+      </div>`;
+  }
   return `
     <div class="ed-banner">
       <span>This test is published, so students are reading it right now. Move it back to a draft to make changes.</span>
@@ -418,16 +569,22 @@ function overviewMarkup(test: Test): string {
   const problemFor = (id: string) => problems.filter((p) => p.questionId === id);
   return `
     <div class="ed-overview">
+      ${copiedBanner()}
       <section class="ed-panel">
-        <div class="ed-panel-head"><span class="ed-panel-label">Test details</span></div>
+        <div class="ed-panel-head">
+          <span class="ed-panel-label">Test details</span>
+          <div class="ed-spacer"></div>
+          ${toolbarMarkup(test)}
+        </div>
+        <p id="ov-publish-error" class="login-error"${publishError ? "" : " hidden"}>${escapeHtml(publishError)}</p>
         <div class="ed-grid">
           <label class="ed-field">
             <span class="ed-panel-label">Title</span>
             <input class="ed-input" id="ov-title" type="text" maxlength="120" value="${escapeHtml(test.title)}" />
           </label>
           <label class="ed-field">
-            <span class="ed-panel-label">Chapter</span>
-            <input class="ed-input" id="ov-chapter" type="text" maxlength="60" value="${escapeHtml(test.chapter || "")}" />
+            <span class="ed-panel-label">Subtitle</span>
+            <input class="ed-input" id="ov-chapter" type="text" maxlength="60" placeholder="e.g. Chapter Test 1" value="${escapeHtml(test.chapter || "")}" />
           </label>
           <label class="ed-field">
             <span class="ed-panel-label">Curated by</span>
@@ -473,19 +630,6 @@ function overviewMarkup(test: Test): string {
         ${test.questions.length === 0 ? `<p class="ed-empty">No questions yet — add the first from the tree.</p>` : ""}
       </section>
 
-      <section class="ed-panel">
-        <div class="ed-panel-head"><span class="ed-panel-label">Publishing</span></div>
-        <p id="ov-publish-error" class="login-error"${publishError ? "" : " hidden"}>${escapeHtml(publishError)}</p>
-        <div class="actions">
-          ${
-            test.status === "draft"
-              ? `<button class="btn btn-primary" id="ov-publish">Publish to students</button>`
-              : `<button class="btn btn-ghost" id="ed-unpublish">Move back to draft</button>`
-          }
-          <button class="btn btn-ghost" id="ov-preview">Preview as student</button>
-          ${test.status === "draft" ? `<button class="btn btn-ghost" id="ov-quick">Quick edit (card view)</button>` : ""}
-        </div>
-      </section>
     </div>`;
 }
 
@@ -516,6 +660,10 @@ function bindOverview(): void {
       render();
     })
   );
+  document.getElementById("ed-welcome-x")?.addEventListener("click", () => {
+    copiedNote = 0;
+    document.getElementById("ed-welcome")?.remove();
+  });
   document.getElementById("ov-preview")?.addEventListener("click", () => {
     window.open(`./?test=${encodeURIComponent(test.id)}`, "_blank");
   });
@@ -532,12 +680,11 @@ async function publish(): Promise<void> {
   const test = currentTest();
   const btn = document.getElementById("ov-publish") as HTMLButtonElement | null;
   if (!test || !btn) return;
+  // An icon button: it says "publishing" by going dim, not by changing its label.
   btn.disabled = true;
-  btn.textContent = "Publishing…";
   await save(); // publish validates what is stored, so flush pending edits first
   const result = await setTestStatus(test.id, "publish");
   btn.disabled = false;
-  btn.textContent = "Publish to students";
   if (!result.ok) {
     // Held in state: renderBody() rebuilds the overview, so a message written
     // straight into the DOM would be wiped by the very next render.
@@ -673,7 +820,7 @@ function bindTree(): void {
     })
   );
   document.getElementById("ed-new-test")?.addEventListener("click", () => {
-    void save().then(() => createTestAndEdit(onExit));
+    void save().then(() => newTestHere(onExit));
   });
   document.querySelectorAll<HTMLElement>(".ed-insert-btn").forEach((el) =>
     el.addEventListener("click", (e) => {
@@ -728,6 +875,13 @@ function bindChrome(): void {
   bindTree();
   document.getElementById("ed-exit")?.addEventListener("click", () => {
     void save().then(onExit);
+  });
+  const subjectSel = document.getElementById("ed-subject") as HTMLSelectElement | null;
+  subjectSel?.addEventListener("change", () => {
+    const id = subjectSel.value;
+    if (!id || id === treeSubject) return;
+    setSubject(id);
+    void save().then(() => showEditorForSubject(id, onExit));
   });
   document.getElementById("ed-crumb-overview")?.addEventListener("click", () => {
     selectedIndex = -1;
@@ -803,6 +957,76 @@ function renderSaveState(): void {
 }
 
 /** Create an empty draft and open it. */
+/**
+ * The + in the tree. A teacher can start blank or take a copy of a built-in
+ * test straight into the subject they are working in — the library is not a
+ * place you go, it is an option where you already are.
+ *
+ * On a built-in shelf (admins only) it always makes a blank master: copying a
+ * master into the library itself is meaningless.
+ */
+export async function newTestHere(back: () => void): Promise<void> {
+  const into = treeSubject ?? currentSubject();
+  if (viewingShelf()) return createTestAndEdit(back);
+
+  const [subjects, masters] = await Promise.all([fetchSubjects(), fetchLibrary()]);
+  const shelves = (subjects ?? []).filter((x) => x.platform);
+  const library = masters ?? [];
+  const usable = shelves.filter((sh) => library.some((t) => t.subjectId === sh.id));
+  if (!usable.length) return createTestAndEdit(back);
+
+  openModal({
+    title: "Add a test",
+    description: "Start from nothing, or take your own copy of a built-in test.",
+    submitLabel: "Add test",
+    fields: [
+      {
+        name: "from",
+        label: "Start from",
+        kind: "radio",
+        choices: [
+          { value: "blank", label: "A blank test", hint: "Write the questions yourself" },
+          ...usable.map((sh) => ({
+            value: sh.id,
+            label: sh.title,
+            hint: "Copy a built-in test",
+          })),
+        ],
+      },
+      ...usable.map((sh) => ({
+        name: `tests_${sh.id}`,
+        label: `Tests to copy from ${sh.title}`,
+        kind: "checklist" as const,
+        showWhen: { field: "from", value: sh.id },
+        empty: "This built-in subject has no published tests yet.",
+        choices: library
+          .filter((t) => t.subjectId === sh.id)
+          .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+          .map((t) => ({
+            value: t.id,
+            label: t.title,
+            hint: `${t.chapter ? `${t.chapter} · ` : ""}${t.questionCount} questions · ${t.totalMarks} marks`,
+          })),
+      })),
+    ],
+    onSubmit: async (v, picks) => {
+      const from = v.from || "blank";
+      if (from === "blank") {
+        void createTestAndEdit(back);
+        return;
+      }
+      const wanted = picks[`tests_${from}`] ?? [];
+      if (!wanted.length) return "Tick at least one test to copy.";
+      const copied = await adoptTests(wanted, into);
+      if (!copied.ok) return copied.message;
+      track("test_adopted", { count: String(copied.tests?.length ?? 0) });
+      // Land on the first copy — it is theirs now, and editable.
+      const first = copied.tests?.[0];
+      if (first) void showEditor(first.id, null, back);
+    },
+  });
+}
+
 export async function createTestAndEdit(back: () => void): Promise<void> {
   const result = await mutateTest("create", {
     title: "Untitled test",

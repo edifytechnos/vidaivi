@@ -3,6 +3,6 @@ dist
 *.local
 .DS_Store
 
-# Seeded design canvas output (2.5MB payload) — rebuilt from .design/*.dc.html
-.design/*.html
-!.design/*.dc.html
+# Seeded design canvas output (2.5MB payload) — rebuilt from the .dc.html sources
+.design/**/*.html
+!.design/**/*.dc.html

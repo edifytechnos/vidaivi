@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, sans-serif; }
+    a { color: #6d28d9; } a:hover { color: #5b21b6; }
+    .row { display: flex; align-items: flex-start; gap: 11px; padding: 11px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; }
+    .box { flex: none; width: 17px; height: 17px; margin-top: 2px; border-radius: 5px; border: 1.5px solid #cbd5e1; background: #fff; }
+    .boxon { flex: none; width: 17px; height: 17px; margin-top: 2px; border-radius: 5px; background: #6d28d9; color: #fff; display: flex; align-items: center; justify-content: center; }
+    .mid { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .ttl { font-size: 14px; font-weight: 600; color: #0f172a; }
+    .sub { font-size: 12px; color: #64748b; }
+    .by { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #475569; flex-wrap: wrap; }
+    .badge { display: inline-flex; align-items: center; font-size: 10.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #f5f3ff; color: #6d28d9; }
+    .right { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+    .prev { font-size: 12px; font-weight: 600; color: #6d28d9; }
+    .case { display: flex; flex-direction: column; gap: 6px; }
+    .caselbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; }
+    .note { font-size: 12.5px; line-height: 1.5; color: #475569; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; background: #f1f5f9; padding: 1px 5px; border-radius: 4px; color: #0f172a; }
+  </style>
+</helmet>
+
+<div style="width: 760px; min-height: 1180px; background: #f1f5f9; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px;">
+
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <span style="display: inline-flex; align-self: flex-start; align-items: center; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; padding: 4px 10px; border-radius: 6px; background: #fef3c7; color: #92400e;">FUTURE · THE ROW AND ITS STATES</span>
+    <div style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a;">One row, six states — and what each one needs stored</div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
+
+    <div class="case">
+      <span class="caselbl">1 · Free, not yet taken</span>
+      <div class="row">
+        <span class="box"></span>
+        <span class="mid">
+          <span class="ttl">Real Numbers</span>
+          <span class="sub">Chapter Test 1 · 15 questions · 26 marks</span>
+          <span class="by"><span class="badge">VIDAI</span> ★ 4.8 · used by 2,140 classes</span>
+        </span>
+        <span class="right"><span style="font-size: 13.5px; font-weight: 700; color: #047857;">Free</span><span class="prev">Preview</span></span>
+      </div>
+      <span class="note">Ticking it copies it. This is the only state that exists today.</span>
+    </div>
+
+    <div class="case">
+      <span class="caselbl">2 · Paid, not owned</span>
+      <div class="row">
+        <span class="box"></span>
+        <span class="mid">
+          <span class="ttl">Real Numbers — Board Pattern Mock</span>
+          <span class="sub">80 marks · 3 hours · 38 questions</span>
+          <span class="by">by <strong style="color:#0f172a;">R. Krishnan</strong> · ★ 4.9 · used by 312 classes</span>
+        </span>
+        <span class="right"><span style="font-size: 13.5px; font-weight: 700; color: #0f172a;">₹99</span><span class="prev">Preview 5 free</span></span>
+      </div>
+      <span class="note">Ticking it adds to the total rather than copying. The preview is not optional —
+      a new author has no rating, so without sample questions there is no reason to trust them.</span>
+    </div>
+
+    <div class="case">
+      <span class="caselbl">3 · Paid and owned, not in this subject</span>
+      <div class="row">
+        <span class="box"></span>
+        <span class="mid">
+          <span class="ttl">Trigonometry — 50 MCQ Rapid Fire</span>
+          <span class="sub">50 questions · 50 marks</span>
+          <span class="by">by <strong style="color:#0f172a;">M. Iqbal</strong> · ★ 4.6</span>
+        </span>
+        <span class="right"><span style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: #047857;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>OWNED</span></span>
+      </div>
+      <span class="note"><strong style="color:#0f172a;">Bought once, usable in every subject you teach.</strong> A teacher with two
+      Class 10 sections must not pay twice — which means a licence is a row about (buyer, test), separate from any copy.</span>
+    </div>
+
+    <div class="case">
+      <span class="caselbl">4 · Already in this subject</span>
+      <div class="row" style="opacity: 0.62;">
+        <span class="box" style="border-style: dashed;"></span>
+        <span class="mid">
+          <span class="ttl">Statistics — Chapter Test</span>
+          <span class="sub">15 questions · 26 marks</span>
+          <span class="by"><span class="badge">VIDAI</span> already in this subject</span>
+        </span>
+        <span class="right"><span style="font-size: 12px; font-weight: 600; color: #64748b;">Added</span></span>
+      </div>
+      <span class="note">Matched on <code>copiedFrom</code>, which is already stored on every copy today.</span>
+    </div>
+
+    <div class="case">
+      <span class="caselbl">5 · The author has fixed something since you copied it</span>
+      <div class="row" style="border-color: #fcd34d; background: #fffbeb;">
+        <span class="box" style="border-style: dashed;"></span>
+        <span class="mid">
+          <span class="ttl">Quadratic Equations — Weak-area Drill</span>
+          <span class="sub">30 questions · 30 marks</span>
+          <span class="by">by <strong style="color:#0f172a;">S. Priya</strong> · <span style="color:#92400e; font-weight:600;">2 questions corrected since your copy</span></span>
+        </span>
+        <span class="right"><span style="font-size: 12px; font-weight: 700; color: #92400e;">Review changes</span></span>
+      </div>
+      <span class="note"><strong style="color:#0f172a;">The one nobody designs until it bites.</strong> A copy is the teacher's to edit, so an
+      update can never be forced onto it — but a wrong answer in a paid test that the author has already fixed, still being
+      set to a class, is the kind of thing that ends a marketplace's reputation. Show it; let them choose.</span>
+    </div>
+
+    <div class="case">
+      <span class="caselbl">6 · Free, from another teacher</span>
+      <div class="row">
+        <span class="box"></span>
+        <span class="mid">
+          <span class="ttl">Circles — Quick Revision</span>
+          <span class="sub">12 questions · 20 marks</span>
+          <span class="by">by <strong style="color:#0f172a;">A. Sharma</strong> · ★ 4.2 · used by 41 classes</span>
+        </span>
+        <span class="right"><span style="font-size: 13.5px; font-weight: 700; color: #047857;">Free</span><span class="prev">Preview</span></span>
+      </div>
+      <span class="note">Same as 1, but the byline is a person rather than Vidai — which is why <em>who wrote this</em> has to be a
+      first-class field, not a label hardcoded to "built in".</span>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #6d28d9;">What the model needs that it has not got</div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #f5f3ff; color: #6d28d9; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">1</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">On the test:</strong> <code>author</code> (a display name and an id, not just <code>platform: true</code>),
+      <code>price</code>, <code>listed</code>, and counters for rating and usage. Cheap to add now while every test is Vidai's and free; expensive to backfill across a live library later.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #f5f3ff; color: #6d28d9; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">2</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">A new table — licences</strong>, keyed by buyer so "what do I own" is one partition read.
+      Ownership is not the copy: one purchase, many subjects, and the copy can be deleted without losing what was paid for.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #f5f3ff; color: #6d28d9; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">3</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">A version on the master</strong>, so state 5 is answerable at all. <code>copiedFrom</code> already
+      records the parent; a copy would also keep the version it was taken at.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #fee2e2; color: #b91c1c; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">!</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">And the one that has to come first:</strong> <code>tests</code> and <code>subjects</code> still use a
+      constant PartitionKey, so every read scans the whole table. A catalogue of 412 tests across hundreds of authors is not
+      reachable from there. <code>CLAUDE.md</code> already names re-partitioning by owner as the outstanding architectural change —
+      this is what makes it urgent rather than tidy.</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

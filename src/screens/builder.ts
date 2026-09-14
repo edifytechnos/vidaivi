@@ -101,9 +101,9 @@ function render() {
         <label class="field-label" for="b-title">Title</label>
         <input id="b-title" class="numeric-input" type="text" maxlength="120"
                placeholder="e.g. Relations and Functions — Test 1" value="${escapeHtml(draft.title)}" />
-        <label class="field-label" for="b-chapter">Chapter</label>
+        <label class="field-label" for="b-chapter">Subtitle</label>
         <input id="b-chapter" class="numeric-input" type="text" maxlength="60"
-               placeholder="e.g. Relations and Functions" value="${escapeHtml(draft.chapter)}" />
+               placeholder="e.g. Chapter Test 1" value="${escapeHtml(draft.chapter)}" />
         <label class="field-label" for="b-teacher">Curated by (optional)</label>
         <input id="b-teacher" class="numeric-input" type="text" maxlength="60"
                placeholder="Teacher name shown to students" value="${escapeHtml(draft.teacher)}" />
