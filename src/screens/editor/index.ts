@@ -62,7 +62,7 @@ export async function showEditor(testId: string, questionId: string | null, back
   treeSubject = currentSubject();
   track("editor_open", { test: testId });
   // The shell and the editor's shape paint at once; the document fills it in.
-  mount(skeleton.editor(), { title: "Loading…", active: "subjects", full: true });
+  mount(skeleton.editor({ add: true }), { title: "Loading…", active: "subjects", full: true });
 
   // The tree shows the subject you came in through, not every test you own.
   const [loaded, list, subjectList] = await Promise.all([
@@ -127,7 +127,7 @@ export async function showEditorForSubject(
   treeSubject = subjectId;
   takeCopiedNote();
   track("editor_subject_open", { subject: subjectId ?? "" });
-  mount(skeleton.editor(), { title: "Loading…", active: "subjects", full: true });
+  mount(skeleton.editor({ add: true }), { title: "Loading…", active: "subjects", full: true });
 
   const list = await fetchTestList(subjectId ?? undefined);
   // Scoped to one subject, the tests returned all belong to it, so platform-ness

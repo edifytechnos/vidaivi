@@ -1259,8 +1259,37 @@ function check(ok, label) {
     try {
       await page.waitForSelector(card, { timeout: 25000 });
       await page.click(card);
+      // The ghost loader has to be the shape of the screen it stands in for,
+      // or the page jumps the moment the data lands — which is the one thing
+      // it exists to prevent. Snapshot the skeleton's + placeholder, then the
+      // real button, and require them to land in the same place. It used to be
+      // a wide bone in a row of its own *below* the tree's head, so it sat
+      // under the title rather than beside it.
+      const ghostAdd = await page.evaluate(() => {
+        const head = document.querySelector(".sk-wrap .ed-tree-head");
+        if (!head) return null;
+        const bones = [...head.querySelectorAll(".sk")];
+        const last = bones[bones.length - 1];
+        if (bones.length < 2 || !last) return null;
+        const h = head.getBoundingClientRect();
+        const b = last.getBoundingClientRect();
+        return { right: Math.round(b.right), width: Math.round(b.width), inHead: b.top >= h.top - 1 && b.bottom <= h.bottom + 1 };
+      });
       await page.waitForSelector(".editor:not(.sk-wrap) .ed-tree", { timeout: 30000 });
       check(await page.isVisible("#ed-new-test"), "an empty subject opens the editor shell");
+      if (ghostAdd) {
+        const realAdd = await page.evaluate(() => {
+          const b = document.querySelector("#ed-new-test").getBoundingClientRect();
+          return { right: Math.round(b.right), width: Math.round(b.width) };
+        });
+        check(ghostAdd.inHead, "the ghost loader puts its + inside the tree's head, beside the title");
+        check(
+          Math.abs(ghostAdd.right - realAdd.right) <= 2 && Math.abs(ghostAdd.width - realAdd.width) <= 2,
+          `and where the real + lands (ghost ${ghostAdd.right}/${ghostAdd.width}, real ${realAdd.right}/${realAdd.width})`
+        );
+      } else {
+        console.log("SKIP  ghost + alignment (skeleton had already been replaced)");
+      }
       check((await page.$$(".ed-node")).length === 0, "the empty subject's tree has no tests");
       check(await page.isVisible("#ed-empty-create"), "the empty shell offers Create the first test");
       await page.click("#ed-exit");
@@ -1353,7 +1382,28 @@ function check(ok, label) {
           `.subject-card[data-subject='${ws.subjectId}']`, "data-title"
         );
         await page.click(`.subject-card[data-subject='${ws.subjectId}']`);
+        // The ghost must be the shape of the screen behind it: the subject page
+        // is a list of tests, so a skeleton drawing a tree column and a crumb
+        // row would paint furniture that vanishes when the data lands.
+        const ghostSubject = await page.evaluate(() => {
+          const sk = document.querySelector(".editor.sk-wrap");
+          if (!sk) return null;
+          return {
+            tree: !!sk.querySelector(".ed-tree"),
+            crumb: !!sk.querySelector(".ed-crumbrow"),
+            scroll: !!document.querySelector(".shell.shell-scroll"),
+          };
+        });
         await page.waitForSelector(".st-workspace .test-list", { timeout: 25000 });
+        if (ghostSubject) {
+          check(
+            !ghostSubject.tree && !ghostSubject.crumb,
+            "the subject page's ghost draws no tree and no crumb row, as the page has neither"
+          );
+          check(ghostSubject.scroll, "and it scrolls the same way the painted page does");
+        } else {
+          console.log("SKIP  subject ghost shape (data landed before the skeleton could be read)");
+        }
         check((await page.$$(".test-list .test-card[data-test]")).length === 2, "a subject opens its tests as a list");
         // The subject page is that list and nothing else: the app bar already
         // names the subject, so a crumb row repeating it and a drawer holding
