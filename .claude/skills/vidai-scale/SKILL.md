@@ -184,6 +184,11 @@ inline script and no `eval`.
 
 **Storage keys are digests.** No raw IP in a table row.
 
+**Never name an API route `admin…`.** Azure Functions reserves that namespace,
+and SWA serves such a route as a 404 with no warning anywhere — the function
+simply never registers. `/api/adminsecurity` cost an afternoon proving it; the
+endpoint is `/api/twostep`.
+
 **The session is an httpOnly cookie, and the page must never hold the token.**
 `authHeader()` sends a marker, not a secret; anything that puts a credential
 back into `localStorage` undoes the whole of finding 4. A new endpoint is

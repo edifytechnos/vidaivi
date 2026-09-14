@@ -14,6 +14,10 @@ import {
   resetStudentPassword,
   setReleased,
   signOut,
+  fetchTotpState,
+  totpDisable,
+  totpEnable,
+  totpInit,
 } from "../auth";
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
@@ -251,12 +255,21 @@ export function showAdmin() {
       <div class="card roster-card">
         <div class="solution-title">Allowed teachers</div>
         <div id="te-list">${skeleton.table(2, 3)}</div>
+      </div>
+      <div class="card">
+        <h2 class="landing-title">Two-step verification</h2>
+        <p class="hint">The admin password opens every teacher, every student and
+        every answer photo on Vidai. A code from your phone means a leaked
+        password is not enough on its own.</p>
+        <div id="totp-state" class="hint">Checking…</div>
+        <div class="actions" id="totp-actions"></div>
       </div>`
   );
   bindConsoleNav();
 
   const addBtn = document.getElementById("te-add") as HTMLButtonElement;
   const listEl = document.getElementById("te-list")!;
+  void refreshTotp();
 
   async function refresh() {
     const teachers = await listTeachers();
@@ -284,6 +297,83 @@ export function showAdmin() {
         void refresh();
       })
     );
+  }
+
+  /**
+   * Setup is two modals because it is two steps for the person doing it: read
+   * the key into the app, then prove the app is working before anything is
+   * switched on. Enabling on the strength of the key alone would lock the admin
+   * out of their own platform if they mistyped it.
+   */
+  async function refreshTotp() {
+    const stateEl = document.getElementById("totp-state");
+    const actionsEl = document.getElementById("totp-actions");
+    if (!stateEl || !actionsEl) return;
+    const state = await fetchTotpState();
+    if (!state) {
+      stateEl.innerHTML = `<span class="login-error">Could not load — refresh to retry.</span>`;
+      actionsEl.innerHTML = "";
+      return;
+    }
+    stateEl.innerHTML = state.enabled
+      ? `<b>On.</b> Signing in asks for a code. ${state.recoveryLeft} recovery
+         code${state.recoveryLeft === 1 ? "" : "s"} left.`
+      : `<b>Off.</b> The password alone signs you in.`;
+    actionsEl.innerHTML = state.enabled
+      ? `<button id="totp-off" class="btn btn-ghost">Turn off</button>`
+      : `<button id="totp-on" class="btn btn-primary">Set up</button>`;
+
+    document.getElementById("totp-on")?.addEventListener("click", async () => {
+      const started = await totpInit();
+      if (!started.ok || !started.secret) {
+        stateEl.innerHTML = `<span class="login-error">${escapeHtml(started.message || "Could not start setup.")}</span>`;
+        return;
+      }
+      openModal({
+        title: "Add Vidai to your authenticator",
+        description:
+          "In Google Authenticator, Authy or 1Password, add an account by hand and " +
+          "type this key. Then enter the 6-digit code it shows.",
+        fields: [
+          { name: "key", label: "Setup key", value: started.secret, readonly: true },
+          { name: "code", label: "6-digit code", required: true, placeholder: "123456" },
+        ],
+        submitLabel: "Turn on",
+        onSubmit: async (values) => {
+          const done = await totpEnable(String(values.code || ""));
+          if (!done.ok) return done.message || "That did not work.";
+          const codes = done.recoveryCodes || [];
+          openModal({
+            title: "Save these recovery codes",
+            description:
+              "Each one signs you in once, if your phone is lost. They are shown " +
+              "now and never again — put them somewhere other than your phone.",
+            fields: [{ name: "codes", label: "Recovery codes", value: codes.join("\n"), textarea: true, readonly: true }],
+            submitLabel: "I have saved them",
+            onSubmit: async () => {
+              await refreshTotp();
+            },
+          });
+        },
+      });
+    });
+
+    document.getElementById("totp-off")?.addEventListener("click", () => {
+      openModal({
+        title: "Turn off two-step verification",
+        description:
+          "Enter a current code to confirm. A code is asked for rather than just " +
+          "your password, so somebody who has taken your session cannot switch " +
+          "this off.",
+        fields: [{ name: "code", label: "6-digit code", required: true, placeholder: "123456" }],
+        submitLabel: "Turn off",
+        onSubmit: async (values) => {
+          const done = await totpDisable(String(values.code || ""));
+          if (!done.ok) return done.message || "That did not work.";
+          await refreshTotp();
+        },
+      });
+    });
   }
 
   addBtn.addEventListener("click", () =>

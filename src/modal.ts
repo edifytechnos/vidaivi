@@ -50,6 +50,11 @@ export interface ModalField {
   options?: string[];
   hint?: string;
   inputmode?: string;
+  /** Something to read and copy out, not fill in — a setup key, a list of
+   *  recovery codes. Still selectable; never submitted as an answer. */
+  readonly?: boolean;
+  /** Several lines of it. Goes with `readonly`. */
+  textarea?: boolean;
 }
 
 /**
@@ -169,13 +174,20 @@ function fieldMarkup(f: ModalField): string {
       <span class="modal-label">${escapeHtml(f.label)}${
         f.required ? ` <span class="modal-req" aria-hidden="true">*</span>` : ""
       }</span>
-      <input class="modal-input" name="${escapeHtml(f.name)}"
+      ${
+        f.textarea
+          ? `<textarea class="modal-input modal-readonly" name="${escapeHtml(f.name)}" rows="${
+              (f.value ?? "").split("\n").length
+            }" readonly>${escapeHtml(f.value ?? "")}</textarea>`
+          : `<input class="modal-input${f.readonly ? " modal-readonly" : ""}" name="${escapeHtml(f.name)}"
              type="${f.type ?? "text"}"
+             ${f.readonly ? "readonly" : ""}
              ${f.inputmode ? `inputmode="${escapeHtml(f.inputmode)}"` : ""}
              ${f.options?.length ? `list="modal-list-${escapeHtml(f.name)}"` : ""}
              ${f.type === "email" ? 'autocapitalize="none" spellcheck="false"' : ""}
              placeholder="${escapeHtml(f.placeholder ?? "")}"
-             value="${escapeHtml(f.value ?? "")}" />
+             value="${escapeHtml(f.value ?? "")}" />`
+      }
       ${
         f.options?.length
           ? `<datalist id="modal-list-${escapeHtml(f.name)}">${f.options
