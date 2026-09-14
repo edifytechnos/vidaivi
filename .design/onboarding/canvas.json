@@ -55,6 +55,22 @@
       "w": 680,
       "h": 1060,
       "title": "2b \u00b7 Step 1 at 1000+ subjects"
+    },
+    {
+      "file": "Step2Catalogue.dc.html",
+      "x": 2040,
+      "y": 2340,
+      "w": 760,
+      "h": 1240,
+      "title": "5a \u00b7 Future \u2014 Step 2 as a catalogue"
+    },
+    {
+      "file": "CatalogueRow.dc.html",
+      "x": 2920,
+      "y": 2340,
+      "w": 760,
+      "h": 1240,
+      "title": "5b \u00b7 Future \u2014 the row and its six states"
     }
   ],
   "annotations": [
@@ -92,6 +108,13 @@
       "y": 1000,
       "w": 680,
       "text": "AT SCALE \u2014 asked in the comments: what if there are 1000+ subjects?\n\nSame step, same question. Cards up to ~6; a search box past that. Step 2 is unchanged either way."
+    },
+    {
+      "id": "future-note",
+      "x": 2040,
+      "y": 2180,
+      "w": 1640,
+      "text": "THE MARKETPLACE \u2014 N tests per subject, free and paid, from many authors.\n\nThe two-step shape survives: step 1 picks a taxonomy node, step 2 picks tests from the pool hanging off it. What changes is the pool. The recommendation is on 5a; what it costs the data model is on 5b."
     }
   ],
   "launch": {
