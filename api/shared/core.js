@@ -1213,7 +1213,7 @@ handlers.signout = async (context, req) => {
  * Disabling asks for a current code, not just a session — otherwise a stolen
  * session could switch off the thing that makes a stolen password useless.
  */
-handlers.adminsecurity = async (context, req) => {
+handlers.twostep = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });

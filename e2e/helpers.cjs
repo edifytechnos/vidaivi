@@ -360,18 +360,18 @@ async function totpHandlerChecks() {
     return { status: c.res.status, data: c.res.body || {}, setCookie: String(set || "") };
   };
 
-  r = await callAs("adminsecurity", {}, "GET");
+  r = await callAs("twostep", {}, "GET");
   check(r.status === 200 && r.data.enabled === false, `it starts off (${JSON.stringify(r.data)})`);
 
-  r = await callAs("adminsecurity", { action: "init" });
+  r = await callAs("twostep", { action: "init" });
   const secret = r.data.secret;
   check(!!secret && String(r.data.uri).startsWith("otpauth://totp/"), "init hands back a secret and an otpauth uri");
 
-  r = await callAs("adminsecurity", { action: "enable", code: "000000" });
+  r = await callAs("twostep", { action: "enable", code: "000000" });
   check(r.status === 400, `a code that does not match will not turn it on (${r.status})`);
 
   const step = t.currentStep();
-  r = await callAs("adminsecurity", { action: "enable", code: t.totpCode(secret, step) });
+  r = await callAs("twostep", { action: "enable", code: t.totpCode(secret, step) });
   const recovery = r.data.recoveryCodes || [];
   check(r.status === 200, `a matching code turns it on (${r.status})`);
   check(recovery.length === 8, `and hands back eight recovery codes (${recovery.length})`);
@@ -382,7 +382,7 @@ async function totpHandlerChecks() {
 
   // The other half of that: a session minted before the factor existed is dead.
   const stale = ctx();
-  await t.handlers.adminsecurity(stale, {
+  await t.handlers.twostep(stale, {
     method: "GET",
     headers: { "x-vidai-auth": "1", cookie: `vidai_session=${staleSession}` },
     body: {},
@@ -409,25 +409,25 @@ async function totpHandlerChecks() {
   check(r.status === 200, `a recovery code signs in (${r.status})`);
   r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: recovery[0] });
   check(r.status === 401, `and is spent (${r.status})`);
-  r = await callAs("adminsecurity", {}, "GET");
+  r = await callAs("twostep", {}, "GET");
   check(r.data.recoveryLeft === 7, `seven recovery codes left (${r.data.recoveryLeft})`);
 
   // Turning it off needs a code, not just the session.
-  r = await callAs("adminsecurity", { action: "disable" });
+  r = await callAs("twostep", { action: "disable" });
   check(r.status === 400, `a session alone cannot switch it off (${r.status})`);
   // A code that has been used is refused here too, exactly as at sign-in.
-  r = await callAs("adminsecurity", { action: "disable", code: t.totpCode(secret, step) });
+  r = await callAs("twostep", { action: "disable", code: t.totpCode(secret, step) });
   check(r.status === 400, `nor a code that has already been used (${r.status}: ${r.data.error})`);
   // Inside one 30-second window every code the skew allows has now been spent,
   // which is the rule working rather than a gap in the test. A recovery code is
   // not step-bound, and is the other thing disable accepts.
-  r = await callAs("adminsecurity", { action: "disable", code: recovery[1] });
+  r = await callAs("twostep", { action: "disable", code: recovery[1] });
   check(r.status === 200, `a recovery code switches it off (${r.status}: ${r.data.error || ""})`);
   // Switching it off ends every admin session too, and re-issues this one.
   const afterOff = /vidai_session=([^;]+)/.exec(r.setCookie);
   check(!!afterOff, "and re-issues this session as well");
   if (afterOff) session = afterOff[1];
-  r = await callAs("adminsecurity", {}, "GET");
+  r = await callAs("twostep", {}, "GET");
   check(r.data.enabled === false, "and it reads as off again");
 }
 

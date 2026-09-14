@@ -580,10 +580,50 @@ per device.
   another warm instance catches up within 30 seconds. That window is how long a
   stolen session still works — **shorten it before lengthening it**.
 
+### The admin has a second factor (`/api/twostep`, TOTP)
+
+The admin password is one shared string that opens every teacher, every student
+and every answer photo. Throttling only slows a guess; it does nothing about a
+password that has leaked. A time-based code makes a leaked password
+insufficient, and costs nothing.
+
+- **TOTP (RFC 6238) is hand-rolled against `node:crypto`** — it is an HMAC of a
+  counter, and a dependency for thirty lines would be a supply-chain surface on
+  the most sensitive endpoint in the product. That is only defensible because
+  `e2e/helpers.cjs` checks it against **the RFC's own test vectors**, including
+  one past 2^32 that exercises the 64-bit counter split. Keep those tests.
+- **A used code is dead.** `totpMatchStep` returns *which* step matched rather
+  than a boolean; the row stores it and refuses anything at or below it, at
+  sign-in and when switching the factor off. A code read over a shoulder cannot
+  be replayed inside its own 30 seconds.
+- **A wrong code counts against the lockout; a missing one does not.** Six
+  digits are walkable in minutes unthrottled. A *missing* code is different:
+  reaching that branch already needed the right password, and counting it would
+  lock the real admin out for filling the form in two steps.
+- **Eight single-use recovery codes**, scrypt-hashed, shown once. An admin
+  locked out of their own platform is worse than the codes existing.
+- **Turning it on ends every other admin session** (they predate the factor,
+  including one an attacker may hold) and re-issues the caller's own cookie in
+  the same response. **Turning it off needs a current code**, not just a
+  session, or a stolen session could remove it.
+- Setup is manual key entry, not a QR: a QR needs a bundled encoder, and this is
+  done once by one person. State lives in `authstate`, PK `totp`, RK `admin`.
+- **The escape hatch if every recovery code is gone**: delete that one row in
+  the Azure portal's Storage browser. Nothing else reads it.
+
+### Never name an API route `admin…`
+
+`/api/adminsecurity` returned **404 on every request** while the identical
+handler answered under another name. It is not a code problem and not a stale
+deploy: a throwaway function proved new functions register fine, and a second
+probe proved the same handler works as `zzprobe` and fails as `adminprobe`.
+**Any `/api/` route beginning with `admin` is silently not served** — Azure
+Functions reserves that namespace for its own management API. The endpoint is
+`/api/twostep` for this reason. Nothing warns you; the route simply 404s as if
+the function did not exist.
+
 ### Known and not yet done
 
-- **Admin is one shared password with no second factor.** Throttled now, but the
-  blast radius is the whole platform.
 - `authattempts` rows are never swept. They are tiny and point-keyed, so this is
   untidy rather than costly.
 
@@ -625,7 +665,9 @@ the Playwright suite (guest flows always;
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
 hardcode credentials). `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
-in-process cache, `inBatches`). Because the browser suite proxies `/api/*` to
+in-process cache, `inBatches`) **and drives the second factor through the real
+handlers against a fake Table Storage** — enabling, replay refusal, recovery
+codes, the session re-issue — so those paths are not left to be tried by hand. Because the browser suite proxies `/api/*` to
 **production**, it does not exercise unmerged API changes — point `E2E_API_BASE`
 at the PR preview for those. See `e2e/README.md`.
 
