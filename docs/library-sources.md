@@ -42,18 +42,33 @@ number behind every tag.
 
 ## What papers exist, and where
 
-### CBSE — board papers are not published for the core subjects
+### CBSE — the real board papers are published, 2022 to 2026
 
-`https://www.cbse.gov.in/cbsenew/question-paper.html` lists 178 papers, but only
-for **2025**, and only for **minor subjects** — Applied Mathematics (465), Data
-Science, Home Science and so on. Mathematics (041), Physics (042), Chemistry
-(043) and Science (086) are **absent**, and the 2022, 2023, 2024 and 2026 paths
-return 503.
+`https://www.cbse.gov.in/cbsenew/question-paper.html` carries the **actual
+question papers sat by the class**, for every year from 2022 to 2026, in both
+the main and the compartment (`-COMPTT`) sitting. Each subject is a zip of every
+set of that paper, named by its Q.P. code:
 
-The Class 10 Maths tags therefore came from papers obtained elsewhere, read in
-full and recorded chapter by chapter. That corpus is 45 papers: 2024 (30/2/1–3,
-30/3/1–3, 30/4/1–3, 30/5/1–3), 2025 (30/1/1–3 … 30/6/1–3) and 2026 (30/1/1–3 …
-30/5/1–3), most of them with their official marking schemes.
+| Class | Subject | Years with a main-sitting paper |
+|---|---|---|
+| XII | Mathematics | 2023, 2024, 2025, 2026 |
+| XII | Physics | 2022, 2023, 2024, 2025, 2026 |
+| XII | Chemistry | 2022, 2023, 2024, 2025, 2026 |
+| X | Science | 2023, 2024, 2025, 2026 |
+| X | Mathematics (Standard) | 2023, 2024, 2025, 2026 |
+
+The URL of one archive is
+`https://www.cbse.gov.in/cbsenew/question-paper/2025/XII/MATHEMATICS.zip`, and
+that one holds 19 papers — 65-1-1 through 65-7-3, plus the visually-impaired
+variant. 2022 is the term-based year, which is why Class XII Mathematics and
+Class X Science have no main-sitting paper for it; both appear under
+`2022-COMPTT`.
+
+**An earlier version of this file said these papers did not exist.** That was
+read off the same page and was simply wrong — the index is long, and a search
+that stops at the first year's block sees only minor subjects. It is recorded
+here rather than quietly deleted, because the next person to look will be
+tempted to conclude the same thing.
 
 ### CBSE — sample question papers and marking schemes are published
 
@@ -66,7 +81,10 @@ equivalent carry, for each of 2021-22 through 2025-26:
 
 These are CBSE's own documents, they state the pattern the board will follow,
 and their marking schemes give the intended answers. They are a legitimate
-source for a tagged question, provided the tag says `SQP` and names the session.
+source for a tagged question, provided the tag says `SQP` and names the session
+— but now that the real papers are available they are the second choice, not the
+first. A sample paper is what the board *intended* to ask; the board paper is
+what it asked.
 
 ### Cambridge — past papers and mark schemes are published
 
