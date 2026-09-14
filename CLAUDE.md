@@ -149,7 +149,8 @@ unlike the `vidai.seyali.app` entry above which is done.
   tokeninfo endpoint) and upserts the profile (name/email/picture/phone) in
   Table Storage; `POST/GET /api/attempts` saves/lists the student's attempts.
 - SWA application settings (Azure portal, not repo): `GEMINI_API_KEY` (optional
-  — switches on AI marking, see below), `GOOGLE_CLIENT_ID`,
+  — switches on AI marking; `ASSESS_DAILY_CAP` bounds its spend; see below),
+  `GOOGLE_CLIENT_ID`,
   `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`,
   `students` are auto-created), `SESSION_SECRET` (any long random string —
   signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
@@ -876,6 +877,32 @@ the box gets rubber-stamped.
 - **The model is never told who the student is** — it gets the question, the
   teacher's model solution, the marks available and the images. Nothing else is
   its business, and nothing else is in the request if it leaks.
+- **A daily cap, not a vault.** A loaded key is money with no brakes: at ~₹0.15
+  an assessment, ₹500 is about 3,300 calls, and a stuck retry or a stolen
+  teacher session could spend it in an afternoon. `ASSESS_DAILY_CAP` (200)
+  bounds it per teacher per day — PK `assess`, RK `<digest(teacherId)>~<date>`,
+  a point read and a point write, never a scan; tomorrow is simply a different
+  key, so nothing needs sweeping. **The gate runs before the row read, the blob
+  downloads and the model call**, for the same reason `loginGate` runs before
+  scrypt: the expensive work is exactly what an abuser wants. A failed model
+  call does not consume a slot. `e2e/helpers.cjs` drives this through the real
+  handler against a fake table and asserts that a refused assessment never
+  reaches the network.
+- **Key Vault is not available here, and this is not a tier problem.** Microsoft's
+  own page says Key Vault integration is unavailable for *"static web apps using
+  managed functions"*, that *"Azure Serverless Functions do not support direct
+  Key Vault integration"*, and that managed identity is Standard-plan only. Our
+  API **is** managed functions, so `@Microsoft.KeyVault(SecretUri=…)` in an app
+  setting does nothing at any tier. Reading a vault from code needs a credential
+  to reach the vault — without managed identity that is a client secret in an
+  app setting, which moves the secret rather than protecting it, and adds a
+  round trip per cold start. Real Key Vault means **bring-your-own Functions +
+  Standard**. If that is ever done, do it for `STORAGE_CONNECTION_STRING`,
+  `SESSION_SECRET` and `ADMIN_PASSWORD` first: they are the account, the
+  sessions and the platform, while the Gemini key is capped pocket money.
+- **Harden the key at Google instead**: restrict it to the Generative Language
+  API, and set a budget alert on the project. IP restriction is not usable —
+  SWA managed Functions have no stable outbound address.
 - **Set `GEMINI_API_KEY`** as an SWA application setting to switch it on
   (`GEMINI_MODEL` overrides the model). Without it `/api/assess` answers **501**
   and the client hides the button — dormant, exactly like analytics without its

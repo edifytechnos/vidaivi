@@ -484,12 +484,112 @@ async function totpHandlerChecks() {
   check(r.data.enabled === false, "and it reads as off again");
 }
 
+// --- The AI assessor's daily cap, driven through the real handler ---
+//
+// The key is money: at about fifteen paise an assessment, a loaded key is a few
+// thousand calls. This proves the brake — that the cap is counted per teacher
+// per day, that the refusal is a 429, and (the part that matters) that a
+// refused call never reaches Google, because the gate runs before the row read
+// and the blob downloads, not after.
+async function assessCapChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, { ...(rows.get(k) || {}), ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: () => ({ [Symbol.asyncIterator]: async function* () {} }),
+  });
+
+  process.env.GEMINI_API_KEY = "not-a-real-key";
+  process.env.ASSESS_DAILY_CAP = "2";
+  process.env.ADMIN_USERNAME = "e2e-admin";
+  process.env.ADMIN_PASSWORD = "e2e-password";
+
+  // Count what actually leaves the box. Nothing here may reach Google.
+  let calls = 0;
+  const realFetch = global.fetch;
+  global.fetch = async () => {
+    calls += 1;
+    throw new Error("network is not available in this test");
+  };
+
+  const mod3 = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod3, mod3.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod3.exports.__t;
+
+  // The real shape: prefix, username (without the adm~), ttl, and the epoch
+  // the handler checks the token against.
+  const session = t.signSession("vad", "e2e-admin", t.ADMIN_TOKEN_TTL_MS, {
+    ep: await t.adminEpoch(),
+  });
+  const call = async (body) => {
+    const c = { res: null };
+    await t.handlers.assess(c, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+      body: body || {},
+    });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+
+  // No such student, so this stops at canSeeStudent — but only AFTER the cap
+  // has been consulted, which is the ordering being proved.
+  let r = await call({ username: "nobody-at-all", testId: "t", questionId: "q" });
+  check(r.status === 404 || r.status === 403, `an unknown student is refused (${r.status})`);
+  check(calls === 0, `and nothing was sent to the model (${calls} calls)`);
+
+  // Spend the cap by hand, then prove the gate turns the next one away before
+  // it can touch storage or the network.
+  const table = await t.attemptsTable();
+  const day = new Date().toISOString().slice(0, 10);
+  const { createHash } = require("crypto");
+  const digest = createHash("sha256").update("adm~e2e-admin").digest("hex").slice(0, 32);
+  await table.upsertEntity(
+    { partitionKey: "assess", rowKey: `${digest}~${day}`, count: 2 },
+    "Merge"
+  );
+
+  r = await call({ username: "nobody-at-all", testId: "t", questionId: "q" });
+  check(r.status === 429, `over the cap the assessor refuses (${r.status})`);
+  check(
+    /limit/i.test(r.data.error || ""),
+    `and says why in words a teacher can act on ("${(r.data.error || "").slice(0, 60)}…")`
+  );
+  check(calls === 0, "a refused assessment never reaches the model");
+
+  global.fetch = realFetch;
+  delete process.env.GEMINI_API_KEY;
+  delete process.env.ASSESS_DAILY_CAP;
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
     check(JSON.stringify(out) === "[2,4,6,8,10]", "inBatches keeps the input order");
     return totpHandlerChecks();
   })
+  .then(() => assessCapChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
     process.exit(failures ? 1 : 0);

@@ -20,6 +20,11 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
 // analytics no-ops without its connection string. Nothing else changes.
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+// A loaded key is a spending limit with no brakes: at roughly fifteen paise an
+// assessment, ₹500 is about 3,300 of them. A stuck retry, a loop, or a stolen
+// teacher session could spend the lot in an afternoon, and the first anyone
+// would know is the bill. One cap per teacher per day is the brake.
+const ASSESS_DAILY_CAP = Number(process.env.ASSESS_DAILY_CAP || 200);
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -3432,6 +3437,41 @@ async function askAssessor(question, solution, maxMarks, images) {
   };
 }
 
+/**
+ * How many assessments this teacher has had today, and whether that is enough.
+ *
+ * Same shape as the login throttle: PK is the bucket kind, RK is a digest of
+ * the caller plus the date, so it is a point read and a point write and never
+ * a scan. The row expires by being irrelevant — tomorrow has a different key —
+ * which is the same reason `authattempts` rows are left to rot.
+ */
+const ASSESS_BUCKET = "assess";
+
+function assessKey(teacherId) {
+  return `${digestKey(teacherId)}~${new Date().toISOString().slice(0, 10)}`;
+}
+
+async function assessUsage(table, teacherId) {
+  try {
+    const row = await table.getEntity(ASSESS_BUCKET, assessKey(teacherId));
+    return typeof row.count === "number" ? row.count : 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function noteAssess(table, teacherId, used) {
+  await table.upsertEntity(
+    {
+      partitionKey: ASSESS_BUCKET,
+      rowKey: assessKey(teacherId),
+      count: used + 1,
+      at: new Date().toISOString(),
+    },
+    "Merge"
+  );
+}
+
 handlers.assess = async (context, req) => {
   if (misconfigured(context)) return;
   if (req.method !== "POST") return json(context, 405, { error: "Method not allowed" });
@@ -3444,6 +3484,17 @@ handlers.assess = async (context, req) => {
   }
   if (!GEMINI_API_KEY) {
     return json(context, 501, { error: "AI marking is not switched on for this site" });
+  }
+
+  // The cap is checked BEFORE the row read, the blob downloads and the model
+  // call — the same reason loginGate runs before scrypt: the expensive work is
+  // exactly what an abuser wants, so it must sit behind the gate, not in front.
+  const gate = await attemptsTable();
+  const used = await assessUsage(gate, who.id);
+  if (used >= ASSESS_DAILY_CAP) {
+    return json(context, 429, {
+      error: `That is ${ASSESS_DAILY_CAP} AI assessments today, which is the daily limit. Mark the rest yourself, or try again tomorrow.`,
+    });
   }
 
   const body = getBody(req) || {};
@@ -3478,6 +3529,10 @@ handlers.assess = async (context, req) => {
   } catch (e) {
     return json(context, 502, { error: (e && e.message) || "The assessment failed" });
   }
+
+  // Counted only once the model has actually answered: a failed call costs
+  // nothing at Google, so it should not cost the teacher a slot either.
+  await noteAssess(gate, who.id, used);
 
   // The proposal is stored beside the answer, never on top of it: `awarded`
   // and `status` are the teacher's to move.
