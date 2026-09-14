@@ -26,7 +26,20 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
 // laptop in Chennai 400s from the Function. A call to an Azure endpoint is
 // Azure-to-Azure and has no country gate, so the app did not have to move —
 // and a child's handwriting now stays inside Azure instead of going to Google.
-const AZURE_AI_ENDPOINT = (process.env.AZURE_AI_ENDPOINT || "").replace(/\/+$/, "");
+// Only the origin is wanted — the portal offers the *full* Responses URL to
+// copy ("https://<name>.services.ai.azure.com/openai/v1/responses"), and
+// pasting that is the obvious thing to do. Left alone it produced
+// ".../openai/v1/responses/openai/v1/chat/completions" and a bare 404 that
+// blamed the deployment. Taking the origin makes either paste work.
+const AZURE_AI_ENDPOINT = (() => {
+  const raw = (process.env.AZURE_AI_ENDPOINT || "").trim().replace(/\/+$/, "");
+  if (!raw) return "";
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return raw;
+  }
+})();
 const AZURE_AI_KEY = process.env.AZURE_AI_KEY;
 // The *deployment* name, which is whatever it was called in the portal — not
 // the model id. It defaults to the name this was built against.
