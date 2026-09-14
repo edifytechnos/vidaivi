@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "emw-001",
+      "id": "c12emw-101",
       "chapter": "Electromagnetic Waves",
-      "topic": "Displacement current",
+      "topic": "Photon momentum",
       "type": "mcq",
-      "q": "Maxwell introduced the displacement current to account for:",
-      "solution": "Ampere's law failed for a charging capacitor: a surface between the plates carries no conduction current, yet a magnetic field is there.\n\nMaxwell added $I_{d} = \\varepsilon_{0}\\dfrac{d\\Phi_{E}}{dt}$ — a **changing electric field** produces a magnetic field just as a current does.\n\nThat single term is what makes electromagnetic waves possible, and so predicted light.",
+      "q": "Which of the following electromagnetic waves has photons of largest momentum?",
+      "solution": "The momentum of a photon is\\n\\n$$p = \\frac{h}{\\lambda} = \\frac{hf}{c},$$\\n\\nso momentum rises with **frequency** and falls with wavelength.\\n\\nRanking the four by frequency, lowest first :\\n\\n$$\\text{AM radio} < \\text{TV} < \\text{microwaves} < \\text{X-rays}.$$\\n\\nX-rays sit at around $10^{18}$ Hz, while AM radio is around $10^6$ Hz — a factor of $10^{12}$. So **X-rays** carry photons of by far the largest momentum.\\n\\nThe same ordering gives photon *energy*, since $E = hf = pc$; for photons, energy and momentum are proportional.",
       "marks": 1,
+      "source": "CBSE 2025",
       "options": [
-        "the current in a resistor",
-        "the changing electric field between capacitor plates",
-        "the magnetic field of a permanent magnet",
-        "the charge on a conductor"
+        "X-rays",
+        "AM radio waves",
+        "Microwaves",
+        "TV waves"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": "emw-002",

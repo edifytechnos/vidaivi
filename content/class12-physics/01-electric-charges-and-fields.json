@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12ecf-101",
+      "chapter": "Electric Charges and Fields",
+      "topic": "Electric flux",
+      "type": "long",
+      "q": "Define electric flux and write its SI unit. Hence, using Gauss's law, obtain the expression for the electric field due to a uniformly charged infinite plane sheet.",
+      "solution": "**Electric flux.** The electric flux through a surface is the total number of electric field lines crossing it — formally, the surface integral of the field over the area :\\n\\n$$\\phi_E = \\oint \\vec{E} \\cdot d\\vec{S} = \\oint E\\,dS\\cos\\theta,$$\\n\\nwhere $\\theta$ is the angle between the field and the outward normal to the element $d\\vec{S}$.\\n\\nIts **SI unit** is $\\text{N m}^2\\,\\text{C}^{-1}$ (equivalently $\\text{V m}$). It is a scalar.\\n\\n**Field of an infinite charged plane sheet.**\\n\\nLet the sheet carry a uniform surface charge density $\\sigma$. By symmetry the field must be perpendicular to the sheet and of the same magnitude at equal distances on either side.\\n\\n*Choose the Gaussian surface.* Take a cylinder of cross-sectional area $A$ passing through the sheet, with its flat faces parallel to the sheet, one on each side.\\n\\n*Compute the flux.* On the curved side the field is parallel to the surface, so $\\theta = 90^\\circ$ and that part contributes nothing. Each flat face has $\\vec{E}$ along its normal, contributing $EA$ :\\n\\n$$\\phi_E = EA + EA = 2EA.$$\\n\\n*Compute the enclosed charge.* The cylinder encloses the patch of sheet of area $A$ :\\n\\n$$q_{\\text{enc}} = \\sigma A.$$\\n\\n*Apply Gauss's law*, $\\phi_E = \\dfrac{q_{\\text{enc}}}{\\varepsilon_0}$ :\\n\\n$$2EA = \\frac{\\sigma A}{\\varepsilon_0} \\quad\\Longrightarrow\\quad E = \\frac{\\sigma}{2\\varepsilon_0}.$$\\n\\nIn vector form $\\vec{E} = \\dfrac{\\sigma}{2\\varepsilon_0}\\hat{n}$, directed away from the sheet for positive $\\sigma$.\\n\\nNote that $E$ does **not** depend on the distance from the sheet — the field is uniform on each side. That is the distinctive result here.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "ecf-001",
       "chapter": "Electric Charges and Fields",
       "topic": "Coulomb's law",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 1,
       "tolerance": 0.01
-    },
-    {
-      "id": "ecf-011",
-      "chapter": "Electric Charges and Fields",
-      "topic": "Field due to a dipole",
-      "type": "long",
-      "q": "Derive the expression for the electric field at a point on the axis of a short electric dipole, at distance $r$ from its centre.",
-      "solution": "Let the dipole be charges $-q$ and $+q$ separated by $2a$, and take a point $P$ on the axis at distance $r$ from the centre, beyond $+q$.\n\n**Field from $+q$** (towards $P$): $E_{+} = \\dfrac{1}{4\\pi\\varepsilon_{0}}\\dfrac{q}{(r - a)^{2}}$.\n\n**Field from $-q$** (towards the dipole): $E_{-} = \\dfrac{1}{4\\pi\\varepsilon_{0}}\\dfrac{q}{(r + a)^{2}}$.\n\nThey point opposite ways, so subtract:\n\n$E = \\dfrac{q}{4\\pi\\varepsilon_{0}}\\left[\\dfrac{1}{(r-a)^{2}} - \\dfrac{1}{(r+a)^{2}}\\right] = \\dfrac{q}{4\\pi\\varepsilon_{0}}\\cdot\\dfrac{4ar}{\\left(r^{2} - a^{2}\\right)^{2}}$.\n\n**For a short dipole** ($a \\ll r$), drop $a^{2}$ beside $r^{2}$:\n\n$E = \\dfrac{1}{4\\pi\\varepsilon_{0}}\\dfrac{2p}{r^{3}}$, where $p = q(2a)$, directed **along** the dipole moment.\n\nThe $1/r^{3}$ appears only after the approximation — it is the signature of two nearly-cancelling charges.",
-      "marks": 3
     },
     {
       "id": "ecf-012",

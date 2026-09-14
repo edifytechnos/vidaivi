@@ -368,8 +368,17 @@ on the page. Chapters carried by words tag well; chapters carried by symbols do
 not. `docs/class12-maths-sources.md` states the per-chapter count for that
 reason: a thin chapter is a limit of the method, not a shortage of papers.
 
-Tagged today: Class 10 Maths (14 chapters, complete) and Class 12 Maths
-(66 of 195, with Relations and Functions complete at 15).
+**Physics tags better than Maths does**, and for the same reason: its questions
+are carried by numbers and words — a work function in eV, a refractive index, a
+frequency — which survive extraction, where a matrix or a surd does not. Every
+one of its fourteen chapters has a sourced question; the Maths shelf cannot say
+that.
+
+Tagged today: Class 10 Maths (14 chapters, complete), Class 12 Maths (66 of 195,
+Relations and Functions complete at 15) and Class 12 Physics (16 of 210, every
+chapter covered). Evidence per shelf in `docs/class12-maths-sources.md`,
+`docs/class12-maths-relations-and-functions-sources.md` and
+`docs/class12-physics-sources.md`.
 
 ## Authoring editor (`src/screens/editor/`)
 

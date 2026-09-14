@@ -7,20 +7,16 @@
   "access": "login",
   "questions": [
     {
-      "id": "mcm-001",
+      "id": "c12mcm-101",
       "chapter": "Moving Charges and Magnetism",
-      "topic": "Force on a moving charge",
-      "type": "mcq",
-      "q": "A charge $q$ moves with velocity $\\vec{v}$ parallel to a magnetic field $\\vec{B}$. The force on it is:",
-      "solution": "$\\vec{F} = q\\left(\\vec{v}\\times\\vec{B}\\right)$, whose magnitude is $qvB\\sin\\theta$.\n\nParallel means $\\theta = 0$, so $\\sin\\theta = 0$ and the force is **zero**.\n\nA magnetic field only pushes on motion that cuts across it; motion along the field is invisible to it.",
-      "marks": 1,
-      "options": [
-        "$qvB$",
-        "zero",
-        "$\\dfrac{qv}{B}$",
-        "$qvB\\sin 90°$"
-      ],
-      "answer": 1
+      "topic": "Circular motion in a magnetic field",
+      "type": "numeric",
+      "q": "A charged particle gains a speed of $10^6$ m s$^{-1}$ when accelerated from rest through a potential difference of $10$ kV. It then enters a region of magnetic field of $0 \\cdot 4$ T, at right angles to its velocity. Find the radius of its circular path, in centimetres.",
+      "solution": "The particle's charge and mass are not given separately, so find the **ratio** $q/m$ from the acceleration stage and use it in the magnetic stage.\\n\\n**Step 1 — the acceleration.** All the electrical work becomes kinetic energy :\\n\\n$$qV = \\frac{1}{2}mv^2 \\quad\\Longrightarrow\\quad \\frac{q}{m} = \\frac{v^2}{2V}.$$\\n\\nSubstituting $v = 10^6$ m s$^{-1}$ and $V = 10\\,000$ V :\\n\\n$$\\frac{q}{m} = \\frac{\\left(10^6\\right)^2}{2 \\times 10^4} = \\frac{10^{12}}{2 \\times 10^4} = 5 \\times 10^7\\ \\text{C kg}^{-1}.$$\\n\\n**Step 2 — the circular path.** With $\\vec{v} \\perp \\vec{B}$ the magnetic force supplies the centripetal force :\\n\\n$$qvB = \\frac{mv^2}{r} \\quad\\Longrightarrow\\quad r = \\frac{mv}{qB} = \\frac{v}{(q/m)B}.$$\\n\\n**Step 3 — substitute.**\\n\\n$$r = \\frac{10^6}{\\left(5 \\times 10^7\\right)\\left(0 \\cdot 4\\right)} = \\frac{10^6}{2 \\times 10^7} = 0 \\cdot 05\\ \\text{m} = \\mathbf{5}\\ \\text{cm}.$$",
+      "marks": 2,
+      "source": "CBSE 2025",
+      "answer": 5,
+      "tolerance": 0
     },
     {
       "id": "mcm-002",

@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "mag-001",
+      "id": "c12mag-101",
       "chapter": "Magnetism and Matter",
-      "topic": "Magnetic dipole",
+      "topic": "Diamagnetism",
       "type": "mcq",
-      "q": "The magnetic field lines of a bar magnet, outside the magnet, run:",
-      "solution": "Outside the magnet the lines run from the **north pole to the south pole**; inside, they run south to north, so every line is a closed loop.\n\nThat closure is the deep point: magnetic field lines never begin or end, because there are no magnetic monopoles.",
+      "q": "A diamagnetic substance is brought near the north or south pole of a bar magnet. It will be :",
+      "solution": "A diamagnetic material has **no permanent** magnetic moment. When an external field is applied, the orbital motion of its electrons changes so as to set up a moment **opposing** the applied field — this is Lenz's law acting at the atomic scale.\\n\\nBecause the induced moment is always antiparallel to the field, whichever way the field points, the substance is pushed towards the **weaker** part of the field — that is, **away** from the magnet.\\n\\nThat happens at the north pole and at the south pole alike, since reversing the field also reverses the induced moment and the force stays repulsive.\\n\\nSo it is **repelled by both the poles**.\\n\\nContrast with a paramagnetic substance, whose induced moment lines up *with* the field and which is therefore weakly attracted by both poles.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "from south to north",
-        "from north to south",
-        "in closed circles around it",
-        "radially outwards"
+        "repelled by both the poles",
+        "attracted by both the poles",
+        "repelled by the north pole and attracted by the south pole",
+        "attracted by the north pole and repelled by the south pole"
       ],
-      "answer": 1
+      "answer": 0
     },
     {
       "id": "mag-002",

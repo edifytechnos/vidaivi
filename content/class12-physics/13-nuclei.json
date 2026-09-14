@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12nuc-101",
+      "chapter": "Nuclei",
+      "topic": "Binding energy curve",
+      "type": "long",
+      "q": "Draw a diagram to show the variation of binding energy per nucleon with mass number for different nuclei, and mention its two features. Why do lighter nuclei usually undergo nuclear fusion?",
+      "solution": "**The curve.** Plot binding energy per nucleon $\\left(\\dfrac{B.E.}{A}\\right)$ in MeV on the vertical axis against mass number $A$ on the horizontal axis. The curve rises steeply for small $A$, flattens into a broad plateau around $A \\approx 50$–$80$, peaks near $A = 56$ (iron) at about $8 \\cdot 8$ MeV per nucleon, and then falls slowly, reaching roughly $7 \\cdot 6$ MeV per nucleon at $A = 238$ (uranium).\\n\\n**Two features.**\\n\\n1. **The curve is nearly flat, at about 8 MeV per nucleon, over most of the range $30 < A < 170$.** This means the nuclear force is **short-ranged and saturated** — a nucleon is bound only to its immediate neighbours, not to every other nucleon in the nucleus. If each nucleon attracted all the others, $B.E.$ would grow as $A^2$ and $B.E./A$ would rise steadily with $A$, which it plainly does not.\\n\\n2. **It is lower at both ends than in the middle.** Very light nuclei have a large fraction of their nucleons at the surface with fewer neighbours; very heavy nuclei suffer growing Coulomb repulsion between their many protons, which acts over the whole nucleus and is not saturated.\\n\\n**Why lighter nuclei fuse.**\\n\\nFor small $A$, the binding energy per nucleon **increases** with mass number. So when two light nuclei combine, the product sits higher on the curve than either parent: its nucleons are more tightly bound.\\n\\nThat gain in binding energy is released as energy, by $E = \\Delta m\\,c^2$ — the mass of the product is less than the sum of the masses of the reactants.\\n\\nFusion is therefore **exothermic for light nuclei**, which is why it powers the Sun. For the same reason, **fission** is exothermic for heavy nuclei: splitting a nucleus beyond the peak moves its fragments up the curve instead.",
+      "marks": 5,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "nuc-001",
       "chapter": "Nuclei",
       "topic": "Nuclear radius",
@@ -158,15 +168,6 @@
       "q": "State the law of radioactive decay and derive the relation between half-life and decay constant.",
       "solution": "**The law.** The rate of decay is proportional to the number of undecayed nuclei present:\n\n$-\\dfrac{dN}{dt} = \\lambda N$.\n\n**Solving.** Separate and integrate:\n\n$\\dfrac{dN}{N} = -\\lambda\\,dt \\Rightarrow \\log_{e}\\dfrac{N}{N_{0}} = -\\lambda t \\Rightarrow \\mathbf{N = N_{0}e^{-\\lambda t}}$.\n\n**Half-life.** Put $N = \\dfrac{N_{0}}{2}$ at $t = T_{1/2}$:\n\n$\\tfrac12 = e^{-\\lambda T_{1/2}} \\Rightarrow \\lambda T_{1/2} = \\log_{e}2$.\n\n$\\mathbf{T_{1/2} = \\dfrac{0.693}{\\lambda}}$.\n\nDecay is purely statistical: no individual nucleus ages or is 'due'. Which one goes next is unknowable, yet the behaviour of a mole of them is exactly predictable.",
       "marks": 3
-    },
-    {
-      "id": "nuc-013",
-      "chapter": "Nuclei",
-      "topic": "Nuclear fission and fusion",
-      "type": "long",
-      "q": "Distinguish between nuclear fission and nuclear fusion, with an example of each, and explain why fusion is so much harder to achieve on Earth.",
-      "solution": "**Fission.** A heavy nucleus splits into two lighter ones, usually after absorbing a neutron, releasing about $200$ MeV and two or three more neutrons — which is what makes a chain reaction possible.\n\n$^{235}_{92}\\text{U} + ^{1}_{0}\\text{n} \\to ^{141}_{56}\\text{Ba} + ^{92}_{36}\\text{Kr} + 3\\,^{1}_{0}\\text{n} + Q$\n\n**Fusion.** Two light nuclei join to make a heavier one, releasing energy — about $17.6$ MeV for the deuterium–tritium reaction, and far more **per nucleon** than fission.\n\n$^{2}_{1}\\text{H} + ^{3}_{1}\\text{H} \\to ^{4}_{2}\\text{He} + ^{1}_{0}\\text{n} + 17.6\\text{ MeV}$\n\n**Why fusion is hard.** Both nuclei are positively charged, so they repel fiercely, and they must be brought within about $10^{-15}$ m for the strong force to take over.\n\nThat needs temperatures of the order of $10^{7}$ K and enormous pressure — conditions the Sun's gravity supplies for free and no laboratory can hold for long.\n\nFission needs no such threshold: a slow neutron is uncharged and simply walks into the nucleus.",
-      "marks": 5
     },
     {
       "id": "nuc-014",

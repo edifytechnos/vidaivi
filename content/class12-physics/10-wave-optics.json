@@ -7,18 +7,19 @@
   "access": "login",
   "questions": [
     {
-      "id": "wav-001",
+      "id": "c12wav-101",
       "chapter": "Wave Optics",
-      "topic": "Huygens' principle",
+      "topic": "Young's double slit",
       "type": "mcq",
-      "q": "According to Huygens' principle, every point on a wavefront acts as:",
-      "solution": "Each point on a wavefront is a **source of secondary wavelets**, and the new wavefront is the surface touching all of them a moment later.\n\nThat one construction explains reflection, refraction and diffraction without any mention of rays.",
+      "q": "In Young's double-slit experiment, if the screen is moved closer to the plane of the slits $S_1$ and $S_2$, then the fringe width :",
+      "solution": "The fringe width in Young's experiment is\\n\\n$$\\beta = \\frac{\\lambda D}{d},$$\\n\\nwhere $D$ is the slit-to-screen distance and $d$ the slit separation.\\n\\n**Effect on fringe width.** Moving the screen closer reduces $D$, and since $\\beta \\propto D$, the fringe width **decreases** — the pattern contracts.\\n\\n**Effect on intensity.** The intensity at a bright fringe is set by the amplitudes arriving from the two slits, $I_{\\max} = \\left(a_1 + a_2\\right)^2$. Neither $\\lambda$, nor $d$, nor the slit widths has changed, so the maximum intensity is **the same**.\\n\\nSo the fringes crowd together but keep their brightness.\\n\\n(A related standard result: immersing the whole set-up in a liquid of refractive index $\\mu$ shortens the wavelength to $\\lambda/\\mu$, so the fringe width becomes $\\beta/\\mu$ — again narrower.)",
       "marks": 1,
+      "source": "CBSE 2022",
       "options": [
-        "a source of secondary wavelets",
-        "a sink for the wave",
-        "a point of total reflection",
-        "a node"
+        "will decrease, but the intensity of the bright fringe remains the same",
+        "will increase, but the intensity of the bright fringe decreases",
+        "will decrease, but the intensity of the bright fringe increases",
+        "and the intensity of the bright fringe both remain unchanged"
       ],
       "answer": 0
     },

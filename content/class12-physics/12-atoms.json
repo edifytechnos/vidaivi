@@ -7,20 +7,16 @@
   "access": "login",
   "questions": [
     {
-      "id": "atm-001",
+      "id": "c12atm-101",
       "chapter": "Atoms",
-      "topic": "Rutherford's experiment",
-      "type": "mcq",
-      "q": "Rutherford's alpha-particle scattering experiment established the existence of:",
-      "solution": "A few alpha particles bounced almost straight back, which could only happen if the atom's positive charge and nearly all its mass were concentrated in a **tiny nucleus**.\n\nRutherford's own words: as surprising as a $15$-inch shell bouncing off tissue paper.",
-      "marks": 1,
-      "options": [
-        "the electron",
-        "the small, massive, positively charged nucleus",
-        "the neutron",
-        "energy levels"
-      ],
-      "answer": 1
+      "topic": "Bohr model",
+      "type": "numeric",
+      "q": "A hydrogen atom initially in the ground state absorbs a photon which excites it to the $n = 5$ level. Find the wavelength of the photon, in nanometres, to the nearest nanometre. (Take $hc = 1240$ eV nm.)",
+      "solution": "**Step 1 — the energy levels.** In the Bohr model,\\n\\n$$E_n = -\\frac{13 \\cdot 6}{n^2}\\ \\text{eV}.$$\\n\\nSo $E_1 = -13 \\cdot 6$ eV and $E_5 = -\\dfrac{13 \\cdot 6}{25} = -0 \\cdot 544$ eV.\\n\\n**Step 2 — the energy absorbed.**\\n\\n$$\\Delta E = E_5 - E_1 = -0 \\cdot 544 - (-13 \\cdot 6) = 13 \\cdot 056\\ \\text{eV},$$\\n\\nwhich is $13 \\cdot 6\\left(1 - \\dfrac{1}{25}\\right)$.\\n\\n**Step 3 — the wavelength.** The photon must carry exactly that energy, so\\n\\n$$\\lambda = \\frac{hc}{\\Delta E} = \\frac{1240\\ \\text{eV nm}}{13 \\cdot 056\\ \\text{eV}} \\approx \\mathbf{95}\\ \\text{nm}.$$\\n\\nThat is in the ultraviolet, as every transition ending on $n = 1$ — the Lyman series — must be.",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 95,
+      "tolerance": 1
     },
     {
       "id": "atm-002",

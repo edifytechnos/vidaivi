@@ -7,20 +7,16 @@
   "access": "login",
   "questions": [
     {
-      "id": "ray-001",
+      "id": "c12ray-101",
       "chapter": "Ray Optics and Optical Instruments",
-      "topic": "Mirror formula",
-      "type": "mcq",
-      "q": "The mirror formula is:",
-      "solution": "For mirrors: $\\mathbf{\\dfrac{1}{v} + \\dfrac{1}{u} = \\dfrac{1}{f}}$.\n\nFor lenses the sign is different: $\\dfrac1v - \\dfrac1u = \\dfrac1f$. Mixing the two up is the most common error in this chapter — mirrors add, lenses subtract.",
-      "marks": 1,
-      "options": [
-        "$\\dfrac{1}{v} + \\dfrac{1}{u} = \\dfrac{1}{f}$",
-        "$\\dfrac{1}{v} - \\dfrac{1}{u} = \\dfrac{1}{f}$",
-        "$\\dfrac{1}{u} - \\dfrac{1}{v} = \\dfrac{1}{f}$",
-        "$v + u = f$"
-      ],
-      "answer": 0
+      "topic": "Prism",
+      "type": "numeric",
+      "q": "The refractive index of an equilateral triangular prism kept in air is $\\sqrt{2}$. Calculate the angle of minimum deviation, in degrees.",
+      "solution": "For a prism at minimum deviation the light passes symmetrically through it, and\\n\\n$$\\mu = \\frac{\\sin\\left(\\dfrac{A + \\delta_m}{2}\\right)}{\\sin\\left(\\dfrac{A}{2}\\right)}.$$\\n\\n**Substitute** $A = 60^\\circ$ (the prism is equilateral) and $\\mu = \\sqrt{2}$. Since $\\sin 30^\\circ = \\dfrac{1}{2}$ :\\n\\n$$\\sqrt{2} = \\frac{\\sin\\left(\\dfrac{60^\\circ + \\delta_m}{2}\\right)}{\\dfrac{1}{2}} \\quad\\Longrightarrow\\quad \\sin\\left(\\frac{60^\\circ + \\delta_m}{2}\\right) = \\frac{\\sqrt{2}}{2} = \\frac{1}{\\sqrt{2}}.$$\\n\\n**Solve.**\\n\\n$$\\frac{60^\\circ + \\delta_m}{2} = 45^\\circ \\quad\\Longrightarrow\\quad 60^\\circ + \\delta_m = 90^\\circ \\quad\\Longrightarrow\\quad \\delta_m = \\mathbf{30^\\circ}.$$\\n\\n(The critical angle for the same material is $C = \\sin^{-1}\\left(\\dfrac{1}{\\sqrt2}\\right) = 45^\\circ$.)",
+      "marks": 2,
+      "source": "CBSE 2022",
+      "answer": 30,
+      "tolerance": 0
     },
     {
       "id": "ray-002",

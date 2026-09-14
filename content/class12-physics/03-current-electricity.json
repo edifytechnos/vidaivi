@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12cur-101",
+      "chapter": "Current Electricity",
+      "topic": "Drift velocity and current density",
+      "type": "long",
+      "q": "A potential difference $V$ is applied across a conductor of length $l$ and cross-sectional area $A$. How will the (i) electric field $E$, (ii) drift velocity $v_d$, and (iii) current density $j$ be affected when (a) $V$ is doubled and (b) $l$ is halved (keeping other factors constant)?",
+      "solution": "Start from the three relations that connect these quantities.\\n\\n$$E = \\frac{V}{l}, \\qquad v_d = \\frac{e\\tau}{m}E, \\qquad j = n e v_d = \\sigma E.$$\\n\\nThe key observation is that **all three depend on $V$ and $l$ only through the combination $E = V/l$**. So whatever multiplies $E$ multiplies $v_d$ and $j$ by the same factor.\\n\\n**(a) $V$ is doubled**, with $l$ unchanged.\\n\\n$$E = \\frac{2V}{l} \\quad\\text{— doubled.}$$\\n\\nSince $v_d \\propto E$ and $j \\propto E$ :\\n\\n- $E$ becomes **twice**,\\n- $v_d$ becomes **twice**,\\n- $j$ becomes **twice**.\\n\\n**(b) $l$ is halved**, with $V$ unchanged.\\n\\n$$E = \\frac{V}{l/2} = \\frac{2V}{l} \\quad\\text{— also doubled.}$$\\n\\nSo again :\\n\\n- $E$ becomes **twice**,\\n- $v_d$ becomes **twice**,\\n- $j$ becomes **twice**.\\n\\n**The point of the question** is that halving the length has exactly the same effect as doubling the voltage: both double the field, and everything else follows from the field. Note that $n$, $\\tau$, $e$ and $m$ are properties of the material, untouched by either change.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
       "id": "cur-001",
       "chapter": "Current Electricity",
       "topic": "Ohm's law",
@@ -140,15 +150,6 @@
       "marks": 2,
       "answer": 60,
       "tolerance": 0
-    },
-    {
-      "id": "cur-011",
-      "chapter": "Current Electricity",
-      "topic": "Drift velocity and current",
-      "type": "long",
-      "q": "Derive the relation $I = neAv_{d}$ between current and drift velocity.",
-      "solution": "Let $n$ be the number of free electrons per unit volume, $A$ the cross-section, and $v_{d}$ the drift velocity.\n\nIn time $t$, every electron travels $v_{d}t$, so all the electrons in a cylinder of length $v_{d}t$ pass the chosen cross-section.\n\n**Volume of that cylinder** $= A v_{d} t$.\n\n**Number of electrons in it** $= n A v_{d} t$.\n\n**Charge passing** $= neAv_{d}t$.\n\n$I = \\dfrac{q}{t} = \\mathbf{neAv_{d}}$.\n\nThe whole derivation is one idea: count everybody who can reach the finishing line in time $t$.",
-      "marks": 3
     },
     {
       "id": "cur-012",
