@@ -36,6 +36,37 @@ function check(ok, label) {
   });
   const shot = (name) => (SHOT ? page.screenshot({ path: `${SHOT}/${name}.png`, fullPage: true }) : Promise.resolve());
 
+  // The session is an httpOnly cookie now, so the page can no longer hold two
+  // identities at once the way a header let it. Two tools replace that:
+  //
+  //  - keepSession()/putSession() park and restore the browser context's jar,
+  //    for the places that sign in as a student and then need the teacher back;
+  //  - signInStudent()/asStudent() run a second identity from Node with its own
+  //    Cookie header, which is what a browser does anyway and lets one check
+  //    compare two students against the same test.
+  const ctx = page.context();
+  const keepSession = () => ctx.cookies();
+  const putSession = async (saved) => {
+    await ctx.clearCookies();
+    if (saved && saved.length) await ctx.addCookies(saved);
+  };
+  const signInStudent = async (username, password) => {
+    const res = await fetch(`${BASE}/api/studentauth`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!res.ok) return null;
+    const set = res.headers.getSetCookie ? res.headers.getSetCookie() : [];
+    const jar = set.map((c) => c.split(";")[0]).join("; ");
+    return jar || null;
+  };
+  const asStudent = (jar, path, init) =>
+    fetch(`${BASE}${path}`, {
+      ...(init || {}),
+      headers: { cookie: jar, "x-vidai-auth": "1", ...((init || {}).headers || {}) },
+    });
+
   // Welcome screen
   await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
   await page.waitForSelector("#student-btn");
@@ -139,6 +170,26 @@ function check(ok, label) {
     // Every sign-in path lands on the subjects grid, admins included.
     await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
     check(true, "admin login lands on the subjects grid");
+
+    // The headline claim of the session work, checked on a real sign-in rather
+    // than asserted in a comment: the session exists, the page cannot read it,
+    // and nothing that looks like a credential was left in localStorage.
+    const jar = await page.context().cookies();
+    const session = jar.find((c) => c.name === "vidai_session");
+    check(!!session, "signing in sets a session cookie");
+    check(!!session && session.httpOnly, "the session cookie is httpOnly");
+    check(!!session && session.sameSite === "Strict", `and SameSite=Strict (${session && session.sameSite})`);
+    check(
+      await page.evaluate(() => !/vidai_session/.test(document.cookie)),
+      "script cannot read it — document.cookie does not have it"
+    );
+    check(
+      await page.evaluate(() => {
+        const raw = localStorage.getItem("vidai:auth") || "";
+        return !/vad\.|vst\.|vgo\.|credential/.test(raw);
+      }),
+      "and no token is left behind in localStorage"
+    );
     await shot("subjects-admin");
 
     // The rail is the navigation on every signed-in screen.
@@ -266,10 +317,10 @@ function check(ok, label) {
     // and the review must rebuild from what the server holds.
     const saved = await page.evaluate(async () => {
       const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-      if (!auth?.credential) return "no-token";
+      if (!auth) return "no-token";
       const res = await fetch("/api/attempts", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
+        headers: { "Content-Type": "application/json", "X-Vidai-Auth": "1" },
         body: JSON.stringify({
           testId: "matrices-demo",
           score: 3,
@@ -301,7 +352,7 @@ function check(ok, label) {
       const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
       return fetch("/api/attempts", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
+        headers: { "Content-Type": "application/json", "X-Vidai-Auth": "1" },
         body: JSON.stringify({ action: "progress", testId: "matrices-demo", index: 0, answers: "{}" }),
       }).then((r) => r.status);
     });
@@ -314,7 +365,7 @@ function check(ok, label) {
       const probeId = `e2e-resume-${Date.now()}`;
       const roundTrip = await page.evaluate(async (id) => {
         const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": "1" };
         await fetch("/api/attempts", {
           method: "POST",
           headers: hdr,
@@ -340,7 +391,7 @@ function check(ok, label) {
       // Continue after the device is wiped.
       const fresh = await page.evaluate(async () => {
         const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-        const hdr = { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
+        const hdr = { "X-Vidai-Auth": "1" };
         const mine = await fetch("/api/attempts", { headers: hdr }).then((r) => r.json());
         const finished = new Set((mine.attempts || []).filter((a) => a.status !== "progress").map((a) => a.testId));
         return ["matrices-demo", "relations-functions-test1"].find((id) => !finished.has(id)) || "";
@@ -385,7 +436,7 @@ function check(ok, label) {
           const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
           await fetch("/api/attempts", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential },
+            headers: { "Content-Type": "application/json", "X-Vidai-Auth": "1" },
             body: JSON.stringify({ action: "progress", testId: id, index: 0, answers: "{}" }),
           });
           localStorage.removeItem(`vidai:attempt:${id}`);
@@ -396,7 +447,7 @@ function check(ok, label) {
       // again — an incomplete draft would fail validation before the gate.
       const gate = await page.evaluate(async () => {
         const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": "1" };
         const created = await fetch("/api/tests", {
           method: "POST",
           headers: hdr,
@@ -471,7 +522,7 @@ function check(ok, label) {
     // which this suite cannot produce — that rule is asserted instead.
     const links = await page.evaluate(async () => {
       const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-      const hdr = { "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
+      const hdr = { "X-Vidai-Auth": "1" };
       const call = (body) =>
         fetch("/api/parentlink", {
           method: "POST",
@@ -532,82 +583,96 @@ function check(ok, label) {
     // handed out again once a student is removed, and a recycled username would
     // otherwise inherit the previous run's grading row ("already marked", 409).
     const photoTestId = "e2e-photo-" + Math.random().toString(36).slice(2, 7);
-    const marking = await page.evaluate(async (photoTestId) => {
-      const auth = JSON.parse(localStorage.getItem("vidai:auth") || "null");
-      const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential, "X-Vidaivi-Auth": auth.credential };
-
-      // A missing route answers 404 too, so every refusal below would "pass"
-      // against an API without this feature. Prove the queue exists first.
-      const queueStatus = await fetch("/api/grading?queue=1", { headers: hdr }).then((r) => r.status);
-      if (queueStatus !== 200) return { missing: true, queueStatus };
-
-      const made = await fetch("/api/students", {
-        method: "POST",
-        headers: hdr,
-        body: JSON.stringify({ name: "E2E Photo Student", grade: "12", school: "E2E" }),
-      }).then((r) => r.json());
-      if (!made.username || !made.password) return { skip: true };
-
-      const cleanup = async () =>
-        fetch("/api/students", {
-          method: "POST",
-          headers: hdr,
-          body: JSON.stringify({ action: "remove", username: made.username }),
-        });
-
-      try {
+    // The session is a cookie, and a browser context holds exactly one. So the
+    // teacher's half of this runs in the page and the student's half runs from
+    // Node with its own jar — which is what two people on two phones actually
+    // are, and a truer test than one tab holding two tokens at once.
+    const marking = await (async () => {
+      const jpeg = await page.evaluate(() => {
         // A real JPEG, drawn here rather than pasted as a constant.
         const canvas = document.createElement("canvas");
         canvas.width = 40;
         canvas.height = 30;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, 40, 30);
-        ctx.fillStyle = "#000";
-        ctx.fillText("f-1", 4, 20);
-        const jpeg = canvas.toDataURL("image/jpeg", 0.7).split(",")[1];
+        const c = canvas.getContext("2d");
+        c.fillStyle = "#fff";
+        c.fillRect(0, 0, 40, 30);
+        c.fillStyle = "#000";
+        c.fillText("f-1", 4, 20);
+        return canvas.toDataURL("image/jpeg", 0.7).split(",")[1];
+      });
 
+      const teacher = (path, init) =>
+        page.evaluate(
+          async ({ path, init }) => {
+            const res = await fetch(path, {
+              ...init,
+              headers: { "Content-Type": "application/json", "X-Vidai-Auth": "1", ...(init.headers || {}) },
+            });
+            return { status: res.status, data: await res.json().catch(() => ({})) };
+          },
+          { path, init: init || {} }
+        );
+
+      // A missing route answers 404 too, so every refusal below would "pass"
+      // against an API without this feature. Prove the queue exists first.
+      const queue0 = await teacher("/api/grading?queue=1");
+      if (queue0.status !== 200) return { missing: true, queueStatus: queue0.status };
+
+      const made = (
+        await teacher("/api/students", {
+          method: "POST",
+          body: JSON.stringify({ name: "E2E Photo Student", grade: "12", school: "E2E" }),
+        })
+      ).data;
+      if (!made.username || !made.password) return { skip: true };
+
+      const cleanup = () =>
+        teacher("/api/students", {
+          method: "POST",
+          body: JSON.stringify({ action: "remove", username: made.username }),
+        });
+
+      try {
         // The teacher/admin identity must not be able to hand work in.
-        const asTeacher = await fetch("/api/answerimage", {
-          method: "POST",
-          headers: hdr,
-          body: JSON.stringify({ testId: photoTestId, questionId: "q1", image: jpeg }),
-        }).then((r) => r.status);
+        const asTeacher = (
+          await teacher("/api/answerimage", {
+            method: "POST",
+            body: JSON.stringify({ testId: photoTestId, questionId: "q1", image: jpeg }),
+          })
+        ).status;
 
-        const login = await fetch("/api/studentauth", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: made.username, password: made.password }),
-        }).then((r) => r.json());
-        if (!login.token) return { cleanupOnly: true, asTeacher, loginFailed: true, username: made.username };
-        const sHdr = { "Content-Type": "application/json", "X-Vidai-Auth": login.token, "X-Vidaivi-Auth": login.token };
+        const jar = await signInStudent(made.username, made.password);
+        if (!jar) return { cleanupOnly: true, asTeacher, loginFailed: true, username: made.username };
+
         const post = (body) =>
-          fetch("/api/answerimage", { method: "POST", headers: sHdr, body: JSON.stringify(body) })
-            .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
+          asStudent(jar, "/api/answerimage", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(body),
+          }).then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
 
         const base = { testId: photoTestId, testTitle: "E2E photo test", questionId: "q1", questionIndex: 0, maxMarks: 5 };
-        const notAnImage = await post({ ...base, image: btoa("this is plainly not a jpeg") });
+        const notAnImage = await post({ ...base, image: Buffer.from("this is plainly not a jpeg").toString("base64") });
         const tooBig = await post({ ...base, image: "/9j/" + "A".repeat(2_400_000) });
         const uploaded = await post({ ...base, image: jpeg });
 
         // The signed URL is per-student: nobody else's blob comes back.
-        const signed = await fetch(
-          `/api/answerimage?blob=${encodeURIComponent(uploaded.data.blob || "x")}`,
-          { headers: sHdr }
+        const signed = await asStudent(
+          jar,
+          `/api/answerimage?blob=${encodeURIComponent(uploaded.data.blob || "x")}`
         ).then(async (r) => ({ status: r.status, url: (await r.json().catch(() => ({}))).url || "" }));
-        const someoneElse = await fetch(
-          "/api/answerimage?blob=" + encodeURIComponent("stu~not-this-student/t/q/1.jpg"),
-          { headers: sHdr }
+        const someoneElse = await asStudent(
+          jar,
+          "/api/answerimage?blob=" + encodeURIComponent("stu~not-this-student/t/q/1.jpg")
         ).then((r) => r.status);
 
         // It reaches the teacher's queue, gets marked, and reads back marked.
-        const queue = await fetch("/api/grading?queue=1", { headers: hdr }).then((r) => r.json());
+        const queue = (await teacher("/api/grading?queue=1")).data;
         const inQueue = (queue.answers || []).some(
           (a) => a.username === made.username && a.testId === photoTestId
         );
-        const marked = await fetch("/api/grading", {
+        const marked = await teacher("/api/grading", {
           method: "POST",
-          headers: hdr,
           body: JSON.stringify({
             action: "mark",
             username: made.username,
@@ -616,8 +681,46 @@ function check(ok, label) {
             awarded: 9, // over maxMarks on purpose: must clamp to 5
             comment: "Good method.",
           }),
-        }).then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
-        const mine = await fetch(`/api/grading?testId=${photoTestId}`, { headers: sHdr }).then((r) => r.json());
+        });
+        const mine = await asStudent(jar, `/api/grading?testId=${photoTestId}`).then((r) =>
+          r.json().catch(() => ({}))
+        );
+
+        // Release: the paper is shut until the teacher opens it.
+        const studentSees = () =>
+          asStudent(jar, `/api/release?testId=${photoTestId}`).then((r) => r.json().catch(() => ({})));
+        const before = await studentSees();
+        // A student must not be able to open their own paper.
+        const bySelf = (
+          await asStudent(jar, "/api/release", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ action: "release", testId: photoTestId }),
+          })
+        ).status;
+        // Nor may a teacher open one for somebody else's student.
+        const forStranger = (
+          await teacher("/api/release", {
+            method: "POST",
+            body: JSON.stringify({
+              action: "release",
+              testId: photoTestId,
+              username: "no-such-student-xyz",
+            }),
+          })
+        ).status;
+        const opened = (
+          await teacher("/api/release", {
+            method: "POST",
+            body: JSON.stringify({ action: "release", testId: photoTestId, username: made.username }),
+          })
+        ).status;
+        const after = await studentSees();
+        await teacher("/api/release", {
+          method: "POST",
+          body: JSON.stringify({ action: "unrelease", testId: photoTestId, username: made.username }),
+        });
+        const closedAgain = await studentSees();
 
         return {
           asTeacher,
@@ -633,57 +736,20 @@ function check(ok, label) {
           awarded: marked.data.awarded,
           readBack: (mine.answers || [])[0] || null,
           username: made.username,
-          token: login.token,
-
-          // Release: the paper is shut until the teacher opens it.
-          release: await (async () => {
-            const get = (hdr) =>
-              fetch(`/api/release?testId=${photoTestId}`, { headers: hdr }).then((r) =>
-                r.json().catch(() => ({}))
-              );
-            const before = await get(sHdr);
-            // A student must not be able to open their own paper.
-            const bySelf = await fetch("/api/release", {
-              method: "POST",
-              headers: sHdr,
-              body: JSON.stringify({ action: "release", testId: photoTestId }),
-            }).then((r) => r.status);
-            // Nor may a teacher open one for somebody else's student.
-            const forStranger = await fetch("/api/release", {
-              method: "POST",
-              headers: hdr,
-              body: JSON.stringify({
-                action: "release",
-                testId: photoTestId,
-                username: "no-such-student-xyz",
-              }),
-            }).then((r) => r.status);
-            const opened = await fetch("/api/release", {
-              method: "POST",
-              headers: hdr,
-              body: JSON.stringify({ action: "release", testId: photoTestId, username: made.username }),
-            }).then((r) => r.status);
-            const after = await get(sHdr);
-            await fetch("/api/release", {
-              method: "POST",
-              headers: hdr,
-              body: JSON.stringify({ action: "unrelease", testId: photoTestId, username: made.username }),
-            });
-            const closedAgain = await get(sHdr);
-            return {
-              before: before.released,
-              bySelf,
-              forStranger,
-              opened,
-              after: after.released,
-              closedAgain: closedAgain.released,
-            };
-          })(),
+          jar,
+          release: {
+            before: before.released,
+            bySelf,
+            forStranger,
+            opened,
+            after: after.released,
+            closedAgain: closedAgain.released,
+          },
         };
       } finally {
         await cleanup();
       }
-    }, photoTestId);
+    })();
 
     if (marking.missing) {
       // Running against an API that predates this feature (production, before
@@ -730,33 +796,35 @@ function check(ok, label) {
       // here — because the workspace saves progress to the server as it goes,
       // and a dead token would end the session mid-check.
       const adminAuth = await page.evaluate(() => localStorage.getItem("vidai:auth"));
+      const adminJar = await keepSession();
+      // Signing in as the student in the page replaces the teacher's cookie
+      // with theirs — which is exactly what is wanted here, and why the jar is
+      // parked above and put back after.
       const sitter = await page.evaluate(async () => {
-        const auth = JSON.parse(localStorage.getItem("vidai:auth"));
-        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": "1" };
         const made = await fetch("/api/students", {
           method: "POST",
           headers: hdr,
           body: JSON.stringify({ name: "E2E Sitting Student", grade: "12", school: "E2E" }),
         }).then((r) => r.json());
         if (!made.username) return null;
-        const login = await fetch("/api/studentauth", {
+        const ok = await fetch("/api/studentauth", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username: made.username, password: made.password }),
-        }).then((r) => r.json());
-        return { username: made.username, token: login.token };
+        }).then((r) => r.ok);
+        return ok ? { username: made.username } : null;
       });
-      await page.evaluate((token) => {
+      await page.evaluate(() => {
         localStorage.setItem(
           "vidai:auth",
           JSON.stringify({
             kind: "student",
-            credential: token,
             profile: { kind: "student", sub: "e2e", name: "E2E Sitting Student", role: "student" },
           })
         );
         localStorage.removeItem("vidai:attempt:matrices-demo");
-      }, sitter?.token ?? marking.token);
+      });
       await page.goto(BASE + "/?test=matrices-demo", { waitUntil: "domcontentloaded" });
       await page.waitForSelector("#primary-btn", { timeout: 20000 });
       await page.click("#primary-btn");
@@ -779,15 +847,15 @@ function check(ok, label) {
       check(silent.verdict === 0, `a student gets no verdict on submit (${silent.verdict} found)`);
       check(silent.solution === 0, `and no worked solution (${silent.solution} found)`);
       check(silent.explain === 0, "and no explanation panel while the test is being sat");
+      await putSession(adminJar);
       await page.evaluate(async ({ a, username }) => {
         localStorage.removeItem("vidai:attempt:matrices-demo");
         localStorage.removeItem("vidai:subject");
         if (a) localStorage.setItem("vidai:auth", a);
         if (username) {
-          const auth = JSON.parse(a);
           await fetch("/api/students", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential },
+            headers: { "Content-Type": "application/json", "X-Vidai-Auth": "1" },
             body: JSON.stringify({ action: "remove", username }),
           });
         }
@@ -800,6 +868,11 @@ function check(ok, label) {
     // before this, every call 401'd and each screen rendered its own empty
     // state, so an hour-old session looked exactly like deleted data.
     const adminAuthForExpiry = await page.evaluate(() => localStorage.getItem("vidai:auth"));
+    const liveJar = await keepSession();
+    // The session lives in the cookie now, so a stale localStorage entry alone
+    // is not an expired session — the jar has to be empty for the API to refuse
+    // the call this is about.
+    await ctx.clearCookies();
     for (const role of ["teacher", "admin", "parent"]) {
       await page.evaluate((r) => {
         localStorage.setItem(
@@ -825,6 +898,7 @@ function check(ok, label) {
       check(!state.stillSignedIn, `and the dead session is cleared (${role})`);
     }
     // The other half: a live session must NOT be signed out.
+    await putSession(liveJar);
     await page.evaluate((a) => localStorage.setItem("vidai:auth", a), adminAuthForExpiry);
     await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });
     await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
@@ -965,7 +1039,7 @@ function check(ok, label) {
     ];
     const ws = await page.evaluate(async (tests) => {
       const auth = JSON.parse(localStorage.getItem("vidai:auth"));
-      const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+      const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": "1" };
       const post = (url, body) =>
         fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) })
           .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
@@ -994,9 +1068,10 @@ function check(ok, label) {
         otherPassword: other.data.password,
       };
     }, wsTests);
-    // The admin credential, kept for cleanup: the student's session replaces it
-    // in localStorage below, and cleanup through that would be refused.
-    const wsAdmin = await page.evaluate(() => JSON.parse(localStorage.getItem("vidai:auth")).credential);
+    // The admin session, parked for cleanup: the student signs in below and
+    // their cookie replaces it, and cleanup as a student would be refused.
+    const wsAdmin = await keepSession();
+    const wsAdminProfile = await page.evaluate(() => localStorage.getItem("vidai:auth"));
 
     try {
       if (ws.published !== wsTests.length || !ws.username) {
@@ -1119,14 +1194,17 @@ function check(ok, label) {
         check(await page.isVisible(".locked-title"), "the detail stays locked until the teacher releases it");
 
         // Released, the result view is the three-column one, explanation and all.
-        const wsReleased = await page.evaluate(async ({ id, username, cred }) =>
+        const studentJar = await keepSession();
+        await putSession(wsAdmin);
+        const wsReleased = await page.evaluate(async ({ id, username }) =>
           fetch("/api/release", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "X-Vidai-Auth": cred },
+            headers: { "Content-Type": "application/json", "X-Vidai-Auth": "1" },
             body: JSON.stringify({ action: "release", testId: id, username }),
           }).then((r) => r.status),
-          { id: wsTests[0].id, username: ws.username, cred: wsAdmin }
+          { id: wsTests[0].id, username: ws.username }
         );
+        await putSession(studentJar);
         check(wsReleased === 200, `the teacher releases the paper (${wsReleased})`);
         await page.goto(BASE + `/?test=${wsTests[0].id}`, { waitUntil: "domcontentloaded" });
         await page.waitForSelector(".review-item", { timeout: 25000 });
@@ -1152,23 +1230,29 @@ function check(ok, label) {
         // ---- Who sees a test ------------------------------------------
         // Publishing shares with everyone the teacher created; assignment
         // narrows it to named students. A draft reaches nobody either way.
-        const audience = await page.evaluate(async ({ ws, tests, cred }) => {
-          const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": cred };
+        // Three identities at once — teacher, student A, student B — which one
+        // cookie jar cannot hold. The teacher stays in the page; the two
+        // students run from Node, each with their own jar.
+        const audience = await (async () => {
+          const tests = wsTests;
+          const teacher = (path, init) =>
+            page.evaluate(
+              async ({ path, init }) => {
+                const res = await fetch(path, {
+                  ...init,
+                  headers: { "Content-Type": "application/json", "X-Vidai-Auth": "1", ...(init.headers || {}) },
+                });
+                return { status: res.status, data: await res.json().catch(() => ({})) };
+              },
+              { path, init: init || {} }
+            );
           const post = (body) =>
-            fetch("/api/tests", { method: "POST", headers: hdr, body: JSON.stringify(body) })
-              .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
-          const signIn = (username, password) =>
-            fetch("/api/studentauth", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username, password }),
-            }).then((r) => r.json());
+            teacher("/api/tests", { method: "POST", body: JSON.stringify(body) });
 
-          const asStudent = async (token, id) => {
-            const h = { "X-Vidai-Auth": token };
-            const one = await fetch(`/api/tests?id=${encodeURIComponent(id)}`, { headers: h });
-            const list = await fetch("/api/tests", { headers: h }).then((r) => r.json());
-            const subjects = await fetch("/api/subjects", { headers: h }).then((r) => r.json());
+          const seenBy = async (jar, id) => {
+            const one = await asStudent(jar, `/api/tests?id=${encodeURIComponent(id)}`);
+            const list = await asStudent(jar, "/api/tests").then((r) => r.json().catch(() => ({})));
+            const subjects = await asStudent(jar, "/api/subjects").then((r) => r.json().catch(() => ({})));
             const row = (list.tests || []).find((t) => t.id === id);
             return {
               one: one.status,
@@ -1178,14 +1262,14 @@ function check(ok, label) {
             };
           };
 
-          const a = await signIn(ws.username, ws.password);
-          const b = await signIn(ws.other, ws.otherPassword);
-          if (!a.token || !b.token) return { skip: true };
+          const a = await signInStudent(ws.username, ws.password);
+          const b = await signInStudent(ws.other, ws.otherPassword);
+          if (!a || !b) return { skip: true };
 
           // Test B starts shared with the class: both students can open it.
           const classWide = {
-            a: await asStudent(a.token, tests[1].id),
-            b: await asStudent(b.token, tests[1].id),
+            a: await seenBy(a, tests[1].id),
+            b: await seenBy(b, tests[1].id),
           };
 
           // Narrow it to the first student only.
@@ -1196,8 +1280,8 @@ function check(ok, label) {
             usernames: [ws.username],
           });
           const narrowed = {
-            a: await asStudent(a.token, tests[1].id),
-            b: await asStudent(b.token, tests[1].id),
+            a: await seenBy(a, tests[1].id),
+            b: await seenBy(b, tests[1].id),
           };
 
           // Someone else's student cannot be assigned.
@@ -1219,17 +1303,17 @@ function check(ok, label) {
           // card must go too — a subject is only theirs through its tests.
           await post({ action: "assign", id: tests[0].id, audience: "selected", usernames: [ws.username] });
           const subjectGone = {
-            b: (await asStudent(b.token, tests[0].id)).subjects,
-            a: (await asStudent(a.token, tests[0].id)).subjects,
+            b: (await seenBy(b, tests[0].id)).subjects,
+            a: (await seenBy(a, tests[0].id)).subjects,
           };
           await post({ action: "assign", id: tests[0].id, audience: "class", usernames: [] });
 
           // Where a question came from must survive the save.
-          const storedSource = await fetch(`/api/tests?id=${encodeURIComponent(tests[0].id)}`, { headers: hdr })
-            .then((r) => r.json())
-            .then((d) => d.test?.questions?.[0]?.source);
+          const storedSource = (
+            await teacher(`/api/tests?id=${encodeURIComponent(tests[0].id)}`)
+          ).data.test?.questions?.[0]?.source;
 
-          const draft = { a: await asStudent(a.token, ws.draftId) };
+          const draft = { a: await seenBy(a, ws.draftId) };
 
           // An MCQ with no option marked. The API used to force it to A, so a
           // teacher who never touched the radios published a paper where A was
@@ -1256,9 +1340,9 @@ function check(ok, label) {
             ],
           };
           await post({ action: "create", test: unmarked });
-          const storedUnmarked = await fetch(`/api/tests?id=${encodeURIComponent(unmarkedId)}`, { headers: hdr })
-            .then((r) => r.json())
-            .then((d) => d.test?.questions?.[0]?.answer);
+          const storedUnmarked = (
+            await teacher(`/api/tests?id=${encodeURIComponent(unmarkedId)}`)
+          ).data.test?.questions?.[0]?.answer;
           const publishUnmarked = await post({ action: "publish", id: unmarkedId });
           // Unpublish first: only drafts can be deleted, so a publish that
           // unexpectedly succeeded would otherwise leave the fixture behind.
@@ -1266,9 +1350,9 @@ function check(ok, label) {
           await post({ action: "delete", id: unmarkedId });
 
           // The teacher's own list still carries the roster.
-          const teacherRow = await fetch("/api/tests", { headers: hdr })
-            .then((r) => r.json())
-            .then((d) => (d.tests || []).find((t) => t.id === tests[1].id));
+          const teacherRow = ((await teacher("/api/tests")).data.tests || []).find(
+            (t) => t.id === tests[1].id
+          );
 
           // Put it back, so the rest of the fixture behaves as before.
           await post({ action: "assign", id: tests[1].id, audience: "class", usernames: [] });
@@ -1287,7 +1371,7 @@ function check(ok, label) {
             publishProblems: publishUnmarked.data.problems || [],
             publishError: publishUnmarked.data.error || "",
           };
-        }, { ws, tests: wsTests, cred: wsAdmin });
+        })();
 
         if (audience.skip) {
           check(false, "who-sees-this: the throwaway students could not sign in");
@@ -1399,12 +1483,10 @@ function check(ok, label) {
         await page.setViewportSize({ width: 1280, height: 900 });
 
         // The editor says what a draft means — the sentence J went hunting for.
-        await page.evaluate((cred) => {
-          localStorage.setItem("vidai:auth", JSON.stringify({
-            kind: "admin", credential: cred,
-            profile: { kind: "admin", sub: "admin", name: "E2E Admin", role: "admin" },
-          }));
-        }, wsAdmin);
+        await putSession(wsAdmin);
+        await page.evaluate((stored) => {
+          if (stored) localStorage.setItem("vidai:auth", stored);
+        }, wsAdminProfile);
         await page.goto(BASE + `/?edit=${ws.draftId}`, { waitUntil: "domcontentloaded" });
         await page.waitForSelector("#ed-audience", { timeout: 30000 });
         const draftNote = await page.textContent("#shellbar-sub");
@@ -1417,14 +1499,13 @@ function check(ok, label) {
         // ---- The built-in library ---------------------------------------
         // A master (platform) test is the library copy: teachers may take
         // their own copy of it, students never see it directly.
-        const lib = await page.evaluate(async ({ questions, student }) => {
-          const auth = JSON.parse(localStorage.getItem("vidai:auth"));
-          const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+        const lib = await page.evaluate(async ({ questions }) => {
+          const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": "1" };
           const post = (url, body) =>
             fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) })
               .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
-          const get = (url, token) =>
-            fetch(url, { headers: { "X-Vidai-Auth": token || auth.credential } })
+          const get = (url) =>
+            fetch(url, { headers: hdr })
               .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
 
           // The taxonomy is deliberately unique, so the copy lands in a subject
@@ -1454,29 +1535,30 @@ function check(ok, label) {
           const copy = adopted.data.test || null;
           const masterAfter = await get(`/api/tests?id=${masterId}`);
 
-          // The student's view: the master itself is not available to them.
-          const login = await fetch("/api/studentauth", {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: student.username, password: student.password }),
-          }).then((r) => r.json());
-          const studentSees = login.token ? await get(`/api/tests?id=${masterId}`, login.token) : { status: 0 };
-          const studentSubjects = login.token
-            ? ((await get("/api/subjects", login.token)).data.subjects || []).map((x) => x.id)
-            : [];
-
           return {
             masterId, libSubjectId, shelfRow,
             filteredIds: (filtered.data.tests || []).map((t) => t.id),
             otherShelfCount: (otherShelf.data.tests || []).length,
-            studentSubjects,
             published: pub.status, inLibrary,
             copy, adoptStatus: adopted.status,
             masterQuestions: (masterAfter.data.test?.questions || []).length,
             masterStatus: masterAfter.data.test?.status,
-            studentStatus: studentSees.status,
             copySource: (copy && (await get(`/api/tests?id=${copy.id}`)).data.test?.questions?.[0]?.source) || "",
           };
-        }, { questions: wsQuestions("lib"), student: { username: ws.username, password: ws.password } });
+        }, { questions: wsQuestions("lib") });
+
+        // The student's view, from their own jar: the master itself is not
+        // available to them, and its shelf is not among their subjects.
+        const libJar = await signInStudent(ws.username, ws.password);
+        lib.studentStatus = libJar
+          ? (await asStudent(libJar, `/api/tests?id=${lib.masterId}`)).status
+          : 0;
+        lib.studentSubjects = libJar
+          ? (
+              ((await asStudent(libJar, "/api/subjects").then((r) => r.json().catch(() => ({}))))
+                .subjects || []).map((x) => x.id)
+          )
+          : [];
 
         try {
           check(lib.published === 200, `a master test publishes into the library (${lib.published})`);
@@ -1503,9 +1585,9 @@ function check(ok, label) {
           );
           check(lib.studentStatus === 403, `a student cannot open the master directly (${lib.studentStatus})`);
         } finally {
+          await putSession(wsAdmin);
           await page.evaluate(async ({ masterId, copyId, subjectId }) => {
-            const auth = JSON.parse(localStorage.getItem("vidai:auth"));
-            const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.credential };
+            const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": "1" };
             const post = (url, body) =>
               fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) }).then((r) => r.status);
             for (const id of [masterId, copyId]) {
@@ -1518,8 +1600,9 @@ function check(ok, label) {
         }
       }
     } finally {
-      const wsGone = await page.evaluate(async ({ ws, ids, cred }) => {
-        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": cred };
+      await putSession(wsAdmin);
+      const wsGone = await page.evaluate(async ({ ws, ids }) => {
+        const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": "1" };
         const post = (url, body) =>
           fetch(url, { method: "POST", headers: hdr, body: JSON.stringify(body) }).then((r) => r.status);
         for (const username of [ws.username, ws.other]) {
@@ -1531,16 +1614,14 @@ function check(ok, label) {
           await post("/api/tests", { action: "delete", id });
         }
         return ws.subjectId ? post("/api/subjects", { action: "delete", id: ws.subjectId }) : 0;
-      }, { ws, ids: wsTests.map((t) => t.id), cred: wsAdmin });
+      }, { ws, ids: wsTests.map((t) => t.id) });
       console.log(`  (cleaned up workspace fixture, subject ${wsGone})`);
-      // Back to the admin session for anything that follows.
-      await page.evaluate((cred) => {
+      // Back to the admin session for anything that follows: the cookie is
+      // already restored above, so this is just the profile the shell paints.
+      await page.evaluate((stored) => {
         localStorage.clear();
-        localStorage.setItem("vidai:auth", JSON.stringify({
-          kind: "admin", credential: cred,
-          profile: { kind: "admin", sub: "admin", name: "E2E Admin", role: "admin" },
-        }));
-      }, wsAdmin);
+        if (stored) localStorage.setItem("vidai:auth", stored);
+      }, wsAdminProfile);
     }
   } else {
     console.log("SKIP  admin flows (set E2E_ADMIN_USER / E2E_ADMIN_PASS to enable)");

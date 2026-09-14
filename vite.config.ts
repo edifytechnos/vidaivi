@@ -13,6 +13,12 @@ export default defineConfig(({ mode }) => {
           target,
           changeOrigin: true,
           secure: true,
+          // The session is an httpOnly cookie, and the API sets it with the
+          // deployed host's domain. A browser on localhost would throw that
+          // away, so strip the domain and let it be host-only here — without
+          // this, signing in appears to succeed locally and every call after
+          // it comes back 401.
+          cookieDomainRewrite: "",
         },
       },
     },

@@ -20,6 +20,33 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 const STUDENT_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const ADMIN_TOKEN_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
+// Teachers and parents used to carry the Google ID token itself, which Google
+// expires after about an hour -- that hour is the "your sign-in timed out"
+// screen. We now mint our own session for them on the same 30 days a student
+// gets, and slide it (see renewIfStale), so signing in lasts until someone
+// signs out.
+const GOOGLE_SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+// ---------- The session cookie ----------
+//
+// The token used to live in localStorage, where any script on the page could
+// read it: an XSS that got past the CSP could take an account outright. It now
+// travels in a cookie the page cannot read at all.
+//
+//   HttpOnly  - document.cookie cannot see it, so script cannot steal it.
+//   Secure    - never sent over plain http.
+//   SameSite=Strict - not attached to any cross-site request, which is what
+//               makes CSRF impossible rather than merely awkward. Nothing here
+//               needs the cookie on a cross-site navigation: the app boots from
+//               static HTML and only then calls the API same-site, so a test
+//               link shared in the class WhatsApp group still opens normally.
+//   Path=/    - the app and the API share an origin.
+//
+// SWA's edge rewrites the cookie's domain to the request host on the way out
+// and hands the Cookie header back in unchanged. Both were verified against a
+// deployed preview before this was written: the edge already replaces
+// Authorization, so neither was safe to assume.
+const SESSION_COOKIE = "vidai_session";
 
 // ---------- In-process caches ----------
 //
@@ -107,6 +134,13 @@ function json(context, status, body, extraHeaders) {
       // for the answerimage SAS and for any authenticated GET an intermediary
       // might otherwise think it may keep.
       "Cache-Control": "no-store",
+      // Silent renewal: identify() parks a refreshed session cookie here when
+      // the token is past halfway, so every handler renews without knowing it.
+      // extraHeaders spreads last, so a handler that sets its own Set-Cookie
+      // (signing in, signing out) still wins.
+      ...(context && context.__renewCookie
+        ? { "Set-Cookie": context.__renewCookie }
+        : {}),
       ...(extraHeaders || {}),
     },
     body,
@@ -214,11 +248,20 @@ async function resolveRole(email) {
   return roleCache.set(normalized, role, ROLE_TTL_MS);
 }
 
-// ---------- Sessions (students and admins) ----------
+// ---------- Sessions (students, admins, teachers and parents) ----------
+//
+// One token shape for all three kinds:  <prefix>.<payload>.<hmac>
+//   vst = student, vad = admin, vgo = teacher/parent signed in with Google.
+//
+// The payload carries `ep`, the account's token epoch at the moment it was
+// issued. Bumping the epoch on the account invalidates every token ever minted
+// for it, which is what "sign out everywhere" is made of: there is no token
+// list to walk and nothing to store per device.
 
-function signSession(prefix, username, ttlMs) {
+function signSession(prefix, username, ttlMs, extra) {
+  const now = Date.now();
   const payload = b64url(
-    JSON.stringify({ u: username, exp: Date.now() + ttlMs })
+    JSON.stringify({ u: username, iat: now, exp: now + ttlMs, ...(extra || {}) })
   );
   const sig = b64url(
     crypto.createHmac("sha256", SESSION_SECRET).update(`${prefix}.${payload}`).digest()
@@ -233,14 +276,175 @@ function verifySession(expectedPrefix, token) {
     const expected = b64url(
       crypto.createHmac("sha256", SESSION_SECRET).update(`${prefix}.${payload}`).digest()
     );
-    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected)))
-      return null;
+    const got = Buffer.from(sig);
+    const want = Buffer.from(expected);
+    // timingSafeEqual throws on a length mismatch, which would be an unhandled
+    // 500 rather than a rejected token.
+    if (got.length !== want.length || !crypto.timingSafeEqual(got, want)) return null;
     const data = JSON.parse(Buffer.from(payload, "base64url").toString());
     if (!data.u || data.exp < Date.now()) return null;
-    return { username: data.u };
+    return {
+      username: data.u,
+      epoch: Number(data.ep) || 0,
+      email: typeof data.e === "string" ? data.e : "",
+      name: typeof data.n === "string" ? data.n : "",
+      issuedAt: Number(data.iat) || 0,
+      expiresAt: Number(data.exp) || 0,
+    };
   } catch {
     return null;
   }
+}
+
+// ---------- Cookies ----------
+
+function readCookie(req, name) {
+  const raw = String((req && req.headers && req.headers.cookie) || "");
+  if (!raw) return "";
+  for (const part of raw.split(";")) {
+    const eq = part.indexOf("=");
+    if (eq < 0) continue;
+    if (part.slice(0, eq).trim() !== name) continue;
+    try {
+      return decodeURIComponent(part.slice(eq + 1).trim());
+    } catch {
+      return part.slice(eq + 1).trim();
+    }
+  }
+  return "";
+}
+
+function sessionCookie(token, ttlMs) {
+  return `${SESSION_COOKIE}=${token}; Max-Age=${Math.floor(ttlMs / 1000)}; Path=/; HttpOnly; Secure; SameSite=Strict`;
+}
+
+function clearedCookie() {
+  return `${SESSION_COOKIE}=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Strict`;
+}
+
+// The lifetime each kind of session is issued and re-issued with.
+const TTL_FOR_PREFIX = {
+  vst: STUDENT_TOKEN_TTL_MS,
+  vad: ADMIN_TOKEN_TTL_MS,
+  vgo: GOOGLE_SESSION_TTL_MS,
+};
+
+/**
+ * Silent renewal. A session past the halfway point of its life is re-issued on
+ * the way out, so anyone who uses Vidai at all stays signed in indefinitely and
+ * only an account left untouched for a full window has to sign in again. The
+ * cost is one HMAC; there is no refresh token to store, leak or revoke.
+ *
+ * The renewed cookie is parked on `context` and picked up by `json()`, so this
+ * works for every handler without any of them knowing about it. A handler that
+ * sets its own Set-Cookie (sign-in, sign-out) still wins: `json()` spreads its
+ * extraHeaders last.
+ */
+function renewIfStale(context, prefix, session, claims) {
+  if (!context) return;
+  const ttl = TTL_FOR_PREFIX[prefix];
+  if (!ttl || !session.issuedAt || !session.expiresAt) return;
+  const halfway = session.issuedAt + (session.expiresAt - session.issuedAt) / 2;
+  if (Date.now() < halfway) return;
+  context.__renewCookie = sessionCookie(
+    signSession(prefix, session.username, ttl, claims),
+    ttl
+  );
+}
+
+// ---------- Token epochs (sign out everywhere) ----------
+//
+// Every account carries a `tokenEpoch`. It is stamped into each token at issue
+// and checked on every request; bumping it makes every token minted before the
+// bump fail to verify, on every device at once.
+//
+// Students already have their row read on each request, so their epoch is free.
+// Google accounts and the admin cost one extra point read, memoised for
+// EPOCH_TTL_MS -- which is exactly how long a "sign out everywhere" can lag on
+// a warm instance that did not serve the request. Shorten this before
+// lengthening it: it is the window in which a stolen session still works.
+const EPOCH_TTL_MS = 30 * 1000;
+const epochCache = makeCache(500);
+
+// The admin signs in against environment variables and so has no row anywhere.
+// This table gives it one -- and nothing else lives here.
+const ADMIN_EPOCH_KEY = "admin";
+
+async function profileEpoch(sub) {
+  const key = `goo~${sub}`;
+  const cached = epochCache.get(key);
+  if (cached !== undefined) return cached;
+  let epoch = 0;
+  try {
+    const row = await tableClient("profiles").getEntity("profile", sub);
+    epoch = Number(row.tokenEpoch) || 0;
+  } catch {}
+  return epochCache.set(key, epoch, EPOCH_TTL_MS);
+}
+
+async function adminEpoch() {
+  const key = `adm~${ADMIN_EPOCH_KEY}`;
+  const cached = epochCache.get(key);
+  if (cached !== undefined) return cached;
+  let epoch = 0;
+  try {
+    const row = await tableClient("authstate").getEntity("epoch", ADMIN_EPOCH_KEY);
+    epoch = Number(row.tokenEpoch) || 0;
+  } catch {}
+  return epochCache.set(key, epoch, EPOCH_TTL_MS);
+}
+
+/**
+ * Ends every session for one account, everywhere, by moving its epoch past the
+ * value stamped in the tokens already out there. The cache entry is dropped so
+ * the instance handling the request is correct immediately; other warm
+ * instances catch up within EPOCH_TTL_MS.
+ */
+async function bumpEpoch(who) {
+  if (who.kind === "student") {
+    const students = tableClient("students");
+    await ensureTable(students);
+    const row = await students.getEntity("student", who.username);
+    await students.updateEntity(
+      {
+        partitionKey: "student",
+        rowKey: who.username,
+        tokenEpoch: (Number(row.tokenEpoch) || 0) + 1,
+      },
+      "Merge"
+    );
+    studentCache.drop(who.username);
+    return true;
+  }
+  if (who.kind === "google") {
+    const profiles = tableClient("profiles");
+    await ensureTable(profiles);
+    let current = 0;
+    try {
+      current = Number((await profiles.getEntity("profile", who.id)).tokenEpoch) || 0;
+    } catch {}
+    await profiles.upsertEntity(
+      { partitionKey: "profile", rowKey: who.id, tokenEpoch: current + 1 },
+      "Merge"
+    );
+    epochCache.drop(`goo~${who.id}`);
+    return true;
+  }
+  if (who.kind === "admin") {
+    const state = tableClient("authstate");
+    await ensureTable(state);
+    let current = 0;
+    try {
+      current = Number((await state.getEntity("epoch", ADMIN_EPOCH_KEY)).tokenEpoch) || 0;
+    } catch {}
+    await state.upsertEntity(
+      { partitionKey: "epoch", rowKey: ADMIN_EPOCH_KEY, tokenEpoch: current + 1 },
+      "Merge"
+    );
+    epochCache.drop(`adm~${ADMIN_EPOCH_KEY}`);
+    return true;
+  }
+  return false;
 }
 
 function hashPassword(password) {
@@ -457,8 +661,21 @@ async function studentRecord(username) {
   return studentCache.set(username, record, STUDENT_TTL_MS);
 }
 
-async function identify(req) {
-  const bearer = getBearer(req);
+/**
+ * Who is calling, and on what.
+ *
+ * The session token is read from the httpOnly cookie first. The custom header
+ * stays as a fallback for one release: a student with the page already open
+ * when this deploys is still holding a token in localStorage and sending it
+ * that way, and the deploy is not atomic. Drop the header path -- and
+ * `getBearer` with it -- once everyone has reloaded.
+ *
+ * `context` is optional and used only for silent renewal; a caller that does
+ * not pass it simply does not renew.
+ */
+async function identify(req, context) {
+  const cookie = readCookie(req, SESSION_COOKIE);
+  const bearer = cookie || getBearer(req);
   if (!bearer) return { reason: "no_bearer_token" };
   if (bearer.startsWith("vst.")) {
     if (!SESSION_SECRET) return { reason: "no_session_secret_configured" };
@@ -469,6 +686,11 @@ async function identify(req) {
     // actually revoke their access. Also carries teacherSub for test scoping.
     const record = await studentRecord(session.username);
     if (!record) return { reason: "student_removed" };
+    // The student's row is already in hand, so their epoch costs nothing.
+    if (session.epoch !== (Number(record.tokenEpoch) || 0)) {
+      return { reason: "session_revoked" };
+    }
+    renewIfStale(context, "vst", session, { ep: session.epoch });
     return {
       kind: "student",
       id: `stu~${session.username}`,
@@ -480,7 +702,44 @@ async function identify(req) {
     if (!SESSION_SECRET) return { reason: "no_session_secret_configured" };
     const session = verifySession("vad", bearer);
     if (!session) return { reason: "bad_admin_token" };
+    if (session.epoch !== (await adminEpoch())) return { reason: "session_revoked" };
+    renewIfStale(context, "vad", session, { ep: session.epoch });
     return { kind: "admin", id: `adm~${session.username}`, name: "Admin", role: "admin" };
+  }
+  if (bearer.startsWith("vgo.")) {
+    if (!SESSION_SECRET) return { reason: "no_session_secret_configured" };
+    const session = verifySession("vgo", bearer);
+    if (!session) return { reason: "bad_session_token" };
+    if (session.epoch !== (await profileEpoch(session.username))) {
+      return { reason: "session_revoked" };
+    }
+    renewIfStale(context, "vgo", session, {
+      ep: session.epoch,
+      e: session.email,
+      n: session.name,
+    });
+    return {
+      kind: "google",
+      id: session.username,
+      // Carried in the token rather than read back: it is only ever stamped on
+      // a row as "who marked this" or "who released this", and one more point
+      // read per request to spell a name would not be worth it.
+      name: session.name,
+      email: session.email,
+      // Still resolved per request (memoised 60s), so adding a teacher to the
+      // allowlist takes effect without them signing in again.
+      role: await resolveRole(session.email),
+    };
+  }
+  // Legacy: a raw Google ID token, from a tab opened before this deploy. It
+  // still expires after Google's hour; the next reload gets a real session.
+  //
+  // Check the shape first. The current client sends only a CSRF marker in this
+  // header, so without this every authenticated request from a browser whose
+  // cookie was refused would spend a round trip asking Google about the string
+  // "1" -- a network call per request, to be told no.
+  if (bearer.split(".").length !== 3 || bearer.length <= 40) {
+    return { reason: "not_a_session_token" };
   }
   const { token, reason } = await verifyGoogleToken(bearer);
   if (!token) return { reason };
@@ -491,6 +750,33 @@ async function identify(req) {
     email: token.email,
     role: await resolveRole(token.email),
   };
+}
+
+/**
+ * CSRF. SameSite=Strict already keeps the cookie off every cross-site request,
+ * so this is the second lock rather than the first: a state-changing call must
+ * also carry a custom header, and a cross-origin page cannot set one without a
+ * CORS preflight this API never answers. Reads are exempt -- nothing here
+ * changes state on a GET -- and so are the sign-in endpoints, which have no
+ * cookie to abuse yet.
+ */
+// Signing in has no session cookie to abuse, and a 403 there would just be a
+// confusing way to fail a password check.
+const SIGN_IN_HANDLERS = new Set(["studentlogin", "adminlogin", "health"]);
+
+function csrfRefused(context, req) {
+  const method = String((req && req.method) || "GET").toUpperCase();
+  if (method === "GET" || method === "HEAD" || method === "OPTIONS") return false;
+  if (!readCookie(req, SESSION_COOKIE)) return false; // header-authenticated
+  const headers = (req && req.headers) || {};
+  const marked =
+    headers["x-vidai-auth"] ||
+    headers["X-Vidai-Auth"] ||
+    headers["x-vidaivi-auth"] ||
+    headers["X-Vidaivi-Auth"];
+  if (marked) return false;
+  json(context, 403, { error: "Missing request header" });
+  return true;
 }
 
 function misconfigured(context) {
@@ -505,78 +791,116 @@ function misconfigured(context) {
 
 const handlers = {};
 
-handlers.health = async (context, req) => {
-  // TEMPORARY probe (removed before this branch merges): does SWA's edge let a
-  // managed Function set a cookie, and does the browser's Cookie header survive
-  // the trip back? The whole httpOnly-session design rests on both being true,
-  // so it is verified on a deployed preview rather than assumed.
-  const probe =
-    req && req.query && req.query.cookieprobe
-      ? {
-          cookieHeaderSeen: String((req.headers || {}).cookie || ""),
-          setCookieAttempted: true,
-        }
-      : null;
-  json(
-    context,
-    200,
-    {
-      hasGoogleClientId: !!GOOGLE_CLIENT_ID,
-      hasStorageConnectionString: !!STORAGE,
-      hasSessionSecret: !!SESSION_SECRET,
-      hasAdminCredentials: !!(ADMIN_USERNAME && ADMIN_PASSWORD),
-      teacherEmailsConfigured: TEACHER_EMAILS.length,
-      model: "v3",
-      node: process.version,
-      probe,
-    },
-    probe
-      ? {
-          "Set-Cookie":
-            "vidai_probe=abc123; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=600",
-        }
-      : undefined
-  );
+handlers.health = async (context) => {
+  json(context, 200, {
+    hasGoogleClientId: !!GOOGLE_CLIENT_ID,
+    hasStorageConnectionString: !!STORAGE,
+    hasSessionSecret: !!SESSION_SECRET,
+    hasAdminCredentials: !!(ADMIN_USERNAME && ADMIN_PASSWORD),
+    teacherEmailsConfigured: TEACHER_EMAILS.length,
+    model: "v3",
+    node: process.version,
+  });
 };
 
+/**
+ * Sign in with Google, and the one place a Google ID token is ever accepted.
+ *
+ * It is exchanged here for a Vidai session and never held by the client again:
+ * the browser gets an httpOnly cookie, not a token it could be robbed of, and
+ * the session is ours to expire and revoke rather than Google's to expire in an
+ * hour.
+ *
+ * The same endpoint takes the WhatsApp number afterwards, authenticated by that
+ * cookie -- the signed-in caller has no Google credential left to re-present.
+ */
 handlers.login = async (context, req) => {
   if (misconfigured(context)) return;
-  const { token, reason } = await verifyGoogleToken(getBearer(req));
-  if (!token) return json(context, 401, { error: "Invalid token", reason });
 
+  const credential = getBearer(req);
   const body = getBody(req);
   const phone =
     typeof body.phone === "string" ? body.phone.trim().slice(0, 20) : "";
+
+  let sub = "";
+  let token = null;
+  // A Google ID token is a JWT. Our own session tokens are also three
+  // dot-separated parts, and a signed-in caller sends only the CSRF marker
+  // ("1"), so the shape alone is not enough to tell them apart — which is how
+  // saving a phone number would have gone to Google's tokeninfo endpoint
+  // carrying the string "1" and come back 401.
+  const isOurs = /^(vgo|vst|vad)\./.test(credential);
+  const looksLikeJwt = credential.split(".").length === 3 && credential.length > 40;
+  if (credential && !isOurs && looksLikeJwt) {
+    const verified = await verifyGoogleToken(credential);
+    if (!verified.token) {
+      return json(context, 401, { error: "Invalid token", reason: verified.reason });
+    }
+    token = verified.token;
+    sub = token.sub;
+  } else {
+    // No Google credential: this is a signed-in caller updating their profile.
+    const who = await identify(req, context);
+    if (who.kind !== "google") {
+      return json(context, 401, { error: "Invalid token", reason: who.reason || "not_google" });
+    }
+    sub = who.id;
+  }
 
   const profiles = tableClient("profiles");
   await ensureTable(profiles);
 
   let entity;
   try {
-    entity = await profiles.getEntity("profile", token.sub);
+    entity = await profiles.getEntity("profile", sub);
   } catch {
     entity = null;
   }
+  if (!token && !entity) {
+    return json(context, 401, { error: "Invalid token", reason: "no_profile" });
+  }
 
+  const epoch = Number(entity && entity.tokenEpoch) || 0;
   const merged = {
     partitionKey: "profile",
-    rowKey: token.sub,
-    name: token.name || (entity && entity.name) || "",
-    email: token.email,
-    picture: token.picture || (entity && entity.picture) || "",
+    rowKey: sub,
+    name: (token && token.name) || (entity && entity.name) || "",
+    email: (token && token.email) || (entity && entity.email) || "",
+    picture: (token && token.picture) || (entity && entity.picture) || "",
     phone: phone || (entity && entity.phone) || "",
     lastLoginAt: new Date().toISOString(),
     createdAt: (entity && entity.createdAt) || new Date().toISOString(),
+    tokenEpoch: epoch,
   };
   await profiles.upsertEntity(merged, "Merge");
-  json(context, 200, {
-    sub: merged.rowKey,
-    name: merged.name,
-    email: merged.email,
-    picture: merged.picture,
-    phone: merged.phone,
-    role: await resolveRole(token.email),
-  });
+  epochCache.drop(`goo~${sub}`);
+
+  json(
+    context,
+    200,
+    {
+      sub: merged.rowKey,
+      name: merged.name,
+      email: merged.email,
+      picture: merged.picture,
+      phone: merged.phone,
+      role: await resolveRole(merged.email),
+    },
+    // Only a fresh Google sign-in mints a session; a phone update rides the
+    // one already in the cookie.
+    token
+      ? {
+          "Set-Cookie": sessionCookie(
+            signSession("vgo", sub, GOOGLE_SESSION_TTL_MS, {
+              ep: epoch,
+              e: merged.email,
+              n: String(merged.name || "").slice(0, 60),
+            }),
+            GOOGLE_SESSION_TTL_MS
+          ),
+        }
+      : undefined
+  );
 };
 
 handlers.studentlogin = async (context, req) => {
@@ -615,15 +939,25 @@ handlers.studentlogin = async (context, req) => {
   }
   await clearFailures(gate.table, "user", gate.user);
 
-  json(context, 200, {
-    token: signSession("vst", username, STUDENT_TOKEN_TTL_MS),
-    student: {
-      username,
-      name: entity.name,
-      school: entity.school,
-      grade: entity.grade,
+  const epoch = Number(entity.tokenEpoch) || 0;
+  json(
+    context,
+    200,
+    {
+      student: {
+        username,
+        name: entity.name,
+        school: entity.school,
+        grade: entity.grade,
+      },
     },
-  });
+    {
+      "Set-Cookie": sessionCookie(
+        signSession("vst", username, STUDENT_TOKEN_TTL_MS, { ep: epoch }),
+        STUDENT_TOKEN_TTL_MS
+      ),
+    }
+  );
 };
 
 handlers.adminlogin = async (context, req) => {
@@ -647,12 +981,49 @@ handlers.adminlogin = async (context, req) => {
   }
   await clearFailures(gate.table, "user", gate.user);
 
-  json(context, 200, { token: signSession("vad", username, ADMIN_TOKEN_TTL_MS) });
+  const epoch = await adminEpoch();
+  json(
+    context,
+    200,
+    { ok: true },
+    {
+      "Set-Cookie": sessionCookie(
+        signSession("vad", username, ADMIN_TOKEN_TTL_MS, { ep: epoch }),
+        ADMIN_TOKEN_TTL_MS
+      ),
+    }
+  );
+};
+
+/**
+ * Signing out.
+ *
+ * Plain: clear the cookie. There is nothing else to clear -- the client never
+ * held the token.
+ *
+ * `{ everywhere: true }`: move the account's token epoch past every token
+ * already minted for it, which ends the session on every device at once. This
+ * is the answer to a lost phone, and the reason a session may now last a month
+ * without that being reckless.
+ */
+handlers.signout = async (context, req) => {
+  if (misconfigured(context)) return;
+  const body = getBody(req);
+  const everywhere = body.everywhere === true;
+  let revoked = false;
+  if (everywhere) {
+    const who = await identify(req, context);
+    if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+    revoked = await bumpEpoch(who);
+  }
+  // The cookie goes either way: a failed revoke must still sign this device out
+  // rather than leave the caller apparently signed in.
+  json(context, 200, { ok: true, revoked }, { "Set-Cookie": clearedCookie() });
 };
 
 handlers.teachers = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
   if (who.role !== "admin") return json(context, 403, { error: "Admins only" });
 
@@ -700,7 +1071,7 @@ handlers.teachers = async (context, req) => {
 
 handlers.students = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
   if (who.role !== "teacher" && who.role !== "admin") {
     return json(context, 403, { error: "Teachers only" });
@@ -760,6 +1131,9 @@ handlers.students = async (context, req) => {
       }
       const password = generatePassword();
       entity.passwordHash = hashPassword(password);
+      // Resetting a password must end the sessions opened with the old one --
+      // otherwise a device that should have lost access keeps it for a month.
+      entity.tokenEpoch = (Number(entity.tokenEpoch) || 0) + 1;
       await students.upsertEntity(entity, "Merge");
       studentCache.drop(username);
       return json(context, 200, { username, password });
@@ -793,6 +1167,7 @@ handlers.students = async (context, req) => {
       grade,
       parentPhone,
       passwordHash: hashPassword(password),
+      tokenEpoch: 0,
       teacherSub: who.id,
       teacherEmail: who.email || "",
       createdAt: new Date().toISOString(),
@@ -826,7 +1201,7 @@ handlers.students = async (context, req) => {
 // Teacher/admin: attempts for one of their students (?username=...) or all.
 handlers.reports = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
   if (who.role !== "teacher" && who.role !== "admin") {
     return json(context, 403, { error: "Teachers only" });
@@ -1172,7 +1547,7 @@ async function subjectForAdopter(who, master) {
 
 handlers.tests = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
 
   const tests = tableClient("tests");
@@ -1577,7 +1952,7 @@ async function listOwnedSubjects(who) {
 
 handlers.subjects = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
   const isStaff = who.role === "teacher" || who.role === "admin";
 
@@ -1821,7 +2196,7 @@ async function childLink(who, username) {
 
 handlers.parentlink = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
 
   const invites = tableClient("invites");
@@ -2016,7 +2391,7 @@ async function hasAttemptInProgress(entity) {
 
 handlers.attempts = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
 
   const attempts = tableClient("attempts");
@@ -2313,7 +2688,7 @@ function refuse(context, reason) {
 
 handlers.answerimage = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) {
     return json(context, 401, { error: "Invalid token", reason: who.reason });
   }
@@ -2459,7 +2834,7 @@ handlers.answerimage = async (context, req) => {
 
 handlers.grading = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) {
     return json(context, 401, { error: "Invalid token", reason: who.reason });
   }
@@ -2590,7 +2965,7 @@ async function isReleased(testId, username) {
 
 handlers.release = async (context, req) => {
   if (misconfigured(context)) return;
-  const who = await identify(req);
+  const who = await identify(req, context);
   if (!who.kind) {
     return json(context, 401, { error: "Invalid token", reason: who.reason });
   }
@@ -2677,5 +3052,16 @@ handlers.release = async (context, req) => {
   );
   return json(context, 200, { ok: true, testId, username: username || null, released: true });
 };
+
+// Every handler goes through the CSRF guard, rather than each one remembering
+// to. Wrapping here means a handler added later is covered by default, which is
+// the only way a rule like this survives.
+for (const [name, fn] of Object.entries(handlers)) {
+  if (SIGN_IN_HANDLERS.has(name)) continue;
+  handlers[name] = async (context, req) => {
+    if (csrfRefused(context, req)) return;
+    return fn(context, req);
+  };
+}
 
 module.exports = { handlers };

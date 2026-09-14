@@ -184,6 +184,17 @@ inline script and no `eval`.
 
 **Storage keys are digests.** No raw IP in a table row.
 
+**The session is an httpOnly cookie, and the page must never hold the token.**
+`authHeader()` sends a marker, not a secret; anything that puts a credential
+back into `localStorage` undoes the whole of finding 4. A new endpoint is
+covered by the CSRF guard automatically (handlers are wrapped at export time) —
+do not unwrap one, and add it to `SIGN_IN_HANDLERS` only if it genuinely has no
+session to abuse.
+
+**Anything that revokes access bumps `tokenEpoch` and drops the cache entry.**
+Deleting a student, resetting their password, signing out everywhere. A change
+that revokes without bumping leaves a usable session for up to 30 days.
+
 ## Checking the work
 
 ```sh

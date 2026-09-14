@@ -9,6 +9,7 @@
 // keeps token, role and student lookups off the hot path.
 
 process.env.STORAGE_CONNECTION_STRING = "UseDevelopmentStorage=true";
+process.env.SESSION_SECRET = "test-secret-not-a-real-one";
 
 const fs = require("fs");
 const path = require("path");
@@ -25,7 +26,9 @@ new Function(
   fs.readFileSync(CORE, "utf8") +
     "\nmodule.exports.__helpers = { makeCache, chunkQuestions, unchunkQuestions," +
     " storedCounts, countsFromQuestions, inBatches, lockMsFor, ipKey, digestKey," +
-    " generatePassword, PW_WORDS, LOCK_AFTER, timingDecoyHash, checkPassword };"
+    " generatePassword, PW_WORDS, LOCK_AFTER, timingDecoyHash, checkPassword," +
+    " signSession, verifySession, readCookie, sessionCookie, clearedCookie," +
+    " renewIfStale, csrfRefused, SESSION_COOKIE, STUDENT_TOKEN_TTL_MS };"
 )(mod, mod.exports, (id) =>
   id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)
 );
@@ -128,6 +131,78 @@ check(space / 23040 === 1024, `the space is 1024x what it was (${space.toLocaleS
 // --- The timing decoy really is a usable hash ---
 check(h.checkPassword("timing-parity-decoy", h.timingDecoyHash()), "the decoy hash verifies its own input");
 check(!h.checkPassword("something-else", h.timingDecoyHash()), "and rejects anything else");
+
+// --- The session cookie carries what it claims, and nothing script can read ---
+const cookie = h.sessionCookie("vst.aaa.bbb", 30 * 24 * 60 * 60 * 1000);
+check(cookie.startsWith(`${h.SESSION_COOKIE}=vst.aaa.bbb;`), "the cookie holds the token");
+check(/;\s*HttpOnly/i.test(cookie), "HttpOnly — script cannot read the session");
+check(/;\s*Secure/i.test(cookie), "Secure — never sent over plain http");
+check(/;\s*SameSite=Strict/i.test(cookie), "SameSite=Strict — no cross-site request carries it");
+check(/;\s*Path=\//i.test(cookie), "Path=/ — the app and the API share an origin");
+check(/Max-Age=2592000/.test(cookie), "Max-Age is the session's own lifetime");
+check(/Max-Age=0/.test(h.clearedCookie()), "signing out expires the cookie rather than editing it");
+
+// --- Reading one cookie out of the header ---
+const req = (cookieHeader, method, headers) => ({
+  method: method || "GET",
+  headers: { cookie: cookieHeader, ...(headers || {}) },
+});
+check(h.readCookie(req("a=1; vidai_session=tok; z=2"), "vidai_session") === "tok", "readCookie finds it mid-header");
+check(h.readCookie(req("vidai_session=tok"), "vidai_session") === "tok", "readCookie finds it alone");
+check(h.readCookie(req("othersession=tok"), "vidai_session") === "", "readCookie does not match a longer name");
+check(h.readCookie(req("vidai_session_x=tok"), "vidai_session") === "", "nor a name with a suffix");
+check(h.readCookie({ headers: {} }, "vidai_session") === "", "no cookie header is not a crash");
+
+// --- Tokens verify, and a tampered one does not ---
+const tok = h.signSession("vst", "asha42", 60 * 60 * 1000, { ep: 3 });
+const seen = h.verifySession("vst", tok);
+check(seen && seen.username === "asha42", "a signed session verifies");
+check(seen && seen.epoch === 3, "the token carries the epoch it was minted at");
+check(h.verifySession("vad", tok) === null, "a student token is not an admin token");
+check(h.verifySession("vst", tok.slice(0, -2) + "xx") === null, "a tampered signature is refused");
+check(h.verifySession("vst", "vst.short") === null, "a malformed token is refused, not thrown");
+// A signature of the wrong length used to throw out of timingSafeEqual.
+check(h.verifySession("vst", "vst.YWJj.YQ") === null, "a short signature is refused, not a 500");
+check(h.verifySession("vst", h.signSession("vst", "asha42", -1000, {})) === null, "an expired token is refused");
+
+// --- Silent renewal happens once past halfway, and not before ---
+const ttl = h.STUDENT_TOKEN_TTL_MS;
+const fresh = { username: "asha42", issuedAt: Date.now(), expiresAt: Date.now() + ttl };
+let ctx = {};
+h.renewIfStale(ctx, "vst", fresh, { ep: 0 });
+check(!ctx.__renewCookie, "a fresh session is not re-issued");
+const stale = { username: "asha42", issuedAt: Date.now() - ttl * 0.9, expiresAt: Date.now() + ttl * 0.1 };
+ctx = {};
+h.renewIfStale(ctx, "vst", stale, { ep: 0 });
+check(!!ctx.__renewCookie, "a session past halfway is re-issued silently");
+const renewed = h.verifySession("vst", String(ctx.__renewCookie).split("=")[1].split(";")[0]);
+check(renewed && renewed.expiresAt > stale.expiresAt, "and the new one runs from now, not from the old expiry");
+
+// --- CSRF: a state-changing cookie request must carry our header ---
+const captured = () => {
+  const c = { res: null };
+  return c;
+};
+let c = captured();
+check(
+  h.csrfRefused(c, req("vidai_session=tok", "POST")) === true && c.res.status === 403,
+  "a cookie POST with no custom header is refused"
+);
+c = captured();
+check(
+  h.csrfRefused(c, req("vidai_session=tok", "POST", { "x-vidai-auth": "1" })) === false,
+  "a cookie POST carrying the header is allowed"
+);
+c = captured();
+check(
+  h.csrfRefused(c, req("vidai_session=tok", "GET")) === false,
+  "a read is never refused — nothing here changes state on a GET"
+);
+c = captured();
+check(
+  h.csrfRefused(c, req("", "POST")) === false,
+  "a header-authenticated POST is untouched, so old tabs keep working"
+);
 
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2).then((out) => {
