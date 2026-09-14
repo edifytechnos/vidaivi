@@ -18,31 +18,25 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
 // The AI marking assistant. Unset means the feature simply does not exist:
 // /api/assess answers 501 and the client hides the button, the same way
 // analytics no-ops without its connection string. Nothing else changes.
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+//
+// The model lives in **Azure AI Foundry, South India** rather than at Google.
+// That is not a preference, it is the only thing that works from here: this app
+// runs in Azure East Asia (Hong Kong), and Hong Kong is on neither Google's
+// Gemini available-regions list nor Anthropic's, so a key that works from a
+// laptop in Chennai 400s from the Function. A call to an Azure endpoint is
+// Azure-to-Azure and has no country gate, so the app did not have to move —
+// and a child's handwriting now stays inside Azure instead of going to Google.
+const AZURE_AI_ENDPOINT = (process.env.AZURE_AI_ENDPOINT || "").replace(/\/+$/, "");
+const AZURE_AI_KEY = process.env.AZURE_AI_KEY;
+// The *deployment* name, which is whatever it was called in the portal — not
+// the model id. It defaults to the name this was built against.
+const AZURE_AI_DEPLOYMENT = process.env.AZURE_AI_DEPLOYMENT || "gpt-4o-mini";
+const aiConfigured = () => !!(AZURE_AI_ENDPOINT && AZURE_AI_KEY);
 // A loaded key is a spending limit with no brakes: at roughly fifteen paise an
 // assessment, ₹500 is about 3,300 of them. A stuck retry, a loop, or a stolen
 // teacher session could spend the lot in an afternoon, and the first anyone
 // would know is the bill. One cap per teacher per day is the brake.
 const ASSESS_DAILY_CAP = Number(process.env.ASSESS_DAILY_CAP || 200);
-
-/**
- * When the provider says it does not serve this location, the feature is off
- * whatever the app settings say — so stop offering it rather than handing
- * teachers a button that fails on every press.
- *
- * This is not hypothetical: the Static Web App runs in Azure **East Asia
- * (Hong Kong)**, and Hong Kong is on neither Google's Gemini available-regions
- * list nor Anthropic's supported-countries list. A key set in the portal is
- * therefore not enough to make AI marking work from here; the app has to be
- * hosted somewhere served, or the model has to live inside Azure.
- *
- * Time-boxed rather than permanent: a warm instance must not keep a stale
- * verdict after the situation is fixed, and a cold one re-learns it in one
- * request that costs nothing.
- */
-const AI_REGION_BLOCK_MS = 6 * 60 * 60 * 1000;
-let aiUnavailableUntil = 0;
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -3337,14 +3331,20 @@ handlers.grading = async (context, req) => {
 // would matter if the request leaked.
 //
 // Cost: one call per press of "Assess with AI", never automatic. At
-// gemini-3.5-flash-lite rates (paid tier, which is excluded from training on
-// your data) a typical answer is about two-tenths of a US cent.
+// gpt-4o-mini rates a typical answer is a fraction of a rupee.
 
-const AI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/interactions";
 const AI_TIMEOUT_MS = 45000;
 const AI_MAX_SOLUTION = 4000;
 
-/** The shape the model must answer in, so the reply is never free prose. */
+/**
+ * The shape the model must answer in, so the reply is never free prose.
+ *
+ * Azure's strict structured outputs are stricter than JSON Schema at large:
+ * **every** property must be listed in `required` and `additionalProperties`
+ * must be `false`, or the request is rejected outright. `minimum`/`maximum` are
+ * not supported either — the mark is clamped in code after it comes back,
+ * which is where it has to be clamped anyway.
+ */
 const AI_SCHEMA = {
   type: "object",
   properties: {
@@ -3352,7 +3352,8 @@ const AI_SCHEMA = {
     comment: { type: "string" },
     reasoning: { type: "string" },
   },
-  required: ["awarded", "comment"],
+  required: ["awarded", "comment", "reasoning"],
+  additionalProperties: false,
 };
 
 function aiPrompt(question, solution, maxMarks) {
@@ -3386,7 +3387,15 @@ async function answerImages(blobNames) {
       const buf = await container.getBlobClient(name).downloadToBuffer();
       const mime = sniffImage(buf);
       if (mime && buf.length <= MAX_IMAGE_BYTES) {
-        out.push({ type: "image", data: buf.toString("base64"), mime_type: mime });
+        // A data URI rather than a URL: the container is private, and handing
+        // the model a SAS would put a link to a child's handwriting in someone
+        // else's logs. `detail: "high"` is the point of the exercise — on the
+        // low setting the model reads a 512px thumbnail, which is not enough
+        // to tell a 6 from a b in pencil.
+        out.push({
+          type: "image_url",
+          image_url: { url: `data:${mime};base64,${buf.toString("base64")}`, detail: "high" },
+        });
       }
     } catch {
       // A missing blob is not worth failing the whole assessment over.
@@ -3401,21 +3410,33 @@ async function askAssessor(question, solution, maxMarks, images) {
   const timer = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
   let res;
   try {
-    res = await fetch(AI_ENDPOINT, {
+    // The v1 GA surface: no api-version to keep in step with, and the same
+    // request shape as OpenAI's own, so the deployment can be swapped for a
+    // stronger model from the portal without touching this file.
+    res = await fetch(`${AZURE_AI_ENDPOINT}/openai/v1/chat/completions`, {
       method: "POST",
       signal: controller.signal,
-      headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
+      headers: { "Content-Type": "application/json", "api-key": AZURE_AI_KEY },
       body: JSON.stringify({
-        model: GEMINI_MODEL,
-        input: [
-          { type: "text", text: aiPrompt(question, solution, maxMarks) },
-          ...images,
+        // The *deployment* name, not the model id.
+        model: AZURE_AI_DEPLOYMENT,
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: aiPrompt(question, solution, maxMarks) },
+              ...images,
+            ],
+          },
         ],
         response_format: {
-          type: "text",
-          mime_type: "application/json",
-          schema: AI_SCHEMA,
+          type: "json_schema",
+          json_schema: { name: "vidai_mark", strict: true, schema: AI_SCHEMA },
         },
+        // No token cap on purpose: the newer models want
+        // `max_completion_tokens` where the older ones want `max_tokens`, and
+        // guessing wrong is a 400 on every call. The schema is what bounds the
+        // reply, and the two strings are truncated below in any case.
       }),
     });
   } catch (e) {
@@ -3430,19 +3451,14 @@ async function askAssessor(question, solution, maxMarks, images) {
   if (!res.ok) {
     // Never echo the provider's *body* back: it can carry the request, and the
     // request carries a child's handwriting. The `error.message` alone is the
-    // provider describing its own complaint ("model not found", "invalid
-    // argument") and carries none of that — and without it an operator has no
-    // way to tell a bad model name from a spent quota. Staff-only endpoint.
+    // provider describing its own complaint ("deployment not found", "quota
+    // exceeded") and carries none of that — and without it an operator has no
+    // way to tell a wrong deployment name from a spent quota. Staff-only.
     let why = "";
     try {
       const body = JSON.parse(text);
       why = String((body.error && body.error.message) || "").slice(0, 200);
     } catch {}
-    // "not available in your current location" is not a bad request to retry —
-    // it is the feature being unavailable from where this app is hosted.
-    if (/location|region|country|territor/i.test(why)) {
-      aiUnavailableUntil = Date.now() + AI_REGION_BLOCK_MS;
-    }
     throw new Error(
       `The model refused the request (${res.status})${why ? `: ${why}` : ""}`
     );
@@ -3453,11 +3469,13 @@ async function askAssessor(question, solution, maxMarks, images) {
   } catch {
     throw new Error("The model sent something that was not JSON");
   }
-  const raw =
-    (payload.interaction && payload.interaction.output_text) || payload.output_text || "";
+  const message = (payload.choices && payload.choices[0] && payload.choices[0].message) || {};
+  // A refusal is the model declining the whole request. It is not a mark of
+  // zero, and must never be written as one.
+  if (message.refusal) throw new Error("The model declined to mark this answer");
   let out;
   try {
-    out = JSON.parse(raw);
+    out = JSON.parse(message.content || "");
   } catch {
     throw new Error("The model did not answer in the shape asked for");
   }
@@ -3515,7 +3533,7 @@ handlers.assess = async (context, req) => {
   if (who.role !== "teacher" && who.role !== "admin") {
     return json(context, 403, { error: "Teachers only" });
   }
-  if (!GEMINI_API_KEY || Date.now() < aiUnavailableUntil) {
+  if (!aiConfigured()) {
     return json(context, 501, { error: "AI marking is not switched on for this site" });
   }
 
@@ -3577,7 +3595,7 @@ handlers.assess = async (context, req) => {
       aiComment: verdict.comment,
       aiReasoning: verdict.reasoning,
       aiAt: new Date().toISOString(),
-      aiModel: GEMINI_MODEL,
+      aiModel: AZURE_AI_DEPLOYMENT,
     },
     "Merge"
   );
@@ -3586,7 +3604,7 @@ handlers.assess = async (context, req) => {
     awarded: verdict.awarded,
     comment: verdict.comment,
     reasoning: verdict.reasoning,
-    model: GEMINI_MODEL,
+    model: AZURE_AI_DEPLOYMENT,
   });
 };
 
