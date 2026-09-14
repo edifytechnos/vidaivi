@@ -1283,12 +1283,20 @@ handlers.adminsecurity = async (context, req) => {
 
   if (action === "disable") {
     if (!existing || !existing.active) return json(context, 409, { error: "It is not on" });
+    // A used code is refused here as it is at sign-in. Someone who has taken a
+    // session and shoulder-surfed one code should not be able to switch the
+    // second factor off with it; the cost is waiting up to 30 seconds for a
+    // fresh one, on an action done once.
     const step = totpMatchStep(existing.secret, code);
-    let ok = step > 0;
+    let ok = step > 0 && step > existing.lastStep;
     if (!ok) {
       for (const stored of existing.recovery) if (checkPassword(code, stored)) ok = true;
     }
-    if (!ok) return json(context, 400, { error: "Wrong authentication code" });
+    if (!ok) {
+      return json(context, 400, {
+        error: step > 0 ? "That code has already been used — wait for the next one" : "Wrong authentication code",
+      });
+    }
     await writeAdminTotp({ secret: "", active: false, lastStep: 0, recovery: "[]" });
     await bumpEpoch(who);
     const epoch = await adminEpoch();

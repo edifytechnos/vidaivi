@@ -10,6 +10,9 @@
 
 process.env.STORAGE_CONNECTION_STRING = "UseDevelopmentStorage=true";
 process.env.SESSION_SECRET = "test-secret-not-a-real-one";
+// misconfigured() gates every handler on these two; the values are never used
+// against a real service, since storage is faked in the handler checks below.
+process.env.GOOGLE_CLIENT_ID = "e2e.apps.googleusercontent.com";
 
 const fs = require("fs");
 const path = require("path");
@@ -30,7 +33,7 @@ new Function(
     " signSession, verifySession, readCookie, sessionCookie, clearedCookie," +
     " renewIfStale, csrfRefused, SESSION_COOKIE, STUDENT_TOKEN_TTL_MS," +
     " totpCode, totpMatchStep, base32Encode, base32Decode, newTotpSecret," +
-    " newRecoveryCodes, currentStep, TOTP_STEP_S };"
+    " newRecoveryCodes, currentStep, TOTP_STEP_S, handlers, hashPassword };"
 )(mod, mod.exports, (id) =>
   id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)
 );
@@ -274,9 +277,171 @@ check(
   "40 bits each — a guess is not worth attempting against the lockout"
 );
 
+// --- The second factor, driven through the real handlers ---
+//
+// The pure helpers above prove the arithmetic. This proves the endpoint: that
+// enabling needs a matching code, that a used code is refused the second time,
+// that a wrong one is counted against the lockout while a missing one is not,
+// and that a recovery code works exactly once. It runs against a fake Table
+// Storage rather than Azure, so it needs no account and no network — and it
+// covers the paths that would otherwise only ever be tried by hand.
+async function totpHandlerChecks() {
+  const rows = new Map(); // "table/pk/rk" -> entity
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, { ...(rows.get(k) || {}), ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: () => ({ [Symbol.asyncIterator]: async function* () {} }),
+  });
+
+  // These are read into consts when the module loads, so they have to be set
+  // before it is built, not before it is called.
+  process.env.ADMIN_USERNAME = "e2e-admin";
+  process.env.ADMIN_PASSWORD = "e2e-password";
+
+  // The module under test, with storage and identity swapped for fakes. Only
+  // those two: everything else is the real code path, including the CSRF
+  // wrapper the handlers are exported through.
+  const mod2 = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, adminTotp, totpCode, currentStep, newTotpSecret };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod2, mod2.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod2.exports.__t;
+
+  const ctx = () => ({ res: null });
+  const admin = { method: "POST", headers: { "x-vidai-auth": "1" }, body: {} };
+  const call = async (name, body, method = "POST") => {
+    const c = ctx();
+    await t.handlers[name](c, { ...admin, method, body: body || {} });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+
+  let r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password" });
+  check(r.status === 200, `password alone signs in while the factor is off (${r.status})`);
+  const cookie = String(
+    (await (async () => {
+      const c = ctx();
+      await t.handlers.adminlogin(c, { ...admin, body: { username: "e2e-admin", password: "e2e-password" } });
+      return c.res.headers["Set-Cookie"];
+    })())
+  ).split("=")[1].split(";")[0];
+  // The session the admin screens run as. It is a `let` because turning the
+  // second factor on deliberately ends every older admin session — the request
+  // that does it is handed a new cookie, and anything still holding the old one
+  // is meant to be refused. Following it here is how that re-issue is tested.
+  let session = cookie;
+  const callAs = async (name, body, method = "POST") => {
+    const c = ctx();
+    await t.handlers[name](c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+      body: body || {},
+    });
+    const set = c.res.headers && c.res.headers["Set-Cookie"];
+    return { status: c.res.status, data: c.res.body || {}, setCookie: String(set || "") };
+  };
+
+  r = await callAs("adminsecurity", {}, "GET");
+  check(r.status === 200 && r.data.enabled === false, `it starts off (${JSON.stringify(r.data)})`);
+
+  r = await callAs("adminsecurity", { action: "init" });
+  const secret = r.data.secret;
+  check(!!secret && String(r.data.uri).startsWith("otpauth://totp/"), "init hands back a secret and an otpauth uri");
+
+  r = await callAs("adminsecurity", { action: "enable", code: "000000" });
+  check(r.status === 400, `a code that does not match will not turn it on (${r.status})`);
+
+  const step = t.currentStep();
+  r = await callAs("adminsecurity", { action: "enable", code: t.totpCode(secret, step) });
+  const recovery = r.data.recoveryCodes || [];
+  check(r.status === 200, `a matching code turns it on (${r.status})`);
+  check(recovery.length === 8, `and hands back eight recovery codes (${recovery.length})`);
+  const reissued = /vidai_session=([^;]+)/.exec(r.setCookie);
+  check(!!reissued, "turning it on re-issues this session, rather than signing the admin out of the screen they are on");
+  const staleSession = session;
+  if (reissued) session = reissued[1];
+
+  // The other half of that: a session minted before the factor existed is dead.
+  const stale = ctx();
+  await t.handlers.adminsecurity(stale, {
+    method: "GET",
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${staleSession}` },
+    body: {},
+  });
+  check(stale.res.status === 401, `and every other admin session is ended (${stale.res.status})`);
+
+  // Signing in now needs the code.
+  r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password" });
+  check(r.status === 401 && r.data.needsCode === true, `the password alone is now refused (${r.status})`);
+
+  // The step used at enrolment is already spent — replay is refused.
+  r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: t.totpCode(secret, step) });
+  check(r.status === 401, `the code used to enrol cannot be replayed (${r.status}: ${r.data.error})`);
+
+  // The next step's code works, once.
+  const next = step + 1;
+  r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: t.totpCode(secret, next) });
+  check(r.status === 200, `a fresh code signs in (${r.status})`);
+  r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: t.totpCode(secret, next) });
+  check(r.status === 401, `and the same one is dead the second time (${r.status}: ${r.data.error})`);
+
+  // A recovery code, exactly once.
+  r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: recovery[0] });
+  check(r.status === 200, `a recovery code signs in (${r.status})`);
+  r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: recovery[0] });
+  check(r.status === 401, `and is spent (${r.status})`);
+  r = await callAs("adminsecurity", {}, "GET");
+  check(r.data.recoveryLeft === 7, `seven recovery codes left (${r.data.recoveryLeft})`);
+
+  // Turning it off needs a code, not just the session.
+  r = await callAs("adminsecurity", { action: "disable" });
+  check(r.status === 400, `a session alone cannot switch it off (${r.status})`);
+  // A code that has been used is refused here too, exactly as at sign-in.
+  r = await callAs("adminsecurity", { action: "disable", code: t.totpCode(secret, step) });
+  check(r.status === 400, `nor a code that has already been used (${r.status}: ${r.data.error})`);
+  // Inside one 30-second window every code the skew allows has now been spent,
+  // which is the rule working rather than a gap in the test. A recovery code is
+  // not step-bound, and is the other thing disable accepts.
+  r = await callAs("adminsecurity", { action: "disable", code: recovery[1] });
+  check(r.status === 200, `a recovery code switches it off (${r.status}: ${r.data.error || ""})`);
+  // Switching it off ends every admin session too, and re-issues this one.
+  const afterOff = /vidai_session=([^;]+)/.exec(r.setCookie);
+  check(!!afterOff, "and re-issues this session as well");
+  if (afterOff) session = afterOff[1];
+  r = await callAs("adminsecurity", {}, "GET");
+  check(r.data.enabled === false, "and it reads as off again");
+}
+
 // --- Bounded parallelism keeps input order ---
-h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2).then((out) => {
-  check(JSON.stringify(out) === "[2,4,6,8,10]", "inBatches keeps the input order");
-  console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
-  process.exit(failures ? 1 : 0);
-});
+h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
+  .then((out) => {
+    check(JSON.stringify(out) === "[2,4,6,8,10]", "inBatches keeps the input order");
+    return totpHandlerChecks();
+  })
+  .then(() => {
+    console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
+    process.exit(failures ? 1 : 0);
+  })
+  .catch((e) => {
+    console.log(`FAIL  the second-factor handler checks threw: ${e.message}`);
+    process.exit(1);
+  });
