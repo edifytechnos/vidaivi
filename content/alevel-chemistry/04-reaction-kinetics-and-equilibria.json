@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-kinetics-equilibria",
+  "title": "Reaction Kinetics and Equilibria",
+  "chapter": "Topic Test 4",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc4-001",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Rate of reaction",
+      "type": "mcq",
+      "q": "The rate of a reaction is increased by a catalyst because the catalyst:",
+      "solution": "A catalyst offers a **different mechanism with a lower $E_{a}$**, so a far larger fraction of collisions is energetic enough to succeed.\n\nIt does **not** move the equilibrium position — it lowers the barrier equally in both directions, so equilibrium is reached **sooner** but at the same place.",
+      "marks": 1,
+      "options": [
+        "increases the energy of the molecules",
+        "provides an alternative route of lower activation energy",
+        "shifts the equilibrium",
+        "raises the temperature"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc4-002",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Order of reaction",
+      "type": "mcq",
+      "q": "For a first order reaction, the half-life:",
+      "solution": "A **constant** half-life is the signature of a first order reaction — and the quickest way to identify one from a concentration-time graph.\n\nFor zero order the half-life **halves** each time; for second order it **doubles**.",
+      "marks": 1,
+      "options": [
+        "depends on concentration",
+        "is constant",
+        "increases with time",
+        "is zero"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc4-003",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Le Chatelier's principle",
+      "type": "mcq",
+      "q": "For $\\text{N}_{2} + 3\\text{H}_{2} \\rightleftharpoons 2\\text{NH}_{3}$ ($\\Delta H$ negative), the yield of ammonia is increased by:",
+      "solution": "**Low temperature** favours the exothermic forward reaction; **high pressure** favours the side with fewer gas molecules (2 against 4).\n\nBut a low temperature makes the reaction impossibly slow, which is why the Haber process uses a **compromise** at $450$°C with an iron catalyst.",
+      "marks": 1,
+      "options": [
+        "high temperature and low pressure",
+        "low temperature and high pressure",
+        "high temperature and high pressure",
+        "a catalyst"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc4-004",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Equilibrium constant",
+      "type": "mcq",
+      "q": "$K_{c}$ is affected by a change in:",
+      "solution": "**Only temperature** changes $K_{c}$.\n\nChanging concentration or pressure shifts the **position** of equilibrium, but the system moves to restore the same value of $K_{c}$. A catalyst changes neither.",
+      "marks": 1,
+      "options": [
+        "concentration",
+        "pressure",
+        "temperature",
+        "the presence of a catalyst"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alc4-005",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Dynamic equilibrium",
+      "type": "mcq",
+      "q": "At dynamic equilibrium:",
+      "solution": "**Both reactions continue**, at equal rates, so the concentrations stay constant — which is why it is called *dynamic*.\n\nAdding a radioactively labelled reactant proves it: the label soon appears in the products even though nothing measurable has changed.",
+      "marks": 1,
+      "options": [
+        "both reactions have stopped",
+        "the forward and reverse rates are equal",
+        "the concentrations are equal",
+        "the reaction is complete"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc4-006",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Rate constant units",
+      "type": "numeric",
+      "q": "A rate constant has units mol$^{-1}$dm$^{3}$s$^{-1}$. Find the order of the reaction.",
+      "solution": "Units of $k$ are $\\left(\\text{mol dm}^{-3}\\right)^{1-n}\\text{s}^{-1}$.\n\nMatching $\\text{mol}^{-1}\\text{dm}^{3}$ gives $1 - n = -1$, so $n = \\mathbf{2}$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc4-007",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Rate law",
+      "type": "numeric",
+      "q": "For rate $= k[A][B]^{2}$, by what factor does the rate change if $[B]$ is doubled?",
+      "solution": "$2^{2} = \\mathbf{4}$ — the rate quadruples.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alc4-008",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Half-life",
+      "type": "numeric",
+      "q": "A first order reaction has $k = 0.0347$ s$^{-1}$. Find its half-life, in s.",
+      "solution": "$t_{1/2} = \\dfrac{0.693}{0.0347} = \\mathbf{20}$ s.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alc4-009",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Equilibrium constant",
+      "type": "numeric",
+      "q": "For $\\text{A} \\rightleftharpoons \\text{B}$ at equilibrium, $[\\text{A}] = 0.2$ and $[\\text{B}] = 0.8$ mol dm$^{-3}$. Find $K_{c}$.",
+      "solution": "$K_{c} = \\dfrac{[\\text{B}]}{[\\text{A}]} = \\dfrac{0.8}{0.2} = \\mathbf{4}$.\n\nA value above 1 means the products are favoured.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alc4-010",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Order from data",
+      "type": "numeric",
+      "q": "Doubling $[A]$ quadruples the rate. Find the order with respect to $A$.",
+      "solution": "$2^{n} = 4 \\Rightarrow n = \\mathbf{2}$ — second order in $A$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc4-011",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Rate equations",
+      "type": "long",
+      "q": "Explain how the order of a reaction is determined from initial rate data, and deduce the rate equation from: doubling $[A]$ doubles the rate; doubling $[B]$ leaves the rate unchanged.",
+      "solution": "**The method of initial rates.** Change **one** concentration at a time, keeping the others fixed, and see how the initial rate responds.\n\nThe **initial** rate is used because at that moment the concentrations are known exactly, before any product has built up to complicate matters.\n\n**Interpreting the result for a single reactant:**\n\n• Doubling the concentration **doubles** the rate — **first** order ($2^{1} = 2$).\n\n• Doubling **quadruples** it — **second** order ($2^{2} = 4$).\n\n• Doubling leaves it **unchanged** — **zero** order ($2^{0} = 1$).\n\n**Applying this.**\n\nDoubling $[A]$ doubles the rate: **first order in A**.\n\nDoubling $[B]$ changes nothing: **zero order in B**.\n\n$\\mathbf{\\text{rate} = k[A]}$, and the overall order is **1**.\n\n**What zero order in B tells you about the mechanism.** $B$ does not appear in the **rate-determining step** — the slowest step of the mechanism.\n\nOnly species involved up to and including that step appear in the rate equation, whatever the balanced equation says.\n\n**This is why the rate equation cannot be written from the stoichiometry.** It must be found experimentally, and when it disagrees with the balanced equation, that disagreement is itself evidence about the mechanism.\n\nThe $\\text{S}_{\\text{N}}1$ hydrolysis of a tertiary halide is the classic case: two species in the equation, one in the rate law, because the slow step is ionisation alone.",
+      "marks": 3
+    },
+    {
+      "id": "alc4-012",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Le Chatelier's principle",
+      "type": "long",
+      "q": "State Le Chatelier's principle and apply it to the Contact process, $2\\text{SO}_{2} + \\text{O}_{2} \\rightleftharpoons 2\\text{SO}_{3}$ ($\\Delta H = -196$ kJ/mol), explaining the conditions actually used.",
+      "solution": "**The principle.** If a change is imposed on a system at equilibrium, the position of equilibrium shifts so as to **oppose** that change.\n\n**Applying it.**\n\n**Temperature.** The forward reaction is exothermic, so **lowering** the temperature shifts the equilibrium to the right and raises $K$ — a higher yield.\n\n**Pressure.** There are 3 moles of gas on the left and 2 on the right, so **high pressure** shifts equilibrium to the right.\n\n**Concentration.** An **excess of air** (cheap and plentiful) pushes the equilibrium right.\n\n**The conditions actually used: about $450$°C, only $1$–$2$ atm, and a $\\text{V}_{2}\\text{O}_{5}$ catalyst.**\n\n**Why not a lower temperature?** The yield would be higher but the **rate** would be hopelessly slow. $450$°C is a **compromise** between yield and speed, and the catalyst is what makes that compromise affordable.\n\n**Why not high pressure, when the theory calls for it?** Because the yield is already about $96\\%$ at atmospheric pressure. The extra few per cent would not repay the enormous cost of pressure vessels and compressors.\n\nThat is the practical lesson of this example, and the contrast with the Haber process — where the equilibrium is far less favourable, so $200$ atm **is** worth paying for.\n\n**The catalyst's role,** in both processes, is to reach equilibrium quickly. It never changes where that equilibrium lies.",
+      "marks": 3
+    },
+    {
+      "id": "alc4-013",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Equilibrium constants",
+      "type": "long",
+      "q": "Write the expression for $K_{c}$ for $\\text{N}_{2} + 3\\text{H}_{2} \\rightleftharpoons 2\\text{NH}_{3}$, explain what the magnitude tells you, and calculate $K_{c}$ given equilibrium concentrations of $0.2$, $0.6$ and $0.4$ mol dm$^{-3}$ respectively.",
+      "solution": "**The expression.** Products over reactants, each raised to the power of its coefficient:\n\n$K_{c} = \\dfrac{[\\text{NH}_{3}]^{2}}{[\\text{N}_{2}][\\text{H}_{2}]^{3}}$\n\n**What the magnitude means.**\n\n• $K_{c} \\gg 1$ — the equilibrium lies well to the **right**; the reaction is nearly complete.\n\n• $K_{c} \\ll 1$ — it lies to the **left**; very little product forms.\n\n• $K_{c} \\approx 1$ — appreciable amounts of everything are present.\n\n**It says nothing whatever about rate.** A reaction may have an enormous $K_{c}$ and still be immeasurably slow — the conversion of diamond to graphite, for instance.\n\n**The calculation.**\n\n$K_{c} = \\dfrac{(0.4)^{2}}{(0.2)(0.6)^{3}} = \\dfrac{0.16}{0.2 \\times 0.216} = \\dfrac{0.16}{0.0432} = \\mathbf{3.70}$\n\n**Units.** $K_{c}$ has units $\\dfrac{(\\text{mol dm}^{-3})^{2}}{(\\text{mol dm}^{-3})^{4}} = \\text{mol}^{-2}\\text{dm}^{6}$ — they must be worked out from the expression each time, and only cancel when the moles of gas are equal on both sides.\n\n**What changes $K_{c}$.** Only **temperature**. Adding more nitrogen shifts the position of equilibrium but the system adjusts until the same ratio is restored — which is exactly what makes $K_{c}$ a *constant*.",
+      "marks": 5
+    },
+    {
+      "id": "alc4-014",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Collision theory and the Boltzmann distribution",
+      "type": "long",
+      "q": "Use the Boltzmann distribution to explain why a small temperature rise increases the rate so dramatically, and why a catalyst does the same.",
+      "solution": "**The Boltzmann distribution** shows how molecular energies are spread at a given temperature: it starts at the origin, rises to a peak, and has a long tail to the right.\n\nOnly molecules in that tail, with energy exceeding $E_{a}$, can react on collision.\n\n**Raising the temperature.** The curve flattens and **shifts right**: the peak lowers and moves to higher energy, and the tail extends.\n\nThe total area is unchanged — the number of molecules is fixed — but the **area beyond $E_{a}$ increases sharply**.\n\n**Why the effect is so large.** The tail falls off **exponentially**, as $e^{-E_{a}/RT}$, so even a small shift multiplies the number of molecules beyond the barrier.\n\nA $10$ K rise near room temperature typically **doubles** the rate.\n\n**The common misconception** is that this is because collisions are more frequent. The collision frequency rises only a few per cent for a $10$ K rise — nothing like enough. It is almost entirely the **energy distribution** that matters.\n\n**A catalyst** works on the same diagram from the other direction. The distribution is **unchanged**, but $E_{a}$ moves **left** to a lower value.\n\nA far larger area of the same curve now lies beyond it, so many more collisions succeed.\n\n**One curve, two ways of getting more molecules over the barrier:** move the molecules, or move the barrier.",
+      "marks": 3
+    },
+    {
+      "id": "alc4-015",
+      "chapter": "Reaction Kinetics and Equilibria",
+      "topic": "Reaction mechanisms",
+      "type": "long",
+      "q": "Explain what a rate-determining step is, and show how the rate equation gives evidence about the mechanism of the hydrolysis of a tertiary halogenoalkane.",
+      "solution": "**The rate-determining step** is the **slowest** step in a multi-step mechanism. The whole reaction can go no faster than its slowest stage.\n\n**Only species involved up to and including that step appear in the rate equation** — which is why the rate law so often disagrees with the balanced equation, and why that disagreement is informative.\n\n**The tertiary halide.** For\n\n$(\\text{CH}_{3})_{3}\\text{CBr} + \\text{OH}^{-} \\to (\\text{CH}_{3})_{3}\\text{COH} + \\text{Br}^{-}$\n\nthe experimental rate equation is\n\n$\\text{rate} = k\\left[(\\text{CH}_{3})_{3}\\text{CBr}\\right]$\n\n**The hydroxide does not appear at all** — the rate is unchanged if its concentration is doubled.\n\n**What that proves.** The slow step must involve the halide **alone**:\n\n**Step 1 (slow):** $(\\text{CH}_{3})_{3}\\text{CBr} \\to (\\text{CH}_{3})_{3}\\text{C}^{+} + \\text{Br}^{-}$\n\n**Step 2 (fast):** $(\\text{CH}_{3})_{3}\\text{C}^{+} + \\text{OH}^{-} \\to (\\text{CH}_{3})_{3}\\text{COH}$\n\nThis is the $\\text{S}_{\\text{N}}1$ mechanism, and the carbocation is stabilised by the three electron-releasing methyl groups.\n\n**Contrast a primary halide**, where the rate equation is\n\n$\\text{rate} = k[\\text{RBr}][\\text{OH}^{-}]$\n\n— second order, because both species are in the single slow step. That is $\\text{S}_{\\text{N}}2$, and there is no carbocation at all.\n\n**The stereochemistry confirms both.** $\\text{S}_{\\text{N}}1$ goes through a planar cation and gives a racemic product; $\\text{S}_{\\text{N}}2$ inverts the configuration. Kinetics and stereochemistry agree, which is what makes the mechanisms believable.",
+      "marks": 2
+    }
+  ]
+}

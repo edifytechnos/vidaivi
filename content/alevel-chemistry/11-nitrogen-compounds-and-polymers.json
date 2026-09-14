@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-nitrogen",
+  "title": "Nitrogen Compounds and Polymers",
+  "chapter": "Topic Test 11",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc11-001",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Basicity of amines",
+      "type": "mcq",
+      "q": "Ethylamine is a stronger base than ammonia because:",
+      "solution": "The alkyl group's **positive inductive effect** pushes electron density onto the nitrogen, making its lone pair more available to accept a proton.\n\nIt also stabilises the resulting ammonium ion.",
+      "marks": 1,
+      "options": [
+        "it is larger",
+        "the ethyl group releases electrons to the nitrogen",
+        "it is a liquid",
+        "it contains carbon"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc11-002",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Aromatic amines",
+      "type": "mcq",
+      "q": "Phenylamine is a much weaker base than ethylamine because:",
+      "solution": "The lone pair overlaps with the ring's $\\pi$ system and is **delocalised**, so it is far less available to bond to a proton.\n\nProtonating it would also destroy that delocalisation, which costs energy. $\\text{p}K_{b}$: phenylamine $9.4$, ethylamine $3.3$.",
+      "marks": 1,
+      "options": [
+        "it is aromatic",
+        "the nitrogen lone pair is delocalised into the ring",
+        "it is insoluble",
+        "it has a higher molar mass"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc11-003",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Amino acids",
+      "type": "mcq",
+      "q": "At its isoelectric point, an amino acid exists mainly as:",
+      "solution": "A **zwitterion** — internally ionised as $\\text{H}_{3}\\text{N}^{+}\\text{-CHR-COO}^{-}$, with no **net** charge.\n\nThat is why amino acids are high-melting crystalline solids, soluble in water and insoluble in organic solvents, quite unlike comparable amines or acids.",
+      "marks": 1,
+      "options": [
+        "a cation",
+        "an anion",
+        "a zwitterion",
+        "an uncharged molecule"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alc11-004",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Condensation polymers",
+      "type": "mcq",
+      "q": "Nylon is formed by:",
+      "solution": "**Condensation** polymerisation — a diamine and a dicarboxylic acid join with the loss of a small molecule (water or HCl) at each link.\n\nThe resulting **amide** links are what make nylon a polyamide, like protein.",
+      "marks": 1,
+      "options": [
+        "addition polymerisation",
+        "condensation polymerisation",
+        "free radical substitution",
+        "cracking"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc11-005",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Proteins",
+      "type": "mcq",
+      "q": "The bond joining amino acids in a protein is:",
+      "solution": "A **peptide bond**, $-\\text{CO}-\\text{NH}-$, formed by condensation between one amino acid's carboxyl group and the next one's amino group.\n\nIt has partial double-bond character, so it is planar and rigid — which is precisely what makes the $\\alpha$-helix and $\\beta$-sheet possible.",
+      "marks": 1,
+      "options": [
+        "an ester bond",
+        "a peptide (amide) bond",
+        "a glycosidic bond",
+        "a hydrogen bond"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc11-006",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Amine isomers",
+      "type": "numeric",
+      "q": "How many isomeric amines has the formula $\\text{C}_{3}\\text{H}_{9}\\text{N}$?",
+      "solution": "Propan-1-amine, propan-2-amine, N-methylethanamine and trimethylamine — $\\mathbf{4}$: two primary, one secondary, one tertiary.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alc11-007",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Peptide links",
+      "type": "numeric",
+      "q": "How many peptide links are in a linear tetrapeptide?",
+      "solution": "$n - 1 = \\mathbf{3}$ — like fence posts and the panels between them.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc11-008",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Dipeptides",
+      "type": "numeric",
+      "q": "How many different dipeptides can be made from two different amino acids, using each once per dipeptide and allowing either order?",
+      "solution": "$\\mathbf{2}$ — A-B and B-A. The order matters, because the two ends of an amino acid are different.\n\nWith 20 amino acids there are $400$ dipeptides, and the number of possible proteins is astronomically large.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc11-009",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of glycine, $\\text{H}_{2}\\text{NCH}_{2}\\text{COOH}$, in g/mol. (C $= 12$, H $= 1$, N $= 14$, O $= 16$.)",
+      "solution": "$\\text{C}_{2}\\text{H}_{5}\\text{NO}_{2}$: $24 + 5 + 14 + 32 = \\mathbf{75}$ g/mol.",
+      "marks": 2,
+      "answer": 75,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alc11-010",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Water molecules lost",
+      "type": "numeric",
+      "q": "How many water molecules are lost when five amino acids condense into a linear pentapeptide?",
+      "solution": "$\\mathbf{4}$ — one for each of the four peptide links formed.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alc11-011",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Basicity of amines",
+      "type": "long",
+      "q": "Compare the basicity of ammonia, ethylamine and phenylamine, and explain how the basicity of a substituted phenylamine depends on the substituent.",
+      "solution": "**The order: ethylamine $>$ ammonia $\\gg$ phenylamine.**\n\n$\\text{p}K_{b}$: ethylamine $3.3$, ammonia $4.8$, phenylamine $9.4$ — phenylamine is about **forty thousand times** weaker than ethylamine.\n\n**Ethylamine against ammonia.** The ethyl group **releases** electron density inductively, increasing the electron density on nitrogen and making the lone pair more available. It also stabilises the ethylammonium ion.\n\n**Phenylamine against both.** The lone pair occupies a $p$ orbital that overlaps with the ring's $\\pi$ system, so it is **delocalised over the ring** and is no longer fully available.\n\nProtonation would also **destroy that delocalisation**, costing the stabilisation energy — so the reaction is doubly unfavourable.\n\n**Substituent effects on phenylamine.**\n\n• **Electron-withdrawing groups** ($-\\text{NO}_{2}$, $-\\text{CN}$, halogens) pull still more density away from the nitrogen, making it a **weaker** base. 4-nitrophenylamine is a very weak base indeed.\n\n• **Electron-releasing groups** ($-\\text{CH}_{3}$, $-\\text{OCH}_{3}$) push density towards it, making it a **stronger** base.\n\n• The effect is **largest from the ortho and para positions**, where resonance can reach the nitrogen. A meta substituent acts only inductively and matters much less.\n\n**A general principle worth extracting.** Base strength depends on the **availability of the lone pair**; acid strength depends on the **stability of the conjugate base**. Both are questions about where electron density ends up.",
+      "marks": 3
+    },
+    {
+      "id": "alc11-012",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Amino acids and proteins",
+      "type": "long",
+      "q": "Describe the structure of an amino acid, explain zwitterions and the isoelectric point, and describe how a protein's primary structure is determined.",
+      "solution": "**Structure.** $\\text{H}_{2}\\text{N-CHR-COOH}$ — an amino group and a carboxyl group on the **same** carbon, with a side chain R that differs between the twenty naturally occurring amino acids.\n\n**All except glycine are chiral**, and biology uses only the L form.\n\n**Zwitterions.** The carboxyl group is acidic and the amino group basic, so the proton transfers internally:\n\n$\\text{H}_{3}\\overset{+}{\\text{N}}\\text{-CHR-COO}^{-}$\n\nThe molecule is internally ionised while remaining overall neutral, which is why amino acids are ionic solids melting above $200$°C rather than the low-boiling liquids their molar mass suggests.\n\n**The isoelectric point** is the pH at which the zwitterion form predominates and there is **no net charge**.\n\n• Below it, the $-\\text{COO}^{-}$ takes a proton and the molecule becomes a **cation**.\n\n• Above it, the $-\\text{NH}_{3}^{+}$ loses one and it becomes an **anion**.\n\nAt the isoelectric point the amino acid does not migrate in an electric field, and its solubility is at a minimum.\n\n**That is what makes electrophoresis work:** at a chosen pH different amino acids carry different charges and move at different rates, so a mixture separates into bands.\n\n**Determining the primary structure.**\n\n1. **Hydrolyse** the protein completely with $6$ M HCl at $110$°C, breaking every peptide link.\n\n2. **Separate and identify** the amino acids by chromatography or electrophoresis, comparing $R_{f}$ values with standards.\n\n3. To get the **sequence** rather than merely the composition, hydrolyse only partially into short fragments, sequence each, and reassemble from the overlaps.",
+      "marks": 3
+    },
+    {
+      "id": "alc11-013",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Condensation polymers",
+      "type": "long",
+      "q": "Compare addition and condensation polymerisation, describe the formation of nylon and Terylene, and explain why condensation polymers are biodegradable while addition polymers are not.",
+      "solution": "**Addition polymerisation.** Many **unsaturated** monomers join with **no other product**. The backbone is C–C throughout, and the atom economy is $100\\%$.\n\n**Condensation polymerisation.** Monomers with **two functional groups each** join with the loss of a small molecule — usually water or HCl — at every link.\n\n**Nylon-6,6 — a polyamide.** A diamine and a dicarboxylic acid:\n\n$\\text{H}_{2}\\text{N}(\\text{CH}_{2})_{6}\\text{NH}_{2} + \\text{HOOC}(\\text{CH}_{2})_{4}\\text{COOH} \\to$ amide links $+ \\text{H}_{2}\\text{O}$\n\nUsed for fibres, ropes, gears and parachutes.\n\n**Terylene (PET) — a polyester.** A diol and a dicarboxylic acid:\n\n$\\text{HOCH}_{2}\\text{CH}_{2}\\text{OH} + \\text{HOOC-C}_{6}\\text{H}_{4}\\text{-COOH} \\to$ ester links $+ \\text{H}_{2}\\text{O}$\n\nUsed for clothing and drinks bottles.\n\n**Why condensation polymers are biodegradable.** The amide and ester links are **polar** and can be **hydrolysed** — by acid, alkali, or enzymes in the environment. The chain is broken back into its monomers, which are then metabolised.\n\n**Why addition polymers are not.** Their backbone is entirely **non-polar C–C and C–H bonds**, with nothing for a nucleophile or an enzyme to attack. Poly(ethene) survives for centuries.\n\n**The same difference makes condensation polymers recyclable by depolymerisation** — PET bottles can be hydrolysed back to their monomers and repolymerised, which addition polymers cannot.\n\nIt is worth noticing that **proteins and DNA are condensation polymers**, and for exactly this reason: life needs polymers that can be taken apart again.",
+      "marks": 5
+    },
+    {
+      "id": "alc11-014",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Preparation and reactions of amines",
+      "type": "long",
+      "q": "Describe two methods of preparing a primary amine, and give three reactions of amines.",
+      "solution": "**Preparation 1 — reduction of a nitrile.**\n\n$\\text{RCN} + 4[\\text{H}] \\xrightarrow{\\text{LiAlH}_{4}\\text{ or H}_{2}/\\text{Ni}} \\text{RCH}_{2}\\text{NH}_{2}$\n\n**This lengthens the carbon chain by one**, since the nitrile itself came from a halogenoalkane and cyanide. It gives a clean primary amine with no mixture.\n\n**Preparation 2 — reduction of a nitro compound.** The standard route to aromatic amines:\n\n$\\text{C}_{6}\\text{H}_{5}\\text{NO}_{2} + 6[\\text{H}] \\xrightarrow{\\text{Sn/conc. HCl}} \\text{C}_{6}\\text{H}_{5}\\text{NH}_{2} + 2\\text{H}_{2}\\text{O}$\n\nThe product is formed as its salt and must be liberated with NaOH.\n\n**Preparation 3 — ammonolysis of a halogenoalkane**, with excess ammonia. Cheap but poor: the product is itself nucleophilic, so a mixture of primary, secondary, tertiary amines and the quaternary salt results.\n\n**Reactions of amines.**\n\n1. **As a base:** with acids, forming salts.\n\n$\\text{CH}_{3}\\text{NH}_{2} + \\text{HCl} \\to \\text{CH}_{3}\\text{NH}_{3}^{+}\\text{Cl}^{-}$\n\n2. **As a nucleophile:** with acyl chlorides, giving **amides**.\n\n$\\text{CH}_{3}\\text{NH}_{2} + \\text{CH}_{3}\\text{COCl} \\to \\text{CH}_{3}\\text{CONHCH}_{3} + \\text{HCl}$\n\n3. **With nitrous acid at $5$°C:** an aromatic amine gives a **diazonium salt**, the gateway to azo dyes; an aliphatic one gives nitrogen gas and an alcohol.\n\n4. **Carbylamine test:** with chloroform and alcoholic KOH, a **primary** amine gives an isocyanide of appalling smell — a clean test for primary amines only.",
+      "marks": 3
+    },
+    {
+      "id": "alc11-015",
+      "chapter": "Nitrogen Compounds and Polymers",
+      "topic": "Azo dyes",
+      "type": "long",
+      "q": "Describe the preparation of an azo dye from phenylamine, and explain why azo compounds are coloured.",
+      "solution": "**Step 1 — diazotisation.** Phenylamine in cold dilute hydrochloric acid, treated with sodium nitrite at $0$–$5$°C:\n\n$\\text{C}_{6}\\text{H}_{5}\\text{NH}_{2} + \\text{HNO}_{2} + \\text{HCl} \\to \\text{C}_{6}\\text{H}_{5}\\text{N}_{2}^{+}\\text{Cl}^{-} + 2\\text{H}_{2}\\text{O}$\n\n**The temperature is critical.** Above about $10$°C the diazonium salt decomposes to phenol and nitrogen gas, and the preparation is lost.\n\n**Step 2 — coupling.** The diazonium salt is added to an electron-rich aromatic compound — phenol in alkaline solution, or another amine:\n\n$\\text{C}_{6}\\text{H}_{5}\\text{N}_{2}^{+} + \\text{C}_{6}\\text{H}_{5}\\text{O}^{-} \\to \\text{C}_{6}\\text{H}_{5}\\text{-N}{=}\\text{N-C}_{6}\\text{H}_{4}\\text{OH}$\n\nAn intensely coloured **azo compound** forms immediately — yellow, orange or red, depending on the coupling partner.\n\n**Why azo compounds are coloured.** The $-\\text{N}{=}\\text{N}-$ group joins the two aromatic rings into one **extended delocalised system** spanning the whole molecule.\n\nThe more extended the delocalisation, the **smaller** the energy gap between the highest occupied and lowest unoccupied orbitals — small enough for **visible** light to bridge it.\n\nThe molecule absorbs part of the visible spectrum, and we see the **complementary** colour.\n\n**The same principle everywhere:** chlorophyll, beta-carotene and indigo are all extensively conjugated. Benzene itself, with only one ring, absorbs in the ultraviolet and is colourless.\n\n**Why azo dyes matter commercially.** They are cheap, cover the whole spectrum, and bind well to fabric — over half of all commercial dyes are azo compounds. Adding $-\\text{SO}_{3}\\text{H}$ groups makes them water-soluble for dyeing cotton.",
+      "marks": 2
+    }
+  ]
+}

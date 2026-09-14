@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-carbonyls",
+  "title": "Carbonyl Compounds and Carboxylic Acids",
+  "chapter": "Topic Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc10-001",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Nucleophilic addition",
+      "type": "mcq",
+      "q": "Aldehydes and ketones react with HCN by:",
+      "solution": "**Nucleophilic addition.** The carbonyl carbon is $\\delta+$ because oxygen is far more electronegative, so it attracts nucleophiles.\n\n$\\text{CN}^{-}$ attacks it, the $\\pi$ electrons move onto the oxygen, and protonation gives the cyanohydrin.",
+      "marks": 1,
+      "options": [
+        "electrophilic addition",
+        "nucleophilic addition",
+        "free radical substitution",
+        "elimination"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc10-002",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Tollens' reagent",
+      "type": "mcq",
+      "q": "Tollens' reagent gives a silver mirror with:",
+      "solution": "Only **aldehydes** reduce the silver(I) complex to metallic silver.\n\nOxidising a ketone would require breaking a carbon-carbon bond, which Tollens' cannot do. It is the standard distinction between the two.",
+      "marks": 1,
+      "options": [
+        "ketones",
+        "aldehydes",
+        "alcohols",
+        "alkanes"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc10-003",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Iodoform test",
+      "type": "mcq",
+      "q": "The triiodomethane (iodoform) test is positive for:",
+      "solution": "A yellow precipitate of $\\text{CHI}_{3}$ forms from anything containing a $\\text{CH}_{3}\\text{CO}-$ group, or a $\\text{CH}_{3}\\text{CH(OH)}-$ group that is oxidised to one in the conditions.\n\nSo ethanal and propanone give it; propanal does not. It is a test for a **fragment**, not a functional group, which is what makes it so useful in structure determination.",
+      "marks": 1,
+      "options": [
+        "all aldehydes",
+        "methyl ketones and methyl secondary alcohols",
+        "all ketones",
+        "carboxylic acids"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc10-004",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Acidity",
+      "type": "mcq",
+      "q": "Carboxylic acids are more acidic than alcohols because:",
+      "solution": "The carboxylate ion's negative charge is **delocalised over two equivalent oxygen atoms**, which stabilises it enormously.\n\nAn alkoxide has no such delocalisation, so the alcohol holds its proton far more tightly. $\\text{p}K_{a}$: about $4.8$ against $16$.",
+      "marks": 1,
+      "options": [
+        "they contain more oxygen",
+        "the carboxylate ion is stabilised by delocalisation",
+        "they are liquids",
+        "they have higher molar mass"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc10-005",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Esterification",
+      "type": "mcq",
+      "q": "An ester is formed from a carboxylic acid and:",
+      "solution": "$\\text{RCOOH} + \\text{R}'\\text{OH} \\rightleftharpoons \\text{RCOOR}' + \\text{H}_{2}\\text{O}$, with concentrated sulphuric acid as catalyst.\n\nThe reaction is **reversible**, so the yield is improved by removing the water or using an excess of one reagent.",
+      "marks": 1,
+      "options": [
+        "an aldehyde",
+        "an alcohol",
+        "an amine",
+        "a ketone"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc10-006",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of propanone, $\\text{CH}_{3}\\text{COCH}_{3}$, in g/mol.",
+      "solution": "$\\text{C}_{3}\\text{H}_{6}\\text{O}$: $36 + 6 + 16 = \\mathbf{58}$ g/mol.",
+      "marks": 2,
+      "answer": 58,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alc10-007",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Carbonyl isomers",
+      "type": "numeric",
+      "q": "How many aldehyde and ketone isomers together does $\\text{C}_{4}\\text{H}_{8}\\text{O}$ have (open chain)?",
+      "solution": "Butanal, 2-methylpropanal and butanone — $\\mathbf{3}$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc10-008",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Basicity of acids",
+      "type": "numeric",
+      "q": "How many moles of NaOH neutralise one mole of ethanedioic acid, $\\text{HOOC-COOH}$?",
+      "solution": "**Dibasic** — two $-\\text{COOH}$ groups, so $\\mathbf{2}$ moles.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc10-009",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Ester formation",
+      "type": "numeric",
+      "q": "How many water molecules are produced when one mole of a diol reacts with one mole of a dicarboxylic acid to form a single ester link?",
+      "solution": "$\\mathbf{1}$ — each ester link releases one water molecule.\n\nRepeating that step many times over is **condensation polymerisation**, which is how polyesters are made.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "alc10-010",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Tests",
+      "type": "numeric",
+      "q": "How many of these give a positive Tollens test: ethanal, propanone, methanal, ethanoic acid?",
+      "solution": "**Ethanal** ✓ and **methanal** ✓ — both aldehydes.\n\n**Propanone** ✗ (a ketone) and **ethanoic acid** ✗.\n\nSo $\\mathbf{2}$. (Methanoic acid would be a third, since it contains a $-\\text{CHO}$ group — but ethanoic acid does not.)",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc10-011",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Nucleophilic addition mechanism",
+      "type": "long",
+      "q": "Give the mechanism for the reaction of HCN with ethanal, explain the role of the base, and say why the product is racemic.",
+      "solution": "**Step 1 — generating the nucleophile.** A trace of base converts HCN into cyanide, a far better nucleophile:\n\n$\\text{HCN} + \\text{OH}^{-} \\rightleftharpoons \\text{CN}^{-} + \\text{H}_{2}\\text{O}$\n\n**Step 2 — attack.** $\\text{CN}^{-}$ attacks the $\\delta+$ carbonyl carbon. The carbon changes from $sp^{2}$ to $sp^{3}$, and the $\\pi$ electrons move onto the oxygen, giving an alkoxide.\n\n**Step 3 — protonation.** The alkoxide takes a proton from HCN, giving the cyanohydrin and **regenerating** $\\text{CN}^{-}$.\n\n$\\text{CH}_{3}\\text{CHO} + \\text{HCN} \\to \\text{CH}_{3}\\text{CH(OH)CN}$\n\n**The base's role.** Pure HCN reacts extremely slowly; adding a trace of KCN or base speeds it up enormously, because the rate depends on $[\\text{CN}^{-}]$ rather than on $[\\text{HCN}]$.\n\nThat kinetic observation is the **evidence** for the mechanism: the attacking species is the ion, not the molecule.\n\n**Why the product is racemic.** The planar carbonyl carbon can be attacked from **either face**, with equal probability, giving equal amounts of the two enantiomers.\n\nThe product contains a chiral centre — the carbon now carries H, OH, CN and $\\text{CH}_{3}$ — but the mixture is optically inactive.\n\n**Why cyanohydrins are useful.** The nitrile can be hydrolysed to a carboxylic acid or reduced to an amine, so this one step both **lengthens the carbon chain** and installs a new functional group.\n\n**Safety:** HCN is extremely toxic, so the reaction is carried out in a fume cupboard using KCN with dilute acid rather than the gas itself.",
+      "marks": 3
+    },
+    {
+      "id": "alc10-012",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Distinguishing carbonyl compounds",
+      "type": "long",
+      "q": "Describe how you would distinguish between propanal, propanone and propan-1-ol using chemical tests.",
+      "solution": "**Test 1 — 2,4-dinitrophenylhydrazine (Brady's reagent).**\n\n**Propanal** ✓ and **propanone** ✓ give an **orange precipitate**; **propan-1-ol** gives nothing.\n\nThis separates the carbonyl compounds from the alcohol at one stroke. The precipitate's melting point, compared with tabulated values, even identifies **which** carbonyl compound it is.\n\n**Test 2 — Tollens' reagent, warmed.**\n\n**Propanal** gives a **silver mirror**; **propanone** does not.\n\nThis separates the aldehyde from the ketone, since only the aldehyde can be oxidised without breaking a C–C bond.\n\n**Alternatively Fehling's solution:** a red-brown precipitate of $\\text{Cu}_{2}\\text{O}$ with the aldehyde only.\n\n**Test 3 — acidified potassium dichromate, warmed.**\n\n**Propanal** and **propan-1-ol** both turn it **orange to green**; **propanone** leaves it orange.\n\n**A trap worth noting: the iodoform test would not help here.** Propanone gives it (it has a $\\text{CH}_{3}\\text{CO}-$ group), but so would ethanal — and neither propanal nor propan-1-ol does. It distinguishes the ketone but by an accident of structure rather than by class.\n\n**A systematic scheme:** Brady's reagent first to find the carbonyls, then Tollens' to separate aldehyde from ketone. Two tests settle three compounds.\n\nIn an examination, always give the **reagent**, the **observation** and the **conclusion** — all three earn marks.",
+      "marks": 3
+    },
+    {
+      "id": "alc10-013",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Carboxylic acids and esters",
+      "type": "long",
+      "q": "Describe four reactions of carboxylic acids, explain esterification including how the yield is improved, and describe the hydrolysis of esters.",
+      "solution": "**Four reactions.**\n\n1. **With a carbonate:** brisk effervescence of $\\text{CO}_{2}$.\n\n$2\\text{CH}_{3}\\text{COOH} + \\text{Na}_{2}\\text{CO}_{3} \\to 2\\text{CH}_{3}\\text{COONa} + \\text{H}_{2}\\text{O} + \\text{CO}_{2}$\n\nThis is the test that distinguishes a carboxylic acid from a phenol.\n\n2. **With an alcohol:** esterification (below).\n\n3. **With $\\text{LiAlH}_{4}$:** reduction to a **primary alcohol**. $\\text{NaBH}_{4}$ is not strong enough.\n\n4. **With $\\text{PCl}_{5}$:** an acyl chloride, plus misty fumes of HCl — itself a test for $-\\text{OH}$.\n\n**Esterification.**\n\n$\\text{CH}_{3}\\text{COOH} + \\text{C}_{2}\\text{H}_{5}\\text{OH} \\rightleftharpoons \\text{CH}_{3}\\text{COOC}_{2}\\text{H}_{5} + \\text{H}_{2}\\text{O}$\n\nConcentrated $\\text{H}_{2}\\text{SO}_{4}$ catalyses it and, by absorbing water, also shifts the equilibrium right.\n\n**Improving the yield:** remove the water as it forms, use an excess of the cheaper reagent, or distil the ester off — all applications of Le Chatelier's principle to a reversible reaction.\n\n**Hydrolysis of esters — two routes.**\n\n• **Acid hydrolysis** is simply esterification in reverse, and is therefore **reversible** and incomplete.\n\n• **Alkaline hydrolysis (saponification)** gives the **carboxylate salt**, which cannot react back — so it goes to **completion**.\n\n$\\text{RCOOR}' + \\text{NaOH} \\to \\text{RCOONa} + \\text{R}'\\text{OH}$\n\n**This is how soap is made:** boiling animal or vegetable fat (an ester of glycerol) with sodium hydroxide gives the sodium salts of long-chain acids — soap — and glycerol as a valuable by-product.",
+      "marks": 5
+    },
+    {
+      "id": "alc10-014",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Acidity of carboxylic acids",
+      "type": "long",
+      "q": "Explain why carboxylic acids are acidic, why chloroethanoic acid is stronger than ethanoic acid, and why phenol is weaker than both.",
+      "solution": "**Why carboxylic acids are acidic.** On losing a proton, the carboxylate ion's negative charge is **delocalised over two equivalent oxygen atoms**.\n\nThe two resonance structures are identical, giving the maximum possible stabilisation, and X-ray measurements confirm that **both C–O bonds are the same length** — intermediate between a single and a double bond.\n\nA stabilised conjugate base means a stronger acid.\n\n**Why chloroethanoic acid is stronger.** Chlorine is electronegative and withdraws electron density **inductively** along the chain, spreading the carboxylate's charge still further and stabilising it more.\n\n$\\text{p}K_{a}$: ethanoic $4.76$, chloroethanoic $2.86$, dichloroethanoic $1.29$, trichloroethanoic $0.65$.\n\n**Each chlorine multiplies the acidity roughly a hundredfold**, and the effect falls off sharply with distance — a chlorine three carbons away barely registers.\n\n**Why phenol is weaker.** Phenoxide's charge is delocalised too, but onto **carbon** atoms of the ring, which hold a negative charge far less willingly than oxygen does.\n\nThose resonance structures also disrupt the aromatic sextet, which costs energy. So the stabilisation is real but much weaker: $\\text{p}K_{a}$ about $10$.\n\n**The order, with the reason in one line each:**\n\ncarboxylic acid ($4.8$, charge on two oxygens) $>$ phenol ($10$, charge on carbons) $>$ alcohol ($16$, no delocalisation at all).\n\n**The practical test that separates them:** only the carboxylic acid is strong enough to displace $\\text{CO}_{2}$ from a carbonate.",
+      "marks": 3
+    },
+    {
+      "id": "alc10-015",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Uses of esters",
+      "type": "long",
+      "q": "Describe the physical properties and uses of esters, and explain why they smell pleasant while carboxylic acids do not.",
+      "solution": "**Physical properties.** Esters are **volatile liquids** with characteristically sweet, fruity smells, only slightly soluble in water but good solvents for organic compounds.\n\n**Why they are volatile.** An ester has no O–H bond, so it **cannot hydrogen bond to itself**. Only dipole-dipole and dispersion forces hold the molecules together.\n\n**Contrast the carboxylic acid it came from.** Acids hydrogen bond strongly and in fact form **dimers**, two molecules locked together by a pair of hydrogen bonds. They are far less volatile and boil much higher.\n\nEthyl ethanoate ($M_{r}$ $88$) boils at $77$°C; ethanoic acid ($M_{r}$ only $60$) boils at $118$°C.\n\n**Why esters smell and acids do not smell pleasant.** To be smelled, a molecule must reach the nose — so volatility is essential. Esters evaporate readily and reach the receptors.\n\nCarboxylic acids are less volatile, and what does reach the nose smells sharp and unpleasant: ethanoic acid is vinegar, butanoic acid is rancid butter, and the acids in goats and in sweat are the same compounds.\n\n**Uses.**\n\n• **Flavourings and perfumes** — pentyl ethanoate is pear drops, octyl ethanoate orange, ethyl butanoate pineapple. Natural fruit flavours are mostly ester mixtures.\n\n• **Solvents** — ethyl ethanoate in nail varnish remover, glues and printing inks.\n\n• **Plasticisers**, softening PVC.\n\n• **Fats and oils** are esters of glycerol, and **biodiesel** is made by transesterifying them with methanol.\n\n• **Polyesters** such as Terylene, from a diol and a dicarboxylic acid.",
+      "marks": 2
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-inorganic",
+  "title": "Inorganic Chemistry: Groups and Transition Elements",
+  "chapter": "Topic Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc6-001",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Group 2",
+      "type": "mcq",
+      "q": "Going down Group 2, the solubility of the hydroxides:",
+      "solution": "Hydroxide solubility **increases** down the group — $\\text{Mg(OH)}_{2}$ is nearly insoluble, $\\text{Ba(OH)}_{2}$ is appreciably soluble.\n\n**Sulphate solubility does the opposite**, decreasing down the group, which is why barium sulphate is used as the test for sulphate ions.",
+      "marks": 1,
+      "options": [
+        "decreases",
+        "increases",
+        "stays the same",
+        "is always zero"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc6-002",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Group 17",
+      "type": "mcq",
+      "q": "The oxidising power of the halogens:",
+      "solution": "**Decreases** down the group. A larger atom attracts an incoming electron less strongly, so it is a weaker oxidising agent.\n\nFluorine is the strongest oxidising agent of all the elements; iodine is comparatively mild.",
+      "marks": 1,
+      "options": [
+        "increases down the group",
+        "decreases down the group",
+        "is the same for all",
+        "is greatest for iodine"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc6-003",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Transition elements",
+      "type": "mcq",
+      "q": "Transition metal complexes are coloured because of:",
+      "solution": "The ligand field splits the d orbitals, and an electron absorbs a photon of visible light to jump the gap. The colour seen is the **complement** of the light absorbed.\n\n$d^{0}$ and $d^{10}$ ions have no such transition available and are **colourless** — which is why $\\text{Zn}^{2+}$ and $\\text{Sc}^{3+}$ solutions are clear.",
+      "marks": 1,
+      "options": [
+        "ionic bonding",
+        "d-d electron transitions",
+        "nuclear transitions",
+        "their high density"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc6-004",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Ligands",
+      "type": "mcq",
+      "q": "A ligand is a species that:",
+      "solution": "A ligand **donates a lone pair** into a vacant orbital on the metal ion, forming a **dative covalent** bond.\n\nLigands may be negative ($\\text{Cl}^{-}$, $\\text{CN}^{-}$) or neutral ($\\text{H}_{2}\\text{O}$, $\\text{NH}_{3}$) — what matters is the lone pair.",
+      "marks": 1,
+      "options": [
+        "accepts electrons from the metal",
+        "donates a lone pair to the metal ion",
+        "removes electrons",
+        "is always negatively charged"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc6-005",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Catalysis",
+      "type": "mcq",
+      "q": "Transition metals make good catalysts largely because they:",
+      "solution": "**Variable oxidation states** let the metal accept and release electrons during a reaction, providing a low-energy pathway through intermediates.\n\nTheir surfaces also **adsorb** reactants, holding them in place and weakening their bonds — the basis of heterogeneous catalysis.",
+      "marks": 1,
+      "options": [
+        "are dense",
+        "show variable oxidation states",
+        "are coloured",
+        "have high melting points"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc6-006",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Oxidation state",
+      "type": "numeric",
+      "q": "Find the oxidation state of manganese in $\\text{MnO}_{4}^{-}$.",
+      "solution": "$x + 4(-2) = -1 \\Rightarrow x = \\mathbf{+7}$.",
+      "marks": 2,
+      "answer": 7,
+      "tolerance": 0
+    },
+    {
+      "id": "alc6-007",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Coordination number",
+      "type": "numeric",
+      "q": "Find the coordination number in $[\\text{Cu}(\\text{H}_{2}\\text{O})_{6}]^{2+}$.",
+      "solution": "$\\mathbf{6}$ — six water molecules, each donating through its oxygen, in an octahedral arrangement.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "alc6-008",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Unpaired electrons",
+      "type": "numeric",
+      "q": "Find the number of unpaired d electrons in $\\text{Ti}^{3+}$ ($Z = 22$).",
+      "solution": "Ti is $[\\text{Ar}]3d^{2}4s^{2}$, so $\\text{Ti}^{3+}$ is $[\\text{Ar}]3d^{1}$ — $\\mathbf{1}$ unpaired electron.\n\nThat single electron is why $\\text{Ti}^{3+}$ solutions are purple.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "alc6-009",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Group 2 formula",
+      "type": "numeric",
+      "q": "How many chloride ions are in the formula of calcium chloride?",
+      "solution": "$\\text{CaCl}_{2}$ — $\\mathbf{2}$, since calcium forms a $2+$ ion and chloride a $1-$ ion.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc6-010",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Halide displacement",
+      "type": "numeric",
+      "q": "How many of these displacements occur: $\\text{Cl}_{2}$ with KBr; $\\text{Br}_{2}$ with KI; $\\text{I}_{2}$ with KBr?",
+      "solution": "**$\\text{Cl}_{2}$ with KBr** ✓ and **$\\text{Br}_{2}$ with KI** ✓ — each halogen displaces those below it.\n\n**$\\text{I}_{2}$ with KBr** ✗ — iodine is below bromine and cannot displace it.\n\nSo $\\mathbf{2}$, and the pattern confirms the order of oxidising power.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc6-011",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Group 2 trends",
+      "type": "long",
+      "q": "Describe and explain the trends down Group 2 in reactivity with water, in the solubility of the hydroxides and sulphates, and in the thermal stability of the carbonates.",
+      "solution": "**Reactivity with water — increases down the group.**\n\nMagnesium reacts only with steam; calcium reacts steadily with cold water; barium reacts vigorously.\n\n*Why:* the outer electrons are further from the nucleus and better shielded, so the ionisation energies fall and the metal loses its electrons more readily.\n\n**Hydroxide solubility — increases down the group.**\n\n$\\text{Mg(OH)}_{2}$ is nearly insoluble (and is milk of magnesia, an antacid mild enough to swallow); $\\text{Ba(OH)}_{2}$ dissolves appreciably.\n\n**Sulphate solubility — decreases down the group.** $\\text{MgSO}_{4}$ is soluble; $\\text{BaSO}_{4}$ is famously insoluble.\n\n*Why they go opposite ways:* both lattice enthalpy and hydration enthalpy fall as the cation grows, and which falls faster depends on the **size of the anion**.\n\nWith the small $\\text{OH}^{-}$, the lattice enthalpy is dominated by the cation and falls faster — so solubility rises. With the large $\\text{SO}_{4}^{2-}$, the lattice enthalpy hardly changes while hydration falls — so solubility drops.\n\n**Carbonate thermal stability — increases down the group.**\n\n$\\text{MgCO}_{3}$ decomposes at about $540$°C, $\\text{BaCO}_{3}$ only above $1300$°C.\n\n*Why:* a small, highly charged cation **polarises** the carbonate ion strongly, distorting its electron cloud and weakening a C–O bond. The larger cations down the group polarise less, so the carbonate survives to a higher temperature.\n\n**The uses follow the chemistry.** $\\text{BaSO}_{4}$'s insolubility makes it safe to swallow as an X-ray contrast medium despite barium's toxicity — nothing dissolves, so nothing is absorbed.",
+      "marks": 3
+    },
+    {
+      "id": "alc6-012",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Group 17 trends",
+      "type": "long",
+      "q": "Describe the trends in the halogens' physical properties and oxidising power, and describe the reactions of the halides with concentrated sulphuric acid.",
+      "solution": "**Physical properties — down the group.**\n\nMelting and boiling points **increase**: chlorine is a green gas, bromine a red-brown liquid, iodine a grey solid that sublimes to a violet vapour.\n\n*Why:* the molecules have more electrons, so the **van der Waals forces** between them grow stronger.\n\n**Oxidising power — decreases down the group.**\n\n*Why:* a larger atom, with more shielding, attracts an incoming electron less strongly.\n\n*The evidence:* **displacement reactions.** $\\text{Cl}_{2}$ displaces $\\text{Br}^{-}$ and $\\text{I}^{-}$; $\\text{Br}_{2}$ displaces only $\\text{I}^{-}$; $\\text{I}_{2}$ displaces neither.\n\n**Halides with concentrated sulphuric acid — a neat demonstration of reducing power, which runs the opposite way.**\n\n**Chloride:** acid-base only. Misty fumes of HCl; the chloride is too weak a reducing agent to attack the acid.\n\n$\\text{NaCl} + \\text{H}_{2}\\text{SO}_{4} \\to \\text{NaHSO}_{4} + \\text{HCl}$\n\n**Bromide:** HBr forms but is then partly oxidised, giving orange $\\text{Br}_{2}$ and the choking smell of $\\text{SO}_{2}$ (sulphur reduced from $+6$ to $+4$).\n\n**Iodide:** the most vigorous. Purple $\\text{I}_{2}$ vapour, and the sulphur is reduced further still — to $\\text{S}$ (yellow solid) and $\\text{H}_{2}\\text{S}$ (bad eggs), a change of $+6$ to $-2$.\n\n**The pattern in one sentence:** the larger the halide ion, the more easily it gives up its electron, so the further it drives the reduction of the sulphur.\n\n**A practical consequence:** HBr and HI cannot be prepared with concentrated sulphuric acid. Phosphoric acid, which is not an oxidising agent, is used instead.",
+      "marks": 3
+    },
+    {
+      "id": "alc6-013",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Transition element chemistry",
+      "type": "long",
+      "q": "Define a transition element, explain why they show variable oxidation states, form coloured complexes and act as catalysts, and explain ligand exchange with an example.",
+      "solution": "**Definition.** A d-block element that forms at least one stable ion with a **partially filled d sub-shell**.\n\nZinc is excluded: $\\text{Zn}^{2+}$ is $3d^{10}$, completely full — which is exactly why zinc compounds are colourless and zinc is a poor catalyst.\n\n**Variable oxidation states.** The $4s$ and $3d$ energies are very close, so electrons can be removed from either at similar cost.\n\nManganese ranges from $+2$ to $+7$; iron shows $+2$ and $+3$. Contrast the s-block, where each element has a single oxidation state.\n\n**Coloured complexes.** The ligands split the five d orbitals into two groups. An electron absorbs a photon of visible light to jump the gap, and the **complementary** colour is transmitted.\n\nThe size of the gap depends on the metal, its oxidation state **and the ligand**, which is why the same metal gives different colours with different ligands.\n\n**Catalysis.** Variable oxidation states allow the metal to accept and donate electrons in intermediate steps ($\\text{Fe}^{3+}/\\text{Fe}^{2+}$ in homogeneous catalysis), and d orbitals allow reactants to **adsorb** onto a surface and have their bonds weakened (iron in the Haber process, nickel in hydrogenation).\n\n**Ligand exchange.** One ligand replaces another in the coordination sphere.\n\n$[\\text{Cu}(\\text{H}_{2}\\text{O})_{6}]^{2+} + 4\\text{NH}_{3} \\to [\\text{Cu}(\\text{NH}_{3})_{4}(\\text{H}_{2}\\text{O})_{2}]^{2+} + 4\\text{H}_{2}\\text{O}$\n\npale blue $\\to$ **deep blue**\n\nThe colour change is dramatic because ammonia splits the d orbitals more strongly than water does, changing the energy gap and so the wavelength absorbed.\n\n**A ligand exchange that matters:** carbon monoxide binds to haemoglobin's iron about $200$ times more strongly than oxygen does, and the exchange is effectively irreversible — which is precisely why CO is so lethal.",
+      "marks": 5
+    },
+    {
+      "id": "alc6-014",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Tests for ions",
+      "type": "long",
+      "q": "Describe the tests for $\\text{Cu}^{2+}$, $\\text{Fe}^{2+}$, $\\text{Fe}^{3+}$, halide ions and sulphate ions, giving the observations.",
+      "solution": "**$\\text{Cu}^{2+}$ — add NaOH.** A **pale blue** gelatinous precipitate of $\\text{Cu(OH)}_{2}$, insoluble in excess.\n\nWith **excess ammonia** it first precipitates, then **dissolves to a deep blue** solution — the tetraammine complex. That two-stage behaviour is the definitive test.\n\n**$\\text{Fe}^{2+}$ — add NaOH.** A **dirty green** precipitate of $\\text{Fe(OH)}_{2}$, which turns **brown at the surface** on standing as it is oxidised by the air.\n\n**$\\text{Fe}^{3+}$ — add NaOH.** A **red-brown** precipitate of $\\text{Fe(OH)}_{3}$, insoluble in excess. With thiocyanate it gives an intense **blood-red** solution, sensitive to traces.\n\n**Halides — acidify with dilute nitric acid, then add silver nitrate:**\n\n• Chloride: **white** precipitate, dissolving in dilute ammonia\n\n• Bromide: **cream** precipitate, dissolving in concentrated ammonia\n\n• Iodide: **pale yellow** precipitate, insoluble even in concentrated ammonia\n\nThe ammonia step is what separates the three, since the colours are easily confused.\n\n**Sulphate — acidify with dilute hydrochloric acid, then add barium chloride.** A **white** precipitate of $\\text{BaSO}_{4}$.\n\n**Why acidify first, in both cases?** Carbonates also give white precipitates with silver and barium ions. The acid destroys any carbonate present, so the result is unambiguous.\n\nIt is one line of the method and it is worth a mark every time.",
+      "marks": 3
+    },
+    {
+      "id": "alc6-015",
+      "chapter": "Inorganic Chemistry: Groups and Transition Elements",
+      "topic": "Complex ions and stereochemistry",
+      "type": "long",
+      "q": "Explain what determines the shape of a complex ion, and describe cis-trans and optical isomerism in complexes with an example of the medical importance of each.",
+      "solution": "**What determines the shape — the coordination number.**\n\n• **6** — **octahedral**, much the commonest. $[\\text{Fe}(\\text{H}_{2}\\text{O})_{6}]^{3+}$.\n\n• **4** — usually **tetrahedral** with large ligands such as $\\text{Cl}^{-}$, as in $[\\text{CuCl}_{4}]^{2-}$; but **square planar** for $d^{8}$ ions such as $\\text{Pt}^{2+}$ and $\\text{Ni}^{2+}$.\n\n• **2** — **linear**, as in $[\\text{Ag}(\\text{NH}_{3})_{2}]^{+}$, the complex used in Tollens' reagent.\n\nLigand size and the metal's electron configuration together decide which.\n\n**Cis-trans isomerism.** In a square planar $\\text{MA}_{2}\\text{B}_{2}$ complex, the two identical ligands may be adjacent (**cis**) or opposite (**trans**).\n\n**The medical case: cisplatin.** $\\text{cis-}[\\text{Pt}(\\text{NH}_{3})_{2}\\text{Cl}_{2}]$ is one of the most successful anticancer drugs, binding to DNA and preventing replication.\n\nThe **trans** isomer — the same atoms, the same bonds, the wrong geometry — is **inactive**, because the chlorides are too far apart to bind to adjacent guanine bases.\n\n**Optical isomerism.** A complex with three bidentate ligands, such as $[\\text{Ni}(\\text{en})_{3}]^{2+}$, exists as two non-superimposable mirror images.\n\nThey rotate plane-polarised light in opposite directions, and — crucially — they behave **differently towards other chiral molecules**, which every biological system is made of.\n\n**Why this matters in medicine.** One enantiomer of a drug may be therapeutic and the other useless or harmful. The thalidomide tragedy is the standard example, and it is why modern drugs are usually developed as **single enantiomers**.\n\nA tiny difference in three-dimensional shape is the difference between a cure and a poison.",
+      "marks": 2
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-bonding",
+  "title": "Chemical Bonding and Structure",
+  "chapter": "Topic Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc2-001",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Ionic bonding",
+      "type": "mcq",
+      "q": "Ionic bonding involves:",
+      "solution": "Electrons are **transferred**, and the resulting oppositely charged ions attract electrostatically in a giant lattice.\n\nThe attraction is non-directional, acting equally in all directions, which is why ionic compounds form regular lattices rather than molecules.",
+      "marks": 1,
+      "options": [
+        "sharing of electron pairs",
+        "electrostatic attraction between oppositely charged ions",
+        "delocalised electrons",
+        "hydrogen bridges"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc2-002",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Shapes of molecules",
+      "type": "mcq",
+      "q": "According to VSEPR theory, a molecule with four bonding pairs and no lone pairs is:",
+      "solution": "Four electron pairs repel to the maximum separation, giving a **tetrahedron** with bond angles of $109.5°$.\n\nMethane is the standard example.",
+      "marks": 1,
+      "options": [
+        "linear",
+        "trigonal planar",
+        "tetrahedral",
+        "octahedral"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alc2-003",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Bond angles",
+      "type": "mcq",
+      "q": "The bond angle in ammonia is about $107°$ rather than $109.5°$ because:",
+      "solution": "A **lone pair** is held by only one nucleus, so it occupies more space near the central atom and repels the bonding pairs more strongly.\n\nEach lone pair closes the angle by about $2.5°$: methane $109.5°$, ammonia $107°$, water $104.5°$ with two lone pairs.",
+      "marks": 1,
+      "options": [
+        "nitrogen is small",
+        "a lone pair repels more strongly than a bonding pair",
+        "the hydrogens repel",
+        "it is planar"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc2-004",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Hydrogen bonding",
+      "type": "mcq",
+      "q": "Hydrogen bonding occurs when hydrogen is bonded directly to:",
+      "solution": "Only **N, O or F** — the three elements electronegative enough, and small enough, to leave the hydrogen nucleus so exposed.\n\nIt is why water boils at $100$°C rather than the $-80$°C its molar mass would suggest, and why ice floats.",
+      "marks": 1,
+      "options": [
+        "carbon",
+        "nitrogen, oxygen or fluorine",
+        "any halogen",
+        "a metal"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc2-005",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Metallic bonding",
+      "type": "mcq",
+      "q": "Metals conduct electricity because they have:",
+      "solution": "A metal is a lattice of positive ions in a **sea of delocalised electrons**, free to move through the whole structure.\n\nThe same electrons make metals good thermal conductors, and the non-directional bonding is why they are malleable rather than brittle.",
+      "marks": 1,
+      "options": [
+        "ions free to move",
+        "delocalised electrons",
+        "covalent bonds",
+        "a high density"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc2-006",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Bond angle",
+      "type": "numeric",
+      "q": "Find the bond angle (in degrees) in a linear molecule such as $\\text{CO}_{2}$.",
+      "solution": "$\\mathbf{180°}$ — two electron domains get furthest apart in a straight line.",
+      "marks": 2,
+      "answer": 180,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alc2-007",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Lone pairs",
+      "type": "numeric",
+      "q": "How many lone pairs are on the central atom in a water molecule?",
+      "solution": "Oxygen has six outer electrons; two are used in bonding, leaving $\\mathbf{2}$ lone pairs.\n\nThey squeeze the bond angle down to $104.5°$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc2-008",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Bond angle in methane",
+      "type": "numeric",
+      "q": "Find the bond angle (in degrees) in methane, to one decimal place.",
+      "solution": "$\\mathbf{109.5°}$ — the perfect tetrahedral angle, with four identical bonding pairs and no lone pairs.",
+      "marks": 2,
+      "answer": 109.5,
+      "tolerance": 0.3
+    },
+    {
+      "id": "alc2-009",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Electron pairs",
+      "type": "numeric",
+      "q": "How many bonding pairs surround the central atom in $\\text{BF}_{3}$?",
+      "solution": "$\\mathbf{3}$, with no lone pairs, giving a **trigonal planar** shape and $120°$ angles.\n\nBoron has only six electrons around it — an exception to the octet rule, and the reason $\\text{BF}_{3}$ is such a good Lewis acid.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc2-010",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Dative bond",
+      "type": "numeric",
+      "q": "How many electrons does the donor atom contribute to a dative covalent bond?",
+      "solution": "$\\mathbf{2}$ — the donor supplies **both** electrons of the shared pair.\n\nOnce formed, the bond is indistinguishable from any other covalent bond: all four N–H bonds in $\\text{NH}_{4}^{+}$ are identical.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc2-011",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Shapes of molecules",
+      "type": "long",
+      "q": "State the principles of VSEPR theory and use them to predict and explain the shapes of $\\text{CH}_{4}$, $\\text{NH}_{3}$, $\\text{H}_{2}\\text{O}$ and $\\text{SF}_{6}$.",
+      "solution": "**The principles.**\n\n1. Electron pairs around a central atom **repel** and arrange themselves as far apart as possible.\n\n2. **Lone pairs repel more strongly than bonding pairs**, because they are held by one nucleus rather than two and so spread out more.\n\n3. The order of repulsion is: lone-lone $>$ lone-bonding $>$ bonding-bonding.\n\n**Methane, $\\text{CH}_{4}$.** Four bonding pairs, no lone pairs.\n\n**Tetrahedral**, $109.5°$.\n\n**Ammonia, $\\text{NH}_{3}$.** Three bonding pairs and **one lone pair** — four domains in all, so the arrangement is still tetrahedral, but the **shape** (which names only the atoms) is **pyramidal**.\n\nThe lone pair pushes the bonds together: $107°$.\n\n**Water, $\\text{H}_{2}\\text{O}$.** Two bonding pairs and **two lone pairs**.\n\nShape **bent**, angle $104.5°$ — squeezed twice over.\n\n**The $109.5° \\to 107° \\to 104.5°$ sequence** is the clearest evidence for rule 2: each lone pair costs about $2.5°$.\n\n**Sulphur hexafluoride, $\\text{SF}_{6}$.** Six bonding pairs, no lone pairs.\n\n**Octahedral**, $90°$. Sulphur has expanded its octet to twelve electrons, which it can do because it has accessible $3d$ orbitals — an option denied to oxygen, which is why $\\text{OF}_{6}$ does not exist.\n\n**Count the domains first, then subtract the lone pairs to name the shape.** That two-step procedure handles every molecule in the syllabus.",
+      "marks": 3
+    },
+    {
+      "id": "alc2-012",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Intermolecular forces",
+      "type": "long",
+      "q": "Describe the three types of intermolecular force, and use them to explain why $\\text{H}_{2}\\text{O}$ boils at $100$°C while $\\text{H}_{2}\\text{S}$ boils at $-60$°C.",
+      "solution": "**1. Van der Waals (London dispersion) forces.** Present between **all** molecules.\n\nElectrons move randomly, so at any instant a molecule has a temporary dipole, which induces one in its neighbour. The forces are weak but they **increase with the number of electrons**, which is why boiling points rise down a homologous series.\n\n**2. Permanent dipole-dipole forces.** Between **polar** molecules, whose $\\delta+$ and $\\delta-$ ends attract. Stronger than dispersion forces for molecules of similar size.\n\n**3. Hydrogen bonding.** A special, much stronger case, where H is bonded directly to **N, O or F**.\n\nThose atoms are so electronegative, and hydrogen so small with no inner shells, that the hydrogen nucleus is left almost bare and attracts a lone pair on a neighbouring molecule very strongly. About ten times a dipole-dipole force.\n\n**Water against hydrogen sulphide.**\n\n$\\text{H}_{2}\\text{S}$ is the **heavier** molecule with more electrons, so on dispersion forces alone it should boil **higher**. It boils $160$ degrees **lower**.\n\nThe reason is that oxygen is electronegative enough for **hydrogen bonding** while sulphur is not. Water's molecules are held in an extensive hydrogen-bonded network, and a great deal of energy is needed to separate them.\n\n**The consequences are not academic.** Without hydrogen bonding, water would boil at about $-80$°C, there would be no liquid water on Earth, and no life of the kind we know.\n\nThe same bonding makes ice **less dense** than water — the open hydrogen-bonded lattice — so ponds freeze from the top down and fish survive the winter.",
+      "marks": 3
+    },
+    {
+      "id": "alc2-013",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Types of bonding and structure",
+      "type": "long",
+      "q": "Compare giant ionic, giant covalent, giant metallic and simple molecular structures, giving an example and the properties of each.",
+      "solution": "**Giant ionic** — $\\text{NaCl}$.\n\nA lattice of alternating ions held by strong electrostatic attraction.\n\n*Properties:* high melting point, hard but **brittle** (a blow slides one layer and brings like charges together), soluble in water, conducts **only when molten or aqueous** — the ions must be free to move.\n\n**Giant covalent** — diamond, graphite, $\\text{SiO}_{2}$.\n\nA continuous network of covalent bonds.\n\n*Properties:* very high melting point (every bond must break), very hard, insoluble, and normally non-conducting — **except graphite**, whose fourth electron is delocalised along the layers, and which is soft because those layers slide.\n\n**Giant metallic** — Na, Fe, Cu.\n\nPositive ions in a sea of delocalised electrons.\n\n*Properties:* good electrical and thermal conductor, **malleable and ductile** (the layers slide without breaking the bonding, since it is non-directional), melting point rising with the ion's charge and the number of delocalised electrons.\n\n**Simple molecular** — $\\text{I}_{2}$, $\\text{CO}_{2}$, $\\text{H}_{2}\\text{O}$.\n\nStrong covalent bonds **within** molecules, weak forces **between** them.\n\n*Properties:* **low** melting and boiling points, soft, non-conducting, often soluble in non-polar solvents.\n\n**The point that is most often missed:** melting a simple molecular substance breaks only the weak **intermolecular** forces, never the covalent bonds. Melting iodine does not break a single I–I bond — which is exactly why it melts at $114$°C while diamond needs $3550$°C.",
+      "marks": 5
+    },
+    {
+      "id": "alc2-014",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Polarity",
+      "type": "long",
+      "q": "Explain what makes a bond polar and what makes a molecule polar, and account for $\\text{CO}_{2}$ being non-polar while $\\text{H}_{2}\\text{O}$ is polar.",
+      "solution": "**A polar bond** arises when the two atoms differ in electronegativity, so the bonding pair is drawn towards one of them, giving partial charges $\\delta+$ and $\\delta-$.\n\nThe greater the difference, the more polar the bond.\n\n**A polar molecule** requires polar bonds **and** a shape in which their dipoles do not cancel. Dipoles are **vectors**, so the geometry matters as much as the bonds.\n\n**Carbon dioxide.** The C=O bonds are strongly polar — oxygen is far more electronegative than carbon.\n\nBut $\\text{CO}_{2}$ is **linear**, with the two dipoles pointing in exactly opposite directions. They cancel completely, so the molecule has **no overall dipole** and is non-polar.\n\n**Water.** The O–H bonds are similarly polar, but the molecule is **bent** at $104.5°$ because of the two lone pairs.\n\nThe two dipoles therefore have a **resultant**, pointing from the hydrogens towards the oxygen. Water is strongly polar.\n\n**Why this matters.** Water dissolves ionic and polar substances because its dipoles can surround and stabilise the separated ions. $\\text{CO}_{2}$ cannot, and is only slightly soluble.\n\nIt also explains the boiling points ($100$°C against $-78$°C for sublimation), and why 'like dissolves like'.\n\n**The test in one sentence:** polar bonds plus a symmetrical shape gives a non-polar molecule; polar bonds plus an asymmetrical shape gives a polar one. $\\text{CCl}_{4}$ is non-polar for exactly the same reason as $\\text{CO}_{2}$, and $\\text{CHCl}_{3}$ is polar because the symmetry is broken.",
+      "marks": 3
+    },
+    {
+      "id": "alc2-015",
+      "chapter": "Chemical Bonding and Structure",
+      "topic": "Bond energy and bond length",
+      "type": "long",
+      "q": "Explain the relation between bond order, bond length and bond energy, and describe what is meant by delocalisation in benzene.",
+      "solution": "**The relation.** As bond order increases, more electron pairs are shared between the same two nuclei, pulling them closer and holding them more firmly.\n\n**Shorter bonds are stronger bonds:**\n\n• C–C: $154$ pm, $348$ kJ/mol\n\n• C=C: $134$ pm, $612$ kJ/mol\n\n• C≡C: $120$ pm, $837$ kJ/mol\n\n**Note a double bond is not twice as strong as a single one.** The second bond is a $\\pi$ bond, formed by sideways overlap, which is weaker than the $\\sigma$ bond — and it is why alkenes react by addition, with the $\\pi$ bond breaking first.\n\n**Benzene and delocalisation.** Kekulé's structure has alternating single and double bonds, which predicts two different bond lengths.\n\n**X-ray measurements show all six C–C bonds are identical**, at $139$ pm — between a single and a double bond.\n\n**The explanation:** each carbon has one electron in a $p$ orbital perpendicular to the ring. These six orbitals overlap sideways all the way round, forming a **delocalised $\\pi$ cloud** above and below the plane.\n\n**The evidence for it.**\n\n1. **Equal bond lengths**, as measured.\n\n2. **Enthalpy of hydrogenation.** Benzene releases $152$ kJ/mol **less** than three isolated double bonds would — it is that much more stable than Kekulé's structure predicts.\n\n3. **Chemical behaviour:** benzene undergoes **substitution**, not addition, because addition would destroy the delocalisation and the stability it confers.\n\nThat last point explains the whole of aromatic chemistry in one sentence.",
+      "marks": 2
+    }
+  ]
+}

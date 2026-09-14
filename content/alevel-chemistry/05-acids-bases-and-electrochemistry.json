@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-acids-electro",
+  "title": "Acids, Bases and Electrochemistry",
+  "chapter": "Topic Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc5-001",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Bronsted-Lowry",
+      "type": "mcq",
+      "q": "According to the Brønsted-Lowry theory, an acid is:",
+      "solution": "A Brønsted-Lowry acid is a **proton donor**, a base a proton acceptor.\n\nThe Lewis definition is broader — an acid is an **electron pair acceptor** — which is why $\\text{BF}_{3}$ counts as a Lewis acid despite having no proton to give.",
+      "marks": 1,
+      "options": [
+        "an electron pair acceptor",
+        "a proton donor",
+        "a proton acceptor",
+        "an electron pair donor"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc5-002",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "pH",
+      "type": "mcq",
+      "q": "The pH of $0.01$ mol dm$^{-3}$ HCl is:",
+      "solution": "HCl is a strong acid and fully dissociates, so $[\\text{H}^{+}] = 0.01 = 10^{-2}$.\n\n$\\text{pH} = -\\log 10^{-2} = \\mathbf{2}$.",
+      "marks": 1,
+      "options": [
+        "1",
+        "2",
+        "12",
+        "0.01"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc5-003",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Buffers",
+      "type": "mcq",
+      "q": "A buffer solution is made from:",
+      "solution": "A **weak acid and its conjugate base** — ethanoic acid with sodium ethanoate, for instance.\n\nA reservoir of both species is needed: the acid mops up added alkali, the salt mops up added acid.",
+      "marks": 1,
+      "options": [
+        "a strong acid and its salt",
+        "a weak acid and its conjugate base",
+        "two strong acids",
+        "water alone"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc5-004",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Standard electrode potential",
+      "type": "mcq",
+      "q": "The standard hydrogen electrode is assigned a potential of:",
+      "solution": "**Exactly zero**, by definition, at $298$ K, $100$ kPa and $1$ mol dm$^{-3}$ $\\text{H}^{+}$.\n\nOnly differences in potential can be measured, so one electrode has to be chosen as the reference.",
+      "marks": 1,
+      "options": [
+        "+1.00 V",
+        "0.00 V",
+        "-1.00 V",
+        "+0.34 V"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc5-005",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Feasibility",
+      "type": "mcq",
+      "q": "A redox reaction is feasible under standard conditions when $E^{\\ominus}_{\\text{cell}}$ is:",
+      "solution": "A **positive** cell potential means a negative $\\Delta G$, so the reaction is thermodynamically feasible.\n\nFeasible does not mean fast, though: a large positive $E^{\\ominus}$ with a high activation energy may still give no observable reaction.",
+      "marks": 1,
+      "options": [
+        "negative",
+        "positive",
+        "zero",
+        "greater than 1 V"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc5-006",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "pH of a strong acid",
+      "type": "numeric",
+      "q": "Find the pH of $0.001$ mol dm$^{-3}$ nitric acid.",
+      "solution": "$[\\text{H}^{+}] = 10^{-3}$, so $\\text{pH} = \\mathbf{3}$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alc5-007",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "pH and pOH",
+      "type": "numeric",
+      "q": "A solution has $\\text{pOH} = 4$. Find its pH.",
+      "solution": "$\\text{pH} + \\text{pOH} = 14$ at $298$ K, so $\\text{pH} = \\mathbf{10}$ — alkaline.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alc5-008",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Cell potential",
+      "type": "numeric",
+      "q": "Find $E^{\\ominus}_{\\text{cell}}$ (in V) for a cell with electrode potentials $-0.76$ V and $+0.34$ V.",
+      "solution": "$E^{\\ominus}_{\\text{cell}} = E^{\\ominus}_{\\text{cathode}} - E^{\\ominus}_{\\text{anode}} = 0.34 - (-0.76) = \\mathbf{1.10}$ V.\n\nThe more positive electrode is always the cathode, where reduction occurs.",
+      "marks": 2,
+      "answer": 1.1,
+      "tolerance": 0.02
+    },
+    {
+      "id": "alc5-009",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Ka and pH",
+      "type": "numeric",
+      "q": "A weak acid has $[\\text{H}^{+}] = 10^{-4}$ mol dm$^{-3}$. Find its pH.",
+      "solution": "$\\text{pH} = -\\log 10^{-4} = \\mathbf{4}$.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alc5-010",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Electrolysis",
+      "type": "numeric",
+      "q": "How many faradays are needed to deposit $1$ mol of aluminium from $\\text{Al}^{3+}$?",
+      "solution": "$\\text{Al}^{3+} + 3e^{-} \\to \\text{Al}$ — $\\mathbf{3}$ faradays per mole.\n\nThat triple charge is a large part of why aluminium extraction is so expensive in electricity.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc5-011",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Strong and weak acids",
+      "type": "long",
+      "q": "Distinguish between a strong and a weak acid, define $K_{a}$ and $\\text{p}K_{a}$, and calculate the pH of $0.1$ mol dm$^{-3}$ ethanoic acid ($K_{a} = 1.8 \\times 10^{-5}$).",
+      "solution": "**Strong acid** — fully dissociated in water. HCl, $\\text{HNO}_{3}$, $\\text{H}_{2}\\text{SO}_{4}$.\n\n**Weak acid** — only partly dissociated, with an equilibrium between the acid and its ions.\n\n$\\text{HA} \\rightleftharpoons \\text{H}^{+} + \\text{A}^{-}$\n\n**Strength is not concentration.** A concentrated solution of a weak acid can have a lower pH than a dilute strong one — the two words describe different things entirely.\n\n**The acid dissociation constant:**\n\n$K_{a} = \\dfrac{[\\text{H}^{+}][\\text{A}^{-}]}{[\\text{HA}]}$, and $\\text{p}K_{a} = -\\log K_{a}$\n\nA **larger $K_{a}$** (or smaller $\\text{p}K_{a}$) means a stronger acid.\n\n**The calculation.** Two approximations are standard:\n\n1. $[\\text{H}^{+}] = [\\text{A}^{-}]$, since both come from the same dissociation.\n\n2. $[\\text{HA}]$ at equilibrium $\\approx$ its initial value, since so little dissociates.\n\n$K_{a} = \\dfrac{[\\text{H}^{+}]^{2}}{0.1}$\n\n$[\\text{H}^{+}]^{2} = 1.8 \\times 10^{-6}$\n\n$[\\text{H}^{+}] = 1.34 \\times 10^{-3}$\n\n$\\text{pH} = \\mathbf{2.87}$\n\n**Compare $0.1$ mol dm$^{-3}$ HCl at pH $1$** — the strong acid gives nearly a hundred times more hydrogen ions at the same concentration.\n\n**Checking the approximation:** only $1.3\\%$ of the ethanoic acid has dissociated, so assuming $[\\text{HA}]$ unchanged was entirely safe. It would not be for a much stronger weak acid.",
+      "marks": 3
+    },
+    {
+      "id": "alc5-012",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Buffers",
+      "type": "long",
+      "q": "Explain how a buffer solution resists a change in pH, and calculate the pH of a buffer containing $0.1$ mol dm$^{-3}$ ethanoic acid and $0.1$ mol dm$^{-3}$ sodium ethanoate ($K_{a} = 1.8 \\times 10^{-5}$).",
+      "solution": "**What a buffer contains.** A reservoir of a weak acid **and** a reservoir of its conjugate base, with the equilibrium\n\n$\\text{CH}_{3}\\text{COOH} \\rightleftharpoons \\text{CH}_{3}\\text{COO}^{-} + \\text{H}^{+}$\n\n**On adding acid.** The extra $\\text{H}^{+}$ is removed by the large reserve of ethanoate ions:\n\n$\\text{CH}_{3}\\text{COO}^{-} + \\text{H}^{+} \\to \\text{CH}_{3}\\text{COOH}$\n\n**On adding alkali.** The $\\text{OH}^{-}$ is removed by the large reserve of undissociated acid:\n\n$\\text{CH}_{3}\\text{COOH} + \\text{OH}^{-} \\to \\text{CH}_{3}\\text{COO}^{-} + \\text{H}_{2}\\text{O}$\n\nIn both cases the **ratio** $\\dfrac{[\\text{HA}]}{[\\text{A}^{-}]}$ changes only slightly, so the pH barely moves.\n\n**The calculation.** Rearranging $K_{a}$:\n\n$[\\text{H}^{+}] = K_{a}\\dfrac{[\\text{HA}]}{[\\text{A}^{-}]} = 1.8 \\times 10^{-5} \\times 1 = 1.8 \\times 10^{-5}$\n\n$\\text{pH} = \\mathbf{4.74}$\n\n**When acid and salt are equal, $\\text{pH} = \\text{p}K_{a}$** — and a buffer works best at that point, where it has equal capacity in both directions.\n\n**Choosing a buffer** therefore means choosing an acid whose $\\text{p}K_{a}$ is near the pH wanted.\n\n**Where buffers matter.** Blood is buffered by $\\text{H}_{2}\\text{CO}_{3}/\\text{HCO}_{3}^{-}$ at pH $7.4$; a drift of more than about $0.4$ either way is fatal. Shampoos, fermentation vats and biochemical assays are all buffered for the same reason.\n\n**A buffer has a finite capacity:** add enough acid to exhaust the ethanoate reserve and the pH collapses.",
+      "marks": 3
+    },
+    {
+      "id": "alc5-013",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Electrode potentials",
+      "type": "long",
+      "q": "Explain how standard electrode potentials are measured, how they predict whether a reaction will occur, and predict whether zinc will displace copper from copper sulphate solution.",
+      "solution": "**Measuring $E^{\\ominus}$.** A potential difference can only be measured between two electrodes, so one is fixed as a reference: the **standard hydrogen electrode**, defined as exactly $0.00$ V.\n\nThe half-cell under test is connected to it through a salt bridge, with a high-resistance voltmeter across the two (high resistance so that no current flows and equilibrium is undisturbed).\n\n**Standard conditions:** $298$ K, $100$ kPa, all solutions at $1$ mol dm$^{-3}$.\n\n**Interpreting the values.** A **more negative** $E^{\\ominus}$ means the species is more readily **oxidised** — a better reducing agent.\n\nA **more positive** $E^{\\ominus}$ means it is more readily **reduced** — a better oxidising agent.\n\n**Predicting a reaction.** The half-cell with the **more positive** $E^{\\ominus}$ runs as written (reduction); the other runs in reverse (oxidation).\n\n$E^{\\ominus}_{\\text{cell}} = E^{\\ominus}_{\\text{more positive}} - E^{\\ominus}_{\\text{more negative}}$, and a **positive** result means feasible.\n\n**Zinc and copper sulphate.**\n\n$\\text{Zn}^{2+} + 2e^{-} \\to \\text{Zn}$, $E^{\\ominus} = -0.76$ V\n\n$\\text{Cu}^{2+} + 2e^{-} \\to \\text{Cu}$, $E^{\\ominus} = +0.34$ V\n\nCopper's is more positive, so copper is reduced and zinc is oxidised:\n\n$\\text{Zn} + \\text{Cu}^{2+} \\to \\text{Zn}^{2+} + \\text{Cu}$, with $E^{\\ominus}_{\\text{cell}} = +1.10$ V\n\n**Feasible** — and this is what is seen: the blue colour fades and copper deposits on the zinc.\n\n**Two warnings.** $E^{\\ominus}$ values assume **standard conditions**; concentrations far from $1$ mol dm$^{-3}$ can reverse a marginal prediction. And feasibility says nothing about **rate** — a reaction with $E^{\\ominus} = +2$ V may be immeasurably slow if its activation energy is high.",
+      "marks": 5
+    },
+    {
+      "id": "alc5-014",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Titration curves",
+      "type": "long",
+      "q": "Describe the shape of the pH curve for a strong acid titrated with a strong base, and compare it with a weak acid titrated with a strong base. Explain how the indicator is chosen.",
+      "solution": "**Strong acid with strong base.**\n\nThe curve starts at about pH 1 and rises very slowly at first, since the acid is in large excess.\n\nNear the equivalence point it becomes almost **vertical**, sweeping from about pH 3 to pH 11 on the addition of a fraction of a drop.\n\nThe **equivalence point is at pH 7**, because the salt formed is neutral.\n\n**Weak acid with strong base.**\n\nIt starts higher, at about pH 3 — the weak acid gives fewer hydrogen ions.\n\nThere is then a **buffer region**, where the curve rises only gently: the mixture of unreacted acid and the salt being formed is itself a buffer. At the half-equivalence point, $\\text{pH} = \\text{p}K_{a}$ — a convenient way of measuring $K_{a}$.\n\nThe vertical section is **shorter**, roughly pH 7 to 11, and the **equivalence point is above 7** (about 8.7), because the salt of a weak acid hydrolyses to give an alkaline solution.\n\n**Choosing the indicator.** An indicator must change colour **entirely within the vertical section**, so that the change is sharp and occurs at the equivalence point.\n\n• **Strong-strong:** the vertical range is huge, so either **phenolphthalein** ($8.3$–$10$) or **methyl orange** ($3.1$–$4.4$) works.\n\n• **Weak acid with strong base:** only **phenolphthalein** — methyl orange would change far too early, while acid remained.\n\n• **Strong acid with weak base:** only **methyl orange**.\n\n• **Weak acid with weak base:** there is **no vertical section at all**, so no indicator is suitable, and a pH meter must be used.\n\n**Note that the indicator does not need to change at pH 7** — it needs to change where the curve is vertical, which is a different requirement and the one that matters.",
+      "marks": 3
+    },
+    {
+      "id": "alc5-015",
+      "chapter": "Acids, Bases and Electrochemistry",
+      "topic": "Electrolysis and Faraday's laws",
+      "type": "long",
+      "q": "State Faraday's laws of electrolysis and calculate the mass of copper deposited by a current of $2$ A flowing for $30$ minutes through copper(II) sulphate solution. ($A_{r}(\\text{Cu}) = 63.5$, $F = 96\\,500$ C/mol.)",
+      "solution": "**First law.** The mass deposited is proportional to the quantity of electricity passed: $m \\propto Q = It$.\n\n**Second law.** The same quantity of electricity deposits amounts of different substances in the ratio of their **equivalent masses** — the molar mass divided by the number of electrons involved.\n\n**The calculation.**\n\n$Q = It = 2 \\times 1800 = 3600$ C\n\n$\\text{moles of electrons} = \\dfrac{3600}{96\\,500} = 0.0373$ mol\n\n$\\text{Cu}^{2+} + 2e^{-} \\to \\text{Cu}$, so **two** electrons per copper atom:\n\n$\\text{moles of Cu} = \\dfrac{0.0373}{2} = 0.01865$ mol\n\n$\\text{mass} = 0.01865 \\times 63.5 = \\mathbf{1.18}$ g\n\n**The step most often missed** is dividing by the charge on the ion. For silver ($\\text{Ag}^{+}$) there is no division; for aluminium ($\\text{Al}^{3+}$) the division is by three.\n\n**Where this is used industrially.** Electroplating, purifying copper (the impure metal is the anode, pure copper the cathode, and the precious-metal impurities collect below as anode sludge worth recovering), and extracting aluminium — which consumes about $5\\%$ of the electricity generated in some countries.\n\n**And the reverse process** is a battery, where the same electrode reactions run spontaneously and deliver current rather than consuming it.",
+      "marks": 2
+    }
+  ]
+}

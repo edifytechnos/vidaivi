@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-hydrocarbons",
+  "title": "Organic Chemistry: Hydrocarbons",
+  "chapter": "Topic Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc8-001",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Alkanes",
+      "type": "mcq",
+      "q": "Alkanes react with chlorine in ultraviolet light by:",
+      "solution": "**Free radical substitution**, initiated by UV light splitting $\\text{Cl}_{2}$ homolytically into two radicals.\n\nThe three stages are **initiation, propagation and termination**, and the propagation steps are what make one photon able to convert thousands of molecules.",
+      "marks": 1,
+      "options": [
+        "electrophilic addition",
+        "free radical substitution",
+        "nucleophilic substitution",
+        "elimination"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc8-002",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Alkenes",
+      "type": "mcq",
+      "q": "Alkenes react with bromine by:",
+      "solution": "**Electrophilic addition.** The $\\pi$ electrons of the double bond are exposed and electron-rich, so they attract electrophiles.\n\nThe bromine molecule is **polarised** as it approaches, and adds across the double bond — which is why bromine water is decolourised.",
+      "marks": 1,
+      "options": [
+        "free radical substitution",
+        "electrophilic addition",
+        "nucleophilic substitution",
+        "condensation"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc8-003",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Markovnikov's rule",
+      "type": "mcq",
+      "q": "When HBr adds to propene, the major product is:",
+      "solution": "**2-bromopropane** — Markovnikov's rule.\n\nThe reaction goes through the **more stable carbocation**, and a secondary cation is stabilised by two electron-releasing alkyl groups where the primary one has only one.",
+      "marks": 1,
+      "options": [
+        "1-bromopropane",
+        "2-bromopropane",
+        "an equal mixture",
+        "propan-2-ol"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc8-004",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Benzene",
+      "type": "mcq",
+      "q": "Benzene undergoes substitution rather than addition because:",
+      "solution": "Addition would break up the **delocalised $\\pi$ system** and lose the extra stability it confers — about $152$ kJ/mol.\n\n**Substitution** leaves the ring intact, which is why benzene's chemistry is so different from an alkene's despite the apparent double bonds.",
+      "marks": 1,
+      "options": [
+        "it is unsaturated",
+        "addition would destroy the delocalised system",
+        "it is a liquid",
+        "it has no double bonds"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc8-005",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Cracking",
+      "type": "mcq",
+      "q": "Cracking long-chain alkanes produces:",
+      "solution": "There are not enough hydrogens to saturate both fragments, so at least one must contain a **double bond**.\n\nThat is why cracking is the industrial source of alkenes, which crude oil itself barely contains.",
+      "marks": 1,
+      "options": [
+        "only shorter alkanes",
+        "a shorter alkane and an alkene",
+        "only alkenes",
+        "alcohols"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc8-006",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Isomers",
+      "type": "numeric",
+      "q": "How many structural isomers does pentane, $\\text{C}_{5}\\text{H}_{12}$, have?",
+      "solution": "Pentane, 2-methylbutane and 2,2-dimethylpropane — $\\mathbf{3}$.\n\nThey differ markedly in boiling point: the more branched, the less surface contact and the weaker the van der Waals forces.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc8-007",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Degrees of unsaturation",
+      "type": "numeric",
+      "q": "Find the degree of unsaturation for $\\text{C}_{6}\\text{H}_{6}$.",
+      "solution": "$\\dfrac{2(6) + 2 - 6}{2} = \\dfrac{8}{2} = \\mathbf{4}$ — three from the double bonds and one from the ring. Benzene.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alc8-008",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Alkene formula",
+      "type": "numeric",
+      "q": "How many hydrogen atoms are in an alkene with $5$ carbon atoms?",
+      "solution": "$\\text{C}_{n}\\text{H}_{2n}$, so $2(5) = \\mathbf{10}$ — pentene.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0
+    },
+    {
+      "id": "alc8-009",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "E-Z isomers",
+      "type": "numeric",
+      "q": "How many stereoisomers does but-2-ene have?",
+      "solution": "$\\mathbf{2}$ — E (trans) and Z (cis).\n\nThe double bond cannot rotate, so the two arrangements cannot interconvert. But-1-ene has none, since one carbon of its double bond carries two identical hydrogens.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc8-010",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Combustion",
+      "type": "numeric",
+      "q": "In $\\text{C}_{3}\\text{H}_{8} + a\\text{O}_{2} \\to 3\\text{CO}_{2} + 4\\text{H}_{2}\\text{O}$, find $a$.",
+      "solution": "Right-hand side: $6 + 4 = 10$ oxygen atoms, so $a = \\mathbf{5}$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "alc8-011",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Free radical substitution",
+      "type": "long",
+      "q": "Describe the mechanism of the chlorination of methane in three stages with equations, and explain why a mixture of products is obtained.",
+      "solution": "**Initiation.** UV light breaks the Cl–Cl bond **homolytically** — one electron to each atom:\n\n$\\text{Cl}_{2} \\xrightarrow{\\;h\\nu\\;} 2\\text{Cl}\\cdot$\n\nChlorine is chosen rather than methane because the Cl–Cl bond ($242$ kJ/mol) is much weaker than C–H ($412$).\n\n**Propagation** — two steps that regenerate a radical, so the chain continues:\n\n$\\text{Cl}\\cdot + \\text{CH}_{4} \\to \\text{HCl} + \\cdot\\text{CH}_{3}$\n\n$\\cdot\\text{CH}_{3} + \\text{Cl}_{2} \\to \\text{CH}_{3}\\text{Cl} + \\text{Cl}\\cdot$\n\n**The chlorine radical is back**, so one photon can convert thousands of molecules. This is what makes it a chain reaction.\n\n**Termination** — any two radicals meeting:\n\n$\\text{Cl}\\cdot + \\text{Cl}\\cdot \\to \\text{Cl}_{2}$\n\n$\\cdot\\text{CH}_{3} + \\cdot\\text{CH}_{3} \\to \\text{C}_{2}\\text{H}_{6}$ (ethane, an unexpected by-product that is itself evidence for the mechanism)\n\n$\\cdot\\text{CH}_{3} + \\text{Cl}\\cdot \\to \\text{CH}_{3}\\text{Cl}$\n\n**Why a mixture forms.** The product $\\text{CH}_{3}\\text{Cl}$ still has three C–H bonds, and a chlorine radical cannot tell it apart from methane. Further substitution gives $\\text{CH}_{2}\\text{Cl}_{2}$, $\\text{CHCl}_{3}$ and $\\text{CCl}_{4}$.\n\n**It is therefore a poor synthetic method** — the products are hard to separate. Using a large excess of methane favours the monosubstituted product, but nothing eliminates the problem.\n\nThe same chemistry, higher in the atmosphere, is how CFC radicals destroy ozone — one chlorine atom, regenerated indefinitely, taking thousands of ozone molecules with it.",
+      "marks": 3
+    },
+    {
+      "id": "alc8-012",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Electrophilic addition",
+      "type": "long",
+      "q": "Describe the mechanism of the addition of HBr to propene, and use it to explain Markovnikov's rule.",
+      "solution": "**Step 1 — the electrophile attacks.** The $\\pi$ bond is a region of high electron density, and it attracts the $\\delta+$ hydrogen of HBr.\n\nThe $\\pi$ electrons form a bond to that hydrogen, and the H–Br bond breaks **heterolytically**, both electrons going to the bromine:\n\n$\\text{CH}_{3}\\text{CH}{=}\\text{CH}_{2} + \\text{HBr} \\to \\text{carbocation} + \\text{Br}^{-}$\n\n**Step 2 — the nucleophile attacks.** The bromide ion attacks the positively charged carbon, giving the product.\n\n**Why the orientation is not random.** The proton can add to either carbon, giving either a **primary** or a **secondary** carbocation.\n\n• Adding H to C1 leaves the positive charge on C2 — a **secondary** cation, flanked by two methyl groups.\n\n• Adding H to C2 leaves it on C1 — a **primary** cation, with only one.\n\n**Alkyl groups release electrons inductively**, spreading the positive charge and stabilising the cation. So the secondary cation is lower in energy and forms much faster.\n\n**The major product is therefore 2-bromopropane**, and **Markovnikov's rule** — that the hydrogen adds to the carbon already carrying more hydrogens — is simply a shorthand for 'the more stable carbocation wins'.\n\n**The order of stability is tertiary $>$ secondary $>$ primary**, and it explains far more than this one reaction: it is also why tertiary halides hydrolyse by $\\text{S}_{\\text{N}}1$ and primary ones do not.",
+      "marks": 3
+    },
+    {
+      "id": "alc8-013",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Benzene",
+      "type": "long",
+      "q": "Give the evidence for the delocalised structure of benzene, and describe the mechanism of its nitration.",
+      "solution": "**The evidence against Kekulé's alternating double bonds.**\n\n1. **Bond lengths.** X-ray diffraction shows all six C–C bonds are identical at $139$ pm — between a single ($154$) and a double ($134$). Kekulé's structure requires two different lengths.\n\n2. **Enthalpy of hydrogenation.** Cyclohexene releases $120$ kJ/mol, so three isolated double bonds should release $360$. Benzene releases only $208$ — it is **$152$ kJ/mol more stable** than the Kekulé structure predicts.\n\n3. **Chemical behaviour.** Benzene does not decolourise bromine water, and it undergoes **substitution** rather than addition — keeping the ring intact rather than destroying it.\n\n4. Only **one** 1,2-disubstituted isomer exists, whereas alternating bonds would give two.\n\n**The structure.** Each carbon contributes one electron in a $p$ orbital perpendicular to the ring; these overlap all the way round, forming a **delocalised $\\pi$ cloud** above and below the plane.\n\n**Nitration mechanism.**\n\n**Generating the electrophile.** Concentrated sulphuric acid protonates nitric acid, which then loses water:\n\n$\\text{HNO}_{3} + 2\\text{H}_{2}\\text{SO}_{4} \\to \\text{NO}_{2}^{+} + \\text{H}_{3}\\text{O}^{+} + 2\\text{HSO}_{4}^{-}$\n\n**Attack.** The delocalised electrons attack $\\text{NO}_{2}^{+}$, giving an unstable intermediate in which the delocalisation is partly broken.\n\n**Loss of a proton.** $\\text{HSO}_{4}^{-}$ removes the H from the substituted carbon, **restoring the aromatic system** — which is the driving force for the whole second step.\n\n$\\text{C}_{6}\\text{H}_{6} + \\text{HNO}_{3} \\xrightarrow{\\text{H}_{2}\\text{SO}_{4},\\;55°\\text{C}} \\text{C}_{6}\\text{H}_{5}\\text{NO}_{2} + \\text{H}_{2}\\text{O}$\n\n**Why $55$°C.** Hotter, and further nitration gives dinitrobenzene. The sulphuric acid is a **catalyst** and is regenerated.\n\nNitrobenzene is the gateway to aniline, and hence to dyes and pharmaceuticals.",
+      "marks": 5
+    },
+    {
+      "id": "alc8-014",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Isomerism in alkenes",
+      "type": "long",
+      "q": "Explain why alkenes show E-Z isomerism but alkanes do not, state the conditions for it, and explain the E-Z naming rules.",
+      "solution": "**Why alkenes do.** The C=C double bond consists of a $\\sigma$ bond and a $\\pi$ bond. Rotating about the bond would require breaking the $\\pi$ overlap, which costs about $260$ kJ/mol — far more than is available at room temperature.\n\n**The bond is therefore locked**, and the groups on either side are held in fixed relative positions.\n\n**Why alkanes do not.** A C–C single bond is a $\\sigma$ bond only, cylindrically symmetrical, so rotation is essentially free — millions of times a second. Any two arrangements interconvert instantly and are the same compound.\n\n**The conditions for E-Z isomerism.**\n\n1. A **C=C double bond** (or a ring, which is similarly rigid).\n\n2. Each carbon of the double bond must carry **two different groups**.\n\nIf either carbon carries two identical groups, flipping the molecule gives the same thing. But-1-ene has none; but-2-ene has two isomers.\n\n**The naming rules (Cahn-Ingold-Prelog).**\n\n1. On each carbon, decide which group has **higher priority** — the one whose first atom has the greater **atomic number**.\n\n2. If the first atoms tie, work outwards until they differ.\n\n3. **Z** (*zusammen*, together) if the two higher-priority groups are on the **same** side; **E** (*entgegen*, opposite) if on opposite sides.\n\n**Why E-Z replaced cis-trans.** With four different groups, 'cis' and 'trans' have nothing to refer to. E-Z always gives an unambiguous answer.\n\n**The isomers are genuinely different compounds** with different melting points, dipole moments and biological activity — and in the case of retinal in the eye, the light-driven Z-to-E conversion is the first step of vision.",
+      "marks": 3
+    },
+    {
+      "id": "alc8-015",
+      "chapter": "Organic Chemistry: Hydrocarbons",
+      "topic": "Addition polymerisation",
+      "type": "long",
+      "q": "Describe addition polymerisation, name three addition polymers with their uses, and discuss the disposal problem and its solutions.",
+      "solution": "**The process.** Many alkene monomers join end to end with **no other product**. The $\\pi$ bond opens and each unit bonds to the next:\n\n$n\\,\\text{CH}_{2}{=}\\text{CH}_{2} \\to -\\!\\left(\\text{CH}_{2}\\text{CH}_{2}\\right)_{n}\\!-$\n\n**Unsaturation is essential** — alkanes cannot polymerise this way. It also means the atom economy is $100\\%$, since nothing is lost.\n\n**Three polymers.**\n\n• **Poly(ethene)** — bags, bottles, packaging. Low-density for film, high-density for rigid containers.\n\n• **Poly(propene)** — ropes, crates, carpet fibres; stronger and with a higher melting point.\n\n• **PVC** — pipes, window frames, cable insulation. Rigid alone, flexible with a plasticiser.\n\n• **PTFE** — non-stick coatings, chemically inert.\n\n**The disposal problem.** The saturated C–C backbone is **non-biodegradable**: no enzyme attacks it, so plastics persist for centuries in landfill and in the oceans, where **microplastics** have now entered the food chain.\n\nBurning them releases carbon dioxide and, from PVC, toxic hydrogen chloride.\n\n**The solutions, in order of preference.**\n\n1. **Reduce** — the only measure that removes the problem rather than managing it.\n\n2. **Reuse.**\n\n3. **Recycle** — effective for a single sorted polymer, difficult for mixtures, which is why the recycling symbols number the types.\n\n4. **Feedstock recycling** — cracking waste plastic back into monomers or into other useful chemicals.\n\n5. **Biodegradable polymers** made from plant starch, or **photodegradable** ones with bonds that ultraviolet light will break.\n\nThe property that makes plastics so useful — that nothing attacks them — is precisely the property that makes disposing of them so hard.",
+      "marks": 2
+    }
+  ]
+}

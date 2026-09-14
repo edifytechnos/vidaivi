@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-atomic",
+  "title": "Atomic Structure and the Periodic Table",
+  "chapter": "Topic Test 1",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc1-001",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Subatomic particles",
+      "type": "mcq",
+      "q": "Which particle has a relative mass of approximately $\\dfrac{1}{1836}$?",
+      "solution": "The **electron**. Protons and neutrons each have a relative mass of about 1.\n\nAlmost all an atom's mass is in the nucleus, and almost all its **volume** is the electron cloud.",
+      "marks": 1,
+      "options": [
+        "Proton",
+        "Neutron",
+        "Electron",
+        "Alpha particle"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alc1-002",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Electron configuration",
+      "type": "mcq",
+      "q": "The electron configuration of a calcium atom ($Z = 20$) is:",
+      "solution": "$4s$ fills **before** $3d$, because it is slightly lower in energy at that point.\n\nThat inversion is why the transition metals begin at scandium rather than immediately after argon — and why they lose their $4s$ electrons first when ionised.",
+      "marks": 1,
+      "options": [
+        "$1s^{2}2s^{2}2p^{6}3s^{2}3p^{6}4s^{2}$",
+        "$1s^{2}2s^{2}2p^{6}3s^{2}3p^{6}3d^{2}$",
+        "$1s^{2}2s^{2}2p^{6}3s^{2}3p^{8}$",
+        "$1s^{2}2s^{2}2p^{6}3s^{2}3p^{6}4p^{2}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alc1-003",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Ionisation energy",
+      "type": "mcq",
+      "q": "The first ionisation energy generally increases across a period because:",
+      "solution": "Across a period, protons are added while the outer electrons all enter the **same shell**, so the shielding hardly changes.\n\nThe effective nuclear charge rises, the atom contracts, and the outer electron is held more firmly.\n\nThe small **dips** at Al and at S are what reveal the sub-shell structure.",
+      "marks": 1,
+      "options": [
+        "the atomic radius increases",
+        "the nuclear charge increases with little extra shielding",
+        "the number of shells increases",
+        "the electrons pair up"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc1-004",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Isotopes",
+      "type": "mcq",
+      "q": "Two isotopes of an element differ in:",
+      "solution": "Isotopes differ only in **neutrons**.\n\nTheir chemistry is essentially identical, since that depends on the electrons — but their physical properties differ slightly, which is how they can be separated in a mass spectrometer.",
+      "marks": 1,
+      "options": [
+        "number of protons",
+        "number of neutrons",
+        "number of electrons",
+        "chemical properties"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc1-005",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Periodic trends",
+      "type": "mcq",
+      "q": "Across Period 3 from Na to Ar, the atomic radius:",
+      "solution": "It **decreases**. The nuclear charge grows while the electrons enter the same shell, so the whole shell is pulled in more tightly.\n\n**Down a group** the radius increases instead, because an entire new shell is added each time.",
+      "marks": 1,
+      "options": [
+        "increases",
+        "decreases",
+        "stays the same",
+        "increases then decreases"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc1-006",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Relative atomic mass",
+      "type": "numeric",
+      "q": "An element has isotopes of mass $10$ ($20\\%$) and $11$ ($80\\%$). Find its relative atomic mass.",
+      "solution": "$\\dfrac{20 \\times 10 + 80 \\times 11}{100} = \\dfrac{200 + 880}{100} = \\mathbf{10.8}$ — boron.",
+      "marks": 2,
+      "answer": 10.8,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alc1-007",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Electrons in a sub-shell",
+      "type": "numeric",
+      "q": "How many electrons can a d sub-shell hold?",
+      "solution": "$\\mathbf{10}$ — five orbitals, each holding two electrons of opposite spin.\n\ns holds 2, p holds 6, d holds 10, f holds 14.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0
+    },
+    {
+      "id": "alc1-008",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Number of neutrons",
+      "type": "numeric",
+      "q": "How many neutrons are in an atom of $^{56}_{26}\\text{Fe}$?",
+      "solution": "$56 - 26 = \\mathbf{30}$.",
+      "marks": 2,
+      "answer": 30,
+      "tolerance": 0
+    },
+    {
+      "id": "alc1-009",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Unpaired electrons",
+      "type": "numeric",
+      "q": "How many unpaired electrons are in a nitrogen atom ($Z = 7$)?",
+      "solution": "$1s^{2}2s^{2}2p^{3}$ — the three $2p$ electrons occupy the three $2p$ orbitals **singly**, by Hund's rule.\n\n$\\mathbf{3}$ unpaired, which is why nitrogen forms three bonds.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc1-010",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Oxidation number",
+      "type": "numeric",
+      "q": "Find the oxidation number of chlorine in $\\text{HClO}_{4}$.",
+      "solution": "$+1 + x + 4(-2) = 0 \\Rightarrow x = \\mathbf{+7}$ — the maximum for chlorine, and it makes perchloric acid a very strong oxidising agent.",
+      "marks": 2,
+      "answer": 7,
+      "tolerance": 0
+    },
+    {
+      "id": "alc1-011",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Ionisation energies",
+      "type": "long",
+      "q": "Define first ionisation energy, explain the trend across Period 3 including the two anomalies, and explain how successive ionisation energies reveal the group of an element.",
+      "solution": "**Definition.** The energy to remove one mole of electrons from one mole of gaseous atoms:\n\n$\\text{X}(g) \\to \\text{X}^{+}(g) + e^{-}$\n\nThe word **gaseous** matters — otherwise lattice or intermolecular energies would be involved.\n\n**The general trend across Period 3: it increases.** The nuclear charge rises while the outer electrons stay in the same shell, so shielding hardly changes, the effective nuclear charge grows and the atom contracts.\n\n**Anomaly 1: Al is lower than Mg.**\n\nMagnesium's outer electron is in $3s$; aluminium's is in $3p$, which is **higher in energy** and better shielded by the filled $3s$. It is therefore easier to remove.\n\n**Anomaly 2: S is lower than P.**\n\nPhosphorus is $3p^{3}$, with three singly occupied orbitals. Sulphur is $3p^{4}$, so one orbital holds a **pair**, and the mutual repulsion between them makes one electron easier to remove.\n\n**These two dips are strong evidence for sub-shells and for Hund's rule** — nothing in a simple shell model predicts them.\n\n**Successive ionisation energies.** Each is larger than the last, since the electron is being pulled from an increasingly positive ion.\n\nBut there is a **large jump** whenever a new inner shell is broached. The number of electrons removed **before** that jump is the number of outer electrons — and therefore the group.\n\nFor magnesium the jump comes after the second, so magnesium is in Group 2. It is a direct experimental route to electronic structure.",
+      "marks": 3
+    },
+    {
+      "id": "alc1-012",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "The mass spectrometer",
+      "type": "long",
+      "q": "Describe how a mass spectrometer determines the relative atomic mass of an element, and calculate $A_{r}$ for an element with peaks at $24$ ($79\\%$), $25$ ($10\\%$) and $26$ ($11\\%$).",
+      "solution": "**The stages.**\n\n1. **Vaporisation** — the sample must be gaseous.\n\n2. **Ionisation** — bombardment with high-energy electrons knocks an electron off each atom, giving $\\text{X}^{+}$. Only charged particles can be manipulated by fields.\n\n3. **Acceleration** — an electric field gives all the ions the same kinetic energy, so the lighter ones travel faster.\n\n4. **Deflection** — a magnetic field bends the beam. The radius depends on $\\dfrac{m}{z}$: **lighter ions are deflected more**.\n\n5. **Detection** — the ions arriving produce a current proportional to their abundance.\n\n**The output** is a spectrum with one peak per isotope, its position giving the mass and its height the relative abundance.\n\n**The calculation:**\n\n$A_{r} = \\dfrac{(79 \\times 24) + (10 \\times 25) + (11 \\times 26)}{100}$\n\n$= \\dfrac{1896 + 250 + 286}{100} = \\dfrac{2432}{100} = \\mathbf{24.32}$\n\nThis is **magnesium**.\n\n**A check on any such answer:** it must lie between the lightest and heaviest isotope, and nearest the most abundant. $24.32$ is just above 24, as an $79\\%$ abundance of mass 24 requires ✓\n\n**Its other uses:** identifying unknown compounds from their fragmentation pattern, radiocarbon dating, and detecting drugs in athletes' samples.",
+      "marks": 3
+    },
+    {
+      "id": "alc1-013",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Periodic trends",
+      "type": "long",
+      "q": "Describe and explain the trends across Period 3 in atomic radius, melting point and the acid-base nature of the oxides.",
+      "solution": "**Atomic radius — decreases across the period.**\n\nNuclear charge rises while the outer electrons remain in the same shell, so shielding is nearly constant and the effective nuclear charge pulls the shell in.\n\n**Melting point — a striking pattern in three parts.**\n\n• **Na, Mg, Al:** metallic lattices, and the melting point **rises** as each atom contributes more delocalised electrons and the ion charge increases.\n\n• **Si:** a giant covalent lattice, with the **highest melting point of all** — every bond must be broken to melt it.\n\n• **P, S, Cl, Ar:** simple molecules ($\\text{P}_{4}$, $\\text{S}_{8}$, $\\text{Cl}_{2}$) held by weak van der Waals forces, so the melting points are **low**.\n\nAmong these, $\\text{S}_{8}$ melts highest because it is the largest molecule with the strongest dispersion forces.\n\n**The oxides — basic to acidic across the period.**\n\n• $\\text{Na}_{2}\\text{O}$, $\\text{MgO}$ — **ionic and basic**; they react with acids and, for sodium oxide, dissolve to give an alkali.\n\n• $\\text{Al}_{2}\\text{O}_{3}$ — **amphoteric**, reacting with both acids and alkalis. The turning point.\n\n• $\\text{SiO}_{2}$, $\\text{P}_{4}\\text{O}_{10}$, $\\text{SO}_{2}$, $\\text{SO}_{3}$ — **covalent and acidic**; they dissolve to give acids.\n\n**The single explanation behind all three trends:** the change from **metallic** to **covalent** bonding as the electronegativity difference with oxygen falls. Metals give electrons away and form ionic, basic oxides; non-metals share them and form covalent, acidic ones.\n\nAluminium sits exactly on the boundary, which is why its oxide answers to both.",
+      "marks": 5
+    },
+    {
+      "id": "alc1-014",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Electron configuration",
+      "type": "long",
+      "q": "State the rules governing the filling of orbitals, and write the configurations of Cr, Cu and $\\text{Fe}^{3+}$, explaining the anomalies.",
+      "solution": "**The three rules.**\n\n1. **Aufbau principle** — orbitals fill from the lowest energy upwards.\n\n2. **Pauli exclusion principle** — an orbital holds at most two electrons, and they must have opposite spins.\n\n3. **Hund's rule** — electrons occupy degenerate orbitals **singly**, with parallel spins, before any pairing begins. Pairing costs energy through mutual repulsion.\n\n**Chromium ($Z = 24$).** Expected $[\\text{Ar}]3d^{4}4s^{2}$; actual $\\mathbf{[\\text{Ar}]3d^{5}4s^{1}}$.\n\n**Copper ($Z = 29$).** Expected $[\\text{Ar}]3d^{9}4s^{2}$; actual $\\mathbf{[\\text{Ar}]3d^{10}4s^{1}}$.\n\n**Why.** The $3d$ and $4s$ levels are extremely close in energy, and a **half-filled or completely filled** $d$ sub-shell is unusually stable — the electrons are as far apart as possible, minimising repulsion.\n\nPromoting one $4s$ electron costs very little and gains that stability, so it is worth doing.\n\n**$\\text{Fe}^{3+}$.** Iron is $[\\text{Ar}]3d^{6}4s^{2}$.\n\n**The $4s$ electrons are removed first**, even though $4s$ filled first — once $3d$ is occupied, it drops below $4s$ in energy.\n\nSo $\\text{Fe}^{3+}$ is $\\mathbf{[\\text{Ar}]3d^{5}}$ — a half-filled $d$ sub-shell, which is exactly why $\\text{Fe}^{3+}$ is more stable in solution than $\\text{Fe}^{2+}$.\n\n'Fill $4s$ first, empty it first' is worth remembering as a single rule.",
+      "marks": 3
+    },
+    {
+      "id": "alc1-015",
+      "chapter": "Atomic Structure and the Periodic Table",
+      "topic": "Electronegativity",
+      "type": "long",
+      "q": "Define electronegativity, describe how it varies across a period and down a group, and explain what it predicts about bonding.",
+      "solution": "**Definition.** The ability of an atom to **attract the bonding pair of electrons** in a covalent bond towards itself.\n\nThe Pauling scale runs from about $0.7$ (caesium) to $4.0$ (fluorine, the most electronegative element).\n\n**Across a period: increases.** The nuclear charge rises while the atomic radius falls, so the nucleus pulls the bonding pair more strongly.\n\n**Down a group: decreases.** The bonding pair is further from the nucleus and more shielded by inner shells, so the attraction weakens.\n\n**The most electronegative elements** are therefore at the **top right**: F, O, N, Cl.\n\n**What it predicts.**\n\n• **Zero difference** — a pure **covalent** bond, with the pair shared equally ($\\text{H}_{2}$, $\\text{Cl}_{2}$).\n\n• **Small difference** — a **polar covalent** bond, with partial charges $\\delta+$ and $\\delta-$ (H–Cl).\n\n• **Large difference** (above about $1.7$) — **ionic** bonding, with the electron effectively transferred (NaCl).\n\n**It is a continuum, not three separate categories** — bonds shade gradually from one type to the next.\n\n**What polarity leads to.** Polar bonds may give a polar **molecule**, and hence dipole-dipole forces, higher boiling points, and solubility in water.\n\nBut a symmetrical molecule cancels its own bond dipoles: $\\text{CO}_{2}$ has two very polar bonds and **no** overall dipole, while the bent $\\text{H}_{2}\\text{O}$ molecule does — which is why one is a gas and the other a liquid.\n\n**And where H is bonded to N, O or F**, the polarity is extreme enough for **hydrogen bonding**, which dominates the chemistry of water, alcohols, proteins and DNA.",
+      "marks": 2
+    }
+  ]
+}

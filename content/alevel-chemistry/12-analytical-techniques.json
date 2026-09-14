@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-analysis",
+  "title": "Analytical Techniques",
+  "chapter": "Topic Test 12",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc12-001",
+      "chapter": "Analytical Techniques",
+      "topic": "Mass spectrometry",
+      "type": "mcq",
+      "q": "In a mass spectrum, the molecular ion peak gives:",
+      "solution": "The **molecular ion peak**, usually the one of highest $m/z$, gives the relative molecular mass of the compound.\n\nSmaller peaks are **fragments**, and the differences between them identify which groups were lost.",
+      "marks": 1,
+      "options": [
+        "the number of carbon atoms",
+        "the relative molecular mass",
+        "the boiling point",
+        "the empirical formula"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc12-002",
+      "chapter": "Analytical Techniques",
+      "topic": "Infrared spectroscopy",
+      "type": "mcq",
+      "q": "Infrared spectroscopy identifies:",
+      "solution": "Each bond absorbs infrared at a characteristic frequency as it vibrates, so IR identifies the **functional groups**.\n\nA broad absorption at $3200$–$3600$ cm$^{-1}$ means O–H; a sharp strong one near $1700$ cm$^{-1}$ means C=O.",
+      "marks": 1,
+      "options": [
+        "the number of carbon atoms",
+        "functional groups present",
+        "the molecular mass",
+        "the melting point"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc12-003",
+      "chapter": "Analytical Techniques",
+      "topic": "NMR",
+      "type": "mcq",
+      "q": "In a proton NMR spectrum, the number of peaks indicates:",
+      "solution": "The number of **chemically distinct environments**, not the total number of hydrogens.\n\nEthanol gives **three** peaks — $\\text{CH}_{3}$, $\\text{CH}_{2}$ and $\\text{OH}$ — despite having six hydrogens. The **integration** then gives the ratio $3:2:1$.",
+      "marks": 1,
+      "options": [
+        "the number of hydrogen atoms",
+        "the number of different chemical environments for hydrogen",
+        "the molecular mass",
+        "the number of carbon atoms"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc12-004",
+      "chapter": "Analytical Techniques",
+      "topic": "Splitting in NMR",
+      "type": "mcq",
+      "q": "A proton with three neighbouring equivalent protons appears as a:",
+      "solution": "The **n+1 rule:** $3 + 1 = \\mathbf{4}$, a **quartet**.\n\nIn ethanol the $\\text{CH}_{2}$ is split into a quartet by the three $\\text{CH}_{3}$ protons, and the $\\text{CH}_{3}$ into a triplet by the two $\\text{CH}_{2}$ protons. Each group reports on its neighbour.",
+      "marks": 1,
+      "options": [
+        "singlet",
+        "doublet",
+        "triplet",
+        "quartet"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "alc12-005",
+      "chapter": "Analytical Techniques",
+      "topic": "Chromatography",
+      "type": "mcq",
+      "q": "In paper chromatography, the $R_{f}$ value is:",
+      "solution": "$R_{f} = \\dfrac{\\text{distance moved by the spot}}{\\text{distance moved by the solvent front}}$.\n\nIt is always between 0 and 1, and it is characteristic of a substance **in a given solvent** — which is why comparison must be against a standard run on the same plate.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\text{distance moved by solvent}}{\\text{distance moved by spot}}$",
+        "$\\dfrac{\\text{distance moved by spot}}{\\text{distance moved by solvent}}$",
+        "the mass of the spot",
+        "the time taken"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc12-006",
+      "chapter": "Analytical Techniques",
+      "topic": "NMR peaks",
+      "type": "numeric",
+      "q": "How many peaks appear in the proton NMR spectrum of propanone, $\\text{CH}_{3}\\text{COCH}_{3}$?",
+      "solution": "$\\mathbf{1}$ — the two methyl groups are **equivalent** by symmetry, so all six hydrogens are in the same environment.\n\nThey have no neighbouring protons either, so it is a singlet.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "alc12-007",
+      "chapter": "Analytical Techniques",
+      "topic": "Rf value",
+      "type": "numeric",
+      "q": "A spot moves $3.6$ cm while the solvent front moves $8.0$ cm. Find the $R_{f}$ value.",
+      "solution": "$R_{f} = \\dfrac{3.6}{8.0} = \\mathbf{0.45}$.",
+      "marks": 2,
+      "answer": 0.45,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alc12-008",
+      "chapter": "Analytical Techniques",
+      "topic": "NMR splitting",
+      "type": "numeric",
+      "q": "A proton has two equivalent neighbouring protons. How many lines does its signal show?",
+      "solution": "$n + 1 = \\mathbf{3}$ — a triplet, with the intensities in the ratio $1:2:1$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc12-009",
+      "chapter": "Analytical Techniques",
+      "topic": "Mass spectrum",
+      "type": "numeric",
+      "q": "A compound shows a molecular ion peak at $m/z = 46$ and contains C, H and O only. If it has two carbons, find the number of hydrogen atoms.",
+      "solution": "$2\\text{C} = 24$ and $1\\text{O} = 16$, leaving $46 - 40 = 6$ for hydrogen.\n\n$\\mathbf{6}$ — the compound is $\\text{C}_{2}\\text{H}_{6}\\text{O}$, either ethanol or methoxymethane, and NMR would be needed to tell them apart.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "alc12-010",
+      "chapter": "Analytical Techniques",
+      "topic": "NMR environments",
+      "type": "numeric",
+      "q": "How many hydrogen environments does ethanol, $\\text{CH}_{3}\\text{CH}_{2}\\text{OH}$, have?",
+      "solution": "$\\mathbf{3}$ — $\\text{CH}_{3}$, $\\text{CH}_{2}$ and $\\text{OH}$, in the integration ratio $3:2:1$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alc12-011",
+      "chapter": "Analytical Techniques",
+      "topic": "Mass spectrometry",
+      "type": "long",
+      "q": "Explain how a mass spectrum is used to identify a compound, including the molecular ion, fragmentation and isotope peaks.",
+      "solution": "**The molecular ion peak, $\\text{M}^{+}$.** Usually the peak of highest $m/z$, it gives the **relative molecular mass** directly.\n\nA small peak one unit higher, the **M+1 peak**, comes from molecules containing a $^{13}\\text{C}$ atom. Since $^{13}\\text{C}$ is $1.1\\%$ abundant, the ratio of M+1 to M gives the **number of carbon atoms**:\n\n$\\text{number of C} \\approx \\dfrac{100}{1.1} \\times \\dfrac{\\text{height of M+1}}{\\text{height of M}}$\n\n**Fragmentation.** The molecular ion breaks into smaller charged fragments, and the **differences** between peaks identify what was lost:\n\n• $\\text{M} - 15$: loss of $\\text{CH}_{3}$\n\n• $\\text{M} - 17$: loss of OH\n\n• $\\text{M} - 29$: loss of CHO or $\\text{C}_{2}\\text{H}_{5}$\n\n• $\\text{M} - 45$: loss of COOH\n\n**Common fragment peaks:** $m/z\\ 15$ ($\\text{CH}_{3}^{+}$), $29$ ($\\text{C}_{2}\\text{H}_{5}^{+}$ or $\\text{CHO}^{+}$), $43$ ($\\text{CH}_{3}\\text{CO}^{+}$), $77$ ($\\text{C}_{6}\\text{H}_{5}^{+}$).\n\n**The fragmentation pattern is a fingerprint**, and can be matched against a database to identify a compound outright.\n\n**Isotope peaks that give the halogen away.**\n\n• **Chlorine:** $^{35}\\text{Cl}$ and $^{37}\\text{Cl}$ are in a $3:1$ ratio, so M and M+2 appear in that ratio.\n\n• **Bromine:** $^{79}\\text{Br}$ and $^{81}\\text{Br}$ are nearly $1:1$, so M and M+2 are of **equal height** — unmistakable.\n\n**Where it is used:** identifying unknowns, detecting drugs in athletes' samples, and analysing the atmosphere of Mars, where a spectrometer was landed to do exactly this.",
+      "marks": 3
+    },
+    {
+      "id": "alc12-012",
+      "chapter": "Analytical Techniques",
+      "topic": "Infrared spectroscopy",
+      "type": "long",
+      "q": "Explain the principle of infrared spectroscopy, list the key absorption ranges, and describe how IR distinguishes an alcohol from a carboxylic acid.",
+      "solution": "**The principle.** Covalent bonds vibrate — stretching and bending — at frequencies that fall in the infrared.\n\nA bond absorbs infrared radiation when the frequency **matches its own vibration**, so the spectrum shows an absorption at a position determined by the masses of the atoms and the stiffness of the bond.\n\nA bond must have a **changing dipole moment** to absorb, which is why $\\text{O}_{2}$ and $\\text{N}_{2}$ are transparent to infrared — and why $\\text{CO}_{2}$ and $\\text{H}_{2}\\text{O}$ are greenhouse gases while the bulk of the atmosphere is not.\n\n**Key absorptions (cm$^{-1}$).**\n\n• **O–H (alcohol):** $3200$–$3600$, broad\n\n• **O–H (carboxylic acid):** $2500$–$3300$, **very broad**\n\n• **N–H (amine):** $3300$–$3500$, sharper\n\n• **C–H:** $2850$–$3100$\n\n• **C=O:** $1680$–$1750$, strong and sharp — the easiest peak in any spectrum to recognise\n\n• **C=C:** $1620$–$1680$, weaker\n\n**Alcohol against carboxylic acid.**\n\n• An **alcohol** has a broad O–H but **no** C=O.\n\n• A **carboxylic acid** has **both**: a very broad O–H from $2500$ cm$^{-1}$ (broadened by the strong hydrogen-bonded dimers) **and** a strong C=O near $1700$.\n\n• An **aldehyde or ketone** has the C=O but no O–H.\n\n**The fingerprint region** below $1500$ cm$^{-1}$ is too complex to interpret bond by bond, but it is unique to each compound — so matching it against a database identifies a substance conclusively, which is how roadside breath and drug testing works.",
+      "marks": 3
+    },
+    {
+      "id": "alc12-013",
+      "chapter": "Analytical Techniques",
+      "topic": "NMR spectroscopy",
+      "type": "long",
+      "q": "Explain the principle of proton NMR, what the chemical shift, integration and splitting each tell you, and interpret the spectrum of ethanol.",
+      "solution": "**The principle.** A hydrogen nucleus behaves as a tiny magnet. In a strong magnetic field it can align with or against the field, and radio-frequency radiation flips it between the two states.\n\nThe frequency absorbed depends on the **electron density** around the nucleus, so protons in different chemical environments absorb at slightly different frequencies.\n\n**TMS** is used as the reference at $\\delta = 0$: chemically inert, volatile, and giving a single sharp peak well clear of everything else.\n\n**The three pieces of information.**\n\n**1. Chemical shift ($\\delta$)** — identifies the environment. Protons near electronegative atoms are **deshielded** and shift downfield.\n\n$\\text{CH}_{3}$ (alkane) $\\approx 0.9$; next to C=O $\\approx 2.2$; next to O $\\approx 3.5$; aromatic $\\approx 7$; aldehyde $\\approx 9.5$; carboxylic acid $\\approx 11$.\n\n**2. Integration** — the area under each peak is proportional to the **number of protons** in that environment, giving their ratio.\n\n**3. Splitting ($n+1$ rule)** — a signal is split into $n+1$ lines by $n$ equivalent protons on **adjacent** carbons. It reveals what each group is next to.\n\n**Ethanol, $\\text{CH}_{3}\\text{CH}_{2}\\text{OH}$ — three signals.**\n\n• $\\delta \\approx 1.2$, **triplet**, integration 3 — the $\\text{CH}_{3}$, split by the two $\\text{CH}_{2}$ protons.\n\n• $\\delta \\approx 3.7$, **quartet**, integration 2 — the $\\text{CH}_{2}$, split by the three $\\text{CH}_{3}$ protons, and shifted downfield by the neighbouring oxygen.\n\n• $\\delta \\approx 2.6$, **singlet**, integration 1 — the OH. It is a singlet because it exchanges rapidly with other OH protons, too fast for the splitting to register.\n\n**That is why adding $\\text{D}_{2}\\text{O}$ identifies OH and NH peaks:** the proton exchanges for deuterium and the peak **disappears**.",
+      "marks": 5
+    },
+    {
+      "id": "alc12-014",
+      "chapter": "Analytical Techniques",
+      "topic": "Chromatography",
+      "type": "long",
+      "q": "Explain the principle of chromatography, describe paper and gas-liquid chromatography, and explain what determines how far a component travels.",
+      "solution": "**The principle.** Components are separated by their differing distribution between a **stationary phase** and a **mobile phase**.\n\nA component that favours the mobile phase travels fast; one that favours the stationary phase is held back. Over a distance, small differences in that preference become large differences in position.\n\n**Paper chromatography.** The stationary phase is water held in the cellulose; the mobile phase is the solvent rising by capillary action.\n\nThe spot is placed above the solvent level (or it would simply dissolve away), the solvent rises, and the components separate. Colourless spots are revealed with a locating agent — ninhydrin for amino acids — or under ultraviolet light.\n\n$R_{f} = \\dfrac{\\text{distance moved by spot}}{\\text{distance moved by solvent front}}$\n\n$R_{f}$ is constant for a substance **in a particular solvent at a particular temperature**, so identification requires running a known standard **on the same plate**.\n\n**Gas-liquid chromatography.** The stationary phase is a liquid on a solid support inside a long coiled column; the mobile phase is an **inert carrier gas**.\n\nThe sample is vaporised and swept through the column, and each component emerges after its own **retention time**, measured by a detector.\n\n**What determines how far a component travels.**\n\n• **Solubility in the mobile phase** — greater solubility means faster travel.\n\n• **Adsorption on the stationary phase** — stronger adhesion means slower travel.\n\n• In GLC, **volatility** also matters: the more volatile the component, the more time it spends in the gas.\n\n**GC-MS combines the two techniques:** chromatography separates the mixture and a mass spectrometer identifies each component as it emerges. It is the standard method in forensic laboratories and in drug testing.",
+      "marks": 3
+    },
+    {
+      "id": "alc12-015",
+      "chapter": "Analytical Techniques",
+      "topic": "Combining techniques",
+      "type": "long",
+      "q": "A compound of formula $\\text{C}_{3}\\text{H}_{6}\\text{O}$ shows a strong IR absorption at $1715$ cm$^{-1}$, no absorption above $3000$ cm$^{-1}$ apart from C-H, and a single peak in its proton NMR. Identify it, giving your reasoning.",
+      "solution": "**Step 1 — the formula.** $\\text{C}_{3}\\text{H}_{6}\\text{O}$ has a degree of unsaturation of\n\n$\\dfrac{2(3) + 2 - 6}{2} = 1$\n\nSo there is **one** double bond or ring.\n\n**Step 2 — the infrared.** A strong absorption at $1715$ cm$^{-1}$ is unmistakably a **C=O** group, which accounts for the one degree of unsaturation.\n\n**No broad absorption above $3000$** rules out O–H, so it is **not** an alcohol or a carboxylic acid.\n\n**Step 3 — the NMR.** A **single** peak means **all six hydrogens are in the same environment** — a highly symmetrical molecule.\n\n**Step 4 — the candidates.** The possibilities for $\\text{C}_{3}\\text{H}_{6}\\text{O}$ with a C=O are:\n\n• **Propanal**, $\\text{CH}_{3}\\text{CH}_{2}\\text{CHO}$ — three environments ($\\text{CH}_{3}$, $\\text{CH}_{2}$, CHO), so **three** peaks. Ruled out.\n\n• **Propanone**, $\\text{CH}_{3}\\text{COCH}_{3}$ — the two methyl groups are **equivalent by symmetry**, so **one** peak. ✓\n\n**The compound is propanone (acetone).**\n\n**Confirming it.** The single NMR peak would appear at $\\delta \\approx 2.1$, the shift expected for a methyl group next to a carbonyl, and it would be a **singlet** since there are no neighbouring protons.\n\nAn aldehyde would also have shown a distinctive peak at $\\delta \\approx 9.5$ and a weak IR absorption near $2700$ cm$^{-1}$ from the aldehyde C–H.\n\n**The general lesson.** No single technique identifies a compound. The formula gives the degrees of unsaturation, IR gives the functional group, NMR gives the carbon skeleton and the symmetry — and together they leave exactly one answer standing.",
+      "marks": 2
+    }
+  ]
+}

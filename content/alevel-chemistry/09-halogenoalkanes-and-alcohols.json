@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-halo-alcohols",
+  "title": "Halogenoalkanes and Alcohols",
+  "chapter": "Topic Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc9-001",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Nucleophilic substitution",
+      "type": "mcq",
+      "q": "A nucleophile is a species that:",
+      "solution": "A nucleophile **donates a lone pair** to an electron-deficient carbon — $\\text{OH}^{-}$, $\\text{CN}^{-}$, $\\text{NH}_{3}$, $\\text{H}_{2}\\text{O}$.\n\nIt is attracted to the $\\delta+$ carbon of a polar bond. An **electrophile** does the opposite.",
+      "marks": 1,
+      "options": [
+        "accepts an electron pair",
+        "donates an electron pair to an electron-deficient centre",
+        "is always positively charged",
+        "removes a proton"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc9-002",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Rate of hydrolysis",
+      "type": "mcq",
+      "q": "The order of rate of hydrolysis of halogenoalkanes is:",
+      "solution": "**Iodo fastest, fluoro slowest** — the order of **bond enthalpy**, not electronegativity.\n\nC–I is the weakest bond ($238$ kJ/mol) and breaks most readily; C–F ($467$) is one of the strongest bonds in organic chemistry, which is why CFCs are so unreactive and so persistent.",
+      "marks": 1,
+      "options": [
+        "R-F > R-Cl > R-Br > R-I",
+        "R-I > R-Br > R-Cl > R-F",
+        "all the same",
+        "R-Cl > R-I > R-Br"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc9-003",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Elimination",
+      "type": "mcq",
+      "q": "A halogenoalkane treated with hot ethanolic KOH gives:",
+      "solution": "**Ethanolic** KOH and heat favour **elimination**, giving an alkene.\n\n**Aqueous** KOH at lower temperature gives substitution and an alcohol. Same reagent, two different reactions — the **solvent** decides whether hydroxide acts as a nucleophile or as a base.",
+      "marks": 1,
+      "options": [
+        "an alcohol",
+        "an alkene",
+        "an amine",
+        "a nitrile"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc9-004",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Oxidation of alcohols",
+      "type": "mcq",
+      "q": "A secondary alcohol is oxidised to:",
+      "solution": "A **ketone**, and it stops there — there is no further hydrogen on the carbinol carbon to remove.\n\nPrimary alcohols give an aldehyde and then an acid; tertiary alcohols resist oxidation altogether.",
+      "marks": 1,
+      "options": [
+        "an aldehyde",
+        "a ketone",
+        "a carboxylic acid",
+        "an ester"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc9-005",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Distinguishing alcohols",
+      "type": "mcq",
+      "q": "Which reagent distinguishes primary, secondary and tertiary alcohols by the time taken for turbidity?",
+      "solution": "**Lucas reagent** — concentrated HCl with anhydrous $\\text{ZnCl}_{2}$.\n\nTertiary turns cloudy at once, secondary in about five minutes, primary only on heating — the order of carbocation stability, since the reaction goes by $\\text{S}_{\\text{N}}1$.",
+      "marks": 1,
+      "options": [
+        "Tollens' reagent",
+        "Lucas reagent",
+        "Bromine water",
+        "Fehling's solution"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc9-006",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Isomers",
+      "type": "numeric",
+      "q": "How many structural isomers of $\\text{C}_{3}\\text{H}_{7}\\text{Br}$ are there?",
+      "solution": "1-bromopropane and 2-bromopropane — $\\mathbf{2}$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc9-007",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Alcohol isomers",
+      "type": "numeric",
+      "q": "How many alcohol isomers does $\\text{C}_{4}\\text{H}_{9}\\text{OH}$ have?",
+      "solution": "Butan-1-ol, butan-2-ol, 2-methylpropan-1-ol and 2-methylpropan-2-ol — $\\mathbf{4}$.\n\nTwo primary, one secondary, one tertiary, which makes this the standard set for the Lucas test.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alc9-008",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Chiral centres",
+      "type": "numeric",
+      "q": "How many chiral carbon atoms does 2-bromobutane have?",
+      "solution": "Carbon 2 carries H, Br, $\\text{CH}_{3}$ and $\\text{C}_{2}\\text{H}_{5}$ — four different groups, so $\\mathbf{1}$.\n\nThe compound therefore exists as a pair of enantiomers.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "alc9-009",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of ethanol, $\\text{C}_{2}\\text{H}_{5}\\text{OH}$, in g/mol.",
+      "solution": "$24 + 6 + 16 = \\mathbf{46}$ g/mol.",
+      "marks": 2,
+      "answer": 46,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alc9-010",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Oxidation products",
+      "type": "numeric",
+      "q": "How many of these are oxidised by acidified dichromate: propan-1-ol, propan-2-ol, 2-methylpropan-2-ol?",
+      "solution": "**Propan-1-ol** ✓ (primary $\\to$ aldehyde $\\to$ acid) and **propan-2-ol** ✓ (secondary $\\to$ ketone).\n\n**2-methylpropan-2-ol** ✗ — tertiary, with no hydrogen on the carbinol carbon.\n\nSo $\\mathbf{2}$, and the orange-to-green colour change is the visible test.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "alc9-011",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "SN1 and SN2 mechanisms",
+      "type": "long",
+      "q": "Compare the $\\text{S}_{\\text{N}}1$ and $\\text{S}_{\\text{N}}2$ mechanisms in terms of steps, kinetics, stereochemistry and the substrate that favours each.",
+      "solution": "**$\\text{S}_{\\text{N}}2$ — one concerted step.**\n\nThe nucleophile attacks the $\\delta+$ carbon from the **opposite side** to the leaving group, which departs as the new bond forms. The transition state has five groups around the carbon.\n\n• **Kinetics:** rate $= k[\\text{RX}][\\text{Nu}]$ — **second order**, since both appear in the single step.\n\n• **Stereochemistry:** **inversion** of configuration, like an umbrella blown inside out.\n\n• **Favoured by:** **primary** halides, where the back of the carbon is accessible.\n\n**$\\text{S}_{\\text{N}}1$ — two steps.**\n\n**Step 1 (slow):** the C–X bond breaks heterolytically, giving a **carbocation**.\n\n**Step 2 (fast):** the nucleophile attacks the cation.\n\n• **Kinetics:** rate $= k[\\text{RX}]$ — **first order**. The nucleophile's concentration has no effect, because it is not in the slow step.\n\n• **Stereochemistry:** the carbocation is **planar**, so attack from either face gives a **racemic mixture**.\n\n• **Favoured by:** **tertiary** halides, whose carbocation is stabilised by three alkyl groups — and whose back is completely blocked to $\\text{S}_{\\text{N}}2$ attack.\n\n**Secondary halides do both**, in proportions depending on the conditions.\n\n**The experimental test.** Double the nucleophile concentration: an $\\text{S}_{\\text{N}}2$ rate doubles, an $\\text{S}_{\\text{N}}1$ rate does not move. Kinetics and stereochemistry agree, which is what makes the two mechanisms believable rather than merely plausible.\n\n**Solvent matters too:** polar protic solvents stabilise the carbocation and favour $\\text{S}_{\\text{N}}1$; polar aprotic solvents leave the nucleophile bare and reactive, favouring $\\text{S}_{\\text{N}}2$.",
+      "marks": 3
+    },
+    {
+      "id": "alc9-012",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Reactions of halogenoalkanes",
+      "type": "long",
+      "q": "Give four reactions of halogenoalkanes with the reagents and products, and explain the synthetic value of each.",
+      "solution": "**1. With aqueous KOH (warm) — hydrolysis.**\n\n$\\text{RBr} + \\text{OH}^{-} \\to \\text{ROH} + \\text{Br}^{-}$\n\nGives an **alcohol**, and so opens the whole of alcohol chemistry.\n\n**2. With ethanolic KOH (hot) — elimination.**\n\n$\\text{CH}_{3}\\text{CH}_{2}\\text{CH}_{2}\\text{Br} + \\text{KOH} \\to \\text{CH}_{3}\\text{CH}{=}\\text{CH}_{2} + \\text{KBr} + \\text{H}_{2}\\text{O}$\n\nGives an **alkene**. The same reagent in a different solvent — hydroxide acts as a **base** here rather than a nucleophile.\n\n**3. With ethanolic KCN, heated under reflux.**\n\n$\\text{RBr} + \\text{CN}^{-} \\to \\text{RCN} + \\text{Br}^{-}$\n\n**This adds a carbon to the chain** — one of the few reactions that lengthens a carbon skeleton, which makes it valuable in synthesis.\n\nThe nitrile can then be hydrolysed to a carboxylic acid or reduced to an amine.\n\n**4. With excess ammonia in a sealed tube.**\n\n$\\text{RBr} + 2\\text{NH}_{3} \\to \\text{RNH}_{2} + \\text{NH}_{4}\\text{Br}$\n\nGives an **amine** — but the product is itself nucleophilic and reacts further, so excess ammonia is used to favour the primary amine.\n\n**5. With silver nitrate in ethanol** — the standard test, giving a precipitate whose colour identifies the halogen and whose rate of appearance shows the C–X bond strength.\n\n**The pattern:** the halogen makes the carbon $\\delta+$, and everything follows from that. Halogenoalkanes are rarely useful in themselves; they are the crossroads of organic synthesis.",
+      "marks": 3
+    },
+    {
+      "id": "alc9-013",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Alcohols",
+      "type": "long",
+      "q": "Describe the oxidation of alcohols, explaining how the product depends on the class of alcohol and on the conditions, and describe how the products are identified.",
+      "solution": "**The reagent** is acidified potassium dichromate(VI), which turns from **orange to green** as $\\text{Cr}^{3+}$ forms.\n\n**Primary alcohol — two stages, and the conditions decide which you get.**\n\n$\\text{RCH}_{2}\\text{OH} \\to \\text{RCHO} \\to \\text{RCOOH}$\n\n• **Distil off** the product as it forms, and the **aldehyde** is collected — it boils lower than the alcohol, having no hydrogen bonding, and escapes before it can be oxidised further.\n\n• **Heat under reflux** with excess oxidant, and the **carboxylic acid** is obtained — reflux returns the aldehyde to the flask to be oxidised again.\n\nThat distinction between distillation and reflux is worth a mark in itself.\n\n**Secondary alcohol.** Gives a **ketone**, and stops there. There is no hydrogen left on the carbinol carbon, and further oxidation would mean breaking a C–C bond.\n\n**Tertiary alcohol.** **No reaction** — no hydrogen on the carbinol carbon at all. The solution stays orange, which is itself a useful test.\n\n**Identifying the products.**\n\n• **Aldehyde against ketone:** Tollens' reagent gives a **silver mirror** with an aldehyde only; Fehling's gives a **red-brown** precipitate with an aliphatic aldehyde only.\n\n• **Carboxylic acid:** effervescence with sodium carbonate, giving $\\text{CO}_{2}$ which turns limewater milky.\n\n• **Both aldehydes and ketones** give an orange precipitate with 2,4-DNPH, whose melting point identifies the specific compound.\n\n**A summary worth memorising:** primary gives aldehyde then acid, secondary gives ketone, tertiary gives nothing.",
+      "marks": 5
+    },
+    {
+      "id": "alc9-014",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Optical isomerism",
+      "type": "long",
+      "q": "Explain optical isomerism, state the conditions for it, and explain why an $\\text{S}_{\\text{N}}1$ reaction gives a racemic product while $\\text{S}_{\\text{N}}2$ does not.",
+      "solution": "**Optical isomers (enantiomers)** are non-superimposable mirror images, like a pair of hands.\n\nThey are identical in melting point, boiling point and every ordinary chemical property — differing only in **rotating plane-polarised light** equally in opposite directions, and in how they react with **other chiral molecules**.\n\n**The condition:** a **chiral centre** — a carbon atom bonded to **four different groups**.\n\n**A racemic mixture** is equal amounts of both, and is **optically inactive** because the rotations cancel.\n\n**Why $\\text{S}_{\\text{N}}1$ racemises.** The first step forms a **carbocation**, which is $sp^{2}$ hybridised and **planar**.\n\nWhatever chirality the starting material had is destroyed at that instant. The nucleophile can then attack either face with equal ease, giving equal amounts of the two enantiomers.\n\n**Why $\\text{S}_{\\text{N}}2$ does not.** There is no intermediate. The nucleophile attacks from the side **opposite** the leaving group, and the other three groups flip through like an umbrella in the wind.\n\nThe product is a **single enantiomer**, with the configuration **inverted**.\n\n**Why this matters far beyond the examination.** Biological molecules — enzymes, receptors, DNA — are all chiral, so they interact differently with the two enantiomers of a drug.\n\nOne may be therapeutic and the other inactive or harmful, as the thalidomide tragedy showed. Modern drugs are therefore developed and tested as **single enantiomers**, which is why asymmetric synthesis is such a large field.",
+      "marks": 3
+    },
+    {
+      "id": "alc9-015",
+      "chapter": "Halogenoalkanes and Alcohols",
+      "topic": "Preparation of a haloalkane",
+      "type": "long",
+      "q": "Describe how you would prepare and purify a sample of 1-bromobutane from butan-1-ol in the laboratory.",
+      "solution": "**The reaction.** HBr is generated in situ from sodium bromide and concentrated sulphuric acid — it is a gas, and inconvenient to handle directly:\n\n$\\text{NaBr} + \\text{H}_{2}\\text{SO}_{4} \\to \\text{NaHSO}_{4} + \\text{HBr}$\n\n$\\text{C}_{4}\\text{H}_{9}\\text{OH} + \\text{HBr} \\to \\text{C}_{4}\\text{H}_{9}\\text{Br} + \\text{H}_{2}\\text{O}$\n\n**Procedure.**\n\n1. Mix butan-1-ol with sodium bromide and add concentrated sulphuric acid **slowly, with cooling** — the mixing is strongly exothermic.\n\n2. **Heat under reflux** for about $45$ minutes. The reflux condenser returns the volatile reagents and product to the flask instead of letting them escape.\n\n3. **Distil** off the crude product, which comes over as a cloudy liquid below $105$°C.\n\n**Purification.**\n\n4. **Separating funnel.** Wash with water to remove acid and soluble impurities, then with sodium carbonate solution to neutralise the remaining acid — **release the pressure frequently**, as $\\text{CO}_{2}$ is given off. The product is the **lower** layer, being denser than water.\n\n5. **Dry** over anhydrous sodium sulphate or calcium chloride until the liquid is clear, then decant.\n\n6. **Redistil**, collecting the fraction at the boiling point of 1-bromobutane, $101$–$104$°C.\n\n**Identifying and checking the product:** measure the boiling point, and test with silver nitrate in ethanol for a cream precipitate of AgBr.\n\n**Why the yield is always well below theoretical:** losses at every transfer, some elimination to butene as a side reaction, and the reaction being an equilibrium that never goes fully to completion.",
+      "marks": 2
+    }
+  ]
+}
