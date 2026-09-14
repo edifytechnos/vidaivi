@@ -126,6 +126,16 @@ export interface ShellOpts {
   active?: RailKey;
   /** The editor: content fills the page area edge to edge, no gutter. */
   full?: boolean;
+  /**
+   * Let the document scroll instead of a box inside it (phones and tablets).
+   *
+   * The shell is normally locked to the window (`height: 100dvh`) with
+   * `.ed-center` as the scroller, which means the app bar can never scroll
+   * away. A student wants it to: the bar is identity, and the row below it —
+   * Back, Questions, Hand in — is what has to stay. Opt in per screen, so the
+   * authoring editor keeps its fixed shell.
+   */
+  scroll?: "page";
   /** Reading width for card pages; "wide" for grids and tables. */
   width?: "narrow" | "wide";
 }
@@ -187,12 +197,14 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
 
   const main = document.getElementById("shell-main")!;
   main.classList.toggle("shell-main-full", !!opts.full);
-  // A full-bleed screen owns the whole window, and on a phone it needs the
-  // rail's 56px too: the workspace's own crumb row already carries the way
-  // back (the subject name) and the Questions drawer, so the rail is a
-  // duplicate that costs a sixth of a 320px screen. The class is on .shell
-  // because the rail is a sibling of the page, not a descendant of it.
-  document.querySelector(".shell")?.classList.toggle("shell-full", !!opts.full);
+  // A full-bleed screen owns the whole window, and on a phone it takes the
+  // rail's 56px too: the bottom bar belongs to the subject picker, which is
+  // the only screen that is *not* full-bleed. Inside a subject or a test the
+  // crumb row already carries the way back and the Questions drawer, so the
+  // rail would be a duplicate costing a sixth of a 320px screen. Both classes
+  // sit on .shell because the rail is a sibling of the page, not a child.
+  shell.classList.toggle("shell-full", !!opts.full);
+  shell.classList.toggle("shell-scroll", opts.scroll === "page");
   main.innerHTML = opts.full ? content : `<div class="page page-${opts.width ?? "narrow"}">${content}</div>`;
   main.scrollTop = 0;
   return opts.full ? main : main.querySelector<HTMLElement>(".page")!;
@@ -305,14 +317,21 @@ export function bindTreeDrawer(editor: HTMLElement): void {
   // opens *under* that row rather than under the app bar, so the button and
   // the panel it opens read as one control. The row wraps at narrow widths,
   // so its height is measured rather than guessed.
-  const crumb = editor.querySelector<HTMLElement>(".ed-crumbrow");
-  if (crumb) {
-    const top = Math.round(crumb.getBoundingClientRect().bottom);
-    editor.style.setProperty("--drawer-top", `${top}px`);
-  }
-  editor
-    .querySelector("[data-drawer-toggle]")
-    ?.addEventListener("click", () => editor.classList.toggle("tree-open"));
+  //
+  // Measured **on open, not on bind**: the crumb row is sticky now, so once
+  // the page has scrolled it sits at the top of the window rather than where
+  // it was painted. A number taken at bind time would leave the drawer
+  // floating below the row it belongs to.
+  const placeDrawer = (): void => {
+    const crumb = editor.querySelector<HTMLElement>(".ed-crumbrow");
+    if (!crumb) return;
+    editor.style.setProperty("--drawer-top", `${Math.round(crumb.getBoundingClientRect().bottom)}px`);
+  };
+  placeDrawer();
+  editor.querySelector("[data-drawer-toggle]")?.addEventListener("click", () => {
+    placeDrawer();
+    editor.classList.toggle("tree-open");
+  });
   editor.querySelector(".ed-scrim")?.addEventListener("click", close);
   // Picking a question is the end of what the drawer is for.
   editor.querySelector(".ed-tree")?.addEventListener("click", (e) => {

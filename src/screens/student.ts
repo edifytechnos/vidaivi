@@ -99,71 +99,43 @@ interface TreeOpts {
   answered?: (q: Question) => boolean;
 }
 
+/**
+ * The question list for the test that is open.
+ *
+ * It used to be a tree of every test in the subject with one expanded. But a
+ * student has exactly one test open — the others are locked while it is — so
+ * the folders were rows to scroll past on a phone to reach the questions. The
+ * way to another test is Back, which is in the crumb row beside this button.
+ */
 export function studentTreeMarkup(opts: TreeOpts = {}): string {
-  const busy = openTestId();
-  const nodes = workTests
-    .map((t) => {
-      const state = stateOf(t.id);
-      const active = t.id === opts.activeTest;
-      const locked = state === "new" && !!busy && busy !== t.id;
-      const chip =
-        state === "done"
-          ? `<span class="status-chip status-done">Done</span>`
-          : state === "progress"
-            ? `<span class="status-chip status-progress">In progress</span>`
-            : locked
-              ? `<span class="st-lock" title="Finish the test you have open first">${ICONS.lock}</span>`
-              : `<span class="status-chip status-new">${t.questionCount} Q</span>`;
-      const rows =
-        active && opts.questions
-          ? `<div class="ed-tree-questions">${opts.questions
-              .map((q, i) => {
-                const ok = opts.answered?.(q) ?? false;
-                return `
-                <div class="ed-tree-row">
-                  <button class="ed-tree-q${i === opts.activeQuestion ? " active" : ""}" data-i="${i}">
-                    <span class="st-dot ${ok ? "st-answered" : "st-todo"}">${ok ? "✓" : ""}</span>
-                    <span class="ed-tree-name">${i + 1}. ${escapeHtml(q.topic)}</span>
-                    <span class="ed-tree-marks">${q.marks}</span>
-                  </button>
-                </div>`;
-              })
-              .join("")}</div>`
-          : "";
+  const rows = (opts.questions ?? [])
+    .map((q, i) => {
+      const ok = opts.answered?.(q) ?? false;
       return `
-        <div class="ed-node${active ? " open" : ""}">
-          <div class="ed-node-head${active ? " active" : ""}">
-            <button class="ed-tree-test st-test${locked ? " st-locked" : ""}" data-test="${escapeHtml(t.id)}"${locked ? " disabled" : ""}>
-              ${ICONS.folder}
-              <span class="ed-tree-name">${testLabelMarkup(t.title, t.chapter)}</span>
-              ${chip}
-            </button>
-          </div>
-          ${rows}
+        <div class="ed-tree-row">
+          <button class="ed-tree-q${i === opts.activeQuestion ? " active" : ""}" data-i="${i}">
+            <span class="st-dot ${ok ? "st-answered" : "st-todo"}">${ok ? "✓" : ""}</span>
+            <span class="ed-tree-name">${i + 1}. ${escapeHtml(q.topic)}</span>
+            <span class="ed-tree-marks">${q.marks}</span>
+          </button>
         </div>`;
     })
     .join("");
 
   return `
     <aside class="ed-tree" id="st-tree">
-      <div class="ed-tree-head"><span class="ed-tree-title">${escapeHtml(subjectTitle)}</span></div>
+      <div class="ed-tree-head"><span class="ed-tree-title">Questions</span></div>
       <div class="ed-tree-body">
-        ${nodes || `<p class="ed-tree-empty hint">No tests here yet.</p>`}
+        ${rows || `<p class="ed-tree-empty hint">No questions here yet.</p>`}
       </div>
     </aside>`;
 }
 
-/** Wire the tree: a test root opens that test, a question row jumps to it. */
+/** Wire the question list: a row jumps to that question. */
 function bindTree(onQuestion?: (i: number) => void): void {
   document.getElementById("st-tree")?.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
-    const qrow = target.closest<HTMLElement>(".ed-tree-q[data-i]");
-    if (qrow && onQuestion) {
-      onQuestion(Number(qrow.dataset.i));
-      return;
-    }
-    const test = target.closest<HTMLElement>(".st-test[data-test]");
-    if (test && !(test as HTMLButtonElement).disabled) void openTest(test.dataset.test!);
+    const qrow = (e.target as HTMLElement).closest<HTMLElement>(".ed-tree-q[data-i]");
+    if (qrow && onQuestion) onQuestion(Number(qrow.dataset.i));
   });
 }
 
@@ -206,7 +178,13 @@ async function loadWorkTests(): Promise<void> {
   workTests = [...bundled, ...server];
 }
 
-/** Nothing picked yet: the tree, and a panel that says what to do with it. */
+/**
+ * The subject: a list of its tests, and nothing else.
+ *
+ * The app bar already names the subject, so the crumb row repeated it and the
+ * drawer held a second copy of the very list on the page. Both are gone — a
+ * student picks a test here, and meets the questions on the next screen.
+ */
 function renderOverview(): void {
   const busy = openTestId();
   const justHandedIn = takeHandedIn();
@@ -214,13 +192,8 @@ function renderOverview(): void {
   mount(
     `
     <div class="editor ed-readonly ed-student" data-pane="question">
-      <div class="ed-cols overview st-workspace">
-        ${studentTreeMarkup()}
+      <div class="ed-cols overview st-workspace st-subject">
         <div class="ed-center">
-          <div class="ed-crumbrow">
-            ${drawerToggleMarkup("Tests")}
-            <span class="ed-crumb-test">${escapeHtml(subjectTitle)}</span>
-          </div>
           <div class="ed-body">
             ${
               justHandedIn
@@ -234,7 +207,7 @@ function renderOverview(): void {
             }
             <section class="ed-panel">
               <div class="ed-panel-head"><span class="ed-panel-label">Your tests</span></div>
-              <p class="hint">Pick a test on the left. Questions open one at a time,
+              <p class="hint">Pick a test to start. Questions open one at a time,
               and you can move between them in any order.</p>
               ${
                 busy
@@ -266,13 +239,9 @@ function renderOverview(): void {
           </div>
         </div>
       </div>
-      <div class="ed-scrim"></div>
     </div>`,
-    { title: subjectTitle, active: "subjects", full: true }
+    { title: subjectTitle, active: "subjects", full: true, scroll: "page" }
   );
-  bindTree();
-  bindDrawer();
-  // The cards say the same thing as the tree, so they must do the same thing.
   document.querySelector(".ed-center .test-list")?.addEventListener("click", (e) => {
     const card = (e.target as HTMLElement).closest<HTMLButtonElement>(".test-card[data-test]");
     if (card && !card.disabled) void openTest(card.dataset.test!);
@@ -345,14 +314,8 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
           })}
           <div class="ed-center">
             <div class="ed-crumbrow">
+              <button class="ed-crumb-back" id="st-back" aria-label="Back to ${escapeHtml(subjectTitle)}" title="Back to ${escapeHtml(subjectTitle)}">${ICONS.back}</button>
               ${drawerToggleMarkup()}
-              <button class="ed-crumb-link" id="st-back">${escapeHtml(subjectTitle)}</button>
-              <span class="ed-crumb-sep">›</span>
-              <span class="ed-crumb-mid">
-                <span class="ed-crumb-test">${escapeHtml(test.title)}</span>
-                <span class="ed-crumb-sep">›</span>
-              </span>
-              <span class="ed-crumb-current">Question ${index + 1} of ${test.questions.length}</span>
               <span class="ed-spacer"></span>
               <button id="st-submit" class="btn btn-primary st-handin">Hand in<span class="st-long"> test</span></button>
             </div>
@@ -390,7 +353,10 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
         </div>
         <div class="ed-scrim"></div>
       </div>`,
-      { title: test.title, sub: "In progress", active: "subjects", full: true }
+      // The bar names the test on two lines — Title, then Subtitle — because
+      // the crumb row no longer carries either. It is the one place on a phone
+      // that says what is open.
+      { title: test.title, sub: test.chapter || "", active: "subjects", full: true, scroll: "page" }
     );
 
     renderAnswer(test, attempt, q, index, render);
