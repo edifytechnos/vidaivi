@@ -7,195 +7,204 @@
   "access": "login",
   "questions": [
     {
-      "id": "rf-001",
+      "id": "c12rf-001",
       "chapter": "Relations and Functions",
       "topic": "Types of relations",
       "type": "mcq",
-      "q": "Let $R = \\{(1,2), (2,1)\\}$ be a relation on the set $A = \\{1, 2, 3\\}$. Then $R$ is:",
-      "solution": "Check each property like checking mirrors: **Symmetric** means every arrow has a return arrow — $(1,2)$ has $(2,1)$ and vice versa, so $R$ is symmetric. ✓\n\nNot reflexive: $(1,1), (2,2), (3,3)$ are missing. Not transitive: $(1,2)$ and $(2,1)$ would require $(1,1)$, which is absent. Hence only **symmetric**.",
+      "q": "A relation $R$ on the set $A = \\{1, 2, 3\\}$ is defined as $R = \\{(1, 1), (2, 2), (1, 2)\\}$. Then $R$ is :",
+      "solution": "**Reflexive?** No. $(3, 3)$ is missing, so not every element is related to itself.\\n\\n**Symmetric?** No. $(1, 2) \\in R$ but $(2, 1) \\notin R$.\\n\\n**Transitive?** Check every chain. $(1,1)$ with $(1,2)$ gives $(1,2)$ — present. $(1,2)$ with $(2,2)$ gives $(1,2)$ — present. Nothing else chains. So $R$ **is** transitive.\\n\\nTransitive only.",
       "marks": 1,
+      "source": "CBSE 2026",
       "options": [
-        "reflexive",
-        "symmetric",
-        "transitive",
-        "an equivalence relation"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "rf-002",
-      "chapter": "Relations and Functions",
-      "topic": "One-one and onto functions",
-      "type": "mcq",
-      "q": "The function $f: \\mathbb{R} \\to \\mathbb{R}$ defined by $f(x) = x^3$ is:",
-      "solution": "**One-one:** $x_1^3 = x_2^3 \\Rightarrow x_1 = x_2$ (cubing never squashes two inputs into one output — the graph always climbs). ✓\n\n**Onto:** every real $y$ has a pre-image $x = y^{1/3}$. ✓\n\nSo $f$ is a **bijection**. Contrast with $x^2$, which folds the negative side onto the positive side and fails both.",
-      "marks": 1,
-      "options": [
-        "one-one but not onto",
-        "onto but not one-one",
-        "both one-one and onto",
-        "neither one-one nor onto"
-      ],
-      "answer": 2
-    },
-    {
-      "id": "rf-003",
-      "chapter": "Relations and Functions",
-      "topic": "Counting functions",
-      "type": "mcq",
-      "q": "If $A = \\{1, 2, 3\\}$ and $B = \\{a, b, c\\}$, the number of one-one functions from $A$ to $B$ is:",
-      "solution": "A one-one function is a seating arrangement: 3 guests, 3 chairs, no sharing. First guest has 3 choices, second has 2, third has 1: $3 \\times 2 \\times 1 = 3! = \\mathbf{6}$.\n\n(All functions would be $3^3 = 27$ — every guest free to pick any chair, sharing allowed.)",
-      "marks": 1,
-      "options": [
-        "3",
-        "6",
-        "9",
-        "27"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "rf-004",
-      "chapter": "Relations and Functions",
-      "topic": "Types of relations",
-      "type": "mcq",
-      "q": "The relation $R$ on $\\mathbb{N}$ defined by $a\\,R\\,b$ iff $a$ divides $b$ is:",
-      "solution": "**Reflexive:** every number divides itself. ✓\n\n**Transitive:** if $a \\mid b$ and $b \\mid c$, then $a \\mid c$ (a brick fits in a box, the box fits in a truck — the brick fits in the truck). ✓\n\n**Not symmetric:** $2 \\mid 4$ but $4 \\nmid 2$ — divisibility is a one-way street. Hence **reflexive and transitive**.",
-      "marks": 1,
-      "options": [
-        "reflexive and symmetric",
-        "reflexive and transitive",
-        "symmetric and transitive",
-        "an equivalence relation"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "rf-005",
-      "chapter": "Relations and Functions",
-      "topic": "One-one and onto functions",
-      "type": "mcq",
-      "q": "The function $f: \\mathbb{R} \\to \\mathbb{R}$ defined by $f(x) = |x|$ is:",
-      "solution": "**Not one-one:** $f(-2) = f(2) = 2$ — the V-shaped graph folds the number line in half, so two inputs land on one output.\n\n**Not onto:** outputs are never negative, so no $x$ maps to $-1$; half the codomain $\\mathbb{R}$ is unreachable. Hence **neither**.",
-      "marks": 1,
-      "options": [
-        "one-one and onto",
-        "one-one but not onto",
-        "onto but not one-one",
-        "neither one-one nor onto"
+        "Reflexive only",
+        "Reflexive and transitive",
+        "Symmetric and transitive",
+        "Transitive only"
       ],
       "answer": 3
     },
     {
-      "id": "rf-006",
+      "id": "c12rf-002",
       "chapter": "Relations and Functions",
-      "topic": "Composition of functions",
+      "topic": "Types of relations",
       "type": "mcq",
-      "q": "If $f(x) = 2x + 3$ and $g(x) = x^2$, then $(f \\circ g)(x)$ equals:",
-      "solution": "$f \\circ g$ means **$g$ runs first, then $f$** — like two machines on a conveyor belt, right to left: $x \\xrightarrow{g} x^2 \\xrightarrow{f} 2x^2 + 3$.\n\nSo $(f \\circ g)(x) = f(g(x)) = f(x^2) = \\mathbf{2x^2 + 3}$. (Option B is $(g \\circ f)(x)$ — the belts swapped.)",
+      "q": "A relation $R$ on the set $A = \\{1, 2, 3\\}$ is defined as $R = \\{(1, 2), (2, 1), (2, 2)\\}$. Then $R$ is :",
+      "solution": "**Reflexive?** No — $(1, 1)$ and $(3, 3)$ are both missing.\\n\\n**Symmetric?** Yes. $(1,2)$ and $(2,1)$ are both there, and $(2,2)$ is its own reverse.\\n\\n**Transitive?** No. $(1, 2) \\in R$ and $(2, 1) \\in R$, so transitivity would need $(1, 1)$ — which is not in $R$.\\n\\nSymmetric only.",
       "marks": 1,
+      "source": "CBSE 2026",
       "options": [
-        "$2x^2 + 3$",
-        "$(2x + 3)^2$",
-        "$4x^2 + 9$",
-        "$2x^2 + 6x + 9$"
+        "Reflexive only",
+        "Reflexive and transitive",
+        "Symmetric and transitive",
+        "Symmetric only"
       ],
-      "answer": 0
+      "answer": 3
     },
     {
-      "id": "rf-007",
+      "id": "c12rf-003",
       "chapter": "Relations and Functions",
-      "topic": "Inverse of a function",
+      "topic": "Types of relations",
+      "type": "mcq",
+      "q": "A relation $R$ on the set $A = \\{1, 2, 3\\}$ is defined as $R = \\{(1, 3), (3, 3), (1, 1), (2, 2), (3, 1)\\}$. Then $R$ is :",
+      "solution": "**Reflexive?** $(1,1)$, $(2,2)$, $(3,3)$ are all present — yes.\\n\\n**Symmetric?** The only unequal pair is $(1,3)$, and $(3,1)$ is there — yes.\\n\\n**Transitive?** The chains to check are $(1,3)$ with $(3,1)$, needing $(1,1)$ ✓; $(3,1)$ with $(1,3)$, needing $(3,3)$ ✓; $(1,3)$ with $(3,3)$, needing $(1,3)$ ✓; $(3,1)$ with $(1,1)$, needing $(3,1)$ ✓. Every one is present — yes.\\n\\nSo $R$ is an equivalence relation: reflexive, symmetric and transitive.",
+      "marks": 1,
+      "source": "CBSE 2026",
+      "options": [
+        "only reflexive and symmetric",
+        "reflexive only",
+        "only reflexive and transitive",
+        "reflexive, symmetric and transitive"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12rf-004",
+      "chapter": "Relations and Functions",
+      "topic": "Types of relations",
+      "type": "mcq",
+      "q": "A relation $R$ defined on the set of human beings as $R = \\{(x, y) : x \\text{ is } 5 \\text{ cm shorter than } y\\}$ is :",
+      "solution": "**Reflexive?** Nobody is 5 cm shorter than themselves, so $(x, x) \\notin R$ — not reflexive.\\n\\n**Symmetric?** If $x$ is 5 cm shorter than $y$, then $y$ is 5 cm **taller** than $x$, not shorter — not symmetric.\\n\\n**Transitive?** If $x$ is 5 cm shorter than $y$ and $y$ is 5 cm shorter than $z$, then $x$ is 10 cm shorter than $z$, not 5 — not transitive.\\n\\nNone of the three.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "reflexive only",
+        "reflexive and transitive",
+        "symmetric and transitive",
+        "neither transitive, nor symmetric, nor reflexive"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12rf-005",
+      "chapter": "Relations and Functions",
+      "topic": "Equivalence classes",
+      "type": "mcq",
+      "q": "Which of the following is **not** true for the equivalence classes $A_i$ $(i = 1, 2, \\dots, n)$ formed by an equivalence relation $R$ defined on a set $A$ ?",
+      "solution": "Equivalence classes **partition** the set: they cover all of $A$, and any two distinct classes are **disjoint**.\\n\\nSo for $i \\neq j$ the correct statement is $A_i \\cap A_j = \\varphi$. The option claiming $A_i \\cap A_j \\neq \\varphi$ is the false one.\\n\\nThe other three are all properties of a partition: the classes cover $A$, an element lies in exactly one class, and everything inside a class is mutually related.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "$\\bigcup_{i=1}^{n} A_i = A$",
+        "$A_i \\cap A_j \\neq \\varphi$ for $i \\neq j$",
+        "$x \\in A_i$ and $x \\in A_j \\Rightarrow A_i = A_j$",
+        "All elements of $A_i$ are related to each other, for all $i$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "c12rf-006",
+      "chapter": "Relations and Functions",
+      "topic": "Onto functions",
+      "type": "mcq",
+      "q": "**Assertion (A):** The number of onto functions from a set $P$ containing 5 elements to a set $Q$ containing 2 elements is 30.\\n\\n**Reason (R):** The number of onto functions from a set containing $m$ elements to a set containing $n$ elements is $n^m$.\\n\\nChoose the correct answer :",
+      "solution": "**Assertion.** A function from $P$ (5 elements) to $Q$ (2 elements) is onto unless it misses one of the two values. The total number of functions is $2^5 = 32$, and exactly 2 of them are constant — the ones that miss a value. So the number of onto functions is\\n\\n$$32 - 2 = 30.$$\\n\\nA is **true**.\\n\\n**Reason.** $n^m$ counts **all** functions from $m$ elements to $n$ elements, onto or not. It is not the count of onto functions — here it gives $2^5 = 32$, not 30.\\n\\nR is **false**.\\n\\nSo A is true but R is false.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "Both A and R are true, and R is the correct explanation of A",
+        "Both A and R are true, but R is not the correct explanation of A",
+        "A is true but R is false",
+        "A is false but R is true"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12rf-007",
+      "chapter": "Relations and Functions",
+      "topic": "Equivalence classes",
       "type": "numeric",
-      "q": "If $f(x) = 3x - 4$, find $f^{-1}(2)$.",
-      "solution": "$f^{-1}(2)$ asks: **which input produced the output 2?** Run the machine backwards.\n\nSet $3x - 4 = 2 \\Rightarrow 3x = 6 \\Rightarrow x = \\mathbf{2}$.",
+      "q": "A relation $R$ defined on the set $A = \\{x : x \\in \\mathbb{Z} \\text{ and } 0 \\leq x \\leq 10\\}$ as $R = \\{(x, y) : x = y\\}$ is given to be an equivalence relation. How many equivalence classes does it have?",
+      "solution": "The set is $A = \\{0, 1, 2, \\dots, 10\\}$, which has **11** elements.\\n\\n$R$ is the relation $x = y$ — the identity relation. Under it, each element is related to itself and to nothing else, so every equivalence class is a single element:\\n\\n$$[0] = \\{0\\},\\ [1] = \\{1\\},\\ \\dots,\\ [10] = \\{10\\}.$$\\n\\nThat is one class per element, so there are **11** equivalence classes.",
       "marks": 2,
-      "answer": 2,
+      "source": "CBSE 2024",
+      "answer": 11,
       "tolerance": 0
     },
     {
-      "id": "rf-008",
+      "id": "c12rf-008",
       "chapter": "Relations and Functions",
-      "topic": "Equivalence relations",
+      "topic": "One-one and onto functions",
       "type": "numeric",
-      "q": "Find the number of equivalence relations on the set $\\{1, 2, 3\\}$ containing the pair $(1, 2)$.",
-      "solution": "An equivalence relation is a way of **sorting elements into groups** (partitions). Requiring $(1,2)$ means 1 and 2 must sit in the same group.\n\nPossible partitions: $\\{1,2\\}, \\{3\\}$ — or — $\\{1,2,3\\}$ all together. That's it: $\\mathbf{2}$ equivalence relations.\n\n(Without the $(1,2)$ condition there would be 5 partitions of a 3-element set.)",
+      "q": "A function $f : A \\to B$ defined as $f(x) = 2x$ is both one-one and onto. If $A = \\{1, 2, 3, 4\\}$, find the sum of all the elements of the set $B$.",
+      "solution": "Because $f$ is **onto**, every element of $B$ is hit by some element of $A$; because it is a function on $A$, nothing outside $f(A)$ is in $B$. So $B$ is exactly the image of $A$:\\n\\n$$B = \\{f(1), f(2), f(3), f(4)\\} = \\{2, 4, 6, 8\\}.$$\\n\\n(The four values are distinct, which is the same as saying $f$ is one-one.)\\n\\nTheir sum is $2 + 4 + 6 + 8 = \\mathbf{20}$.",
       "marks": 2,
-      "answer": 2,
+      "source": "CBSE 2023",
+      "answer": 20,
       "tolerance": 0
     },
     {
-      "id": "rf-009",
+      "id": "c12rf-009",
       "chapter": "Relations and Functions",
-      "topic": "Composition of functions",
+      "topic": "Equivalence classes",
       "type": "numeric",
-      "q": "If $f(x) = \\dfrac{x}{x - 2}$ for $x \\neq 2$, find $f(f(3))$.",
-      "solution": "Feed the machine twice.\n\n**First pass:** $f(3) = \\dfrac{3}{3 - 2} = 3$.\n\n**Second pass:** $f(f(3)) = f(3) = \\mathbf{3}$.\n\nInteresting: 3 is a *fixed point* — the machine returns it unchanged, like a mirror reflecting a point on its own surface.",
+      "q": "A relation $R$ on the set $A = \\{-4, -3, -2, -1, 0, 1, 2, 3, 4\\}$ is defined as $R = \\{(x, y) : x + y \\text{ is an integer divisible by } 2\\}$. It is an equivalence relation. How many elements are there in the equivalence class $[2]$?",
+      "solution": "$x + y$ is divisible by 2 exactly when $x$ and $y$ have the **same parity** — both even or both odd.\\n\\nThe class $[2]$ holds everything related to 2, and 2 is even, so $[2]$ is the set of even members of $A$:\\n\\n$$[2] = \\{-4, -2, 0, 2, 4\\}.$$\\n\\nThat is **5** elements.",
       "marks": 2,
-      "answer": 3,
-      "tolerance": 0
-    },
-    {
-      "id": "rf-010",
-      "chapter": "Relations and Functions",
-      "topic": "Composition of functions",
-      "type": "numeric",
-      "q": "If $g(x) = x^2 + 1$, find $(g \\circ g)(1)$.",
-      "solution": "Same machine, two passes:\n\n$g(1) = 1^2 + 1 = 2$, then $g(2) = 2^2 + 1 = \\mathbf{5}$.",
-      "marks": 2,
+      "source": "CBSE 2024",
       "answer": 5,
       "tolerance": 0
     },
     {
-      "id": "rf-011",
+      "id": "c12rf-010",
       "chapter": "Relations and Functions",
-      "topic": "Counting relations",
+      "topic": "Equivalence classes",
       "type": "numeric",
-      "q": "Find the total number of relations on a set with 2 elements.",
-      "solution": "A relation on $A$ is any subset of $A \\times A$. With $|A| = 2$, the grid $A \\times A$ has $2 \\times 2 = 4$ cells, and each cell is an independent on/off switch (pair included or not).\n\n$4$ switches $\\Rightarrow 2^4 = \\mathbf{16}$ relations. In general: $2^{n^2}$.",
+      "q": "A relation $R$ on the set $A = \\{x : -10 \\leq x \\leq 10,\\ x \\in \\mathbb{Z}\\}$ is defined as $R = \\{(x, y) : (x - y) \\text{ is divisible by } 5\\}$. It is an equivalence relation. How many elements are there in the equivalence class $[5]$?",
+      "solution": "$A = \\{-10, -9, \\dots, 9, 10\\}$, which has 21 elements.\\n\\n$(x - y)$ divisible by 5 means $x$ and $y$ leave the same remainder on division by 5. The class $[5]$ therefore holds every member of $A$ that is a multiple of 5:\\n\\n$$[5] = \\{-10, -5, 0, 5, 10\\}.$$\\n\\nThat is **5** elements.",
       "marks": 2,
-      "answer": 16,
+      "source": "CBSE 2024",
+      "answer": 5,
       "tolerance": 0
     },
     {
-      "id": "rf-012",
+      "id": "c12rf-011",
       "chapter": "Relations and Functions",
-      "topic": "Counting onto functions",
-      "type": "numeric",
-      "q": "Find the number of onto functions from $A = \\{1, 2, 3, 4\\}$ to $B = \\{a, b\\}$.",
-      "solution": "**Total functions:** each of the 4 elements picks one of 2 targets: $2^4 = 16$ — like 4 people each choosing one of 2 rooms.\n\n**Not onto** means one room stays empty: everyone in room $a$ (1 way) or everyone in room $b$ (1 way) — 2 bad cases.\n\n**Onto** $= 16 - 2 = \\mathbf{14}$.",
+      "topic": "Types of relations",
+      "type": "long",
+      "q": "A relation $R$ on the set $A = \\{1, 2, 3\\}$ is defined as $R = \\{(1, 1), (3, 3), (1, 2)\\}$.\\n\\n(i) Is $R$ a symmetric relation? Justify your answer.\\n\\n(ii) Write the smallest set of ordered pairs $R_1$ such that $R \\cup R_1$ becomes an equivalence relation on $A$.",
+      "solution": "**(i) Symmetric?**\\n\\nNo. A relation is symmetric when $(a, b) \\in R$ forces $(b, a) \\in R$. Here $(1, 2) \\in R$ but $(2, 1) \\notin R$, so $R$ is **not symmetric**.\\n\\n**(ii) The smallest $R_1$.**\\n\\nWork through the three requirements, adding only what is forced.\\n\\n*Reflexive:* $A$ needs $(1,1)$, $(2,2)$, $(3,3)$. We have $(1,1)$ and $(3,3)$, so $(2,2)$ must be added.\\n\\n*Symmetric:* $(1, 2)$ is present, so $(2, 1)$ must be added.\\n\\n*Transitive:* the union so far is $\\{(1,1), (2,2), (3,3), (1,2), (2,1)\\}$. Check the chains: $(1,2)$ with $(2,1)$ needs $(1,1)$ ✓; $(2,1)$ with $(1,2)$ needs $(2,2)$ ✓; $(1,2)$ with $(2,2)$ needs $(1,2)$ ✓. Nothing further is forced.\\n\\nSo the smallest set is\\n\\n$$R_1 = \\{(2, 2), (2, 1)\\}.$$",
       "marks": 3,
-      "answer": 14,
-      "tolerance": 0
+      "source": "CBSE 2026"
     },
     {
-      "id": "rf-013",
+      "id": "c12rf-012",
       "chapter": "Relations and Functions",
-      "topic": "Inverse of a function",
-      "type": "numeric",
-      "q": "Let $f: \\mathbb{R} - \\{3\\} \\to \\mathbb{R} - \\{1\\}$ be defined by $f(x) = \\dfrac{x - 2}{x - 3}$. Find $f^{-1}(2)$.",
-      "solution": "Run the machine backwards: find $x$ with $f(x) = 2$.\n\n$$\\frac{x - 2}{x - 3} = 2 \\Rightarrow x - 2 = 2(x - 3) \\Rightarrow x - 2 = 2x - 6 \\Rightarrow x = \\mathbf{4}$$\n\n**Check (always check inverses):** $f(4) = \\dfrac{4 - 2}{4 - 3} = 2$. ✓",
+      "topic": "Types of relations",
+      "type": "long",
+      "q": "A relation $R$ on the set $A = \\{1, 2, 3, 4, 5\\}$ is defined as $R = \\{(x, y) : |x^2 - y^2| < 8\\}$. Check whether the relation $R$ is reflexive, symmetric and transitive.",
+      "solution": "First list $R$. Taking each pair with $|x^2 - y^2| < 8$:\\n\\n$$R = \\{(1,1), (1,2), (2,1), (2,2), (2,3), (3,2), (3,3), (3,4), (4,3), (4,4), (5,5)\\}.$$\\n\\n**Reflexive.** For any $x$, $|x^2 - x^2| = 0 < 8$, so $(x, x) \\in R$ for every $x \\in A$. **$R$ is reflexive.**\\n\\n**Symmetric.** $|x^2 - y^2| = |y^2 - x^2|$, so $(x, y) \\in R$ immediately gives $(y, x) \\in R$. **$R$ is symmetric.**\\n\\n**Transitive.** Take $(1, 2)$ and $(2, 3)$, both in $R$. Transitivity would need $(1, 3)$, but\\n\\n$$|1^2 - 3^2| = |1 - 9| = 8,$$\\n\\nwhich is **not** less than 8. So $(1, 3) \\notin R$ and **$R$ is not transitive**.\\n\\n$R$ is reflexive and symmetric but not transitive — so it is not an equivalence relation.",
       "marks": 3,
-      "answer": 4,
-      "tolerance": 0
+      "source": "CBSE 2024"
     },
     {
-      "id": "rf-014",
+      "id": "c12rf-013",
+      "chapter": "Relations and Functions",
+      "topic": "One-one and onto functions",
+      "type": "long",
+      "q": "A function $f$ is defined from $\\mathbb{R} \\to \\mathbb{R}$ as $f(x) = ax + b$, such that $f(1) = 1$ and $f(2) = 3$. Find the function $f(x)$. Hence, check whether the function $f(x)$ is one-one and onto or not.",
+      "solution": "**Finding $a$ and $b$.**\\n\\n$$f(1) = a + b = 1, \\qquad f(2) = 2a + b = 3.$$\\n\\nSubtracting the first from the second gives $a = 2$, and then $b = 1 - a = -1$. So\\n\\n$$f(x) = 2x - 1.$$\\n\\n**One-one?** Suppose $f(x_1) = f(x_2)$. Then\\n\\n$$2x_1 - 1 = 2x_2 - 1 \\Rightarrow 2x_1 = 2x_2 \\Rightarrow x_1 = x_2.$$\\n\\nSo $f$ is **one-one**.\\n\\n**Onto?** Take any $y \\in \\mathbb{R}$ and solve $y = 2x - 1$:\\n\\n$$x = \\frac{y + 1}{2},$$\\n\\nwhich is a real number for every real $y$, and $f\\\\left(\\frac{y+1}{2}\\right) = y$. So every element of the codomain is reached and $f$ is **onto**.\\n\\n$f(x) = 2x - 1$ is therefore a **bijection** from $\\mathbb{R}$ to $\\mathbb{R}$.",
+      "marks": 3,
+      "source": "CBSE 2024"
+    },
+    {
+      "id": "c12rf-014",
       "chapter": "Relations and Functions",
       "topic": "Equivalence relations",
       "type": "long",
-      "q": "Show that the relation $R$ on $\\mathbb{Z}$ defined by $a\\,R\\,b$ iff $(a - b)$ is divisible by 5 is an equivalence relation. Also write the equivalence class $[2]$.",
-      "solution": "Think of the clock analogy: a 5-hour clock face where numbers landing on the same mark are \"equal\". We verify the three properties.\n\n**Reflexive:** $a - a = 0 = 5 \\times 0$, divisible by 5. So $a\\,R\\,a$ for all $a \\in \\mathbb{Z}$. ✓\n\n**Symmetric:** if $a\\,R\\,b$, then $a - b = 5k$ for some $k \\in \\mathbb{Z}$. Then $b - a = 5(-k)$, also divisible by 5, so $b\\,R\\,a$. ✓\n\n**Transitive:** if $a\\,R\\,b$ and $b\\,R\\,c$, then $a - b = 5k$ and $b - c = 5m$. Adding: $a - c = 5(k + m)$, divisible by 5, so $a\\,R\\,c$. ✓\n\nAll three hold, so $R$ is an **equivalence relation**.\n\n**Equivalence class of 2** — all integers landing on the same clock mark as 2:\n\n$$[2] = \\{x \\in \\mathbb{Z} : x - 2 = 5k\\} = \\{\\ldots, -8, -3, 2, 7, 12, \\ldots\\}$$\n\ni.e. $[2] = \\{5k + 2 : k \\in \\mathbb{Z}\\}$.",
-      "marks": 5
+      "q": "Let $A = \\{x \\mid x \\in \\mathbb{Z},\\ 0 \\leq x \\leq 12\\}$. Show that the relation $R = \\{(a, b) : a, b \\in A,\\ (a - b) \\text{ is divisible by } 4\\}$ is an equivalence relation. Find the set of elements related to 2.",
+      "solution": "$A = \\{0, 1, 2, \\dots, 12\\}$.\\n\\n**Reflexive.** For any $a \\in A$, $a - a = 0$, and 0 is divisible by 4. So $(a, a) \\in R$.\\n\\n**Symmetric.** If $(a, b) \\in R$ then $a - b = 4k$ for some integer $k$. Then $b - a = -4k = 4(-k)$, which is also divisible by 4, so $(b, a) \\in R$.\\n\\n**Transitive.** If $(a, b) \\in R$ and $(b, c) \\in R$ then $a - b = 4k$ and $b - c = 4m$. Adding,\\n\\n$$a - c = (a - b) + (b - c) = 4k + 4m = 4(k + m),$$\\n\\ndivisible by 4, so $(a, c) \\in R$.\\n\\nAll three hold, so **$R$ is an equivalence relation**.\\n\\n**Elements related to 2.** We need every $b \\in A$ with $b - 2$ divisible by 4 — that is, $b$ leaving remainder 2 on division by 4:\\n\\n$$\\{2, 6, 10\\}.$$",
+      "marks": 5,
+      "source": "CBSE 2024"
     },
     {
-      "id": "rf-015",
+      "id": "c12rf-015",
       "chapter": "Relations and Functions",
-      "topic": "Invertible functions",
+      "topic": "Equivalence relations",
       "type": "long",
-      "q": "Show that the function $f: \\mathbb{R} \\to \\mathbb{R}$ given by $f(x) = 4x + 3$ is invertible, and find $f^{-1}$.",
-      "solution": "A function is invertible iff it is a perfect pairing (bijective): every input gets a unique output (**one-one**) and every output is used (**onto**). Then the pairing can be read in reverse.\n\n**One-one:** suppose $f(x_1) = f(x_2)$. Then $4x_1 + 3 = 4x_2 + 3 \\Rightarrow 4x_1 = 4x_2 \\Rightarrow x_1 = x_2$. ✓\n\n**Onto:** take any $y \\in \\mathbb{R}$. We need $x$ with $4x + 3 = y$, i.e. $x = \\dfrac{y - 3}{4}$, which is a real number for every $y$. So every $y$ has a pre-image. ✓\n\nHence $f$ is bijective and therefore **invertible**.\n\n**Finding $f^{-1}$:** the machine does \"multiply by 4, then add 3\", so the reverse machine must \"subtract 3, then divide by 4\" — undo the steps in reverse order, like taking off shoes before socks:\n\n$$f^{-1}(y) = \\frac{y - 3}{4}$$\n\n**Check:** $f^{-1}(f(x)) = \\dfrac{(4x + 3) - 3}{4} = x$. ✓",
-      "marks": 5
+      "q": "If $\\mathbb{N}$ denotes the set of all natural numbers and $R$ is the relation on $\\mathbb{N} \\times \\mathbb{N}$ defined by\\n\\n$$(a, b)\\, R\\, (c, d) \\quad \\text{if } ad(b + c) = bc(a + d),$$\\n\\nshow that $R$ is an equivalence relation.",
+      "solution": "The trick throughout is to divide by $abcd$, which is allowed because every letter is a natural number and so non-zero. Doing that to $ad(b+c) = bc(a+d)$ gives the symmetric form\\n\\n$$\\frac{b + c}{bc} = \\frac{a + d}{ad} \\quad\\Longleftrightarrow\\quad \\frac{1}{b} + \\frac{1}{c} = \\frac{1}{a} + \\frac{1}{d} \\quad\\Longleftrightarrow\\quad \\frac{1}{a} - \\frac{1}{b} = \\frac{1}{c} - \\frac{1}{d}.$$\\n\\nSo $(a, b)\\, R\\, (c, d)$ says exactly that $\\frac{1}{a} - \\frac{1}{b} = \\frac{1}{c} - \\frac{1}{d}$. Now the three properties are easy.\\n\\n**Reflexive.** $\\frac{1}{a} - \\frac{1}{b} = \\frac{1}{a} - \\frac{1}{b}$ is trivially true, so $(a, b)\\, R\\, (a, b)$.\\n\\n**Symmetric.** If $\\frac{1}{a} - \\frac{1}{b} = \\frac{1}{c} - \\frac{1}{d}$, then reading the equation backwards gives $\\frac{1}{c} - \\frac{1}{d} = \\frac{1}{a} - \\frac{1}{b}$, so $(c, d)\\, R\\, (a, b)$.\\n\\n**Transitive.** Suppose $(a, b)\\, R\\, (c, d)$ and $(c, d)\\, R\\, (e, f)$. Then\\n\\n$$\\frac{1}{a} - \\frac{1}{b} = \\frac{1}{c} - \\frac{1}{d} \\quad\\text{and}\\quad \\frac{1}{c} - \\frac{1}{d} = \\frac{1}{e} - \\frac{1}{f}.$$\\n\\nTherefore $\\frac{1}{a} - \\frac{1}{b} = \\frac{1}{e} - \\frac{1}{f}$, which is $(a, b)\\, R\\, (e, f)$.\\n\\nAll three properties hold, so **$R$ is an equivalence relation** on $\\mathbb{N} \\times \\mathbb{N}$.",
+      "marks": 5,
+      "source": "CBSE 2023"
     }
   ]
 }

@@ -7,105 +7,102 @@
   "access": "login",
   "questions": [
     {
-      "id": "det-001",
+      "id": "c12det-101",
       "chapter": "Determinants",
-      "topic": "Value of a determinant",
+      "topic": "Adjoint and determinant",
       "type": "mcq",
-      "q": "The value of $\\begin{vmatrix} 2 & 3 \\\\ 4 & 5 \\end{vmatrix}$ is:",
-      "solution": "For a $2 \\times 2$ determinant, multiply the main diagonal and subtract the other diagonal:\n\n$(2)(5) - (3)(4) = 10 - 12 = \\mathbf{-2}$.\n\nDown-right minus down-left — the same cross pattern every time.",
+      "q": "Let $A$ be a $3 \\times 3$ matrix such that $|\\text{adj } A| = 64$. Then $|A|$ is equal to :",
+      "solution": "For an $n \\times n$ matrix the adjoint satisfies\\n\\n$$|\\text{adj } A| = |A|^{\\,n-1}.$$\\n\\nHere $n = 3$, so $|\\text{adj } A| = |A|^2$. Therefore\\n\\n$$|A|^2 = 64 \\quad\\Longrightarrow\\quad |A| = \\pm 8.$$\\n\\nBoth signs are genuinely possible — squaring loses the sign, and nothing in the question rules either out. So $|A| = 8$ **or** $-8$.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "22",
-        "-2",
-        "2",
-        "-22"
+        "$8$ only",
+        "$-8$ only",
+        "$64$",
+        "$8$ or $-8$"
       ],
-      "answer": 1
+      "answer": 3
     },
     {
-      "id": "det-002",
+      "id": "c12det-102",
       "chapter": "Determinants",
-      "topic": "Scalar multiple",
+      "topic": "Determinant of a scalar multiple",
       "type": "mcq",
-      "q": "If $A$ is a square matrix of order $3$ and $|A| = 5$, then $|2A|$ is:",
-      "solution": "Multiplying a matrix by $k$ multiplies **every row** by $k$, and each row pulls a factor out of the determinant.\n\nFor order $n$: $|kA| = k^{n}|A|$. Here $|2A| = 2^{3} \\times 5 = \\mathbf{40}$.\n\nA determinant is a volume. Double all three edges of a box and the volume grows eightfold, not twofold.",
+      "q": "If $|A| = |kA|$, where $A$ is a square matrix of order 2, then the sum of all possible values of $k$ is :",
+      "solution": "For a square matrix of order $n$, multiplying every entry by $k$ multiplies the determinant by $k^n$ :\\n\\n$$|kA| = k^n |A|.$$\\n\\nHere $n = 2$, so $|kA| = k^2 |A|$. The condition $|A| = |kA|$ becomes\\n\\n$$|A| = k^2 |A| \\quad\\Longrightarrow\\quad |A|\\left(k^2 - 1\\right) = 0.$$\\n\\nTaking $|A| \\neq 0$ gives $k^2 = 1$, so $k = 1$ or $k = -1$.\\n\\nTheir sum is $1 + (-1) = \\mathbf{0}$.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "10",
-        "20",
-        "40",
-        "25"
+        "$1$",
+        "$-1$",
+        "$2$",
+        "$0$"
       ],
-      "answer": 2
+      "answer": 3
     },
     {
-      "id": "det-003",
+      "id": "c12det-103",
       "chapter": "Determinants",
-      "topic": "Adjoint",
+      "topic": "Determinant of an inverse",
       "type": "mcq",
-      "q": "For a square matrix $A$ of order $n$, $A\\,(\\text{adj }A)$ equals:",
-      "solution": "$A\\,(\\text{adj }A) = (\\text{adj }A)\\,A = |A|\\,I$ — this is the identity the whole inverse formula rests on.\n\nDivide both sides by $|A|$ (when it is non-zero) and you get $A^{-1} = \\dfrac{1}{|A|}\\,\\text{adj }A$.\n\nThe adjoint is the inverse before it has been scaled down to size.",
+      "q": "If $|A| = 2$, where $A$ is a $2 \\times 2$ matrix, then $\\left|4A^{-1}\\right|$ equals :",
+      "solution": "Two rules are needed.\\n\\n**The inverse.** $\\left|A^{-1}\\right| = \\dfrac{1}{|A|} = \\dfrac{1}{2}$.\\n\\n**The scalar.** For a matrix of order $n$, $|kB| = k^n |B|$. Here $n = 2$ and $k = 4$, so\\n\\n$$\\left|4A^{-1}\\right| = 4^2 \\left|A^{-1}\\right| = 16 \\times \\frac{1}{2} = \\mathbf{8}.$$\\n\\nThe common slip is to write $4 \\times \\frac12 = 2$, forgetting that the scalar is raised to the power of the order.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "$A^{2}$",
-        "$|A|\\,I$",
-        "$I$",
-        "$\\text{adj}(A)\\,|A|^{-1}$"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "det-004",
-      "chapter": "Determinants",
-      "topic": "Determinant of the adjoint",
-      "type": "mcq",
-      "q": "If $A$ is a $3 \\times 3$ matrix with $|A| = 4$, then $|\\text{adj }A|$ is:",
-      "solution": "For order $n$, $|\\text{adj }A| = |A|^{\\,n-1}$.\n\nHere $n = 3$, so $|\\text{adj }A| = 4^{2} = \\mathbf{16}$.\n\nQuick derivation: take determinants of $A\\,(\\text{adj }A) = |A|I$ to get $|A| \\cdot |\\text{adj }A| = |A|^{3}$.",
-      "marks": 1,
-      "options": [
-        "4",
-        "12",
-        "16",
-        "64"
+        "$4$",
+        "$2$",
+        "$8$",
+        "$\\dfrac{1}{32}$"
       ],
       "answer": 2
     },
     {
-      "id": "det-005",
+      "id": "c12det-104",
       "chapter": "Determinants",
-      "topic": "Singular matrices",
-      "type": "mcq",
-      "q": "The matrix $A = \\begin{pmatrix} 2 & 4 \\\\ 3 & k \\end{pmatrix}$ has no inverse when $k$ equals:",
-      "solution": "A matrix has no inverse exactly when its determinant is zero (it is then called **singular**).\n\n$|A| = 2k - 12 = 0 \\Rightarrow k = \\mathbf{6}$.\n\nAt $k = 6$ the second row is $1.5$ times the first — the rows point the same way, the 'area' they span collapses to zero, and nothing can be undone.",
-      "marks": 1,
-      "options": [
-        "2",
-        "4",
-        "6",
-        "8"
-      ],
-      "answer": 2
-    },
-    {
-      "id": "det-006",
-      "chapter": "Determinants",
-      "topic": "Solving for an unknown",
+      "topic": "Collinear points",
       "type": "numeric",
-      "q": "Find the value of $x$ if $\\begin{vmatrix} x & 2 \\\\ 18 & x \\end{vmatrix} = \\begin{vmatrix} 6 & 2 \\\\ 18 & 6 \\end{vmatrix}$ and $x > 0$.",
-      "solution": "Left side: $x^{2} - 36$. Right side: $36 - 36 = 0$.\n\n$x^{2} - 36 = 0 \\Rightarrow x = \\pm 6$, and the question asks for the positive value, so $x = \\mathbf{6}$.",
+      "q": "If the points $A(3, -2)$, $B(k, 2)$ and $C(8, 8)$ are collinear, find the value of $k$.",
+      "solution": "Three points are collinear exactly when the triangle they form has zero area, so set the determinant to zero :\\n\\n$$\\frac{1}{2}\\begin{vmatrix} 3 & -2 & 1 \\\\ k & 2 & 1 \\\\ 8 & 8 & 1 \\end{vmatrix} = 0.$$\\n\\nExpanding along the first row,\\n\\n$$3(2 - 8) - (-2)(k - 8) + 1(8k - 16) = 0$$\\n$$-18 + 2k - 16 + 8k - 16 = 0$$\\n$$10k - 50 = 0.$$\\n\\nTherefore $k = \\mathbf{5}$.\\n\\n**Check.** With $k = 5$ the points are $(3,-2)$, $(5,2)$, $(8,8)$. The slope from $A$ to $B$ is $\\frac{2-(-2)}{5-3} = 2$, and from $B$ to $C$ is $\\frac{8-2}{8-5} = 2$. Equal slopes — collinear.",
       "marks": 2,
-      "answer": 6,
+      "source": "CBSE 2024",
+      "answer": 5,
       "tolerance": 0
     },
     {
-      "id": "det-007",
+      "id": "c12det-105",
       "chapter": "Determinants",
-      "topic": "Determinant of the inverse",
+      "topic": "Collinear points",
       "type": "numeric",
-      "q": "If $A$ is a square matrix with $|A| = 8$, find the value of $\\left|A^{-1}\\right| \\times 8$.",
-      "solution": "$AA^{-1} = I$, so $|A| \\cdot \\left|A^{-1}\\right| = |I| = 1$, giving $\\left|A^{-1}\\right| = \\dfrac{1}{|A|} = \\dfrac18$.\n\nTherefore $\\left|A^{-1}\\right| \\times 8 = \\mathbf{1}$.\n\nThe inverse shrinks volume by exactly the factor the matrix stretched it by — that is what undoing means.",
+      "q": "If the points $(2, 3)$, $(0, 4)$ and $(p, 2)$ are collinear, find the value of $p$.",
+      "solution": "Set the area determinant to zero :\\n\\n$$\\frac{1}{2}\\begin{vmatrix} 2 & 3 & 1 \\\\ 0 & 4 & 1 \\\\ p & 2 & 1 \\end{vmatrix} = 0.$$\\n\\nExpanding along the first row,\\n\\n$$2(4 - 2) - 3(0 - p) + 1(0 - 4p) = 0$$\\n$$4 + 3p - 4p = 0$$\\n$$4 - p = 0.$$\\n\\nTherefore $p = \\mathbf{4}$.\\n\\n**Check.** The points are $(2,3)$, $(0,4)$, $(4,2)$. From $(0,4)$ to $(2,3)$ the slope is $-\\frac12$; from $(2,3)$ to $(4,2)$ it is also $-\\frac12$. Collinear.",
       "marks": 2,
-      "answer": 1,
+      "source": "CBSE 2026",
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "c12det-106",
+      "chapter": "Determinants",
+      "topic": "Area of a triangle",
+      "type": "numeric",
+      "q": "The area of a triangle with vertices $(2, -6)$, $(5, 4)$ and $(k, 4)$ is $35$ square units. Find the **positive** value of $k$.",
+      "solution": "The area is given by\\n\\n$$\\text{Area} = \\frac{1}{2}\\left|\\begin{vmatrix} 2 & -6 & 1 \\\\ 5 & 4 & 1 \\\\ k & 4 & 1 \\end{vmatrix}\\right|.$$\\n\\nExpanding along the first row,\\n\\n$$2(4 - 4) - (-6)(5 - k) + 1(20 - 4k) = 0 + 30 - 6k + 20 - 4k = 50 - 10k.$$\\n\\nSo the area is $\\dfrac{1}{2}\\left|50 - 10k\\right| = 35$, giving\\n\\n$$|50 - 10k| = 70.$$\\n\\nThat splits into two cases :\\n\\n$$50 - 10k = 70 \\Rightarrow k = -2, \\qquad 50 - 10k = -70 \\Rightarrow k = 12.$$\\n\\nBoth are valid answers to the original question; the **positive** one asked for here is $k = \\mathbf{12}$.",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 12,
+      "tolerance": 0
+    },
+    {
+      "id": "c12det-107",
+      "chapter": "Determinants",
+      "topic": "Matrix identities",
+      "type": "numeric",
+      "q": "If $A = \\begin{pmatrix} 0 & 1 \\\\ -1 & 0 \\end{pmatrix}$ and $(3I + 4A)(3I - 4A) = x^2 I$, find the **positive** value of $x$.",
+      "solution": "**Step 1 — expand the product.** The two brackets commute here because both are built from $I$ and $A$ :\\n\\n$$(3I + 4A)(3I - 4A) = 9I^2 - 12A + 12A - 16A^2 = 9I - 16A^2.$$\\n\\n**Step 2 — find $A^2$.**\\n\\n$$A^2 = \\begin{pmatrix} 0 & 1 \\\\ -1 & 0 \\end{pmatrix}\\begin{pmatrix} 0 & 1 \\\\ -1 & 0 \\end{pmatrix} = \\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix} = -I.$$\\n\\n**Step 3 — substitute.**\\n\\n$$9I - 16(-I) = 9I + 16I = 25I.$$\\n\\nSo $x^2 I = 25 I$, giving $x^2 = 25$ and $x = \\pm 5$. The positive value is $\\mathbf{5}$.",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 5,
       "tolerance": 0
     },
     {

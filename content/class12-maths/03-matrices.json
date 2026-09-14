@@ -7,105 +7,112 @@
   "access": "login",
   "questions": [
     {
-      "id": "c12mat-001",
+      "id": "c12mtx-001",
       "chapter": "Matrices",
-      "topic": "Order of a matrix",
+      "topic": "Matrix multiplication",
       "type": "mcq",
-      "q": "A matrix has 24 elements. How many different orders can it have?",
-      "solution": "An order $m \\times n$ needs $mn = 24$, so count the ordered factor pairs of 24:\n\n$(1,24), (2,12), (3,8), (4,6), (6,4), (8,3), (12,2), (24,1)$ — **8** of them.\n\nThink of 24 chairs to be set out in a perfect rectangle: every different rectangle you can make, counting a $3\\times8$ hall as different from an $8\\times3$ one, is one order.",
+      "q": "If $A$ and $B$ are two non-zero square matrices of the same order such that $(A + B)^2 = A^2 + B^2$, then :",
+      "solution": "Expand the left side, remembering that matrix multiplication does **not** commute, so the two cross terms must be kept separate :\\n\\n$$(A + B)^2 = (A + B)(A + B) = A^2 + AB + BA + B^2.$$\\n\\nSetting this equal to $A^2 + B^2$ :\\n\\n$$A^2 + AB + BA + B^2 = A^2 + B^2 \\quad\\Longrightarrow\\quad AB + BA = O.$$\\n\\nTherefore\\n\\n$$AB = -BA.$$\\n\\nNote that $AB = O$ is **not** forced — it is one way to satisfy $AB + BA = O$, but not the only one, and the question asks what must be true.",
       "marks": 1,
+      "source": "CBSE 2024",
       "options": [
-        "6",
-        "8",
-        "12",
-        "24"
+        "$AB = O$",
+        "$AB = -BA$",
+        "$BA = O$",
+        "$AB = BA$"
       ],
       "answer": 1
     },
     {
-      "id": "c12mat-002",
-      "chapter": "Matrices",
-      "topic": "Symmetric matrices",
-      "type": "mcq",
-      "q": "If $A$ is any square matrix, then $A + A^{T}$ is always:",
-      "solution": "Let $B = A + A^{T}$. Then $B^{T} = A^{T} + (A^{T})^{T} = A^{T} + A = B$, which is the definition of **symmetric**.\n\nAdding a matrix to its own mirror image across the diagonal balances the two halves — fold the page along the diagonal and the numbers land on their equals.",
-      "marks": 1,
-      "options": [
-        "skew-symmetric",
-        "symmetric",
-        "the zero matrix",
-        "the identity matrix"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "c12mat-003",
-      "chapter": "Matrices",
-      "topic": "Order of a product",
-      "type": "mcq",
-      "q": "If $A$ is of order $3 \\times 4$ and $B$ is of order $4 \\times 2$, then the order of $AB$ is:",
-      "solution": "Multiplication is allowed when the inner numbers match: $3 \\times \\underline{4}$ and $\\underline{4} \\times 2$. They do.\n\nThe product keeps the **outer** numbers: $\\mathbf{3 \\times 2}$.\n\nLike joining two pipes: the ends that meet must be the same width, and the pipe you end up with has the outer two openings.",
-      "marks": 1,
-      "options": [
-        "$4 \\times 4$",
-        "$3 \\times 2$",
-        "$2 \\times 3$",
-        "$AB$ is not defined"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "c12mat-004",
+      "id": "c12mtx-002",
       "chapter": "Matrices",
       "topic": "Skew-symmetric matrices",
       "type": "mcq",
-      "q": "Every diagonal element of a skew-symmetric matrix is:",
-      "solution": "Skew-symmetric means $a_{ij} = -a_{ji}$. Put $i = j$: $a_{ii} = -a_{ii}$, so $2a_{ii} = 0$ and $a_{ii} = \\mathbf{0}$.\n\nA diagonal entry is its own mirror image, and the only number that is the negative of itself is zero.",
+      "q": "$A$ and $B$ are skew-symmetric matrices of the same order. $AB$ is symmetric, if :",
+      "solution": "Skew-symmetric means $A' = -A$ and $B' = -B$.\\n\\nTake the transpose of the product, remembering that transposing reverses the order :\\n\\n$$(AB)' = B'A' = (-B)(-A) = BA.$$\\n\\n$AB$ is symmetric exactly when $(AB)' = AB$, which by the line above means\\n\\n$$BA = AB.$$\\n\\nSo $AB$ is symmetric precisely when $A$ and $B$ commute.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "1",
-        "0",
-        "equal to the trace",
-        "undefined"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "c12mat-005",
-      "chapter": "Matrices",
-      "topic": "Symmetric and skew-symmetric",
-      "type": "mcq",
-      "q": "If a matrix $A$ is both symmetric and skew-symmetric, then $A$ is:",
-      "solution": "Symmetric gives $A^{T} = A$; skew-symmetric gives $A^{T} = -A$.\n\nSo $A = -A \\Rightarrow 2A = O \\Rightarrow A = \\mathbf{O}$, the zero matrix.\n\nOnly one thing equals its own opposite, and it is nothing at all.",
-      "marks": 1,
-      "options": [
-        "the identity matrix",
-        "a diagonal matrix",
-        "the zero matrix",
-        "not possible"
+        "$AB = O$",
+        "$AB = -BA$",
+        "$AB = BA$",
+        "$BA = O$"
       ],
       "answer": 2
     },
     {
-      "id": "c12mat-006",
+      "id": "c12mtx-003",
       "chapter": "Matrices",
-      "topic": "Matrix multiplication",
+      "topic": "Determinant of a skew-symmetric matrix",
+      "type": "mcq",
+      "q": "Let $A$ be a skew-symmetric matrix of order 3. If $|A| = x$, then $(2023)^x$ is equal to :",
+      "solution": "For a skew-symmetric matrix $A' = -A$. Take determinants of both sides, using $|A'| = |A|$ and $|kA| = k^n|A|$ for an $n \\times n$ matrix — here $n = 3$ :\\n\\n$$|A| = |A'| = |-A| = (-1)^3 |A| = -|A|.$$\\n\\nSo $|A| = -|A|$, giving $2|A| = 0$ and therefore\\n\\n$$|A| = 0 \\quad\\Rightarrow\\quad x = 0.$$\\n\\nHence $(2023)^x = (2023)^0 = \\mathbf{1}$.\\n\\n(The determinant of **every** skew-symmetric matrix of odd order is 0 — this is the argument for it.)",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$2023$",
+        "$\\dfrac{1}{2023}$",
+        "$(2023)^2$",
+        "$1$"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12mtx-004",
+      "chapter": "Matrices",
+      "topic": "Order of a matrix product",
+      "type": "mcq",
+      "q": "If $A$ is a $2 \\times 3$ matrix such that $AB$ and $AB'$ both are defined, then the order of the matrix $B$ is :",
+      "solution": "Let $B$ be of order $m \\times n$.\\n\\n**$AB$ is defined.** $A$ is $2 \\times 3$, so the number of rows of $B$ must match the number of columns of $A$ :\\n\\n$$m = 3.$$\\n\\n**$AB'$ is defined.** $B'$ is $n \\times m$, and for $A\\,B'$ the rows of $B'$ must again be 3 :\\n\\n$$n = 3.$$\\n\\nSo $B$ is a $3 \\times 3$ matrix.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$2 \\times 2$",
+        "$2 \\times 1$",
+        "$3 \\times 2$",
+        "$3 \\times 3$"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12mtx-005",
+      "chapter": "Matrices",
+      "topic": "Symmetric and skew-symmetric parts",
+      "type": "mcq",
+      "q": "If $\\begin{pmatrix} 2 & 0 \\\\ 5 & 4 \\end{pmatrix} = P + Q$, where $P$ is a symmetric and $Q$ is a skew-symmetric matrix, then $Q$ is equal to :",
+      "solution": "Any square matrix splits uniquely as\\n\\n$$A = \\underbrace{\\tfrac{1}{2}(A + A')}_{\\text{symmetric } P} + \\underbrace{\\tfrac{1}{2}(A - A')}_{\\text{skew-symmetric } Q}.$$\\n\\nHere $A = \\begin{pmatrix} 2 & 0 \\\\ 5 & 4 \\end{pmatrix}$, so $A' = \\begin{pmatrix} 2 & 5 \\\\ 0 & 4 \\end{pmatrix}$ and\\n\\n$$A - A' = \\begin{pmatrix} 0 & -5 \\\\ 5 & 0 \\end{pmatrix}.$$\\n\\nHalving,\\n\\n$$Q = \\frac{1}{2}\\begin{pmatrix} 0 & -5 \\\\ 5 & 0 \\end{pmatrix} = \\begin{pmatrix} 0 & -5/2 \\\\ 5/2 & 0 \\end{pmatrix}.$$\\n\\nCheck: the leading diagonal is zero and the off-diagonal entries are negatives of each other, as a skew-symmetric matrix requires.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$\\begin{pmatrix} 2 & 5/2 \\\\ 5/2 & 4 \\end{pmatrix}$",
+        "$\\begin{pmatrix} 0 & 5/2 \\\\ -5/2 & 0 \\end{pmatrix}$",
+        "$\\begin{pmatrix} 0 & -5/2 \\\\ 5/2 & 0 \\end{pmatrix}$",
+        "$\\begin{pmatrix} 2 & -5/2 \\\\ -5/2 & 4 \\end{pmatrix}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12mtx-006",
+      "chapter": "Matrices",
+      "topic": "Order of a matrix",
       "type": "numeric",
-      "q": "If $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ and $B = \\begin{pmatrix} 2 & 0 \\\\ 1 & 3 \\end{pmatrix}$, find the element in the second row, second column of $AB$.",
-      "solution": "The $(2,2)$ entry pairs **row 2 of $A$** with **column 2 of $B$**:\n\n$(3)(0) + (4)(3) = 0 + 12 = \\mathbf{12}$.\n\nRow across, column down, multiply the partners, add — you never need the rest of the product to answer for one cell.",
+      "q": "If a matrix has 36 elements, how many possible orders can it have?",
+      "solution": "An $m \\times n$ matrix has $mn$ elements, so we need every ordered pair of positive integers with\\n\\n$$m \\times n = 36.$$\\n\\nThat is one order per **divisor** of 36, taking each divisor as the number of rows. The divisors of $36 = 2^2 \\times 3^2$ are\\n\\n$$1,\\ 2,\\ 3,\\ 4,\\ 6,\\ 9,\\ 12,\\ 18,\\ 36,$$\\n\\nand there are $(2+1)(2+1) = 9$ of them. The orders are $1\\times36$, $2\\times18$, $3\\times12$, $4\\times9$, $6\\times6$, $9\\times4$, $12\\times3$, $18\\times2$, $36\\times1$.\\n\\nSo there are **9** possible orders.",
       "marks": 2,
-      "answer": 12,
+      "source": "CBSE 2024",
+      "answer": 9,
       "tolerance": 0
     },
     {
-      "id": "c12mat-007",
+      "id": "c12mtx-007",
       "chapter": "Matrices",
-      "topic": "Equality of matrices",
+      "topic": "Adjoint of a matrix",
       "type": "numeric",
-      "q": "If $\\begin{pmatrix} x + y & 7 \\\\ 5 & x - y \\end{pmatrix} = \\begin{pmatrix} 8 & 7 \\\\ 5 & 2 \\end{pmatrix}$, find the value of $x$.",
-      "solution": "Equal matrices match entry by entry, like two identical seating plans.\n\n$x + y = 8$ and $x - y = 2$. Adding: $2x = 10$, so $x = \\mathbf{5}$ (and $y = 3$).",
+      "q": "If $A \\cdot (\\text{adj } A) = \\begin{pmatrix} 3 & 0 & 0 \\\\ 0 & 3 & 0 \\\\ 0 & 0 & 3 \\end{pmatrix}$, then find the value of $|A| + |\\text{adj } A|$.",
+      "solution": "**Finding $|A|$.** The defining property of the adjoint is\\n\\n$$A \\cdot (\\text{adj } A) = |A| \\, I.$$\\n\\nThe given matrix is $3I$, so $|A| = 3$.\\n\\n**Finding $|\\text{adj } A|$.** For an $n \\times n$ matrix, $|\\text{adj } A| = |A|^{\\,n-1}$. Here $n = 3$, so\\n\\n$$|\\text{adj } A| = |A|^2 = 3^2 = 9.$$\\n\\n**Adding.**\\n\\n$$|A| + |\\text{adj } A| = 3 + 9 = \\mathbf{12}.$$",
       "marks": 2,
-      "answer": 5,
+      "source": "CBSE 2023",
+      "answer": 12,
       "tolerance": 0
     },
     {
