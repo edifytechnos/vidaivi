@@ -1819,6 +1819,11 @@ function check(ok, label) {
             vw: window.innerWidth,
             toggleInBar: !!document.querySelector("#shellbar-actions [data-drawer-toggle]"),
             toggleInCrumb: !!document.querySelector(".ed-crumbrow [data-drawer-toggle]"),
+            handInSameRow: !!document.querySelector(".ed-crumbrow .st-handin"),
+            barTitle: (document.querySelector("#shellbar-title") || {}).textContent || "",
+            barTitleShown: document.querySelector("#shellbar-title")
+              ? getComputedStyle(document.querySelector("#shellbar-title")).display
+              : "none",
           };
         });
         check(
@@ -1826,8 +1831,16 @@ function check(ok, label) {
           `on a phone the rail is a bottom bar (y ${chrome.railY} of ${chrome.vh}, ${chrome.railW}px wide)`
         );
         check(
-          chrome.toggleInBar && !chrome.toggleInCrumb,
-          "and the question list opens from the app bar, not the crumb row"
+          chrome.toggleInCrumb && !chrome.toggleInBar,
+          "Questions sits in the crumb row beside Hand in, where a student works"
+        );
+        check(
+          chrome.handInSameRow,
+          "and Hand in is in that same row"
+        );
+        check(
+          /\S/.test(chrome.barTitle) && chrome.barTitleShown !== "none",
+          `the app bar names the test beside the logo ("${chrome.barTitle.slice(0, 40)}")`
         );
         await page.click("[data-drawer-toggle]");
         await page.waitForSelector("#st-tree .ed-tree-q:visible", { timeout: 10000 });
@@ -1838,13 +1851,20 @@ function check(ok, label) {
         );
         const opened = await page.evaluate(() => ({
           x: document.querySelector(".ed-tree").getBoundingClientRect().x,
+          top: Math.round(document.querySelector(".ed-tree").getBoundingClientRect().top),
+          crumbBottom: Math.round(document.querySelector(".ed-crumbrow").getBoundingClientRect().bottom),
           scrim: getComputedStyle(document.querySelector(".ed-scrim")).display,
         }));
         check(opened.scrim === "block", `the Questions button slides it in over a scrim (at ${Math.round(opened.x)}px)`);
-        // From the window's own left edge, not from wherever the page starts.
+        // From the window's own left edge, and from under the row whose button
+        // opened it — the button and the panel belong together.
         check(
           Math.round(opened.x) === 0,
           `and from the screen's left wall (${Math.round(opened.x)}px)`
+        );
+        check(
+          Math.abs(opened.top - opened.crumbBottom) <= 2,
+          `starting under the Questions button (tree ${opened.top}, crumb ends ${opened.crumbBottom})`
         );
         await page.mouse.click(370, 500);
         await page.waitForFunction(

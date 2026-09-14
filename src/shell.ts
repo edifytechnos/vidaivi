@@ -300,18 +300,17 @@ let escBound = false;
 export function bindTreeDrawer(editor: HTMLElement): void {
   const close = (): void => editor.classList.remove("tree-open");
 
-  // On a phone or tablet the trigger belongs in the app bar, beside the
-  // brand — one fixed place, always reachable, rather than a button that
-  // moves around inside whichever crumb row a screen happens to have. The
-  // markup stays defined once (`drawerToggleMarkup`) and is relocated here,
-  // so there is still only one button to bind and one to style.
-  const toggle = editor.querySelector<HTMLElement>("[data-drawer-toggle]");
-  const bar = document.getElementById("shellbar-actions");
-  if (toggle && bar && window.matchMedia("(max-width: 899px)").matches) {
-    bar.prepend(toggle);
+  // The trigger stays in the crumb row, beside Hand in — the two things a
+  // student reaches for while sitting a test, in one row. The drawer then
+  // opens *under* that row rather than under the app bar, so the button and
+  // the panel it opens read as one control. The row wraps at narrow widths,
+  // so its height is measured rather than guessed.
+  const crumb = editor.querySelector<HTMLElement>(".ed-crumbrow");
+  if (crumb) {
+    const top = Math.round(crumb.getBoundingClientRect().bottom);
+    editor.style.setProperty("--drawer-top", `${top}px`);
   }
-  // Bind from the document: it may no longer be inside `editor`.
-  document
+  editor
     .querySelector("[data-drawer-toggle]")
     ?.addEventListener("click", () => editor.classList.toggle("tree-open"));
   editor.querySelector(".ed-scrim")?.addEventListener("click", close);

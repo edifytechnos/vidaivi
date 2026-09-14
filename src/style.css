@@ -1718,7 +1718,9 @@ body {
        rather than from wherever the page happens to start. */
     position: fixed;
     z-index: 40;
-    top: 57px;
+    /* Under the crumb row that holds the Questions button — measured, because
+       that row wraps at narrow widths and a guessed offset would float. */
+    top: var(--drawer-top, 91px);
     left: 0;
     bottom: calc(56px + env(safe-area-inset-bottom, 0px));
     width: min(86vw, 300px);
@@ -2221,11 +2223,16 @@ body {
   .tb-name,
   .tb-role,
   .shellbar-div,
-  .shellbar-sub,
-  /* The crumb row under the bar already names the test; on a phone the bar's
-     copy of it only crowds out the subject picker. */
-  .shellbar-title {
+  .shellbar-sub {
     display: none;
+  }
+  /* The title sits beside the logo, which is where a phone should say what
+     you have open: the crumb row below is busy carrying Questions and Hand in,
+     and it drops the test's name at this width anyway. */
+  .shellbar-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
   }
 }
 
@@ -3263,7 +3270,7 @@ body.modal-open {
   display: none;
   position: fixed;
   z-index: 35;
-  inset: 57px 0 0;
+  inset: var(--drawer-top, 57px) 0 0;
   background: rgba(15, 23, 42, 0.32);
   opacity: 0;
   pointer-events: none;
@@ -3304,20 +3311,6 @@ body.modal-open {
      undoing it — 28px of a 320px phone, outside the layout that had already
      paid for its own margins. */
   .shell-main-full { padding: 0; }
-}
-
-/* In the app bar it is the one fixed way into the question list, so it reads
-   as a bar control rather than as part of whatever crumb row is below it. */
-.shellbar-actions .st-drawer-btn {
-  display: inline-flex;
-  order: -1;
-  margin-right: 2px;
-  padding: 7px 10px;
-  border-radius: var(--radius-sm);
-}
-@media (max-width: 420px) {
-  .shellbar-actions .st-drawer-btn span { display: none; }
-  .shellbar-actions .st-drawer-btn { padding: 7px 8px; }
 }
 
 /* A phone and a tablet get the rail along the bottom, where a thumb is —

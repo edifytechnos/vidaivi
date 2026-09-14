@@ -1133,13 +1133,21 @@ question scrolling to the end — that rule holds everywhere a test is shown.
     where a thumb is. As a column it spent a sixth of a 320px screen on two
     icons. `.shell-page` gains matching bottom padding so nothing hides under
     it, and `env(safe-area-inset-bottom)` keeps it clear of the home indicator.
-  - **The Questions trigger lives in the app bar**, not in the crumb row:
-    `bindTreeDrawer` relocates the one `drawerToggleMarkup()` button into
-    `#shellbar-actions` below 900px, so there is still a single button to bind
-    and style, in one fixed place on every screen that has a tree.
-  - **The drawer slides from the window's own left edge** — `position: fixed`,
-    `left: 0`, stopping above the bottom bar. It was `absolute`, so it started
-    wherever the page did, which on a phone meant inset by the rail.
+  - **Questions stays in the crumb row, beside Hand in** — the two things a
+    student reaches for while sitting a test belong in one row. (It was briefly
+    moved to the app bar; that separated the button from the action beside it
+    and cost the row nothing it needed back.)
+  - **The drawer slides from the window's own left edge, under the row whose
+    button opened it** — `position: fixed`, `left: 0`, stopping above the
+    bottom bar. It was `absolute`, so it started wherever the page did, which
+    on a phone meant inset by the rail and clipped on the right. The top offset
+    is **measured**, not guessed: `bindTreeDrawer` writes the crumb row's
+    bottom into `--drawer-top` on the editor, because that row wraps at narrow
+    widths and a hard-coded offset would float away from it.
+  - **The app bar names the test, beside the logo.** It used to drop the title
+    below 600px on the grounds that the crumb row carried it — but the crumb
+    row drops the test name at that width too, so a phone said nothing about
+    what was open.
   - **A full-bleed screen keeps its own margins.** `.shell-main-full` sets
     `padding: 0`, and the small-screen `.shell-main` rules were quietly
     overriding it — 28px of a 320px phone. They now re-assert it. Measured on
