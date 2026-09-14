@@ -3461,8 +3461,17 @@ async function askAssessor(question, solution, maxMarks, images) {
       const body = JSON.parse(text);
       why = String((body.error && body.error.message) || "").slice(0, 200);
     } catch {}
+    // A 404 says nothing on its own — the host, the path and the deployment
+    // name are all candidates, and Azure answers a bad one of any of the three
+    // with a bare "Resource not found". Naming what was tried turns an
+    // afternoon of guessing into a glance. Neither is a secret: the key is not
+    // here and neither is the handwriting.
+    const tried =
+      res.status === 404
+        ? ` (tried deployment "${AZURE_AI_DEPLOYMENT}" at ${AZURE_AI_ENDPOINT}/openai/v1/chat/completions)`
+        : "";
     throw new Error(
-      `The model refused the request (${res.status})${why ? `: ${why}` : ""}`
+      `The model refused the request (${res.status})${why ? `: ${why}` : ""}${tried}`
     );
   }
   let payload;
