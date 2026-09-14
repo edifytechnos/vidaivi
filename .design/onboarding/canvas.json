@@ -1,0 +1,100 @@
+{
+  "artboards": [
+    {
+      "file": "Today.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 680,
+      "h": 1040,
+      "title": "Today \u2014 what goes wrong"
+    },
+    {
+      "file": "FirstRun.dc.html",
+      "x": 800,
+      "y": 0,
+      "w": 1120,
+      "h": 700,
+      "title": "1 \u00b7 First run \u2014 an empty Your subjects"
+    },
+    {
+      "file": "Main.dc.html",
+      "x": 2040,
+      "y": 0,
+      "w": 680,
+      "h": 780,
+      "title": "2 \u00b7 Step 1 \u2014 what do you teach?"
+    },
+    {
+      "file": "Step2Tests.dc.html",
+      "x": 2840,
+      "y": 0,
+      "w": 680,
+      "h": 940,
+      "title": "3a \u00b7 Step 2 \u2014 which tests?"
+    },
+    {
+      "file": "Step2Custom.dc.html",
+      "x": 2840,
+      "y": 1160,
+      "w": 680,
+      "h": 620,
+      "title": "3b \u00b7 Step 2 \u2014 something else"
+    },
+    {
+      "file": "Landing.dc.html",
+      "x": 3640,
+      "y": 0,
+      "w": 1120,
+      "h": 720,
+      "title": "4 \u00b7 Lands in the editor, as drafts"
+    },
+    {
+      "file": "Scale.dc.html",
+      "x": 2040,
+      "y": 1160,
+      "w": 680,
+      "h": 1060,
+      "title": "2b \u00b7 Step 1 at 1000+ subjects"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "the-diagnosis",
+      "x": 0,
+      "y": -150,
+      "w": 680,
+      "text": "THE DIAGNOSIS\n\nThe dialog asks three unrelated things at once \u2014 a content choice, a taxonomy chore, and a second content choice \u2014 and it asks for the taxonomy even when it already knows the answer.\n\nA teacher's mental model is not \"create a subject entity\". It is \"I teach Class 10 Maths and I want to set a test.\""
+    },
+    {
+      "id": "the-flow",
+      "x": 800,
+      "y": -150,
+      "w": 2720,
+      "text": "THE PROPOSED FLOW \u2014 one question per step, and the taxonomy is a consequence rather than a question.\n\nEmpty state teaches the loop  \u2192  Step 1: what do you teach?  \u2192  Step 2: which tests?  \u2192  land in the editor with drafts you can edit."
+    },
+    {
+      "id": "branch-note",
+      "x": 2840,
+      "y": 1000,
+      "w": 680,
+      "text": "The other branch of Step 2. Only \"Something else\" has to ask for board, class and subject \u2014 and then it is the only thing on screen."
+    },
+    {
+      "id": "closes-loop",
+      "x": 3640,
+      "y": -150,
+      "w": 1120,
+      "text": "This is the screen that answers \"where did my test go?\" \u2014 the copies are drafts, students see nothing until Publish, and + adds another (blank or built-in). One banner, dismissed once."
+    },
+    {
+      "id": "scale-note",
+      "x": 2040,
+      "y": 1000,
+      "w": 680,
+      "text": "AT SCALE \u2014 asked in the comments: what if there are 1000+ subjects?\n\nSame step, same question. Cards up to ~6; a search box past that. Step 2 is unchanged either way."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

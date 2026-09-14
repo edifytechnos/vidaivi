@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, sans-serif; }
+    a { color: #6d28d9; } a:hover { color: #5b21b6; }
+    .res { display: flex; align-items: center; gap: 11px; padding: 10px 11px; border-radius: 8px; cursor: pointer; }
+    .rname { font-size: 14px; font-weight: 600; color: #0f172a; }
+    .rmeta { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .rcount { font-size: 12px; font-weight: 600; color: #047857; white-space: nowrap; }
+    .hit { background: #fef3c7; border-radius: 3px; padding: 0 1px; }
+  </style>
+</helmet>
+
+<div style="width: 680px; min-height: 1000px; background: #f1f5f9; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;">
+
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <span style="display: inline-flex; align-self: flex-start; align-items: center; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; padding: 4px 10px; border-radius: 6px; background: #f5f3ff; color: #6d28d9;">STEP 1 AT 1000+ SUBJECTS</span>
+    <div style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a;">Same step, same question — the cards become a search</div>
+  </div>
+
+  <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(15,23,42,0.05), 0 10px 15px -3px rgba(15,23,42,0.08); padding: 22px; display: flex; flex-direction: column; gap: 14px;">
+
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <h2 style="flex: 1; margin: 0; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a;">New subject</h2>
+      <span style="font-size: 12px; font-weight: 600; color: #64748b;">Step 1 of 2</span>
+      <div style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+
+    <div style="font-size: 15px; font-weight: 600; color: #0f172a;">What do you teach?</div>
+
+    <!-- search is the primary control once the list outgrows a glance -->
+    <div style="display: flex; align-items: center; gap: 10px; padding: 11px 13px; border: 1.5px solid #6d28d9; border-radius: 8px; background: #fff;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span style="font-size: 14.5px; color: #0f172a;">class 10 ma</span>
+      <span style="width: 1.5px; height: 17px; background: #6d28d9;"></span>
+      <span style="margin-left: auto; font-size: 12px; color: #64748b;">1,248 subjects</span>
+    </div>
+
+    <!-- facets narrow without forcing an order -->
+    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+      <span style="font-size: 12px; font-weight: 600; color: #64748b;">Filter</span>
+      <span style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; font-size: 12.5px; font-weight: 600; color: #6d28d9; background: #f5f3ff; border: 1px solid #ddd6fe; border-radius: 6px;">
+        CBSE
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </span>
+      <span style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; font-size: 12.5px; font-weight: 500; color: #475569; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px;">
+        Any class
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </span>
+      <span style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; font-size: 12.5px; font-weight: 500; color: #475569; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px;">
+        Any subject
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </span>
+    </div>
+
+    <!-- what a teacher most likely wants, before any typing -->
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; padding: 0 11px;">Because you already teach CBSE</span>
+      <div class="res" style="background: #f5f3ff; border: 1px solid #ddd6fe;">
+        <span style="flex: none; width: 32px; height: 32px; border-radius: 8px; background: #6d28d9; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center;">10</span>
+        <span class="rname">CBSE · Class 10 · <span class="hit">Ma</span>ths</span>
+        <span class="rmeta">
+          <span class="rcount">14 tests</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 3px;">
+      <div style="display: flex; align-items: center; padding: 0 11px;">
+        <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8;">Matches</span>
+        <span style="margin-left: auto; font-size: 11.5px; color: #94a3b8;">12 of 1,248</span>
+      </div>
+      <div class="res">
+        <span style="flex: none; width: 32px; height: 32px; border-radius: 8px; background: #64748b; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center;">10</span>
+        <span class="rname">CBSE · Class 10 · <span class="hit">Ma</span>thematics (Basic)</span>
+        <span class="rmeta"><span class="rcount">9 tests</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="res">
+        <span style="flex: none; width: 32px; height: 32px; border-radius: 8px; background: #64748b; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center;">10</span>
+        <span class="rname">ICSE · Class 10 · <span class="hit">Ma</span>thematics</span>
+        <span class="rmeta"><span class="rcount">11 tests</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="res">
+        <span style="flex: none; width: 32px; height: 32px; border-radius: 8px; background: #64748b; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center;">10</span>
+        <span class="rname">TN State Board · Class 10 · <span class="hit">Ma</span>ths</span>
+        <span class="rmeta"><span class="rcount">14 tests</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="res">
+        <span style="flex: none; width: 32px; height: 32px; border-radius: 8px; background: #64748b; color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center;">10</span>
+        <span class="rname">IGCSE · Class 10 · <span class="hit">Ma</span>thematics</span>
+        <span class="rmeta"><span class="rcount">7 tests</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+      </div>
+      <div style="font-size: 12px; color: #94a3b8; padding: 6px 11px 0 54px;">…8 more, scrolling</div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px; padding: 13px 15px; background: #fff; border: 1px dashed #cbd5e1; border-radius: 12px; cursor: pointer;">
+      <span style="flex: none; width: 32px; height: 32px; border-radius: 9px; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </span>
+      <span style="display: flex; flex-direction: column; gap: 2px; flex: 1;">
+        <span style="font-size: 13.5px; font-weight: 600; color: #0f172a;">Not here? Set it up yourself</span>
+        <span style="font-size: 12px; color: #64748b;">Choose your own board, class and subject</span>
+      </span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 9px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+    <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #6d28d9;">How it scales</div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #f5f3ff; color: #6d28d9; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">1</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">One rule decides the control.</strong> Up to about six subjects, cards — you can read them all at a glance. Past that, the same step renders a search box and result rows. The flow, the wording and Step 2 never change.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #f5f3ff; color: #6d28d9; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">2</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">Nobody scrolls 1,248 rows.</strong> A teacher knows what they teach, so typing beats browsing. Facets narrow without forcing an order, and “because you already teach CBSE” puts the likely answer on top before a key is pressed.</span>
+    </div>
+    <div style="display: flex; gap: 9px; align-items: flex-start;">
+      <span style="flex: none; width: 18px; height: 18px; border-radius: 50%; background: #fef3c7; color: #92400e; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">!</span>
+      <span style="font-size: 13px; line-height: 1.5; color: #334155;"><strong style="color:#0f172a;">The real problem at 1000+ is the data, not the layout.</strong> Today this dialog fetches <em>every</em> subject and <em>every</em> built-in test to open — at 1,248 subjects that is roughly 15,000 test records in one response, on a cheap Android phone. Search has to move to the server (a query with a limit), and the test list must load only for the subject actually picked.</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
