@@ -302,19 +302,54 @@ solution, so a teacher can *judge* a test before taking it.
 
 ### Where chapter content lives
 
-Chapter JSON lives in **`content/<shelf>/*.json`** — `content/class10-maths/`,
-`content/class12-maths/` — and is pushed into Table Storage as masters by
-`node scripts/seed-library.mjs content/class10-maths` (`VIDAI_BASE`,
+Chapter JSON lives in **`content/<shelf>/*.json`** and is pushed into Table
+Storage as masters by `node scripts/seed-library.mjs` (`VIDAI_BASE`,
 `VIDAI_ADMIN_USER`, `VIDAI_ADMIN_PASS` from the environment; never hardcode
-credentials). The script creates the shelf if it is missing, then for each file
+credentials). Name one or more directories, or none at all to rebuild every
+shelf. The script creates each shelf if it is missing, then for each file
 unpublishes → deletes → creates → publishes, so **editing a JSON file and
 re-running is how a question is corrected**.
+
+`RETIRED` in that script names test ids that have **left** `content/`. A test is
+replaced by id, so a file merely deleted from the repo would leave its row
+published in the library forever — nobody would ever see the deletion.
+
+**The eleven shelves**, each 15 questions per chapter:
+
+| Directory | Shelf | Chapters |
+|---|---|---|
+| `class10-maths` | CBSE Class 10 Maths | 14 |
+| `class10-science` | CBSE Class 10 Science | 13 |
+| `class12-maths` | CBSE Class 12 Maths | 13 |
+| `class12-physics` | CBSE Class 12 Physics | 14 |
+| `class12-chemistry` | CBSE Class 12 Chemistry | 10 |
+| `igcse-maths` | Cambridge IGCSE Maths (0580) | 9 |
+| `igcse-science` | Cambridge IGCSE Combined Science (0653) | 12 |
+| `alevel-maths` | Cambridge A Level Maths (9709) | 10 |
+| `alevel-physics` | Cambridge A Level Physics (9702) | 12 |
+| `alevel-chemistry` | Cambridge A Level Chemistry (9701) | 12 |
+| `neet` | NEET (Physics, Chemistry, Biology) | 6 |
 
 **Not `src/tests/`.** Everything there is picked up by `import.meta.glob` and
 becomes a guest-visible bundled demo test. `src/tests/` is the guest demo and
 nothing else; the library is `content/`.
 
-`order` on each chapter is its NCERT chapter number, so the tree reads 1…14.
+`order` on each chapter is its NCERT chapter number where there is one, so the
+tree reads 1…14; the Cambridge and NEET shelves are ordered by the syllabus'
+own topic order instead.
+
+**`node scripts/check-content.cjs` proves a chapter before it ships.** It runs
+the server's own `validateQuestions` — read out of `api/shared/core.js`, never
+reimplemented — over every file, plus the things a library cares about and the
+validator does not: unique test ids across shelves, an `order` per chapter, a
+title and a subtitle. Run it after editing any chapter; a question that would
+fail to publish then fails while it is being written rather than mid-seed.
+
+**A `source` tag is a claim, and it has to be earned.** A year is written only
+when the question was read verbatim out of a full paper for that year, with the
+paper's own code, and the tag must say what kind of paper: `CBSE SQP 2024-25`
+is not `CBSE 2024`. `docs/library-sources.md` records which papers exist, which
+were obtained, and which shelves carry tags — today only Class 10 Maths does.
 
 ## Authoring editor (`src/screens/editor/`)
 

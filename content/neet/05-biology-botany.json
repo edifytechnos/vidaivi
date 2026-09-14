@@ -1,0 +1,250 @@
+{
+  "id": "lib-neet-biology-1",
+  "title": "NEET Biology: Botany",
+  "chapter": "Practice Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "neetb1-001",
+      "chapter": "Biology: Botany",
+      "topic": "Cell biology",
+      "type": "mcq",
+      "q": "The site of photosynthesis in a plant cell is the:",
+      "solution": "The **chloroplast**, which contains chlorophyll in stacked thylakoid membranes (grana) surrounded by the stroma.\n\nThe light reactions occur on the thylakoids, the Calvin cycle in the stroma. Chloroplasts have their own DNA and ribosomes, evidence for their bacterial ancestry.",
+      "marks": 4,
+      "options": [
+        "mitochondrion",
+        "chloroplast",
+        "ribosome",
+        "Golgi apparatus"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-002",
+      "chapter": "Biology: Botany",
+      "topic": "Cell wall",
+      "type": "mcq",
+      "q": "The plant cell wall is composed mainly of:",
+      "solution": "**Cellulose**, a $\\beta$-1,4 polymer of glucose whose parallel chains hydrogen bond into strong microfibrils.\n\nFungi use **chitin**, bacteria **peptidoglycan**. Lignin is added later to strengthen xylem and wood.",
+      "marks": 4,
+      "options": [
+        "chitin",
+        "cellulose",
+        "peptidoglycan",
+        "lignin"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-003",
+      "chapter": "Biology: Botany",
+      "topic": "Photosynthesis",
+      "type": "mcq",
+      "q": "In the light reactions of photosynthesis, oxygen is produced by:",
+      "solution": "**Photolysis of water** at photosystem II: $2\\text{H}_{2}\\text{O} \\to 4\\text{H}^{+} + 4e^{-} + \\text{O}_{2}$.\n\nEvery oxygen molecule you breathe came from a water molecule, not from carbon dioxide — proved with isotopically labelled water.",
+      "marks": 4,
+      "options": [
+        "reduction of carbon dioxide",
+        "photolysis of water",
+        "oxidation of glucose",
+        "the Calvin cycle"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-004",
+      "chapter": "Biology: Botany",
+      "topic": "C4 plants",
+      "type": "mcq",
+      "q": "The first stable product of carbon fixation in $\\text{C}_{4}$ plants is:",
+      "solution": "**Oxaloacetic acid**, a four-carbon compound — hence the name $\\text{C}_{4}$.\n\nThe $\\text{C}_{4}$ pathway concentrates $\\text{CO}_{2}$ in the bundle sheath cells, which suppresses wasteful photorespiration. Maize and sugarcane use it, and it is why they thrive in hot, bright conditions.",
+      "marks": 4,
+      "options": [
+        "3-phosphoglyceric acid",
+        "oxaloacetic acid",
+        "glucose",
+        "RuBP"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-005",
+      "chapter": "Biology: Botany",
+      "topic": "Plant tissues",
+      "type": "mcq",
+      "q": "Which tissue conducts water in vascular plants?",
+      "solution": "**Xylem** — dead, hollow, lignified cells carrying water and minerals **upwards only**, driven by transpiration pull.\n\nPhloem is living and carries dissolved food in both directions by active transport.",
+      "marks": 4,
+      "options": [
+        "Phloem",
+        "Xylem",
+        "Cambium",
+        "Epidermis"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-006",
+      "chapter": "Biology: Botany",
+      "topic": "Transpiration",
+      "type": "mcq",
+      "q": "The opening and closing of stomata is controlled by:",
+      "solution": "**Guard cells.** When they take in water and become turgid, their unevenly thickened walls bow apart and the pore opens.\n\nThey are the only epidermal cells with chloroplasts, and they close at night when no photosynthesis is happening and water would only be wasted.",
+      "marks": 4,
+      "options": [
+        "epidermal cells",
+        "guard cells",
+        "mesophyll cells",
+        "xylem vessels"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-007",
+      "chapter": "Biology: Botany",
+      "topic": "Plant hormones",
+      "type": "mcq",
+      "q": "Which hormone promotes cell elongation and causes phototropism?",
+      "solution": "**Auxin (IAA).** Light drives it to the shaded side of the shoot, where it makes the cells elongate more — so the shoot bends towards the light.\n\nCytokinin promotes cell division, gibberellin stem elongation, abscisic acid dormancy and stomatal closure, ethylene fruit ripening.",
+      "marks": 4,
+      "options": [
+        "Cytokinin",
+        "Auxin",
+        "Abscisic acid",
+        "Ethylene"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-008",
+      "chapter": "Biology: Botany",
+      "topic": "Reproduction in plants",
+      "type": "mcq",
+      "q": "Double fertilisation in angiosperms produces:",
+      "solution": "One male gamete fuses with the egg to give the **diploid zygote**; the other fuses with two polar nuclei to give the **triploid endosperm**, the seed's food store.\n\n**Double fertilisation is unique to angiosperms**, and it means no food reserve is built unless fertilisation has actually succeeded — an efficiency gymnosperms do not have.",
+      "marks": 4,
+      "options": [
+        "two embryos",
+        "a zygote and the endosperm",
+        "two endosperms",
+        "a zygote only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-009",
+      "chapter": "Biology: Botany",
+      "topic": "Seed structure",
+      "type": "mcq",
+      "q": "The endosperm of a seed is:",
+      "solution": "**Triploid (3n)** — formed from one haploid male gamete and two haploid polar nuclei.\n\nIn cereals it is the bulk of the grain, and it is what we actually eat when we eat rice or wheat.",
+      "marks": 4,
+      "options": [
+        "diploid",
+        "haploid",
+        "triploid",
+        "tetraploid"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetb1-010",
+      "chapter": "Biology: Botany",
+      "topic": "Plant kingdom",
+      "type": "mcq",
+      "q": "Bryophytes are called the amphibians of the plant kingdom because they:",
+      "solution": "Their **flagellated sperm must swim** to the egg through a film of water, so they cannot reproduce without it — even though the plant itself lives on land.\n\nThey also lack true vascular tissue, roots and seeds, which together confine them to damp, shady places.",
+      "marks": 4,
+      "options": [
+        "live only in water",
+        "need water for fertilisation",
+        "have true roots",
+        "produce seeds"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-011",
+      "chapter": "Biology: Botany",
+      "topic": "Respiration",
+      "type": "mcq",
+      "q": "The net ATP yield from the complete aerobic oxidation of one molecule of glucose is about:",
+      "solution": "About $\\mathbf{36}$–$\\mathbf{38}$ ATP: 2 from glycolysis, 2 from the Krebs cycle, and the great majority from the electron transport chain.\n\nAnaerobic respiration yields only 2 — which is why it can sustain a sprint but not a marathon.",
+      "marks": 4,
+      "options": [
+        "2",
+        "4",
+        "36-38",
+        "100"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetb1-012",
+      "chapter": "Biology: Botany",
+      "topic": "Krebs cycle",
+      "type": "mcq",
+      "q": "The Krebs cycle takes place in the:",
+      "solution": "The **mitochondrial matrix**.\n\nGlycolysis occurs in the **cytoplasm**, and the electron transport chain is embedded in the **inner mitochondrial membrane** — whose folding into cristae gives the enormous surface area that chain needs.",
+      "marks": 4,
+      "options": [
+        "cytoplasm",
+        "mitochondrial matrix",
+        "inner mitochondrial membrane",
+        "nucleus"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-013",
+      "chapter": "Biology: Botany",
+      "topic": "Ecology",
+      "type": "mcq",
+      "q": "In a food chain, the amount of energy passed to the next trophic level is about:",
+      "solution": "About **$10\\%$** — the ten per cent law.\n\nThe rest is lost in respiration, as heat, or is never eaten. This is why food chains rarely exceed four or five links, and why fewer top predators can be supported than herbivores.",
+      "marks": 4,
+      "options": [
+        "1%",
+        "10%",
+        "50%",
+        "90%"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-014",
+      "chapter": "Biology: Botany",
+      "topic": "Biodiversity",
+      "type": "mcq",
+      "q": "Which of these is a biodiversity hotspot in India?",
+      "solution": "The **Western Ghats**, along with the Eastern Himalayas, the Indo-Burma region and the Sundaland (Nicobar) area.\n\nA hotspot must have exceptional **endemism** — species found nowhere else — and be under serious threat. Both conditions are required.",
+      "marks": 4,
+      "options": [
+        "Thar Desert",
+        "Western Ghats",
+        "Gangetic Plain",
+        "Deccan Plateau"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb1-015",
+      "chapter": "Biology: Botany",
+      "topic": "Plant classification",
+      "type": "mcq",
+      "q": "The binomial system of nomenclature was introduced by:",
+      "solution": "**Carolus Linnaeus**, in *Species Plantarum* (1753).\n\nEach name has two parts: **genus** (capitalised) and **species** (lower case), both italicised or underlined — *Mangifera indica* for mango. One unambiguous name per organism, in every country.",
+      "marks": 4,
+      "options": [
+        "Charles Darwin",
+        "Carolus Linnaeus",
+        "Gregor Mendel",
+        "Robert Hooke"
+      ],
+      "answer": 1
+    }
+  ]
+}

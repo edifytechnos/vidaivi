@@ -1,0 +1,250 @@
+{
+  "id": "lib-neet-physics-1",
+  "title": "NEET Physics: Mechanics and Properties of Matter",
+  "chapter": "Practice Test 1",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "neetp1-001",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Kinematics",
+      "type": "mcq",
+      "q": "A body starts from rest and accelerates uniformly. The ratio of the distances covered in the 1st, 2nd and 3rd seconds is:",
+      "solution": "Distance in the $n$th second: $s_{n} = u + \\dfrac{a}{2}(2n - 1)$.\n\nFrom rest, $s_{n} \\propto (2n - 1)$, giving $1 : 3 : 5$.\n\nThe **total** distances after 1, 2, 3 s are in the ratio $1 : 4 : 9$ — the squares. Reading the question carefully is half the battle here.",
+      "marks": 4,
+      "options": [
+        "1 : 2 : 3",
+        "1 : 3 : 5",
+        "1 : 4 : 9",
+        "1 : 1 : 1"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp1-002",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Projectile motion",
+      "type": "mcq",
+      "q": "For a given speed of projection, the maximum range is obtained at an angle of:",
+      "solution": "$R = \\dfrac{u^{2}\\sin 2\\theta}{g}$, which is greatest when $\\sin 2\\theta = 1$, that is $\\theta = \\mathbf{45°}$.\n\nNote also that $30°$ and $60°$ give the **same** range, since $\\sin 60° = \\sin 120°$ — a favourite examination point.",
+      "marks": 4,
+      "options": [
+        "30°",
+        "45°",
+        "60°",
+        "90°"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp1-003",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Newton's laws",
+      "type": "mcq",
+      "q": "A body of mass $2$ kg moving at $5$ m/s is brought to rest in $0.1$ s. The average force is:",
+      "solution": "$F = \\dfrac{\\Delta p}{\\Delta t} = \\dfrac{2 \\times 5}{0.1} = \\mathbf{100}$ N.\n\nDoubling the stopping **time** would halve the force — the principle behind airbags and crumple zones.",
+      "marks": 4,
+      "options": [
+        "10 N",
+        "50 N",
+        "100 N",
+        "200 N"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetp1-004",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Work and energy",
+      "type": "mcq",
+      "q": "A body of mass $m$ moving with velocity $v$ has its speed doubled. Its kinetic energy becomes:",
+      "solution": "$E_{k} = \\tfrac12 mv^{2} \\propto v^{2}$, so doubling $v$ gives **four** times the energy.\n\nThis is why a car's braking distance quadruples when its speed doubles.",
+      "marks": 4,
+      "options": [
+        "twice",
+        "three times",
+        "four times",
+        "unchanged"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetp1-005",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Circular motion",
+      "type": "mcq",
+      "q": "A body moving in a circle at constant speed has:",
+      "solution": "The **direction** of the velocity changes continuously, so there is an acceleration — directed towards the centre.\n\n$a = \\dfrac{v^{2}}{r}$. The speed is constant; the velocity is not.",
+      "marks": 4,
+      "options": [
+        "zero acceleration",
+        "constant velocity",
+        "acceleration directed towards the centre",
+        "no force acting on it"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetp1-006",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Rotational motion",
+      "type": "mcq",
+      "q": "The moment of inertia of a solid sphere of mass $M$ and radius $R$ about a diameter is:",
+      "solution": "$I = \\mathbf{\\dfrac25 MR^{2}}$ for a solid sphere about a diameter.\n\nFor comparison: a hollow sphere is $\\tfrac23 MR^{2}$, a solid cylinder $\\tfrac12 MR^{2}$, and a ring $MR^{2}$. The more mass sits far from the axis, the larger the moment of inertia — which is why a hoop rolls down a slope more slowly than a sphere.",
+      "marks": 4,
+      "options": [
+        "$\\dfrac{2}{5}MR^{2}$",
+        "$\\dfrac{2}{3}MR^{2}$",
+        "$MR^{2}$",
+        "$\\dfrac{1}{2}MR^{2}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "neetp1-007",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Gravitation",
+      "type": "mcq",
+      "q": "The escape velocity from the surface of a planet of mass $M$ and radius $R$ is:",
+      "solution": "$v_{e} = \\mathbf{\\sqrt{\\dfrac{2GM}{R}}} = \\sqrt{2gR}$, which is $11.2$ km/s for the Earth.\n\nIt is exactly $\\sqrt2$ times the orbital velocity at the surface, and it is independent of the escaping body's mass.",
+      "marks": 4,
+      "options": [
+        "$\\sqrt{\\dfrac{GM}{R}}$",
+        "$\\sqrt{\\dfrac{2GM}{R}}$",
+        "$\\dfrac{2GM}{R}$",
+        "$\\sqrt{\\dfrac{GM}{2R}}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp1-008",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Elasticity",
+      "type": "mcq",
+      "q": "Young's modulus of a wire does not depend on its:",
+      "solution": "Young's modulus is a property of the **material**, not of the specimen — so its length and cross-section do not affect it.\n\nThey do affect the **extension** for a given load, through $x = \\dfrac{FL}{AE}$, but not $E$ itself.",
+      "marks": 4,
+      "options": [
+        "material",
+        "temperature",
+        "length and area of cross-section",
+        "nature of the stress"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetp1-009",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Fluid mechanics",
+      "type": "mcq",
+      "q": "According to Bernoulli's theorem, where the velocity of a fluid is high, the pressure is:",
+      "solution": "$p + \\tfrac12\\rho v^{2} + \\rho gh$ is constant, so a **higher velocity means a lower pressure**.\n\nIt is why an aerofoil generates lift, why a spinning ball swings, and why two ships sailing close alongside are drawn together.",
+      "marks": 4,
+      "options": [
+        "high",
+        "low",
+        "unchanged",
+        "zero"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp1-010",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Surface tension",
+      "type": "mcq",
+      "q": "The excess pressure inside a soap bubble of radius $r$ and surface tension $T$ is:",
+      "solution": "$\\mathbf{\\dfrac{4T}{r}}$ for a **soap bubble**, which has **two** surfaces — inner and outer.\n\nA liquid **drop** has only one surface, so its excess pressure is $\\dfrac{2T}{r}$. The factor of two is the whole point of the question.",
+      "marks": 4,
+      "options": [
+        "$\\dfrac{2T}{r}$",
+        "$\\dfrac{4T}{r}$",
+        "$\\dfrac{T}{r}$",
+        "$\\dfrac{T}{2r}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp1-011",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Simple harmonic motion",
+      "type": "mcq",
+      "q": "The time period of a simple pendulum of length $l$ on the Earth's surface is:",
+      "solution": "$T = \\mathbf{2\\pi\\sqrt{\\dfrac{l}{g}}}$, independent of the bob's **mass** and (for small swings) of the amplitude.\n\nThe independence of mass is what makes a pendulum a reliable clock, and its dependence on $g$ is how $g$ is measured.",
+      "marks": 4,
+      "options": [
+        "$2\\pi\\sqrt{\\dfrac{l}{g}}$",
+        "$2\\pi\\sqrt{\\dfrac{g}{l}}$",
+        "$\\dfrac{1}{2\\pi}\\sqrt{\\dfrac{l}{g}}$",
+        "$2\\pi l g$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "neetp1-012",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Thermodynamics",
+      "type": "mcq",
+      "q": "In an adiabatic process:",
+      "solution": "**Adiabatic** means $q = 0$ — no heat enters or leaves.\n\nBy the first law, $\\Delta U = W$, so compressing a gas adiabatically **raises its temperature**. That is how a diesel engine ignites its fuel without a spark.",
+      "marks": 4,
+      "options": [
+        "no heat is exchanged with the surroundings",
+        "the temperature is constant",
+        "the pressure is constant",
+        "the volume is constant"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "neetp1-013",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Kinetic theory",
+      "type": "mcq",
+      "q": "The average kinetic energy of a gas molecule depends only on:",
+      "solution": "$\\overline{E_{k}} = \\tfrac32 kT$ — it depends on **absolute temperature alone**.\n\nAt the same temperature, hydrogen and oxygen molecules have the same average kinetic energy, so the lighter hydrogen moves much faster. That is what temperature *is*, microscopically.",
+      "marks": 4,
+      "options": [
+        "pressure",
+        "volume",
+        "absolute temperature",
+        "molar mass"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetp1-014",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Waves",
+      "type": "mcq",
+      "q": "A stationary wave is formed by the superposition of two waves that have:",
+      "solution": "Two waves of the **same frequency and amplitude travelling in opposite directions** — usually a wave and its own reflection.\n\nThe result has fixed **nodes** and **antinodes**, and transfers no energy, since no energy can cross a node.",
+      "marks": 4,
+      "options": [
+        "different frequencies",
+        "the same frequency travelling in opposite directions",
+        "the same direction",
+        "different amplitudes only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp1-015",
+      "chapter": "Physics: Mechanics and Properties of Matter",
+      "topic": "Doppler effect",
+      "type": "mcq",
+      "q": "A source of sound approaches a stationary observer. The observed frequency is:",
+      "solution": "**Higher** — the wavefronts are bunched up ahead of the approaching source, so the wavelength reaching the observer is shorter.\n\nThe pitch drops abruptly as the source passes, which is the familiar sound of an ambulance. The same effect on light gives the redshift of receding galaxies.",
+      "marks": 4,
+      "options": [
+        "lower than the emitted frequency",
+        "higher than the emitted frequency",
+        "the same",
+        "zero"
+      ],
+      "answer": 1
+    }
+  ]
+}
