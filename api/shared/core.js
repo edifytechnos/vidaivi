@@ -95,7 +95,7 @@ function b64url(buf) {
   return Buffer.from(buf).toString("base64url");
 }
 
-function json(context, status, body) {
+function json(context, status, body, extraHeaders) {
   context.res = {
     status,
     headers: {
@@ -107,6 +107,7 @@ function json(context, status, body) {
       // for the answerimage SAS and for any authenticated GET an intermediary
       // might otherwise think it may keep.
       "Cache-Control": "no-store",
+      ...(extraHeaders || {}),
     },
     body,
   };
@@ -255,22 +256,167 @@ function checkPassword(password, stored) {
   return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(candidate));
 }
 
+// An unknown username must still cost a hash comparison. Computed once and
+// lazily: one scrypt on first use, not on every cold start.
+let decoyHash = null;
+
+function timingDecoyHash() {
+  if (!decoyHash) decoyHash = hashPassword("timing-parity-decoy");
+  return decoyHash;
+}
+
 function safeEqual(a, b) {
   const ba = Buffer.from(String(a));
   const bb = Buffer.from(String(b));
   return ba.length === bb.length && crypto.timingSafeEqual(ba, bb);
 }
 
+// ---------- Login throttling ----------
+//
+// There was none. A student password was one of 23,040 strings and nothing
+// counted the guesses, so a classmate who knew a username could walk the whole
+// space in minutes. Worse, every guess ran scrypt: unthrottled, the login
+// endpoint was also a CPU burn billed to a consumption plan.
+//
+// Table "authattempts": PK = bucket kind ("user" | "ip"), RK = the identifier.
+// Point reads and point writes only, never a scan.
+//
+// The username bucket is the control that matters: an attacker must name an
+// account to attack it, and cannot evade the count. The IP bucket is secondary
+// — x-forwarded-for is set by SWA's edge but is not a trust boundary, so
+// spoofing it only sidesteps the weaker of the two.
+
+// The two buckets are deliberately not equally strict. A whole school commonly
+// sits behind one NAT address, so an IP threshold as tight as the username one
+// would let a single student fumbling their password lock out every classmate.
+// The username bucket is the control that stops an attack; the IP bucket only
+// catches someone walking many accounts at once.
+const LOCK_AFTER = { user: 5, ip: 50 };
+const FAIL_WINDOW_MS = 15 * 60 * 1000; // failures older than this are forgotten
+const LOCK_STEPS_MS = [30e3, 60e3, 2 * 60e3, 5 * 60e3, 15 * 60e3, 30 * 60e3];
+
+/** Buckets are keyed by a digest, so no raw IP is stored — these are minors. */
+function digestKey(value) {
+  return crypto.createHash("sha256").update(String(value)).digest("hex").slice(0, 32);
+}
+
+function ipKey(req) {
+  const h = req.headers || {};
+  const xff = String(h["x-forwarded-for"] || h["X-Forwarded-For"] || "");
+  // SWA appends the source port: "203.0.113.4:51514".
+  const first = xff.split(",")[0].trim().replace(/:\d+$/, "");
+  return digestKey(first || "unknown");
+}
+
+async function attemptsTable() {
+  const t = tableClient("authattempts");
+  await ensureTable(t);
+  return t;
+}
+
+function lockMsFor(fails, kind = "user") {
+  const after = LOCK_AFTER[kind] ?? LOCK_AFTER.user;
+  if (fails < after) return 0;
+  return LOCK_STEPS_MS[Math.min(fails - after, LOCK_STEPS_MS.length - 1)];
+}
+
+/** Milliseconds this bucket stays shut. 0 means go ahead. */
+async function bucketLock(table, kind, id) {
+  try {
+    const e = await table.getEntity(kind, id);
+    return Math.max(0, (Date.parse(e.lockedUntil || "") || 0) - Date.now());
+  } catch {
+    return 0; // no row, or the read failed: never lock someone out by accident
+  }
+}
+
+async function noteFailure(table, kind, id) {
+  let fails = 0;
+  try {
+    const e = await table.getEntity(kind, id);
+    const last = Date.parse(e.lastFailAt || "") || 0;
+    // A quiet quarter of an hour wipes the slate: this throttles attacks, it
+    // does not punish a student who mistypes today and again next week.
+    if (Date.now() - last < FAIL_WINDOW_MS) fails = Number(e.fails) || 0;
+  } catch {}
+  fails += 1;
+  const lock = lockMsFor(fails, kind);
+  try {
+    await table.upsertEntity(
+      {
+        partitionKey: kind,
+        rowKey: id,
+        fails,
+        lastFailAt: new Date().toISOString(),
+        lockedUntil: lock ? new Date(Date.now() + lock).toISOString() : "",
+      },
+      "Replace"
+    );
+  } catch {}
+  return lock;
+}
+
+async function clearFailures(table, kind, id) {
+  try {
+    await table.deleteEntity(kind, id);
+  } catch {}
+}
+
+/**
+ * The gate in front of every credential check.
+ *
+ * Run this BEFORE hashing anything. scrypt is deliberately slow, so letting an
+ * unthrottled caller reach it is what turns a login endpoint into a denial of
+ * service that the account owner pays for.
+ */
+async function loginGate(req, id) {
+  const table = await attemptsTable();
+  const ip = ipKey(req);
+  const user = digestKey(id);
+  const [userLock, ipLock] = await Promise.all([
+    bucketLock(table, "user", user),
+    bucketLock(table, "ip", ip),
+  ]);
+  return { table, ip, user, lockMs: Math.max(userLock, ipLock) };
+}
+
+function tooManyAttempts(context, lockMs) {
+  const seconds = Math.max(1, Math.ceil(lockMs / 1000));
+  const wait = seconds >= 60 ? `${Math.ceil(seconds / 60)} minutes` : `${seconds} seconds`;
+  return json(
+    context,
+    429,
+    { error: `Too many sign-in attempts. Try again in ${wait}.`, retryAfter: seconds },
+    { "Retry-After": String(seconds) }
+  );
+}
+
+/** Both buckets pay for a failure, so neither route around the other. */
+async function noteLoginFailure(gate) {
+  await Promise.all([
+    noteFailure(gate.table, "user", gate.user),
+    noteFailure(gate.table, "ip", gate.ip),
+  ]);
+}
+
+// Sixty-four plain words, three of them per password, so the space is
+// 64 x 90 x 64 x 64 = 23,592,960 — exactly 1024x the 23,040 this used to be.
+// Still all lowercase and a two-digit number, because a student reads it off
+// WhatsApp and types it on a phone.
 const PW_WORDS = [
   "tiger", "lotus", "mango", "cobra", "delta", "gamma", "sigma", "vector",
   "matrix", "prime", "pearl", "coral", "falcon", "comet", "orbit", "pixel",
+  "amber", "basil", "cedar", "cliff", "coast", "crane", "dune", "ember",
+  "fern", "flint", "glade", "grove", "harbor", "heron", "ivory", "jade",
+  "kite", "lagoon", "lark", "linen", "maple", "marsh", "meadow", "mint",
+  "nectar", "oasis", "olive", "onyx", "opal", "otter", "petal", "quartz",
+  "quill", "raven", "reef", "ridge", "saffron", "slate", "sparrow", "spruce",
+  "summit", "thistle", "topaz", "tulip", "violet", "walnut", "willow", "zephyr",
 ];
 
 function generatePassword() {
-  const w1 = PW_WORDS[crypto.randomInt(PW_WORDS.length)];
-  const w2 = PW_WORDS[crypto.randomInt(PW_WORDS.length)];
-  const n = crypto.randomInt(10, 100);
-  return `${w1}${n}${w2}`;
+  const word = () => PW_WORDS[crypto.randomInt(PW_WORDS.length)];
+  return `${word()}${crypto.randomInt(10, 100)}${word()}${word()}`;
 }
 
 // A roster row never needs the password hash — the one property on a student
@@ -424,15 +570,29 @@ handlers.studentlogin = async (context, req) => {
   }
   const students = tableClient("students");
   await ensureTable(students);
+
+  // Before the row read and before any hashing.
+  const gate = await loginGate(req, username);
+  if (gate.lockMs > 0) return tooManyAttempts(context, gate.lockMs);
+
   let entity;
   try {
     entity = await students.getEntity("student", username);
   } catch {
     entity = null;
   }
-  if (!entity || !checkPassword(password, entity.passwordHash)) {
+  // An unknown username still pays for a comparison. Returning early made the
+  // answer measurably quicker for a name that does not exist, which is a free
+  // oracle for "which of my classmates has an account".
+  const ok = entity
+    ? checkPassword(password, entity.passwordHash)
+    : (checkPassword(password, timingDecoyHash()), false);
+  if (!ok) {
+    await noteLoginFailure(gate);
     return json(context, 401, { error: "Wrong username or password" });
   }
+  await clearFailures(gate.table, "user", gate.user);
+
   json(context, 200, {
     token: signSession("vst", username, STUDENT_TOKEN_TTL_MS),
     student: {
@@ -452,9 +612,19 @@ handlers.adminlogin = async (context, req) => {
   const body = getBody(req);
   const username = String(body.username || "").trim();
   const password = String(body.password || "");
-  if (!safeEqual(username, ADMIN_USERNAME) || !safeEqual(password, ADMIN_PASSWORD)) {
+  const gate = await loginGate(req, `admin~${username}`);
+  if (gate.lockMs > 0) return tooManyAttempts(context, gate.lockMs);
+
+  // Both compares always run: `||` would skip the password check on a wrong
+  // username, and the difference is measurable.
+  const userOk = safeEqual(username, ADMIN_USERNAME);
+  const passOk = safeEqual(password, ADMIN_PASSWORD);
+  if (!userOk || !passOk) {
+    await noteLoginFailure(gate);
     return json(context, 401, { error: "Wrong username or password" });
   }
+  await clearFailures(gate.table, "user", gate.user);
+
   json(context, 200, { token: signSession("vad", username, ADMIN_TOKEN_TTL_MS) });
 };
 
@@ -1693,10 +1863,16 @@ handlers.parentlink = async (context, req) => {
       }
       const code = normaliseCode(body.code);
       if (code.length < 6) return json(context, 400, { error: "That code does not look right" });
+      // 31^8 is far too large to walk, but an unthrottled guess loop is still
+      // free traffic against a consumption plan. The bucket is the caller's,
+      // not the code's: locking a code would let anyone shut out a real parent.
+      const gate = await loginGate(req, `invite~${who.id}`);
+      if (gate.lockMs > 0) return tooManyAttempts(context, gate.lockMs);
       let invite;
       try {
         invite = await invites.getEntity("invite", code);
       } catch {
+        await noteLoginFailure(gate);
         return json(context, 404, { error: "No such code - check it and try again" });
       }
       if (invite.expiresAt && Date.parse(invite.expiresAt) < Date.now()) {
