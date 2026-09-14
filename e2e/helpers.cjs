@@ -407,8 +407,30 @@ async function totpHandlerChecks() {
   check(r.status === 401, `and the same one is dead the second time (${r.status}: ${r.data.error})`);
 
   // A recovery code, exactly once.
-  r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: recovery[0] });
-  check(r.status === 200, `a recovery code signs in (${r.status})`);
+  const recoveryLogin = ctx();
+  await t.handlers.adminlogin(recoveryLogin, {
+    method: "POST",
+    headers: { "x-vidai-auth": "1" },
+    body: { username: "e2e-admin", password: "e2e-password", code: recovery[0] },
+  });
+  check(recoveryLogin.res.status === 200, `a recovery code signs in (${recoveryLogin.res.status})`);
+  // The session it hands back has to WORK. A live probe saw session_revoked
+  // right after a recovery-code login, which would mean signing in with the
+  // code you kept for a lost phone signs you straight back out again.
+  const recoveryCookie = /vidai_session=([^;]+)/.exec(
+    String((recoveryLogin.res.headers || {})["Set-Cookie"] || "")
+  );
+  const useRecoverySession = ctx();
+  await t.handlers.twostep(useRecoverySession, {
+    method: "GET",
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${recoveryCookie ? recoveryCookie[1] : ""}` },
+    body: {},
+  });
+  check(
+    useRecoverySession.res.status === 200,
+    `and the session it hands back actually works (${useRecoverySession.res.status}: ${JSON.stringify(useRecoverySession.res.body)})`
+  );
+  r = { status: recoveryLogin.res.status };
   r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: recovery[0] });
   check(r.status === 401, `and is spent (${r.status})`);
   r = await callAs("twostep", {}, "GET");
