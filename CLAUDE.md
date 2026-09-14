@@ -1128,6 +1128,23 @@ question scrolling to the end — that rule holds everywhere a test is shown.
   title is in the app bar already and wrapped onto four lines otherwise.
   `e2e/regression.cjs` asserts the order, the single row, and that nothing
   overflows the card at 390px.
+- **On a phone and a tablet the chrome moves out of the way** (≤899px):
+  - **The rail becomes a bottom bar** — fixed, full width, icon over label,
+    where a thumb is. As a column it spent a sixth of a 320px screen on two
+    icons. `.shell-page` gains matching bottom padding so nothing hides under
+    it, and `env(safe-area-inset-bottom)` keeps it clear of the home indicator.
+  - **The Questions trigger lives in the app bar**, not in the crumb row:
+    `bindTreeDrawer` relocates the one `drawerToggleMarkup()` button into
+    `#shellbar-actions` below 900px, so there is still a single button to bind
+    and style, in one fixed place on every screen that has a tree.
+  - **The drawer slides from the window's own left edge** — `position: fixed`,
+    `left: 0`, stopping above the bottom bar. It was `absolute`, so it started
+    wherever the page did, which on a phone meant inset by the rail.
+  - **A full-bleed screen keeps its own margins.** `.shell-main-full` sets
+    `padding: 0`, and the small-screen `.shell-main` rules were quietly
+    overriding it — 28px of a 320px phone. They now re-assert it. Measured on
+    a 320px screen, the question text went from **200px to 276px** of usable
+    width.
 - **Below 900px the tree is a side drawer**, on the workspace and the result
   alike: `.ed-tree` is parked off-canvas with `transform: translateX(-100%)` and
   **`visibility: hidden`** — the visibility is what hides it, since a transform

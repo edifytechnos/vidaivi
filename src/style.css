@@ -1714,12 +1714,14 @@ body {
      element on the page as far as a test (or a screen reader) is concerned. */
   .ed-tree {
     display: flex;
-    position: absolute;
-    z-index: 7;
+    /* Fixed, not absolute: it slides in from the window's own left edge
+       rather than from wherever the page happens to start. */
+    position: fixed;
+    z-index: 40;
     top: 57px;
     left: 0;
-    bottom: 0;
-    width: 284px;
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+    width: min(86vw, 300px);
     box-shadow: var(--shadow-lg);
     visibility: hidden;
     transform: translateX(-100%);
@@ -2318,6 +2320,7 @@ body {
   .shell-main {
     padding: 16px 16px 40px;
   }
+  .shell-main-full { padding: 0; }
   .shellbar {
     padding: 0 16px;
   }
@@ -3258,8 +3261,8 @@ body.modal-open {
 /* Dimmed behind the drawer, and the tap target that closes it. */
 .ed-scrim {
   display: none;
-  position: absolute;
-  z-index: 6;
+  position: fixed;
+  z-index: 35;
   inset: 57px 0 0;
   background: rgba(15, 23, 42, 0.32);
   opacity: 0;
@@ -3296,6 +3299,74 @@ body.modal-open {
   .ed-readonly .ed-body { gap: 10px; }
   .ed-readonly .ed-panel { padding: 12px 13px 13px; }
   .shell-main { padding: 14px 14px 24px; }
+  /* ...but never on a full-bleed screen. .shell-main-full sets padding 0 and
+     this rule, later in the file and of equal specificity, was quietly
+     undoing it — 28px of a 320px phone, outside the layout that had already
+     paid for its own margins. */
+  .shell-main-full { padding: 0; }
+}
+
+/* In the app bar it is the one fixed way into the question list, so it reads
+   as a bar control rather than as part of whatever crumb row is below it. */
+.shellbar-actions .st-drawer-btn {
+  display: inline-flex;
+  order: -1;
+  margin-right: 2px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+}
+@media (max-width: 420px) {
+  .shellbar-actions .st-drawer-btn span { display: none; }
+  .shellbar-actions .st-drawer-btn { padding: 7px 8px; }
+}
+
+/* A phone and a tablet get the rail along the bottom, where a thumb is —
+   never as a column, which on a 320px screen spent a sixth of the width on two
+   icons. Fixed, so it stays put while the page scrolls under it, and the
+   safe-area inset keeps it clear of the home indicator. */
+@media (max-width: 899px) {
+  .rail {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 30;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: stretch;
+    width: 100%;
+    height: calc(56px + env(safe-area-inset-bottom, 0px));
+    padding: 0 4px env(safe-area-inset-bottom, 0px);
+    border-right: 0;
+    border-top: 1px solid var(--border);
+    transition: none;
+  }
+  /* The rail widens on a desktop; on a bottom bar there is nothing to widen. */
+  .shell.rail-open .rail { width: 100%; padding: 0 4px env(safe-area-inset-bottom, 0px); }
+  .rail-toggle, .rail-spacer { display: none; }
+  .rail-item {
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    height: 100%;
+    min-width: 0;
+    padding: 0 2px;
+    border-radius: 0;
+  }
+  .rail-item .icon { width: 20px; height: 20px; }
+  .shell.rail-open .rail-label,
+  .rail-label {
+    display: block;
+    font-size: 10px;
+    line-height: 1.1;
+    font-weight: 600;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* Nothing may hide under the bar: not the last card of a page, not the
+     foot of the answer panel. */
+  .shell-page { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
 }
 
 @media (max-width: 480px) {

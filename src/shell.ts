@@ -187,6 +187,12 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
 
   const main = document.getElementById("shell-main")!;
   main.classList.toggle("shell-main-full", !!opts.full);
+  // A full-bleed screen owns the whole window, and on a phone it needs the
+  // rail's 56px too: the workspace's own crumb row already carries the way
+  // back (the subject name) and the Questions drawer, so the rail is a
+  // duplicate that costs a sixth of a 320px screen. The class is on .shell
+  // because the rail is a sibling of the page, not a descendant of it.
+  document.querySelector(".shell")?.classList.toggle("shell-full", !!opts.full);
   main.innerHTML = opts.full ? content : `<div class="page page-${opts.width ?? "narrow"}">${content}</div>`;
   main.scrollTop = 0;
   return opts.full ? main : main.querySelector<HTMLElement>(".page")!;
@@ -293,7 +299,19 @@ let escBound = false;
  */
 export function bindTreeDrawer(editor: HTMLElement): void {
   const close = (): void => editor.classList.remove("tree-open");
-  editor
+
+  // On a phone or tablet the trigger belongs in the app bar, beside the
+  // brand — one fixed place, always reachable, rather than a button that
+  // moves around inside whichever crumb row a screen happens to have. The
+  // markup stays defined once (`drawerToggleMarkup`) and is relocated here,
+  // so there is still only one button to bind and one to style.
+  const toggle = editor.querySelector<HTMLElement>("[data-drawer-toggle]");
+  const bar = document.getElementById("shellbar-actions");
+  if (toggle && bar && window.matchMedia("(max-width: 899px)").matches) {
+    bar.prepend(toggle);
+  }
+  // Bind from the document: it may no longer be inside `editor`.
+  document
     .querySelector("[data-drawer-toggle]")
     ?.addEventListener("click", () => editor.classList.toggle("tree-open"));
   editor.querySelector(".ed-scrim")?.addEventListener("click", close);
