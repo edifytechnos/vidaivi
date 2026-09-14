@@ -312,6 +312,7 @@ async function totpHandlerChecks() {
   // before it is built, not before it is called.
   process.env.ADMIN_USERNAME = "e2e-admin";
   process.env.ADMIN_PASSWORD = "e2e-password";
+  process.env.ADMIN_EMAILS = "e2e-owner@example.com";
 
   // The module under test, with storage and identity swapped for fakes. Only
   // those two: everything else is the real code path, including the CSRF
@@ -319,7 +320,8 @@ async function totpHandlerChecks() {
   const mod2 = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, adminTotp, totpCode, currentStep, newTotpSecret };";
+    + "\nmodule.exports.__t = { handlers, adminTotp, totpCode, currentStep, newTotpSecret," +
+      " signSession, GOOGLE_SESSION_TTL_MS };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod2, mod2.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -412,16 +414,45 @@ async function totpHandlerChecks() {
   r = await callAs("twostep", {}, "GET");
   check(r.data.recoveryLeft === 7, `seven recovery codes left (${r.data.recoveryLeft})`);
 
-  // Turning it off needs a code, not just the session.
+  // The lost-phone path: an admin who signed in with Google clears it without a
+  // code. They already hold every power on the platform, through an account
+  // with a second factor of its own — and without this the only way back is
+  // deleting a row in the Azure portal.
+  const googleCookie = t.signSession("vgo", "google-sub-1", t.GOOGLE_SESSION_TTL_MS, {
+    ep: 0,
+    e: "e2e-owner@example.com",
+    n: "Owner",
+  });
+  const asGoogle = ctx();
+  await t.handlers.twostep(asGoogle, {
+    method: "POST",
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${googleCookie}` },
+    body: { action: "disable" },
+  });
+  check(asGoogle.res.status === 200, `a Google admin clears a stuck factor without a code (${asGoogle.res.status})`);
+
+  // Put it back for the checks below, which are about the password session.
+  // Enabling ends older admin sessions and re-issues this one, so follow it —
+  // the same thing that caught the test out the first time.
+  await callAs("twostep", { action: "init" });
+  const again = await t.adminTotp();
+  const re = await callAs("twostep", { action: "enable", code: t.totpCode(again.secret, t.currentStep() + 1) });
+  const reCookie = /vidai_session=([^;]+)/.exec(re.setCookie);
+  check(!!reCookie, `re-enrolling after a reset works (${re.status}: ${re.data.error || ""})`);
+  if (reCookie) session = reCookie[1];
+  const recovery2 = re.data.recoveryCodes || [];
+
+  // Turning it off from the PASSWORD session needs a code, not just a session:
+  // that is the case the factor exists for.
   r = await callAs("twostep", { action: "disable" });
   check(r.status === 400, `a session alone cannot switch it off (${r.status})`);
   // A code that has been used is refused here too, exactly as at sign-in.
-  r = await callAs("twostep", { action: "disable", code: t.totpCode(secret, step) });
+  r = await callAs("twostep", { action: "disable", code: t.totpCode(again.secret, t.currentStep() + 1) });
   check(r.status === 400, `nor a code that has already been used (${r.status}: ${r.data.error})`);
   // Inside one 30-second window every code the skew allows has now been spent,
   // which is the rule working rather than a gap in the test. A recovery code is
   // not step-bound, and is the other thing disable accepts.
-  r = await callAs("twostep", { action: "disable", code: recovery[1] });
+  r = await callAs("twostep", { action: "disable", code: recovery2[1] });
   check(r.status === 200, `a recovery code switches it off (${r.status}: ${r.data.error || ""})`);
   // Switching it off ends every admin session too, and re-issues this one.
   const afterOff = /vidai_session=([^;]+)/.exec(r.setCookie);

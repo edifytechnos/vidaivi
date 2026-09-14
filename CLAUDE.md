@@ -608,7 +608,15 @@ insufficient, and costs nothing.
   session, or a stolen session could remove it.
 - Setup is manual key entry, not a QR: a QR needs a bundled encoder, and this is
   done once by one person. State lives in `authstate`, PK `totp`, RK `admin`.
-- **The escape hatch if every recovery code is gone**: delete that one row in
+- **The lost-phone path**: an admin who signs in with **Google** may switch the
+  factor off without a code. That is not a hole — this factor protects the
+  shared username-and-password login, and a Google admin already holds every
+  power on the platform through an account with a second factor of its own, so
+  requiring a code from a different credential adds nothing against them. The
+  password session still has to prove a code, which is the case that matters.
+  Only a password session gets a replacement cookie: minting a `vad.` one for a
+  Google caller would hand them a second identity named after their Google sub.
+- **The backstop if there is no Google admin either**: delete that one row in
   the Azure portal's Storage browser. Nothing else reads it.
 
 ### Never name an API route `admin…`

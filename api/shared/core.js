@@ -1283,21 +1283,43 @@ handlers.twostep = async (context, req) => {
 
   if (action === "disable") {
     if (!existing || !existing.active) return json(context, 409, { error: "It is not on" });
-    // A used code is refused here as it is at sign-in. Someone who has taken a
-    // session and shoulder-surfed one code should not be able to switch the
-    // second factor off with it; the cost is waiting up to 30 seconds for a
-    // fresh one, on an action done once.
-    const step = totpMatchStep(existing.secret, code);
-    let ok = step > 0 && step > existing.lastStep;
-    if (!ok) {
-      for (const stored of existing.recovery) if (checkPassword(code, stored)) ok = true;
-    }
-    if (!ok) {
-      return json(context, 400, {
-        error: step > 0 ? "That code has already been used — wait for the next one" : "Wrong authentication code",
-      });
+
+    // An admin who signed in with GOOGLE may clear this without a code.
+    //
+    // It sounds like a hole and is not: this factor protects the shared
+    // username-and-password admin login, and a Google admin already holds every
+    // power on the platform through an account with a second factor of its own.
+    // Requiring a code from a different credential adds nothing against them —
+    // while the ability to reset is the whole difference between a lost phone
+    // and a platform nobody can administer. Without it the only way back is
+    // deleting a row in the Azure portal, and an escape hatch that needs the
+    // portal is not one you can use from a phone on a Sunday.
+    //
+    // The password session (`kind: "admin"`) still has to prove a code, which
+    // is the case that matters: a stolen admin session must not be able to
+    // switch off the thing that makes the stolen password insufficient.
+    if (who.kind !== "google") {
+      // A used code is refused here as it is at sign-in. Someone who has taken
+      // a session and shoulder-surfed one code should not be able to switch the
+      // second factor off with it; the cost is waiting up to 30 seconds for a
+      // fresh one, on an action done once.
+      const step = totpMatchStep(existing.secret, code);
+      let ok = step > 0 && step > existing.lastStep;
+      if (!ok) {
+        for (const stored of existing.recovery) if (checkPassword(code, stored)) ok = true;
+      }
+      if (!ok) {
+        return json(context, 400, {
+          error: step > 0 ? "That code has already been used — wait for the next one" : "Wrong authentication code",
+        });
+      }
     }
     await writeAdminTotp({ secret: "", active: false, lastStep: 0, recovery: "[]" });
+    // Only the password account's sessions are ended, and only a password
+    // session gets a replacement. Minting a `vad.` cookie for a Google caller
+    // would hand them a second identity they never asked for, named after their
+    // Google sub — which is exactly what the first version of this did.
+    if (who.kind !== "admin") return json(context, 200, { ok: true });
     await bumpEpoch(who);
     const epoch = await adminEpoch();
     return json(
