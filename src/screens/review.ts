@@ -120,24 +120,20 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolea
     })
     .join("");
 
+  // A flat list, like the workspace: one test is open, so naming it again as a
+  // folder above its own questions was a row to scroll past on a phone. The
+  // score chip moves to the head, where the list is titled.
   return `
     <aside class="ed-tree" id="rv-tree">
-      <div class="ed-tree-head"><span class="ed-tree-title">${escapeHtml(owner)} answers</span></div>
-      <div class="ed-tree-body">
-        <div class="ed-node open">
-          <div class="ed-node-head">
-            <span class="ed-tree-test">
-              <span class="ed-tree-name">${testLabelMarkup(test.title, test.chapter)}</span>
-              ${
-                open
-                  ? `<span class="status-chip status-done">${attempt.score}/${totalMarks(test)}</span>`
-                  : `<span class="status-chip status-progress">Handed in</span>`
-              }
-            </span>
-          </div>
-          <div class="ed-tree-questions">${rows}</div>
-        </div>
+      <div class="ed-tree-head">
+        <span class="ed-tree-title">${escapeHtml(owner)} answers</span>
+        ${
+          open
+            ? `<span class="status-chip status-done">${attempt.score}/${totalMarks(test)}</span>`
+            : `<span class="status-chip status-progress">Handed in</span>`
+        }
       </div>
+      <div class="ed-tree-body">${rows}</div>
     </aside>`;
 }
 
@@ -387,17 +383,17 @@ export async function showReview(
 
     mount(
       `
-      <div class="editor ed-readonly" data-pane="question">
+      <div class="editor ed-readonly ed-paper">
         <div class="ed-cols review-item${open ? "" : " overview"}">
           ${treeMarkup(test, attempt, index, open)}
           <div class="ed-center">
             <div class="ed-crumbrow">
+              ${
+                opts.back
+                  ? `<button class="ed-crumb-back" id="review-back" aria-label="Back" title="Back">${ICONS.back}</button>`
+                  : ""
+              }
               ${drawerToggleMarkup()}
-              <span class="ed-crumb-mid">
-                <span class="ed-crumb-test">${escapeHtml(test.title)}</span>
-                <span class="ed-crumb-sep">›</span>
-              </span>
-              <span class="ed-crumb-current">Question ${index + 1} of ${test.questions.length}</span>
               <span class="ed-spacer"></span>
               ${
                 opts.marking
@@ -405,11 +401,9 @@ export async function showReview(
                   : ""
               }
               ${
-                opts.back
-                  ? `<button id="review-back" class="btn btn-ghost st-handin">Back</button>`
-                  : open
-                    ? `<button id="retake-btn" class="btn btn-primary st-handin">Retake<span class="st-long"> test</span></button>`
-                    : ""
+                open && !opts.marking && !opts.student
+                  ? `<button id="retake-btn" class="btn btn-primary st-handin">Retake<span class="st-long"> test</span></button>`
+                  : ""
               }
             </div>
             <div class="ed-body">
@@ -468,13 +462,8 @@ export async function showReview(
           }
         </div>
         <div class="ed-scrim"></div>
-        <div class="ed-tabs">
-          <button class="ed-tab active" data-pane="question">Question</button>
-          <button class="ed-tab" data-pane="answer">${escapeHtml(owner)} answer</button>
-          ${open ? `<button class="ed-tab" data-pane="explain">Explanation</button>` : ""}
-        </div>
       </div>`,
-      { title: test.title, sub: open ? "Review" : "Handed in", active: "results", full: true }
+      { title: test.title, sub: test.chapter || "", active: "results", full: true, scroll: "page" }
     );
 
     document.getElementById("rv-tree")!.addEventListener("click", (e) => {
@@ -490,12 +479,6 @@ export async function showReview(
       if (index < test.questions.length - 1) { index += 1; render(); }
     });
     bindTreeDrawer(document.querySelector<HTMLElement>(".editor")!);
-    document.querySelector(".ed-tabs")!.addEventListener("click", (e) => {
-      const tab = (e.target as HTMLElement).closest<HTMLElement>("[data-pane]");
-      if (!tab) return;
-      document.querySelector(".editor")!.setAttribute("data-pane", tab.dataset.pane!);
-      document.querySelectorAll(".ed-tab").forEach((t) => t.classList.toggle("active", t === tab));
-    });
     document.getElementById("review-back")?.addEventListener("click", opts.back ?? (() => {}));
     document.getElementById("retake-btn")?.addEventListener("click", () => {
       track("test_retake", { test: test.id });

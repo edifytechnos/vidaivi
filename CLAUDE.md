@@ -376,9 +376,12 @@ running it. Two boxes, two lines, in that order.
 The second box is **labelled Subtitle** in the editor and the card builder, but
 it is still `chapter` in the JSON and in Table Storage — the stored schema has
 not changed, only the label and where it renders. Used by the editor tree,
-`student.ts`, `review.ts` and `home.ts`. **Not** the app bar
-(`mount({title})` sets `textContent`, and a second line would grow the bar) and
-**not** the My tests table, which has its own Chapter column.
+`student.ts`, `review.ts` and `home.ts`. **Not** the My tests table, which has
+its own Chapter column. The app bar was on that list too — `mount({title})`
+sets `textContent`, and a second line grows the bar — and it still is on a
+desktop, where the two sit side by side. Under `.shell-scroll` on a phone the
+bar does stack them, because there the crumb row carries neither and the bar
+is the only thing that says what is open.
 
 **The tree rows carry no icon.** The caret already says a row opens, and the
 two-line label is the thing to read.
@@ -1093,10 +1096,16 @@ A student gets the same shape their teacher authors in, read-only: **subjects �
 a tree of tests → one question beside the tree**. Never a single page of every
 question scrolling to the end — that rule holds everywhere a test is shown.
 
-- Signing in lands on **Your subjects** (already true); a subject now opens the
-  workspace rather than the flat test list. Every test is a root node in the
-  tree and the open test's questions are the level beneath it, exactly as in
-  `src/screens/editor/`.
+- Signing in lands on **Your subjects** (already true). **A subject is a list
+  of its tests and nothing else** — no crumb row repeating the subject the app
+  bar already names, and no drawer holding a second copy of the list on screen.
+- **The question list is flat: the open test's questions, and only those.** It
+  was a tree of every test in the subject with one expanded, which on a phone
+  was folders to scroll past to reach the questions — and a student has exactly
+  one test open, because the others are locked while it is. The way to another
+  test is Back. `studentTreeMarkup` and `review.ts`'s `treeMarkup` both render
+  this shape; the teacher's authoring tree in `src/screens/editor/` still has
+  tests as roots, because a teacher really is moving between them.
 - **Sitting the test has no explanation column** — `.ed-cols.overview`, two
   columns — and no worked solution anywhere on the page. The discussion panel
   under the question is the next phase's work; nothing is stubbed for it yet.
@@ -1117,42 +1126,84 @@ question scrolling to the end — that rule holds everywhere a test is shown.
   the photo *is* the answer, and the uploader's ✕ already removes it
   server-side, which a local Clear could not do.
 - **The controls follow the approved screen**: *Hand in test* sits at the right
-  of the breadcrumb row, and **Previous · progress · Clear · Next** form
-  one row at the foot of the answer card. The released result mirrors it, with
-  *Retake test* in the same place. Below 560px that row becomes a grid — the
-  two steps first, then the count, then Clear full width *last*, because Clear
-  is the rare press and must not land under a thumb aiming for Next — and
-  `.st-navrow .btn` needs `min-width: 0`, because `.btn` carries `min-width: 130px` and a bare `1fr`
-  column cannot shrink under it (the row spilled out of the card on a phone).
-  Below 720px the crumb keeps only the subject link and the action; the test
-  title is in the app bar already and wrapped onto four lines otherwise.
-  `e2e/regression.cjs` asserts the order, the single row, and that nothing
-  overflows the card at 390px.
+  of the breadcrumb row, and **Previous · progress · Next** form one row at the
+  foot of the answer card, with *Clear answer* in the answer panel's own head.
+  The released result mirrors it, with *Retake test* in the same place. Below
+  560px that row becomes a grid, and `.st-navrow .btn` needs `min-width: 0`,
+  because `.btn` carries `min-width: 130px` and a bare `1fr` column cannot
+  shrink under it (the row spilled out of the card on a phone). Below 720px the
+  crumb keeps only the action; the test title is in the app bar already and
+  wrapped onto four lines otherwise. `e2e/regression.cjs` asserts the order,
+  the single row, and that nothing overflows the window at 390px.
 - **On a phone and a tablet the chrome moves out of the way** (≤899px):
+  - **The page scrolls, not a box inside it.** `mount({scroll: "page"})` puts
+    `.shell-scroll` on the shell, which unwinds `height: 100dvh` and the inner
+    `overflow` so the *document* is the scroller. The app bar then scrolls away
+    with the content and comes back when the student returns to the top — no
+    scroll-direction listener, just ordinary scrolling. Only `student.ts` and
+    `review.ts` opt in; the authoring editor keeps its fixed shell.
+  - **The crumb row is sticky** (`top: 0`): when the app bar goes, Back,
+    Questions and Hand in stay. It is the secondary bar.
   - **The rail becomes a bottom bar** — fixed, full width, icon over label,
     where a thumb is. As a column it spent a sixth of a 320px screen on two
-    icons. `.shell-page` gains matching bottom padding so nothing hides under
-    it, and `env(safe-area-inset-bottom)` keeps it clear of the home indicator.
-  - **Questions stays in the crumb row, beside Hand in** — the two things a
-    student reaches for while sitting a test belong in one row. (It was briefly
-    moved to the app bar; that separated the button from the action beside it
-    and cost the row nothing it needed back.)
+    icons. **It belongs to the subject picker alone**: `.shell-full .rail` is
+    hidden, and `.shell-full` is set on exactly the full-bleed screens, so a
+    bar whose two items are Subjects and Results does not follow a student
+    into a subject or a test. `env(safe-area-inset-bottom)` keeps it clear of
+    the home indicator where it does appear.
+  - **The crumb row is Back · Questions … Hand in, and nothing else.** It used
+    to spend its width on `subject › test › Question 3 of 15` between the two
+    buttons a student presses — and hid the trail below 720px anyway. The app
+    bar names the test, the panel head names the question. Back
+    (`.ed-crumb-back`, an arrow) sits left of Questions and returns to the
+    subject's test list with the subject back in the bar.
+  - **Previous and Next are a fixed bottom bar** — `position: fixed; bottom: 0`,
+    always on the floor of the window, with the answered count on the line
+    **above** them rather than buried under a thumb. `.ed-center` carries
+    matching bottom padding (declared *after* the ≤480px block, whose `padding`
+    shorthand would otherwise reset it on the narrowest phones).
+    It was `position: sticky` for one release and could not keep the promise:
+    sticky only shifts an element within **its own containing block**, which
+    here is the answer panel the row closes — so on a short paper the panel
+    ended mid-screen, there was nothing to pull against, and the row sat in the
+    middle of the window. Fixed is the only thing that always means the bottom.
+    The bar stays **under** the drawer and its scrim (20 against 40/35): unlike
+    the rail, it is not the way off the screen, so the question list may cover
+    it.
+  - **Clear answer sits in the answer panel's head**, beside the *Answered*
+    chip — not in the steps row. It acts on the answer rather than on
+    navigation, a fixed bar has no room for a third full-width line, and it is
+    the one place it can never land under a thumb aiming for Next, which is the
+    hazard that put it last in the row to begin with.
   - **The drawer slides from the window's own left edge, under the row whose
-    button opened it** — `position: fixed`, `left: 0`, stopping above the
-    bottom bar. It was `absolute`, so it started wherever the page did, which
-    on a phone meant inset by the rail and clipped on the right. The top offset
-    is **measured**, not guessed: `bindTreeDrawer` writes the crumb row's
-    bottom into `--drawer-top` on the editor, because that row wraps at narrow
-    widths and a hard-coded offset would float away from it.
-  - **The bottom bar is never dimmed by the drawer's overlay.** It sits above
-    both (`z-index: 45`) and the scrim stops where the bar starts. A greyed-out
-    bar reads as disabled, and it is still the way off the screen. The scrim's
-    `bottom` has to be declared *after* the base `.ed-scrim` rule, whose
-    `inset` shorthand would otherwise reset it.
-  - **The app bar names the test, beside the logo.** It used to drop the title
-    below 600px on the grounds that the crumb row carried it — but the crumb
-    row drops the test name at that width too, so a phone said nothing about
-    what was open.
+    button opened it** — `position: fixed`, `left: 0`, running to the floor.
+    It was `absolute`, so it started wherever the page did, which on a phone
+    meant inset by the rail and clipped on the right. The top offset is
+    **measured on open, not on bind**: `bindTreeDrawer`'s `placeDrawer()` runs
+    inside the toggle handler, because the crumb row is sticky and a number
+    taken when the screen was painted is wrong the moment the page scrolls.
+  - **The bottom bar is never dimmed by the drawer's overlay** on the screens
+    that still have one: it sits above both (`z-index: 45`) and the scrim stops
+    where the bar starts. The scrim's `bottom` has to be declared *after* the
+    base `.ed-scrim` rule, whose `inset` shorthand would otherwise reset it —
+    `.shell-full .ed-scrim` then takes it back to the floor where there is no
+    bar.
+  - **The app bar names the test on two lines** — Title, then Subtitle
+    (`chapter`), stacked in a grid under `.shell-scroll` so the brand and the
+    profile stay whole beside them. This is the one exception to the rule that
+    the app bar is a single line: the crumb row no longer carries the test's
+    name at any width, so without it a phone says nothing about what is open.
+    **Three declarations in that grid are load-bearing, and all three were
+    missing at first.** `row-gap: 0`, because `column-gap` does not cancel
+    `row-gap` and `.shellbar` carries a `gap` shorthand that sets both — the
+    lines drifted apart, and with *no* subtitle the phantom gap under row 1
+    left the title riding above the brand beside it. `align-content: center`,
+    or the two auto rows stretch to fill `min-height` and the lines drift again
+    inside their own taller rows. And `.shell-scroll .shellbar-div {display:
+    none}`, because the divider is the one child the grid never places: it is
+    hidden only below 600px, so on a tablet it auto-placed into the subtitle's
+    own cell and inflated that row with its 22px. Space it with a margin on the
+    subtitle, never with a gap.
   - **A full-bleed screen keeps its own margins.** `.shell-main-full` sets
     `padding: 0`, and the small-screen `.shell-main` rules were quietly
     overriding it — 28px of a 320px phone. They now re-assert it. Measured on
@@ -1234,8 +1285,18 @@ row, one question in the middle (the student's answer, their photos, the
 awarded mark and the teacher's comment), the explanation on the right. Prev/next
 walk the paper and `?test=<id>&review=<questionId>` carries the place.
 
+**The paper has no bottom tab bar** (`.ed-paper` on its root, and no
+`data-pane`). It had one, and two of its three tabs did nothing: the
+`[data-pane]` rules hide `.ed-pane-question` / `.ed-pane-answer`, classes that
+exist only in the authoring editor, while `review.ts` renders plain `.ed-panel`
+sections. Only the third tab acted, by un-hiding the explanation — which now
+simply stacks under the answer on a phone. Dropping the attribute is what does
+it: with no `data-pane` none of those rules match, so the editor and Browse keep
+their tabs untouched. `.ed-paper` is also excluded from the 86px clearance that
+reserves room for a bar it no longer has.
+
 It reuses the editor's **layout only** — `.ed-cols`, `.ed-tree*`, `.ed-panel`,
-`.ed-preview`, `.ed-tabs` — under an `.ed-readonly` modifier. Never change those
+`.ed-preview` — under an `.ed-readonly` modifier. Never change those
 base rules: `e2e/editor.cjs` asserts `.ed-cols` computes to exactly three columns
 at 1280px and that `.ed-tree` / `.ed-explain` sit flush to the rail and the
 window edge. Do **not** reach into `src/screens/editor/` for this: its panels are

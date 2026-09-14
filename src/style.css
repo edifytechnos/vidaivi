@@ -513,6 +513,16 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
+/* The card is a row of two: what the test is, and where it stands. Without a
+   zero min-width the left half refuses to shrink and pushes the chip out past
+   the card's own edge — which is exactly what it did on a 390px phone. */
+.test-card-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.test-card > .status-chip { flex: none; }
+
 .test-card-title {
   font-weight: 600;
   font-size: 14.5px;
@@ -1722,7 +1732,7 @@ body {
        that row wraps at narrow widths and a guessed offset would float. */
     top: var(--drawer-top, 91px);
     left: 0;
-    bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+    bottom: 0;
     width: min(86vw, 300px);
     box-shadow: var(--shadow-lg);
     visibility: hidden;
@@ -3177,13 +3187,21 @@ body.modal-open {
 .st-navrow .ed-spacer { flex: 1; }
 .st-count { flex: none; white-space: nowrap; }
 .st-step { flex: none; }
-.st-save { display: contents; }
-.st-save .btn { flex: none; }
+
 /* Answers save themselves, so this slot holds the way back out rather than a
-   Save button: Clear is quieter than the steps beside it and disappears
-   entirely until there is something to clear. */
+   Save button: Clear is quieter than the steps and disappears entirely until
+   there is something to clear. It sits in the answer panel's own head, beside
+   the Answered chip — it acts on the answer, not on navigation, and the steps
+   row below is a fixed bar on a phone with no room for a third line. */
+.st-save { display: contents; }
+.ed-panel-head .st-clear {
+  flex: none;
+  min-width: 0;
+  padding: 4px 10px;
+  font-size: 12px;
+}
 .st-clear[hidden] { display: none; }
-.st-autosave { flex: none; white-space: nowrap; }
+.ed-panel-head .st-autosave { flex: none; white-space: nowrap; font-size: 12px; }
 
 /* The crumb row carries the one action that ends the test. */
 .ed-crumbrow .st-handin {
@@ -3207,60 +3225,57 @@ body.modal-open {
     gap: 10px 8px;
   }
   .st-navrow .btn { min-width: 0; }
-  /* The two steps first, side by side — they are what a student presses on
-     every question. Clear is the rare one, so it goes last and full width
-     rather than under a thumb that meant to press Next. */
-  .st-save .btn { grid-column: 1 / -1; order: 3; width: 100%; }
-  .st-autosave { grid-column: 1 / -1; order: 3; text-align: center; }
   .st-navrow .ed-spacer { display: none; }
   .st-step { width: 100%; }
   #st-next, #rv-next { order: 1; }
   .st-count { grid-column: 1 / -1; order: 2; text-align: center; }
 }
 
-/* The crumb row is one line, always. The test title wrapped onto four lines on
-   a phone and pushed the whole question down; the app bar already carries it,
-   so below 720px the middle of the trail drops out and the subject link and
-   the question number stay. */
+/* In the bottom bar the count reads *above* the two steps: it is the line that
+   says how far there is to go, and burying it under the buttons put it off the
+   bottom of the window. */
+@media (max-width: 560px) {
+  .shell-scroll .st-count { order: -1; }
+}
+
+/* The crumb row is one line, always — and now it is three controls and a gap.
+   It used to carry `subject › test › Question 3 of 15` between the two buttons
+   a student presses, which on a phone left them squeezed against the edges
+   and, below 720px, hid the trail anyway. The app bar names the test; the
+   panel head names the question; this row is the way out and the way around. */
 .ed-readonly .ed-crumbrow {
   flex-wrap: nowrap;
   min-height: 34px;
 }
 
-.ed-readonly .ed-crumb-mid {
+/* An arrow, left of the Questions button, sized like it. */
+.ed-crumb-back {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-width: 0;
+  justify-content: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
 }
 
-.ed-readonly .ed-crumb-test,
-.ed-readonly .ed-crumb-link,
-.ed-readonly .ed-crumb-current {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ed-readonly .ed-crumb-current { flex: none; }
-
-@media (max-width: 720px) {
-  /* Keep the way back and the action; the panel head under it already says
-     which question this is, and the count row says how many are answered. */
-  .ed-readonly .ed-crumb-mid,
-  .ed-readonly .ed-crumbrow > .ed-crumb-sep,
-  .ed-readonly .ed-crumb-current { display: none; }
-  .ed-readonly .ed-crumb-link { flex: none; max-width: 45vw; }
-}
+.ed-crumb-back:hover { border-color: var(--border-strong); color: var(--primary); }
+.ed-crumb-back .icon { width: 16px; height: 16px; }
 
 /* Under 900px the bottom tabs float over the page, and they landed on top of
    Previous/Next and the progress line. Give the scrolling column room to end
    above them. */
 @media (max-width: 899px) {
-  /* Only the result screen still has the floating tabs under it; the workspace
-     lost them when the tree became a drawer. */
-  .ed-readonly:not(.ed-student) .ed-center { padding-bottom: 86px; }
+  /* Only Browse still has the floating tabs under it. The workspace lost them
+     when the tree became a drawer, and the student's paper (.ed-paper) lost
+     them because two of its three did nothing: its Question and Answer panels
+     are plain .ed-panel sections, which the [data-pane] rules never matched. */
+  .ed-readonly:not(.ed-student):not(.ed-paper) .ed-center { padding-bottom: 86px; }
 }
 
 /* ---------- The tree as a drawer on small screens ---------- */
@@ -3277,13 +3292,14 @@ body.modal-open {
   transition: opacity 0.2s ease;
 }
 
-/* The overlay stops where the bottom bar starts. The bar is opaque and sits
-   above it either way, but a sheet stretched under it is a sheet that dims
-   nothing and swallows taps meant for the bar. Declared here rather than in
-   the phone block above, because this rule's `inset` shorthand comes later in
-   the file and would reset the `bottom` a media query had set. */
+/* The overlay stops where the bottom bar starts, on the screens that still
+   have one. Inside a subject or a test the bar is gone, so the sheet runs to
+   the floor. Declared here rather than in the phone block above, because the
+   base rule's `inset` shorthand comes later in the file and would reset a
+   `bottom` a media query had set. */
 @media (max-width: 899px) {
   .ed-scrim { bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+  .shell-full .ed-scrim { bottom: 0; }
 }
 
 /* The button that opens it. Only where the tree is not already a column. */
@@ -3311,7 +3327,7 @@ body.modal-open {
 
   /* Space back. The question is what a small screen is for. */
   .ed-readonly .ed-center { padding: 12px 14px 24px; gap: 10px; }
-  .ed-readonly:not(.ed-student) .ed-center { padding-bottom: 86px; }
+  .ed-readonly:not(.ed-student):not(.ed-paper) .ed-center { padding-bottom: 86px; }
   .ed-readonly .ed-body { gap: 10px; }
   .ed-readonly .ed-panel { padding: 12px 13px 13px; }
   .shell-main { padding: 14px 14px 24px; }
@@ -3371,12 +3387,143 @@ body.modal-open {
   /* Nothing may hide under the bar: not the last card of a page, not the
      foot of the answer panel. */
   .shell-page { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+
+  /* The bar belongs to the subject picker — the one screen that is not
+     full-bleed. Inside a subject or a test its two items (Subjects, Results)
+     are not what the student is doing, and the crumb row already carries the
+     way back, so the bar is 56px of chrome taken from the question. */
+  .shell-full .rail { display: none; }
+  .shell-full .shell-page { padding-bottom: 0; }
+}
+
+/* ---------- The page scrolls, not a box inside it (phones and tablets) ----------
+
+   The shell is normally locked to the window and `.ed-center` is the scroller,
+   so the app bar sits there permanently while the question scrolls between it
+   and the crumb row. On a phone that is two fixed bars stealing height from
+   the one thing being read. Under `.shell-scroll` the *document* scrolls
+   instead: the app bar leaves with the content and comes back when the student
+   returns to the top, and the crumb row below it is what stays. */
+@media (max-width: 899px) {
+  .shell-scroll {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .shell-scroll .shell-body { min-height: 0; }
+  .shell-scroll .shell-main,
+  .shell-scroll .shell-main-full {
+    overflow: visible;
+    min-height: 0;
+  }
+  .shell-scroll .editor,
+  .shell-scroll .ed-cols,
+  .shell-scroll .ed-center,
+  .shell-scroll .ed-body,
+  .shell-scroll .ed-explain {
+    overflow: visible;
+    height: auto;
+    min-height: 0;
+  }
+
+  /* The secondary bar: Back, Questions and Hand in stay while the app bar
+     goes. It is the row a student works from. */
+  .shell-scroll .ed-crumbrow {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--bg);
+    padding: 8px 0;
+    margin-top: -8px;
+  }
+
+  /* The bar names the test on two lines: Title, then Subtitle. The crumb row
+     no longer carries either, so this is the only place on a phone that says
+     what is open. A grid rather than the flex row, because the two lines are
+     siblings and have to stack in the middle column while the brand and the
+     profile stay whole beside them. */
+  .shell-scroll .shellbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    /* The tracks are content-height and the block centres as a whole. Without
+       this, `align-content` stretches both auto rows to fill `min-height` and
+       the two lines drift apart inside their own taller rows — the row gap
+       again, by another route. */
+    align-content: center;
+    column-gap: 10px;
+    /* `column-gap` does not cancel `row-gap`, and `.shellbar` carries a `gap`
+       shorthand (12px, 8px under 600px) that sets both. That row gap was drawn
+       between the two lines as loose space — and, with no subtitle, between
+       row 1 and an empty row 2, which left the title riding a few pixels above
+       the brand beside it. The second line is spaced with a margin instead, so
+       it exists only when there is a second line. */
+    row-gap: 0;
+    height: auto;
+    min-height: 57px;
+    padding: 8px 16px;
+  }
+  .shell-scroll .shellbar-brand { grid-column: 1; grid-row: 1 / span 2; }
+  .shell-scroll .shellbar-title { grid-column: 2; grid-row: 1; }
+  .shell-scroll .shellbar-sub:not([hidden]) {
+    display: block;
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 2px;
+    font-size: 11px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .shell-scroll .tb-profile-wrap { grid-column: 3; grid-row: 1 / span 2; }
+  .shell-scroll .shellbar-actions { display: none; }
+  /* The divider is the one child this grid never places. It is only hidden
+     below 600px, so between 601 and 899px it auto-placed into the free cell —
+     column 2, row 2, the subtitle's own slot — and its 22px height inflated
+     that row even with no subtitle to show. A stacked bar has nothing to
+     divide anyway. */
+  .shell-scroll .shellbar-div { display: none; }
+
+  /* Previous and Next sit on the floor of the window, always — reachable with
+     one hand on every question, not only once the paper is long enough to
+     scroll.
+     This was `position: sticky` and it could not keep that promise: sticky
+     only shifts an element within *its own containing block*, which here is
+     the answer panel the row closes. On a short paper that panel ends
+     mid-screen, so there was nothing to pull against and the row sat in the
+     middle of the window. Fixed is the only thing that always means the
+     bottom.
+     It stays *under* the drawer and its scrim (40/35): unlike the rail, this
+     row is not the way off the screen, so the question list may cover it. */
+  .shell-scroll .st-navrow {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    margin: 0;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 @media (max-width: 480px) {
   .ed-readonly .ed-center { padding: 10px 10px 20px; }
   .ed-readonly .ed-panel { padding: 11px 11px 12px; }
   .st-drawer-btn { padding: 6px 8px; }
+}
+
+/* Room for the bottom bar, so the foot of the paper is never hidden under it.
+   Declared after the 480px block above: that block sets `padding` as a
+   shorthand at equal specificity, so a clearance written earlier would be
+   reset to 20px on the narrowest phones — the exact screens that can least
+   afford to lose the last line of an answer. */
+@media (max-width: 899px) {
+  .shell-scroll .ed-center { padding-bottom: 108px; }
+  /* The subject page has no steps row, so it has nothing to clear. */
+  .shell-scroll .st-subject .ed-center { padding-bottom: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

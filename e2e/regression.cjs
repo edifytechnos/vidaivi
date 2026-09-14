@@ -1349,21 +1349,69 @@ function check(ok, label) {
           "their teacher's subject is one of them"
         );
 
+        const wsSubjectTitle = await page.getAttribute(
+          `.subject-card[data-subject='${ws.subjectId}']`, "data-title"
+        );
         await page.click(`.subject-card[data-subject='${ws.subjectId}']`);
-        await page.waitForSelector("#st-tree .st-test", { timeout: 25000 });
-        check((await page.$$("#st-tree .st-test")).length === 2, "a subject opens its tests as a tree");
+        await page.waitForSelector(".st-workspace .test-list", { timeout: 25000 });
+        check((await page.$$(".test-list .test-card[data-test]")).length === 2, "a subject opens its tests as a list");
+        // The subject page is that list and nothing else: the app bar already
+        // names the subject, so a crumb row repeating it and a drawer holding
+        // a second copy of the list were both noise.
+        const subjPage = await page.evaluate(() => ({
+          toggle: !!document.querySelector("[data-drawer-toggle]"),
+          tree: !!document.querySelector("#st-tree"),
+          crumb: !!document.querySelector(".ed-crumbrow"),
+        }));
+        check(!subjPage.toggle && !subjPage.tree, "with no Tests drawer duplicating it");
+        check(!subjPage.crumb, "and no crumb row repeating the subject's name");
+        // With no subtitle the app bar's second grid row must collapse. A row
+        // gap left it drawn, and the title — placed in row 1 only — rode a few
+        // pixels above the brand that spans both.
+        const barMid = await page.evaluate(() => {
+          const mid = (sel) => {
+            const r = document.querySelector(sel).getBoundingClientRect();
+            return r.top + r.height / 2;
+          };
+          return {
+            title: mid("#shellbar-title"),
+            brand: mid(".shellbar-brand"),
+            subHidden: document.querySelector("#shellbar-sub").hidden,
+          };
+        });
+        check(barMid.subHidden, "the subject's bar carries no subtitle line");
+        check(
+          Math.abs(barMid.title - barMid.brand) <= 1,
+          `and the name is centred beside the V (${barMid.title.toFixed(1)} vs ${barMid.brand.toFixed(1)})`
+        );
+        // The card is a row of two, and the left half has to be able to shrink
+        // or the status chip is pushed out past the card's own right edge.
+        const cardFit = await page.evaluate(() => {
+          const card = document.querySelector(".test-card[data-test]");
+          const chip = card.querySelector(".status-chip");
+          return {
+            chipRight: Math.round(chip.getBoundingClientRect().right),
+            cardRight: Math.round(card.getBoundingClientRect().right),
+          };
+        });
+        check(
+          cardFit.chipRight <= cardFit.cardRight,
+          `the status chip stays inside the card (${cardFit.chipRight} of ${cardFit.cardRight})`
+        );
 
-        await page.click(`#st-tree .st-test[data-test='${wsTests[0].id}']`);
+        await page.click(`.test-card[data-test='${wsTests[0].id}']`);
         await page.waitForSelector(".ed-center .question-text", { timeout: 25000 });
         const wsShape = await page.evaluate(() => ({
           shown: document.querySelectorAll(".ed-center .question-text").length,
           rows: document.querySelectorAll("#st-tree .ed-tree-q").length,
+          roots: document.querySelectorAll("#st-tree .st-test").length,
           cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
           explain: document.querySelectorAll(".ed-explain").length,
           solution: document.querySelectorAll(".solution").length,
         }));
         check(wsShape.shown === 1, `one question on screen, never the whole paper (${wsShape.shown})`);
         check(wsShape.rows === 3, `its questions are listed beside it (${wsShape.rows})`);
+        check(wsShape.roots === 0, "as a flat list, not a folder of every test in the subject");
         check(wsShape.cols === 2, `sitting a test has no third column (${wsShape.cols})`);
         check(wsShape.explain === 0 && wsShape.solution === 0, "no explanation and no solution while sitting it");
         check(
@@ -1384,6 +1432,7 @@ function check(ok, label) {
             handinInCrumb: !!document.querySelector(".ed-crumbrow .st-handin"),
             prev: box("#st-prev"), save: box("#st-clear"), next: box("#st-next"),
             noSave: !document.querySelector("#st-save"),
+            clearInHead: !!document.querySelector(".ed-panel-head #st-clear"),
             count: box(".st-count"),
             panel: box(".ed-body .ed-panel:last-of-type"),
           };
@@ -1391,14 +1440,18 @@ function check(ok, label) {
         check(wsButtons.handinInCrumb, "Hand in test sits on the breadcrumb row");
         check(wsButtons.noSave, "there is no Save button — answers save themselves");
         check(
-          Math.abs(wsButtons.prev.y - wsButtons.save.y) < 4 && Math.abs(wsButtons.save.y - wsButtons.next.y) < 4,
-          "Previous, Clear and Next share one row"
+          Math.abs(wsButtons.prev.y - wsButtons.next.y) < 4,
+          "Previous and Next share one row"
         );
         check(
-          wsButtons.prev.x < wsButtons.count.x &&
-            wsButtons.count.right < wsButtons.save.x &&
-            wsButtons.save.right <= wsButtons.next.x,
-          "in the order Previous · count · Clear · Next"
+          wsButtons.prev.x < wsButtons.count.x && wsButtons.count.right <= wsButtons.next.x,
+          "in the order Previous · count · Next"
+        );
+        // Clear acts on the answer, so it sits with the answer's own status
+        // rather than in the steps row — above them, never beside Next.
+        check(
+          !!wsButtons.clearInHead && wsButtons.save.bottom <= wsButtons.prev.y,
+          "and Clear answer sits up in the answer panel's head, above the steps"
         );
         check(
           wsButtons.next.right <= wsButtons.panel.right + 1 && wsButtons.prev.x >= wsButtons.panel.x - 1,
@@ -1451,8 +1504,12 @@ function check(ok, label) {
 
         // One test at a time: the other one is locked while this is open.
         await page.click("#st-back");
-        await page.waitForSelector("#st-tree .st-test", { timeout: 20000 });
-        const wsLocks = await page.$$eval("#st-tree .st-test", (n) =>
+        await page.waitForSelector(".st-workspace .test-list", { timeout: 20000 });
+        check(
+          (await page.textContent("#shellbar-title")) === wsSubjectTitle,
+          "Back returns to the subject's tests, with the subject named in the bar"
+        );
+        const wsLocks = await page.$$eval(".test-list .test-card[data-test]", (n) =>
           n.map((e) => ({ id: e.dataset.test, disabled: e.disabled })));
         check(
           wsLocks.find((t) => t.id === wsTests[1].id)?.disabled === true,
@@ -1464,7 +1521,7 @@ function check(ok, label) {
         );
 
         // Hand in: the score, with the paper still shut.
-        await page.click(`#st-tree .st-test[data-test='${wsTests[0].id}']`);
+        await page.click(`.test-card[data-test='${wsTests[0].id}']`);
         await page.waitForSelector("#st-submit", { timeout: 20000 });
         page.once("dialog", (d) => d.accept());
         await page.click("#st-submit");
@@ -1483,7 +1540,7 @@ function check(ok, label) {
         );
         await shot("student-handed-in");
         // The paper opens read-only: what they answered, and nothing else.
-        await page.click(`#st-tree .st-test[data-test='${wsTests[0].id}']`);
+        await page.click(`.test-card[data-test='${wsTests[0].id}']`);
         await page.waitForSelector(".review-item", { timeout: 25000 });
         const shut = await page.evaluate(() => ({
           cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
@@ -1552,6 +1609,32 @@ function check(ok, label) {
         await page.click("[data-drawer-toggle]");
         await page.waitForSelector("#rv-tree .ed-tree-q:visible", { timeout: 10000 });
         check(true, "and opens from the same Questions button");
+        await page.keyboard.press("Escape");
+        // The bottom tab bar is gone from the paper. Two of its three tabs did
+        // nothing — the [data-pane] rules only hide .ed-pane-* panels, which
+        // exist in the authoring editor and not here — and the third only
+        // un-hid the explanation, which now simply stacks under the answer.
+        const paper = await page.evaluate(() => {
+          const ex = document.querySelector(".ed-explain");
+          return {
+            tabs: !!document.querySelector(".ed-paper .ed-tabs"),
+            pane: document.querySelector(".ed-paper")?.getAttribute("data-pane"),
+            explainShown: ex ? getComputedStyle(ex).display !== "none" : null,
+            navPos: getComputedStyle(document.querySelector(".st-navrow")).position,
+            navBottom: Math.round(document.querySelector(".st-navrow").getBoundingClientRect().bottom),
+            vh: window.innerHeight,
+          };
+        });
+        check(!paper.tabs && !paper.pane, "the handed-in paper has no bottom tab bar");
+        if (paper.explainShown !== null) {
+          check(paper.explainShown, "and its explanation stacks under the answer, no tab to press");
+        }
+        // A short paper is the case sticky could not hold: its panel ends
+        // mid-screen, so there was nothing for sticky to pull against.
+        check(
+          paper.navPos === "fixed" && Math.abs(paper.navBottom - paper.vh) <= 1,
+          `Previous and Next sit on the floor even on a short paper (${paper.navBottom} of ${paper.vh})`
+        );
         await page.setViewportSize({ width: 1280, height: 900 });
 
 
@@ -1783,17 +1866,17 @@ function check(ok, label) {
                    panel: box(".ed-body .ed-panel:last-of-type"), scrollWidth: document.documentElement.scrollWidth };
         });
         check(
-          phoneRow.next.right <= phoneRow.panel.right + 1 && phoneRow.prev.x >= phoneRow.panel.x - 1,
-          "on a phone the buttons stay inside the card"
+          phoneRow.next.right <= 390 && phoneRow.prev.x >= -1,
+          "on a phone the buttons stay inside the window"
         );
         if (phoneRow.save) {
           check(
-            phoneRow.save.y > phoneRow.prev.y && phoneRow.save.width > phoneRow.prev.width,
-            "with Clear answer full width below Previous and Next"
+            phoneRow.save.y < phoneRow.prev.y,
+            "with Clear answer above them, in the answer panel's head"
           );
           check(
             phoneRow.save.right <= phoneRow.panel.right + 1,
-            "and Clear inside the card too"
+            "and Clear inside the card"
           );
         } else {
           console.log("SKIP  phone Clear layout (first question is not answerable in one tap)");
@@ -1808,28 +1891,34 @@ function check(ok, label) {
           parked.visibility === "hidden" && parked.x < 0,
           `the tree waits off-screen to the left (${Math.round(parked.x)}px, ${parked.visibility})`
         );
-        // The mobile chrome J asked for: the rail along the bottom where a
-        // thumb is, and the one way into the question list up in the app bar.
+        // The mobile chrome J asked for. Inside a test the bottom bar is gone:
+        // its two items are not what a student is doing, and the crumb row —
+        // Back, Questions, Hand in — is the whole of what stays.
         const chrome = await page.evaluate(() => {
-          const rail = document.querySelector(".rail").getBoundingClientRect();
+          const rail = document.querySelector(".rail");
+          const crumb = document.querySelector(".ed-crumbrow");
+          const back = crumb && crumb.querySelector(".ed-crumb-back");
+          const toggle = crumb && crumb.querySelector("[data-drawer-toggle]");
           return {
-            railY: Math.round(rail.y),
-            railW: Math.round(rail.width),
-            vh: window.innerHeight,
-            vw: window.innerWidth,
+            railShown: !!rail && getComputedStyle(rail).display !== "none",
             toggleInBar: !!document.querySelector("#shellbar-actions [data-drawer-toggle]"),
-            toggleInCrumb: !!document.querySelector(".ed-crumbrow [data-drawer-toggle]"),
-            handInSameRow: !!document.querySelector(".ed-crumbrow .st-handin"),
+            toggleInCrumb: !!toggle,
+            handInSameRow: !!crumb.querySelector(".st-handin"),
+            backBeforeToggle: !!(back && toggle &&
+              back.getBoundingClientRect().right <= toggle.getBoundingClientRect().left + 1),
+            // Nothing between them: only the two buttons, the spacer and Hand in.
+            crumbText: crumb.textContent.replace(/\s+/g, " ").trim(),
             barTitle: (document.querySelector("#shellbar-title") || {}).textContent || "",
             barTitleShown: document.querySelector("#shellbar-title")
               ? getComputedStyle(document.querySelector("#shellbar-title")).display
               : "none",
+            barSub: (document.querySelector("#shellbar-sub") || {}).textContent || "",
+            barSubShown: document.querySelector("#shellbar-sub")
+              ? getComputedStyle(document.querySelector("#shellbar-sub")).display
+              : "none",
           };
         });
-        check(
-          chrome.railY > chrome.vh / 2 && chrome.railW === chrome.vw,
-          `on a phone the rail is a bottom bar (y ${chrome.railY} of ${chrome.vh}, ${chrome.railW}px wide)`
-        );
+        check(!chrome.railShown, "inside a test the bottom bar is gone — the screen is the question");
         check(
           chrome.toggleInCrumb && !chrome.toggleInBar,
           "Questions sits in the crumb row beside Hand in, where a student works"
@@ -1838,9 +1927,27 @@ function check(ok, label) {
           chrome.handInSameRow,
           "and Hand in is in that same row"
         );
+        check(chrome.backBeforeToggle, "with Back to the left of it");
+        check(
+          chrome.crumbText === "Questions Hand in test" || chrome.crumbText === "Questions Hand in",
+          `and nothing in between (\"${chrome.crumbText}\")`
+        );
         check(
           /\S/.test(chrome.barTitle) && chrome.barTitleShown !== "none",
           `the app bar names the test beside the logo ("${chrome.barTitle.slice(0, 40)}")`
+        );
+        check(
+          /\S/.test(chrome.barSub) && chrome.barSubShown !== "none",
+          `with its subtitle on the line under it ("${chrome.barSub.slice(0, 40)}")`
+        );
+        const barLines = await page.evaluate(() => {
+          const t = document.querySelector("#shellbar-title").getBoundingClientRect();
+          const sb = document.querySelector("#shellbar-sub").getBoundingClientRect();
+          return Math.round(sb.top - t.bottom);
+        });
+        check(
+          barLines <= 4,
+          `and the two lines read as one label, not two (${barLines}px apart)`
         );
         await page.click("[data-drawer-toggle]");
         await page.waitForSelector("#st-tree .ed-tree-q:visible", { timeout: 10000 });
@@ -1866,20 +1973,14 @@ function check(ok, label) {
           Math.abs(opened.top - opened.crumbBottom) <= 2,
           `starting under the Questions button (tree ${opened.top}, crumb ends ${opened.crumbBottom})`
         );
-        // The bottom bar is never what the overlay dims: a greyed-out bar
-        // reads as disabled, and it is still the way off this screen.
-        const barLit = await page.evaluate(() => {
-          const rail = document.querySelector(".rail").getBoundingClientRect();
-          const scrim = document.querySelector(".ed-scrim").getBoundingClientRect();
-          const hit = document.elementFromPoint(
-            Math.round(rail.left + rail.width / 2),
-            Math.round(rail.top + rail.height / 2)
-          );
-          return { onTop: !!(hit && hit.closest(".rail")), scrimBottom: Math.round(scrim.bottom), railTop: Math.round(rail.top) };
-        });
+        // With no bar to clear, the overlay runs to the floor.
+        const scrimFoot = await page.evaluate(() => ({
+          bottom: Math.round(document.querySelector(".ed-scrim").getBoundingClientRect().bottom),
+          vh: window.innerHeight,
+        }));
         check(
-          barLit.onTop && barLit.scrimBottom <= barLit.railTop + 1,
-          `the bottom bar stays above the overlay (scrim ends ${barLit.scrimBottom}, bar starts ${barLit.railTop})`
+          scrimFoot.bottom >= scrimFoot.vh - 1,
+          `the overlay runs to the floor now the bar is gone (${scrimFoot.bottom} of ${scrimFoot.vh})`
         );
         await page.mouse.click(370, 500);
         await page.waitForFunction(
@@ -1887,6 +1988,95 @@ function check(ok, label) {
           { timeout: 10000 }
         );
         check(true, "and a tap outside closes it again");
+
+        // Scrolling: the app bar leaves with the content, the crumb row stays,
+        // and the drawer still opens under the row as it sits *now* — that is
+        // the measure-on-open fix, and a bind-time number would fail here.
+        // A short window, so there is reliably more paper than screen.
+        await page.setViewportSize({ width: 390, height: 420 });
+        const scrolled = await page.evaluate(async () => {
+          const doc = document.scrollingElement;
+          doc.scrollTop = doc.scrollHeight;
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+          const bar = document.querySelector(".shellbar").getBoundingClientRect();
+          const crumb = document.querySelector(".ed-crumbrow").getBoundingClientRect();
+          return {
+            scrollTop: Math.round(doc.scrollTop),
+            barBottom: Math.round(bar.bottom),
+            crumbTop: Math.round(crumb.top),
+            crumbPos: getComputedStyle(document.querySelector(".ed-crumbrow")).position,
+          };
+        });
+        check(scrolled.scrollTop > 0, `the page itself scrolls (${scrolled.scrollTop}px)`);
+        check(
+          scrolled.barBottom <= 0,
+          `the app bar scrolls away with the content (ends at ${scrolled.barBottom})`
+        );
+        check(
+          scrolled.crumbPos === "sticky" && scrolled.crumbTop <= 1 && scrolled.crumbTop >= -1,
+          `and the Questions / Hand in row sticks to the top (${scrolled.crumbTop})`
+        );
+        await page.click("[data-drawer-toggle]");
+        await page.waitForFunction(
+          () => document.querySelector(".ed-tree").getBoundingClientRect().x >= 0,
+          { timeout: 10000 }
+        );
+        const afterScroll = await page.evaluate(() => ({
+          top: Math.round(document.querySelector(".ed-tree").getBoundingClientRect().top),
+          crumbBottom: Math.round(document.querySelector(".ed-crumbrow").getBoundingClientRect().bottom),
+        }));
+        check(
+          Math.abs(afterScroll.top - afterScroll.crumbBottom) <= 2,
+          `the drawer still starts under that row once scrolled (tree ${afterScroll.top}, crumb ends ${afterScroll.crumbBottom})`
+        );
+        await page.keyboard.press("Escape");
+        await page.evaluate(() => { document.scrollingElement.scrollTop = 0; });
+        await page.setViewportSize({ width: 390, height: 844 });
+
+        // Previous and Next ride the floor of the window while there is still
+        // paper below them, with the count above rather than under a thumb.
+        const pinned = await page.evaluate(() => {
+          const row = document.querySelector(".st-navrow");
+          const r = row.getBoundingClientRect();
+          const count = document.querySelector(".st-count").getBoundingClientRect();
+          const prev = document.querySelector("#st-prev").getBoundingClientRect();
+          const last = [...document.querySelectorAll(".ed-center .ed-panel")].pop();
+          return {
+            position: getComputedStyle(row).position,
+            bottom: Math.round(r.bottom),
+            top: Math.round(r.top),
+            vh: window.innerHeight,
+            countAbove: count.bottom <= prev.top + 1,
+            // Nothing may end underneath the bar.
+            lastPanelBottom: Math.round(last.getBoundingClientRect().bottom),
+            clearInNav: !!document.querySelector(".st-navrow #st-clear"),
+            clearInHead: !!document.querySelector(".ed-panel-head #st-clear"),
+          };
+        });
+        check(pinned.position === "fixed", "the steps row is a bottom bar, not a row in the page");
+        check(
+          Math.abs(pinned.bottom - pinned.vh) <= 1,
+          `Previous and Next sit on the floor of the window (row ends ${pinned.bottom} of ${pinned.vh})`
+        );
+        check(pinned.countAbove, "with the answered count on the line above them");
+        check(
+          !pinned.clearInNav && pinned.clearInHead,
+          "and Clear answer up with the answer it clears, never under a thumb aiming for Next"
+        );
+
+        // The bottom bar itself: it belongs to the subject picker, which is the
+        // one screen that is not full-bleed.
+        await page.click("#shellbar-home");
+        await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
+        check(true, "the V in the app bar goes back to the subjects");
+        const railHome = await page.evaluate(() => {
+          const rail = document.querySelector(".rail").getBoundingClientRect();
+          return { y: Math.round(rail.y), w: Math.round(rail.width), vh: innerHeight, vw: innerWidth };
+        });
+        check(
+          railHome.y > railHome.vh / 2 && railHome.w === railHome.vw,
+          `and there the rail is a bottom bar (y ${railHome.y} of ${railHome.vh}, ${railHome.w}px wide)`
+        );
         await page.setViewportSize({ width: 1280, height: 900 });
 
         // The editor says what a draft means — the sentence J went hunting for.
