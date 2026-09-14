@@ -6,12 +6,8 @@
       "direction": "in",
       "name": "req",
       "methods": ["get", "post"],
-      "route": "zzprobe"
+      "route": "adminprobe"
     },
-    {
-      "type": "http",
-      "direction": "out",
-      "name": "res"
-    }
+    { "type": "http", "direction": "out", "name": "res" }
   ]
 }

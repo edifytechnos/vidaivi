@@ -394,7 +394,7 @@ export interface TotpState {
 
 export async function fetchTotpState(): Promise<TotpState | null> {
   try {
-    const res = await apiFetch("/api/adminsecurity", { headers: authHeader() });
+    const res = await apiFetch("/api/twostep", { headers: authHeader() });
     if (!res.ok) return null;
     return (await res.json()) as TotpState;
   } catch {
@@ -406,7 +406,7 @@ async function totpAction(
   body: Record<string, string>
 ): Promise<{ ok: boolean; message?: string; secret?: string; uri?: string; recoveryCodes?: string[] }> {
   try {
-    const res = await apiFetch("/api/adminsecurity", {
+    const res = await apiFetch("/api/twostep", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify(body),
