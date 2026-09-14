@@ -2366,6 +2366,16 @@ body {
   font-size: 13px;
   line-height: 1.55;
 }
+/* The one-render confirmation after handing a paper in: green rather than the
+   note's usual purple, because it is reporting something finished. */
+.note.st-handed {
+  margin-top: 0;
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: #065f46;
+}
+.note.st-handed .icon { color: var(--green); }
+
 .note .icon {
   flex: none;
   width: 16px;
@@ -2812,6 +2822,15 @@ body {
 .rv-pending {
   background: var(--amber);
 }
+/* Before the teacher releases a paper there is no right and wrong to colour:
+   a dot says the question was answered, an empty ring says it was not. */
+.rv-given {
+  background: var(--primary);
+}
+.rv-blank {
+  background: transparent;
+  border: 1.5px solid var(--border-strong);
+}
 
 .rv-nav {
   display: flex;
@@ -2824,10 +2843,6 @@ body {
 }
 .rv-nav .btn[disabled] {
   opacity: 0.4;
-}
-
-.locked-page {
-  text-align: center;
 }
 
 /* An expired sign-in is ordinary and hourly — inform, do not alarm. */
@@ -3142,6 +3157,11 @@ body.modal-open {
 .st-step { flex: none; }
 .st-save { display: contents; }
 .st-save .btn { flex: none; }
+/* Answers save themselves, so this slot holds the way back out rather than a
+   Save button: Clear is quieter than the steps beside it and disappears
+   entirely until there is something to clear. */
+.st-clear[hidden] { display: none; }
+.st-autosave { flex: none; white-space: nowrap; }
 
 /* The crumb row carries the one action that ends the test. */
 .ed-crumbrow .st-handin {
@@ -3165,9 +3185,11 @@ body.modal-open {
     gap: 10px 8px;
   }
   .st-navrow .btn { min-width: 0; }
-  /* Save first and full width: it is the thing a student presses every time,
-     then the two steps side by side, then the count. */
-  .st-save .btn { grid-column: 1 / -1; order: -1; width: 100%; }
+  /* The two steps first, side by side — they are what a student presses on
+     every question. Clear is the rare one, so it goes last and full width
+     rather than under a thumb that meant to press Next. */
+  .st-save .btn { grid-column: 1 / -1; order: 3; width: 100%; }
+  .st-autosave { grid-column: 1 / -1; order: 3; text-align: center; }
   .st-navrow .ed-spacer { display: none; }
   .st-step { width: 100%; }
   #st-next, #rv-next { order: 1; }
@@ -3662,4 +3684,75 @@ body.modal-open {
   color: #065f46;
   background: var(--surface);
   border-color: #a7f3d0;
+}
+
+/* Reading a built-in test: answers shown as facts rather than as choices — the
+   teacher is reading, not sitting the test. */
+.lib-options { display: grid; gap: 8px; margin-top: 12px; }
+.lib-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.lib-option.lib-correct { border-color: var(--green); background: var(--green-bg); }
+.lib-letter {
+  flex: none; width: 24px; height: 24px; border-radius: 6px;
+  display: grid; place-items: center;
+  background: var(--bg); font-weight: 600; font-size: 0.85rem;
+}
+.lib-option .status-chip { margin-left: auto; }
+
+/* The score's big number is marks, and it has to say so: "4 / 14" was read as
+   four of fourteen questions answered. */
+.score-unit {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.score-answered { margin: 6px 0 0; font-size: 0.9rem; color: var(--muted); }
+
+/* A released result opens; one still with the teacher does not. */
+.score-breakdown .res-open {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.score-breakdown .res-open:hover { background: var(--primary-soft); }
+.score-breakdown .res-open .icon {
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  vertical-align: -2px;
+  color: var(--faint);
+  transform: rotate(-90deg);
+}
+.score-breakdown .row-pending { color: var(--muted); }
+
+/* Browse: the catalogue row. Everything that will vary between authors later —
+   a byline, a price, whether you already hold it — has a slot here already, so
+   the marketplace arrives as content rather than as a new layout. */
+.br-list { display: grid; gap: 10px; margin-top: 12px; }
+.br-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.br-open {
+  flex: 1 1 240px; min-width: 0; display: flex; text-align: left;
+  background: none; border: 0; padding: 0; cursor: pointer; color: inherit;
+}
+.br-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.br-meta { font-size: 0.82rem; color: var(--muted); }
+.br-by { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.br-badge {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em;
+  padding: 2px 6px; border-radius: 4px; background: var(--primary-soft); color: var(--primary);
+}
+.br-have { font-size: 0.78rem; color: var(--muted); }
+.br-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.br-price { font-size: 0.85rem; font-weight: 700; color: var(--green); }
+@media (max-width: 560px) {
+  .br-actions { width: 100%; }
+  .br-actions .btn { flex: 1 1 auto; min-width: 0; }
 }

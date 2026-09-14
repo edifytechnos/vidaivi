@@ -13,6 +13,7 @@ import { app, escapeHtml, ICONS } from "./dom";
 
 export type RailKey =
   | "subjects"
+  | "browse"
   | "mark"
   | "students"
   | "mytests"
@@ -31,6 +32,7 @@ const RAIL_ITEMS: RailItem[] = [
   { key: "children", label: "My children", icon: ICONS.users, show: isParent },
   { key: "subjects", label: "Subjects", icon: ICONS.folder, show: () => isLoggedIn() && !isParent() },
   { key: "results", label: "My results", icon: ICONS.check, show: () => getProfile()?.kind === "student" },
+  { key: "browse", label: "Browse tests", icon: ICONS.book, show: isTeacher },
   { key: "mark", label: "To mark", icon: ICONS.mark, show: isTeacher },
   { key: "students", label: "My students", icon: ICONS.users, show: isTeacher },
   { key: "mytests", label: "My tests", icon: ICONS.home, show: isAdmin },

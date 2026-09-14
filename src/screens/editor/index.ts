@@ -43,6 +43,12 @@ let pane: Pane = "question";
 let siblings: { id: string; title: string; chapter: string; status: string; questionCount: number }[] = [];
 /** The teacher's own subjects, for the app bar picker. Fetched once per open. */
 let ownSubjects: { id: string; title: string; platform: boolean }[] = [];
+/**
+ * Every built-in shelf's id, from the *full* subject list. `ownSubjects` holds
+ * only the teacher's own subjects, so shelf-ness cannot be read from it — and
+ * a shelf that looked like an ordinary subject would be editable.
+ */
+let shelfIds = new Set<string>();
 const expanded = new Set<string>();
 const treeQuestions = new Map<string, { id: string; topic: string; marks: number; complete: boolean }[]>();
 let treeSubject: string | null = null;
@@ -77,11 +83,13 @@ export async function showEditor(testId: string, questionId: string | null, back
   // Built-in shelves are offered here alongside a teacher's own subjects. They
   // open read-only unless you are an admin — see readOnly(). This must be set
   // BEFORE viewingShelf() is asked anything, since that is what it reads.
-  ownSubjects = (subjectList ?? []).map((x) => ({
-    id: x.id,
-    title: x.title,
-    platform: !!x.platform,
-  }));
+  shelfIds = new Set((subjectList ?? []).filter((x) => x.platform).map((x) => x.id));
+  shelfTitles = new Map((subjectList ?? []).filter((x) => x.platform).map((x) => [x.id, x.title]));
+  // The picker lists what you own. Built-in shelves are read from Browse and
+  // picked when creating a subject or a test; they do not crowd this control.
+  ownSubjects = (subjectList ?? [])
+    .filter((x) => !x.platform)
+    .map((x) => ({ id: x.id, title: x.title, platform: !!x.platform }));
   // A shelf's tree holds its masters; an ordinary subject's holds the teacher's
   // own tests. Never both, or a teacher's tree fills up with library copies.
   const shelf = viewingShelf();
@@ -223,8 +231,7 @@ function copiedBanner(): string {
 
 /** Is the subject in the tree a built-in shelf rather than one of your own? */
 function viewingShelf(): boolean {
-  const here = treeSubject ?? "";
-  return ownSubjects.some((x) => x.id === here && x.platform);
+  return shelfIds.has(treeSubject ?? "");
 }
 
 /**
@@ -298,9 +305,15 @@ function render(): void {
  * Only their own subjects: a built-in shelf is read-only and opens elsewhere.
  */
 function subjectLead(): string {
-  if (ownSubjects.length < 1) return "";
   const here = treeSubject ?? "";
-  const options = ownSubjects
+  // An admin arriving from Browse is *in* a shelf, which is not one of their
+  // own subjects. Carry it as a transient entry so the control never lies
+  // about where you are.
+  const list = viewingShelf()
+    ? [{ id: here, title: shelfTitle(here), platform: true }, ...ownSubjects]
+    : ownSubjects;
+  if (list.length < 1) return "";
+  const options = list
     .map(
       (x) =>
         `<option value="${escapeHtml(x.id)}"${x.id === here ? " selected" : ""}>${escapeHtml(
@@ -309,6 +322,12 @@ function subjectLead(): string {
     )
     .join("");
   return `<select class="shellbar-select" id="ed-subject" aria-label="Subject">${options}</select>`;
+}
+
+/** The open shelf's name, for the transient picker entry. */
+let shelfTitles = new Map<string, string>();
+function shelfTitle(id: string): string {
+  return shelfTitles.get(id) || "Built-in subject";
 }
 
 /** The editor's controls sit in the shell's top bar, not in a bar of their own. */

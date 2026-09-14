@@ -24,7 +24,6 @@ import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup
 import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
 import type { Attempt, Question, Test } from "../types";
 import { showReview } from "./review";
-import { showScore } from "./test";
 import { showSubjects } from "./subjects";
 
 /** One test as the tree knows it, before its questions are fetched. */
@@ -210,6 +209,8 @@ async function loadWorkTests(): Promise<void> {
 /** Nothing picked yet: the tree, and a panel that says what to do with it. */
 function renderOverview(): void {
   const busy = openTestId();
+  const justHandedIn = takeHandedIn();
+  const handedTitle = workTests.find((t) => t.id === justHandedIn)?.title ?? "";
   mount(
     `
     <div class="editor ed-readonly ed-student" data-pane="question">
@@ -221,6 +222,16 @@ function renderOverview(): void {
             <span class="ed-crumb-test">${escapeHtml(subjectTitle)}</span>
           </div>
           <div class="ed-body">
+            ${
+              justHandedIn
+                ? `<div class="note st-handed">
+                     ${ICONS.check}
+                     <span><strong>Handed in${handedTitle ? ` — ${escapeHtml(handedTitle)}` : ""}.</strong>
+                     Your teacher marks it next. You can open it here any time to see what you
+                     answered; the marks and worked solutions appear once they release it.</span>
+                   </div>`
+                : ""
+            }
             <section class="ed-panel">
               <div class="ed-panel-head"><span class="ed-panel-label">Your tests</span></div>
               <p class="hint">Pick a test on the left. Questions open one at a time,
@@ -421,7 +432,41 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
   }
 }
 
-/** The type-adaptive answer control, plus what saving it does. */
+/**
+ * Repaint what an answer changes, without rebuilding the page.
+ *
+ * Saving happens on every keystroke and every option tap now, so a full
+ * re-render is both wasteful on a cheap phone and wrong: it would tear the
+ * number input out from under the student mid-number. Only the four things an
+ * answer actually moves are touched — the tick in the tree, the Answered chip,
+ * the count in the nav row, and whether Clear is offered.
+ */
+function refreshProgress(test: Test, attempt: Attempt, q: Question, index: number): void {
+  const done = answeredCount(test, attempt);
+  const answered = !!attempt.answers[q.id];
+
+  const count = document.querySelector(".st-navrow .st-count");
+  if (count) count.textContent = `${done} of ${test.questions.length} answered`;
+
+  const head = document.querySelectorAll(".ed-panel-head")[1];
+  const chip = head?.querySelector(".status-chip");
+  if (answered && !chip && head) {
+    head.insertAdjacentHTML("beforeend", `<span class="status-chip status-done">Answered</span>`);
+  } else if (!answered && chip) {
+    chip.remove();
+  }
+
+  const dot = document.querySelectorAll("#st-tree .ed-tree-q")[index]?.querySelector(".st-dot");
+  if (dot) {
+    dot.className = `st-dot ${answered ? "st-answered" : "st-todo"}`;
+    dot.textContent = answered ? "✓" : "";
+  }
+
+  const clear = document.getElementById("st-clear");
+  if (clear) clear.hidden = !answered;
+}
+
+/** The type-adaptive answer control. Answers save themselves. */
 function renderAnswer(
   test: Test,
   attempt: Attempt,
@@ -436,6 +481,18 @@ function renderAnswer(
   const record = (given: number | null, extra?: Partial<(typeof attempt.answers)[string]>) => {
     const correct = gradeAnswer(q, given);
     attempt.answers[q.id] = { given, correct, earned: correct ? q.marks : 0, ...extra };
+    persist();
+    track("question_answered", { test: test.id, question: q.id, correct });
+  };
+
+  /** Take the answer back off the paper, so the question can be left for later. */
+  const clear = () => {
+    delete attempt.answers[q.id];
+    persist();
+    track("question_cleared", { test: test.id, question: q.id });
+  };
+
+  function persist(): void {
     recomputeScore(test, attempt);
     // `index` stays the furthest question reached, so another device resumes
     // somewhere sensible; it is no longer a gate on what can be opened.
@@ -448,37 +505,50 @@ function renderAnswer(
       score: attempt.score,
       total: totalMarks(test),
     });
-    track("question_answered", { test: test.id, question: q.id, correct });
-    rerender();
+    refreshProgress(test, attempt, q, index);
+  }
+
+  /**
+   * The one control in the actions slot. There is no Save button: an answer is
+   * saved the moment it is given, which is what a student expects and what
+   * stops a tapped-but-unsaved answer being lost on Next. What is left is the
+   * way back out — Clear, so a question can be revisited later.
+   */
+  const actionsMarkup = (answered: boolean): string =>
+    `<button id="st-clear" class="btn btn-ghost st-clear"${answered ? "" : " hidden"}>Clear answer</button>`;
+
+  const bindClear = (reset: () => void): void => {
+    document.getElementById("st-clear")!.addEventListener("click", () => {
+      clear();
+      reset();
+    });
   };
 
   if (q.type === "mcq") {
-    let selected = existing?.given ?? -1;
     area.innerHTML = `
       <div class="options">
         ${q.options!
           .map(
             (opt, i) => `
-          <button class="option${i === selected ? " selected" : ""}" data-i="${i}">
+          <button class="option${i === (existing?.given ?? -1) ? " selected" : ""}" data-i="${i}">
             <span class="option-letter">${String.fromCharCode(65 + i)}</span>
             <span class="option-text">${escapeHtml(opt)}</span>
           </button>`
           )
           .join("")}
       </div>`;
-    actions.innerHTML = `<button id="st-save" class="btn btn-primary"${selected < 0 ? " disabled" : ""}>${
-      existing ? "Update answer" : "Save answer"
-    }</button>`;
-    const save = document.getElementById("st-save") as HTMLButtonElement;
+    actions.innerHTML = actionsMarkup(!!existing);
+    const select = (i: number): void => {
+      area.querySelectorAll(".option").forEach((b, n) => b.classList.toggle("selected", n === i));
+    };
     area.querySelectorAll<HTMLButtonElement>(".option").forEach((btn) => {
       btn.addEventListener("click", () => {
-        area.querySelectorAll(".option").forEach((b) => b.classList.remove("selected"));
-        btn.classList.add("selected");
-        selected = Number(btn.dataset.i);
-        save.disabled = false;
+        const i = Number(btn.dataset.i);
+        select(i);
+        record(i);
       });
     });
-    save.addEventListener("click", () => record(selected));
+    bindClear(() => select(-1));
     renderMath(area);
     return;
   }
@@ -487,24 +557,41 @@ function renderAnswer(
     area.innerHTML = `
       <input id="st-num" class="numeric-input" type="number" step="any" inputmode="decimal"
              placeholder="Enter your answer" value="${existing?.given ?? ""}" />`;
-    actions.innerHTML = `<button id="st-save" class="btn btn-primary">${
-      existing ? "Update answer" : "Save answer"
-    }</button>`;
+    actions.innerHTML = actionsMarkup(!!existing);
     const input = document.getElementById("st-num") as HTMLInputElement;
-    const save = document.getElementById("st-save") as HTMLButtonElement;
-    save.disabled = input.value.trim() === "";
-    input.addEventListener("input", () => { save.disabled = input.value.trim() === ""; });
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !save.disabled) save.click();
-    });
-    save.addEventListener("click", () => {
-      const val = parseFloat(input.value);
+    // A number is typed a digit at a time, and "1" on the way to "12" is a
+    // wrong answer. So it settles before it is saved — and blur and Enter save
+    // at once, because leaving the box means the student is done with it.
+    let timer = 0;
+    const commit = (): void => {
+      window.clearTimeout(timer);
+      const text = input.value.trim();
+      if (text === "") {
+        if (attempt.answers[q.id]) clear();
+        return;
+      }
+      const val = parseFloat(text);
       record(Number.isFinite(val) ? val : null);
+    };
+    input.addEventListener("input", () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(commit, 800);
+    });
+    input.addEventListener("blur", commit);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") commit();
+    });
+    bindClear(() => {
+      input.value = "";
+      input.focus();
     });
     return;
   }
 
-  // long: photograph the working; the teacher awards the marks.
+  // long: photograph the working; the teacher awards the marks. A photo *is*
+  // the answer here, so adding one saves it and removing the last one takes it
+  // back — the uploader's own ✕ is the Clear button for this type, and there is
+  // no second one, because the photo also has to be deleted server-side.
   area.innerHTML = `
     <div class="note">
       ${ICONS.mark}
@@ -513,25 +600,26 @@ function renderAnswer(
     </div>
     <div class="section-label">Your working</div>
     <div id="st-upload"></div>`;
-  const readImages = mountUploader(document.getElementById("st-upload")!, {
+  let first = true;
+  mountUploader(document.getElementById("st-upload")!, {
     testId: test.id,
     testTitle: test.title,
     questionId: q.id,
     questionIndex: index,
     maxMarks: q.marks,
     initial: existing?.images ?? [],
-    onChange: () => {},
+    onChange: (images) => {
+      // The uploader paints once on mount; that first call is the state we
+      // were given, not a change the student made.
+      if (first) {
+        first = false;
+        return;
+      }
+      if (images.length) record(1, { images, review: "pending" });
+      else if (attempt.answers[q.id]) clear();
+    },
   });
-  actions.innerHTML = `<button id="st-save" class="btn btn-primary">${
-    existing ? "Update working" : "Hand in answer"
-  }</button>`;
-  document.getElementById("st-save")!.addEventListener("click", () => {
-    const images = readImages();
-    record(images.length ? 1 : 0, {
-      images,
-      review: images.length ? "pending" : undefined,
-    });
-  });
+  actions.innerHTML = `<span class="ed-hint st-autosave">Saved as you go</span>`;
 }
 
 /** Hand the paper in: the score screen, and the marks the teacher still owes. */
@@ -553,7 +641,25 @@ function handIn(test: Test, attempt: Attempt): void {
     completedAt: attempt.completedAt,
     answers: JSON.stringify(attempt.answers),
   });
-  showScore(test, attempt);
+  // No score screen. A student hands the paper in and goes back to their
+  // subject: marks are the teacher's to give, and a number on the way out
+  // would be a half-truth anyway while every long answer is still unmarked.
+  // The test stays open to them read-only — what they answered, nothing more.
+  handedIn = test.id;
+  void showStudentSubject(subjectId, subjectTitle);
+}
+
+/**
+ * The test just handed in, for the one render of the subject page that
+ * follows. It is a note on a screen, not state worth keeping: a reload has
+ * nothing to say about it, and the tree already says "Done".
+ */
+let handedIn = "";
+
+export function takeHandedIn(): string {
+  const id = handedIn;
+  handedIn = "";
+  return id;
 }
 
 /** Small screens: the tree slides in from the left over the question. */

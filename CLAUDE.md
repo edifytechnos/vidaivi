@@ -218,8 +218,11 @@ list skips platform tests for the same reason.
 
 A **shelf** is a subject row carrying `platform: true` — "CBSE Class 10 Maths",
 holding one master test per NCERT chapter. It is the shape a teacher already
-thinks in, and it is what they meet on **Your subjects**, badged *Built in*
-beside their own subjects.
+thinks in. It is **not** on Your subjects: that grid means *subjects you own*,
+for every role, and a shelf is nobody's own work. Shelves live on **Browse
+tests** (`src/screens/browse.ts`), and they are offered where a teacher is
+already asking for something — New subject's step 1, and the **+** in the tests
+tree.
 
 - Every teacher sees every shelf (`listOwnedSubjects` lets a `platform` row
   through regardless of owner); only an **admin** may rename or delete one
@@ -229,8 +232,15 @@ beside their own subjects.
   subject list is derived from the tests they can see, and platform tests are
   already skipped there.
 - `GET /api/tests?library=1&subjectId=<id>` is one shelf's chapters.
-- **A shelf opens in the ordinary authoring editor**, like any other subject —
-  it is in the subject dropdown, badged *(built in)*. An **admin** edits a
+- **A shelf is not in the editor's subject dropdown** (`ownSubjects` filters
+  `!platform`). Shelf-ness is therefore read from a separate `shelfIds` set
+  built from the *full* subject list — `viewingShelf()`, and with it
+  `readOnly()`, `canAddHere()` and the sibling filter, would otherwise treat
+  every shelf as an ordinary subject and hand a teacher an editable master. An
+  admin arriving from Browse is *in* a shelf, so `subjectLead()` carries the
+  current shelf as a transient entry rather than showing the wrong subject.
+- **A shelf still opens in the ordinary authoring editor** when an admin asks
+  for it — from **Edit** on a Browse row. An **admin** edits a
   master there exactly as they would their own test (unpublish → edit →
   publish; unpublishing a master is safe because it reaches no student). A
   **teacher** gets it read-only.
@@ -240,10 +250,33 @@ beside their own subjects.
   server then rejects — and it is now handled at the source: **`readOnly()` in
   `src/screens/editor/index.ts` returns true for `test.platform && !isAdmin()`**,
   so the client never asks. `canManageTest` on the server is still the real
-  gate. The separate read-only browser (`src/screens/library.ts`) is deleted;
-  `?library=<id>` redirects into the editor so old links keep working.
+  gate.
 - The **+** in the tree is hidden on a shelf unless you are an admin
   (`canAddHere()`): a teacher cannot add to the library.
+
+### Browse: reading the library before you take it (`src/screens/browse.ts`)
+
+`?browse` is the shelf list, `?browse=<id>` one shelf; old `?library=<id>` links
+land in the same place. A rail item **Browse tests** (`RailKey` `"browse"`) is
+shown to teachers and admins. Three read-only levels: shelves → that shelf's
+tests as catalogue rows → one test, one question at a time with its worked
+solution, so a teacher can *judge* a test before taking it.
+
+- **Use this test** calls `adoptTest(id)` with **no `subjectId`**, so the server
+  files the copy under the caller's own matching subject (creating one if they
+  have none) and the editor opens on the copy. **Edit** is admin-only and is
+  the route by which a master is corrected — it moved here when shelves left
+  Your subjects.
+- Like `src/screens/review.ts`, this reuses the editor's **layout only**
+  (`.ed-*` under `.ed-readonly`) and never reaches into `src/screens/editor/`,
+  whose panels are inputs and whose `state.ts` autosaves a shared working copy.
+- **`rowMarkup` is the one row renderer**, and it already has slots for what
+  will vary between authors — byline badge, price, "already in your tests". The
+  catalogue wireframes (`Step2Catalogue`, `CatalogueRow`) hold that design;
+  when teacher-to-teacher sharing arrives those tests join the same list with a
+  different byline and the page does not change. Browse fetches the whole
+  library to open, which is fine at 16 masters and is the same thing that has
+  to move server-side when the catalogue grows.
 
 ### Where chapter content lives
 
@@ -599,6 +632,7 @@ per device.
 - `screens/auth.ts` — welcome, student login, admin login, phone capture.
 - `screens/home.ts` — home test list, profile row, cloud-saved results.
 - `api.ts` — fetch client for the DB-backed tests API.
+- `screens/browse.ts` — read-only catalogue of built-in shelves and their tests.
 - `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
 - `screens/builder.ts` — visual test builder (create/edit cloud tests).
 - `screens/test.ts` — test player (landing → questions → score); guests only, past the landing.
@@ -741,19 +775,53 @@ useful as a demo.)
 - `GET /api/release?testId=` → `{released}` for a student; add `&student=` for a
   teacher, admin or linked parent asking about one student; a teacher asking
   without `student` gets `{classWide, students[]}` for the whole test.
+- `GET /api/release?testIds=a,b,c` → `{released: {id: bool}}` — the same
+  question for up to 50 papers at once, because the results list asks about
+  every paper a student has handed in and one request per paper is an N+1 from
+  a phone. Still only point reads (`isReleased` twice per id, `inBatches`).
 - `POST {action:"release"|"unrelease", testId, username?}` — teachers/admins,
   gated by `canSeeStudent`. Omit `username` to open it for everyone.
 - Client: `fetchReleased` / `fetchReleaseState` / `setReleased` in `src/auth.ts`.
   `fetchReleased` **fails closed** — a network error keeps the paper shut.
 
-## The test is silent until the teacher releases it
+## The test is silent until the teacher releases it — marks included
 
-A signed-in student submits and **nothing comes back** — no verdict, no correct
-answer, no worked solution, for any question type (`finishQuestion` in
-`src/screens/test.ts`). The score screen shows their marks but locks the
-question-by-question detail. **Guests keep the old instant feedback**: a guest
-has no teacher to release anything, and the demo has to stay worth sharing.
-`canHandIn()` is the one test for "is this a real student with a teacher".
+A signed-in student submits and **nothing comes back**: no verdict, no correct
+answer, no worked solution, **and no score**. **`showScore` is the guest's
+screen and only the guest's.** It used to show a student their marks with the
+detail behind a padlock and *Try again* beside it, which is three wrong things
+at once — a number that is a half-truth while every long answer is unmarked, a
+padlock where an answer should be, and an invitation to retake a paper the
+teacher has not finished with.
+
+What a student gets instead, in order:
+
+1. **Hand in → back to their subject.** `handIn` in `src/screens/student.ts`
+   goes to `showStudentSubject`, with one green note (`.st-handed`,
+   `takeHandedIn()`) saying the paper is in and what happens next. It is a note
+   for one render, not state: a reload has nothing to say about it.
+2. **The paper stays open to them, read-only and silent.** `showReview` has one
+   flag, `open`, and it is the whole difference between the two screens it is:
+   `false` renders what they answered and nothing else — two columns, no
+   explanation, no correct answer, no marks in the tree, no *Try again*, and a
+   chip that says only *Answered* / *Not answered*. A blank "not released yet"
+   page used to stand here, which left a student unable to see what they had
+   handed in.
+3. **Released → the result.** The same screen with `open` true: marks, correct
+   answers, the worked solution beside each question, and *Try again*. It is
+   reachable from the subject tree and from the row in **Your saved results**,
+   which is a button once the paper is open and reads *"Handed in 14 Sep ·
+   waiting for your teacher"* before that.
+
+**No score reaches a student anywhere before release.** `statusChip` and
+`refreshStatusChips` in `src/screens/home.ts` read `releasedTests`, filled by
+one `fetchReleasedMany` call; an unreleased paper's chip says *Handed in*. That
+set **fails closed**: absent means shut, so a failed request cannot leak a mark.
+
+**Guests keep the old instant feedback** — verdict, solution, score screen and
+all. A guest has no teacher to release anything, and the demo has to stay worth
+sharing. `canHandIn()` is the one test for "is this a real student with a
+teacher".
 
 Release is per student *and* per class — see `/api/release` above. The teacher
 presses it from the marking queue (`src/screens/marking.ts`) or from a student's
@@ -864,12 +932,26 @@ question scrolling to the end — that rule holds everywhere a test is shown.
 - **Reading the result has both**: that is `src/screens/review.ts`, unchanged —
   three columns, with the explanation on the right, once the teacher releases
   the paper.
+- **An answer saves itself. There is no Save button.** Tapping an option is the
+  save; a typed number settles for 800ms, and blur or Enter commits it at once;
+  a photo saves when it uploads and unsaves when the last one is removed. The
+  button that stood there cost a tap on every question and lost the answer of
+  anyone who tapped **Next** instead — which is exactly what happened in
+  testing. Saving no longer re-renders the page either (`refreshProgress` moves
+  the tick, the chip and the count in place): a full render tore the number
+  input out from under the student mid-number.
+- **What sits in that slot now is Clear answer** (`#st-clear`), hidden until
+  there is something to clear — the way to take an answer back off the paper
+  and leave the question for later. A `long` question has no Clear of its own:
+  the photo *is* the answer, and the uploader's ✕ already removes it
+  server-side, which a local Clear could not do.
 - **The controls follow the approved screen**: *Hand in test* sits at the right
-  of the breadcrumb row, and **Previous · progress · Save answer · Next** form
+  of the breadcrumb row, and **Previous · progress · Clear · Next** form
   one row at the foot of the answer card. The released result mirrors it, with
-  *Retake test* in the same place. Below 560px that row becomes a grid — Save
-  full width, then the two steps, then the count — and `.st-navrow .btn` needs
-  `min-width: 0`, because `.btn` carries `min-width: 130px` and a bare `1fr`
+  *Retake test* in the same place. Below 560px that row becomes a grid — the
+  two steps first, then the count, then Clear full width *last*, because Clear
+  is the rare press and must not land under a thumb aiming for Next — and
+  `.st-navrow .btn` needs `min-width: 0`, because `.btn` carries `min-width: 130px` and a bare `1fr`
   column cannot shrink under it (the row spilled out of the card on a phone).
   Below 720px the crumb keeps only the subject link and the action; the test
   title is in the app bar already and wrapped onto four lines otherwise.
@@ -907,6 +989,41 @@ question scrolling to the end — that rule holds everywhere a test is shown.
   one place that chooses, on `canHandIn()`.
 - Coming later, deliberately not built: a running timer, and questions unlocked
   only in order.
+
+## The teacher reads the whole paper, not just the long answers
+
+A teacher could see every long answer in the marking queue and the total on the
+student's report, and **never which MCQ the class got wrong** — the one thing a
+chapter test is for.
+
+- **Student report → an attempt row → View paper** (`openPaper` in
+  `src/screens/console.ts`) opens that student's finished paper in the same
+  read-only review screen the student and the parent get. One renderer for a
+  finished paper, no second implementation of "what did they put down".
+- **`GET /api/attempts?testId=&student=` now gates on `canSeeStudent`**, not on
+  `childLink`. That one function already knew every rule — a student reads only
+  their own, a parent only a linked child, a teacher only their own student, an
+  admin anyone — so the endpoint gained a role rather than a new rule. The read
+  is still one point-partition query with an explicit projection.
+- **Release does not gate the teacher.** `gated` in `src/screens/review.ts`
+  excludes `isTeacher()`: release is the teacher's own switch, and a teacher
+  has to see the answers *before* deciding to open them to the class.
+- The review's labels say **"Priya's answer"** rather than "Your answer" when
+  someone else's paper is open (`owner` in `review.ts`, set from
+  `opts.studentName`).
+
+## The score is marks, and says so (the guest's screen)
+
+The big number on the score screen is **marks**, and it was read as questions
+answered: `4 / 14` on a paper of 15 questions, because 12 of the 26 marks were
+still with the teacher and the denominator is deliberately what has been graded
+so far. The number now carries a `marks` unit and the count it was mistaken for
+is its own line underneath — *"15 of 15 questions answered"*. Keep both: either
+alone is ambiguous the moment a long answer is outstanding.
+
+That screen is **the guest's** now — a student never reaches it (see above).
+The misreading is what started the change; it is kept because the demo still
+shows it.
 
 ## Review: one question per page (`src/screens/review.ts`)
 

@@ -583,7 +583,14 @@ function check(ok, label) {
       // gets the same 403 for any code — it cannot probe which codes exist.
       check(links.badCode === 403, "an ineligible account learns nothing from an unknown code");
       check(links.nonGoogle === 403, "only a Google account can redeem a code");
-      check(links.unlinkedAttempts === 403, "attempts for an unlinked child are refused");
+      // Refused, but the reason depends on who is asking. /api/attempts now
+      // gates on canSeeStudent, so a parent gets 403 "Not your child" while
+      // this suite's admin — who may read any student that exists — gets 404
+      // for one who does not. Both are a refusal; neither hands back a paper.
+      check(
+        links.unlinkedAttempts === 403 || links.unlinkedAttempts === 404,
+        `attempts for an unlinked child are refused (${links.unlinkedAttempts})`
+      );
       check(links.unlinkedTests === 403, "the test list for an unlinked child is refused");
     }
 
@@ -733,7 +740,37 @@ function check(ok, label) {
         });
         const closedAgain = await studentSees();
 
+        // The teacher reads the whole paper, MCQs included. The attempt row is
+        // the student's own; GET /api/attempts?student= gates on canSeeStudent,
+        // so a teacher reaches their own student and nobody else's.
+        const handedIn = (
+          await asStudent(jar, "/api/attempts", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              testId: photoTestId,
+              score: 3,
+              total: 5,
+              completedAt: new Date().toISOString(),
+              answers: JSON.stringify({ q1: { given: 2, correct: true, earned: 3 } }),
+            }),
+          })
+        ).status;
+        const paperRead = await teacher(
+          `/api/attempts?testId=${photoTestId}&student=${made.username}`
+        );
+        const strangerPaper = (
+          await teacher(`/api/attempts?testId=${photoTestId}&student=no-such-student-xyz`)
+        ).status;
+
         return {
+          paper: {
+            handedIn,
+            status: paperRead.status,
+            error: paperRead.data?.error || "",
+            given: paperRead.data?.attempt?.answers?.q1?.given,
+            stranger: strangerPaper,
+          },
           asTeacher,
           notAnImage: notAnImage.status,
           tooBig: tooBig.status,
@@ -761,6 +798,25 @@ function check(ok, label) {
         await cleanup();
       }
     })();
+
+    if (marking.paper) {
+      const paper = marking.paper;
+      if (paper.status === 403 && /child/i.test(paper.error)) {
+        // The old parent-only rule. Point E2E_API_BASE at an environment
+        // carrying this branch to exercise it.
+        console.log(`SKIP  teacher reads a student's paper (API predates it: "${paper.error}")`);
+      } else {
+        check(paper.handedIn === 201, `a student hands a paper in (${paper.handedIn})`);
+        check(
+          paper.status === 200 && paper.given === 2,
+          `the teacher reads it back question by question (${paper.status}, answer ${paper.given})`
+        );
+        check(
+          paper.stranger === 404 || paper.stranger === 403,
+          `and cannot read a student who is not theirs (${paper.stranger})`
+        );
+      }
+    }
 
     if (marking.missing) {
       // Running against an API that predates this feature (production, before
@@ -840,10 +896,9 @@ function check(ok, label) {
       await page.waitForSelector("#primary-btn", { timeout: 20000 });
       await page.click("#primary-btn");
       // A signed-in student sits the test in the workspace (src/screens/student.ts):
-      // the question list beside one question, and Save rather than Submit.
+      // the question list beside one question, and the answer saves itself.
       await page.waitForSelector(".ed-student .option", { timeout: 20000 });
       await page.click(".ed-student .option");
-      await page.click("#st-save");
       // The tree is a drawer at phone width, so count the tick rather than
       // waiting for it to be on screen.
       await page.waitForFunction(
@@ -955,6 +1010,41 @@ function check(ok, label) {
     await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 20000 });
     check(true, "a signed-in teacher lands on the subjects grid");
     await shot("subjects");
+    // Your subjects means subjects you own. Built-in shelves are read from
+    // Browse and picked when creating a subject or a test; they are not here,
+    // and they are not in the editor's subject picker either.
+    check(
+      (await page.$$("#sub-grid .subject-card-builtin")).length === 0,
+      "no built-in shelf on Your subjects"
+    );
+    check(await page.isVisible('[data-rail="browse"]'), "the rail offers Browse tests");
+    await page.click('[data-rail="browse"]');
+    // Wait for Browse's own loaded state: Your subjects is a ".subjects" page
+    // too, and Browse paints its title over a skeleton before the data lands.
+    await page.waitForSelector("#br-subjects", { timeout: 25000 });
+    const shelfCard = await page.$(".subjects .subject-card-builtin[data-subject]");
+    check(!!shelfCard, "Browse lists the built-in shelves");
+    if (shelfCard) {
+      await shot("browse");
+      await shelfCard.click();
+      await page.waitForSelector(".br-list .br-row, .ed-panel .hint", { timeout: 30000 });
+      const rows = await page.$$(".br-list .br-row");
+      check(rows.length >= 1, `the shelf lists its tests as catalogue rows (${rows.length})`);
+      check(await page.isVisible(".br-row .br-use"), "each row offers Use this test");
+      const admin = !!process.env.E2E_ADMIN_USER;
+      check(
+        (await page.$$(".br-row .br-edit")).length > 0 === admin,
+        admin ? "an admin gets Edit on a built-in test" : "a teacher gets no Edit on a built-in test"
+      );
+      if (rows.length) {
+        await page.click(".br-row .br-preview");
+        await page.waitForSelector(".ed-readonly .ed-explain", { timeout: 30000 });
+        check(true, "a built-in test opens read-only with its explanation");
+        await shot("browse-test");
+      }
+    }
+    await page.click('[data-rail="subjects"]');
+    await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 25000 });
     const owned = await page.$(".subject-card[data-subject]:not(.subject-card-builtin)");
     if (owned) {
       await owned.click();
@@ -962,6 +1052,12 @@ function check(ok, label) {
       await page.waitForSelector(".editor:not(.sk-wrap) .ed-tree", { timeout: 30000 });
       check(true, "clicking a subject opens the authoring editor");
       check(await page.isVisible("#ed-new-test"), "the editor's tree offers Create");
+      check(
+        !(await page.evaluate(() =>
+          [...document.querySelectorAll("#ed-subject option")].some((o) => /built in/i.test(o.textContent))
+        )),
+        "the editor's subject picker lists no built-in shelf"
+      );
       await page.click("#ed-exit");
       await page.waitForSelector("#sub-grid .subject-card[data-subject]", { timeout: 20000 });
       check(true, "the editor returns to all subjects");
@@ -1181,52 +1277,75 @@ function check(ok, label) {
         );
 
         // The button layout J drew: Hand in test up on the breadcrumb row, and
-        // Previous · count · Save · Next as one row at the foot of the answer card.
+        // Previous · count · Clear · Next as one row at the foot of the answer
+        // card. Save is gone — an answer saves itself the moment it is given,
+        // so what is left in that slot is the way back out.
+        // Clear is hidden until there is an answer, so give it one first.
+        await page.click(".ed-student .option");
+        await page.waitForSelector("#st-clear:not([hidden])", { timeout: 15000 });
         const wsButtons = await page.evaluate(() => {
           const box = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, right: b.right, bottom: b.bottom }; };
           return {
             handinInCrumb: !!document.querySelector(".ed-crumbrow .st-handin"),
-            prev: box("#st-prev"), save: box("#st-save"), next: box("#st-next"),
+            prev: box("#st-prev"), save: box("#st-clear"), next: box("#st-next"),
+            noSave: !document.querySelector("#st-save"),
             count: box(".st-count"),
             panel: box(".ed-body .ed-panel:last-of-type"),
           };
         });
         check(wsButtons.handinInCrumb, "Hand in test sits on the breadcrumb row");
+        check(wsButtons.noSave, "there is no Save button — answers save themselves");
         check(
           Math.abs(wsButtons.prev.y - wsButtons.save.y) < 4 && Math.abs(wsButtons.save.y - wsButtons.next.y) < 4,
-          "Previous, Save and Next share one row"
+          "Previous, Clear and Next share one row"
         );
         check(
           wsButtons.prev.x < wsButtons.count.x &&
             wsButtons.count.right < wsButtons.save.x &&
             wsButtons.save.right <= wsButtons.next.x,
-          "in the order Previous · count · Save · Next"
+          "in the order Previous · count · Clear · Next"
         );
         check(
           wsButtons.next.right <= wsButtons.panel.right + 1 && wsButtons.prev.x >= wsButtons.panel.x - 1,
           "and the row stays inside the answer card"
         );
 
-        // Answered in any order, and revisitable.
+        // Answered in any order, and revisitable. Picking the option IS the
+        // save: this is the bug that lost answers when a student tapped Next.
         await page.click(".ed-student .option[data-i='0']");
-        await page.click("#st-save");
         await page.waitForFunction(
           () => document.querySelectorAll("#st-tree .st-answered").length === 1,
           { timeout: 15000 }
         );
-        check(true, "an answered question is ticked in the list");
+        check(true, "picking an option saves it and ticks the question");
+        // And Clear takes it back off, so the question can be left for later.
+        await page.click("#st-clear");
+        await page.waitForFunction(
+          () => document.querySelectorAll("#st-tree .st-answered").length === 0,
+          { timeout: 15000 }
+        );
+        check(
+          !(await page.$(".ed-student .option.selected")),
+          "Clear unticks it and deselects the option"
+        );
+        await page.click(".ed-student .option[data-i='0']");
+        await page.waitForFunction(
+          () => document.querySelectorAll("#st-tree .st-answered").length === 1,
+          { timeout: 15000 }
+        );
         await page.click("#st-tree .ed-tree-q[data-i='2']");
         await page.waitForSelector("#st-upload", { timeout: 15000 });
         check(true, "a later question can be opened before the one before it");
         await page.click("#st-tree .ed-tree-q[data-i='1']");
         await page.waitForSelector("#st-num", { timeout: 15000 });
         await page.fill("#st-num", "1");
-        await page.click("#st-save");
+        // A typed number settles before it saves; leaving the box commits at once.
+        await page.click(".ed-center .question-text");
         await page.waitForFunction(
           () => document.querySelectorAll("#st-tree .st-answered").length === 2,
           { timeout: 15000 }
         );
-        check(true, "and answered out of order");
+        check(true, "a typed number saves itself on blur, answered out of order");
 
         // A refresh lands back on the same question.
         const wsBefore = await page.evaluate(() => new URLSearchParams(location.search).get("q"));
@@ -1254,12 +1373,46 @@ function check(ok, label) {
         await page.waitForSelector("#st-submit", { timeout: 20000 });
         page.once("dialog", (d) => d.accept());
         await page.click("#st-submit");
-        await page.waitForSelector(".score-card", { timeout: 20000 });
+        // A student gets no score screen. Handing in returns them to their
+        // subject, with the paper readable but silent: marks are the teacher's
+        // to give, and a number on the way out is a half-truth while every
+        // long answer is unmarked.
+        await page.waitForSelector(".st-workspace .test-list", { timeout: 25000 });
         check(
-          (await page.textContent(".score-big")).replace(/\s/g, "").startsWith("3/"),
-          "handing in scores only what is auto-graded"
+          !(await page.$(".score-card")),
+          "handing in shows no score screen"
         );
-        check(await page.isVisible(".locked-title"), "the detail stays locked until the teacher releases it");
+        check(
+          await page.isVisible(".st-handed"),
+          "it lands back on the subject, saying the paper is in"
+        );
+        await shot("student-handed-in");
+        // The paper opens read-only: what they answered, and nothing else.
+        await page.click(`#st-tree .st-test[data-test='${wsTests[0].id}']`);
+        await page.waitForSelector(".review-item", { timeout: 25000 });
+        const shut = await page.evaluate(() => ({
+          cols: getComputedStyle(document.querySelector(".ed-cols")).gridTemplateColumns.split(" ").length,
+          solution: !!document.querySelector(".solution"),
+          correct: !!document.querySelector(".review-correct"),
+          retake: !!document.querySelector("#retake-btn"),
+          given: (document.querySelector(".review-given") || {}).textContent || "",
+          chips: [...document.querySelectorAll(".ed-panel-head .status-chip")].map((c) => c.textContent.trim()),
+          marks: [...document.querySelectorAll("#rv-tree .ed-tree-marks")].map((m) => m.textContent.trim()),
+        }));
+        check(shut.cols === 2, `a handed-in paper has no explanation column (${shut.cols})`);
+        check(!shut.solution, "and no worked solution");
+        check(!shut.correct, "and never says what the correct answer was");
+        check(!shut.retake, "and offers no Try again until the teacher releases it");
+        check(/answer/i.test(shut.given), `but does show what was answered ("${shut.given.slice(0, 40)}")`);
+        check(
+          shut.chips.every((c) => /answered/i.test(c)),
+          `no verdict on any question, only whether it was answered (${shut.chips.join(", ")})`
+        );
+        check(
+          shut.marks.every((m) => !m.includes("/")),
+          `and no marks in the question list (${shut.marks.join(" ")})`
+        );
+        await shot("student-paper-shut");
 
         // Released, the result view is the three-column one, explanation and all.
         const studentJar = await keepSession();
@@ -1282,6 +1435,17 @@ function check(ok, label) {
         }));
         check(wsResult.cols === 3, `the result view brings back the third column (${wsResult.cols})`);
         check(wsResult.solution, "and shows the explanation beside the question");
+        // Release is also what puts the marks and Try again back.
+        const nowOpen = await page.evaluate(() => ({
+          retake: !!document.querySelector("#retake-btn"),
+          marks: [...document.querySelectorAll("#rv-tree .ed-tree-marks")].map((m) => m.textContent.trim()),
+        }));
+        check(
+          nowOpen.marks.some((m) => m.includes("/")),
+          `the released paper shows the marks (${nowOpen.marks.join(" ")})`
+        );
+        check(nowOpen.retake, "and Try again is offered once it is open");
+        await shot("student-paper-open");
 
         // The result screen used to have no way to reach the question list on a
         // phone at all: its bottom tabs switch panes, and nothing opened the tree.
@@ -1514,19 +1678,30 @@ function check(ok, label) {
         );
         // .btn carries min-width:130px, so a bare 1fr column used to push this
         // row past the card's edge on a 390px screen.
+        // Clear only exists once there is something to clear, so answer first.
+        const phoneOption = await page.$(".ed-student .option");
+        if (phoneOption) await phoneOption.click();
         const phoneRow = await page.evaluate(() => {
           const box = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, right: b.right, width: b.width }; };
-          return { save: box("#st-save"), prev: box("#st-prev"), next: box("#st-next"),
+          return { save: box("#st-clear"), prev: box("#st-prev"), next: box("#st-next"),
                    panel: box(".ed-body .ed-panel:last-of-type"), scrollWidth: document.documentElement.scrollWidth };
         });
         check(
-          phoneRow.save.right <= phoneRow.panel.right + 1 && phoneRow.next.right <= phoneRow.panel.right + 1,
+          phoneRow.next.right <= phoneRow.panel.right + 1 && phoneRow.prev.x >= phoneRow.panel.x - 1,
           "on a phone the buttons stay inside the card"
         );
-        check(
-          phoneRow.save.y < phoneRow.prev.y && phoneRow.save.width > phoneRow.prev.width,
-          "with Save answer full width above Previous and Next"
-        );
+        if (phoneRow.save) {
+          check(
+            phoneRow.save.y > phoneRow.prev.y && phoneRow.save.width > phoneRow.prev.width,
+            "with Clear answer full width below Previous and Next"
+          );
+          check(
+            phoneRow.save.right <= phoneRow.panel.right + 1,
+            "and Clear inside the card too"
+          );
+        } else {
+          console.log("SKIP  phone Clear layout (first question is not answerable in one tap)");
+        }
         check(phoneRow.scrollWidth <= 390, `and nothing forces a sideways scroll (${phoneRow.scrollWidth}px)`);
         // The drawer: parked off-canvas, slides in, and the scrim shuts it.
         const parked = await page.evaluate(() => {

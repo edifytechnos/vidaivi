@@ -2506,14 +2506,16 @@ handlers.attempts = async (context, req) => {
     return json(context, 201, { ok: true });
   }
 
-  // A parent may read one linked child's attempts instead of their own. The
-  // link row is the authority — never the username the client sent.
+  // Someone may read another student's attempts instead of their own: a parent
+  // for a linked child, a teacher for their own student, an admin for anyone.
+  // canSeeStudent is the one place that decides, and it checks the row rather
+  // than trusting the username the client sent.
   const wantedChild = String((req.query && req.query.student) || "").trim().toLowerCase();
   let readAs = who.id;
   if (wantedChild) {
-    const link = await childLink(who, wantedChild);
-    if (!link) return json(context, 403, { error: "Not your child" });
-    readAs = `stu~${link.username}`;
+    const reason = await canSeeStudent(who, wantedChild);
+    if (reason) return refuse(context, reason);
+    readAs = `stu~${wantedChild}`;
   }
   const partition = `PartitionKey eq '${readAs.replace(/'/g, "''")}'`;
 
@@ -3005,6 +3007,33 @@ handlers.release = async (context, req) => {
 
   if (req.method === "GET") {
     const q = req.query || {};
+
+    // ?testIds=a,b,c — "which of these papers are open for me". The results
+    // list asks about every test a student has handed in, and one request per
+    // test would be an N+1 from a phone. Still only point reads: isReleased is
+    // two getEntity calls against the test's own partition, run a few at a
+    // time and capped, so this can never become a scan.
+    const many = String(q.testIds || "").trim();
+    if (many) {
+      const ids = many
+        .split(",")
+        .map((id) => safeId(id, 60))
+        .filter(Boolean)
+        .slice(0, 50);
+      const student =
+        who.kind === "student" ? who.username : String(q.student || "").trim().toLowerCase();
+      if (who.kind !== "student") {
+        if (!student) return json(context, 400, { error: "student is required" });
+        const refusal = await canSeeStudent(who, student);
+        if (refusal) return refuse(context, refusal);
+      }
+      const released = {};
+      await inBatches(ids, 10, async (id) => {
+        released[id] = await isReleased(id, student);
+      });
+      return json(context, 200, { released });
+    }
+
     const testId = safeId(q.testId, 60);
     if (!testId) return json(context, 400, { error: "testId is required" });
 
