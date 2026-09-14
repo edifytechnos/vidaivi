@@ -42,7 +42,7 @@ export async function openStudentPaper(opts: {
   questionId?: string;
   back: () => void;
 }): Promise<void> {
-  mount(skeleton.editor(), { title: "Marking", active: "mark", full: true });
+  mount(skeleton.editor(), { title: "Marking", active: "mark", full: true, scroll: "page" });
   const [test, remote] = await Promise.all([
     loadTest(opts.testId),
     fetchMyAttempt(opts.testId, opts.username),

@@ -1401,9 +1401,41 @@ placeholder must never be able to pass for a value: `.modal-input::placeholder`
 is italic and faint for the same reason, and `e2e/regression.cjs` asserts the
 error names the empty field.
 
+## The ghost loader is part of the screen (`skeleton` in `src/shell.ts`)
+
+A skeleton exists to stop the page jumping when the data lands. One that draws
+furniture the real screen does not have does the opposite, so **`skeleton.editor()`
+must be the shape of the screen its caller is about to paint** — and it takes
+options because the three screens sharing that shell no longer agree:
+
+| Caller | Shape |
+|---|---|
+| `src/screens/editor/index.ts` | `{ add: true }` — the authoring editor, the one screen with the **+** in the tree's head |
+| `showStudentSubject` (`student.ts`) | `{ tree: false, crumb: false }` — the subject page is a list of tests and nothing else |
+| `openTest` (`student.ts`), `openStudentPaper` (`marking.ts`) | the default — the paper: a question list and a crumb row |
+
+Two things it is easy to get wrong, and both were:
+
+- **The `+` placeholder belongs in the tree's head**, right-aligned, 26px square
+  — the same size and slot as the real `#ed-new-test`. It used to be a 60px
+  bone in a row of its own *below* the head, which inherited `.ed-tree-add`'s
+  purple and sat under the title instead of beside it.
+- **`scroll` must match too.** A skeleton mounted without `scroll: "page"` in
+  front of a screen that has it flips the whole scroll model the moment the data
+  arrives.
+
+`e2e/regression.cjs` holds the API back and asserts both: the ghost `+` lands at
+the same right edge and width as the real button, and the subject page's ghost
+draws no tree and no crumb row.
+
 ## Working style
 
 - Concise, structured output. No padding.
+- **Rework the ghost loader with the screen.** Any change to a screen's
+  furniture — a column, a row of controls, the scroll model — is not finished
+  until `skeleton` in `src/shell.ts` matches it and the suite has been run. The
+  skeleton is the first thing a student or a teacher sees on a cold start, and
+  it is the easiest thing in the app to leave behind.
 - Prefer the smallest change that keeps the loop moving.
 - Ask before adding any dependency, backend, or new feature outside this file.
 - Hold to **Performance, scale and cost** and **Security** above on every change

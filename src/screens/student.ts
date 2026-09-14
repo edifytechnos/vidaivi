@@ -147,7 +147,9 @@ export async function showStudentSubject(id: string | null, title?: string): Pro
   setUrl(id ? { subject: id } : {});
   track("subject_open", id ? { subject: id } : {});
 
-  mount(skeleton.editor(), { title: subjectTitle, active: "subjects", full: true });
+  mount(skeleton.editor({ tree: false, crumb: false }), {
+    title: subjectTitle, active: "subjects", full: true, scroll: "page",
+  });
 
   await loadWorkTests();
   renderOverview();
@@ -253,7 +255,7 @@ export async function openTest(testId: string): Promise<void> {
   const bundled = TESTS.find((t) => t.id === testId);
   let test: Test | null = bundled ?? null;
   if (!test) {
-    mount(skeleton.editor(), { title: "Test", active: "subjects", full: true });
+    mount(skeleton.editor(), { title: "Test", active: "subjects", full: true, scroll: "page" });
     test = await fetchServerTest(testId);
   }
   if (!test) {

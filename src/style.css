@@ -2303,10 +2303,6 @@ body {
   gap: 10px;
 }
 
-.sk-btn .sk {
-  background: rgba(255, 255, 255, 0.35);
-}
-
 @keyframes sk-shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }

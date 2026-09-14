@@ -269,18 +269,41 @@ export const skeleton = {
       .join("")}</tr></thead><tbody>${Array.from({ length: rows }).map(row).join("")}</tbody></table></div>`;
   },
   /** The editor: tree column and the overview panels. */
-  editor(): string {
+  /**
+   * The full-bleed working screen, as a ghost.
+   *
+   * **It must match the screen the caller is about to paint.** A skeleton that
+   * draws a column or a row the real screen does not have is worse than no
+   * skeleton: the page jumps the moment the data lands, which is the one thing
+   * it exists to prevent. Three screens share this shell and they no longer
+   * have the same furniture, so each says what it will paint:
+   *
+   * - `tree`  — the list beside the question (the subject page has none).
+   * - `add`   — the **+** in the tree's head, which only the authoring editor
+   *             has. It is a 26px square in the head's right-hand slot, the
+   *             same size and place as the real button; it used to be a
+   *             60px bone in a row of its own *below* the head, which is how
+   *             it came to sit under the title rather than beside it.
+   * - `crumb` — the row of controls above the question.
+   */
+  editor(opts: { tree?: boolean; add?: boolean; crumb?: boolean } = {}): string {
+    const { tree = true, add = false, crumb = true } = opts;
     const treeRow = () => `<div class="ed-tree-row"><span class="ed-tree-q">${bone("7px", "7px", "border-radius:50%")}${bone("65%", "13px")}</span></div>`;
+    const treeCol = tree
+      ? `<aside class="ed-tree">
+            <div class="ed-tree-head">
+              ${bone("110px", "11px")}
+              ${add ? `<span class="ed-spacer"></span>${bone("26px", "26px", "border-radius:var(--radius-sm);flex:none")}` : ""}
+            </div>
+            <div class="ed-tree-body">${treeRow()}${treeRow()}${treeRow()}${treeRow()}</div>
+          </aside>`
+      : "";
     return `
       <div class="editor sk-wrap" aria-busy="true">
-        <div class="ed-cols overview">
-          <aside class="ed-tree">
-            <div class="ed-tree-head">${bone("110px", "11px")}</div>
-            <div class="ed-tree-add sk-btn">${bone("60px", "13px")}</div>
-            <div class="ed-tree-body">${treeRow()}${treeRow()}${treeRow()}${treeRow()}</div>
-          </aside>
+        <div class="ed-cols overview${tree ? "" : " st-subject"}">
+          ${treeCol}
           <div class="ed-center">
-            <div class="ed-crumbrow">${bone("80px", "12px")}</div>
+            ${crumb ? `<div class="ed-crumbrow">${bone("80px", "12px")}</div>` : ""}
             <div class="ed-body">
               <section class="ed-panel"><div class="ed-panel-head">${bone("90px", "11px")}</div>
                 <div class="ed-grid">${bone("100%", "40px")}${bone("100%", "40px")}${bone("100%", "40px")}${bone("100%", "40px")}</div></section>
