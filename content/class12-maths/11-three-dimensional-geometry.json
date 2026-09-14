@@ -7,52 +7,55 @@
   "access": "login",
   "questions": [
     {
-      "id": "td-001",
-      "chapter": "Three Dimensional Geometry",
-      "topic": "Direction ratios",
-      "type": "mcq",
-      "q": "The direction ratios of the line joining $(1, 2, 3)$ and $(4, 5, 7)$ are:",
-      "solution": "Subtract the coordinates: $(4 - 1,\\; 5 - 2,\\; 7 - 3) = \\mathbf{3,\\,3,\\,4}$.\n\nDirection ratios are fixed only up to a common factor — $6, 6, 8$ describes the same direction. They are a heading, not a distance.",
-      "marks": 1,
-      "options": [
-        "3, 3, 4",
-        "5, 7, 10",
-        "4, 5, 7",
-        "1, 2, 3"
-      ],
-      "answer": 0
-    },
-    {
-      "id": "td-002",
+      "id": "c12td-101",
       "chapter": "Three Dimensional Geometry",
       "topic": "Direction cosines",
       "type": "mcq",
-      "q": "If $l$, $m$, $n$ are the direction cosines of a line, then $l^{2} + m^{2} + n^{2}$ equals:",
-      "solution": "The direction cosines are the components of a **unit** vector along the line, so their squares add to $\\mathbf{1}$.\n\nIt is Pythagoras in three dimensions, applied to a vector of length one.",
+      "q": "If the direction cosines of a line are $k$, $k$, $k$, then the value of $k$ is :",
+      "solution": "Direction cosines always satisfy\\n\\n$$l^2 + m^2 + n^2 = 1.$$\\n\\nHere $l = m = n = k$, so\\n\\n$$k^2 + k^2 + k^2 = 1 \\quad\\Longrightarrow\\quad 3k^2 = 1 \\quad\\Longrightarrow\\quad k^2 = \\frac13.$$\\n\\nTherefore\\n\\n$$k = \\pm\\frac{1}{\\sqrt{3}}.$$\\n\\nBoth signs are genuine — they correspond to the two opposite directions along the same line.",
       "marks": 1,
+      "source": "CBSE 2024",
       "options": [
-        "0",
-        "1",
-        "3",
-        "depends on the line"
+        "$\\pm 1$",
+        "$\\pm\\sqrt{3}$",
+        "$\\pm 3$",
+        "$\\pm\\dfrac{1}{\\sqrt{3}}$"
       ],
-      "answer": 1
+      "answer": 3
     },
     {
-      "id": "td-003",
+      "id": "c12td-102",
       "chapter": "Three Dimensional Geometry",
-      "topic": "Vector equation of a line",
+      "topic": "Direction cosines",
       "type": "mcq",
-      "q": "The vector equation of the line through the point with position vector $\\vec{a}$ and parallel to $\\vec{b}$ is:",
-      "solution": "Start at $\\vec{a}$ and walk any distance along $\\vec{b}$: $\\mathbf{\\vec{r} = \\vec{a} + \\lambda\\vec{b}}$.\n\n$\\vec{a}$ is where you stand, $\\vec{b}$ is which way you face, and $\\lambda$ is how far you go — forwards or backwards.",
+      "q": "If the direction cosines of a line are $\\dfrac{1}{a}$, $\\dfrac{1}{a}$, $\\dfrac{1}{a}$, then :",
+      "solution": "Apply $l^2 + m^2 + n^2 = 1$ :\\n\\n$$\\frac{1}{a^2} + \\frac{1}{a^2} + \\frac{1}{a^2} = 1 \\quad\\Longrightarrow\\quad \\frac{3}{a^2} = 1 \\quad\\Longrightarrow\\quad a^2 = 3.$$\\n\\nTherefore\\n\\n$$a = \\pm\\sqrt{3}.$$\\n\\nNote that this is an exact value, not a range — the other three options describe intervals, and the condition on direction cosines pins $a$ down completely.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "$\\vec{r} = \\vec{a} + \\lambda\\vec{b}$",
-        "$\\vec{r} = \\vec{a}\\cdot\\vec{b}$",
-        "$\\vec{r} = \\lambda\\left(\\vec{a} + \\vec{b}\\right)$",
-        "$\\vec{r} = \\vec{a} \\times \\vec{b}$"
+        "$0 < a < 1$",
+        "$a > 2$",
+        "$a > 0$",
+        "$a = \\pm\\sqrt{3}$"
       ],
-      "answer": 0
+      "answer": 3
+    },
+    {
+      "id": "c12td-103",
+      "chapter": "Three Dimensional Geometry",
+      "topic": "Distance from an axis",
+      "type": "mcq",
+      "q": "The distance of the point $(p, q, r)$ from the $y$-axis is :",
+      "solution": "The foot of the perpendicular from $(p, q, r)$ to the $y$-axis is the point $(0, q, 0)$ — moving along the $y$-axis changes only the $y$-coordinate, so the closest point on the axis keeps $q$ and zeroes the rest.\\n\\nThe distance is therefore\\n\\n$$\\sqrt{(p - 0)^2 + (q - q)^2 + (r - 0)^2} = \\sqrt{p^2 + r^2}.$$\\n\\nThe general rule: the distance from a coordinate axis is found by **dropping** that axis's own coordinate and taking the root of the sum of the squares of the other two.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$q$",
+        "$|q|$",
+        "$|q| + |r|$",
+        "$\\sqrt{p^2 + r^2}$"
+      ],
+      "answer": 3
     },
     {
       "id": "td-004",

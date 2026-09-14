@@ -7,20 +7,26 @@
   "access": "login",
   "questions": [
     {
-      "id": "aoi-001",
+      "id": "c12aoi-101",
       "chapter": "Application of Integrals",
-      "topic": "Area under a curve",
-      "type": "mcq",
-      "q": "The area bounded by $y = x^{2}$, the $x$-axis and the lines $x = 0$ and $x = 3$ is:",
-      "solution": "$\\displaystyle\\int_{0}^{3}x^{2}dx = \\left[\\dfrac{x^{3}}{3}\\right]_{0}^{3} = \\dfrac{27}{3} = \\mathbf{9}$ square units.\n\nAn integral is a stack of infinitely thin rectangles: height $y$, width $dx$, all added up.",
-      "marks": 1,
-      "options": [
-        "3 sq units",
-        "9 sq units",
-        "27 sq units",
-        "6 sq units"
-      ],
-      "answer": 1
+      "topic": "Area of a sector",
+      "type": "numeric",
+      "q": "The area of the region bounded by the line $y = mx$ $(m > 0)$, the curve $x^2 + y^2 = 4$ and the $x$-axis in the first quadrant is $\\dfrac{\\pi}{2}$ square units. Find the value of $m$.",
+      "solution": "The three boundaries — the $x$-axis, the line $y = mx$ and the circle of radius 2 — enclose a **circular sector** with its vertex at the origin.\\n\\nLet $\\theta$ be the angle the line makes with the $x$-axis, so $m = \\tan\\theta$.\\n\\n**Area of the sector.** For a circle of radius $r$, a sector of angle $\\theta$ has area\\n\\n$$\\frac{1}{2}r^2\\theta = \\frac{1}{2}(2)^2\\theta = 2\\theta.$$\\n\\n**Set it equal to the given area.**\\n\\n$$2\\theta = \\frac{\\pi}{2} \\quad\\Longrightarrow\\quad \\theta = \\frac{\\pi}{4}.$$\\n\\n**Recover $m$.**\\n\\n$$m = \\tan\\frac{\\pi}{4} = \\mathbf{1}.$$\\n\\nSo the line is $y = x$, which indeed cuts the first quadrant exactly in half — and a quarter-disc of radius 2 has area $\\pi$, half of which is $\\dfrac{\\pi}{2}$. The answer checks out.",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aoi-102",
+      "chapter": "Application of Integrals",
+      "topic": "Area between curves",
+      "type": "long",
+      "q": "Find the area of the region bounded by the curves $x^2 = y$, $y = x + 2$ and the $x$-axis, using integration.",
+      "solution": "**Step 1 — find every corner of the region.**\n\nThe line meets the $x$-axis where $x + 2 = 0$, that is at $(-2, 0)$.\n\nThe parabola meets the $x$-axis where $x^2 = 0$, that is at $(0, 0)$.\n\nThe line meets the parabola where $x^2 = x + 2$, so $x^2 - x - 2 = 0$ and $(x-2)(x+1) = 0$, giving $x = -1$ and $x = 2$. The intersection that borders our region is $(-1, 1)$.\n\nSo the region is the closed figure with corners $(-2, 0)$, $(-1, 1)$ and $(0, 0)$: up the **line** from $(-2,0)$ to $(-1,1)$, down the **parabola** from $(-1,1)$ to $(0,0)$, then back along the **$x$-axis**.\n\n**Step 2 — split the integral at $x = -1$**, where the upper boundary changes from the line to the parabola.\n\n$$\\text{Area} = \\int_{-2}^{-1}(x + 2)\\,dx \\;+\\; \\int_{-1}^{0} x^2\\,dx.$$\n\n**Step 3 — evaluate each piece.**\n\n$$\\int_{-2}^{-1}(x+2)\\,dx = \\left[\\frac{x^2}{2} + 2x\\right]_{-2}^{-1} = \\left(\\frac12 - 2\\right) - \\left(2 - 4\\right) = -\\frac32 + 2 = \\frac12.$$\n\n$$\\int_{-1}^{0} x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_{-1}^{0} = 0 - \\left(-\\frac13\\right) = \\frac13.$$\n\n**Step 4 — add.**\n\n$$\\text{Area} = \\frac12 + \\frac13 = \\frac{5}{6}\\ \\text{square units}.$$\n\n**Check.** The first piece is a triangle with base 1 and height 1, area $\\tfrac12$ — which matches. The second is the small area under the parabola from $-1$ to $0$, comfortably less than the $1 \\times 1$ square containing it. Both pieces are sensible.",
+      "marks": 5,
+      "source": "CBSE 2023"
     },
     {
       "id": "aoi-002",
@@ -158,15 +164,6 @@
       "q": "Find the area of the region in the first quadrant enclosed by the circle $x^{2} + y^{2} = 16$ and the coordinate axes.",
       "solution": "In the first quadrant, $y = \\sqrt{16 - x^{2}}$ with $x$ running from $0$ to $4$.\n\nArea $= \\displaystyle\\int_{0}^{4}\\sqrt{16 - x^{2}}\\,dx$.\n\nUsing $\\displaystyle\\int\\sqrt{a^{2} - x^{2}}dx = \\dfrac{x}{2}\\sqrt{a^{2} - x^{2}} + \\dfrac{a^{2}}{2}\\sin^{-1}\\dfrac{x}{a}$ with $a = 4$:\n\nAt $x = 4$: $0 + 8\\sin^{-1}(1) = 8 \\times \\tfrac{\\pi}{2} = 4\\pi$. At $x = 0$: $0$.\n\nArea $= \\mathbf{4\\pi}$ square units, which is a quarter of $\\pi(4)^{2} = 16\\pi$ — as it must be. ✓",
       "marks": 3
-    },
-    {
-      "id": "aoi-013",
-      "chapter": "Application of Integrals",
-      "topic": "Parabola and a chord",
-      "type": "long",
-      "q": "Find the area of the region bounded by the parabola $y^{2} = 4x$ and the line $x = 4$.",
-      "solution": "The parabola opens to the right and is symmetric about the $x$-axis, so work out the top half and double it.\n\nOn top, $y = 2\\sqrt{x}$, with $x$ from $0$ to $4$.\n\nArea $= 2\\displaystyle\\int_{0}^{4}2\\sqrt{x}\\,dx = 4\\left[\\dfrac{2}{3}x^{3/2}\\right]_{0}^{4} = \\dfrac{8}{3}\\left(4^{3/2}\\right) = \\dfrac{8}{3}(8) = \\mathbf{\\dfrac{64}{3}}$ square units.\n\n**Sanity check:** the enclosing rectangle is $4$ wide and $8$ tall, area $32$; the region fills two-thirds of it, $\\tfrac{64}{3} \\approx 21.3$. ✓\n\nUsing symmetry halves the work and halves the chances of a sign slip.",
-      "marks": 5
     },
     {
       "id": "aoi-014",

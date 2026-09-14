@@ -7,34 +7,36 @@
   "access": "login",
   "questions": [
     {
-      "id": "lp-001",
+      "id": "c12lp-102",
       "chapter": "Linear Programming",
-      "topic": "Feasible region",
+      "topic": "Corner point method",
       "type": "mcq",
-      "q": "In a linear programming problem, the feasible region is:",
-      "solution": "The feasible region is where **every** constraint holds at once — the overlap of all the shaded half-planes.\n\nIt is the set of plans you are actually allowed to carry out; the objective function only comes in afterwards, to rank them.",
+      "q": "The corner points of the feasible region in the graphical representation of a linear programming problem are $(2, 72)$, $(15, 20)$ and $(40, 15)$. If $z = 18x + 9y$ is the objective function, then :",
+      "solution": "By the corner point method, the optimum of a linear objective over a bounded feasible region occurs at one of its corners — so simply evaluate $z = 18x + 9y$ at each.\\n\\n**At $(2, 72)$ :**\\n\\n$$z = 18(2) + 9(72) = 36 + 648 = 684.$$\\n\\n**At $(15, 20)$ :**\\n\\n$$z = 18(15) + 9(20) = 270 + 180 = 450.$$\\n\\n**At $(40, 15)$ :**\\n\\n$$z = 18(40) + 9(15) = 720 + 135 = 855.$$\\n\\nComparing $684$, $450$ and $855$ :\\n\\n- the **maximum** is $855$, at $(40, 15)$;\\n- the **minimum** is $450$, at $(15, 20)$.\\n\\nNote that the largest $y$-value does not give the largest $z$ — the coefficient of $x$ is twice that of $y$, so $x$ carries more weight.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "the set of all points satisfying the objective function",
-        "the common region of all the constraints",
-        "the region outside the constraints",
-        "always a triangle"
+        "$z$ is maximum at $(2, 72)$, minimum at $(15, 20)$",
+        "$z$ is maximum at $(40, 15)$, minimum at $(15, 20)$",
+        "$z$ is maximum at $(15, 20)$, minimum at $(40, 15)$",
+        "$z$ is maximum at $(40, 15)$, minimum at $(2, 72)$"
       ],
       "answer": 1
     },
     {
-      "id": "lp-002",
+      "id": "c12lp-101",
       "chapter": "Linear Programming",
-      "topic": "Corner point theorem",
+      "topic": "What an LPP is",
       "type": "mcq",
-      "q": "If a linear programming problem has an optimal solution over a bounded feasible region, that optimum occurs:",
-      "solution": "A linear objective function has no peaks in the middle — it slides steadily across the region, so its best value is pushed out to the boundary and, in the end, to a **corner point**.\n\nTilt a tray of marbles: they all end up in a corner, never in the middle.",
+      "q": "A linear programming problem deals with the optimization of a/an :",
+      "solution": "The name says it. A linear programming problem consists of :\\n\\n- an **objective function** that is linear in the decision variables, such as $Z = ax + by$ — this is what is maximised or minimised;\\n- a set of **linear constraints**, written as inequalities such as $2x + 3y \\leq 12$;\\n- usually non-negativity conditions $x \\geq 0$, $y \\geq 0$.\\n\\nBoth the thing being optimised and the region it is optimised over are linear, which is exactly why the optimum can always be found at a **corner point** of the feasible region. If the objective were quadratic or exponential, that corner-point method would fail.",
       "marks": 1,
+      "source": "CBSE 2024",
       "options": [
-        "at the centre of the region",
-        "at a corner point of the region",
-        "at any interior point",
-        "only at the origin"
+        "logarithmic function",
+        "linear function",
+        "quadratic function",
+        "exponential function"
       ],
       "answer": 1
     },

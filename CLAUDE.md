@@ -349,7 +349,27 @@ fail to publish then fails while it is being written rather than mid-seed.
 when the question was read verbatim out of a full paper for that year, with the
 paper's own code, and the tag must say what kind of paper: `CBSE SQP 2024-25`
 is not `CBSE 2024`. `docs/library-sources.md` records which papers exist, which
-were obtained, and which shelves carry tags — today only Class 10 Maths does.
+were obtained, and which shelves carry tags.
+
+**The real board papers are at
+`https://www.cbse.gov.in/cbsenew/question-paper.html`** — the papers the class
+actually sat, one zip per subject-year holding every set by Q.P. code, for 2022
+to 2026 in both the main and the compartment sitting. Class XII Maths, Physics
+and Chemistry and Class X Science and Maths are all there. An earlier note in
+this repo said they were not published; that was wrong, and `library-sources.md`
+says so rather than quietly deleting it, because the index is long enough that
+the next person to look will reach the same wrong conclusion.
+
+**Extraction loses notation, and that decides which chapters can be tagged.**
+Reading a paper as text keeps the words and the whole numbers and drops the
+surds, fractions and superscripts — so a question that reads *"the principal
+value of $\sec^{-1}$ ___"* cannot be tagged, because what it asked is no longer
+on the page. Chapters carried by words tag well; chapters carried by symbols do
+not. `docs/class12-maths-sources.md` states the per-chapter count for that
+reason: a thin chapter is a limit of the method, not a shortage of papers.
+
+Tagged today: Class 10 Maths (14 chapters, complete) and Class 12 Maths
+(66 of 195, with Relations and Functions complete at 15).
 
 ## Authoring editor (`src/screens/editor/`)
 

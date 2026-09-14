@@ -7,52 +7,89 @@
   "access": "login",
   "questions": [
     {
-      "id": "aod-001",
+      "id": "c12aod-101",
       "chapter": "Application of Derivatives",
-      "topic": "Rate of change",
+      "topic": "Strictly decreasing functions",
       "type": "mcq",
-      "q": "The radius of a circle is increasing at $3$ cm/s. When the radius is $10$ cm, the area is increasing at:",
-      "solution": "$A = \\pi r^{2}$, so $\\dfrac{dA}{dt} = 2\\pi r \\dfrac{dr}{dt}$.\n\n$= 2\\pi (10)(3) = \\mathbf{60\\pi}$ cm$^{2}$/s.\n\nNotice the area grows faster the bigger the circle already is: new area is added around the **rim**, and a longer rim takes more of it.",
+      "q": "If $f(x) = a(x - \\cos x)$ is strictly decreasing in $\\mathbb{R}$, then $a$ belongs to :",
+      "solution": "Differentiate :\\n\\n$$f'(x) = a\\left(1 + \\sin x\\right).$$\\n\\nNow $\\sin x \\geq -1$ for every real $x$, so $1 + \\sin x \\geq 0$ always — it is zero only at isolated points where $\\sin x = -1$.\\n\\nFor $f$ to be **strictly decreasing** we need $f'(x) \\leq 0$ throughout (and not identically zero on any interval). Since $1 + \\sin x$ is never negative, this forces\\n\\n$$a < 0.$$\\n\\nIf $a > 0$ the function would be strictly increasing, and $a = 0$ makes $f$ constant — neither is decreasing. So $a \\in (-\\infty, 0)$.",
       "marks": 1,
+      "source": "CBSE 2023",
       "options": [
-        "$30\\pi$ cm$^{2}$/s",
-        "$60\\pi$ cm$^{2}$/s",
-        "$100\\pi$ cm$^{2}$/s",
-        "$20\\pi$ cm$^{2}$/s"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "aod-002",
-      "chapter": "Application of Derivatives",
-      "topic": "Increasing functions",
-      "type": "mcq",
-      "q": "A differentiable function $f$ is strictly increasing on an interval if, throughout that interval:",
-      "solution": "The derivative is the slope. A positive slope everywhere means the graph climbs everywhere — that is exactly strictly increasing.\n\n$f''(x) > 0$ is a different statement: it says the climb is getting steeper (the curve bends upwards), which can happen while the function is still falling.",
-      "marks": 1,
-      "options": [
-        "$f'(x) < 0$",
-        "$f'(x) > 0$",
-        "$f''(x) > 0$",
-        "$f(x) > 0$"
-      ],
-      "answer": 1
-    },
-    {
-      "id": "aod-003",
-      "chapter": "Application of Derivatives",
-      "topic": "Slope of a tangent",
-      "type": "mcq",
-      "q": "The slope of the tangent to the curve $y = x^{3} - 3x$ at $x = 2$ is:",
-      "solution": "$\\dfrac{dy}{dx} = 3x^{2} - 3$.\n\nAt $x = 2$: $3(4) - 3 = \\mathbf{9}$.\n\nThe derivative is a speedometer for the curve — read it at the moment you care about.",
-      "marks": 1,
-      "options": [
-        "3",
-        "6",
-        "9",
-        "12"
+        "$\\{0\\}$",
+        "$(0, \\infty)$",
+        "$(-\\infty, 0)$",
+        "$(-\\infty, \\infty)$"
       ],
       "answer": 2
+    },
+    {
+      "id": "c12aod-102",
+      "chapter": "Application of Derivatives",
+      "topic": "Rate of change",
+      "type": "numeric",
+      "q": "If the sides of a square are decreasing at the rate of $1 \\cdot 5$ cm/s, find the rate of decrease of its perimeter, in cm/s.",
+      "solution": "Let the side be $a$ and the perimeter $P$. For a square,\\n\\n$$P = 4a.$$\\n\\nDifferentiate with respect to time :\\n\\n$$\\frac{dP}{dt} = 4\\,\\frac{da}{dt}.$$\\n\\nThe side is decreasing at $1 \\cdot 5$ cm/s, so $\\left|\\dfrac{da}{dt}\\right| = 1 \\cdot 5$ and\\n\\n$$\\left|\\frac{dP}{dt}\\right| = 4 \\times 1 \\cdot 5 = \\mathbf{6}\\ \\text{cm/s}.$$\\n\\nThe perimeter is decreasing at 6 cm/s. Note this does not depend on the size of the square — the relation $P = 4a$ is linear, so the rates are always in the ratio 4 : 1.",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aod-103",
+      "chapter": "Application of Derivatives",
+      "topic": "Motion in a straight line",
+      "type": "numeric",
+      "q": "If the distance travelled by a particle in $t$ seconds is given by $S = 72t + 3t^2 - t^3$, find the time, in seconds, taken by the particle to come to rest.",
+      "solution": "The particle is at rest when its velocity is zero. Velocity is the derivative of distance :\\n\\n$$v = \\frac{dS}{dt} = 72 + 6t - 3t^2.$$\\n\\nSet $v = 0$ :\\n\\n$$72 + 6t - 3t^2 = 0.$$\\n\\nDivide through by $-3$ :\\n\\n$$t^2 - 2t - 24 = 0 \\quad\\Longrightarrow\\quad (t - 6)(t + 4) = 0.$$\\n\\nSo $t = 6$ or $t = -4$. Time cannot be negative, so\\n\\n$$t = \\mathbf{6}\\ \\text{seconds}.$$",
+      "marks": 2,
+      "source": "CBSE 2026",
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aod-104",
+      "chapter": "Application of Derivatives",
+      "topic": "Local maxima and minima",
+      "type": "numeric",
+      "q": "If $M$ and $m$ denote the local maximum and local minimum values of the function $f(x) = x + \\dfrac{1}{x}$ $(x \\neq 0)$ respectively, find the value of $(M - m)$.",
+      "solution": "**Step 1 — stationary points.**\\n\\n$$f'(x) = 1 - \\frac{1}{x^2} = 0 \\quad\\Longrightarrow\\quad x^2 = 1 \\quad\\Longrightarrow\\quad x = \\pm 1.$$\\n\\n**Step 2 — classify them.** $f''(x) = \\dfrac{2}{x^3}$.\\n\\nAt $x = 1$ : $f''(1) = 2 > 0$, so this is a local **minimum**, with $m = f(1) = 1 + 1 = 2$.\\n\\nAt $x = -1$ : $f''(-1) = -2 < 0$, so this is a local **maximum**, with $M = f(-1) = -1 - 1 = -2$.\\n\\n**Step 3 — subtract.**\\n\\n$$M - m = -2 - 2 = \\mathbf{-4}.$$\\n\\nThis looks wrong at first glance — the local maximum value is *smaller* than the local minimum value. It is correct: the two stationary points sit on opposite branches of the curve, separated by the asymptote at $x = 0$, so neither is a maximum or minimum of the whole function.",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": -4,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aod-105",
+      "chapter": "Application of Derivatives",
+      "topic": "Local maxima and minima",
+      "type": "numeric",
+      "q": "Find the local minimum value of the function $f(x) = 4x^2 + \\dfrac{1}{x}$ $(x \\neq 0)$.",
+      "solution": "**Step 1 — stationary points.**\\n\\n$$f'(x) = 8x - \\frac{1}{x^2} = 0 \\quad\\Longrightarrow\\quad 8x = \\frac{1}{x^2} \\quad\\Longrightarrow\\quad 8x^3 = 1 \\quad\\Longrightarrow\\quad x = \\frac{1}{2}.$$\\n\\n**Step 2 — classify.**\\n\\n$$f''(x) = 8 + \\frac{2}{x^3}, \\qquad f''\\!\\left(\\tfrac12\\right) = 8 + 16 = 24 > 0,$$\\n\\nso $x = \\dfrac{1}{2}$ gives a local **minimum**.\\n\\n**Step 3 — the value.**\\n\\n$$f\\!\\left(\\frac12\\right) = 4 \\times \\frac14 + \\frac{1}{1/2} = 1 + 2 = \\mathbf{3}.$$\\n\\n(There is no local maximum: $f'$ has only this one zero.)",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aod-106",
+      "chapter": "Application of Derivatives",
+      "topic": "Absolute maxima and minima",
+      "type": "long",
+      "q": "Find the absolute maximum and minimum values of the function $f(x) = 12x^{4/3} - 6x^{1/3}$, $x \\in [0, 1]$.",
+      "solution": "On a **closed** interval the absolute extremes occur either at a stationary point inside or at an endpoint, so find all three kinds of candidate.\\n\\n**Step 1 — differentiate.**\\n\\n$$f'(x) = 12 \\cdot \\frac{4}{3}x^{1/3} - 6 \\cdot \\frac{1}{3}x^{-2/3} = 16x^{1/3} - 2x^{-2/3}.$$\\n\\n**Step 2 — stationary points.** Setting $f'(x) = 0$ and multiplying through by $x^{2/3}$ :\\n\\n$$16x - 2 = 0 \\quad\\Longrightarrow\\quad x = \\frac{1}{8},$$\\n\\nwhich lies inside $[0, 1]$.\\n\\n**Step 3 — evaluate at every candidate.**\\n\\n$$f(0) = 0,$$\\n$$f\\!\\left(\\tfrac18\\right) = 12\\left(\\tfrac18\\right)^{4/3} - 6\\left(\\tfrac18\\right)^{1/3} = 12 \\cdot \\frac{1}{16} - 6 \\cdot \\frac12 = \\frac34 - 3 = -\\frac94,$$\\n$$f(1) = 12 - 6 = 6.$$\\n\\n**Step 4 — compare.**\\n\\nThe **absolute maximum** is $\\mathbf{6}$, at $x = 1$.\\n\\nThe **absolute minimum** is $\\mathbf{-\\dfrac{9}{4}} = -2 \\cdot 25$, at $x = \\dfrac18$.",
+      "marks": 3,
+      "source": "CBSE 2024"
+    },
+    {
+      "id": "c12aod-107",
+      "chapter": "Application of Derivatives",
+      "topic": "Strictly increasing functions",
+      "type": "long",
+      "q": "Show that $f(x) = e^{x} - e^{-x} + x - \\tan^{-1} x$ is strictly increasing in $\\mathbb{R}$.",
+      "solution": "A function is strictly increasing on $\\mathbb{R}$ if $f'(x) > 0$ for every real $x$.\\n\\n**Differentiate.**\\n\\n$$f'(x) = e^{x} + e^{-x} + 1 - \\frac{1}{1 + x^2}.$$\\n\\n(The derivative of $-e^{-x}$ is $+e^{-x}$, and the derivative of $-\\tan^{-1}x$ is $-\\dfrac{1}{1+x^2}$.)\\n\\n**Bound the two parts separately.**\\n\\nFirst, by AM–GM applied to the positive numbers $e^x$ and $e^{-x}$,\\n\\n$$e^{x} + e^{-x} \\geq 2\\sqrt{e^{x} \\cdot e^{-x}} = 2.$$\\n\\nSecond, since $1 + x^2 \\geq 1$ for every real $x$, we have $\\dfrac{1}{1+x^2} \\leq 1$ and therefore\\n\\n$$1 - \\frac{1}{1 + x^2} \\geq 0.$$\\n\\n**Add them.**\\n\\n$$f'(x) \\geq 2 + 0 = 2 > 0$$\\n\\nfor every $x \\in \\mathbb{R}$.\\n\\nSince the derivative is strictly positive everywhere, $f$ is **strictly increasing on $\\mathbb{R}$**.",
+      "marks": 3,
+      "source": "CBSE 2024"
     },
     {
       "id": "aod-004",
@@ -87,28 +124,6 @@
       "answer": 1
     },
     {
-      "id": "aod-006",
-      "chapter": "Application of Derivatives",
-      "topic": "Related rates",
-      "type": "numeric",
-      "q": "The side of a square is increasing at $4$ cm/s. Find the rate (in cm$^{2}$/s) at which its area increases when the side is $8$ cm.",
-      "solution": "$A = x^{2}$, so $\\dfrac{dA}{dt} = 2x\\dfrac{dx}{dt} = 2(8)(4) = \\mathbf{64}$ cm$^{2}$/s.\n\nThe new area is a thin strip along two sides of the square, so it grows in proportion to the side length.",
-      "marks": 2,
-      "answer": 64,
-      "tolerance": 0
-    },
-    {
-      "id": "aod-007",
-      "chapter": "Application of Derivatives",
-      "topic": "Local minimum",
-      "type": "numeric",
-      "q": "Find the value of $x$ at which $f(x) = x^{2} - 4x + 5$ has its local minimum.",
-      "solution": "$f'(x) = 2x - 4 = 0 \\Rightarrow x = 2$.\n\n$f''(x) = 2 > 0$, so it is a minimum. $x = \\mathbf{2}$ (where $f = 1$).\n\nFor a parabola this is just the vertex, exactly halfway between the roots.",
-      "marks": 2,
-      "answer": 2,
-      "tolerance": 0
-    },
-    {
       "id": "aod-008",
       "chapter": "Application of Derivatives",
       "topic": "Maximum value",
@@ -140,24 +155,6 @@
       "marks": 2,
       "answer": 1.5,
       "tolerance": 0.01
-    },
-    {
-      "id": "aod-011",
-      "chapter": "Application of Derivatives",
-      "topic": "Increasing and decreasing intervals",
-      "type": "long",
-      "q": "Find the intervals on which $f(x) = 2x^{3} - 3x^{2} - 36x + 7$ is increasing and on which it is decreasing.",
-      "solution": "$f'(x) = 6x^{2} - 6x - 36 = 6\\left(x^{2} - x - 6\\right) = 6(x - 3)(x + 2)$.\n\nThe critical points are $x = -2$ and $x = 3$; test the sign of $f'$ in each stretch:\n\n• $x < -2$: both factors negative → product positive → **increasing**.\n\n• $-2 < x < 3$: one negative, one positive → **decreasing**.\n\n• $x > 3$: both positive → **increasing**.\n\n**Increasing on** $(-\\infty, -2) \\cup (3, \\infty)$; **decreasing on** $(-2, 3)$.\n\nThe cubic climbs to a local peak at $x = -2$, dips to a local trough at $x = 3$, and climbs away.",
-      "marks": 3
-    },
-    {
-      "id": "aod-012",
-      "chapter": "Application of Derivatives",
-      "topic": "Tangent and normal",
-      "type": "long",
-      "q": "Find the equations of the tangent and the normal to the curve $y = x^{2} - 2x + 7$ at the point $(2, 7)$.",
-      "solution": "**Check the point is on the curve:** $4 - 4 + 7 = 7$. ✓\n\n$\\dfrac{dy}{dx} = 2x - 2$, which at $x = 2$ is $2$ — the slope of the tangent.\n\n**Tangent:** $y - 7 = 2(x - 2) \\Rightarrow \\mathbf{y = 2x + 3}$.\n\n**Normal** is perpendicular, so its slope is $-\\tfrac12$:\n\n$y - 7 = -\\tfrac12(x - 2) \\Rightarrow \\mathbf{x + 2y = 16}$.\n\nPerpendicular slopes multiply to $-1$ — that single fact turns every tangent question into a normal question.",
-      "marks": 3
     },
     {
       "id": "aod-013",
