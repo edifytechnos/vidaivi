@@ -3277,6 +3277,15 @@ body.modal-open {
   transition: opacity 0.2s ease;
 }
 
+/* The overlay stops where the bottom bar starts. The bar is opaque and sits
+   above it either way, but a sheet stretched under it is a sheet that dims
+   nothing and swallows taps meant for the bar. Declared here rather than in
+   the phone block above, because this rule's `inset` shorthand comes later in
+   the file and would reset the `bottom` a media query had set. */
+@media (max-width: 899px) {
+  .ed-scrim { bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+}
+
 /* The button that opens it. Only where the tree is not already a column. */
 .st-drawer-btn {
   display: none;
@@ -3321,7 +3330,9 @@ body.modal-open {
   .rail {
     position: fixed;
     inset: auto 0 0 0;
-    z-index: 30;
+    /* Above the drawer and its scrim. The bar is never what the overlay is
+       dimming — it stays lit and usable with the question list open. */
+    z-index: 45;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: stretch;

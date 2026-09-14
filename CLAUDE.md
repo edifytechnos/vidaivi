@@ -1144,6 +1144,11 @@ question scrolling to the end — that rule holds everywhere a test is shown.
     is **measured**, not guessed: `bindTreeDrawer` writes the crumb row's
     bottom into `--drawer-top` on the editor, because that row wraps at narrow
     widths and a hard-coded offset would float away from it.
+  - **The bottom bar is never dimmed by the drawer's overlay.** It sits above
+    both (`z-index: 45`) and the scrim stops where the bar starts. A greyed-out
+    bar reads as disabled, and it is still the way off the screen. The scrim's
+    `bottom` has to be declared *after* the base `.ed-scrim` rule, whose
+    `inset` shorthand would otherwise reset it.
   - **The app bar names the test, beside the logo.** It used to drop the title
     below 600px on the grounds that the crumb row carried it — but the crumb
     row drops the test name at that width too, so a phone said nothing about

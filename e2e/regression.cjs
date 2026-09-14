@@ -1866,6 +1866,21 @@ function check(ok, label) {
           Math.abs(opened.top - opened.crumbBottom) <= 2,
           `starting under the Questions button (tree ${opened.top}, crumb ends ${opened.crumbBottom})`
         );
+        // The bottom bar is never what the overlay dims: a greyed-out bar
+        // reads as disabled, and it is still the way off this screen.
+        const barLit = await page.evaluate(() => {
+          const rail = document.querySelector(".rail").getBoundingClientRect();
+          const scrim = document.querySelector(".ed-scrim").getBoundingClientRect();
+          const hit = document.elementFromPoint(
+            Math.round(rail.left + rail.width / 2),
+            Math.round(rail.top + rail.height / 2)
+          );
+          return { onTop: !!(hit && hit.closest(".rail")), scrimBottom: Math.round(scrim.bottom), railTop: Math.round(rail.top) };
+        });
+        check(
+          barLit.onTop && barLit.scrimBottom <= barLit.railTop + 1,
+          `the bottom bar stays above the overlay (scrim ends ${barLit.scrimBottom}, bar starts ${barLit.railTop})`
+        );
         await page.mouse.click(370, 500);
         await page.waitForFunction(
           () => getComputedStyle(document.querySelector(".ed-tree")).visibility === "hidden",
