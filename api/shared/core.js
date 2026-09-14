@@ -2506,14 +2506,16 @@ handlers.attempts = async (context, req) => {
     return json(context, 201, { ok: true });
   }
 
-  // A parent may read one linked child's attempts instead of their own. The
-  // link row is the authority — never the username the client sent.
+  // Someone may read another student's attempts instead of their own: a parent
+  // for a linked child, a teacher for their own student, an admin for anyone.
+  // canSeeStudent is the one place that decides, and it checks the row rather
+  // than trusting the username the client sent.
   const wantedChild = String((req.query && req.query.student) || "").trim().toLowerCase();
   let readAs = who.id;
   if (wantedChild) {
-    const link = await childLink(who, wantedChild);
-    if (!link) return json(context, 403, { error: "Not your child" });
-    readAs = `stu~${link.username}`;
+    const reason = await canSeeStudent(who, wantedChild);
+    if (reason) return refuse(context, reason);
+    readAs = `stu~${wantedChild}`;
   }
   const partition = `PartitionKey eq '${readAs.replace(/'/g, "''")}'`;
 

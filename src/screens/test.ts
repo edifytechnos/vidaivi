@@ -503,6 +503,10 @@ export function showScore(test: Test, attempt: Attempt, released?: boolean) {
   // With marks still out, the percentage would be a lie — the denominator is
   // what has actually been graded, and the pill says what is missing.
   const graded = total - waiting.marks;
+  // The big number is MARKS, and it was read as questions answered — 4/14 on a
+  // paper of 15 questions where 12 marks were still with the teacher. The unit
+  // is now on the number, and the count it was mistaken for is its own line.
+  const answered = test.questions.filter((q) => attempt.answers[q.id]).length;
   const pct = graded > 0 ? Math.round((attempt.score / graded) * 100) : 0;
   const message = waiting.count
     ? "Handed in — your teacher marks the long answers next."
@@ -514,8 +518,11 @@ export function showScore(test: Test, attempt: Attempt, released?: boolean) {
   mount(
     `
     <main class="card score-card">
-      <div class="score-big">${attempt.score} / ${waiting.count ? graded : total}</div>
-      <div class="score-pct">${pct}%${waiting.count ? " of what is marked so far" : ""}</div>
+      <div class="score-big">${attempt.score} / ${waiting.count ? graded : total}<span class="score-unit">marks</span></div>
+      <div class="score-pct">${pct}%${waiting.count ? " of the marks given so far" : ""}</div>
+      <p class="score-answered">${answered} of ${test.questions.length} question${
+        test.questions.length === 1 ? "" : "s"
+      } answered</p>
       <p class="score-message">${message}</p>
       ${
         waiting.count
@@ -623,7 +630,8 @@ export function showReviewFor(
   test: Test,
   attempt: Attempt,
   back: () => void,
-  student?: string
+  student?: string,
+  studentName?: string
 ): void {
-  void showReview(test, attempt, { back, student });
+  void showReview(test, attempt, { back, student, studentName });
 }

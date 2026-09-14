@@ -840,10 +840,9 @@ function check(ok, label) {
       await page.waitForSelector("#primary-btn", { timeout: 20000 });
       await page.click("#primary-btn");
       // A signed-in student sits the test in the workspace (src/screens/student.ts):
-      // the question list beside one question, and Save rather than Submit.
+      // the question list beside one question, and the answer saves itself.
       await page.waitForSelector(".ed-student .option", { timeout: 20000 });
       await page.click(".ed-student .option");
-      await page.click("#st-save");
       // The tree is a drawer at phone width, so count the tick rather than
       // waiting for it to be on screen.
       await page.waitForFunction(
@@ -1222,52 +1221,75 @@ function check(ok, label) {
         );
 
         // The button layout J drew: Hand in test up on the breadcrumb row, and
-        // Previous · count · Save · Next as one row at the foot of the answer card.
+        // Previous · count · Clear · Next as one row at the foot of the answer
+        // card. Save is gone — an answer saves itself the moment it is given,
+        // so what is left in that slot is the way back out.
+        // Clear is hidden until there is an answer, so give it one first.
+        await page.click(".ed-student .option");
+        await page.waitForSelector("#st-clear:not([hidden])", { timeout: 15000 });
         const wsButtons = await page.evaluate(() => {
           const box = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, right: b.right, bottom: b.bottom }; };
           return {
             handinInCrumb: !!document.querySelector(".ed-crumbrow .st-handin"),
-            prev: box("#st-prev"), save: box("#st-save"), next: box("#st-next"),
+            prev: box("#st-prev"), save: box("#st-clear"), next: box("#st-next"),
+            noSave: !document.querySelector("#st-save"),
             count: box(".st-count"),
             panel: box(".ed-body .ed-panel:last-of-type"),
           };
         });
         check(wsButtons.handinInCrumb, "Hand in test sits on the breadcrumb row");
+        check(wsButtons.noSave, "there is no Save button — answers save themselves");
         check(
           Math.abs(wsButtons.prev.y - wsButtons.save.y) < 4 && Math.abs(wsButtons.save.y - wsButtons.next.y) < 4,
-          "Previous, Save and Next share one row"
+          "Previous, Clear and Next share one row"
         );
         check(
           wsButtons.prev.x < wsButtons.count.x &&
             wsButtons.count.right < wsButtons.save.x &&
             wsButtons.save.right <= wsButtons.next.x,
-          "in the order Previous · count · Save · Next"
+          "in the order Previous · count · Clear · Next"
         );
         check(
           wsButtons.next.right <= wsButtons.panel.right + 1 && wsButtons.prev.x >= wsButtons.panel.x - 1,
           "and the row stays inside the answer card"
         );
 
-        // Answered in any order, and revisitable.
+        // Answered in any order, and revisitable. Picking the option IS the
+        // save: this is the bug that lost answers when a student tapped Next.
         await page.click(".ed-student .option[data-i='0']");
-        await page.click("#st-save");
         await page.waitForFunction(
           () => document.querySelectorAll("#st-tree .st-answered").length === 1,
           { timeout: 15000 }
         );
-        check(true, "an answered question is ticked in the list");
+        check(true, "picking an option saves it and ticks the question");
+        // And Clear takes it back off, so the question can be left for later.
+        await page.click("#st-clear");
+        await page.waitForFunction(
+          () => document.querySelectorAll("#st-tree .st-answered").length === 0,
+          { timeout: 15000 }
+        );
+        check(
+          !(await page.$(".ed-student .option.selected")),
+          "Clear unticks it and deselects the option"
+        );
+        await page.click(".ed-student .option[data-i='0']");
+        await page.waitForFunction(
+          () => document.querySelectorAll("#st-tree .st-answered").length === 1,
+          { timeout: 15000 }
+        );
         await page.click("#st-tree .ed-tree-q[data-i='2']");
         await page.waitForSelector("#st-upload", { timeout: 15000 });
         check(true, "a later question can be opened before the one before it");
         await page.click("#st-tree .ed-tree-q[data-i='1']");
         await page.waitForSelector("#st-num", { timeout: 15000 });
         await page.fill("#st-num", "1");
-        await page.click("#st-save");
+        // A typed number settles before it saves; leaving the box commits at once.
+        await page.click(".ed-center .question-text");
         await page.waitForFunction(
           () => document.querySelectorAll("#st-tree .st-answered").length === 2,
           { timeout: 15000 }
         );
-        check(true, "and answered out of order");
+        check(true, "a typed number saves itself on blur, answered out of order");
 
         // A refresh lands back on the same question.
         const wsBefore = await page.evaluate(() => new URLSearchParams(location.search).get("q"));
@@ -1555,19 +1577,30 @@ function check(ok, label) {
         );
         // .btn carries min-width:130px, so a bare 1fr column used to push this
         // row past the card's edge on a 390px screen.
+        // Clear only exists once there is something to clear, so answer first.
+        const phoneOption = await page.$(".ed-student .option");
+        if (phoneOption) await phoneOption.click();
         const phoneRow = await page.evaluate(() => {
           const box = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return { x: b.x, y: b.y, right: b.right, width: b.width }; };
-          return { save: box("#st-save"), prev: box("#st-prev"), next: box("#st-next"),
+          return { save: box("#st-clear"), prev: box("#st-prev"), next: box("#st-next"),
                    panel: box(".ed-body .ed-panel:last-of-type"), scrollWidth: document.documentElement.scrollWidth };
         });
         check(
-          phoneRow.save.right <= phoneRow.panel.right + 1 && phoneRow.next.right <= phoneRow.panel.right + 1,
+          phoneRow.next.right <= phoneRow.panel.right + 1 && phoneRow.prev.x >= phoneRow.panel.x - 1,
           "on a phone the buttons stay inside the card"
         );
-        check(
-          phoneRow.save.y < phoneRow.prev.y && phoneRow.save.width > phoneRow.prev.width,
-          "with Save answer full width above Previous and Next"
-        );
+        if (phoneRow.save) {
+          check(
+            phoneRow.save.y > phoneRow.prev.y && phoneRow.save.width > phoneRow.prev.width,
+            "with Clear answer full width below Previous and Next"
+          );
+          check(
+            phoneRow.save.right <= phoneRow.panel.right + 1,
+            "and Clear inside the card too"
+          );
+        } else {
+          console.log("SKIP  phone Clear layout (first question is not answerable in one tap)");
+        }
         check(phoneRow.scrollWidth <= 390, `and nothing forces a sideways scroll (${phoneRow.scrollWidth}px)`);
         // The drawer: parked off-canvas, slides in, and the scrim shuts it.
         const parked = await page.evaluate(() => {

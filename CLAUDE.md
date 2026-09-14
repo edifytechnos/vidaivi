@@ -898,12 +898,26 @@ question scrolling to the end — that rule holds everywhere a test is shown.
 - **Reading the result has both**: that is `src/screens/review.ts`, unchanged —
   three columns, with the explanation on the right, once the teacher releases
   the paper.
+- **An answer saves itself. There is no Save button.** Tapping an option is the
+  save; a typed number settles for 800ms, and blur or Enter commits it at once;
+  a photo saves when it uploads and unsaves when the last one is removed. The
+  button that stood there cost a tap on every question and lost the answer of
+  anyone who tapped **Next** instead — which is exactly what happened in
+  testing. Saving no longer re-renders the page either (`refreshProgress` moves
+  the tick, the chip and the count in place): a full render tore the number
+  input out from under the student mid-number.
+- **What sits in that slot now is Clear answer** (`#st-clear`), hidden until
+  there is something to clear — the way to take an answer back off the paper
+  and leave the question for later. A `long` question has no Clear of its own:
+  the photo *is* the answer, and the uploader's ✕ already removes it
+  server-side, which a local Clear could not do.
 - **The controls follow the approved screen**: *Hand in test* sits at the right
-  of the breadcrumb row, and **Previous · progress · Save answer · Next** form
+  of the breadcrumb row, and **Previous · progress · Clear · Next** form
   one row at the foot of the answer card. The released result mirrors it, with
-  *Retake test* in the same place. Below 560px that row becomes a grid — Save
-  full width, then the two steps, then the count — and `.st-navrow .btn` needs
-  `min-width: 0`, because `.btn` carries `min-width: 130px` and a bare `1fr`
+  *Retake test* in the same place. Below 560px that row becomes a grid — the
+  two steps first, then the count, then Clear full width *last*, because Clear
+  is the rare press and must not land under a thumb aiming for Next — and
+  `.st-navrow .btn` needs `min-width: 0`, because `.btn` carries `min-width: 130px` and a bare `1fr`
   column cannot shrink under it (the row spilled out of the card on a phone).
   Below 720px the crumb keeps only the subject link and the action; the test
   title is in the app bar already and wrapped onto four lines otherwise.
@@ -941,6 +955,37 @@ question scrolling to the end — that rule holds everywhere a test is shown.
   one place that chooses, on `canHandIn()`.
 - Coming later, deliberately not built: a running timer, and questions unlocked
   only in order.
+
+## The teacher reads the whole paper, not just the long answers
+
+A teacher could see every long answer in the marking queue and the total on the
+student's report, and **never which MCQ the class got wrong** — the one thing a
+chapter test is for.
+
+- **Student report → an attempt row → View paper** (`openPaper` in
+  `src/screens/console.ts`) opens that student's finished paper in the same
+  read-only review screen the student and the parent get. One renderer for a
+  finished paper, no second implementation of "what did they put down".
+- **`GET /api/attempts?testId=&student=` now gates on `canSeeStudent`**, not on
+  `childLink`. That one function already knew every rule — a student reads only
+  their own, a parent only a linked child, a teacher only their own student, an
+  admin anyone — so the endpoint gained a role rather than a new rule. The read
+  is still one point-partition query with an explicit projection.
+- **Release does not gate the teacher.** `gated` in `src/screens/review.ts`
+  excludes `isTeacher()`: release is the teacher's own switch, and a teacher
+  has to see the answers *before* deciding to open them to the class.
+- The review's labels say **"Priya's answer"** rather than "Your answer" when
+  someone else's paper is open (`owner` in `review.ts`, set from
+  `opts.studentName`).
+
+## The score is marks, and says so
+
+The big number on the score screen is **marks**, and it was read as questions
+answered: `4 / 14` on a paper of 15 questions, because 12 of the 26 marks were
+still with the teacher and the denominator is deliberately what has been graded
+so far. The number now carries a `marks` unit and the count it was mistaken for
+is its own line underneath — *"15 of 15 questions answered"*. Keep both: either
+alone is ambiguous the moment a long answer is outstanding.
 
 ## Review: one question per page (`src/screens/review.ts`)
 

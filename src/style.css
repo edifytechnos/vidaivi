@@ -3142,6 +3142,11 @@ body.modal-open {
 .st-step { flex: none; }
 .st-save { display: contents; }
 .st-save .btn { flex: none; }
+/* Answers save themselves, so this slot holds the way back out rather than a
+   Save button: Clear is quieter than the steps beside it and disappears
+   entirely until there is something to clear. */
+.st-clear[hidden] { display: none; }
+.st-autosave { flex: none; white-space: nowrap; }
 
 /* The crumb row carries the one action that ends the test. */
 .ed-crumbrow .st-handin {
@@ -3165,9 +3170,11 @@ body.modal-open {
     gap: 10px 8px;
   }
   .st-navrow .btn { min-width: 0; }
-  /* Save first and full width: it is the thing a student presses every time,
-     then the two steps side by side, then the count. */
-  .st-save .btn { grid-column: 1 / -1; order: -1; width: 100%; }
+  /* The two steps first, side by side — they are what a student presses on
+     every question. Clear is the rare one, so it goes last and full width
+     rather than under a thumb that meant to press Next. */
+  .st-save .btn { grid-column: 1 / -1; order: 3; width: 100%; }
+  .st-autosave { grid-column: 1 / -1; order: 3; text-align: center; }
   .st-navrow .ed-spacer { display: none; }
   .st-step { width: 100%; }
   #st-next, #rv-next { order: 1; }
@@ -3678,6 +3685,18 @@ body.modal-open {
   background: var(--bg); font-weight: 600; font-size: 0.85rem;
 }
 .lib-option .status-chip { margin-left: auto; }
+
+/* The score's big number is marks, and it has to say so: "4 / 14" was read as
+   four of fourteen questions answered. */
+.score-unit {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.score-answered { margin: 6px 0 0; font-size: 0.9rem; color: var(--muted); }
 
 /* Browse: the catalogue row. Everything that will vary between authors later —
    a byline, a price, whether you already hold it — has a slot here already, so

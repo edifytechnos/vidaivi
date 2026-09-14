@@ -10,7 +10,7 @@
 
 import { track } from "../analytics";
 import { hydrateThumbs, photoStrip } from "../answerphotos";
-import { fetchReleased, getProfile, isLoggedIn } from "../auth";
+import { fetchReleased, getProfile, isLoggedIn, isTeacher } from "../auth";
 import { clearAttempt, newAttempt } from "../attempts";
 import { totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
@@ -23,7 +23,16 @@ export interface ReviewOpts {
   back?: () => void;
   /** Whose paper this is, when the viewer is not the student themselves. */
   student?: string;
+  /** That student's name, for the labels that would otherwise say "Your". */
+  studentName?: string;
 }
+
+/**
+ * Whose paper this is, in the second person or the third. "Your answer" is
+ * wrong on a teacher's screen, and the same three labels are used in four
+ * places, so the word is decided once.
+ */
+let owner = "Your";
 
 /** What the student put down. */
 function describeGiven(q: Question, a: StoredAnswer | undefined): string {
@@ -31,9 +40,9 @@ function describeGiven(q: Question, a: StoredAnswer | undefined): string {
   if (q.type === "mcq") {
     const i = a.given ?? -1;
     const letter = i >= 0 ? String.fromCharCode(65 + i) : "?";
-    return `Your answer: <strong>${letter}.</strong> ${escapeHtml(q.options?.[i] ?? "")}`;
+    return `${owner} answer: <strong>${letter}.</strong> ${escapeHtml(q.options?.[i] ?? "")}`;
   }
-  if (q.type === "numeric") return `Your answer: <strong>${a.given}</strong>`;
+  if (q.type === "numeric") return `${owner} answer: <strong>${a.given}</strong>`;
   if (a.review === "pending") {
     const n = a.images?.length ?? 0;
     return `Handed in${n ? ` · ${n} photo${n > 1 ? "s" : ""}` : ""} — waiting for your teacher`;
@@ -84,7 +93,7 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number): string {
 
   return `
     <aside class="ed-tree" id="rv-tree">
-      <div class="ed-tree-head"><span class="ed-tree-title">Your answers</span></div>
+      <div class="ed-tree-head"><span class="ed-tree-title">${escapeHtml(owner)} answers</span></div>
       <div class="ed-tree-body">
         <div class="ed-node open">
           <div class="ed-node-head">
@@ -124,7 +133,10 @@ export async function showReview(
   // Teachers and admins own the content, and a guest on the demo has no
   // teacher to release anything. Only a real student's paper is held back.
   const viewerIsStudent = isLoggedIn() && getProfile()?.kind === "student";
-  const gated = viewerIsStudent || !!opts.student;
+  // Release is the teacher's own switch, so it can never hide a paper from
+  // them: a teacher marking the class needs to see what was answered *before*
+  // deciding to open it. Only the student and their parent wait.
+  const gated = !isTeacher() && (viewerIsStudent || !!opts.student);
   const released = gated ? await fetchReleased(test.id, opts.student) : true;
 
   if (!released) {
@@ -137,6 +149,8 @@ export async function showReview(
     document.getElementById("review-back")?.addEventListener("click", opts.back ?? (() => {}));
     return;
   }
+
+  owner = opts.student ? `${opts.studentName || opts.student}'s` : "Your";
 
   const wanted = new URLSearchParams(location.search).get("review");
   let index = Math.max(0, test.questions.findIndex((q) => q.id === wanted));
@@ -179,7 +193,7 @@ export async function showReview(
 
               <section class="ed-panel">
                 <div class="ed-panel-head">
-                  <span class="ed-panel-label">Your answer</span>
+                  <span class="ed-panel-label">${escapeHtml(owner)} answer</span>
                   <div class="ed-spacer"></div>
                   ${marksChip(q, a)}
                 </div>
@@ -210,7 +224,7 @@ export async function showReview(
         <div class="ed-scrim"></div>
         <div class="ed-tabs">
           <button class="ed-tab active" data-pane="question">Question</button>
-          <button class="ed-tab" data-pane="answer">Your answer</button>
+          <button class="ed-tab" data-pane="answer">${escapeHtml(owner)} answer</button>
           <button class="ed-tab" data-pane="explain">Explanation</button>
         </div>
       </div>`,
