@@ -95,10 +95,16 @@ unlike the `vidai.seyali.app` entry above which is done.
   surplus environment half-serves, answering roughly half of all requests with
   Azure's own 404 page while the deploy log still reports success. An afternoon
   was lost to this. A closing PR frees its own slot automatically via the
-  `close_environment` job; **Actions → Run workflow** takes a
-  `close_environment` name but Azure refuses it outside a PR event
-  (*"Request is missing the pull request id"*), so closing and reopening a PR is
-  what frees a slot by hand.
+  `close_environment` job. **There is no manual close, and the workflow no
+  longer pretends there is.** `action: close` is a pull-request operation end to
+  end — `deployment_environment` is not even a declared input on the action —
+  and Azure answers anything else with *"Request is missing the pull request
+  id"*. Three shapes were tried and rejected identically: the environment name,
+  a synthetic event naming it, and a synthetic event carrying a plain number;
+  each failed run also left a red check on whatever PR it was dispatched from.
+  **To free a slot by hand, delete the environment in the Azure portal** (Static
+  Web App → Environments), or close and reopen a PR to recycle its own.
+  **Actions → Run workflow** now takes no inputs and simply redeploys QA.
   Measured, once back to two environments: a deploy causes **no disruption at
   all** — 10/10 before, during and after, then 30/30 on `index.html` and 12/12
   on each hashed asset. While a third environment existed, fifteen quiet minutes
