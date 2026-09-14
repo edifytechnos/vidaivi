@@ -7,6 +7,43 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12cd-201",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Continuity at a point",
+      "type": "mcq",
+      "q": "**Assertion (A):** $f(x) = \\begin{cases} 3x - 8, & x \\leq 5 \\\\ 2k, & x > 5 \\end{cases}$ is continuous at $x = 5$ for $k = \\dfrac{5}{2}$.\n\n**Reason (R):** For a function $f$ to be continuous at $x = a$, $\\displaystyle\\lim_{x \\to a^-} f(x) = \\lim_{x \\to a^+} f(x) = f(a)$.\n\nChoose the correct answer :",
+      "solution": "**Reason first**, since it is the tool. The three-part condition quoted — left limit $=$ right limit $=$ the value of the function — is exactly the definition of continuity at a point. R is **true**.\n\n**Now test the assertion** by applying it.\n\n*Left-hand limit and the value at 5.* For $x \\leq 5$ the rule is $3x - 8$, so\n\n$$\\lim_{x \\to 5^-} f(x) = f(5) = 3(5) - 8 = 7.$$\n\n*Right-hand limit.* For $x > 5$ the rule is the constant $2k$, so\n\n$$\\lim_{x \\to 5^+} f(x) = 2k.$$\n\n*Set them equal.*\n\n$$2k = 7 \\quad\\Longrightarrow\\quad k = \\frac{7}{2}.$$\n\nThe assertion claims $k = \\dfrac{5}{2}$, which would make the right-hand limit $5$ against a left-hand limit of $7$ — a jump, not continuity. A is **false**.\n\nSo A is false but R is true. Note that R, correctly applied, is what *disproves* A.",
+      "marks": 1,
+      "source": "CBSE 2025",
+      "options": [
+        "Both A and R are true, and R is the correct explanation of A",
+        "Both A and R are true, but R is not the correct explanation of A",
+        "A is true but R is false",
+        "A is false but R is true"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12cd-202",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Differentiating with respect to a function",
+      "type": "long",
+      "q": "Differentiate $2^{\\cos^2 x}$ with respect to $\\cos^2 x$.",
+      "solution": "The question asks for a derivative **with respect to $\\cos^2 x$**, not with respect to $x$. That makes it simpler than it looks: substitute and differentiate normally.\n\n**Step 1 — substitute.** Let\n\n$$u = \\cos^2 x, \\qquad y = 2^{u}.$$\n\n**Step 2 — differentiate $y$ with respect to $u$.** For a general exponential $a^u$,\n\n$$\\frac{d}{du}\\left(a^u\\right) = a^u \\ln a.$$\n\nWith $a = 2$ :\n\n$$\\frac{dy}{du} = 2^{u}\\ln 2.$$\n\n**Step 3 — substitute back.**\n\n$$\\frac{dy}{d\\left(\\cos^2 x\\right)} = 2^{\\cos^2 x}\\ln 2.$$\n\nThe chain rule never has to be used here. Had the question asked for $\\dfrac{dy}{dx}$, it would have, giving the extra factor $\\dfrac{du}{dx} = -2\\cos x\\sin x = -\\sin 2x$ and an answer of $-2^{\\cos^2 x}\\ln 2 \\cdot \\sin 2x$.",
+      "marks": 2,
+      "source": "CBSE 2025"
+    },
+    {
+      "id": "c12cd-203",
+      "chapter": "Continuity and Differentiability",
+      "topic": "Implicit differentiation",
+      "type": "long",
+      "q": "If $\\tan^{-1}\\left(x^2 + y^2\\right) = a^2$, then find $\\dfrac{dy}{dx}$.",
+      "solution": "The right-hand side $a^2$ is a **constant**, so the whole left-hand side is constant and its derivative is zero.\n\n**Step 1 — differentiate both sides with respect to $x$**, using the chain rule on $\\tan^{-1}$ :\n\n$$\\frac{1}{1 + \\left(x^2 + y^2\\right)^2} \\cdot \\frac{d}{dx}\\left(x^2 + y^2\\right) = 0.$$\n\n**Step 2 — the bracket can be cleared.** The factor $\\dfrac{1}{1 + (x^2+y^2)^2}$ is never zero, so the other factor must be :\n\n$$\\frac{d}{dx}\\left(x^2 + y^2\\right) = 0.$$\n\n**Step 3 — differentiate implicitly.**\n\n$$2x + 2y\\frac{dy}{dx} = 0.$$\n\n**Step 4 — solve.**\n\n$$\\frac{dy}{dx} = -\\frac{x}{y}.$$\n\nThere is a neat way to see this without any work: $\\tan^{-1}(x^2+y^2)$ constant means $x^2 + y^2$ is constant, which is a **circle centred at the origin**. The radius drawn to $(x, y)$ has gradient $y/x$, and the tangent is perpendicular to it, so its gradient is $-x/y$.",
+      "marks": 2,
+      "source": "CBSE 2025"
+    },
+    {
       "id": "c12cd-101",
       "chapter": "Continuity and Differentiability",
       "topic": "Differentiability",
@@ -78,22 +115,6 @@
       "source": "CBSE 2026"
     },
     {
-      "id": "cd-004",
-      "chapter": "Continuity and Differentiability",
-      "topic": "Rolle's theorem",
-      "type": "mcq",
-      "q": "Rolle's theorem is applicable to $f$ on $[a, b]$ only if, in addition to $f$ being continuous on $[a, b]$ and differentiable on $(a, b)$:",
-      "solution": "Rolle's theorem needs the curve to come back to the same height: $f(a) = f(b)$.\n\nIt then guarantees some $c \\in (a, b)$ with $f'(c) = 0$.\n\nThrow a ball up and catch it at the same height: somewhere in between it must have stopped rising — that instant is $c$.",
-      "marks": 1,
-      "options": [
-        "$f(a) = f(b)$",
-        "$f(a) = 0$",
-        "$f'(a) = f'(b)$",
-        "$f$ is increasing"
-      ],
-      "answer": 0
-    },
-    {
       "id": "cd-005",
       "chapter": "Continuity and Differentiability",
       "topic": "Derivative of an inverse function",
@@ -108,28 +129,6 @@
         "$\\sec^{2}x$"
       ],
       "answer": 0
-    },
-    {
-      "id": "cd-006",
-      "chapter": "Continuity and Differentiability",
-      "topic": "Continuity at a point",
-      "type": "numeric",
-      "q": "Find the value of $k$ that makes $f(x) = \\begin{cases} kx^{2}, & x \\le 2 \\\\ 3, & x > 2 \\end{cases}$ continuous at $x = 2$.",
-      "solution": "Continuity at $x = 2$ needs the two sides and the value to agree.\n\nFrom the left and at the point: $f(2) = 4k$. From the right: $3$.\n\n$4k = 3 \\Rightarrow k = \\tfrac34 = \\mathbf{0.75}$.\n\nTwo lengths of pipe joined at a wall: continuity is simply insisting both ends arrive at the same height.",
-      "marks": 2,
-      "answer": 0.75,
-      "tolerance": 0.001
-    },
-    {
-      "id": "cd-007",
-      "chapter": "Continuity and Differentiability",
-      "topic": "Derivative at a point",
-      "type": "numeric",
-      "q": "If $y = e^{x}\\sin x$, find $\\dfrac{dy}{dx}$ at $x = 0$.",
-      "solution": "Product rule: $\\dfrac{dy}{dx} = e^{x}\\sin x + e^{x}\\cos x = e^{x}\\left(\\sin x + \\cos x\\right)$.\n\nAt $x = 0$: $e^{0}(0 + 1) = \\mathbf{1}$.",
-      "marks": 2,
-      "answer": 1,
-      "tolerance": 0
     },
     {
       "id": "cd-008",

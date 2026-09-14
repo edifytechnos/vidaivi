@@ -39,27 +39,34 @@ So the chapters that come out well are the ones whose questions are carried by
 Application of Derivatives. The ones that come out thin are those carried by
 **symbols** — Integrals, Vector Algebra, Linear Programming.
 
-Recovering the rest means reading the PDFs as pages rather than as text. That is
-the next pass, and it is a different kind of work, not more of this kind.
+**That pass has now been started.** Rendering a page to an image and reading it
+recovers everything extraction drops — matrices, integrals, surds, vectors — and
+twelve questions from 65/1/1 of 2025 were added that way, tagged `CBSE 2025`.
+Every chapter they touch moved up. The remaining gap is simply pages not yet
+read: the method works, it is just slower per question than a text search, so it
+is worth spending on the chapters that text extraction cannot reach at all.
+
+`scratchpad/render.py` shows the mechanics — `pypdfium2` at scale 2.0 gives a
+1224x1584 PNG, which is legible enough to read a full page of mathematics.
 
 ## What is tagged, chapter by chapter
 
 | Chapter | Sourced | Of |
 |---|---|---|
 | Relations and Functions | 15 | 15 |
-| Inverse Trigonometric Functions | 8 | 15 |
+| Inverse Trigonometric Functions | 9 | 15 |
 | Matrices | 7 | 15 |
 | Determinants | 7 | 15 |
-| Continuity and Differentiability | 5 | 15 |
-| Application of Derivatives | 7 | 15 |
-| Integrals | 3 | 15 |
+| Continuity and Differentiability | 8 | 15 |
+| Application of Derivatives | 9 | 15 |
+| Integrals | 4 | 15 |
 | Application of Integrals | 2 | 15 |
 | Differential Equations | 3 | 15 |
-| Vector Algebra | 2 | 15 |
+| Vector Algebra | 6 | 15 |
 | Three Dimensional Geometry | 3 | 15 |
-| Linear Programming | 2 | 15 |
+| Linear Programming | 3 | 15 |
 | Probability | 2 | 15 |
-| **Total** | **66** | **195** |
+| **Total** | **78** | **195** |
 
 ## The tagged questions
 

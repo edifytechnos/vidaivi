@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12lp-201",
+      "chapter": "Linear Programming",
+      "topic": "Unbounded feasible regions",
+      "type": "long",
+      "q": "Solve the following linear programming problem graphically :\n\nMaximise $Z = x + 2y$\n\nsubject to the constraints\n\n$$x - y \\geq 0, \\qquad x - 2y \\geq -2, \\qquad x \\geq 0,\\ y \\geq 0.$$",
+      "solution": "**Step 1 — rewrite the constraints as regions.**\n\n$x - y \\geq 0$ becomes $y \\leq x$ — on or below the line $y = x$.\n\n$x - 2y \\geq -2$ becomes $y \\leq \\dfrac{x + 2}{2}$ — on or below the line through $(0, 1)$ and $(2, 2)$.\n\nTogether with $x \\geq 0$ and $y \\geq 0$, the feasible region lies in the first quadrant below both lines.\n\n**Step 2 — find the corner points.** The two lines meet where $y = x$ and $2y = x + 2$ :\n\n$$2x = x + 2 \\quad\\Longrightarrow\\quad x = 2,\\ y = 2.$$\n\nSo the corners are $(0, 0)$ and $(2, 2)$.\n\n**Step 3 — notice that the region is unbounded.** Nothing places an upper limit on $x$. Taking $y = 0$, every point $(x, 0)$ with $x \\geq 0$ satisfies all four constraints, and $x$ may be as large as we like.\n\n**Step 4 — test the objective on that unbounded part.** Along $y = 0$,\n\n$$Z = x + 2(0) = x,$$\n\nwhich increases without limit as $x \\to \\infty$.\n\n**Conclusion.**\n\n$$\\textbf{$Z$ has no maximum value — the problem is unbounded.}$$\n\nThe corner-point values ($Z = 0$ at the origin, $Z = 6$ at $(2,2)$) are **not** the answer. This is the case the corner-point method has to be used carefully in: on an unbounded region it gives a maximum only if one exists, and here it does not. The method still works for the **minimum**, which is $Z = 0$ at the origin.",
+      "marks": 3,
+      "source": "CBSE 2025"
+    },
+    {
       "id": "c12lp-102",
       "chapter": "Linear Programming",
       "topic": "Corner point method",
@@ -142,15 +152,6 @@
       "marks": 2,
       "answer": 20,
       "tolerance": 0
-    },
-    {
-      "id": "lp-011",
-      "chapter": "Linear Programming",
-      "topic": "Solving graphically",
-      "type": "long",
-      "q": "Maximise $Z = 3x + 4y$ subject to $x + y \\le 4$, $x \\ge 0$, $y \\ge 0$. Show the corner points you used.",
-      "solution": "**The region.** $x + y \\le 4$ with both variables non-negative is the triangle $(0,0)$, $(4,0)$, $(0,4)$ — bounded, so a maximum certainly exists.\n\n**Evaluate $Z = 3x + 4y$ at each corner:**\n\n$(0,0) \\to 0$\n\n$(4,0) \\to 12$\n\n$(0,4) \\to 16$\n\n**Maximum $= 16$ at $(0, 4)$.**\n\nEach unit of the budget buys $4$ if spent on $y$ and only $3$ if spent on $x$, and both cost the same — so the whole budget goes to $y$.",
-      "marks": 3
     },
     {
       "id": "lp-012",

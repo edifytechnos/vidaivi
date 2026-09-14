@@ -7,6 +7,16 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12int-201",
+      "chapter": "Integrals",
+      "topic": "Integration by half-angle",
+      "type": "long",
+      "q": "Find : $\\displaystyle\\int \\frac{x + \\sin x}{1 + \\cos x}\\,dx$",
+      "solution": "The half-angle identities turn this into something recognisable. Recall\n\n$$1 + \\cos x = 2\\cos^2\\frac{x}{2}, \\qquad \\sin x = 2\\sin\\frac{x}{2}\\cos\\frac{x}{2}.$$\n\n**Step 1 — split the fraction and substitute.**\n\n$$\\frac{x + \\sin x}{1 + \\cos x} = \\frac{x}{2\\cos^2\\frac{x}{2}} + \\frac{2\\sin\\frac{x}{2}\\cos\\frac{x}{2}}{2\\cos^2\\frac{x}{2}}$$\n\n$$= \\frac{x}{2}\\sec^2\\frac{x}{2} + \\tan\\frac{x}{2}.$$\n\n**Step 2 — recognise the result as a product rule run backwards.** Differentiate $x\\tan\\dfrac{x}{2}$ :\n\n$$\\frac{d}{dx}\\left(x\\tan\\frac{x}{2}\\right) = \\tan\\frac{x}{2} + x \\cdot \\frac{1}{2}\\sec^2\\frac{x}{2},$$\n\nwhich is **exactly** the integrand from Step 1.\n\n**Step 3 — write the answer.**\n\n$$\\int \\frac{x + \\sin x}{1 + \\cos x}\\,dx = x\\tan\\frac{x}{2} + C.$$\n\n**Check numerically.** At $x = 1$, the derivative of $x\\tan(x/2)$ is $1 \\cdot 19553$ and the integrand is $1 \\cdot 19553$ — they agree.",
+      "marks": 3,
+      "source": "CBSE 2025"
+    },
+    {
       "id": "c12int-102",
       "chapter": "Integrals",
       "topic": "Definite integral of a modulus",
@@ -152,15 +162,6 @@
       "marks": 3,
       "answer": 0.347,
       "tolerance": 0.002
-    },
-    {
-      "id": "int-012",
-      "chapter": "Integrals",
-      "topic": "Completing the square",
-      "type": "long",
-      "q": "Evaluate $\\displaystyle\\int \\dfrac{dx}{x^{2} + 4x + 8}$.",
-      "solution": "The denominator has no real roots, so complete the square:\n\n$x^{2} + 4x + 8 = (x + 2)^{2} + 4$.\n\nThat matches the standard form $\\displaystyle\\int\\dfrac{dt}{t^{2} + a^{2}} = \\dfrac1a\\tan^{-1}\\dfrac{t}{a} + C$, with $t = x + 2$ and $a = 2$:\n\n$\\mathbf{\\dfrac{1}{2}\\tan^{-1}\\left(\\dfrac{x + 2}{2}\\right) + C}$.\n\nCompleting the square slides the curve sideways so it sits on a shape you already have a formula for.",
-      "marks": 3
     },
     {
       "id": "int-013",

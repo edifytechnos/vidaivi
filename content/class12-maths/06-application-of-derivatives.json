@@ -7,6 +7,28 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12aod-201",
+      "chapter": "Application of Derivatives",
+      "topic": "Increasing and decreasing functions",
+      "type": "long",
+      "q": "Find the intervals in which the function $f(x) = 5x^{3/2} - 3x^{5/2}$, $x > 0$, is (i) increasing (ii) decreasing.",
+      "solution": "**Step 1 — differentiate.**\n\n$$f'(x) = 5 \\cdot \\frac{3}{2}x^{1/2} - 3 \\cdot \\frac{5}{2}x^{3/2} = \\frac{15}{2}x^{1/2} - \\frac{15}{2}x^{3/2}.$$\n\n**Step 2 — factorise**, which is what makes the sign readable :\n\n$$f'(x) = \\frac{15}{2}x^{1/2}\\left(1 - x\\right) = \\frac{15}{2}\\sqrt{x}\\,(1 - x).$$\n\n**Step 3 — read off the sign.** For $x > 0$ the factor $\\dfrac{15}{2}\\sqrt{x}$ is always **positive**, so the sign of $f'(x)$ is decided entirely by $(1 - x)$ :\n\n- $0 < x < 1$ : $(1 - x) > 0$, so $f'(x) > 0$ — **increasing**.\n- $x = 1$ : $f'(x) = 0$ — a stationary point.\n- $x > 1$ : $(1 - x) < 0$, so $f'(x) < 0$ — **decreasing**.\n\n**Answer.**\n\n(i) $f$ is increasing on $(0, 1)$.\n\n(ii) $f$ is decreasing on $(1, \\infty)$.\n\nThe function therefore has a maximum at $x = 1$, where $f(1) = 5 - 3 = 2$.",
+      "marks": 2,
+      "source": "CBSE 2025"
+    },
+    {
+      "id": "c12aod-202",
+      "chapter": "Application of Derivatives",
+      "topic": "Related rates",
+      "type": "numeric",
+      "q": "The side of an equilateral triangle is increasing at the rate of 3 cm/s. At what rate is its area increasing when the side of the triangle is 15 cm? Give your answer in cm²/s, correct to two decimal places.",
+      "solution": "**Step 1 — write the relation.** For an equilateral triangle of side $a$,\n\n$$A = \\frac{\\sqrt{3}}{4}a^2.$$\n\n**Step 2 — differentiate with respect to time**, using the chain rule :\n\n$$\\frac{dA}{dt} = \\frac{\\sqrt{3}}{4} \\cdot 2a \\cdot \\frac{da}{dt} = \\frac{\\sqrt{3}}{2}\\,a\\,\\frac{da}{dt}.$$\n\n**Step 3 — substitute** $a = 15$ cm and $\\dfrac{da}{dt} = 3$ cm/s :\n\n$$\\frac{dA}{dt} = \\frac{\\sqrt{3}}{2} \\times 15 \\times 3 = \\frac{45\\sqrt{3}}{2} = 22 \\cdot 5\\sqrt{3}.$$\n\n**Step 4 — evaluate.**\n\n$$\\frac{dA}{dt} \\approx \\mathbf{38 \\cdot 97}\\ \\text{cm}^2\\text{/s}.$$\n\nNote that the answer depends on the side length at that instant — the area of a growing triangle speeds up as it gets bigger, because $A$ goes as $a^2$ while $a$ grows steadily.",
+      "marks": 3,
+      "source": "CBSE 2025",
+      "answer": 38.97,
+      "tolerance": 0.02
+    },
+    {
       "id": "c12aod-101",
       "chapter": "Application of Derivatives",
       "topic": "Strictly decreasing functions",
@@ -124,17 +146,6 @@
       "answer": 1
     },
     {
-      "id": "aod-008",
-      "chapter": "Application of Derivatives",
-      "topic": "Maximum value",
-      "type": "numeric",
-      "q": "Find the maximum value of $f(x) = -x^{2} + 4x + 5$.",
-      "solution": "$f'(x) = -2x + 4 = 0 \\Rightarrow x = 2$, and $f''(x) = -2 < 0$, so it is a maximum.\n\n$f(2) = -4 + 8 + 5 = \\mathbf{9}$.",
-      "marks": 2,
-      "answer": 9,
-      "tolerance": 0
-    },
-    {
       "id": "aod-009",
       "chapter": "Application of Derivatives",
       "topic": "Approximation using differentials",
@@ -155,15 +166,6 @@
       "marks": 2,
       "answer": 1.5,
       "tolerance": 0.01
-    },
-    {
-      "id": "aod-013",
-      "chapter": "Application of Derivatives",
-      "topic": "Maxima and minima in a real problem",
-      "type": "long",
-      "q": "A square sheet of side $18$ cm has a small square cut from each corner, and the flaps are folded up to make an open box. Find the side of the cut square that gives the box its greatest volume.",
-      "solution": "Let the cut have side $x$. The base is then $(18 - 2x)$ by $(18 - 2x)$ and the height is $x$:\n\n$V = x\\left(18 - 2x\\right)^{2}$, valid for $0 < x < 9$.\n\n$\\dfrac{dV}{dx} = \\left(18 - 2x\\right)^{2} + x \\cdot 2(18 - 2x)(-2) = (18 - 2x)\\left[(18 - 2x) - 4x\\right] = (18 - 2x)(18 - 6x)$.\n\nSetting this to zero gives $x = 9$ (rejected — no box left) or $x = \\mathbf{3}$ cm.\n\n$\\dfrac{d^{2}V}{dx^{2}} = 24x - 144$, which at $x = 3$ is $-72 < 0$: a maximum. ✓\n\nThe box is then $12 \\times 12 \\times 3$, with volume $432$ cm$^{3}$.\n\nCut too little and the box is shallow; cut too much and the base is tiny. The derivative finds the balance point.",
-      "marks": 5
     },
     {
       "id": "aod-014",

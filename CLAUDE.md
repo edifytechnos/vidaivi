@@ -379,7 +379,7 @@ Tagged today, with an evidence file per shelf under `docs/`:
 | Shelf | Sourced | Notes |
 |---|---|---|
 | CBSE Class 10 Maths | 14 chapters, complete | one `docs/class10-*-sources.md` per chapter |
-| CBSE Class 12 Maths | 66 of 195 | Relations and Functions complete at 15 |
+| CBSE Class 12 Maths | 78 of 195 | Relations and Functions complete at 15 |
 | CBSE Class 12 Physics | 16 of 210 | every chapter covered |
 | CBSE Class 12 Chemistry | 13 of 150 | every chapter covered |
 | CBSE Class 10 Science | 11 of 195 | 10 of 13 chapters |
@@ -420,7 +420,21 @@ richer reaches the student literally.
 
 `scripts/check-content.cjs` now rejects both. Neither is catchable by
 `validateQuestions` — both are perfectly valid strings, wrong only once a
-student reads them.
+student reads them. The guard has already earned itself: writing twelve more
+questions the same way reproduced the backslash-n bug immediately, and the check
+caught all fourteen fields before they could ship.
+
+### Reading a paper as pages, when extraction is not enough
+
+Text extraction keeps words and numbers and drops notation, which is why the
+Maths shelves are thin. **Rendering the page to an image and reading it recovers
+everything** — matrices, integrals, surds, vectors, the lot.
+
+`pypdfium2` at `scale=2.0` gives a 1224x1584 PNG that is comfortably legible
+(`poppler-utils` is not installed here, and `pdftoppm` is what the Read tool
+would otherwise want). One page of a Class XII Maths paper yields six to eight
+questions. It is slower per question than a text search, so spend it on the
+chapters text cannot reach at all rather than on ones already covered.
 
 ## Authoring editor (`src/screens/editor/`)
 

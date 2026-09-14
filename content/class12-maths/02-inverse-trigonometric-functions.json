@@ -7,6 +7,23 @@
   "access": "login",
   "questions": [
     {
+      "id": "c12itf-201",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Composite of inverse functions",
+      "type": "mcq",
+      "q": "Evaluate : $\\tan^{-1}\\left[2\\sin\\left(2\\cos^{-1}\\dfrac{\\sqrt{3}}{2}\\right)\\right]$",
+      "solution": "Work strictly from the inside out.\n\n**Step 1 — the innermost inverse.** $\\cos^{-1}\\dfrac{\\sqrt{3}}{2}$ is the angle in $[0, \\pi]$ whose cosine is $\\dfrac{\\sqrt3}{2}$ :\n\n$$\\cos^{-1}\\frac{\\sqrt{3}}{2} = \\frac{\\pi}{6}.$$\n\n**Step 2 — double it.**\n\n$$2 \\times \\frac{\\pi}{6} = \\frac{\\pi}{3}.$$\n\n**Step 3 — take the sine.**\n\n$$\\sin\\frac{\\pi}{3} = \\frac{\\sqrt{3}}{2}.$$\n\n**Step 4 — double again.**\n\n$$2 \\times \\frac{\\sqrt{3}}{2} = \\sqrt{3}.$$\n\n**Step 5 — the outer inverse.**\n\n$$\\tan^{-1}\\sqrt{3} = \\frac{\\pi}{3},$$\n\nsince $\\dfrac{\\pi}{3}$ lies in the principal branch $\\left(-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right)$ and $\\tan\\dfrac{\\pi}{3} = \\sqrt3$.\n\nSo the value is $\\dfrac{\\pi}{3}$ — the same angle it passed through in the middle, which is a coincidence of the numbers rather than a shortcut.",
+      "marks": 1,
+      "source": "CBSE 2025",
+      "options": [
+        "$\\dfrac{\\pi}{6}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{\\pi}{2}$"
+      ],
+      "answer": 2
+    },
+    {
       "id": "c12itf-001",
       "chapter": "Inverse Trigonometric Functions",
       "topic": "Principal value branches",
@@ -113,22 +130,6 @@
       "solution": "Both terms must be read inside the principal branch $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$.\n\n**First term.** $\\sin\\theta = -\\dfrac{1}{2}$ with $\\theta$ in the branch gives $\\theta = -\\dfrac{\\pi}{6}$.\n\n**Second term.** $\\sin\\theta = 1$ gives $\\theta = \\dfrac{\\pi}{2}$.\n\nSubtracting,\n\n$$-\\frac{\\pi}{6} - \\frac{\\pi}{2} = -\\frac{\\pi}{6} - \\frac{3\\pi}{6} = -\\frac{4\\pi}{6} = -\\frac{2\\pi}{3}.$$\n\n(About $-2.094$ radians.)",
       "marks": 2,
       "source": "CBSE 2024"
-    },
-    {
-      "id": "itf-006",
-      "chapter": "Inverse Trigonometric Functions",
-      "topic": "Sum of principal values",
-      "type": "mcq",
-      "q": "$\\tan^{-1}(1) + \\cos^{-1}\\left(-\\tfrac{1}{2}\\right)$ equals:",
-      "solution": "$\\tan^{-1}(1) = \\tfrac{\\pi}{4}$ and $\\cos^{-1}\\left(-\\tfrac12\\right) = \\tfrac{2\\pi}{3}$.\n\n$\\tfrac{\\pi}{4} + \\tfrac{2\\pi}{3} = \\tfrac{3\\pi + 8\\pi}{12} = \\mathbf{\\tfrac{11\\pi}{12}}$.",
-      "marks": 1,
-      "options": [
-        "$\\dfrac{11\\pi}{12}$",
-        "$\\dfrac{5\\pi}{12}$",
-        "$\\dfrac{\\pi}{2}$",
-        "$\\dfrac{13\\pi}{12}$"
-      ],
-      "answer": 0
     },
     {
       "id": "itf-008",
