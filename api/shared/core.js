@@ -26,6 +26,24 @@ const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 // would know is the bill. One cap per teacher per day is the brake.
 const ASSESS_DAILY_CAP = Number(process.env.ASSESS_DAILY_CAP || 200);
 
+/**
+ * When the provider says it does not serve this location, the feature is off
+ * whatever the app settings say — so stop offering it rather than handing
+ * teachers a button that fails on every press.
+ *
+ * This is not hypothetical: the Static Web App runs in Azure **East Asia
+ * (Hong Kong)**, and Hong Kong is on neither Google's Gemini available-regions
+ * list nor Anthropic's supported-countries list. A key set in the portal is
+ * therefore not enough to make AI marking work from here; the app has to be
+ * hosted somewhere served, or the model has to live inside Azure.
+ *
+ * Time-boxed rather than permanent: a warm instance must not keep a stale
+ * verdict after the situation is fixed, and a cold one re-learns it in one
+ * request that costs nothing.
+ */
+const AI_REGION_BLOCK_MS = 6 * 60 * 60 * 1000;
+let aiUnavailableUntil = 0;
+
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
@@ -3420,6 +3438,11 @@ async function askAssessor(question, solution, maxMarks, images) {
       const body = JSON.parse(text);
       why = String((body.error && body.error.message) || "").slice(0, 200);
     } catch {}
+    // "not available in your current location" is not a bad request to retry —
+    // it is the feature being unavailable from where this app is hosted.
+    if (/location|region|country|territor/i.test(why)) {
+      aiUnavailableUntil = Date.now() + AI_REGION_BLOCK_MS;
+    }
     throw new Error(
       `The model refused the request (${res.status})${why ? `: ${why}` : ""}`
     );
@@ -3492,7 +3515,7 @@ handlers.assess = async (context, req) => {
   if (who.role !== "teacher" && who.role !== "admin") {
     return json(context, 403, { error: "Teachers only" });
   }
-  if (!GEMINI_API_KEY) {
+  if (!GEMINI_API_KEY || Date.now() < aiUnavailableUntil) {
     return json(context, 501, { error: "AI marking is not switched on for this site" });
   }
 

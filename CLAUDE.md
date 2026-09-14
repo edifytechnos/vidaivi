@@ -903,6 +903,26 @@ the box gets rubber-stamped.
 - **Harden the key at Google instead**: restrict it to the Generative Language
   API, and set a budget alert on the project. IP restriction is not usable —
   SWA managed Functions have no stable outbound address.
+- **It does not work from this app's region, and that is why it ships off.**
+  The Static Web App runs in Azure **East Asia, which is Hong Kong**, so its
+  Functions call out from there — and Hong Kong is on **neither** Google's
+  Gemini available-regions list **nor** Anthropic's supported-countries list.
+  Both were checked; India, where the key was created, is on both, which is why
+  the same key works from a laptop and 400s from the app. The error is
+  *"This API is not available in your current location"*, and it was only
+  visible after the provider's `error.message` was allowed through — worth
+  remembering the next time a provider call fails opaquely.
+  **Setting the key does not fix it.** The three ways out, none of them small:
+  a model deployed inside Azure (AI Foundry — the call never crosses a border),
+  moving the app to a served region such as Central India (a new Static Web App:
+  region is fixed at creation, so new deploy token, custom domain, OAuth
+  origins and QA URL — and it would also cut latency for students who are all
+  in India), or Vertex AI with a service account instead of an API key.
+  Until one of those happens the feature is **dormant on purpose**: a 400 whose
+  message names a location marks it unavailable in-process for six hours
+  (`aiUnavailableUntil`) and `/api/assess` answers **501** from then on, so the
+  button disappears instead of failing on every press. Leaving a key set in the
+  portal is therefore harmless.
 - **Set `GEMINI_API_KEY`** as an SWA application setting to switch it on
   (`GEMINI_MODEL` overrides the model). Without it `/api/assess` answers **501**
   and the client hides the button — dormant, exactly like analytics without its
