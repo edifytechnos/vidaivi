@@ -1,3 +1,2 @@
-module.exports = async (context) => {
-  context.res = { status: 200, headers: { "Content-Type": "application/json" }, body: { probe: true } };
-};
+const { handlers } = require("../shared/core");
+module.exports = handlers.adminsecurity;
