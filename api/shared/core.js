@@ -1168,6 +1168,9 @@ const ROSTER_SELECT = [
 
 const ATTEMPT_LIST_SELECT = [
   "PartitionKey", "RowKey", "testId", "score", "total", "completedAt", "updatedAt", "index",
+  // A teacher's granted extra attempt rides in this partition too; the listing
+  // tallies it rather than showing it.
+  "extra",
 ];
 
 function slugify(name) {
@@ -2494,6 +2497,9 @@ function testMeta(e) {
     sample: !!e.sample,
     subjectId: e.subjectId || "",
     ownerSub: e.ownerSub,
+    // Whether the attempt cap applies, not where the row came from: the
+    // client needs the rule, and a master's id is the library's business.
+    capped: !!e.copiedFrom,
     questionCount: counts.questionCount,
     totalMarks: counts.totalMarks,
     updatedAt: e.updatedAt,
@@ -3552,6 +3558,10 @@ handlers.parentlink = async (context, req) => {
 // In-progress rows share the attempts table under a stable key, so each save
 // replaces the last rather than piling up.
 const PROGRESS_PREFIX = "progress~";
+// A teacher's extra attempt, parked in the student's own attempt partition so
+// that counting the attempts and reading the grant are ONE walk rather than
+// two round trips. `progress~` already established that namespace.
+const GRANT_PREFIX = "grant~";
 
 function isProgressRow(e) {
   return String(e.rowKey || "").startsWith(PROGRESS_PREFIX);
@@ -3628,6 +3638,55 @@ async function hasAttemptInProgress(entity) {
   return false;
 }
 
+/**
+ * How many times this student has handed this test in, and how many extra
+ * attempts their teacher has granted — in one walk of their own partition.
+ *
+ * **The attempt rows are the ledger.** This deliberately does not follow rule
+ * 5's "stamp the count on write": a stamped counter can drift from the rows it
+ * counts, and here the rows are what a teacher actually reads on the report,
+ * so a disagreement would be a bug with two plausible answers. Counting them
+ * cannot disagree with itself.
+ *
+ * Projected to `RowKey` alone — this asks how many, never what was answered.
+ */
+async function attemptTally(attempts, studentId, testId) {
+  const safeId = String(studentId).replace(/'/g, "''");
+  const safeTest = String(testId).replace(/'/g, "''");
+  let used = 0;
+  let extra = 0;
+  const iter = attempts.listEntities({
+    queryOptions: {
+      filter: `PartitionKey eq '${safeId}' and testId eq '${safeTest}'`,
+      select: ["RowKey", "testId", "extra"],
+    },
+  });
+  for await (const row of iter) {
+    const rk = String(row.rowKey || "");
+    if (rk.startsWith(PROGRESS_PREFIX)) continue; // mid-paper, not a hand-in
+    if (rk.startsWith(GRANT_PREFIX)) {
+      extra += typeof row.extra === "number" ? row.extra : 0;
+      continue;
+    }
+    used += 1;
+  }
+  return { used, extra };
+}
+
+/**
+ * How many attempts this test allows, or 0 for unlimited.
+ *
+ * **`copiedFrom` is the whole test.** A row carrying it came from the built-in
+ * library; a teacher's own test never does. That is why this needs no lineage
+ * walk and no purchases read — the cap belongs to ready-made content however it
+ * was obtained, so the shelf it descends from does not come into it.
+ */
+function attemptLimitFor(testRow, rules) {
+  if (!testRow || !testRow.copiedFrom) return 0;
+  const n = Number(rules.subjectAttempts);
+  return Number.isFinite(n) && n > 0 ? n : 0;
+}
+
 handlers.attempts = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req, context);
@@ -3651,6 +3710,40 @@ handlers.attempts = async (context, req) => {
     // upserted under a stable key, so a student who drops off mid-test — or
     // picks up a different device — loses nothing. Each write carries the WHOLE
     // answer map, so a dropped one is healed by the next answer.
+    // A teacher hands back an attempt. The real case is a child whose
+    // connection died mid-paper; without this every one of those becomes a
+    // message to the person who runs the platform.
+    if (body.action === "grant") {
+      if (who.role !== "teacher" && who.role !== "admin") {
+        return json(context, 403, { error: "Teachers only" });
+      }
+      const username = String(body.username || "").trim().toLowerCase();
+      const refusal = await canSeeStudent(who, username);
+      if (refusal) return refuse(context, refusal);
+      const testId = String(body.testId || "").slice(0, 80);
+      if (!testId) return json(context, 400, { error: "A test is needed" });
+      const key = `${GRANT_PREFIX}${testId}`;
+      let current = 0;
+      try {
+        const row = await attempts.getEntity(`stu~${username}`, key);
+        current = typeof row.extra === "number" ? row.extra : 0;
+      } catch {}
+      await attempts.upsertEntity(
+        {
+          partitionKey: `stu~${username}`,
+          rowKey: key,
+          // `testId` matters: the tally filters on it, so a grant that did not
+          // carry it would be invisible to the very walk that reads it.
+          testId,
+          extra: current + 1,
+          grantedBy: who.id,
+          grantedAt: new Date().toISOString(),
+        },
+        "Merge"
+      );
+      return json(context, 200, { ok: true, extra: current + 1 });
+    }
+
     if (body.action === "progress") {
       if (typeof body.index !== "number") {
         return json(context, 400, { error: "Bad attempt payload" });
@@ -3690,6 +3783,39 @@ handlers.attempts = async (context, req) => {
       typeof body.answers === "string" && body.answers.length <= Q_CHUNK
         ? body.answers
         : "";
+    // The cap, and only on a real student's hand-in. A teacher previewing
+    // their own paper and a guest on the demo have nobody to be limited by —
+    // `canHandIn()` draws the same line on the client.
+    if (who.kind === "student") {
+      const testId = body.testId.slice(0, 80);
+      let testRow = null;
+      try {
+        // The student's own teacher's partition is the only one their test
+        // can live in — the same set `visible()` allows them.
+        const testsTbl = tableClient("tests");
+        await ensureTable(testsTbl);
+        testRow = await readByPartitions(
+          testsTbl,
+          [who.teacherSub || ""].filter(Boolean),
+          testId,
+          LEGACY_TEST_PK
+        );
+      } catch {
+        testRow = null;
+      }
+      const limit = attemptLimitFor(testRow, await platformRules());
+      if (limit > 0) {
+        const tally = await attemptTally(attempts, who.id, testId);
+        if (tally.used >= limit + tally.extra) {
+          return json(context, 402, {
+            error: `You have used all ${limit + tally.extra} attempts at this test. Your teacher can give you another.`,
+            used: tally.used,
+            limit: limit + tally.extra,
+          });
+        }
+      }
+    }
+
     // Inverted-time row key so newest attempts sort first in the table.
     const rowKey = `${String(9999999999999 - Date.now())}~${body.testId.slice(0, 80)}`;
     await attempts.createEntity({
@@ -3761,10 +3887,26 @@ handlers.attempts = async (context, req) => {
   }
 
   const list = [];
+  // Counted in the SAME walk the listing already makes: how many hand-ins per
+  // test, and any extra the teacher granted. A second query would ask the same
+  // partition the same question twice.
+  const counts = {};
+  const bump = (id, key, by) => {
+    if (!id) return;
+    counts[id] = counts[id] || { used: 0, extra: 0 };
+    counts[id][key] += by;
+  };
   const iter = attempts.listEntities({
     queryOptions: { filter: partition, select: ATTEMPT_LIST_SELECT },
   });
   for await (const e of iter) {
+    // A grant is not an attempt. Left in the list it would read as a paper the
+    // student handed in and never sat.
+    if (String(e.rowKey || "").startsWith(GRANT_PREFIX)) {
+      bump(e.testId, "extra", typeof e.extra === "number" ? e.extra : 0);
+      continue;
+    }
+    if (!isProgressRow(e)) bump(e.testId, "used", 1);
     list.push(
       isProgressRow(e)
         ? {
@@ -3785,7 +3927,7 @@ handlers.attempts = async (context, req) => {
     );
     if (list.length >= 100) break;
   }
-  json(context, 200, { attempts: list });
+  json(context, 200, { attempts: list, counts, attemptRule: (await platformRules()).subjectAttempts });
 };
 
 // ---------- Answer photos for long questions ----------

@@ -10,6 +10,7 @@ import {
   listStudents,
   extendTrial,
   fetchAiUsage,
+  grantAttempt,
   listAccounts,
   savePlanRules,
   setAccountExempt,
@@ -686,7 +687,23 @@ export function showStudentReport(username: string) {
       document.querySelector(".shell-main .page")!.innerHTML = `
         <div class="card"><p class="login-error">Could not load the report — go back and retry.</p>
         <div class="actions"><button id="rep-back" class="btn btn-ghost">Back</button></div></div>`;
-      document.getElementById("rep-back")!.addEventListener("click", showTeacher);
+      // A child whose connection died mid-paper is the real case this exists
+    // for. Without it, every one of those is a message to whoever runs the
+    // platform.
+    document.querySelectorAll<HTMLButtonElement>(".rep-grant").forEach((btn) =>
+      btn.addEventListener("click", async () => {
+        const was = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = "Giving…";
+        const res = await grantAttempt(btn.dataset.user!, btn.dataset.test!);
+        btn.textContent = res.ok ? "Given" : res.message || "Could not give";
+        if (!res.ok) {
+          btn.disabled = false;
+          btn.textContent = was || "Give another attempt";
+        }
+      })
+    );
+    document.getElementById("rep-back")!.addEventListener("click", showTeacher);
       return;
     }
 
@@ -729,6 +746,8 @@ export function showStudentReport(username: string) {
                         <button class="btn-link rep-paper" data-test="${escapeHtml(a.testId)}"
                                 data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Open &amp; mark</button>
                         <button class="btn-link rel-toggle" data-test="${escapeHtml(a.testId)}" data-user="${escapeHtml(s.username)}">Release</button>
+                        <button class="btn-link rep-grant" data-test="${escapeHtml(a.testId)}"
+                                data-user="${escapeHtml(s.username)}">Give another attempt</button>
                       </td>
                     </tr>`;
                   })

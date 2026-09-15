@@ -525,10 +525,16 @@ async function assessCapChecks() {
     deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
     listEntities: ({ queryOptions } = {}) => ({
       [Symbol.asyncIterator]: async function* () {
-        const want = /PartitionKey eq '([^']*)'/.exec((queryOptions && queryOptions.filter) || "");
+        const filter = (queryOptions && queryOptions.filter) || "";
+        const want = /PartitionKey eq '([^']*)'/.exec(filter);
+        // The real table applies a property clause too. Without this the fake
+        // hands back the whole partition, and any test of "this test's
+        // attempts, not that one's" passes without proving anything.
+        const wantTest = /testId eq '([^']*)'/.exec(filter);
         for (const [k, row] of rows) {
           if (!k.startsWith(`${name}/`)) continue;
           if (want && row.partitionKey !== want[1]) continue;
+          if (wantTest && String(row.testId || "") !== wantTest[1]) continue;
           yield { ...row };
         }
       },
@@ -553,7 +559,7 @@ async function assessCapChecks() {
   const mod3 = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, usageMonth, creditsAreLow, entitlements, platformRules, planCache, accountsTable, ACCOUNT_PK, GOOGLE_SESSION_TTL_MS };";
+    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, usageMonth, creditsAreLow, entitlements, platformRules, planCache, accountsTable, ACCOUNT_PK, GOOGLE_SESSION_TTL_MS, attemptTally, attemptLimitFor, GRANT_PREFIX, PROGRESS_PREFIX };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod3, mod3.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -778,6 +784,52 @@ async function assessCapChecks() {
   // A signed-in teacher must not be able to set the platform's prices.
   r2 = await asGoogle({ action: "rules", subjectPaise: 1 });
   check(r2.status === 403, `a teacher cannot change the pricing (${r2.status})`);
+
+  // --- Two attempts per ready-made test ---
+  //
+  // `copiedFrom` is the whole test: a row carrying it came from the library.
+  // A teacher's own paper has none and is never capped.
+  const rulesNow = await t.platformRules();
+  check(t.attemptLimitFor({ copiedFrom: "lib-c10-1" }, rulesNow) === 2, "a library copy allows 2 attempts");
+  check(t.attemptLimitFor({ copiedFrom: "" }, rulesNow) === 0, "a teacher's own test is uncapped (0)");
+  check(t.attemptLimitFor(null, rulesNow) === 0, "and a test that cannot be read is not capped by accident");
+
+  // The tally reads hand-ins, and must not miscount the two other row shapes
+  // that share the partition.
+  const att = fakeTable("attempts");
+  const stu = "stu~tally-kid";
+  await att.upsertEntity({ partitionKey: stu, rowKey: "9999~t1", testId: "t1" }, "Merge");
+  await att.upsertEntity({ partitionKey: stu, rowKey: "9998~t1", testId: "t1" }, "Merge");
+  await att.upsertEntity(
+    { partitionKey: stu, rowKey: `${t.PROGRESS_PREFIX}t1`, testId: "t1" },
+    "Merge"
+  );
+  let tally = await t.attemptTally(att, stu, "t1");
+  check(tally.used === 2, `two hand-ins count as two (${tally.used})`);
+  check(tally.extra === 0, "and nothing is granted yet");
+
+  // A paper still being written is not a hand-in — counting it would spend an
+  // attempt on a student who is mid-question.
+  await att.upsertEntity({ partitionKey: stu, rowKey: `${t.PROGRESS_PREFIX}t2`, testId: "t2" }, "Merge");
+  tally = await t.attemptTally(att, stu, "t2");
+  check(tally.used === 0, `a paper in progress spends nothing (${tally.used})`);
+
+  // The teacher's grant lives in the same partition and must be read, never
+  // counted as an attempt.
+  await att.upsertEntity(
+    { partitionKey: stu, rowKey: `${t.GRANT_PREFIX}t1`, testId: "t1", extra: 1 },
+    "Merge"
+  );
+  tally = await t.attemptTally(att, stu, "t1");
+  check(
+    tally.used === 2 && tally.extra === 1,
+    `a granted attempt is read, not counted (used ${tally.used}, extra ${tally.extra})`
+  );
+
+  // Another test in the same partition must not bleed into this one.
+  await att.upsertEntity({ partitionKey: stu, rowKey: "9997~other", testId: "other" }, "Merge");
+  tally = await t.attemptTally(att, stu, "t1");
+  check(tally.used === 2, `another test's attempts stay out of this count (${tally.used})`);
 
   // Exempt lifts everything, and is what protects the pilot class.
   await accounts.upsertEntity(

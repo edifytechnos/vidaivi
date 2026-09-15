@@ -1027,6 +1027,24 @@ export async function fetchMyAttempt(
   }
 }
 
+export interface AttemptCount {
+  used: number;
+  extra: number;
+}
+
+/** How many attempts have been spent per test, and the platform's cap. Filled
+ *  by the same call that lists the attempts — it is counted in that walk. */
+export interface AttemptCounts {
+  counts: Record<string, AttemptCount>;
+  rule: number;
+}
+
+let lastAttemptCounts: AttemptCounts = { counts: {}, rule: 0 };
+
+/** The counts from the most recent `fetchMyAttempts`. Read by the screens that
+ *  have to say "no attempts left" before a student taps. */
+export const attemptCounts = (): AttemptCounts => lastAttemptCounts;
+
 export async function fetchMyAttempts(student?: string): Promise<ServerAttempt[] | null> {
   if (!isLoggedIn()) return null;
   try {
@@ -1034,8 +1052,32 @@ export async function fetchMyAttempts(student?: string): Promise<ServerAttempt[]
     const res = await apiFetch(`/api/attempts${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     const data = await res.json();
+    lastAttemptCounts = {
+      counts: (data.counts as Record<string, AttemptCount>) || {},
+      rule: Number(data.attemptRule) || 0,
+    };
     return (data.attempts as ServerAttempt[]) ?? null;
   } catch {
     return null;
+  }
+}
+
+export async function grantAttempt(
+  username: string,
+  testId: string
+): Promise<{ ok: boolean; message?: string }> {
+  try {
+    const res = await apiFetch("/api/attempts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "grant", username, testId }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { ok: false, message: data.error || "Request failed" };
+    }
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Network error" };
   }
 }
