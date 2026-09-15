@@ -161,6 +161,11 @@ Working near it:
 - `ownerSub` is still on the row and is still the authorization field. **A
   partition key says where a row lives, never what it permits.**
 
+**Never exercise a storage-shape change on QA before merging it.** QA runs the
+new code against *production's* tables, and compatibility runs one way only:
+new code reads old rows, old code cannot read new ones. Opening QA on such a PR
+migrates live data into a shape the live site cannot see.
+
 Still outstanding, in order: bake published tests to immutable blobs on publish;
 then delete `LEGACY_TEST_PK` / `LEGACY_SUBJECT_PK` and the paths that read them,
 once both tables have drained.

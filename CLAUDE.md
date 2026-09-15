@@ -132,6 +132,15 @@ unlike the `vidai.seyali.app` entry above which is done.
   QA could point at a separate storage account instead of the live one.
 - **QA shares production's API and database.** Students and tests created while
   testing are the live ones, exactly as in local dev.
+- **So a storage-shape change must never be exercised on QA before it is
+  merged.** Compatibility between a schema change and the code around it is
+  one-directional: new code is written to read old rows, old code knows nothing
+  of new ones. QA runs the new code against **production's tables**, so opening
+  QA on such a PR migrates production's data into a shape production's own live
+  code cannot see — the re-partition would have emptied the library out of the
+  live site by way of a browser tab nobody thought was a deployment. Merge
+  first, and let production and QA reach the new shape together. QA is a test
+  bed for behaviour, and a schema change is the one thing it cannot hold.
 - Analytics: Azure Application Insights (optional). Activates only when the
   `APPINSIGHTS_CONNECTION_STRING` repo secret is set (passed to the build as
   `VITE_APPINSIGHTS_CONNECTION_STRING`); without it `src/analytics.ts` no-ops.
