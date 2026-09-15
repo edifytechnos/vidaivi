@@ -1005,6 +1005,23 @@ grading row, the blob downloads and the model call, for the same reason
   `POST {action:"grant"}` tops one teacher up, so somebody who runs out
   mid-term is not waiting on a deploy. The route is **not** named `admin…` —
   see the rule above about that namespace 404ing silently.
+- **Running low is warned about, not discovered at zero.** `LOW_CREDIT_FRACTION`
+  (0.2) and `creditsAreLow` live in `api/shared/core.js` and decide it **once**:
+  the teacher's note and the admin's list would drift apart the first time the
+  grant changed if each worked it out for itself. It is a **fraction** for the
+  same reason "10 left" is ample notice out of 100 and far too late out of 500.
+  `low` therefore rides on the assess response, on `?me=1` and on every admin
+  row.
+  - The teacher's balance is **seeded when the paper opens**, in the
+    `Promise.all` `openStudentPaper` already makes — a warning that only appears
+    *after* spending another credit is no warning at all. Below the threshold it
+    turns amber (`.credit-low`) and says what to do, not just the number.
+  - **A failed balance fetch says nothing**: the server's gate is the real
+    limit, and a network blip must neither claim a teacher is out nor reassure
+    them that they are not.
+  - The admin list flags those rows **Low**, sorts them first and counts them in
+    the header line, because the question that screen answers is "who needs
+    topping up".
 - Client: `fetchAiUsage` / `fetchMyCredits` / `grantCredits` in `src/auth.ts`;
   **AI usage** is an admin-only rail item rendering `showAiUsage()` in
   `src/screens/console.ts`, built on the same `consoleShell` + `.roster-row`

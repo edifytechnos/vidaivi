@@ -553,7 +553,7 @@ async function assessCapChecks() {
   const mod3 = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, usageMonth };";
+    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, usageMonth, creditsAreLow };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod3, mod3.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -646,6 +646,18 @@ async function assessCapChecks() {
     mine.promptTokens === 20 && mine.used === 3,
     `and totals tokens across calls (${mine.promptTokens} tokens, ${mine.used} used)`
   );
+
+  // --- "Close to the limit" ---
+  //
+  // The boundary is the whole of this feature: one off-by-one and a teacher is
+  // warned a credit too late, which is invisible until it happens to them.
+  check(!t.creditsAreLow(79, 100), "79 of 100 used is not yet low");
+  check(t.creditsAreLow(80, 100), "80 of 100 used is low (20% left)");
+  check(t.creditsAreLow(100, 100), "and spent is still low");
+  // A fraction, not a fixed ten: the same rule has to hold at another grant.
+  check(!t.creditsAreLow(39, 50), "39 of 50 used is not yet low");
+  check(t.creditsAreLow(40, 50), "40 of 50 used is low — the rule scales with the grant");
+  check(!t.creditsAreLow(0, 0), "a grant of zero is not reported as low");
 
   // Spend the rest of the month's credits and prove the gate refuses in words
   // — before the network, exactly as the daily cap does.

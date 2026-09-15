@@ -288,8 +288,11 @@ export function showAiUsage(month?: string) {
       listEl.innerHTML = `<p class="login-error">Could not load — refresh to retry.</p>`;
       return;
     }
+    const lowCount = report.rows.filter((r) => r.low).length;
     totalEl.textContent = report.rows.length
-      ? `${report.totals.used} assessment${report.totals.used === 1 ? "" : "s"} · ₹${report.totals.costInr.toFixed(2)} this month`
+      ? `${report.totals.used} assessment${report.totals.used === 1 ? "" : "s"} · ₹${report.totals.costInr.toFixed(2)} this month${
+          lowCount ? ` · ${lowCount} running low` : ""
+        }`
       : "";
     if (!report.rows.length) {
       listEl.innerHTML = `<p class="hint">No AI marking used in ${escapeHtml(shown)}.</p>`;
@@ -300,7 +303,9 @@ export function showAiUsage(month?: string) {
         (r) => `
       <div class="roster-row">
         <div class="roster-main">
-          <div class="roster-name">${escapeHtml(r.name || r.email || r.teacherId)}</div>
+          <div class="roster-name">${escapeHtml(r.name || r.email || r.teacherId)}${
+            r.low ? ` <span class="credit-low">Low</span>` : ""
+          }</div>
           <div class="hint">${r.used} of ${r.granted} credits used · ${r.left} left ·
             ${rupees(r.costInr)} · ${r.promptTokens + r.completionTokens} tokens</div>
         </div>
