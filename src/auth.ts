@@ -453,6 +453,76 @@ export async function modifyTeacher(
   }
 }
 
+// ---------- Plans, roles and what an account may do ----------
+
+export interface Entitlements {
+  plan: "new" | "trial" | "teacher" | "parent" | "lapsed" | "exempt" | "admin";
+  chose: "" | "teacher" | "parent";
+  trialEndsAt: string;
+  limits: { subjects: number; tests: number; students: number; shelfTests: number };
+  rules: Record<string, number>;
+}
+
+export async function fetchEntitlements(): Promise<Entitlements | null> {
+  try {
+    const res = await apiFetch("/api/accounts", { headers: authHeader() });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function accountsPost(body: unknown): Promise<{ ok: boolean; message?: string }> {
+  try {
+    const res = await apiFetch("/api/accounts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { ok: false, message: data.error || "Request failed" };
+    }
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
+export const chooseRole = (chose: "teacher" | "parent") => accountsPost({ action: "choose", chose });
+export const savePlanRules = (rules: Record<string, number>) =>
+  accountsPost({ action: "rules", ...rules });
+export const setAccountExempt = (sub: string, exempt: boolean) =>
+  accountsPost({ action: "exempt", sub, exempt });
+export const setAccountSeats = (sub: string, seats: number) =>
+  accountsPost({ action: "seats", sub, seats });
+export const extendTrial = (sub: string, days: number) =>
+  accountsPost({ action: "extend", sub, days });
+export const grantShelf = (sub: string, shelfId: string) =>
+  accountsPost({ action: "grant", sub, shelfId });
+
+export interface AccountRow {
+  sub: string;
+  name: string;
+  email: string;
+  chose: string;
+  trialEndsAt: string;
+  paidSeats: number;
+  exempt: boolean;
+  createdAt: string;
+}
+
+export async function listAccounts(): Promise<{ accounts: AccountRow[]; rules: Record<string, number> } | null> {
+  try {
+    const res = await apiFetch("/api/accounts?all=1", { headers: authHeader() });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
 // ---------- AI credits and usage ----------
 
 export interface AiUsageRow {

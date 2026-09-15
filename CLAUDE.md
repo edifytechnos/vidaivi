@@ -1370,6 +1370,83 @@ grading row, the blob downloads and the model call, for the same reason
   an assessment, so the day it refuses is not the day a teacher first hears
   about credits.
 
+## Plans, trials and what an account may do (`/api/accounts`)
+
+A Google account now picks **teacher or parent** once, at sign-up, and gets a
+trial. What each plan allows is enforced at the four creation points, and
+**every price and limit is a row an admin edits from the platform** — no number
+in that model is a constant in the code, because the first thing that happens
+to a price is that it changes and a deploy is a poor way to change one.
+
+- **Table `platform`, PK `plan`, RK `current`** — one row, every number,
+  memoised behind `PLAN_TTL_MS` with `planCache.drop()` on save (rule 4). A
+  **missing row means `PLAN_DEFAULTS`**, so the platform is never broken by a
+  table nobody has written yet.
+- **Money is integer paise, never rupees as a float.** `subjectPaise: 49900`.
+  Rupees exist only at the two edges — `rupees()` on the server for a message,
+  and one conversion in the Plans screen for the form — the same discipline
+  `aiusage` uses with micro-dollars.
+- **Table `accounts`, PK `account`, RK = the Google sub** — the role chosen,
+  the trial window, paid seats, `exempt`. A constant PartitionKey, the same
+  trade `tests` and `subjects` make, defensible *here* because the rows are
+  teachers and parents rather than students and the admin listing is one
+  partition query. It joins the outstanding re-partition work, it is not a new
+  kind of problem.
+- **Table `purchases`, PK = the buyer's sub, RK = the shelf id** — "do they own
+  this shelf" is a point read in their own partition. The right key from the
+  first line, unlike the two above.
+
+### Nobody who already had an account is charged
+
+`exemptLegacyAccounts` stamps **every existing profile as exempt**, once,
+guarded by a marker row in `authstate` and bounded by `inBatches`. The pilot
+class was promised free forever; a limit arriving by surprise would bill the one
+teacher the pilot depends on. It **never overwrites an account that exists**, so
+a live trial cannot be turned into a free-forever account by the migration.
+`exempt` is also the admin's manual lever, from the accounts list.
+
+### One resolver, four gates
+
+`entitlements(who)` returns the whole answer — plan, trial, limits — and every
+gate reads it. Nothing recomputes a limit at a call site, for the same reason
+`creditsAreLow` lives in one function: two places deciding one rule is how they
+come to disagree. **A limit of `0` means no limit**, and a gate treats a missing
+answer as the tightest one.
+
+- `POST /api/subjects` create, `POST /api/tests` create — own-content counts.
+- `POST /api/tests {action:"adopt"}` — where the free allowance meets the
+  ₹499 shelf. Owning the shelf (`ownsShelf`) copies freely; otherwise
+  `adoptedCount` (rows carrying `copiedFrom`) is checked against
+  `freeShelfTests`, and the refusal **names the price**.
+- `POST /api/students` create — seats, `teacherFreeStudents + paidSeats`.
+  Issuing a login to a real child **still needs the teacher allowlist**: anyone
+  may pick "teacher" and start a trial, but approval is a separate gate and
+  stays deliberate.
+
+Every refusal is **402** through `overLimit`, saying what was hit and what lifts
+it. A bare "no" reads as a broken product; a number and a price is a decision.
+
+### The role is chosen once, and the server decides when to ask
+
+`showRoleChoiceIfNeeded` in `src/screens/auth.ts` runs **before** phone capture
+and only when the server reports no stored choice — not a localStorage flag, so
+a reload or a second device cannot skip it. `choose` is refused with 409 if a
+choice already exists: re-picking would restart the trial at will and move a
+roster of real children between two kinds of account. A failed entitlements
+call **carries on rather than stranding** somebody on a chooser they cannot
+complete.
+
+### Admin: Plans & pricing
+
+An admin-only rail item beside **AI usage**: every number in a form, and the
+accounts list with **Free forever**, **paid seats** and **extend trial** as
+manual levers. Those levers are what make the payment stub honest — a real
+teacher can be run end to end today, with money arriving later.
+
+**Payments are deliberately not built.** Razorpay, invoices, renewal and
+charging a card are the next slice; seats are counted, priced and shown, never
+billed. CLAUDE.md's "payments: later, only when v1 loop is proven" still holds.
+
 ## Releasing the answers (`/api/release`, table `releases`)
 
 Taking a test is **silent**: a signed-in student submits and nothing comes back —

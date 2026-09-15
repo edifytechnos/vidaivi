@@ -8,7 +8,12 @@ import {
   fetchReports,
   isAdmin,
   listStudents,
+  extendTrial,
   fetchAiUsage,
+  listAccounts,
+  savePlanRules,
+  setAccountExempt,
+  setAccountSeats,
   grantCredits,
   listTeachers,
   modifyTeacher,
@@ -34,11 +39,12 @@ import { audienceLabel, openAssign } from "./assign";
 import { showSubjects } from "./subjects";
 import { openStudentPaper } from "./marking";
 
-type ConsolePage = "admin" | "aiusage" | "students" | "report" | "tests";
+type ConsolePage = "admin" | "aiusage" | "plans" | "students" | "report" | "tests";
 
 const CONSOLE_TITLES: Record<ConsolePage, string> = {
   admin: "Teacher access",
   aiusage: "AI usage",
+  plans: "Plans & pricing",
   students: "My students",
   report: "Student report",
   tests: "My tests",
@@ -337,6 +343,165 @@ export function showAiUsage(month?: string) {
       )
     );
   }
+
+  void refresh();
+}
+
+/** Every price and limit, and who is on which plan. The numbers here are the
+ *  live ones: nothing in the code duplicates them. */
+export function showPlans() {
+  setUrl();
+  track("plans_open");
+  const FIELDS: { key: string; label: string; money?: boolean; hint?: string }[] = [
+    { key: "trialDays", label: "Trial length (days)" },
+    { key: "trialSubjects", label: "Trial: subjects" },
+    { key: "trialTests", label: "Trial: tests" },
+    { key: "trialStudents", label: "Trial: student accounts" },
+    { key: "teacherMonthlyPaise", label: "Teacher platform fee / month", money: true },
+    { key: "teacherFreeStudents", label: "Teacher: free student accounts" },
+    { key: "perStudentMonthlyPaise", label: "Each extra student / month", money: true },
+    { key: "subjectPaise", label: "Ready-made subject", money: true, hint: "All its tests included" },
+    { key: "subjectAttempts", label: "Attempts per test in a bought subject" },
+    { key: "freeShelfTests", label: "Free ready-made tests", hint: "Before a subject must be bought" },
+    { key: "parentMaxChildren", label: "Parent: children" },
+  ];
+  consoleShell(
+    "plans",
+    `
+      <div class="card">
+        <h2 class="landing-title">Plans &amp; pricing</h2>
+        <p class="hint">These are the live numbers. Changing one here changes what
+        every account may do, straight away — nothing needs deploying.</p>
+        <div id="plan-form">${skeleton.table(2, 6)}</div>
+        <p id="plan-msg" class="hint"></p>
+        <div class="actions"><button id="plan-save" class="btn btn-primary" disabled>Save</button></div>
+      </div>
+      <div class="card roster-card">
+        <div class="solution-title">Accounts</div>
+        <div id="acct-list">${skeleton.table(3, 4)}</div>
+      </div>`
+  );
+  bindConsoleNav();
+
+  const formEl = document.getElementById("plan-form")!;
+  const listEl = document.getElementById("acct-list")!;
+  const msgEl = document.getElementById("plan-msg")!;
+  const saveBtn = document.getElementById("plan-save") as HTMLButtonElement;
+
+  async function refresh() {
+    const data = await listAccounts();
+    if (!data) {
+      formEl.innerHTML = `<p class="login-error">Could not load — refresh to retry.</p>`;
+      listEl.innerHTML = "";
+      return;
+    }
+    // Money is stored in paise and shown in rupees. The conversion happens
+    // here and nowhere else, so nothing downstream can round a price.
+    formEl.innerHTML = FIELDS.map((f) => {
+      const raw = Number(data.rules[f.key] ?? 0);
+      const shown = f.money ? raw / 100 : raw;
+      return `
+        <div class="roster-row">
+          <div class="roster-main">
+            <div class="roster-name">${escapeHtml(f.label)}${f.money ? " (₹)" : ""}</div>
+            ${f.hint ? `<div class="hint">${escapeHtml(f.hint)}</div>` : ""}
+          </div>
+          <input class="modal-input plan-num" style="max-width:120px" type="number" min="0"
+                 data-key="${escapeHtml(f.key)}" data-money="${f.money ? "1" : ""}"
+                 value="${shown}" />
+        </div>`;
+    }).join("");
+    saveBtn.disabled = false;
+
+    if (!data.accounts.length) {
+      listEl.innerHTML = `<p class="hint">Nobody has signed up under a plan yet.</p>`;
+      return;
+    }
+    listEl.innerHTML = data.accounts
+      .map((a) => {
+        const left = a.trialEndsAt ? Math.ceil((Date.parse(a.trialEndsAt) - Date.now()) / 86400000) : 0;
+        const state = a.exempt
+          ? `<span class="credit-low">Free forever</span>`
+          : a.trialEndsAt && left > 0
+            ? `on trial · ${left} day${left === 1 ? "" : "s"} left`
+            : a.chose
+              ? "trial ended"
+              : "not chosen yet";
+        return `
+        <div class="roster-row">
+          <div class="roster-main">
+            <div class="roster-name">${escapeHtml(a.name || a.email || a.sub)}</div>
+            <div class="hint">${escapeHtml(a.chose || "—")} · ${state}${
+              a.paidSeats ? ` · ${a.paidSeats} paid seats` : ""
+            }</div>
+          </div>
+          <button class="btn-link acct-edit" data-sub="${escapeHtml(a.sub)}"
+            data-exempt="${a.exempt ? "1" : ""}" data-seats="${a.paidSeats}">Change</button>
+        </div>`;
+      })
+      .join("");
+    listEl.querySelectorAll<HTMLButtonElement>(".acct-edit").forEach((btn) =>
+      btn.addEventListener("click", () =>
+        openModal({
+          title: "Change this account",
+          description: "Free forever lifts every limit — that is what the pilot class holds.",
+          fields: [
+            {
+              name: "exempt",
+              label: "Free forever",
+              kind: "radio",
+              choices: [
+                { value: "no", label: "No, apply the plan limits", checked: !btn.dataset.exempt },
+                { value: "yes", label: "Yes, no limits", checked: !!btn.dataset.exempt },
+              ],
+            },
+            { name: "seats", label: "Paid student seats", value: btn.dataset.seats || "0" },
+            { name: "days", label: "Extend trial by (days)", value: "0" },
+          ],
+          submitLabel: "Save",
+          onSubmit: async (values) => {
+            const sub = btn.dataset.sub!;
+            const want = values.exempt === "yes";
+            if (want !== !!btn.dataset.exempt) {
+              const r = await setAccountExempt(sub, want);
+              if (!r.ok) return r.message || "Could not save.";
+            }
+            const seats = Number(values.seats);
+            if (Number.isFinite(seats) && String(seats) !== (btn.dataset.seats || "0")) {
+              const r = await setAccountSeats(sub, seats);
+              if (!r.ok) return r.message || "Could not save.";
+            }
+            const days = Number(values.days);
+            if (Number.isFinite(days) && days > 0) {
+              const r = await extendTrial(sub, days);
+              if (!r.ok) return r.message || "Could not save.";
+            }
+            void refresh();
+          },
+        })
+      )
+    );
+  }
+
+  saveBtn.addEventListener("click", async () => {
+    const out: Record<string, number> = {};
+    let bad = "";
+    formEl.querySelectorAll<HTMLInputElement>(".plan-num").forEach((el) => {
+      const n = Number(el.value);
+      if (!Number.isFinite(n) || n < 0) bad = el.dataset.key || "a value";
+      // Back to paise on the way out, the inverse of the one conversion above.
+      out[el.dataset.key!] = el.dataset.money ? Math.round(n * 100) : Math.round(n);
+    });
+    if (bad) {
+      msgEl.textContent = `${bad} must be a number that is not negative.`;
+      return;
+    }
+    saveBtn.disabled = true;
+    msgEl.textContent = "Saving…";
+    const res = await savePlanRules(out);
+    msgEl.textContent = res.ok ? "Saved. This is live now." : res.message || "Could not save.";
+    saveBtn.disabled = false;
+  });
 
   void refresh();
 }

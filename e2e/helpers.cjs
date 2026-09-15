@@ -553,7 +553,7 @@ async function assessCapChecks() {
   const mod3 = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, usageMonth, creditsAreLow };";
+    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, usageMonth, creditsAreLow, entitlements, platformRules, planCache, accountsTable, ACCOUNT_PK, GOOGLE_SESSION_TTL_MS };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod3, mod3.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -672,6 +672,120 @@ async function assessCapChecks() {
     `and says marking by hand still works ("${(r.data.error || "").slice(0, 70)}…")`
   );
   check(calls === 0, "no credit is spent reaching the model");
+
+  // --- Plans, trials and limits ---
+  //
+  // The rules must be readable from the table rather than the code: J's
+  // requirement was that a price changes without a deploy, and a test that
+  // only ever sees the defaults would not notice if that broke.
+  const accounts = await t.accountsTable();
+  const planRows = await (async () => {
+    const tbl = fakeTable("platform");
+    return tbl;
+  })();
+
+  const teacher = { kind: "google", id: "goo~trial", role: "teacher", email: "t@example.com", name: "T" };
+  const admin = { kind: "admin", id: "adm~e2e-admin", role: "admin" };
+
+  let ent = await t.entitlements(teacher);
+  check(ent.subjects === 1 && ent.tests === 3, `a new account gets the trial (${ent.subjects} subject, ${ent.tests} tests)`);
+  check(ent.students === 3, `and the trial's student seats (${ent.students})`);
+
+  ent = await t.entitlements(admin);
+  check(ent.exempt === true, "an admin is never gated by the plan they set");
+
+  // Chose teacher, trial expired yesterday → the paid plan's shape.
+  await accounts.upsertEntity(
+    {
+      partitionKey: t.ACCOUNT_PK,
+      rowKey: teacher.id,
+      chose: "teacher",
+      trialEndsAt: new Date(Date.now() - 86400000).toISOString(),
+      paidSeats: 0,
+      exempt: false,
+    },
+    "Merge"
+  );
+  ent = await t.entitlements(teacher);
+  check(ent.plan === "teacher", `a lapsed trial with a choice becomes the paid plan (${ent.plan})`);
+  check(ent.subjects === 0 && ent.tests === 0, "which lifts subjects and tests (0 means no limit)");
+  check(ent.students === 2, `but keeps the free seats (${ent.students})`);
+
+  // Paid seats add to the free ones.
+  await accounts.upsertEntity(
+    { partitionKey: t.ACCOUNT_PK, rowKey: teacher.id, paidSeats: 5 },
+    "Merge"
+  );
+  ent = await t.entitlements(teacher);
+  check(ent.students === 7, `paid seats add to the free ones (${ent.students})`);
+
+  // The whole point of the settings row: a number changes without a deploy.
+  await planRows.upsertEntity(
+    { partitionKey: "plan", rowKey: "current", teacherFreeStudents: 10 },
+    "Merge"
+  );
+  t.planCache.drop("current");
+  ent = await t.entitlements(teacher);
+  check(
+    ent.students === 15,
+    `an admin raising the free seats changes the limit with no deploy (${ent.students})`
+  );
+
+  // --- Choosing a role, through the real handler ---
+  //
+  // This is the one moment that decides which product a person gets, and it
+  // happens exactly once. The UI cannot be driven without a real Google
+  // account, so the rules that matter are proved here instead.
+  const freshSub = "goo~fresh-signup";
+  const goog = t.signSession("vgo", freshSub, t.GOOGLE_SESSION_TTL_MS, {
+    ep: 0,
+    e: "fresh@example.com",
+    n: "Fresh",
+  });
+  const asGoogle = async (body, method) => {
+    const c = { res: null };
+    await t.handlers.accounts(c, {
+      method: method || "POST",
+      query: {},
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${goog}` },
+      body: body || {},
+    });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+
+  let r2 = await asGoogle({ action: "choose", chose: "wizard" });
+  check(r2.status === 400, `an unknown role is refused (${r2.status})`);
+
+  r2 = await asGoogle({ action: "choose", chose: "teacher" });
+  check(r2.status === 200 && r2.data.chose === "teacher", `choosing teacher works (${r2.status})`);
+  check(
+    Date.parse(r2.data.trialEndsAt) > Date.now(),
+    `and starts the trial there and then (${String(r2.data.trialEndsAt).slice(0, 10)})`
+  );
+
+  // Once. Re-picking would restart the trial at will, and would move a roster
+  // of real children between two kinds of account.
+  r2 = await asGoogle({ action: "choose", chose: "parent" });
+  check(r2.status === 409, `the choice cannot be made twice (${r2.status})`);
+  r2 = await asGoogle(null, "GET");
+  check(r2.data.chose === "teacher", `and the first choice stands (${r2.data.chose})`);
+  check(r2.data.plan === "trial", `a fresh account is on trial, not exempt (${r2.data.plan})`);
+  check(
+    r2.data.limits.subjects === 1 && r2.data.limits.students === 3,
+    `with the trial's limits (${r2.data.limits.subjects} subject, ${r2.data.limits.students} students)`
+  );
+
+  // A signed-in teacher must not be able to set the platform's prices.
+  r2 = await asGoogle({ action: "rules", subjectPaise: 1 });
+  check(r2.status === 403, `a teacher cannot change the pricing (${r2.status})`);
+
+  // Exempt lifts everything, and is what protects the pilot class.
+  await accounts.upsertEntity(
+    { partitionKey: t.ACCOUNT_PK, rowKey: teacher.id, exempt: true },
+    "Merge"
+  );
+  ent = await t.entitlements(teacher);
+  check(ent.exempt && ent.subjects === 0 && ent.students === 0, "an exempt account is gated by nothing");
 
   global.fetch = realFetch;
   delete process.env.AZURE_AI_ENDPOINT;
