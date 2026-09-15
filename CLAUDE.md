@@ -314,6 +314,18 @@ re-running is how a question is corrected**.
 replaced by id, so a file merely deleted from the repo would leave its row
 published in the library forever — nobody would ever see the deletion.
 
+**The seeder authenticates with the session cookie, not a token.** It used to
+read `auth.token` from the login response and send it as `X-Vidai-Auth`. The
+cookie migration ended that: `/api/manageauth` now answers `{ok: true}` and sets
+the httpOnly `vidai_session` cookie, so `auth.token` was `undefined` and every
+run died on **"Admin login failed"** — with correct credentials. The script now
+keeps a cookie jar and sends `X-Vidai-Auth: 1` purely as the **CSRF marker**
+`csrfRefused` looks for; its value is never checked and is not a secret.
+
+Worth remembering as a class of bug: the migration was correct everywhere the
+app itself runs, and silently broke the one caller that is not the app. A script
+that authenticates is the thing to re-test after any change to how sessions work.
+
 **The eleven shelves**, each 15 questions per chapter:
 
 | Directory | Shelf | Chapters |

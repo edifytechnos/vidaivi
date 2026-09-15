@@ -63,16 +63,37 @@ for (const d of dirs) {
   }
 }
 
-const auth = await fetch(`${BASE}/api/manageauth`, {
+// The session is an httpOnly cookie, not a token in the body.
+//
+// This script used to read `auth.token` from the login response and send it as
+// `X-Vidai-Auth`. That stopped working when sessions moved to the
+// `vidai_session` cookie (see "The session is a cookie the page cannot read" in
+// CLAUDE.md): /api/manageauth now answers `{ok: true}` and sets the cookie, so
+// `auth.token` was undefined and every run died on "Admin login failed" — the
+// credentials were never the problem.
+//
+// `X-Vidai-Auth` is still sent, but it is now only the **CSRF marker** that
+// `csrfRefused` looks for on a state-changing call. Its value is not a secret
+// and is never checked; what authenticates is the cookie.
+const login = await fetch(`${BASE}/api/manageauth`, {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
+  headers: { "Content-Type": "application/json", "X-Vidai-Auth": "1" },
   body: JSON.stringify({ username: USER, password: PASS }),
-}).then((r) => r.json());
-if (!auth.token) {
-  console.error("Admin login failed.");
+});
+const session = (login.headers.getSetCookie?.() || [])
+  .map((c) => /(?:^|;\s*)vidai_session=([^;]+)/.exec(c)?.[1])
+  .find(Boolean);
+if (!login.ok || !session) {
+  const body = await login.json().catch(() => ({}));
+  console.error(`Admin login failed (${login.status}) ${body.error || ""}`.trim());
+  if (login.ok) console.error("Logged in but no vidai_session cookie came back.");
   process.exit(1);
 }
-const hdr = { "Content-Type": "application/json", "X-Vidai-Auth": auth.token };
+const hdr = {
+  "Content-Type": "application/json",
+  "X-Vidai-Auth": "1",
+  Cookie: `vidai_session=${session}`,
+};
 const post = (url, body) =>
   fetch(`${BASE}${url}`, { method: "POST", headers: hdr, body: JSON.stringify(body) })
     .then(async (r) => ({ status: r.status, data: await r.json().catch(() => ({})) }));
