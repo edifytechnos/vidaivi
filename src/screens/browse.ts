@@ -257,7 +257,7 @@ function renderTest(test: Test, index: number): void {
                       )
                       .join("")}</div>`
                   : q.type === "numeric"
-                    ? `<p class="review-correct">Answer: <strong>${q.answer}</strong>${
+                    ? `<p class="review-correct">Answer: <strong>${escapeHtml(String(q.answer ?? ""))}</strong>${
                         q.tolerance ? ` (±${q.tolerance})` : ""
                       }</p>`
                     : `<p class="hint">Long answer — the student photographs their working and you award the marks.</p>`
