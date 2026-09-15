@@ -230,6 +230,7 @@ export async function showRoleChoiceIfNeeded(next: () => void): Promise<void> {
     fields: [
       {
         name: "chose",
+        // The dialog's own title asks the question; the tiles answer it.
         label: "",
         kind: "cards",
         required: true,
@@ -249,6 +250,10 @@ export async function showRoleChoiceIfNeeded(next: () => void): Promise<void> {
         ],
       },
     ],
+    // It cannot be dismissed: closing it left the account with no role at all,
+    // and the app then fell back to the parent's shape — which is exactly what
+    // "I picked teacher and landed as a parent" looked like from the outside.
+    mandatory: true,
     submitLabel: "Start",
     onSubmit: async (values) => {
       const pick = values.chose === "teacher" ? "teacher" : "parent";

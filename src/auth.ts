@@ -97,6 +97,15 @@ export function isTeacher(): boolean {
   return role === "teacher" || role === "admin";
 }
 
+/**
+ * An account that owns content of its own — a teacher, an admin, or a parent
+ * buying practice for their own children. The client mirror of the server's
+ * `isAuthor`: "may I have subjects and tests at all", never "how many".
+ */
+export function canAuthor(): boolean {
+  return isTeacher() || isParent();
+}
+
 export function isParent(): boolean {
   return getProfile()?.role === "parent";
 }
@@ -473,7 +482,9 @@ export async function fetchEntitlements(): Promise<Entitlements | null> {
   }
 }
 
-async function accountsPost(body: unknown): Promise<{ ok: boolean; message?: string }> {
+async function accountsPost(
+  body: unknown
+): Promise<{ ok: boolean; message?: string; data?: Record<string, unknown> }> {
   try {
     const res = await apiFetch("/api/accounts", {
       method: "POST",
@@ -484,13 +495,33 @@ async function accountsPost(body: unknown): Promise<{ ok: boolean; message?: str
       const data = await res.json().catch(() => ({}));
       return { ok: false, message: data.error || "Request failed" };
     }
-    return { ok: true };
+    return { ok: true, data: await res.json().catch(() => ({})) };
   } catch {
     return { ok: false, message: "Network error" };
   }
 }
 
-export const chooseRole = (chose: "teacher" | "parent") => accountsPost({ action: "choose", chose });
+/**
+ * Pick teacher or parent, once.
+ *
+ * The stored profile's role is what every screen reads, and it was written at
+ * sign-in — before this choice existed. So the answer has to be carried back
+ * onto it here, or somebody who picked "I teach a class" lands in the parent's
+ * app until their next sign-in. The server is the authority: this writes back
+ * the role it returns, never the button that was pressed.
+ */
+export async function chooseRole(chose: "teacher" | "parent"): Promise<{ ok: boolean; message?: string }> {
+  const res = await accountsPost({ action: "choose", chose });
+  if (res.ok) applyRole(res.data?.role);
+  return res;
+}
+
+function applyRole(role: unknown): void {
+  if (role !== "teacher" && role !== "parent") return;
+  const state = getAuth();
+  if (!state?.profile) return;
+  saveAuth({ ...state, profile: { ...state.profile, role } });
+}
 export const savePlanRules = (rules: Record<string, number>) =>
   accountsPost({ action: "rules", ...rules });
 export const setAccountExempt = (sub: string, exempt: boolean) =>

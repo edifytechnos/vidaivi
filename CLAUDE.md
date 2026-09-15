@@ -1436,6 +1436,80 @@ roster of real children between two kinds of account. A failed entitlements
 call **carries on rather than stranding** somebody on a chooser they cannot
 complete.
 
+**The choice decides the app; the allowlist decides approval.** These are two
+questions and conflating them is what made picking "I teach a class" land
+somebody in the parent's app. `chose` was written to the accounts row and
+**nothing ever read it back**: `resolveRole` knew only `ADMIN_EMAILS`,
+`TEACHER_EMAILS` and the `teachers` table, so the session's role stayed the
+default of `parent` and every screen believed it.
+
+- `resolveRole(email, sub)` now falls through to the account's own `chose`, and
+  is keyed by **sub** where there is one, because the answer lives on the
+  account rather than on the address. Still one point read, still memoised for
+  60s — and `choose` **drops the entry** (rule 4), or the chooser's own next
+  request is still served "parent".
+- The response carries `role`, and `chooseRole` in `src/auth.ts` writes it onto
+  the stored profile. The profile was stamped at sign-in, before the choice
+  existed; without this the app is right only after the next sign-in. **The
+  server's answer is what is stored, never the button that was pressed.**
+- **`mayIssueLogins` keeps the allowlist's one real power**: issuing a login to
+  a real child. Anyone may call themselves a teacher; a self-declaration must
+  not open a roster of other people's children, so an unapproved teacher is
+  refused `students {action:"create"}` and told it is **waiting for approval**
+  rather than simply refused. A parent's own children are capped by
+  `parentMaxChildren` instead.
+- **The dialog cannot be dismissed** (`mandatory` in `src/modal.ts`: no ✕, no
+  Cancel, no Escape, no scrim click). Closing it left the account with no role
+  at all and the app fell back to the parent's shape — the same symptom by a
+  second route.
+
+### A parent was sold a plan they could not use
+
+`entitlements()` has given a parent a subject, three tests, three children and
+the free shelf allowance since the plans slice. **Every gate around it still
+asked "teacher or admin"**, so a parent could reach none of it: no Browse rail
+item, `?library=1` answered *Teachers only*, and `POST /api/subjects` and
+`/api/tests` refused them outright. The plan existed only in the pricing screen.
+
+- **`isAuthor(who)`** — teacher, admin or parent — replaces `role === "teacher"
+  || role === "admin"` at every one of those gates. It answers only "does this
+  account own content at all"; **how much** is still `entitlements()`'s, and
+  a student is the one kind that is neither.
+- `canManageTest` and `canSeeStudent` follow the same line: **whoever issued
+  the login owns the relationship**, parent or teacher alike. A parent linked
+  to somebody else's student by invite code still falls through to `childLink`,
+  unchanged.
+- Client: `canAuthor()` in `src/auth.ts` is the mirror, used by
+  `src/screens/subjects.ts` and the rail. A parent now gets **Browse tests**,
+  **Subjects** (where the copies they take actually land — without it their
+  purchases have no door) and **To mark**.
+- In `src/screens/review.ts` a parent sees an unreleased paper only when
+  `opts.marking` is set — reached through their own marking queue. A parent
+  *reading* a child's paper still waits for release, exactly as before.
+
+**Not done, and it is the next slice**: payments. A parent past the free
+allowance gets the 402 naming ₹499 and no way to pay it.
+
+**One leftover of the re-partition fixed in passing**: the adopt gate read the
+master with `tests.getEntity("test", ids[0])` — the old constant partition — so
+it threw on every call, the shelf id came back empty, and **a shelf somebody had
+paid for spent their free allowance anyway**. It reads `PLATFORM_PK` now.
+
+### A dialog's buttons end at the right, and nothing is pre-picked
+
+The modal's actions were left-aligned with the primary first, which is neither
+the platform convention nor what an eye scanning a form expects.
+
+- `.modal-actions` is a footer: a hairline above it, **Back at the far left**
+  (pushed there by `.modal-actions-gap`, the only thing in the row that grows),
+  then **Cancel, then the primary, hard right**. Below 520px the dialog is a
+  sheet and they stack full width with the **primary on top** — furthest from
+  the thumb that is aiming for it.
+- **A `cards` field no longer pre-selects its first tile.** It used to, so a
+  one-time irreversible choice arrived already answered — the same mistake as
+  the MCQ editor's radio arriving on A, which this file already records. New
+  subject's step 1 is `required: true` now that nothing is ticked for it.
+
 ### Admin: Plans & pricing
 
 An admin-only rail item beside **AI usage**: every number in a form, and the

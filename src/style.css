@@ -3028,10 +3028,40 @@ body.modal-open {
   margin: 0;
 }
 
+/* The footer is a bar, not a row of buttons floating in the body: a hairline
+   above it separates deciding from doing, and the actions sit hard right with
+   the primary last. Back is pushed to the left by .modal-actions-gap, which is
+   the only thing in here that grows. */
 .modal-actions {
   display: flex;
+  align-items: center;
   gap: 10px;
-  margin-top: 4px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.modal-actions-gap {
+  flex: 1 1 auto;
+}
+
+/* On a phone the dialog is a sheet and the actions stack full width, primary
+   first: the thumb is at the bottom, so the safe target belongs furthest from
+   it and the one they came to press belongs on top. */
+@media (max-width: 520px) {
+  .modal-actions {
+    flex-wrap: wrap;
+  }
+  .modal-actions .btn {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .modal-actions-gap {
+    display: none;
+  }
+  .modal-submit {
+    order: -1;
+  }
 }
 
 @media (max-width: 520px) {
