@@ -310,10 +310,22 @@ export async function adoptTest(
   return { ok: result.ok, message: result.message, test: result.tests?.[0] };
 }
 
+/** Who is part-way through a test, when publishing is refused because of it. */
+export interface InProgressHolder {
+  /** Empty when it is the caller's own unfinished preview. */
+  username: string;
+  self: boolean;
+}
+
 export async function setTestStatus(
   id: string,
   action: "publish" | "unpublish" | "archive" | "delete"
-): Promise<{ ok: boolean; message?: string; problems?: TestProblem[] }> {
+): Promise<{
+  ok: boolean;
+  message?: string;
+  problems?: TestProblem[];
+  inProgress?: InProgressHolder[];
+}> {
   try {
     const res = await apiFetch("/api/tests", {
       method: "POST",
@@ -322,8 +334,37 @@ export async function setTestStatus(
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      return { ok: false, message: data.error || "Request failed", problems: data.problems };
+      return {
+        ok: false,
+        message: data.error || "Request failed",
+        problems: data.problems,
+        inProgress: data.inProgress,
+      };
     }
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
+/**
+ * Throw away an unfinished attempt so the test can be published.
+ *
+ * Omit `username` for the caller's own preview. Destructive: the answers in
+ * that row go with it, which is why every caller asks first.
+ */
+export async function discardAttempt(
+  testId: string,
+  username?: string
+): Promise<{ ok: boolean; message?: string }> {
+  try {
+    const res = await apiFetch("/api/attempts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "discard", testId, username }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not discard that attempt" };
     return { ok: true };
   } catch {
     return { ok: false, message: "Network error" };

@@ -1642,6 +1642,39 @@ now, at the hand-in.
   `testId eq` clause, **without which the "another test's attempts stay out of
   this count" assertion passed while proving nothing.**
 
+### Publishing was a dead end when a paper was left open
+
+Publishing is refused while somebody is part-way through — the paper would
+change under them mid-question, which is right. But the **only** thing that ever
+cleared that `progress~` row was **that same account handing the paper in**, so
+an abandoned paper, or the author's own preview left open while testing, locked
+the test for good. The refusal said *"try again once they have finished"* about
+a paper nobody was ever going to finish, and named nobody to chase.
+
+- **`attemptsInProgress` replaces `hasAttemptInProgress`**: it returns *who*,
+  not merely *whether*. The point reads were already being made, so naming the
+  holder costs nothing — and it is the whole difference between a wait and a
+  wall. The 409 carries `inProgress[]`, and the sentence names them:
+  *"Priya is part-way through…"*, or *"You are part-way through this test
+  yourself"* for the author's own preview.
+- **`POST /api/attempts {action:"discard", testId, username?}`** throws that row
+  away. Omit `username` for the caller's own preview. It is a **point delete
+  naming its partition**, gated by `canManageTest` on the test — a teacher
+  cannot clear a paper in progress on somebody else's test — and by
+  `canSeeStudent` on the student.
+- It is **destructive**: the answers in that row go with it. So the editor names
+  whose paper it is and asks first, and says plainly that a student's should be
+  discarded only if the paper has been abandoned.
+
+**The suite's TOTP block had a real intermittency, now removed.** A step is 30
+seconds and the server re-reads its own clock on every call, while the block
+captured `currentStep()` once and derived every later code from it. Straddling a
+boundary put the enrolment code two steps stale, outside `totpMatchStep`'s ±1
+window — and the four assertions hanging off that enrolment failed together.
+Read the clock at the point of use. (This matches an intermittent "4 FAILED"
+seen twice in one session and never reproduced in ~40 runs afterwards, so it is
+the removal of a real hazard rather than a confirmed diagnosis.)
+
 ## The report says what a paper is, not just a number
 
 `handlers.reports` pushed **every row in the student's partition** with no

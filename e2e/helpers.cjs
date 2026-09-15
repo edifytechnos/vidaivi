@@ -372,8 +372,11 @@ async function totpHandlerChecks() {
   r = await callAs("twostep", { action: "enable", code: "000000" });
   check(r.status === 400, `a code that does not match will not turn it on (${r.status})`);
 
+  // Enrol against the clock as the SERVER will read it, not a value captured
+  // earlier: `totpMatchStep` allows +/-1 step, so a code two steps stale is
+  // refused and every assertion hanging off this enrolment fails with it.
   const step = t.currentStep();
-  r = await callAs("twostep", { action: "enable", code: t.totpCode(secret, step) });
+  r = await callAs("twostep", { action: "enable", code: t.totpCode(secret, t.currentStep()) });
   const recovery = r.data.recoveryCodes || [];
   check(r.status === 200, `a matching code turns it on (${r.status})`);
   check(recovery.length === 8, `and hands back eight recovery codes (${recovery.length})`);
@@ -400,7 +403,13 @@ async function totpHandlerChecks() {
   check(r.status === 401, `the code used to enrol cannot be replayed (${r.status}: ${r.data.error})`);
 
   // The next step's code works, once.
-  const next = step + 1;
+  //
+  // Read the clock AGAIN here rather than trusting `step + 1`. A TOTP step is
+  // 30 seconds and the server re-reads its own clock on every call, so a block
+  // that captures the step once and derives every later code from it breaks
+  // whenever the suite happens to straddle a boundary — intermittently, and in
+  // a group, because the assertions after it all depend on this one.
+  const next = Math.max(step + 1, t.currentStep() + 1);
   r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: t.totpCode(secret, next) });
   check(r.status === 200, `a fresh code signs in (${r.status})`);
   r = await call("adminlogin", { username: "e2e-admin", password: "e2e-password", code: t.totpCode(secret, next) });
@@ -1634,7 +1643,7 @@ async function reportStatusChecks() {
   const mod = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS };";
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, chunkQuestions };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod, mod.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -1713,6 +1722,89 @@ async function reportStatusChecks() {
     check(!acct.chose && !acct.trialEndsAt, "the choice and the trial are cleared");
     check(!prof.phone, `and the saved phone number with them (got ${JSON.stringify(prof.phone)})`);
     check(prof.name === "Who", "while the rest of the profile is left alone");
+  }
+
+  // --- an unfinished attempt names its holder, and can be discarded --------
+  // Publishing is refused while somebody is part-way through, which is right.
+  // But the ONLY thing that cleared that row was the same account handing the
+  // paper in, so an abandoned paper — or a teacher's own preview left open —
+  // locked the test for good, and the refusal named nobody to chase.
+  {
+    const OWNER = TEACHER;
+    const testRow = {
+      partitionKey: OWNER, rowKey: "poly-1", title: "Polynomials", chapter: "Chapter Test 2",
+      status: "draft", platform: false, ownerSub: OWNER, audience: "class", assignedTo: "[]",
+      board: "CBSE", klass: "10", subject: "Maths", subjectId: "sub-1", order: 2,
+    };
+    t.chunkQuestions(testRow, [
+      { id: "q1", chapter: "C", topic: "T", type: "numeric", q: "2+2?", answer: 4, tolerance: 0, solution: "four", marks: 1 },
+    ]);
+    rows.set(key("tests", OWNER, "poly-1"), testRow);
+    // The author's own half-finished preview.
+    rows.set(key("attempts", OWNER, "progress~poly-1"), {
+      partitionKey: OWNER, rowKey: "progress~poly-1", testId: "poly-1", score: 0, total: 1, index: 0,
+    });
+
+    const blocked = { res: null };
+    await t.handlers.tests(blocked, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      query: {},
+      body: { action: "publish", id: "poly-1" },
+    });
+    check(blocked.res.status === 409, `publishing is refused while a paper is open (${blocked.res.status})`);
+    check(
+      /yourself/i.test(blocked.res.body.error || ""),
+      `and says it is the author's own preview ("${blocked.res.body.error}")`
+    );
+    check(
+      (blocked.res.body.inProgress || []).some((h) => h.self),
+      "and hands back who is holding it, so the client can offer a way out"
+    );
+
+    const gone = { res: null };
+    await t.handlers.attempts(gone, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      query: {},
+      body: { action: "discard", testId: "poly-1" },
+    });
+    check(gone.res.status === 200, `the author can discard their own preview (${gone.res.status})`);
+    check(!rows.get(key("attempts", OWNER, "progress~poly-1")), "and the row is actually gone");
+
+    const ok = { res: null };
+    await t.handlers.tests(ok, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      query: {},
+      body: { action: "publish", id: "poly-1" },
+    });
+    check(ok.res.status === 200, `and the test publishes (${ok.res.status})`);
+    check(
+      (rows.get(key("tests", OWNER, "poly-1")) || {}).status === "published",
+      "with the row actually published"
+    );
+
+    // --- and somebody else's test is not theirs to clear --------------------
+    rows.set(key("tests", "another-owner", "theirs-9"), {
+      partitionKey: "another-owner", rowKey: "theirs-9", title: "Theirs",
+      status: "draft", platform: false, ownerSub: "another-owner",
+    });
+    rows.set(key("attempts", "another-owner", "progress~theirs-9"), {
+      partitionKey: "another-owner", rowKey: "progress~theirs-9", testId: "theirs-9",
+    });
+    const nope = { res: null };
+    await t.handlers.attempts(nope, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      query: {},
+      body: { action: "discard", testId: "theirs-9" },
+    });
+    check(nope.res.status === 404 || nope.res.status === 403, `another owner's test cannot be cleared (${nope.res.status})`);
+    check(
+      !!rows.get(key("attempts", "another-owner", "progress~theirs-9")),
+      "and their in-progress row is untouched"
+    );
   }
 
   // --- an unusable completion time never reaches the row -------------------
