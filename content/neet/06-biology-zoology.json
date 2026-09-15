@@ -1,0 +1,250 @@
+{
+  "id": "lib-neet-biology-2",
+  "title": "NEET Biology: Zoology and Human Physiology",
+  "chapter": "Practice Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "neetb2-001",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Digestion",
+      "type": "mcq",
+      "q": "The enzyme that begins protein digestion in the stomach is:",
+      "solution": "**Pepsin**, secreted as inactive pepsinogen and activated by the stomach's hydrochloric acid.\n\nIt works best at about **pH 2**, which is why the stomach is so acidic. Trypsin continues the job in the alkaline small intestine.",
+      "marks": 4,
+      "options": [
+        "amylase",
+        "pepsin",
+        "trypsin",
+        "lipase"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-002",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Absorption",
+      "type": "mcq",
+      "q": "Most absorption of digested food occurs in the:",
+      "solution": "The **ileum**, whose villi and microvilli give an enormous surface area — some $250$ m$^{2}$ in all.\n\nEach villus is one cell thick with a rich blood supply and a lacteal for fats. The large intestine absorbs water, not food.",
+      "marks": 4,
+      "options": [
+        "stomach",
+        "duodenum",
+        "ileum",
+        "large intestine"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetb2-003",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Circulation",
+      "type": "mcq",
+      "q": "The blood vessel carrying oxygenated blood from the lungs to the heart is the:",
+      "solution": "The **pulmonary vein** — the one vein carrying **oxygenated** blood.\n\nThe pulmonary artery is its mirror exception. Arteries and veins are defined by direction relative to the heart, not by what they carry.",
+      "marks": 4,
+      "options": [
+        "pulmonary artery",
+        "pulmonary vein",
+        "aorta",
+        "vena cava"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-004",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Blood",
+      "type": "mcq",
+      "q": "The normal human haemoglobin content is about:",
+      "solution": "About **12–16 g/dL** — somewhat higher in men than women.\n\nBelow this range is **anaemia**, usually from iron deficiency, and the symptoms are tiredness and breathlessness because oxygen delivery falls.",
+      "marks": 4,
+      "options": [
+        "2-4 g/dL",
+        "12-16 g/dL",
+        "25-30 g/dL",
+        "50 g/dL"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-005",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Respiration",
+      "type": "mcq",
+      "q": "Gaseous exchange in humans takes place in the:",
+      "solution": "The **alveoli** — about 300 million of them, giving some $80$ m$^{2}$ of surface, walls one cell thick, moist and richly supplied with capillaries.\n\nEvery feature answers a requirement for fast diffusion.",
+      "marks": 4,
+      "options": [
+        "trachea",
+        "bronchi",
+        "alveoli",
+        "pleura"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetb2-006",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Excretion",
+      "type": "mcq",
+      "q": "The functional unit of the kidney is the:",
+      "solution": "The **nephron** — about a million per kidney.\n\nFiltration at the glomerulus, then **selective reabsorption** along the tubule recovers nearly everything: of $180$ litres filtered daily, only $1$–$2$ litres leaves as urine.",
+      "marks": 4,
+      "options": [
+        "neuron",
+        "nephron",
+        "alveolus",
+        "glomerulus"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-007",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Nervous system",
+      "type": "mcq",
+      "q": "The part of the brain that controls balance and coordination is the:",
+      "solution": "The **cerebellum**.\n\nThe cerebrum handles thought and voluntary action; the **medulla** controls heartbeat, breathing and blood pressure; the **hypothalamus** regulates temperature, hunger, thirst and the pituitary.",
+      "marks": 4,
+      "options": [
+        "cerebrum",
+        "cerebellum",
+        "medulla",
+        "hypothalamus"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-008",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Endocrine system",
+      "type": "mcq",
+      "q": "Which gland is called the master gland?",
+      "solution": "The **pituitary**, which secretes hormones controlling the thyroid, adrenals and gonads as well as growth.\n\nIt is itself directed by the **hypothalamus**, so the true master is arguably the brain.",
+      "marks": 4,
+      "options": [
+        "Thyroid",
+        "Pituitary",
+        "Adrenal",
+        "Pancreas"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-009",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Reproduction",
+      "type": "mcq",
+      "q": "Fertilisation in humans normally occurs in the:",
+      "solution": "In the **ampulla of the fallopian tube**.\n\nThe zygote then divides as it travels down and implants in the uterine wall about a week later.",
+      "marks": 4,
+      "options": [
+        "uterus",
+        "ovary",
+        "fallopian tube",
+        "cervix"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetb2-010",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Genetics",
+      "type": "mcq",
+      "q": "A cross between two heterozygous individuals gives a phenotypic ratio of:",
+      "solution": "$\\text{Tt} \\times \\text{Tt}$ gives **3 : 1** by phenotype and $1:2:1$ by genotype.\n\nThe $9:3:3:1$ ratio belongs to a **dihybrid** cross, and it is just $3:1$ happening twice independently.",
+      "marks": 4,
+      "options": [
+        "1:1",
+        "3:1",
+        "9:3:3:1",
+        "1:2:1"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-011",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Molecular biology",
+      "type": "mcq",
+      "q": "In DNA, adenine pairs with:",
+      "solution": "**A–T** with two hydrogen bonds, **G–C** with three.\n\nUracil replaces thymine in **RNA**. The complementary pairing is what makes accurate replication possible — each strand is a template for the other.",
+      "marks": 4,
+      "options": [
+        "guanine",
+        "cytosine",
+        "thymine",
+        "uracil"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetb2-012",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Genetic code",
+      "type": "mcq",
+      "q": "The number of codons that code for amino acids is:",
+      "solution": "There are $4^{3} = 64$ codons in all, of which **3 are stop codons**, leaving $\\mathbf{61}$ that specify amino acids.\n\nSince there are only 20 amino acids, the code is **degenerate** — most amino acids have several codons, which buffers the effect of point mutations.",
+      "marks": 4,
+      "options": [
+        "20",
+        "61",
+        "64",
+        "4"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-013",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Evolution",
+      "type": "mcq",
+      "q": "The theory of natural selection was proposed by:",
+      "solution": "**Charles Darwin and Alfred Russel Wallace**, who presented it jointly in 1858.\n\nLamarck's rival idea was the inheritance of **acquired** characteristics, which Weismann's mouse-tail experiment disproved. De Vries contributed the mutation theory.",
+      "marks": 4,
+      "options": [
+        "Lamarck",
+        "Darwin and Wallace",
+        "Mendel",
+        "Hugo de Vries"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-014",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Immunity",
+      "type": "mcq",
+      "q": "Antibodies are produced by:",
+      "solution": "**B lymphocytes**, which mature into plasma cells and secrete antibodies specific to one antigen.\n\nT lymphocytes handle cell-mediated immunity. Memory cells are what make **vaccination** work, giving a rapid response on a second exposure.",
+      "marks": 4,
+      "options": [
+        "red blood cells",
+        "B lymphocytes",
+        "platelets",
+        "neutrophils"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetb2-015",
+      "chapter": "Biology: Zoology and Human Physiology",
+      "topic": "Human diseases",
+      "type": "mcq",
+      "q": "Malaria is caused by:",
+      "solution": "The protozoan **Plasmodium**, transmitted by the bite of the female **Anopheles** mosquito.\n\nThe periodic fever corresponds to the synchronised bursting of infected red blood cells as a new generation of parasites is released.",
+      "marks": 4,
+      "options": [
+        "a bacterium",
+        "a virus",
+        "a protozoan",
+        "a fungus"
+      ],
+      "answer": 2
+    }
+  ]
+}

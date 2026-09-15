@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-dynamics",
+  "title": "Dynamics and Momentum",
+  "chapter": "Topic Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp3-001",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Newton's second law",
+      "type": "mcq",
+      "q": "Newton's second law is most generally written as:",
+      "solution": "$F = \\dfrac{\\Delta p}{\\Delta t}$ — force is the **rate of change of momentum**.\n\n$F = ma$ follows only when the mass is constant. For a rocket burning fuel, or a raindrop gathering mass, the momentum form is the one that still works.",
+      "marks": 1,
+      "options": [
+        "$F = ma$",
+        "$F = \\dfrac{\\Delta p}{\\Delta t}$",
+        "$F = mv$",
+        "$F = \\dfrac{m}{a}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp3-002",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Momentum",
+      "type": "mcq",
+      "q": "Momentum is defined as:",
+      "solution": "$p = \\mathbf{mv}$, a **vector** in the direction of the velocity, measured in kg m s$^{-1}$ or N s.\n\n$\\tfrac12 mv^{2}$ is kinetic energy, a scalar — and the distinction matters enormously in collisions.",
+      "marks": 1,
+      "options": [
+        "$\\tfrac12 mv^{2}$",
+        "$mv$",
+        "$ma$",
+        "$mgh$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp3-003",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Conservation of momentum",
+      "type": "mcq",
+      "q": "Momentum is conserved in a collision provided:",
+      "solution": "Momentum is conserved whenever there is **no resultant external force** — in **every** collision, elastic or not.\n\nKinetic energy is conserved only in an **elastic** collision. Conflating the two is the standard error in this topic.",
+      "marks": 1,
+      "options": [
+        "the collision is elastic",
+        "no external force acts",
+        "the masses are equal",
+        "kinetic energy is conserved"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp3-004",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Elastic collisions",
+      "type": "mcq",
+      "q": "In a perfectly inelastic collision:",
+      "solution": "The objects **coalesce** and move off together, and the **maximum possible** kinetic energy is lost — to heat, sound and deformation.\n\nMomentum is still conserved. Cars crumpling into one another are the everyday example, and crumple zones are designed to maximise exactly this loss.",
+      "marks": 1,
+      "options": [
+        "kinetic energy is conserved",
+        "the objects stick together",
+        "momentum is not conserved",
+        "no energy is lost"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp3-005",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Newton's third law",
+      "type": "mcq",
+      "q": "A book rests on a table. The reaction to the book's weight is:",
+      "solution": "The weight is the **Earth pulling on the book**, so its Newton's-third-law partner is the **book pulling on the Earth** — equal, opposite, and gravitational.\n\nThe table's upward push is a **different** force, a contact force, and it happens to balance the weight. Two forces on the **same** object are never a third-law pair.",
+      "marks": 1,
+      "options": [
+        "the table pushing up on the book",
+        "the book pushing down on the table",
+        "the book pulling up on the Earth",
+        "the table's weight"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alp3-006",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Momentum",
+      "type": "numeric",
+      "q": "Find the momentum (in kg m/s) of a $1500$ kg car travelling at $20$ m/s.",
+      "solution": "$p = mv = 1500 \\times 20 = \\mathbf{30\\,000}$ kg m/s.",
+      "marks": 2,
+      "answer": 30000,
+      "tolerance": 100
+    },
+    {
+      "id": "alp3-007",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Impulse",
+      "type": "numeric",
+      "q": "A force of $50$ N acts for $0.4$ s. Find the impulse, in N s.",
+      "solution": "Impulse $= Ft = 50 \\times 0.4 = \\mathbf{20}$ N s, which is also the change in momentum produced.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.2
+    },
+    {
+      "id": "alp3-008",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Conservation of momentum",
+      "type": "numeric",
+      "q": "A $2$ kg trolley at $3$ m/s collides with a stationary $4$ kg trolley and they stick together. Find their common velocity, in m/s.",
+      "solution": "Momentum before $= 2(3) + 4(0) = 6$ kg m/s.\n\nMomentum after $= 6v$.\n\n$6v = 6 \\Rightarrow v = \\mathbf{1}$ m/s.\n\n**Check the energy:** $9$ J before, $3$ J after — $6$ J lost, as expected in an inelastic collision.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp3-009",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Force from momentum change",
+      "type": "numeric",
+      "q": "A $0.2$ kg ball hits a wall at $10$ m/s and rebounds at $8$ m/s. Find the magnitude of the change in momentum, in kg m/s.",
+      "solution": "Taking towards the wall as positive: $p_{i} = 2$, $p_{f} = -1.6$ kg m/s.\n\n$\\Delta p = -1.6 - 2 = -3.6$, so the magnitude is $\\mathbf{3.6}$ kg m/s.\n\nThe **sign change** is what makes the rebound so much more damaging than simply stopping.",
+      "marks": 2,
+      "answer": 3.6,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp3-010",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Newton's second law",
+      "type": "numeric",
+      "q": "Find the resultant force (in N) needed to accelerate a $1200$ kg car at $2.5$ m/s$^{2}$.",
+      "solution": "$F = ma = 1200 \\times 2.5 = \\mathbf{3000}$ N.\n\nThis is the **resultant**; the engine must supply this plus enough to overcome friction and drag.",
+      "marks": 2,
+      "answer": 3000,
+      "tolerance": 10
+    },
+    {
+      "id": "alp3-011",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Conservation of momentum",
+      "type": "long",
+      "q": "State the principle of conservation of momentum, derive it from Newton's third law, and apply it to a $60$ kg skater pushing off a $40$ kg skater initially at rest, so that the first moves at $2$ m/s.",
+      "solution": "**The principle.** In any interaction, the total momentum of a system is constant **provided no resultant external force acts**.\n\n**Derivation from Newton's third law.** During a collision, $A$ exerts a force on $B$ and $B$ exerts an equal and opposite force on $A$.\n\nThey act for the **same time** $t$, so the impulses are equal and opposite:\n\n$F_{AB}t = -F_{BA}t$\n\nImpulse is change in momentum, so\n\n$\\Delta p_{B} = -\\Delta p_{A}$\n\nWhatever momentum one gains, the other loses. The **total** change is zero. ∎\n\n**The skaters.** Before the push, everything is at rest, so the total momentum is **zero**. It must remain zero.\n\n$0 = 60(2) + 40v$\n\n$v = -\\dfrac{120}{40} = \\mathbf{-3}$ m/s\n\nThe lighter skater moves at $3$ m/s in the **opposite** direction — faster, because they have less mass to carry the same momentum.\n\n**Where the energy came from.** Kinetic energy has increased from zero to $120 + 180 = 300$ J, supplied by the skaters' muscles. Momentum was conserved; energy was **created** from chemical stores.\n\nThe two conservation laws answer quite different questions, which is why both are needed.",
+      "marks": 3
+    },
+    {
+      "id": "alp3-012",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Elastic and inelastic collisions",
+      "type": "long",
+      "q": "Distinguish between elastic and inelastic collisions, and show how to test which a given collision is.",
+      "solution": "**Elastic collision** — both momentum **and** kinetic energy are conserved.\n\nTruly elastic collisions occur only between molecules in a gas, and between subatomic particles. Snooker balls come close.\n\n**Inelastic collision** — momentum is conserved, kinetic energy is **not**. Some becomes heat, sound and permanent deformation.\n\n**Perfectly inelastic** is the extreme case: the objects stick together and the maximum possible energy is lost.\n\n**The test.**\n\n1. Work out the total kinetic energy **before**: $\\sum\\tfrac12 mv^{2}$.\n\n2. Work out the total kinetic energy **after**.\n\n3. Equal means elastic; less means inelastic.\n\n(More would mean an explosion, with energy supplied from a store.)\n\n**A shortcut for elastic collisions.** In any elastic collision,\n\nrelative speed of approach $=$ relative speed of separation.\n\nThis is often quicker than the energy calculation and gives the second equation needed to find two unknown final velocities.\n\n**Why it matters practically.** A car is deliberately built to be **inelastic**: crumple zones absorb kinetic energy that would otherwise go into the passengers. A car that bounced elastically off a wall would be far more dangerous, because the occupants' momentum would have to reverse rather than merely stop.",
+      "marks": 3
+    },
+    {
+      "id": "alp3-013",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Impulse and force-time graphs",
+      "type": "long",
+      "q": "Define impulse, explain its relation to a force-time graph, and use it to explain why airbags and crumple zones reduce injury.",
+      "solution": "**Impulse** $= F\\Delta t$, and it equals the **change in momentum**:\n\n$F\\Delta t = \\Delta p = mv - mu$\n\nIt is a vector, measured in N s (the same as kg m s$^{-1}$).\n\n**On a force-time graph**, the impulse is the **area under the curve**. For a varying force this is the only way to find it, and it is why the graph is drawn at all.\n\n**Airbags and crumple zones.** In a crash the passenger's momentum change $\\Delta p$ is **fixed** — they are travelling at $20$ m/s and must end at rest, whatever happens.\n\nSince $F\\Delta t = \\Delta p$ is fixed, the **only** thing that can be changed is how the impulse is delivered:\n\n$F = \\dfrac{\\Delta p}{\\Delta t}$\n\n**Increase $\\Delta t$ and $F$ falls in proportion.** An airbag extends the stopping time from perhaps $0.01$ s against the steering wheel to $0.1$ s — reducing the force on the chest **tenfold**.\n\n**Crumple zones** do the same for the car itself, deforming progressively rather than stopping dead.\n\n**The same physics elsewhere:** bending the knees on landing, a cricketer drawing the hands back while catching, packaging a fragile parcel, and a high-jump crash mat. Every one of them buys time in order to cut force.\n\nIt is worth seeing clearly that none of them reduces the momentum change. They only spread it out.",
+      "marks": 5
+    },
+    {
+      "id": "alp3-014",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Newton's laws",
+      "type": "long",
+      "q": "State Newton's three laws of motion and explain a common misunderstanding of the third law.",
+      "solution": "**First law.** A body remains at rest or in uniform motion in a straight line unless acted on by a resultant force.\n\nThis defines what a force **does** — it changes motion, rather than maintaining it. Aristotle thought otherwise for two thousand years.\n\n**Second law.** The rate of change of momentum is proportional to the resultant force and in the same direction:\n\n$F = \\dfrac{\\Delta p}{\\Delta t}$, reducing to $F = ma$ for constant mass.\n\n**Third law.** If body $A$ exerts a force on body $B$, then $B$ exerts an equal and opposite force on $A$.\n\n**The common misunderstanding.** Students often say: 'if every force has an equal and opposite reaction, nothing can ever accelerate — the forces cancel.'\n\n**The answer is that the two forces act on different bodies.** Forces only cancel when they act on the **same** object.\n\nWhen you push a trolley, you push the trolley and the trolley pushes you. The trolley accelerates because of the force on **it**; the force on you is irrelevant to the trolley's motion.\n\n**A second confusion:** the book on the table. Its weight and the table's upward push are equal and opposite, but they are **not** a third-law pair — both act on the book, and they happen to balance. The true partner of the book's weight is the book's gravitational pull on the **Earth**.\n\n**The test for a genuine pair:** same type of force, same magnitude, opposite direction, and acting on **two different bodies**.",
+      "marks": 3
+    },
+    {
+      "id": "alp3-015",
+      "chapter": "Dynamics and Momentum",
+      "topic": "Momentum in two dimensions",
+      "type": "long",
+      "q": "Explain how conservation of momentum is applied to a two-dimensional collision, with an example.",
+      "solution": "**The principle.** Momentum is a **vector**, so it is conserved **independently in each direction**.\n\nTwo separate equations, one for each perpendicular axis, must both be satisfied.\n\n**The method.**\n\n1. Choose convenient axes — usually along the initial velocity and perpendicular to it.\n\n2. Resolve every velocity into components.\n\n3. Write conservation of momentum **separately** for $x$ and $y$.\n\n4. Solve the two equations together.\n\n**Example.** A ball of mass $m$ moving at $v$ strikes an identical stationary ball. After the collision the first moves at $30°$ to its original path with speed $v_{1}$, the second at $-60°$ with speed $v_{2}$.\n\n**Along the original direction:**\n\n$mv = mv_{1}\\cos 30° + mv_{2}\\cos 60°$\n\n**Perpendicular to it** (total was zero, so it must stay zero):\n\n$0 = mv_{1}\\sin 30° - mv_{2}\\sin 60°$\n\nThe second equation gives $v_{1} = v_{2}\\sqrt3$, and substituting into the first gives $v_{1} = v\\cos 30°$ and $v_{2} = v\\cos 60°$.\n\n**A beautiful result:** for equal masses in an **elastic** collision where one is initially at rest, the two always separate at exactly **$90°$** to each other.\n\nSnooker players know this without doing the algebra, and bubble-chamber photographs of particle collisions show the same right angle — which is how physicists confirmed that the colliding particles had equal mass.",
+      "marks": 2
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "id": "lib-c10s-light",
+  "title": "Light - Reflection and Refraction",
+  "chapter": "Chapter Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10lrr-101",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Concave mirror",
+      "type": "numeric",
+      "q": "An object of height 3 cm is placed 18 cm from a concave mirror of focal length 12 cm, forming an image on a white screen. Find the distance of the image from the mirror, in centimetres. Give the magnitude.",
+      "solution": "Use the New Cartesian Sign Convention throughout: distances are measured from the pole, and those on the same side as the incoming light are negative.\n\n**Given.** $u = -18$ cm, $f = -12$ cm (a concave mirror has a negative focal length), $h = +3$ cm.\n\n**Step 1 — the mirror formula.**\n\n$$\\frac{1}{v} + \\frac{1}{u} = \\frac{1}{f} \\quad\\Longrightarrow\\quad \\frac{1}{v} = \\frac{1}{f} - \\frac{1}{u}.$$\n\n**Step 2 — substitute.**\n\n$$\\frac{1}{v} = \\frac{1}{-12} - \\frac{1}{-18} = -\\frac{1}{12} + \\frac{1}{18}.$$\n\nTaking the common denominator 36 :\n\n$$\\frac{1}{v} = \\frac{-3 + 2}{36} = -\\frac{1}{36} \\quad\\Longrightarrow\\quad v = -36\\ \\text{cm}.$$\n\nThe image is **36 cm** in front of the mirror. The negative sign says it is on the same side as the object, which is exactly what allows it to be caught on a screen — it is **real**.\n\n**The image height, for completeness.**\n\n$$m = -\\frac{v}{u} = -\\frac{-36}{-18} = -2,$$\n\nso $h' = m \\times h = -2 \\times 3 = -6$ cm. The image is **6 cm tall and inverted**, twice the size of the object.\n\n(Sensible: the object at 18 cm lies between $f = 12$ cm and $2f = 24$ cm, and an object there always gives a real, inverted, magnified image beyond $2f$.)",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 36,
+      "tolerance": 0
+    },
+    {
+      "id": "lrr-001",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Laws of reflection",
+      "type": "mcq",
+      "q": "The angle of incidence is always equal to the angle of:",
+      "solution": "The first law of reflection: $\\angle i = \\angle r$, both measured **from the normal**, not from the surface.\n\nThe second law says the incident ray, the reflected ray and the normal all lie in one plane.",
+      "marks": 1,
+      "options": [
+        "refraction",
+        "reflection",
+        "deviation",
+        "emergence"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lrr-002",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Plane mirror",
+      "type": "mcq",
+      "q": "The image formed by a plane mirror is:",
+      "solution": "A plane mirror gives a **virtual, erect** image of the **same size**, as far behind the mirror as the object is in front.\n\nIt is also **laterally inverted** — your right hand appears as a left hand, which is why an ambulance's lettering is printed backwards.",
+      "marks": 1,
+      "options": [
+        "real and inverted",
+        "virtual, erect and of the same size",
+        "real and magnified",
+        "virtual and diminished"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lrr-003",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Concave mirror",
+      "type": "mcq",
+      "q": "A concave mirror forms a virtual, erect and magnified image when the object is placed:",
+      "solution": "**Between the pole and the focus** — the only position that gives a concave mirror a virtual image.\n\nThis is why a shaving mirror or a dentist's mirror is concave, and why you must hold it close to your face.",
+      "marks": 1,
+      "options": [
+        "at the focus",
+        "between the pole and the focus",
+        "beyond the centre of curvature",
+        "at the centre of curvature"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lrr-004",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Refraction",
+      "type": "mcq",
+      "q": "When light passes from air into glass, it bends:",
+      "solution": "Glass is optically **denser**, so light slows down and bends **towards the normal**.\n\nGoing the other way — glass to air — it speeds up and bends away.\n\nA car driving off tarmac onto sand at an angle swings round for the same reason: one wheel slows before the other.",
+      "marks": 1,
+      "options": [
+        "away from the normal",
+        "towards the normal",
+        "along the normal",
+        "not at all"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lrr-005",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Power of a lens",
+      "type": "mcq",
+      "q": "The SI unit of the power of a lens is:",
+      "solution": "The **dioptre** (D), which is the reciprocal of the focal length in **metres**.\n\nA converging lens has positive power, a diverging lens negative. Spectacle prescriptions are written in dioptres — $-2.5$ D is a diverging lens for short sight.",
+      "marks": 1,
+      "options": [
+        "metre",
+        "dioptre",
+        "watt",
+        "candela"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lrr-007",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Radius of curvature",
+      "type": "numeric",
+      "q": "A concave mirror has a focal length of $12$ cm. Find its radius of curvature, in cm.",
+      "solution": "$R = 2f = 2 \\times 12 = \\mathbf{24}$ cm.\n\nThe focus always sits exactly halfway between the pole and the centre of curvature.",
+      "marks": 2,
+      "answer": 24,
+      "tolerance": 0
+    },
+    {
+      "id": "lrr-008",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Refractive index",
+      "type": "numeric",
+      "q": "The speed of light in a medium is $2 \\times 10^{8}$ m/s. Find its refractive index. (Speed in vacuum $= 3 \\times 10^{8}$ m/s.)",
+      "solution": "$\\mu = \\dfrac{c}{v} = \\dfrac{3 \\times 10^{8}}{2 \\times 10^{8}} = \\mathbf{1.5}$ — which is about the value for ordinary glass.",
+      "marks": 2,
+      "answer": 1.5,
+      "tolerance": 0.02
+    },
+    {
+      "id": "lrr-009",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Power of a lens",
+      "type": "numeric",
+      "q": "Find the power (in dioptres) of a convex lens of focal length $25$ cm.",
+      "solution": "$P = \\dfrac{1}{f\\text{ in metres}} = \\dfrac{1}{0.25} = \\mathbf{+4}$ D.\n\nConverting centimetres to metres first is where this calculation is usually lost.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "lrr-010",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Magnification",
+      "type": "numeric",
+      "q": "An object of height $5$ cm gives an image of height $10$ cm. Find the magnitude of the magnification.",
+      "solution": "$|m| = \\dfrac{h_{i}}{h_{o}} = \\dfrac{10}{5} = \\mathbf{2}$ — the image is twice the size of the object.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "lrr-011",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Image formation by a concave mirror",
+      "type": "long",
+      "q": "Describe the nature, position and size of the image formed by a concave mirror for five positions of the object.",
+      "solution": "**1. Object at infinity.** Image **at the focus** — real, inverted, highly diminished (a point). This is how a concave mirror is used to collect sunlight, and how its focal length is measured.\n\n**2. Object beyond C.** Image **between F and C** — real, inverted, diminished.\n\n**3. Object at C.** Image **at C** — real, inverted, **same size**.\n\n**4. Object between C and F.** Image **beyond C** — real, inverted, magnified. (This is a projector's arrangement.)\n\n**5. Object at F.** Image **at infinity** — real, inverted, highly magnified. Used in searchlights and headlamps, where a parallel beam is wanted.\n\n**6. Object between P and F.** Image **behind the mirror** — **virtual**, erect, magnified. The shaving mirror.\n\n**The pattern worth holding on to:** a concave mirror gives a **real** image everywhere except when the object is closer than the focus. Cases 1 and 5 are each other's reverse, and cases 2 and 4 likewise — light paths are reversible.",
+      "marks": 3
+    },
+    {
+      "id": "lrr-012",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Refraction and Snell's law",
+      "type": "long",
+      "q": "State the laws of refraction, define refractive index, and explain why a pencil in a glass of water looks bent.",
+      "solution": "**Laws of refraction.**\n\n1. The incident ray, the refracted ray and the normal all lie in one plane.\n\n2. **Snell's law:** $\\dfrac{\\sin i}{\\sin r} = \\mu$, a constant for the two media.\n\n**Refractive index.** $\\mu = \\dfrac{\\text{speed of light in vacuum}}{\\text{speed of light in the medium}}$.\n\nA higher $\\mu$ means light travels more slowly in that medium, and bends more on entering it. Water is $1.33$, glass about $1.5$, diamond $2.42$.\n\n**The bent pencil.** Light from the submerged part travels from water into air and bends **away from the normal** at the surface.\n\nYour eye does not know this. It traces the rays back in **straight lines**, so it places the submerged part higher and displaced sideways from where it really is.\n\nThe pencil looks broken at the waterline — and the same effect makes a swimming pool look shallower than it is, which is worth remembering before diving in.",
+      "marks": 3
+    },
+    {
+      "id": "lrr-013",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Lens formula and ray diagrams",
+      "type": "long",
+      "q": "An object $4$ cm tall is placed $20$ cm from a convex lens of focal length $10$ cm. Find the image position, size and nature, and state the rules for drawing the ray diagram.",
+      "solution": "**Using the lens formula** with $u = -20$ cm, $f = +10$ cm:\n\n$\\dfrac{1}{v} - \\dfrac{1}{u} = \\dfrac{1}{f} \\Rightarrow \\dfrac{1}{v} = \\dfrac{1}{10} + \\dfrac{1}{-20} = \\dfrac{2 - 1}{20} = \\dfrac{1}{20}$\n\n$v = +20$ cm — **positive**, so the image is **real** and on the other side of the lens.\n\n**Magnification:** $m = \\dfrac{v}{u} = \\dfrac{20}{-20} = -1$.\n\n**Image height:** $-1 \\times 4 = -4$ cm — the minus sign means **inverted**.\n\n**Answer:** real, inverted, same size ($4$ cm), $20$ cm on the far side.\n\nAn object at $2f$ always gives an image at $2f$, the same size — worth recognising on sight.\n\n**Rules for the ray diagram** (any two are enough):\n\n1. A ray **parallel to the principal axis** passes through the focus after refraction.\n\n2. A ray **through the optical centre** goes straight on, undeviated.\n\n3. A ray **through the focus** emerges parallel to the axis.\n\nWhere the two refracted rays meet is the image.",
+      "marks": 5
+    },
+    {
+      "id": "lrr-014",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Sign convention",
+      "type": "long",
+      "q": "State the New Cartesian sign convention for mirrors and lenses, and explain why a negative image distance means a virtual image.",
+      "solution": "**The convention.**\n\n1. The **pole** (mirror) or **optical centre** (lens) is the origin.\n\n2. Distances are measured **from** it, along the principal axis.\n\n3. Distances measured in the **same direction as the incident light** are **positive**; against it, **negative**.\n\n4. Heights **above** the axis are positive; **below**, negative.\n\n**Consequences worth memorising:**\n\n• The **object distance $u$ is always negative** (the object is on the incoming side).\n\n• A **concave mirror** has negative $f$; a **convex mirror** positive.\n\n• A **convex lens** has positive $f$; a **concave lens** negative.\n\n**Why negative $v$ means virtual.** For a **mirror**, a real image forms in front, where the light actually goes — the same side as the object, so $v$ is negative there by the convention; behind the mirror, where no light reaches, $v$ is positive and the image is **virtual**.\n\nFor a **lens** it is the other way: a real image forms on the far side ($v$ positive), so a negative $v$ puts the image back on the object's side, where the rays only *appear* to come from — virtual.\n\nThe sign is not decoration: it is the answer to 'which side is the image on', and hence to whether you could catch it on a screen.",
+      "marks": 3
+    },
+    {
+      "id": "lrr-015",
+      "chapter": "Light - Reflection and Refraction",
+      "topic": "Uses of mirrors and lenses",
+      "type": "long",
+      "q": "Give one use each of a concave mirror, a convex mirror, a convex lens and a concave lens, with the reason.",
+      "solution": "**Concave mirror — a car headlamp or a torch.** The bulb is placed at the focus, so the reflected light leaves as a **parallel beam** that travels far without spreading.\n\nAlso used as a shaving mirror and by dentists (magnified erect image when held close), and in solar cookers (sunlight concentrated at the focus).\n\n**Convex mirror — a vehicle's rear-view mirror.** It always gives an erect, diminished image and covers a **much wider field of view**, so the driver sees more traffic — at the cost of everything looking further away, which is why such mirrors carry a warning.\n\nAlso used as security mirrors at blind corners in shops.\n\n**Convex lens — spectacles for long sight (hypermetropia).** The eye's lens converges too weakly, so the image falls behind the retina; a converging lens gives the extra help.\n\nAlso used in a magnifying glass, a camera and a microscope.\n\n**Concave lens — spectacles for short sight (myopia).** The eye converges too strongly and the image falls in front of the retina; a diverging lens pushes it back.\n\nAlso used in a peephole in a door and in a Galilean telescope's eyepiece.",
+      "marks": 2
+    }
+  ]
+}

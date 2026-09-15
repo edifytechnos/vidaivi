@@ -1,0 +1,192 @@
+{
+  "id": "lib-c12p-dual-nature",
+  "title": "Dual Nature of Radiation and Matter",
+  "chapter": "Chapter Test 11",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12dn-101",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric effect",
+      "type": "mcq",
+      "q": "A photon of energy $7$ eV is incident on a metal surface having a work function of $3 \\cdot 75$ eV. The stopping potential is :",
+      "solution": "Einstein's photoelectric equation gives the maximum kinetic energy of the emitted electrons :\n\n$$K_{\\max} = hf - \\phi_0 = 7\\ \\text{eV} - 3 \\cdot 75\\ \\text{eV} = 3 \\cdot 25\\ \\text{eV}.$$\n\nThe stopping potential $V_0$ is the retarding voltage that just halts the fastest electron, so\n\n$$eV_0 = K_{\\max} \\quad\\Longrightarrow\\quad V_0 = 3 \\cdot 25\\ \\text{V}.$$\n\nWorking in electron-volts is what makes this a one-line subtraction: because $K_{\\max}$ comes out in eV, the stopping potential in volts is the same number.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$1 \\cdot 75$ V",
+        "$2 \\cdot 45$ V",
+        "$3 \\cdot 25$ V",
+        "$3 \\cdot 75$ V"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12dn-102",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric effect",
+      "type": "numeric",
+      "q": "Light of frequency $6 \\cdot 4 \\times 10^{14}$ Hz is incident on a metal of work function $2 \\cdot 14$ eV. Find the maximum kinetic energy of the emitted electrons, in eV, correct to two decimal places. (Take $h = 6 \\cdot 626 \\times 10^{-34}$ J s.)",
+      "solution": "**Step 1 — energy of the incident photon.**\n\n$$E = hf = \\left(6 \\cdot 626 \\times 10^{-34}\\right)\\left(6 \\cdot 4 \\times 10^{14}\\right) = 4 \\cdot 241 \\times 10^{-19}\\ \\text{J}.$$\n\n**Step 2 — convert to electron-volts**, dividing by $e = 1 \\cdot 602 \\times 10^{-19}$ C :\n\n$$E = \\frac{4 \\cdot 241 \\times 10^{-19}}{1 \\cdot 602 \\times 10^{-19}} = 2 \\cdot 65\\ \\text{eV}.$$\n\n**Step 3 — subtract the work function.**\n\n$$K_{\\max} = E - \\phi_0 = 2 \\cdot 65 - 2 \\cdot 14 = \\mathbf{0 \\cdot 51\\ \\text{eV}}.$$\n\nThe photon energy only just exceeds the work function, so the electrons come off slowly — the usual situation near the threshold frequency.",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 0.51,
+      "tolerance": 0.02
+    },
+    {
+      "id": "dn-002",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Threshold frequency",
+      "type": "mcq",
+      "q": "Photoelectric emission does not occur at all below the threshold frequency, no matter how intense the light. This shows that:",
+      "solution": "A wave theory says a dim light should eventually deliver enough energy if you wait. It does not — **emission is instantaneous above threshold and absent below it**.\n\nThat is only explicable if a single photon of energy $h\nu$ must do the whole job in one go.\n\nIt is what won Einstein the Nobel Prize, and it is why light has to be granular.",
+      "marks": 1,
+      "options": [
+        "light is a wave",
+        "energy is transferred in quanta",
+        "electrons are heavy",
+        "the metal is an insulator"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "dn-003",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "de Broglie wavelength",
+      "type": "mcq",
+      "q": "The de Broglie wavelength of a particle of momentum $p$ is:",
+      "solution": "$\\lambda = \\mathbf{\\dfrac{h}{p}}$.\n\nEverything has one — a cricket ball's is about $10^{-34}$ m, which is why nobody has ever seen a ball diffract. For an electron it is comparable to atomic spacings, which is why electron diffraction works.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{h}{p}$",
+        "$\\dfrac{p}{h}$",
+        "$hp$",
+        "$\\dfrac{h}{p^{2}}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "dn-004",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Stopping potential",
+      "type": "mcq",
+      "q": "The stopping potential in a photoelectric experiment depends on:",
+      "solution": "$eV_{0} = h\nu - \\phi$, so the stopping potential depends on the **frequency** and the metal's **work function** only.\n\nDoubling the intensity doubles the current but leaves $V_{0}$ exactly where it was — the single most telling result of the whole experiment.",
+      "marks": 1,
+      "options": [
+        "the intensity of light",
+        "the frequency of light and the work function",
+        "the distance of the source",
+        "the area of the cathode"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "dn-005",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Work function",
+      "type": "mcq",
+      "q": "The work function of a metal is:",
+      "solution": "$\\phi$ is the **minimum energy** to pull an electron out of the metal surface.\n\nIt fixes the threshold frequency, $\nu_{0} = \\dfrac{\\phi}{h}$ — the price of admission that every photon has to pay before anything is left over as kinetic energy.",
+      "marks": 1,
+      "options": [
+        "the energy of the incident photon",
+        "the minimum energy needed to free an electron from the surface",
+        "the kinetic energy of the fastest electron",
+        "the energy of the metal's nucleus"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "dn-007",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Threshold wavelength",
+      "type": "numeric",
+      "q": "Find the threshold wavelength (in nm) for a metal of work function $2.48$ eV. Take $hc = 1240$ eV nm.",
+      "solution": "$\\lambda_{0} = \\dfrac{hc}{\\phi} = \\dfrac{1240}{2.48} = \\mathbf{500}$ nm.\n\nLight of **longer** wavelength than this — redder, lower frequency — causes no emission at all.",
+      "marks": 2,
+      "answer": 500,
+      "tolerance": 2
+    },
+    {
+      "id": "dn-008",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Stopping potential",
+      "type": "numeric",
+      "q": "Photons of energy $4$ eV fall on a metal of work function $1.5$ eV. Find the stopping potential, in volts.",
+      "solution": "$eV_{0} = h\nu - \\phi = 4 - 1.5 = 2.5$ eV, so $V_{0} = \\mathbf{2.5}$ V.\n\nWorking in electron-volts makes the arithmetic trivial: the number of eV *is* the number of volts.",
+      "marks": 2,
+      "answer": 2.5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "dn-009",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "de Broglie wavelength of an electron",
+      "type": "numeric",
+      "q": "Find the de Broglie wavelength (in nm) of an electron accelerated through $150$ V, using $\\lambda = \\dfrac{1.227}{\\sqrt{V}}$ nm.",
+      "solution": "$\\lambda = \\dfrac{1.227}{\\sqrt{150}} = \\dfrac{1.227}{12.25} \\approx \\mathbf{0.1}$ nm.\n\nThat is about the spacing of atoms in a crystal — which is exactly why the Davisson–Germer experiment could diffract electrons off a nickel crystal and see the wave nature directly.",
+      "marks": 2,
+      "answer": 0.1,
+      "tolerance": 0.005
+    },
+    {
+      "id": "dn-010",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photon energy",
+      "type": "numeric",
+      "q": "Find the energy (in eV) of a photon of wavelength $310$ nm. Take $hc = 1240$ eV nm.",
+      "solution": "$E = \\dfrac{1240}{310} = \\mathbf{4}$ eV — in the ultraviolet.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "dn-011",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Einstein's photoelectric equation",
+      "type": "long",
+      "q": "State Einstein's photoelectric equation and use it to explain the existence of a threshold frequency and the instantaneous nature of emission.",
+      "solution": "**The equation.**\n\n$h\nu = \\phi + K_{\\max}$, or $K_{\\max} = h\nu - \\phi$.\n\nA photon delivers all its energy $h\nu$ to **one** electron; $\\phi$ is spent escaping the surface, the rest is kinetic energy.\n\n**Threshold frequency.** $K_{\\max}$ cannot be negative, so emission needs $h\nu \\ge \\phi$, that is $\nu \\ge \nu_{0} = \\dfrac{\\phi}{h}$.\n\nBelow that frequency no photon, however many arrive, has enough energy — and intensity cannot help, because energy from two photons is not pooled.\n\n**Instantaneous emission.** The whole transaction is one photon and one electron, so there is no waiting for energy to accumulate: emission begins within about $10^{-9}$ s.\n\nWave theory predicted a delay of minutes for faint light. None is observed. That is the experiment deciding between two theories.",
+      "marks": 3
+    },
+    {
+      "id": "dn-012",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "de Broglie hypothesis",
+      "type": "long",
+      "q": "State the de Broglie hypothesis and derive the wavelength of an electron accelerated through a potential difference $V$.",
+      "solution": "**The hypothesis.** Matter, like radiation, has a dual nature: a particle of momentum $p$ has an associated wavelength\n\n$\\lambda = \\dfrac{h}{p}$.\n\n**For an accelerated electron.** The work done by the field becomes kinetic energy:\n\n$eV = \\tfrac12 mv^{2} \\Rightarrow v = \\sqrt{\\dfrac{2eV}{m}}$.\n\n$p = mv = \\sqrt{2meV}$.\n\n$\\lambda = \\dfrac{h}{\\sqrt{2meV}}$.\n\nPutting the constants in gives the working form\n\n$\\mathbf{\\lambda = \\dfrac{1.227}{\\sqrt{V}}\\text{ nm}}$, with $V$ in volts.\n\nAt $100$ V that is about $0.12$ nm — shorter than visible light by a factor of thousands, which is the whole reason the electron microscope can resolve what an optical one cannot.",
+      "marks": 3
+    },
+    {
+      "id": "dn-013",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric experiment",
+      "type": "long",
+      "q": "Describe how the photoelectric effect is studied experimentally, and explain the three graphs: current against intensity, current against potential, and stopping potential against frequency.",
+      "solution": "**Apparatus.** An evacuated tube with a photosensitive plate and a collector, a variable potential between them, a microammeter for the current, and monochromatic light of controllable frequency and intensity.\n\n**Current against intensity** (frequency and potential fixed): a **straight line through the origin**. More photons per second means proportionally more electrons per second.\n\n**Current against collector potential** (fixed frequency, two intensities): the current rises with potential and then **saturates** — every emitted electron is being collected. The saturation current is higher for greater intensity. Going negative, the current falls to zero at the **same** stopping potential for both intensities.\n\nThat last point is the crucial one: $V_{0}$ does not depend on intensity.\n\n**Stopping potential against frequency:** a **straight line**,\n\n$V_{0} = \\dfrac{h}{e}\nu - \\dfrac{\\phi}{e}$.\n\nIts slope is $\\dfrac{h}{e}$ — the **same for every metal**, which is how Millikan measured Planck's constant — and its intercept on the frequency axis is the threshold $\nu_{0}$, which differs from metal to metal.\n\nThree graphs, one conclusion: light arrives in quanta.",
+      "marks": 5
+    },
+    {
+      "id": "dn-014",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Davisson-Germer experiment",
+      "type": "long",
+      "q": "Describe the Davisson-Germer experiment and say what it established.",
+      "solution": "**Set-up.** Electrons from a heated filament are accelerated through a known potential and directed at a **nickel crystal**. A movable detector measures the intensity of electrons scattered at each angle.\n\n**Observation.** The scattered intensity is not smooth: it shows a sharp **peak** at a particular angle (about $50°$ for $54$ V). Moving the detector round shows maxima and minima — a **diffraction pattern**.\n\n**Interpretation.** The regular atomic planes of the crystal act as a diffraction grating. From Bragg's law the wavelength works out at about $0.165$ nm.\n\nThe de Broglie formula $\\lambda = \\dfrac{1.227}{\\sqrt{54}}$ nm predicts $0.167$ nm.\n\n**What it established.** The agreement is the direct experimental proof that **electrons behave as waves** — matter waves are real, not a formal device.\n\nDiffraction is a wave's signature. Particles are not supposed to do it. These did.",
+      "marks": 3
+    },
+    {
+      "id": "dn-015",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Particle and wave",
+      "type": "long",
+      "q": "Two metals have work functions $2$ eV and $4$ eV. Light of wavelength $310$ nm falls on both. Say which emits photoelectrons and find the maximum kinetic energy in that case.",
+      "solution": "**Photon energy.** $E = \\dfrac{hc}{\\lambda} = \\dfrac{1240}{310} = 4$ eV.\n\n**Metal with $\\phi = 2$ eV:** $4 > 2$, so emission occurs.\n\n$K_{\\max} = 4 - 2 = \\mathbf{2}$ eV.\n\n**Metal with $\\phi = 4$ eV:** the photon energy exactly equals the work function, so an electron can just barely escape with **zero** kinetic energy. This is the threshold case — no photoelectric current worth measuring.\n\nDoubling the intensity would not change either answer. Only a shorter wavelength would.",
+      "marks": 2
+    }
+  ]
+}

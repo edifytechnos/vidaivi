@@ -1,0 +1,191 @@
+{
+  "id": "lib-c10s-magnetic-effects",
+  "title": "Magnetic Effects of Electric Current",
+  "chapter": "Chapter Test 12",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10mec-101",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Magnetic field lines",
+      "type": "mcq",
+      "q": "**Assertion (A):** Magnetic field lines do not intersect each other.\n\n**Reason (R):** Magnetic field lines are imaginary lines, the tangent to which at any point gives the direction of the field at that point.\n\nChoose the correct answer :",
+      "solution": "**Assertion.** Magnetic field lines never cross. A is **true**.\n\n**Reason.** Field lines are indeed imaginary lines drawn so that the tangent at any point gives the direction of the magnetic field there. R is **true**.\n\n**Is R the explanation of A?** Yes — and this is the whole argument.\n\nSuppose two field lines *did* cross at some point. Then at that single point you could draw **two different tangents**, and each would give a direction for the field. That would mean the magnetic field has **two directions at once** at the same place.\n\nThat is impossible: a compass needle placed there would have to point two ways at the same time. Since the field has a single, definite direction at every point, no two lines can ever intersect.\n\nSo both statements are true, and the property named in R is exactly what rules out the intersection in A.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "Both A and R are true, and R is the correct explanation of A",
+        "Both A and R are true, but R is not the correct explanation of A",
+        "A is true but R is false",
+        "A is false but R is true"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "mec-002",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Right-hand thumb rule",
+      "type": "mcq",
+      "q": "The direction of the magnetic field around a straight current-carrying conductor is given by:",
+      "solution": "The **right-hand thumb rule**: grip the wire with your right hand, thumb pointing along the current, and your fingers curl the way the field goes.\n\nThe field lines are **concentric circles** around the wire, crowded near it and spreading out further away.",
+      "marks": 1,
+      "options": [
+        "Fleming's left-hand rule",
+        "the right-hand thumb rule",
+        "Fleming's right-hand rule",
+        "Lenz's law"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mec-003",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Force on a conductor",
+      "type": "mcq",
+      "q": "The direction of the force on a current-carrying conductor in a magnetic field is given by:",
+      "solution": "**Fleming's left-hand rule** — for a **motor**.\n\nHold the first three fingers of the left hand at right angles: **F**irst finger = **F**ield, se**C**ond finger = **C**urrent, thu**M**b = **M**otion (the force).\n\nThe right-hand rule is for the generator, where motion produces current — the reverse situation.",
+      "marks": 1,
+      "options": [
+        "the right-hand thumb rule",
+        "Fleming's left-hand rule",
+        "Fleming's right-hand rule",
+        "Ohm's law"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mec-004",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Electromagnetic induction",
+      "type": "mcq",
+      "q": "Moving a magnet into a coil produces a current in it. This is called:",
+      "solution": "**Electromagnetic induction**, discovered by Faraday.\n\nThe current flows only while the magnet is **moving** — the field through the coil has to be **changing**. A stationary magnet, however strong, induces nothing.",
+      "marks": 1,
+      "options": [
+        "the heating effect",
+        "electromagnetic induction",
+        "the chemical effect",
+        "resistance"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mec-005",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Solenoid",
+      "type": "mcq",
+      "q": "The magnetic field inside a current-carrying solenoid is:",
+      "solution": "Inside a long solenoid the field is **uniform and strong**, and the field lines are parallel straight lines.\n\nThe pattern outside is exactly like a bar magnet's, with a north and a south end. Putting a soft iron core inside makes it far stronger — that is an **electromagnet**.",
+      "marks": 1,
+      "options": [
+        "zero",
+        "uniform and strong",
+        "circular",
+        "strongest at the ends"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mec-006",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Frequency of AC",
+      "type": "numeric",
+      "q": "What is the frequency of the alternating current supplied in India, in Hz?",
+      "solution": "$\\mathbf{50}$ Hz — the current reverses direction $100$ times a second, completing $50$ full cycles.\n\n(The United States uses $60$ Hz.)",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 0
+    },
+    {
+      "id": "mec-007",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Fuse rating",
+      "type": "numeric",
+      "q": "An appliance of $2200$ W runs on a $220$ V supply. Find the minimum current rating (in A) the fuse must have.",
+      "solution": "$I = \\dfrac{P}{V} = \\dfrac{2200}{220} = \\mathbf{10}$ A.\n\nA fuse rated below this would blow every time the appliance was switched on; one rated far above it would not protect the circuit at all.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.1
+    },
+    {
+      "id": "mec-008",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Number of wires",
+      "type": "numeric",
+      "q": "How many wires are used in a domestic electric supply in India (live, neutral, earth)?",
+      "solution": "$\\mathbf{3}$ — live, neutral and earth.\n\nThe live and neutral carry the current; the earth wire is a safety path that normally carries none at all.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "mec-009",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Voltage of domestic supply",
+      "type": "numeric",
+      "q": "What is the voltage of the domestic electric supply in India, in volts?",
+      "solution": "$\\mathbf{220}$ V at $50$ Hz.",
+      "marks": 2,
+      "answer": 220,
+      "tolerance": 1
+    },
+    {
+      "id": "mec-010",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Poles of a magnet",
+      "type": "numeric",
+      "q": "If a bar magnet is cut into two equal pieces, how many poles does each piece have?",
+      "solution": "$\\mathbf{2}$ — every piece, however small, is a complete magnet with a north and a south pole.\n\nYou cannot isolate a single pole by cutting; there is no such thing as a magnetic monopole. Keep cutting and you simply get more, smaller magnets.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "mec-011",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Magnetic field patterns",
+      "type": "long",
+      "q": "Describe the magnetic field produced by (a) a straight current-carrying conductor, (b) a circular loop and (c) a solenoid.",
+      "solution": "**(a) Straight conductor.** The field lines are **concentric circles** in a plane perpendicular to the wire.\n\nTheir direction is given by the **right-hand thumb rule**, and the field is stronger nearer the wire — the circles are crowded close in and spread out further away.\n\n$B$ grows with the current and falls off with distance.\n\n**(b) Circular loop.** Every part of the loop contributes a circular field, and at the **centre** all these contributions point the same way, so they add up.\n\nNear the centre the field is almost **straight and uniform**, perpendicular to the plane of the loop. More turns means a proportionally stronger field, since each turn adds its own contribution.\n\n**(c) Solenoid.** A long coil of many turns. Inside, the field is **strong and uniform**, with parallel straight lines; outside, it is weak.\n\nThe pattern is exactly that of a **bar magnet**, one end behaving as north and the other as south.\n\n**Electromagnet.** Put a soft iron core inside a solenoid and the field becomes far stronger. Soft iron is chosen because it magnetises strongly and, crucially, **loses its magnetism the moment the current stops** — which is what makes a crane able to drop the scrap it picked up.",
+      "marks": 3
+    },
+    {
+      "id": "mec-012",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Electric motor",
+      "type": "long",
+      "q": "Explain the principle, construction and working of an electric motor, and the function of the split-ring commutator.",
+      "solution": "**Principle.** A current-carrying coil placed in a magnetic field experiences a **force**, and if the two sides are pushed in opposite directions the coil turns. Fleming's left-hand rule gives the direction.\n\n**Construction.** A rectangular coil of insulated wire between the poles of a magnet; a **split-ring commutator**; brushes; and a battery.\n\n**Working.**\n\n1. Current flows through the coil. In one arm it runs one way, in the opposite arm the other way.\n\n2. The field pushes one arm **up** and the other **down**, so the coil rotates.\n\n3. After half a turn, the arms have swapped places. If nothing changed, the forces would now oppose the rotation and the coil would stop — swinging back and forth.\n\n**The split-ring commutator** solves exactly this. At the half-turn point the two halves of the ring change brushes, so the **current through the coil reverses**.\n\nThe force on each arm is therefore always in the direction that keeps the coil turning the same way.\n\nThat is the whole trick: the commutator does not power the motor, it keeps the push in step with the rotation — like giving a swing a shove at the right moment every time.",
+      "marks": 3
+    },
+    {
+      "id": "mec-013",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Electromagnetic induction and the generator",
+      "type": "long",
+      "q": "State Faraday's law and Fleming's right-hand rule, and explain the working of an AC generator and how a DC generator differs.",
+      "solution": "**Faraday's law.** Whenever the magnetic field through a coil changes, an emf is induced in it, and the faster the change, the greater the emf.\n\nThe change can be produced by moving the magnet, moving the coil, or changing the current in a nearby coil.\n\n**Fleming's right-hand rule** — for the **generator**. Hold the first three fingers of the right hand at right angles: **F**irst finger = **F**ield, thu**M**b = **M**otion, se**C**ond finger = the induced **C**urrent.\n\n**AC generator.**\n\n1. A coil is rotated in a magnetic field, so the flux through it changes continuously.\n\n2. A current is induced.\n\n3. After each half turn, each arm has moved to where the other was, so the induced current **reverses**.\n\n4. Two **slip rings** carry the current out without ever swapping the connections, so the output alternates. This is alternating current.\n\n**DC generator.** Everything is the same **except** that the slip rings are replaced by a **split-ring commutator**, which swaps the connections every half turn — exactly when the current would have reversed.\n\nThe two reversals cancel, and the output current flows one way throughout.\n\nSo the commutator appears in both machines, doing the same job in opposite directions: in the motor it reverses the current to keep the rotation going; in the generator it reverses the connection to keep the output steady.",
+      "marks": 5
+    },
+    {
+      "id": "mec-014",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Domestic circuits and safety",
+      "type": "long",
+      "q": "Describe short circuiting and overloading, their causes, and the safety devices that protect against them.",
+      "solution": "**Short circuit.** The live and neutral wires touch directly, giving the current a path of almost **no resistance**.\n\nBy $I = V/R$, the current becomes enormous, and by $H = I^{2}Rt$ the heating is catastrophic. The cause is usually damaged insulation or a fault inside an appliance.\n\n**Overloading.** Too much power is drawn from one circuit — many appliances on one socket, or an unusually high supply voltage.\n\nThe current exceeds what the wiring was designed for, the wires overheat, and the insulation can catch fire.\n\n**Protection.**\n\n1. **Fuse.** A thin wire of low melting point in the **live** wire. Excess current melts it and breaks the circuit within a fraction of a second. It must be correctly rated — replacing it with thicker wire removes the protection entirely.\n\n2. **MCB (miniature circuit breaker).** A switch that trips on excess current and can be reset. More convenient than a fuse and faster acting.\n\n3. **Earth wire.** Gives a leaking current a safe path to ground instead of through a person.\n\n4. **Proper insulation, good-quality wiring, and not overloading one socket** — the cheapest protection of all.\n\nEvery one of these works by the same principle: give the fault an easier path than the one through you.",
+      "marks": 3
+    },
+    {
+      "id": "mec-015",
+      "chapter": "Magnetic Effects of Electric Current",
+      "topic": "Magnetic field lines",
+      "type": "long",
+      "q": "What are magnetic field lines? State three of their properties and explain why two field lines never intersect.",
+      "solution": "**Definition.** Lines drawn so that the tangent at any point gives the **direction** of the magnetic field there. The path a free north pole would take.\n\n**Properties.**\n\n1. They run from **north to south outside** a magnet and from south to north **inside** it, so every line is a **closed loop** with no beginning and no end.\n\n2. Where the lines are **crowded**, the field is strong; where they are far apart, it is weak. The field is strongest at the poles.\n\n3. They **never intersect**.\n\n4. They can be shown with iron filings sprinkled on a card over a magnet, or traced with a small compass.\n\n**Why they never cross.** If two lines crossed, there would be **two tangents** at the crossing point — and therefore two different directions for the magnetic field at one place.\n\nA compass needle placed there would have to point two ways at once, which is impossible. ∎\n\nThe same argument applies to electric field lines, and for exactly the same reason.",
+      "marks": 2
+    }
+  ]
+}

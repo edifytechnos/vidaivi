@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12p-wave-optics",
+  "title": "Wave Optics",
+  "chapter": "Chapter Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12wav-101",
+      "chapter": "Wave Optics",
+      "topic": "Young's double slit",
+      "type": "mcq",
+      "q": "In Young's double-slit experiment, if the screen is moved closer to the plane of the slits $S_1$ and $S_2$, then the fringe width :",
+      "solution": "The fringe width in Young's experiment is\n\n$$\\beta = \\frac{\\lambda D}{d},$$\n\nwhere $D$ is the slit-to-screen distance and $d$ the slit separation.\n\n**Effect on fringe width.** Moving the screen closer reduces $D$, and since $\\beta \\propto D$, the fringe width **decreases** — the pattern contracts.\n\n**Effect on intensity.** The intensity at a bright fringe is set by the amplitudes arriving from the two slits, $I_{\\max} = \\left(a_1 + a_2\\right)^2$. Neither $\\lambda$, nor $d$, nor the slit widths has changed, so the maximum intensity is **the same**.\n\nSo the fringes crowd together but keep their brightness.\n\n(A related standard result: immersing the whole set-up in a liquid of refractive index $\\mu$ shortens the wavelength to $\\lambda/\\mu$, so the fringe width becomes $\\beta/\\mu$ — again narrower.)",
+      "marks": 1,
+      "source": "CBSE 2022",
+      "options": [
+        "will decrease, but the intensity of the bright fringe remains the same",
+        "will increase, but the intensity of the bright fringe decreases",
+        "will decrease, but the intensity of the bright fringe increases",
+        "and the intensity of the bright fringe both remain unchanged"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "wav-002",
+      "chapter": "Wave Optics",
+      "topic": "Young's double slit",
+      "type": "mcq",
+      "q": "In Young's experiment, the fringe width $\\beta$ is:",
+      "solution": "$\\beta = \\mathbf{\\dfrac{\\lambda D}{d}}$, where $d$ is the slit separation and $D$ the screen distance.\n\nWider fringes come from a longer wavelength, a more distant screen, or **closer** slits — the inverse dependence on $d$ is the part that surprises people.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\lambda D}{d}$",
+        "$\\dfrac{\\lambda d}{D}$",
+        "$\\dfrac{D}{\\lambda d}$",
+        "$\\lambda D d$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "wav-003",
+      "chapter": "Wave Optics",
+      "topic": "Coherent sources",
+      "type": "mcq",
+      "q": "Two sources are coherent if they have:",
+      "solution": "Coherence needs a **constant phase difference** and the same frequency; otherwise the fringes shift about faster than the eye can follow and blur into uniform brightness.\n\nIt is why Young used a single slit to feed both slits — two independent lamps can never be coherent.",
+      "marks": 1,
+      "options": [
+        "the same amplitude",
+        "a constant phase difference and the same frequency",
+        "the same intensity",
+        "the same direction"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "wav-004",
+      "chapter": "Wave Optics",
+      "topic": "Diffraction",
+      "type": "mcq",
+      "q": "In single-slit diffraction, the width of the central maximum is:",
+      "solution": "The first minima lie at $\\sin\\theta = \\pm\\dfrac{\\lambda}{a}$, so the central maximum spans $\\mathbf{\\dfrac{2\\lambda D}{a}}$ — **twice** the width of every other fringe.\n\nA narrower slit gives a wider spread: squeeze the light and it fans out more.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\lambda D}{a}$",
+        "$\\dfrac{2\\lambda D}{a}$",
+        "$\\dfrac{\\lambda a}{D}$",
+        "$\\dfrac{\\lambda D}{2a}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "wav-005",
+      "chapter": "Wave Optics",
+      "topic": "Polarisation",
+      "type": "mcq",
+      "q": "Polarisation of light proves that light waves are:",
+      "solution": "Only a **transverse** wave has a direction of vibration across its line of travel that can be filtered.\n\nSound, being longitudinal, cannot be polarised — which is why polarisation settled the question of light's nature.",
+      "marks": 1,
+      "options": [
+        "longitudinal",
+        "transverse",
+        "mechanical",
+        "of high frequency"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "wav-006",
+      "chapter": "Wave Optics",
+      "topic": "Fringe width",
+      "type": "numeric",
+      "q": "In Young's experiment, $\\lambda = 600$ nm, $d = 0.5$ mm and $D = 1$ m. Find the fringe width, in mm.",
+      "solution": "$\\beta = \\dfrac{\\lambda D}{d} = \\dfrac{600 \\times 10^{-9} \\times 1}{0.5 \\times 10^{-3}} = 1.2 \\times 10^{-3}$ m $= \\mathbf{1.2}$ mm.",
+      "marks": 2,
+      "answer": 1.2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "wav-007",
+      "chapter": "Wave Optics",
+      "topic": "Path difference",
+      "type": "numeric",
+      "q": "For constructive interference, the path difference must be $n\\lambda$. Find the path difference (in nm) for the second bright fringe with $\\lambda = 500$ nm.",
+      "solution": "$\\Delta = n\\lambda = 2 \\times 500 = \\mathbf{1000}$ nm.\n\nDestructive interference would need $\\left(n + \\tfrac12\\right)\\lambda$ — a half-wavelength out of step, so crest meets trough.",
+      "marks": 2,
+      "answer": 1000,
+      "tolerance": 1
+    },
+    {
+      "id": "wav-008",
+      "chapter": "Wave Optics",
+      "topic": "Brewster's angle",
+      "type": "numeric",
+      "q": "Find Brewster's angle (in degrees) for glass of refractive index $1.5$, correct to one decimal place. Take $\\tan^{-1}(1.5) = 56.3°$.",
+      "solution": "$\\tan i_{B} = \\mu \\Rightarrow i_{B} = \\tan^{-1}(1.5) = \\mathbf{56.3°}$.\n\nAt Brewster's angle the reflected light is **completely plane-polarised**, and the reflected and refracted rays are exactly $90°$ apart.\n\nIt is why polarising sunglasses cut glare from a wet road so well: light reflected near this angle is already polarised, and the lens simply blocks that direction.",
+      "marks": 2,
+      "answer": 56.3,
+      "tolerance": 0.5
+    },
+    {
+      "id": "wav-009",
+      "chapter": "Wave Optics",
+      "topic": "Width of central maximum",
+      "type": "numeric",
+      "q": "A single slit of width $0.2$ mm is lit by light of wavelength $600$ nm, with a screen $1$ m away. Find the width of the central maximum, in mm.",
+      "solution": "Width $= \\dfrac{2\\lambda D}{a} = \\dfrac{2 \\times 600 \\times 10^{-9} \\times 1}{0.2 \\times 10^{-3}} = 6 \\times 10^{-3}$ m $= \\mathbf{6}$ mm.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0.1
+    },
+    {
+      "id": "wav-010",
+      "chapter": "Wave Optics",
+      "topic": "Intensity and polarisation",
+      "type": "numeric",
+      "q": "Unpolarised light of intensity $I_{0}$ passes through a polaroid. Find the transmitted intensity as a fraction of $I_{0}$.",
+      "solution": "Unpolarised light contains every vibration direction equally, and a polaroid passes the component along its axis. Averaging $\\cos^{2}\\theta$ over all angles gives $\\tfrac12$.\n\nTransmitted intensity $= \\mathbf{0.5}\\,I_{0}$.\n\nA **second** polaroid then follows Malus's law, $I = I_{1}\\cos^{2}\\theta$, and can cut it to zero when crossed.",
+      "marks": 2,
+      "answer": 0.5,
+      "tolerance": 0.01
+    },
+    {
+      "id": "wav-011",
+      "chapter": "Wave Optics",
+      "topic": "Young's experiment",
+      "type": "long",
+      "q": "Derive the expression for fringe width in Young's double slit experiment.",
+      "solution": "Let the slits $S_{1}$, $S_{2}$ be a distance $d$ apart, the screen $D$ away, and $y$ be measured on the screen from the central point.\n\n**Path difference.** For $D \\gg d$,\n\n$\\Delta = \\dfrac{yd}{D}$.\n\n**Bright fringes** need $\\Delta = n\\lambda$:\n\n$y_{n} = \\dfrac{n\\lambda D}{d}$.\n\n**Fringe width** is the gap between consecutive bright fringes:\n\n$\\beta = y_{n+1} - y_{n} = \\mathbf{\\dfrac{\\lambda D}{d}}$.\n\nTwo things follow at once: the fringes are **equally spaced**, and measuring $\\beta$ measures $\\lambda$ — which is how the wavelength of light was first found, with nothing but a ruler.\n\nDark fringes sit midway, where $\\Delta = \\left(n + \\tfrac12\\right)\\lambda$.",
+      "marks": 3
+    },
+    {
+      "id": "wav-012",
+      "chapter": "Wave Optics",
+      "topic": "Huygens' principle and refraction",
+      "type": "long",
+      "q": "Use Huygens' principle to prove Snell's law of refraction.",
+      "solution": "Let a plane wavefront strike the boundary at angle $i$, with speeds $v_{1}$ above and $v_{2}$ below.\n\nWhile the wavelet from the trailing edge travels $v_{1}t$ to reach the surface, the wavelet from the leading edge — already in the second medium — travels $v_{2}t$.\n\nBoth distances sit on the same stretch $AC$ of the boundary:\n\n$\\sin i = \\dfrac{v_{1}t}{AC}$ and $\\sin r = \\dfrac{v_{2}t}{AC}$.\n\nDividing:\n\n$\\dfrac{\\sin i}{\\sin r} = \\dfrac{v_{1}}{v_{2}} = \\dfrac{\\mu_{2}}{\\mu_{1}} = \\text{constant}$. ∎\n\nThe bending is not mysterious once seen this way: the part of the wavefront that enters the slower medium first falls behind, and the whole front swings round.\n\nA car driving off tarmac onto sand at an angle turns for exactly the same reason.",
+      "marks": 3
+    },
+    {
+      "id": "wav-013",
+      "chapter": "Wave Optics",
+      "topic": "Diffraction at a single slit",
+      "type": "long",
+      "q": "Explain single-slit diffraction and derive the positions of the minima. State two ways it differs from double-slit interference.",
+      "solution": "**The idea.** Treat the slit of width $a$ as a row of secondary sources, by Huygens. Light from them travels slightly different distances to a point on the screen, and where these cancel in pairs a minimum appears.\n\n**Minima.** Divide the slit into two halves. If the path difference between the two edges is $\\lambda$, every point in the top half cancels a partner in the bottom half:\n\n$a\\sin\\theta = \\lambda$.\n\nDividing into four, six, … parts gives the general condition\n\n$\\mathbf{a\\sin\\theta = n\\lambda}, \\quad n = 1, 2, 3, \\ldots$ (and $n \ne 0$, which is the central **maximum**).\n\n**Differences from interference:**\n\n1. The central maximum is **twice as wide** as the others; interference fringes are all of equal width.\n\n2. Diffraction fringes **fall off sharply in brightness**; interference fringes are of nearly equal intensity.\n\n3. Interference comes from two separate coherent sources; diffraction comes from many points of a **single** wavefront.\n\nIn a real double-slit experiment both are present at once: the interference fringes are seen inside a diffraction envelope.",
+      "marks": 5
+    },
+    {
+      "id": "wav-014",
+      "chapter": "Wave Optics",
+      "topic": "Polarisation and Malus's law",
+      "type": "long",
+      "q": "State Malus's law and use it to find the intensity transmitted by two polaroids at $60°$ to each other, when unpolarised light of intensity $I_{0}$ falls on the first.",
+      "solution": "**Malus's law.** When plane-polarised light of intensity $I_{1}$ meets an analyser at angle $\\theta$ to its plane,\n\n$I = I_{1}\\cos^{2}\\theta$.\n\n**Step 1.** The first polaroid halves unpolarised light: $I_{1} = \\dfrac{I_{0}}{2}$.\n\n**Step 2.** The second is at $60°$:\n\n$I = \\dfrac{I_{0}}{2}\\cos^{2}60° = \\dfrac{I_{0}}{2} \\times \\dfrac14 = \\mathbf{\\dfrac{I_{0}}{8}}$.\n\nAt $90°$ the polaroids are 'crossed' and nothing gets through — yet slipping a third polaroid at $45°$ **between** them lets light through again, which is one of the most startling demonstrations in the syllabus.",
+      "marks": 3
+    },
+    {
+      "id": "wav-015",
+      "chapter": "Wave Optics",
+      "topic": "Conditions for sustained interference",
+      "type": "long",
+      "q": "State the conditions necessary to observe a steady interference pattern.",
+      "solution": "1. The two sources must be **coherent** — same frequency and a constant phase difference.\n\n2. They must be **narrow and close together**, or the fringes will be too fine to see.\n\n3. The waves should have **nearly equal amplitudes**, so that the dark fringes are properly dark and the contrast is good.\n\n4. The light should be **monochromatic**, or each wavelength makes its own set of fringes and they overlap into colour.\n\n5. The sources must emit waves of the **same polarisation state** — light polarised at right angles cannot interfere.\n\nIn practice conditions 1 and 5 are met by deriving both beams from **one** source, which is precisely what Young's single slit does.",
+      "marks": 2
+    }
+  ]
+}

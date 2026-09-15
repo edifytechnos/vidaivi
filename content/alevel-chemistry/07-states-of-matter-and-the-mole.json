@@ -1,0 +1,191 @@
+{
+  "id": "lib-alc-mole",
+  "title": "States of Matter and the Mole",
+  "chapter": "Topic Test 7",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "cie9701-103",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Ideal gases",
+      "type": "numeric",
+      "q": "Calculate the density of a sample of fluorine gas, $\\text{F}_2$, at $32\\ ^\\circ$C and $100\\,000$ Pa, in g dm$^{-3}$, correct to 1 decimal place. Assume fluorine behaves as an ideal gas. ($A_r$ of F $= 19 \\cdot 0$; $R = 8 \\cdot 314$ J K$^{-1}$ mol$^{-1}$.)",
+      "solution": "Start from the ideal gas equation and turn it into a density.\n\n**Step 1 — rearrange for density.** Since $n = \\dfrac{m}{M}$,\n\n$$pV = nRT = \\frac{m}{M}RT \\quad\\Longrightarrow\\quad \\rho = \\frac{m}{V} = \\frac{pM}{RT}.$$\n\n**Step 2 — collect the values in SI units.**\n\n- $p = 100\\,000$ Pa\n- $M\\left(\\text{F}_2\\right) = 2 \\times 19 \\cdot 0 = 38 \\cdot 0\\ \\text{g mol}^{-1} = 0 \\cdot 038\\ \\text{kg mol}^{-1}$\n- $T = 32 + 273 = 305$ K (the temperature **must** be absolute)\n\n**Step 3 — substitute.**\n\n$$\\rho = \\frac{100\\,000 \\times 0 \\cdot 038}{8 \\cdot 314 \\times 305} = \\frac{3800}{2536} = 1 \\cdot 498\\ \\text{kg m}^{-3}.$$\n\n**Step 4 — convert the units.** Conveniently, $1\\ \\text{kg m}^{-3} = 1\\ \\text{g dm}^{-3}$, since both are a thousandth of the other unit :\n\n$$\\rho = \\mathbf{1 \\cdot 5}\\ \\text{g dm}^{-3}.$$\n\nForgetting to convert $32\\ ^\\circ$C to kelvin is the error that wrecks this calculation — dividing by 32 instead of 305 would give an answer about ten times too large.",
+      "marks": 2,
+      "source": "Cambridge 9701 Jun 2024",
+      "answer": 1.5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alc7-001",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Avogadro constant",
+      "type": "mcq",
+      "q": "One mole of any substance contains:",
+      "solution": "$6.02 \\times 10^{23}$ — the **Avogadro constant**.\n\nIt is a counting unit chosen so that one mole of a substance has a mass in grams numerically equal to its relative formula mass.",
+      "marks": 1,
+      "options": [
+        "$6.02 \\times 10^{23}$ particles",
+        "$1$ g",
+        "$22.4$ particles",
+        "$100$ particles"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alc7-002",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Ideal gas equation",
+      "type": "mcq",
+      "q": "The ideal gas equation is:",
+      "solution": "$pV = nRT$, with $p$ in Pa, $V$ in m$^{3}$, $T$ in **kelvin** and $R = 8.31$ J mol$^{-1}$K$^{-1}$.\n\nGetting the units right before substituting is most of the work.",
+      "marks": 1,
+      "options": [
+        "$pV = nRT$",
+        "$pV = nR$",
+        "$\\dfrac{p}{V} = nRT$",
+        "$pVT = nR$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alc7-003",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Empirical formula",
+      "type": "mcq",
+      "q": "The empirical formula of a compound of $\\text{C}_{6}\\text{H}_{12}\\text{O}_{6}$ is:",
+      "solution": "Dividing each subscript by 6 gives the simplest whole-number ratio: $\\mathbf{\\text{CH}_{2}\\text{O}}$.\n\nGlucose, fructose and ribose all share it — an empirical formula alone never identifies a compound.",
+      "marks": 1,
+      "options": [
+        "$\\text{C}_{6}\\text{H}_{12}\\text{O}_{6}$",
+        "$\\text{CH}_{2}\\text{O}$",
+        "$\\text{C}_{2}\\text{H}_{4}\\text{O}_{2}$",
+        "$\\text{C}_{3}\\text{H}_{6}\\text{O}_{3}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc7-004",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Concentration",
+      "type": "mcq",
+      "q": "The concentration of a solution containing $0.5$ mol in $250$ cm$^{3}$ is:",
+      "solution": "$c = \\dfrac{n}{V} = \\dfrac{0.5}{0.25} = \\mathbf{2}$ mol dm$^{-3}$.\n\nThe volume must be in **dm$^{3}$**, so divide the cm$^{3}$ figure by 1000 before dividing.",
+      "marks": 1,
+      "options": [
+        "$0.5$ mol dm$^{-3}$",
+        "$2$ mol dm$^{-3}$",
+        "$0.125$ mol dm$^{-3}$",
+        "$1.25$ mol dm$^{-3}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc7-005",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Limiting reagent",
+      "type": "mcq",
+      "q": "The limiting reagent in a reaction is the one that:",
+      "solution": "The reagent that runs out first, so it **determines the maximum yield**.\n\nIt is found by dividing each reagent's moles by its coefficient and taking the smallest result — not simply by looking at which mass is smaller.",
+      "marks": 1,
+      "options": [
+        "is present in the largest amount",
+        "is completely used up first",
+        "has the highest molar mass",
+        "is the catalyst"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc7-007",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Gas volume",
+      "type": "numeric",
+      "q": "Find the volume (in dm$^{3}$) occupied by $0.25$ mol of gas at room temperature and pressure, taking the molar volume as $24$ dm$^{3}$.",
+      "solution": "$V = 0.25 \\times 24 = \\mathbf{6}$ dm$^{3}$.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alc7-008",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Concentration",
+      "type": "numeric",
+      "q": "Find the concentration (in mol dm$^{-3}$) of a solution of $4$ g of NaOH ($M_{r} = 40$) in $500$ cm$^{3}$.",
+      "solution": "$n = \\dfrac{4}{40} = 0.1$ mol, and $V = 0.5$ dm$^{3}$.\n\n$c = \\dfrac{0.1}{0.5} = \\mathbf{0.2}$ mol dm$^{-3}$.",
+      "marks": 2,
+      "answer": 0.2,
+      "tolerance": 0.005
+    },
+    {
+      "id": "alc7-009",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Percentage yield",
+      "type": "numeric",
+      "q": "A reaction has a theoretical yield of $8$ g and an actual yield of $6$ g. Find the percentage yield.",
+      "solution": "$\\dfrac{6}{8} \\times 100 = \\mathbf{75}\\%$.",
+      "marks": 2,
+      "answer": 75,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alc7-010",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Atom economy",
+      "type": "numeric",
+      "q": "A reaction produces $18$ g of desired product from a total product mass of $90$ g. Find the atom economy, as a percentage.",
+      "solution": "$\\dfrac{18}{90} \\times 100 = \\mathbf{20}\\%$.\n\nAtom economy is fixed by the **equation**, not by how well the reaction is carried out — so a low figure can only be improved by choosing a different route, or by finding a use for the by-products.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alc7-011",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Mole calculations",
+      "type": "long",
+      "q": "Explain the relations between mass, moles, concentration and gas volume, and calculate the volume of carbon dioxide produced at RTP when $10$ g of calcium carbonate reacts with excess hydrochloric acid.",
+      "solution": "**The four relations** — every mole calculation is one of these, or a chain of them:\n\n$n = \\dfrac{m}{M}$ (mass)\n\n$n = cV$ (solution, $V$ in dm$^{3}$)\n\n$n = \\dfrac{V}{24}$ (gas at RTP, $V$ in dm$^{3}$)\n\n$n = \\dfrac{pV}{RT}$ (any gas conditions)\n\n**The universal method:** convert to **moles**, use the balanced equation to change species, convert back.\n\n**The calculation.**\n\n$\\text{CaCO}_{3} + 2\\text{HCl} \\to \\text{CaCl}_{2} + \\text{H}_{2}\\text{O} + \\text{CO}_{2}$\n\n$M_{r}(\\text{CaCO}_{3}) = 40 + 12 + 48 = 100$\n\n$n = \\dfrac{10}{100} = 0.1$ mol\n\nThe ratio is $1:1$, so $0.1$ mol of $\\text{CO}_{2}$ is produced.\n\n$V = 0.1 \\times 24 = \\mathbf{2.4}$ dm$^{3}$\n\n**Why 'excess acid' matters.** It tells you the carbonate is the **limiting** reagent, so the acid need not be considered at all. Without that word, both amounts would have to be checked.\n\n**A sanity check.** $0.1$ mol of gas is about $2.4$ litres — roughly a large bottle, from ten grams of chalk. Gases occupy enormous volumes compared with the solids that produce them, which is worth remembering when a calculation returns something implausible.",
+      "marks": 3
+    },
+    {
+      "id": "alc7-012",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Empirical and molecular formulae",
+      "type": "long",
+      "q": "Explain the difference between empirical and molecular formulae, and find both for a compound containing $52.2\\%$ C, $13.0\\%$ H and $34.8\\%$ O by mass, with $M_{r} = 46$.",
+      "solution": "**Empirical formula** — the simplest whole-number ratio of atoms.\n\n**Molecular formula** — the actual number of each atom in one molecule. It is always a whole-number multiple of the empirical formula.\n\n**Ionic compounds have only an empirical formula**, since there are no molecules — NaCl describes a ratio, not a particle.\n\n**The calculation. Take 100 g**, so the percentages become grams:\n\nC: $\\dfrac{52.2}{12} = 4.35$\n\nH: $\\dfrac{13.0}{1} = 13.0$\n\nO: $\\dfrac{34.8}{16} = 2.175$\n\n**Divide by the smallest** ($2.175$):\n\nC: $2.0$, H: $6.0$, O: $1.0$\n\n**Empirical formula: $\\mathbf{\\text{C}_{2}\\text{H}_{6}\\text{O}}$**, of mass $24 + 6 + 16 = 46$.\n\n$\\dfrac{46}{46} = 1$, so the **molecular formula is the same**: $\\text{C}_{2}\\text{H}_{6}\\text{O}$.\n\n**A caution.** $\\text{C}_{2}\\text{H}_{6}\\text{O}$ could be **ethanol** or **methoxymethane** — structural isomers with identical formulae and utterly different chemistry.\n\nA molecular formula never settles the structure. Infrared and NMR spectroscopy are what distinguish them.\n\n**On rounding:** if a ratio comes out near $1 : 1.5$, multiply everything by 2 rather than rounding to $1:2$. Rounding a genuine $1.5$ is the usual way this calculation fails.",
+      "marks": 3
+    },
+    {
+      "id": "alc7-013",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Titration calculations",
+      "type": "long",
+      "q": "Describe a titration and calculate the concentration of a sulphuric acid solution if $25.0$ cm$^{3}$ required $20.0$ cm$^{3}$ of $0.100$ mol dm$^{-3}$ NaOH.",
+      "solution": "**The procedure.**\n\n1. **Pipette** exactly $25.0$ cm$^{3}$ of the acid into a conical flask, and add two drops of indicator.\n\n2. **Fill a burette** with the standard alkali; record the initial reading to $0.05$ cm$^{3}$.\n\n3. Run in alkali, swirling, until the colour just changes permanently. Record the final reading.\n\n4. **Repeat** until two titres agree within $0.10$ cm$^{3}$, and average only those concordant results.\n\nThe first run is a rough one, done quickly to locate the end point; the accurate ones are added dropwise near it.\n\n**The calculation.**\n\n$n(\\text{NaOH}) = cV = 0.100 \\times \\dfrac{20.0}{1000} = 2.00 \\times 10^{-3}$ mol\n\n$\\text{H}_{2}\\text{SO}_{4} + 2\\text{NaOH} \\to \\text{Na}_{2}\\text{SO}_{4} + 2\\text{H}_{2}\\text{O}$\n\n**The ratio is $1 : 2$** — this is the step everything depends on:\n\n$n(\\text{H}_{2}\\text{SO}_{4}) = \\dfrac{2.00 \\times 10^{-3}}{2} = 1.00 \\times 10^{-3}$ mol\n\n$c = \\dfrac{1.00 \\times 10^{-3}}{0.0250} = \\mathbf{0.0400}$ mol dm$^{-3}$\n\n**Had the acid been hydrochloric**, the ratio would be $1:1$ and the answer twice as large. The balanced equation is not a formality here; it is half the calculation.\n\n**Accuracy.** A pipette is used for the fixed volume because it is far more accurate than a measuring cylinder, and the burette is read to half a division. The percentage uncertainty in a $20$ cm$^{3}$ titre read twice to $\\pm 0.05$ cm$^{3}$ is about $0.5\\%$.",
+      "marks": 5
+    },
+    {
+      "id": "alc7-014",
+      "chapter": "States of Matter and the Mole",
+      "topic": "The ideal gas equation",
+      "type": "long",
+      "q": "State the assumptions of the ideal gas model, explain when real gases deviate from it, and calculate the volume of $0.5$ mol of gas at $300$ K and $200$ kPa.",
+      "solution": "**The assumptions.**\n\n1. Molecules have **negligible volume** compared with the container.\n\n2. There are **no intermolecular forces**.\n\n3. Collisions are **perfectly elastic**.\n\n4. The molecules are in constant **random motion**.\n\n**When real gases deviate.**\n\n• **At high pressure**, the molecules are forced close together and their **own volume** is no longer negligible, so the real volume exceeds the ideal prediction.\n\n• **At low temperature**, the molecules move slowly enough for **intermolecular attractions** to matter, pulling them together so the real volume is less than predicted.\n\n**Which gases deviate most.** Those with strong intermolecular forces and large molecules — ammonia and water vapour deviate badly, while helium and hydrogen behave almost ideally.\n\n**The decisive point:** a truly ideal gas could never be liquefied, since liquefaction depends entirely on the attractions the model denies. Every real gas can be.\n\n**The calculation.**\n\n$V = \\dfrac{nRT}{p} = \\dfrac{0.5 \\times 8.31 \\times 300}{200\\,000}$\n\n$= \\dfrac{1246.5}{200\\,000} = 6.23 \\times 10^{-3}$ m$^{3}$ $= \\mathbf{6.23}$ dm$^{3}$\n\n**Units are everything here:** pressure in **pascals**, volume in **cubic metres**, temperature in **kelvin**. Using kPa or dm$^{3}$ with $R = 8.31$ gives an answer wrong by a factor of a thousand.",
+      "marks": 3
+    },
+    {
+      "id": "alc7-015",
+      "chapter": "States of Matter and the Mole",
+      "topic": "Yield and atom economy",
+      "type": "long",
+      "q": "Distinguish between percentage yield and atom economy, calculate both for a reaction, and explain why atom economy matters to industry.",
+      "solution": "**Percentage yield** $= \\dfrac{\\text{actual mass obtained}}{\\text{theoretical mass}} \\times 100$.\n\nIt measures how **well the reaction was carried out** — losses come from side reactions, incomplete reaction, and material left behind in transfers and purification.\n\n**Atom economy** $= \\dfrac{M_{r}\\text{ of desired product}}{\\text{total }M_{r}\\text{ of all products}} \\times 100$.\n\nIt measures how much of the starting material **ends up as something useful**, and it is fixed entirely by the **equation**.\n\n**The crucial difference.** A reaction can have a $100\\%$ yield and a terrible atom economy, if most of the mass leaves as by-products.\n\n**Example — extracting iron:**\n\n$\\text{Fe}_{2}\\text{O}_{3} + 3\\text{CO} \\to 2\\text{Fe} + 3\\text{CO}_{2}$\n\nDesired: $2 \\times 56 = 112$. Total products: $112 + 3(44) = 244$.\n\nAtom economy $= \\dfrac{112}{244} \\times 100 = \\mathbf{45.9\\%}$ — even if every atom of ore reacted.\n\n**Why industry cares.**\n\n1. **Raw materials cost money**, and a low atom economy means buying a great deal that ends up as waste.\n\n2. **Waste costs money to dispose of**, and increasingly attracts regulation.\n\n3. **Sustainability** — feedstocks are finite.\n\n**Addition reactions have $100\\%$ atom economy** by definition, since there is only one product. Substitution and elimination never do.\n\nThat is why green chemistry favours addition and catalytic routes, and why finding a **use** for a by-product can transform a process's economics — as the cumene route to phenol does by selling its acetone.",
+      "marks": 2
+    }
+  ]
+}

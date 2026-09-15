@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-forces",
+  "title": "Forces, Density and Pressure",
+  "chapter": "Topic Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp5-001",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Equilibrium",
+      "type": "mcq",
+      "q": "A body is in equilibrium when:",
+      "solution": "**Both** conditions are needed: no resultant force (no acceleration) **and** no resultant moment (no angular acceleration).\n\nA body can have balanced forces and still spin, if they form a couple — which is why the second condition is not redundant.",
+      "marks": 1,
+      "options": [
+        "it is stationary",
+        "the resultant force and the resultant moment are both zero",
+        "all forces are equal",
+        "it moves at constant speed"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp5-002",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Moments",
+      "type": "mcq",
+      "q": "A couple consists of:",
+      "solution": "A **couple** is two equal, opposite, parallel forces whose lines of action do not coincide.\n\nIt has **no resultant force** but a definite turning effect, of torque $= F \\times d$ where $d$ is the perpendicular separation. Turning a steering wheel with both hands is the everyday example.",
+      "marks": 1,
+      "options": [
+        "one force",
+        "two equal parallel forces in opposite directions with different lines of action",
+        "two forces at right angles",
+        "a force and its reaction"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp5-003",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Upthrust",
+      "type": "mcq",
+      "q": "Archimedes' principle states that the upthrust equals:",
+      "solution": "Upthrust $=$ **weight of fluid displaced** $= \\rho V g$.\n\nAn object floats when it can displace its own weight of fluid before being fully submerged — which is why a steel ship floats and a steel bar does not.",
+      "marks": 1,
+      "options": [
+        "the weight of the object",
+        "the weight of fluid displaced",
+        "the volume of the object",
+        "the density of the fluid"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp5-004",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Pressure in a fluid",
+      "type": "mcq",
+      "q": "The pressure at a depth $h$ in a liquid of density $\\rho$ is:",
+      "solution": "$p = \\mathbf{\\rho gh}$ — it depends only on the **depth**, not on the shape or the total amount of liquid.\n\nThat is why water finds its own level, and why a dam's thickness is determined by the depth behind it rather than the size of the lake.",
+      "marks": 1,
+      "options": [
+        "$\\rho h$",
+        "$\\rho g h$",
+        "$\\dfrac{\\rho g}{h}$",
+        "$\\rho g h^{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp5-005",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Centre of gravity",
+      "type": "mcq",
+      "q": "An object is in stable equilibrium if, when tilted slightly:",
+      "solution": "In **stable** equilibrium, tilting **raises** the centre of gravity, so the weight provides a restoring moment that returns the object to its original position.\n\nIn unstable equilibrium the centre of gravity falls and the object topples further — which is why a racing car is built low and wide.",
+      "marks": 1,
+      "options": [
+        "its centre of gravity rises",
+        "its centre of gravity falls",
+        "it topples",
+        "the forces are unbalanced"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp5-006",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Pressure",
+      "type": "numeric",
+      "q": "Find the pressure (in kPa) at a depth of $5$ m in water. Take $\\rho = 1000$ kg/m$^{3}$ and $g = 10$ m/s$^{2}$.",
+      "solution": "$p = \\rho gh = 1000 \\times 10 \\times 5 = 50\\,000$ Pa $= \\mathbf{50}$ kPa.\n\nThat is about half atmospheric pressure, added on top of it.",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 1
+    },
+    {
+      "id": "alp5-007",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Upthrust",
+      "type": "numeric",
+      "q": "Find the upthrust (in N) on an object of volume $0.002$ m$^{3}$ fully submerged in water. Take $\\rho = 1000$ kg/m$^{3}$, $g = 10$ m/s$^{2}$.",
+      "solution": "$U = \\rho Vg = 1000 \\times 0.002 \\times 10 = \\mathbf{20}$ N.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alp5-008",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Moments",
+      "type": "numeric",
+      "q": "A uniform beam $4$ m long is pivoted at its centre. A $30$ N weight hangs $1$ m from the pivot. Find the force (in N) needed at the far end to balance it.",
+      "solution": "$30 \\times 1 = F \\times 2 \\Rightarrow F = \\mathbf{15}$ N.\n\nThe beam is uniform and pivoted centrally, so its own weight acts at the pivot and contributes no moment.",
+      "marks": 2,
+      "answer": 15,
+      "tolerance": 0.2
+    },
+    {
+      "id": "alp5-009",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Density",
+      "type": "numeric",
+      "q": "Find the density (in kg/m$^{3}$) of a $0.5$ kg block of volume $2 \\times 10^{-4}$ m$^{3}$.",
+      "solution": "$\\rho = \\dfrac{m}{V} = \\dfrac{0.5}{2 \\times 10^{-4}} = \\mathbf{2500}$ kg/m$^{3}$.",
+      "marks": 2,
+      "answer": 2500,
+      "tolerance": 10
+    },
+    {
+      "id": "alp5-010",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Resolving forces",
+      "type": "numeric",
+      "q": "A $100$ N force acts at $60°$ to the horizontal. Find its horizontal component, in N.",
+      "solution": "$F_{x} = 100\\cos 60° = \\mathbf{50}$ N (and the vertical component is $86.6$ N).",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alp5-011",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Equilibrium of forces",
+      "type": "long",
+      "q": "State the two conditions for equilibrium, and use them to find the tensions in two ropes supporting a $200$ N weight, one at $30°$ and one at $60°$ to the horizontal.",
+      "solution": "**The two conditions.**\n\n1. The **resultant force** is zero — so the components in each direction balance.\n\n2. The **resultant moment** about any point is zero.\n\n**Setting up.** Let $T_{1}$ act at $30°$ and $T_{2}$ at $60°$, on opposite sides of the vertical.\n\n**Horizontally:**\n\n$T_{1}\\cos 30° = T_{2}\\cos 60°$\n\n$0.866\\,T_{1} = 0.5\\,T_{2}$, so $T_{2} = 1.732\\,T_{1}$.\n\n**Vertically:**\n\n$T_{1}\\sin 30° + T_{2}\\sin 60° = 200$\n\n$0.5\\,T_{1} + 0.866(1.732\\,T_{1}) = 200$\n\n$0.5\\,T_{1} + 1.5\\,T_{1} = 200 \\Rightarrow T_{1} = \\mathbf{100}$ N\n\n$T_{2} = 1.732 \\times 100 = \\mathbf{173.2}$ N\n\n**Check:** $100(0.5) + 173.2(0.866) = 50 + 150 = 200$ ✓\n\n**Worth noticing:** the ropes are at right angles to each other, and the steeper rope carries much the greater load.\n\n**A practical consequence:** as two supporting ropes are pulled closer to horizontal, the tensions rise steeply — towards infinity as the angle approaches zero. That is why a washing line always sags, and why no rope can ever be pulled perfectly straight.",
+      "marks": 3
+    },
+    {
+      "id": "alp5-012",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Moments and centre of gravity",
+      "type": "long",
+      "q": "Define the moment of a force and the centre of gravity, and describe an experiment to find the centre of gravity of an irregular lamina.",
+      "solution": "**Moment of a force** $=$ force $\\times$ **perpendicular** distance from the pivot to the line of action, in N m.\n\n'Perpendicular' is the operative word: a force whose line of action passes through the pivot has zero moment however large it is.\n\n**Centre of gravity** — the single point at which the entire weight of a body may be taken to act. For a uniform body it is at the geometric centre; it need not lie within the material at all (consider a ring, or a horseshoe).\n\n**The experiment — the plumb line method.**\n\n1. Make three small holes near the edge of the lamina.\n\n2. Suspend it freely from one hole on a pin, so it can swing.\n\n3. Hang a **plumb line** from the same pin and mark the vertical line it traces.\n\n4. Repeat from a second hole, and then a third.\n\n5. The three lines **intersect at the centre of gravity**.\n\n**Why it works.** A freely suspended body comes to rest with its centre of gravity **directly below** the point of suspension — any other position would leave a turning moment. So the centre of gravity lies somewhere on that vertical line, and two such lines fix it.\n\n**The third line is a check**, not an extra requirement: if it does not pass through the same point, something has gone wrong.",
+      "marks": 3
+    },
+    {
+      "id": "alp5-013",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Pressure in fluids",
+      "type": "long",
+      "q": "Derive $p = \\rho gh$, explain why atmospheric pressure decreases with altitude, and describe how a manometer measures pressure.",
+      "solution": "**Derivation.** Consider a column of liquid of cross-sectional area $A$ and height $h$.\n\n$\\text{Volume} = Ah$, so $\\text{mass} = \\rho Ah$ and $\\text{weight} = \\rho Ahg$.\n\nThat weight is supported by the base:\n\n$p = \\dfrac{F}{A} = \\dfrac{\\rho Ahg}{A} = \\mathbf{\\rho gh}$\n\n**The area cancels** — which is why the pressure at the bottom of a lake is the same as at the bottom of a narrow pipe of the same depth, and why the shape of the vessel is irrelevant.\n\n**Atmospheric pressure and altitude.** The pressure at any height is the weight of all the air **above** you. Climb higher and there is less air overhead, so the pressure falls.\n\nThe fall is **not linear**, though, because air is compressible: it is densest at the bottom, so pressure drops fastest near sea level and the decrease is roughly exponential. Half the atmosphere's mass lies below $5.5$ km.\n\n**A manometer.** A U-tube containing liquid, with one arm open to the atmosphere and the other connected to the gas supply being measured.\n\nThe difference in the two liquid levels, $h$, gives the **excess** pressure directly:\n\n$p_{\\text{gas}} = p_{\\text{atmospheric}} + \\rho gh$\n\n**Choosing the liquid** is a matter of sensitivity: mercury for large pressures (it is dense, so $h$ stays manageable), water or oil for small ones, where a low density gives a longer, more readable column.",
+      "marks": 5
+    },
+    {
+      "id": "alp5-014",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Upthrust and flotation",
+      "type": "long",
+      "q": "State Archimedes' principle, explain why a steel ship floats, and find the fraction of an iceberg that is submerged. (Ice: $920$ kg/m$^{3}$; sea water: $1025$ kg/m$^{3}$.)",
+      "solution": "**Archimedes' principle.** The upthrust on a body immersed in a fluid equals the **weight of fluid displaced**.\n\n**Why it happens.** Pressure increases with depth, so the upward pressure on the bottom of the object exceeds the downward pressure on its top. That difference, over the object's area, is the upthrust.\n\n**Why a steel ship floats.** Steel is about eight times denser than water, so a solid steel block sinks at once.\n\nBut a ship is a **hollow hull**, mostly enclosing air. Its **average density** — total mass divided by total volume including the air — is less than water's.\n\nIt therefore settles until it has displaced a weight of water equal to its own weight, and floats. Breach the hull, let water replace the air, and the average density rises above water's — which is precisely how a ship sinks.\n\n**The iceberg.** Floating means upthrust equals weight:\n\n$\\rho_{\\text{ice}}V_{\\text{total}}\\,g = \\rho_{\\text{water}}V_{\\text{submerged}}\\,g$\n\n$\\dfrac{V_{\\text{sub}}}{V_{\\text{total}}} = \\dfrac{\\rho_{\\text{ice}}}{\\rho_{\\text{water}}} = \\dfrac{920}{1025} = \\mathbf{0.898}$\n\n**About $90\\%$ is under water**, and only a tenth shows — hence 'the tip of the iceberg', which turns out to be a quantitatively accurate expression.\n\n**The general result:** the submerged fraction of any floating object is the ratio of its density to the fluid's.",
+      "marks": 3
+    },
+    {
+      "id": "alp5-015",
+      "chapter": "Forces, Density and Pressure",
+      "topic": "Turning effects",
+      "type": "long",
+      "q": "A uniform plank of mass $20$ kg and length $6$ m rests on two supports, one at each end. A $60$ kg person stands $2$ m from the left support. Find the force on each support. Take $g = 10$ m/s$^{2}$.",
+      "solution": "**The forces.** Let $R_{L}$ and $R_{R}$ be the upward forces at the left and right supports.\n\nThe plank's weight, $200$ N, acts at its **centre**, $3$ m from each end. The person's weight is $600$ N at $2$ m from the left.\n\n**Take moments about the left support** — this eliminates $R_{L}$, since its moment arm is zero:\n\n**Clockwise:** $600(2) + 200(3) = 1200 + 600 = 1800$ N m\n\n**Anticlockwise:** $R_{R}(6)$\n\n$6R_{R} = 1800 \\Rightarrow R_{R} = \\mathbf{300}$ N\n\n**Now use the force condition:**\n\n$R_{L} + R_{R} = 200 + 600 = 800$ N\n\n$R_{L} = 800 - 300 = \\mathbf{500}$ N\n\n**Check by taking moments about the right support:**\n\n$600(4) + 200(3) = 2400 + 600 = 3000$, and $R_{L}(6) = 3000 \\Rightarrow R_{L} = 500$ ✓\n\n**The technique worth keeping:** take moments about a point where an unknown force acts, and that unknown disappears from the equation. Choosing the pivot well turns a pair of simultaneous equations into two separate one-line calculations.\n\nThe nearer support carries the greater load, which is exactly what intuition expects.",
+      "marks": 2
+    }
+  ]
+}

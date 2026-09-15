@@ -304,19 +304,163 @@ solution, so a teacher can *judge* a test before taking it.
 
 ### Where chapter content lives
 
-Chapter JSON lives in **`content/<shelf>/*.json`** — `content/class10-maths/`,
-`content/class12-maths/` — and is pushed into Table Storage as masters by
-`node scripts/seed-library.mjs content/class10-maths` (`VIDAI_BASE`,
+Chapter JSON lives in **`content/<shelf>/*.json`** and is pushed into Table
+Storage as masters by `node scripts/seed-library.mjs` (`VIDAI_BASE`,
 `VIDAI_ADMIN_USER`, `VIDAI_ADMIN_PASS` from the environment; never hardcode
-credentials). The script creates the shelf if it is missing, then for each file
+credentials). Name one or more directories, or none at all to rebuild every
+shelf. The script creates each shelf if it is missing, then for each file
 unpublishes → deletes → creates → publishes, so **editing a JSON file and
 re-running is how a question is corrected**.
+
+`RETIRED` in that script names test ids that have **left** `content/`. A test is
+replaced by id, so a file merely deleted from the repo would leave its row
+published in the library forever — nobody would ever see the deletion.
+
+**The seeder authenticates with the session cookie, not a token.** It used to
+read `auth.token` from the login response and send it as `X-Vidai-Auth`. The
+cookie migration ended that: `/api/manageauth` now answers `{ok: true}` and sets
+the httpOnly `vidai_session` cookie, so `auth.token` was `undefined` and every
+run died on **"Admin login failed"** — with correct credentials. The script now
+keeps a cookie jar and sends `X-Vidai-Auth: 1` purely as the **CSRF marker**
+`csrfRefused` looks for; its value is never checked and is not a secret.
+
+Worth remembering as a class of bug: the migration was correct everywhere the
+app itself runs, and silently broke the one caller that is not the app. A script
+that authenticates is the thing to re-test after any change to how sessions work.
+
+**The eleven shelves**, each 15 questions per chapter:
+
+| Directory | Shelf | Chapters |
+|---|---|---|
+| `class10-maths` | CBSE Class 10 Maths | 14 |
+| `class10-science` | CBSE Class 10 Science | 13 |
+| `class12-maths` | CBSE Class 12 Maths | 13 |
+| `class12-physics` | CBSE Class 12 Physics | 14 |
+| `class12-chemistry` | CBSE Class 12 Chemistry | 10 |
+| `igcse-maths` | Cambridge IGCSE Maths (0580) | 9 |
+| `igcse-science` | Cambridge IGCSE Combined Science (0653) | 12 |
+| `alevel-maths` | Cambridge A Level Maths (9709) | 10 |
+| `alevel-physics` | Cambridge A Level Physics (9702) | 12 |
+| `alevel-chemistry` | Cambridge A Level Chemistry (9701) | 12 |
+| `neet` | NEET (Physics, Chemistry, Biology) | 6 |
 
 **Not `src/tests/`.** Everything there is picked up by `import.meta.glob` and
 becomes a guest-visible bundled demo test. `src/tests/` is the guest demo and
 nothing else; the library is `content/`.
 
-`order` on each chapter is its NCERT chapter number, so the tree reads 1…14.
+`order` on each chapter is its NCERT chapter number where there is one, so the
+tree reads 1…14; the Cambridge and NEET shelves are ordered by the syllabus'
+own topic order instead.
+
+**`node scripts/check-content.cjs` proves a chapter before it ships.** It runs
+the server's own `validateQuestions` — read out of `api/shared/core.js`, never
+reimplemented — over every file, plus the things a library cares about and the
+validator does not: unique test ids across shelves, an `order` per chapter, a
+title and a subtitle. Run it after editing any chapter; a question that would
+fail to publish then fails while it is being written rather than mid-seed.
+
+**A `source` tag is a claim, and it has to be earned.** A year is written only
+when the question was read verbatim out of a full paper for that year, with the
+paper's own code, and the tag must say what kind of paper: `CBSE SQP 2024-25`
+is not `CBSE 2024`. `docs/library-sources.md` records which papers exist, which
+were obtained, and which shelves carry tags.
+
+**The real board papers are at
+`https://www.cbse.gov.in/cbsenew/question-paper.html`** — the papers the class
+actually sat, one zip per subject-year holding every set by Q.P. code, for 2022
+to 2026 in both the main and the compartment sitting. Class XII Maths, Physics
+and Chemistry and Class X Science and Maths are all there. An earlier note in
+this repo said they were not published; that was wrong, and `library-sources.md`
+says so rather than quietly deleting it, because the index is long enough that
+the next person to look will reach the same wrong conclusion.
+
+**Extraction loses notation, and that decides which chapters can be tagged.**
+Reading a paper as text keeps the words and the whole numbers and drops the
+surds, fractions and superscripts — so a question that reads *"the principal
+value of $\sec^{-1}$ ___"* cannot be tagged, because what it asked is no longer
+on the page. Chapters carried by words tag well; chapters carried by symbols do
+not. `docs/class12-maths-sources.md` states the per-chapter count for that
+reason: a thin chapter is a limit of the method, not a shortage of papers.
+
+**Physics tags better than Maths does**, and for the same reason: its questions
+are carried by numbers and words — a work function in eV, a refractive index, a
+frequency — which survive extraction, where a matrix or a surd does not. Every
+one of its fourteen chapters has a sourced question; the Maths shelf cannot say
+that.
+
+Tagged today, with an evidence file per shelf under `docs/`:
+
+| Shelf | Sourced | Notes |
+|---|---|---|
+| CBSE Class 10 Maths | 14 chapters, complete | one `docs/class10-*-sources.md` per chapter |
+| CBSE Class 12 Maths | 78 of 195 | Relations and Functions complete at 15 |
+| CBSE Class 12 Physics | 16 of 210 | every chapter covered |
+| CBSE Class 12 Chemistry | 13 of 150 | every chapter covered |
+| CBSE Class 10 Science | 11 of 195 | 10 of 13 chapters |
+| Cambridge IGCSE Maths (0580) | 5 of 135 | from the Jun 2024 papers |
+| Cambridge IGCSE Combined Science (0653) | 3 of 180 | from the Jun 2024 papers |
+| Cambridge A Level Physics (9702) | 3 of 180 | from the Jun 2024 papers |
+| Cambridge A Level Chemistry (9701) | 4 of 180 | from the Jun 2024 papers |
+| Cambridge A Level Maths (9709) | 4 of 150 | recovered by reading pages as images |
+
+**261 of 1875 questions are evidenced.** The only shelf with nothing is **NEET**,
+because no public archive exists; nothing there will carry a year until one does.
+
+**Cambridge publishes past papers openly** at
+`.../programmes-and-qualifications/<syllabus>/past-papers/` as direct PDF links,
+but **most of what it publishes there is specimen material** (2020, 2022, 2025),
+which is the exact counterpart of a CBSE SQP. Only the **June 2024** series in
+that corpus is a real past paper, so every Cambridge tag names it:
+`Cambridge 0580 Jun 2024`. Downloading needs `curl --http1.1`, and 0653's slug
+is `cambridge-igcse-science-combined-0653`, not the `-combined-science-` form
+every other subject uses.
+
+### Two ways content renders wrong, and both shipped once
+
+`formatText` in `src/dom.ts` supports `$…$` maths, `**bold**`, and a blank line
+as a paragraph break. **Nothing else.** Everything is escaped first, so anything
+richer reaches the student literally.
+
+- **A markdown table** has no support at all. A frequency table rendered as a
+  wall of `| 0 – 10 | 4 |` with the `|---|---|` separator visible as junk. Six
+  questions in the live Class 10 Maths shelf had one. Write **one line per row**
+  instead, header in bold.
+- **A literal backslash-n** comes from building the JSON in Python with a *raw*
+  string, where `\n` stays two characters instead of becoming a newline. Every
+  paragraph break in that question then appears on screen as the text `\n`. 134
+  fields were affected. Before fixing any, check that no occurrence is a LaTeX
+  `\\` line break.
+
+`scripts/check-content.cjs` now rejects both. Neither is catchable by
+`validateQuestions` — both are perfectly valid strings, wrong only once a
+student reads them. The guard has already earned itself: writing twelve more
+questions the same way reproduced the backslash-n bug immediately, and the check
+caught all fourteen fields before they could ship.
+
+### Reading a paper as pages, when extraction is not enough
+
+Text extraction keeps words and numbers and drops notation, which is why the
+Maths shelves are thin. **Rendering the page to an image and reading it recovers
+everything** — matrices, integrals, surds, vectors, the lot.
+
+`pypdfium2` at `scale=2.0` gives a 1224x1584 PNG that is comfortably legible
+(`poppler-utils` is not installed here, and `pdftoppm` is what the Read tool
+would otherwise want).
+
+**Yield per page varies enormously, so find the pages worth rendering first.** A
+CBSE paper packs six to eight questions onto a page; a Cambridge paper is mostly
+ruled answer space and gives about one, with whole pages carrying nothing but
+dotted lines. `scratchpad/pagemap.py` reads each page's text, strips the dotted
+rules and the footer, and lists only the pages with a real question stem left —
+which is what makes rendering Cambridge papers worth doing at all.
+
+It is slower per question than a text search, so spend it on the chapters text
+cannot reach rather than on ones already covered.
+
+**Write the JSON with ordinary Python strings, not raw strings**: `"\n"` must be
+a real newline while LaTeX needs its backslash doubled, as in `"\\binom"`. A raw
+string gets both wrong at once and is what caused the literal-backslash-n bug
+twice.
 
 ## Authoring editor (`src/screens/editor/`)
 
@@ -837,6 +981,24 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   `Q_CHUNK` guard that silently drops an oversized `answers` blob.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
+- **Removing a student removes the photographs.** `POST /api/students
+  {action:"remove"}` deletes the login, the attempts, **the `grading` rows and
+  the blobs they point at**, and answers with all four counts. It used to stop
+  after the attempts, which left a removed student's handwriting in the
+  container for good — and nothing could reach it afterwards, because
+  `answerimage`'s own remove keys on `grading.getEntity(who.id, …)`, the
+  **caller's** partition, so not even an admin could delete someone else's
+  photo. The only route left was the Azure portal.
+  The walk is one partition (`stu~<username>` is the PartitionKey), projects to
+  `RowKey` + `images`, and goes through `inBatches`. **Blobs are deleted before
+  their rows**: the row is the only record of where the photo lives, so losing
+  it first strands the photo permanently. The whole cascade is best-effort and
+  the login is deleted either way — a student who asked to be removed and can
+  still sign in is the worse of the two failures.
+  `e2e/helpers.cjs` drives this through the real handler against a fake table
+  **and a fake blob container**, and asserts the thing that would be a silent
+  disaster: that a second student's rows and photos are untouched, so the
+  cascade never becomes a table scan.
 
 ## The teacher marks on the student's own screen, with an AI first draft
 

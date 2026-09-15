@@ -1,0 +1,192 @@
+{
+  "id": "lib-c10s-human-eye",
+  "title": "The Human Eye and the Colourful World",
+  "chapter": "Chapter Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10eye-101",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Defects of vision",
+      "type": "mcq",
+      "q": "**Assertion (A):** A person suffering from myopia cannot see distant objects clearly.\n\n**Reason (R):** A converging lens is used for the correction of a myopic eye, as it can form real as well as virtual images of objects placed in front of it.\n\nChoose the correct answer :",
+      "solution": "**Assertion.** Myopia, or short-sightedness, is the defect in which the eye's far point moves nearer than infinity. The image of a distant object is formed **in front of** the retina rather than on it — usually because the eyeball is too long or the lens too strongly curved. So the person sees near objects clearly but distant ones blurred.\n\nA is **true**.\n\n**Reason.** Correcting myopia means moving the image **back** onto the retina, which requires **diverging** the light before it enters the eye. That is done with a **concave** lens, of suitable negative power.\n\nThe reason claims a **converging** (convex) lens is used — that is the correction for **hypermetropia**, the opposite defect.\n\nR is **false**.\n\nSo A is true but R is false.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "Both A and R are true, and R is the correct explanation of A",
+        "Both A and R are true, but R is not the correct explanation of A",
+        "A is true but R is false",
+        "A is false but R is true"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c10eye-102",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Scattering of light",
+      "type": "long",
+      "q": "What is scattering of light? Why does the clear sky appear blue?",
+      "solution": "**Scattering of light.** When light travelling through a medium strikes a particle — a molecule, a dust grain, a water droplet — the particle absorbs the light and re-emits it in **all directions**. That redirection of light from its original path is called scattering.\n\n**How much is scattered depends on the wavelength.** For particles much smaller than the wavelength of light, Rayleigh showed that\n\n$$\\text{amount scattered} \\propto \\frac{1}{\\lambda^4}.$$\n\nThe fourth power makes this a very strong dependence: the shorter the wavelength, the far more strongly it is scattered.\n\n**Why the clear sky is blue.**\n\nThe molecules of the air — mainly nitrogen and oxygen — are much smaller than the wavelength of visible light, so Rayleigh scattering applies.\n\nBlue light has a much shorter wavelength (about 450 nm) than red (about 700 nm). Since scattering goes as $1/\\lambda^4$, blue is scattered roughly\n\n$$\\left(\\frac{700}{450}\\right)^4 \\approx 6 \\text{ times}$$\n\nmore strongly than red.\n\nSo when sunlight passes through the atmosphere, the blue end of the spectrum is scattered in all directions by the air molecules. Looking anywhere in the sky away from the Sun, what reaches the eye is this **scattered** light — and it is predominantly blue.\n\n**The confirming case.** An astronaut above the atmosphere sees the sky as **black**, because there are no molecules to scatter the sunlight. The blue is made by the air, not by the Sun.",
+      "marks": 2,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "eye-002",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Myopia",
+      "type": "mcq",
+      "q": "Myopia (short sight) is corrected by using:",
+      "solution": "In myopia the image forms **in front of** the retina, because the eyeball is too long or the lens too powerful.\n\nA **concave (diverging) lens** spreads the light a little before it enters the eye, pushing the image back onto the retina.",
+      "marks": 1,
+      "options": [
+        "a convex lens",
+        "a concave lens",
+        "a cylindrical lens",
+        "a plane mirror"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "eye-003",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Dispersion",
+      "type": "mcq",
+      "q": "The splitting of white light into its component colours is called:",
+      "solution": "**Dispersion**, and it happens because different colours travel at **different speeds** in glass, so each is bent by a different amount.\n\n**Violet bends most, red least** — the order that produces VIBGYOR.",
+      "marks": 1,
+      "options": [
+        "reflection",
+        "refraction",
+        "dispersion",
+        "scattering"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "eye-004",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Scattering",
+      "type": "mcq",
+      "q": "The sky appears blue because of:",
+      "solution": "Air molecules are very small, and small particles scatter **short** wavelengths far more strongly.\n\nBlue light is scattered all over the sky and reaches your eye from every direction; red passes straight through.\n\nThe same effect, with the light travelling a much longer path through the atmosphere, makes the sun red at sunrise and sunset — all the blue has been scattered away before it reaches you.",
+      "marks": 1,
+      "options": [
+        "reflection of the sea",
+        "dispersion of light",
+        "scattering of shorter wavelengths by air molecules",
+        "total internal reflection"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "eye-005",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Least distance of distinct vision",
+      "type": "mcq",
+      "q": "The least distance of distinct vision for a normal human eye is about:",
+      "solution": "About **$25$ cm** for a normal adult eye, and it is the closest distance at which the eye can focus comfortably.\n\nFor a young child it is nearer $7$–$8$ cm, and it moves further out with age as the lens stiffens — which is why older people hold a newspaper at arm's length.",
+      "marks": 1,
+      "options": [
+        "5 cm",
+        "25 cm",
+        "50 cm",
+        "1 m"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "eye-006",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Power of correcting lens",
+      "type": "numeric",
+      "q": "A myopic person cannot see beyond $50$ cm. Find the power (in dioptres) of the correcting lens.",
+      "solution": "The lens must bring an object at infinity to an image at the far point, $50$ cm away, on the same side.\n\n$f = -50$ cm $= -0.5$ m.\n\n$P = \\dfrac{1}{-0.5} = \\mathbf{-2}$ D — a concave lens, as the sign says.",
+      "marks": 2,
+      "answer": -2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "eye-007",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Colours in the spectrum",
+      "type": "numeric",
+      "q": "How many colours are there in the visible spectrum of white light (VIBGYOR)?",
+      "solution": "$\\mathbf{7}$ — violet, indigo, blue, green, yellow, orange, red.\n\nIn truth the spectrum is continuous; Newton chose seven names, apparently to match the notes of a musical scale.",
+      "marks": 2,
+      "answer": 7,
+      "tolerance": 0
+    },
+    {
+      "id": "eye-008",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Near point",
+      "type": "numeric",
+      "q": "A hypermetropic person has a near point of $50$ cm. What power (in dioptres) of lens is needed to read at the normal $25$ cm?",
+      "solution": "The lens must make an object at $25$ cm appear to be at $50$ cm.\n\n$u = -25$ cm, $v = -50$ cm.\n\n$\\dfrac{1}{f} = \\dfrac{1}{v} - \\dfrac{1}{u} = \\dfrac{1}{-50} - \\dfrac{1}{-25} = \\dfrac{-1 + 2}{50} = \\dfrac{1}{50}$ cm$^{-1}$.\n\n$f = +50$ cm $= +0.5$ m, so $P = \\mathbf{+2}$ D — a convex lens.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "eye-009",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Angle of a prism",
+      "type": "numeric",
+      "q": "What is the angle of a typical equilateral glass prism, in degrees?",
+      "solution": "$\\mathbf{60°}$ — all three angles of an equilateral triangle.",
+      "marks": 2,
+      "answer": 60,
+      "tolerance": 0.5
+    },
+    {
+      "id": "eye-010",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Persistence of vision",
+      "type": "numeric",
+      "q": "For about how many seconds does an image persist on the retina (give the answer as a fraction of a second, i.e. $1/x$: find $x$)?",
+      "solution": "About $\\tfrac{1}{16}$ of a second, so $x = \\mathbf{16}$.\n\nThis is **persistence of vision**, and it is why a rapid series of still pictures looks like continuous motion — the whole basis of cinema.",
+      "marks": 2,
+      "answer": 16,
+      "tolerance": 0
+    },
+    {
+      "id": "eye-012",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Dispersion and the rainbow",
+      "type": "long",
+      "q": "Explain dispersion of light through a prism and how a rainbow is formed.",
+      "solution": "**Dispersion through a prism.** White light entering a glass prism is split into a band of seven colours, a **spectrum**.\n\n*Why:* each colour travels at a slightly different speed in glass, so each has a slightly different refractive index and is bent by a different amount. **Violet is slowed most and bends most; red least.**\n\nA second, inverted prism recombines the colours into white light — Newton's experiment, which proved the colours were in the light all along and not created by the glass.\n\n**A rainbow.** Every raindrop acts as a tiny prism, in three steps:\n\n1. **Refraction and dispersion** as light enters the drop.\n\n2. **Total internal reflection** off the back of the drop.\n\n3. **Refraction again** as the light leaves, spreading the colours further.\n\nThe light emerges at about $42°$ to the direction it came from, which is why a rainbow is always an arc of fixed radius.\n\n**Always with your back to the sun** — that is the geometry, not a coincidence. And because each observer sees the light from a different set of drops, no two people ever see quite the same rainbow.",
+      "marks": 3
+    },
+    {
+      "id": "eye-013",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Scattering of light",
+      "type": "long",
+      "q": "Explain the scattering of light and use it to account for the blue sky, the red sun at sunrise and sunset, and the choice of red for danger signals.",
+      "solution": "**Scattering.** Light falling on very small particles is sent off in all directions. How strongly depends sharply on wavelength: **shorter wavelengths scatter far more** (Rayleigh's law, with scattering proportional to $1/\\lambda^{4}$).\n\n**Why the sky is blue.** Air molecules are far smaller than the wavelength of light, so they scatter blue strongly and red hardly at all.\n\nThe scattered blue reaches your eye from every part of the sky, so the whole sky glows blue. On the Moon, with no atmosphere, the sky is black even in daylight.\n\n**Why the sun is red at sunrise and sunset.** Near the horizon, sunlight travels through a much greater thickness of atmosphere. Almost all the blue is scattered out along the way, and what survives the journey is red and orange.\n\nAt noon the path is shortest and the sun looks white.\n\n**Why danger signals are red.** Red is scattered **least**, so it travels furthest through fog, mist, rain and dust.\n\nA red light is visible from further away, and in worse weather, than any other colour — which is why stop signals, brake lights and warning lamps are red.\n\n**Tyndall effect.** Scattering also makes a beam of light visible — sunlight through a canopy of trees, or a torch beam in a dusty room.",
+      "marks": 5
+    },
+    {
+      "id": "eye-014",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Structure of the eye",
+      "type": "long",
+      "q": "Describe the structure of the human eye and the function of each main part.",
+      "solution": "**Cornea** — the transparent front window. Most of the eye's bending of light happens here, not at the lens.\n\n**Iris** — the coloured ring, a muscular diaphragm that controls the size of the pupil.\n\n**Pupil** — the opening that lets light in. It narrows in bright light and widens in dim light, which is why a room seems dark for a moment when you come in from the sun.\n\n**Crystalline lens** — provides the fine focusing, by changing shape under the ciliary muscles. This is **accommodation**.\n\n**Ciliary muscles** — contract to make the lens more curved for near objects; relax for distant ones.\n\n**Retina** — the light-sensitive screen at the back, holding **rods** (sensitive in dim light, no colour) and **cones** (colour vision, needing bright light).\n\n**Optic nerve** — carries the signals to the brain.\n\n**Blind spot** — where the optic nerve leaves; there are no receptors there, so nothing is seen at that point. The brain fills in the gap so convincingly that nobody notices.\n\n**The image on the retina is real, inverted and diminished.** The brain turns it the right way up — and it learns to. In experiments with inverting spectacles, the world eventually appears upright again.",
+      "marks": 3
+    },
+    {
+      "id": "eye-015",
+      "chapter": "The Human Eye and the Colourful World",
+      "topic": "Atmospheric refraction",
+      "type": "long",
+      "q": "What is atmospheric refraction? Use it to explain twinkling stars, the advanced sunrise and the fact that planets do not twinkle.",
+      "solution": "**Atmospheric refraction.** The air is not uniform: its density varies with temperature and height, so light passing through it bends continuously rather than travelling straight.\n\n**Twinkling stars.** A star is so distant that it is effectively a **point** source. As its light passes through constantly shifting layers of air, the path wobbles and the apparent position and brightness fluctuate rapidly.\n\nThat flickering is twinkling.\n\n**Why planets do not twinkle.** A planet is much closer and appears as an **extended** object — a collection of many point sources. Their variations are random and average out, so the total light stays steady.\n\nThis is a genuinely useful test with the naked eye: a steady 'star' is usually a planet.\n\n**Advanced sunrise and delayed sunset.** Light from the sun below the horizon is bent downwards by the atmosphere, so the sun is **seen** before it has actually risen and for a while after it has set.\n\nThe effect is about **2 minutes at each end**, giving roughly 4 extra minutes of daylight every day.\n\nThe same refraction flattens the sun's disc near the horizon: light from the lower edge is bent more than from the upper, so the sun looks squashed.",
+      "marks": 2
+    }
+  ]
+}

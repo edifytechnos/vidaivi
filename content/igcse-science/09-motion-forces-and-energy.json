@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-motion",
+  "title": "Motion, Forces and Energy",
+  "chapter": "Topic Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igp1-001",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Speed",
+      "type": "mcq",
+      "q": "Speed is calculated as:",
+      "solution": "$\\text{speed} = \\dfrac{\\text{distance}}{\\text{time}}$, measured in m/s.\n\n**Velocity** is speed with a direction, which is why an object going round a circle at a steady rate has constant speed but changing velocity.",
+      "marks": 1,
+      "options": [
+        "distance $\\times$ time",
+        "$\\dfrac{\\text{distance}}{\\text{time}}$",
+        "$\\dfrac{\\text{time}}{\\text{distance}}$",
+        "distance $+$ time"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp1-002",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Newton's first law",
+      "type": "mcq",
+      "q": "An object continues at constant velocity unless acted on by:",
+      "solution": "Newton's first law: only a **resultant** (unbalanced) force changes an object's motion.\n\nBalanced forces produce no change at all — a car at steady speed has its engine's drive exactly cancelled by friction and drag.",
+      "marks": 1,
+      "options": [
+        "gravity only",
+        "a resultant force",
+        "friction only",
+        "its own weight"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp1-003",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Newton's second law",
+      "type": "mcq",
+      "q": "The equation relating force, mass and acceleration is:",
+      "solution": "$\\mathbf{F = ma}$.\n\nFor a given force, a heavier object accelerates less. Mass is a measure of how strongly an object **resists** being accelerated, which is what inertia means.",
+      "marks": 1,
+      "options": [
+        "$F = \\dfrac{m}{a}$",
+        "$F = ma$",
+        "$F = \\dfrac{a}{m}$",
+        "$F = m + a$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp1-004",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Energy",
+      "type": "mcq",
+      "q": "The principle of conservation of energy states that energy:",
+      "solution": "Energy is **transferred** between stores, never created or destroyed.\n\n'Wasted' energy has not vanished — it has usually spread out as heat into the surroundings, where it is too dilute to be useful.",
+      "marks": 1,
+      "options": [
+        "can be destroyed",
+        "can be created",
+        "cannot be created or destroyed, only transferred",
+        "is always lost"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igp1-005",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Moments",
+      "type": "mcq",
+      "q": "The moment of a force about a pivot is:",
+      "solution": "$\\text{moment} = \\text{force} \\times \\text{perpendicular distance from the pivot}$, in N m.\n\nA long spanner needs less force for the same turning effect, which is why they are made long.",
+      "marks": 1,
+      "options": [
+        "force $\\times$ distance from pivot",
+        "$\\dfrac{\\text{force}}{\\text{distance}}$",
+        "force $+$ distance",
+        "force $\\times$ time"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igp1-006",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Speed",
+      "type": "numeric",
+      "q": "A car travels $150$ m in $10$ s. Find its average speed, in m/s.",
+      "solution": "$v = \\dfrac{150}{10} = \\mathbf{15}$ m/s (about $54$ km/h).",
+      "marks": 2,
+      "answer": 15,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igp1-007",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Acceleration",
+      "type": "numeric",
+      "q": "A car accelerates from $5$ m/s to $25$ m/s in $4$ s. Find its acceleration, in m/s$^{2}$.",
+      "solution": "$a = \\dfrac{\\Delta v}{t} = \\dfrac{25 - 5}{4} = \\mathbf{5}$ m/s$^{2}$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igp1-008",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Force",
+      "type": "numeric",
+      "q": "Find the force (in N) needed to give a $60$ kg mass an acceleration of $2$ m/s$^{2}$.",
+      "solution": "$F = ma = 60 \\times 2 = \\mathbf{120}$ N.",
+      "marks": 2,
+      "answer": 120,
+      "tolerance": 1
+    },
+    {
+      "id": "igp1-009",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Kinetic energy",
+      "type": "numeric",
+      "q": "Find the kinetic energy (in J) of a $2$ kg object moving at $10$ m/s.",
+      "solution": "$E_{k} = \\tfrac12 mv^{2} = \\tfrac12 \\times 2 \\times 100 = \\mathbf{100}$ J.\n\nKinetic energy goes as the **square** of the speed, which is why doubling a car's speed quadruples its braking distance.",
+      "marks": 2,
+      "answer": 100,
+      "tolerance": 1
+    },
+    {
+      "id": "igp1-010",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Moments",
+      "type": "numeric",
+      "q": "A force of $20$ N acts $0.4$ m from a pivot. Find the moment, in N m.",
+      "solution": "$\\text{moment} = 20 \\times 0.4 = \\mathbf{8}$ N m.",
+      "marks": 2,
+      "answer": 8,
+      "tolerance": 0.1
+    },
+    {
+      "id": "igp1-011",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Newton's laws",
+      "type": "long",
+      "q": "State Newton's three laws of motion and give an everyday example of each.",
+      "solution": "**First law (inertia).** An object stays at rest, or moves at constant velocity, unless a **resultant force** acts on it.\n\n*Example:* passengers lurch forward when a bus brakes — they carry on at the old speed until the seat belt stops them.\n\n**Second law.** The acceleration is proportional to the resultant force and inversely proportional to the mass: $F = ma$.\n\n*Example:* an empty shopping trolley is easy to get moving; the same push barely shifts a full one.\n\n**Third law.** For every action there is an **equal and opposite reaction**, acting on a **different** body.\n\n*Example:* a rocket pushes gas backwards, and the gas pushes the rocket forwards. Walking works the same way — you push the ground back, it pushes you forward.\n\n**The crucial detail of the third law:** the two forces act on **different objects**, which is why they do not cancel out. If both acted on the same body, nothing could ever accelerate.",
+      "marks": 3
+    },
+    {
+      "id": "igp1-012",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Energy transfers",
+      "type": "long",
+      "q": "Describe the energy transfers in a swinging pendulum and in a falling ball, and explain why the pendulum eventually stops.",
+      "solution": "**Pendulum.**\n\n• At the **highest point** of the swing: all **gravitational potential energy**, and momentarily at rest.\n\n• **Swinging down:** potential $\\to$ **kinetic**.\n\n• At the **lowest point:** maximum kinetic energy, maximum speed, minimum potential.\n\n• **Swinging up the other side:** kinetic $\\to$ potential.\n\nThe cycle repeats, with energy shuttling back and forth.\n\n**Falling ball.** Potential $\\to$ kinetic, so it speeds up as it falls. On impact, the kinetic energy becomes sound and heat, plus some elastic energy if the ball bounces.\n\n**Why the pendulum stops.** **Air resistance and friction at the pivot** transfer a little energy to the surroundings as heat and sound on every swing.\n\nThe total energy is unchanged — conservation still holds — but it has spread out into the air and the support, where it is far too dilute to move the pendulum.\n\n**This is the real meaning of 'wasted' energy:** not destroyed, but dissipated. In a vacuum with a frictionless pivot the pendulum would swing forever, which is exactly what makes a pendulum clock's escapement necessary — it returns the small amount lost on each swing.",
+      "marks": 3
+    },
+    {
+      "id": "igp1-013",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Motion graphs",
+      "type": "long",
+      "q": "Explain what the gradient and the area represent on a distance-time graph and on a speed-time graph, and describe the motion shown by a horizontal line on each.",
+      "solution": "**Distance-time graph.**\n\n• **Gradient = speed.** A steep line means fast; a shallow line means slow.\n\n• A **straight** line means constant speed; a **curve** means changing speed.\n\n• The **area** under it has no physical meaning.\n\n• A **horizontal line** means the distance is not changing — the object is **stationary**.\n\n**Speed-time graph.**\n\n• **Gradient = acceleration.** A positive gradient is speeding up, negative is slowing down.\n\n• **Area under the graph = distance travelled.** This is the most useful single fact about these graphs.\n\n• A **horizontal line** means constant speed — **zero acceleration**, not stationary.\n\n**That difference is the classic confusion:** a horizontal line means 'not moving' on one graph and 'moving steadily' on the other. Always read the axis label first.\n\n**Finding the area.** Split the shape into triangles and rectangles. For constant acceleration from rest to $20$ m/s in $10$ s, the area is a triangle: $\\tfrac12 \\times 10 \\times 20 = 100$ m.\n\n**A line sloping down to the axis** on a speed-time graph shows deceleration to a stop — and the area under it is the braking distance.",
+      "marks": 5
+    },
+    {
+      "id": "igp1-014",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Moments and equilibrium",
+      "type": "long",
+      "q": "State the principle of moments, and calculate the force needed at one end of a $2$ m uniform plank pivoted at its centre to balance a $40$ N weight placed $0.5$ m from the pivot on the other side.",
+      "solution": "**Principle of moments.** For a body in equilibrium, the **sum of the clockwise moments about any point equals the sum of the anticlockwise moments** about that point.\n\n**The calculation.** The pivot is at the centre, so each end is $1$ m from it. The plank is uniform, so its own weight acts **at the pivot** and has no moment.\n\n**Clockwise moment** (the $40$ N weight at $0.5$ m):\n\n$40 \\times 0.5 = 20$ N m\n\n**Anticlockwise moment** (the unknown force $F$ at $1$ m):\n\n$F \\times 1$\n\n**Balancing:**\n\n$F \\times 1 = 20 \\Rightarrow F = \\mathbf{20}$ N.\n\n**Worth noticing:** the force needed is only half the weight, because it acts at twice the distance. That is exactly how a lever multiplies force — and why a crowbar works.\n\n**Two conditions for full equilibrium:** the moments must balance **and** the resultant force must be zero. Here the pivot supplies the extra $60$ N upwards.",
+      "marks": 3
+    },
+    {
+      "id": "igp1-015",
+      "chapter": "Motion, Forces and Energy",
+      "topic": "Density and pressure",
+      "type": "long",
+      "q": "Define density and pressure, and calculate the pressure exerted by a $600$ N person standing on one foot of area $0.015$ m$^{2}$.",
+      "solution": "**Density** $= \\dfrac{\\text{mass}}{\\text{volume}}$, in kg/m$^{3}$ or g/cm$^{3}$.\n\nIt explains floating: an object floats if it is **less dense** than the fluid. A steel ship floats because its hull encloses a great deal of air, making its **average** density less than water's.\n\n**Pressure** $= \\dfrac{\\text{force}}{\\text{area}}$, in pascals (N/m$^{2}$).\n\n**The calculation:**\n\n$P = \\dfrac{600}{0.015} = \\mathbf{40\\,000}$ Pa $= 40$ kPa.\n\n**On two feet** the area doubles and the pressure halves, to $20$ kPa.\n\n**Why area matters so much.** The same person in stiletto heels, with perhaps $0.0001$ m$^{2}$ of contact, exerts $6$ **MPa** — enough to dent a wooden floor.\n\nThe **force is the same in every case**; only the area changes. It is why snowshoes work, why a knife is sharpened, and why a camel's foot is broad.",
+      "marks": 2
+    }
+  ]
+}

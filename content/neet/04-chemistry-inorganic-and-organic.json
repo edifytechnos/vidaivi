@@ -1,0 +1,250 @@
+{
+  "id": "lib-neet-chemistry-2",
+  "title": "NEET Chemistry: Inorganic and Organic",
+  "chapter": "Practice Test 4",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "neetc2-001",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Periodic table",
+      "type": "mcq",
+      "q": "The element with the highest electronegativity is:",
+      "solution": "**Fluorine**, at $4.0$ on the Pauling scale — the most electronegative element there is.\n\nElectronegativity increases across a period and decreases down a group, putting fluorine at the extreme top right of the reactive elements.",
+      "marks": 4,
+      "options": [
+        "Oxygen",
+        "Chlorine",
+        "Fluorine",
+        "Nitrogen"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc2-002",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "s-block",
+      "type": "mcq",
+      "q": "Which alkaline earth metal hydroxide is the least soluble in water?",
+      "solution": "Hydroxide solubility **increases** down Group 2, so $\\text{Mg(OH)}_{2}$ is the least soluble.\n\nThat is why it is safe as milk of magnesia — it dissolves too little to be caustic, but enough to neutralise stomach acid.",
+      "marks": 4,
+      "options": [
+        "$\\text{Mg(OH)}_{2}$",
+        "$\\text{Ca(OH)}_{2}$",
+        "$\\text{Sr(OH)}_{2}$",
+        "$\\text{Ba(OH)}_{2}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "neetc2-003",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "p-block",
+      "type": "mcq",
+      "q": "The hybridisation of the central atom in $\\text{SF}_{6}$ is:",
+      "solution": "Six bonding pairs require six hybrid orbitals: $\\mathbf{sp^{3}d^{2}}$, giving an **octahedral** shape.\n\nSulphur can expand its octet because it has accessible $3d$ orbitals; oxygen, in the second period, cannot — which is why $\\text{OF}_{6}$ does not exist.",
+      "marks": 4,
+      "options": [
+        "$sp^{3}$",
+        "$sp^{3}d$",
+        "$sp^{3}d^{2}$",
+        "$sp^{2}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc2-004",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "d-block",
+      "type": "mcq",
+      "q": "Which ion is colourless in aqueous solution?",
+      "solution": "$\\text{Zn}^{2+}$ is $3d^{10}$ — a **completely filled** d sub-shell, so no d–d transition is possible and the ion is **colourless**.\n\nThe same is true of $\\text{Sc}^{3+}$ ($d^{0}$) at the other end of the series.",
+      "marks": 4,
+      "options": [
+        "$\\text{Cu}^{2+}$",
+        "$\\text{Fe}^{3+}$",
+        "$\\text{Zn}^{2+}$",
+        "$\\text{Ni}^{2+}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc2-005",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Coordination compounds",
+      "type": "mcq",
+      "q": "The oxidation state of cobalt in $[\\text{Co}(\\text{NH}_{3})_{6}]\\text{Cl}_{3}$ is:",
+      "solution": "Ammonia is neutral and the three chlorides are outside the sphere, so the complex ion is $3+$:\n\n$x + 0 = +3 \\Rightarrow x = \\mathbf{+3}$.",
+      "marks": 4,
+      "options": [
+        "+1",
+        "+2",
+        "+3",
+        "+6"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc2-006",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Isomerism",
+      "type": "mcq",
+      "q": "$[\\text{Pt}(\\text{NH}_{3})_{2}\\text{Cl}_{2}]$ shows which type of isomerism?",
+      "solution": "**Geometrical (cis-trans)** isomerism, since it is square planar.\n\nThe **cis** isomer is the anticancer drug cisplatin; the **trans** isomer is inactive. Same atoms, same bonds, different medicine — because only the cis form can bind to two adjacent bases of DNA.",
+      "marks": 4,
+      "options": [
+        "Optical",
+        "Geometrical",
+        "Linkage",
+        "Ionisation"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc2-007",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Organic nomenclature",
+      "type": "mcq",
+      "q": "The IUPAC name of $(\\text{CH}_{3})_{3}\\text{CBr}$ is:",
+      "solution": "The longest chain is three carbons (propane), with a methyl and a bromine both on C2: **2-bromo-2-methylpropane**.\n\nIt is a tertiary halide, and so hydrolyses by $\\text{S}_{\\text{N}}1$.",
+      "marks": 4,
+      "options": [
+        "1-bromobutane",
+        "2-bromobutane",
+        "2-bromo-2-methylpropane",
+        "3-bromopropane"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc2-008",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Reaction mechanisms",
+      "type": "mcq",
+      "q": "Tertiary halogenoalkanes undergo hydrolysis predominantly by:",
+      "solution": "$\\mathbf{\\text{S}_{\\text{N}}1}$ — the tertiary carbocation is well stabilised by three electron-releasing alkyl groups, and the crowded carbon blocks backside attack.\n\nThe rate depends only on the halide's concentration, and the product is racemic.",
+      "marks": 4,
+      "options": [
+        "$\\text{S}_{\\text{N}}1$",
+        "$\\text{S}_{\\text{N}}2$",
+        "free radical substitution",
+        "elimination only"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "neetc2-009",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Markovnikov's rule",
+      "type": "mcq",
+      "q": "HBr adds to propene to give mainly:",
+      "solution": "**2-bromopropane** — the reaction goes through the more stable **secondary** carbocation.\n\nIn the presence of peroxides the addition is anti-Markovnikov, because the mechanism changes to free radical addition.",
+      "marks": 4,
+      "options": [
+        "1-bromopropane",
+        "2-bromopropane",
+        "propan-2-ol",
+        "a racemic mixture of both"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc2-010",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Aromatic chemistry",
+      "type": "mcq",
+      "q": "Benzene reacts with $\\text{CH}_{3}\\text{Cl}$ and anhydrous $\\text{AlCl}_{3}$ to give:",
+      "solution": "**Friedel-Crafts alkylation**, giving toluene.\n\nThe $\\text{AlCl}_{3}$ generates the electrophile $\\text{CH}_{3}^{+}$, and the reaction is **substitution**, which preserves the delocalised ring.",
+      "marks": 4,
+      "options": [
+        "chlorobenzene",
+        "toluene",
+        "benzoic acid",
+        "phenol"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc2-011",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Alcohols and phenols",
+      "type": "mcq",
+      "q": "Phenol is more acidic than ethanol because:",
+      "solution": "The phenoxide's negative charge is **delocalised into the ring**, which stabilises it. Ethoxide has no such escape route.\n\n$\\text{p}K_{a}$: phenol $10$, ethanol $16$ — a factor of a million.",
+      "marks": 4,
+      "options": [
+        "it has more oxygen",
+        "the phenoxide ion is stabilised by resonance",
+        "it is aromatic",
+        "it is a solid"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc2-012",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Aldehydes and ketones",
+      "type": "mcq",
+      "q": "Which compound gives a positive Tollens test but a negative iodoform test?",
+      "solution": "**Propanal** is an aldehyde, so Tollens' gives a silver mirror — but it has no $\\text{CH}_{3}\\text{CO}-$ group, so no iodoform.\n\nEthanal gives **both**; propanone gives iodoform only; ethanol gives iodoform only.",
+      "marks": 4,
+      "options": [
+        "Ethanal",
+        "Propanal",
+        "Propanone",
+        "Ethanol"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc2-013",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Carboxylic acids",
+      "type": "mcq",
+      "q": "Which acid is the strongest?",
+      "solution": "**Fluoroethanoic acid.** Fluorine is the most electronegative halogen, so it withdraws electron density most strongly and stabilises the carboxylate best.\n\nThe order follows electronegativity: F $>$ Cl $>$ Br $>$ I $>$ H.",
+      "marks": 4,
+      "options": [
+        "$\\text{CH}_{3}\\text{COOH}$",
+        "$\\text{FCH}_{2}\\text{COOH}$",
+        "$\\text{ClCH}_{2}\\text{COOH}$",
+        "$\\text{BrCH}_{2}\\text{COOH}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc2-014",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Amines",
+      "type": "mcq",
+      "q": "In aqueous solution, the order of basicity of methylamines is:",
+      "solution": "The famous irregular order in **water**: $\\mathbf{2° > 1° > 3°}$.\n\nThree effects compete — the inductive effect (favouring $3°$), steric hindrance and **solvation** of the cation through its N–H bonds (both favouring fewer alkyl groups). In the **gas phase**, with no solvent, the order is the simple $3° > 2° > 1°$.",
+      "marks": 4,
+      "options": [
+        "$3° > 2° > 1°$",
+        "$2° > 1° > 3°$",
+        "$1° > 2° > 3°$",
+        "all equal"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc2-015",
+      "chapter": "Chemistry: Inorganic and Organic",
+      "topic": "Biomolecules",
+      "type": "mcq",
+      "q": "Which of these is a non-reducing sugar?",
+      "solution": "**Sucrose.** Its glycosidic link joins both anomeric carbons, so neither ring can open to a carbonyl.\n\nMaltose and lactose keep one free anomeric carbon and are reducing. Fructose, though a ketose, is reducing too, because in alkali it isomerises to an aldose.",
+      "marks": 4,
+      "options": [
+        "Glucose",
+        "Fructose",
+        "Maltose",
+        "Sucrose"
+      ],
+      "answer": 3
+    }
+  ]
+}

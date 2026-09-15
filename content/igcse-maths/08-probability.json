@@ -1,0 +1,186 @@
+{
+  "id": "lib-ig-probability",
+  "title": "Probability",
+  "chapter": "Topic Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "cie0580-104",
+      "chapter": "Probability",
+      "topic": "Complementary events",
+      "type": "numeric",
+      "q": "Geetha picks a toy at random from a box. The probability that she picks a wooden toy is $0 \\cdot 6$. Work out the probability that she does **not** pick a wooden toy.",
+      "solution": "An event and its complement together cover every possibility, so their probabilities add to 1 :\n\n$$P(\\text{not wooden}) = 1 - P(\\text{wooden}).$$\n\n**Substitute.**\n\n$$P(\\text{not wooden}) = 1 - 0 \\cdot 6 = \\mathbf{0 \\cdot 4}.$$\n\nThis works however many kinds of toy are in the box — wooden, plastic, metal or anything else. Everything that is not wooden is lumped together into the one complementary event, so no further information is needed.",
+      "marks": 1,
+      "source": "Cambridge 0580 Jun 2024",
+      "answer": 0.4,
+      "tolerance": 0.001
+    },
+    {
+      "id": "igp-002",
+      "chapter": "Probability",
+      "topic": "Complementary events",
+      "type": "mcq",
+      "q": "If $P(A) = 0.3$, then $P(\\text{not } A)$ is:",
+      "solution": "$P(\\text{not } A) = 1 - P(A) = \\mathbf{0.7}$.\n\nEither it happens or it does not, so the two probabilities must add to 1. This is often the quickest route to an answer — especially for 'at least one'.",
+      "marks": 1,
+      "options": [
+        "0.3",
+        "0.7",
+        "1.3",
+        "0"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp-003",
+      "chapter": "Probability",
+      "topic": "Independent events",
+      "type": "mcq",
+      "q": "Two fair coins are tossed. The probability of two heads is:",
+      "solution": "The tosses are independent, so multiply: $\\dfrac12 \\times \\dfrac12 = \\mathbf{\\dfrac14}$.\n\nThe four equally likely outcomes are HH, HT, TH, TT, and only one of them is two heads.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac12$",
+        "$\\dfrac14$",
+        "$\\dfrac13$",
+        "$\\dfrac18$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp-004",
+      "chapter": "Probability",
+      "topic": "Mutually exclusive events",
+      "type": "mcq",
+      "q": "For mutually exclusive events $A$ and $B$, $P(A \\text{ or } B)$ equals:",
+      "solution": "Mutually exclusive means they cannot both happen, so there is no overlap to subtract:\n\n$P(A \\text{ or } B) = \\mathbf{P(A) + P(B)}$.\n\n**Remember: 'or' adds, 'and' multiplies** — provided the events are exclusive for the first and independent for the second.",
+      "marks": 1,
+      "options": [
+        "$P(A)P(B)$",
+        "$P(A) + P(B)$",
+        "$P(A) - P(B)$",
+        "$\\dfrac{P(A)}{P(B)}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp-005",
+      "chapter": "Probability",
+      "topic": "Relative frequency",
+      "type": "mcq",
+      "q": "A drawing pin is dropped $200$ times and lands point up $130$ times. The relative frequency of landing point up is:",
+      "solution": "$\\dfrac{130}{200} = \\mathbf{0.65}$.\n\nRelative frequency is an **estimate** of probability from experiment, used when outcomes are not equally likely — and a drawing pin is exactly such a case. The more trials, the better the estimate.",
+      "marks": 1,
+      "options": [
+        "0.5",
+        "0.65",
+        "1.3",
+        "0.35"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp-006",
+      "chapter": "Probability",
+      "topic": "Single event",
+      "type": "numeric",
+      "q": "A bag holds $5$ red and $3$ blue balls. Find the probability of drawing a red ball, correct to three decimal places.",
+      "solution": "$P(\\text{red}) = \\dfrac{5}{8} = \\mathbf{0.625}$.",
+      "marks": 2,
+      "answer": 0.625,
+      "tolerance": 0.002
+    },
+    {
+      "id": "igp-007",
+      "chapter": "Probability",
+      "topic": "Two events",
+      "type": "numeric",
+      "q": "Two fair dice are thrown. Find the probability that both show a six, correct to four decimal places.",
+      "solution": "$\\dfrac16 \\times \\dfrac16 = \\dfrac{1}{36} \\approx \\mathbf{0.0278}$.",
+      "marks": 2,
+      "answer": 0.0278,
+      "tolerance": 0.002
+    },
+    {
+      "id": "igp-008",
+      "chapter": "Probability",
+      "topic": "At least one",
+      "type": "numeric",
+      "q": "The probability that a seed germinates is $0.8$. Two seeds are sown. Find the probability that at least one germinates.",
+      "solution": "Work through the complement:\n\n$P(\\text{neither}) = 0.2 \\times 0.2 = 0.04$\n\n$P(\\text{at least one}) = 1 - 0.04 = \\mathbf{0.96}$.\n\nCounting the one way it fails is always easier than counting the several ways it succeeds.",
+      "marks": 2,
+      "answer": 0.96,
+      "tolerance": 0.005
+    },
+    {
+      "id": "igp-009",
+      "chapter": "Probability",
+      "topic": "Without replacement",
+      "type": "numeric",
+      "q": "A bag holds $4$ red and $6$ blue balls. Two are drawn without replacement. Find the probability that both are red, correct to four decimal places.",
+      "solution": "$\\dfrac{4}{10} \\times \\dfrac{3}{9} = \\dfrac{12}{90} = \\dfrac{2}{15} \\approx \\mathbf{0.1333}$.\n\n**Both** numbers change on the second draw: one fewer red, and one fewer ball altogether. That is the whole difference between with and without replacement.",
+      "marks": 2,
+      "answer": 0.1333,
+      "tolerance": 0.002
+    },
+    {
+      "id": "igp-010",
+      "chapter": "Probability",
+      "topic": "Expected frequency",
+      "type": "numeric",
+      "q": "A fair die is thrown $180$ times. Find the expected number of fours.",
+      "solution": "$180 \\times \\dfrac16 = \\mathbf{30}$.\n\n'Expected' does not mean it will happen — it is the long-run average. An actual run of 180 throws might give 26 or 34 and be entirely unremarkable.",
+      "marks": 2,
+      "answer": 30,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igp-011",
+      "chapter": "Probability",
+      "topic": "Tree diagrams",
+      "type": "long",
+      "q": "A bag holds $3$ red and $5$ green sweets. Two are taken without replacement. Draw the tree diagram in words and find the probability that the two sweets are of different colours.",
+      "solution": "**First draw:** $P(R) = \\tfrac38$, $P(G) = \\tfrac58$.\n\n**Second draw**, with 7 sweets left:\n\n• After red: $P(R) = \\tfrac27$, $P(G) = \\tfrac57$\n\n• After green: $P(R) = \\tfrac37$, $P(G) = \\tfrac47$\n\n**The four branches** (multiply along each):\n\n$P(RR) = \\tfrac38 \\times \\tfrac27 = \\tfrac{6}{56}$\n\n$P(RG) = \\tfrac38 \\times \\tfrac57 = \\tfrac{15}{56}$\n\n$P(GR) = \\tfrac58 \\times \\tfrac37 = \\tfrac{15}{56}$\n\n$P(GG) = \\tfrac58 \\times \\tfrac47 = \\tfrac{20}{56}$\n\n**Check:** the four add to $\\tfrac{56}{56} = 1$ ✓\n\n**Different colours** means $RG$ **or** $GR$, so add those two:\n\n$\\tfrac{15}{56} + \\tfrac{15}{56} = \\mathbf{\\dfrac{30}{56} = \\dfrac{15}{28}} \\approx 0.536$.\n\n**Multiply along the branches, add between them** — that single sentence is the whole method.",
+      "marks": 3
+    },
+    {
+      "id": "igp-012",
+      "chapter": "Probability",
+      "topic": "Combined events",
+      "type": "long",
+      "q": "In a class of 30 students, 18 study French, 15 study Spanish and 7 study both. Find the probability that a student chosen at random studies neither language.",
+      "solution": "**Use the addition rule**, subtracting the overlap so it is not counted twice:\n\n$n(F \\text{ or } S) = 18 + 15 - 7 = 26$.\n\n**Neither:** $30 - 26 = 4$ students.\n\n$P(\\text{neither}) = \\dfrac{4}{30} = \\mathbf{\\dfrac{2}{15}} \\approx 0.133$.\n\n**Checking with a Venn diagram:**\n\n• French only: $18 - 7 = 11$\n\n• Both: $7$\n\n• Spanish only: $15 - 7 = 8$\n\n• Neither: $4$\n\n$11 + 7 + 8 + 4 = 30$ ✓\n\nFilling in the **overlap first** and working outwards makes every Venn question straightforward — the trouble always comes from counting the middle twice.",
+      "marks": 3
+    },
+    {
+      "id": "igp-013",
+      "chapter": "Probability",
+      "topic": "Probability without replacement",
+      "type": "long",
+      "q": "A box holds $7$ white and $3$ black counters. Three counters are drawn without replacement. Find the probability that all three are white, and the probability that exactly one is black.",
+      "solution": "**All three white:**\n\n$\\dfrac{7}{10} \\times \\dfrac{6}{9} \\times \\dfrac{5}{8} = \\dfrac{210}{720} = \\mathbf{\\dfrac{7}{24}} \\approx 0.292$.\n\n**Exactly one black.** The black counter could be the first, second or third draw.\n\nEach order has the same probability — the numerators are the same three numbers in a different sequence, and the denominators are always $10 \\times 9 \\times 8$:\n\n$P(BWW) = \\dfrac{3}{10} \\times \\dfrac{7}{9} \\times \\dfrac{6}{8} = \\dfrac{126}{720}$\n\n$P(WBW) = \\dfrac{7}{10} \\times \\dfrac{3}{9} \\times \\dfrac{6}{8} = \\dfrac{126}{720}$\n\n$P(WWB) = \\dfrac{7}{10} \\times \\dfrac{6}{9} \\times \\dfrac{3}{8} = \\dfrac{126}{720}$\n\n**Total:**\n\n$3 \\times \\dfrac{126}{720} = \\dfrac{378}{720} = \\mathbf{\\dfrac{21}{40}} = 0.525$.\n\n**The insight worth keeping:** order does not change the probability, only the arrangement — so work out **one** order and multiply by the number of arrangements.",
+      "marks": 5
+    },
+    {
+      "id": "igp-014",
+      "chapter": "Probability",
+      "topic": "Relative frequency",
+      "type": "long",
+      "q": "Explain the difference between theoretical probability and relative frequency, and say when each is used.",
+      "solution": "**Theoretical probability** is worked out by reasoning about equally likely outcomes:\n\n$P(\\text{event}) = \\dfrac{\\text{favourable outcomes}}{\\text{total outcomes}}$\n\nIt needs no experiment — a fair die gives $P(6) = \\tfrac16$ before it is ever thrown.\n\n**Relative frequency** is found from experiment:\n\n$\\dfrac{\\text{number of times it happened}}{\\text{number of trials}}$\n\n**When each is used.**\n\n• Theoretical probability works only when the outcomes are **equally likely** — coins, fair dice, cards, balls in a bag.\n\n• Relative frequency is needed when they are **not**, or when the situation cannot be analysed: a drawing pin landing point up, a biased die, the chance of rain, the failure rate of a machine.\n\n**The connection.** As the number of trials grows, the relative frequency settles down towards the true probability — the **law of large numbers**.\n\nTen throws of a fair die might give three sixes; ten thousand will give very close to a sixth. This is also how bias is detected: a die whose relative frequency stays far from $\\tfrac16$ over many throws is not fair.",
+      "marks": 3
+    },
+    {
+      "id": "igp-015",
+      "chapter": "Probability",
+      "topic": "Expected values",
+      "type": "long",
+      "q": "A game costs $\\$2$ to play. A player throws a fair die and wins $\\$9$ for a six and nothing otherwise. Determine whether the game is fair.",
+      "solution": "**Expected winnings per game:**\n\n$P(\\text{six}) = \\tfrac16$, winning $\\$9$; $P(\\text{not six}) = \\tfrac56$, winning $\\$0$.\n\nExpected win $= \\tfrac16 \\times 9 + \\tfrac56 \\times 0 = \\dfrac{9}{6} = \\$1.50$.\n\n**Cost to play:** $\\$2$.\n\n**Expected profit per game:** $1.50 - 2 = \\mathbf{-\\$0.50}$.\n\nThe game is **not fair** — the player loses $50$ cents per game on average, so over 100 games the organiser expects to take about $\\$50$.\n\n**To make it fair**, the prize would have to be $\\$12$: $\\tfrac16 \\times 12 = \\$2$, exactly the stake.\n\n'Fair' in probability has a precise meaning — an expected profit of **zero** — and no commercial game is ever fair in that sense, because the organiser's margin is the difference.",
+      "marks": 2
+    }
+  ]
+}

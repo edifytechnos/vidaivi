@@ -1,0 +1,191 @@
+{
+  "id": "lib-c10s-our-environment",
+  "title": "Our Environment",
+  "chapter": "Chapter Test 13",
+  "teacher": null,
+  "order": 13,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10env-101",
+      "chapter": "Our Environment",
+      "topic": "Trophic levels and energy flow",
+      "type": "long",
+      "q": "(a) What is meant by a trophic level?\n\n(b) On average, what percentage of energy is transferred to the second trophic level from the first? Which category of consumers do the organisms of the second trophic level belong to?\n\n(c) Some harmful chemicals enter our bodies through the food chain. Why is their concentration found to be maximum in human beings?",
+      "solution": "**(a) Trophic level.**\n\nA trophic level is a **step in a food chain** — the position an organism occupies according to how it obtains its food, and therefore how many steps the energy has travelled from the Sun to reach it.\n\nThe first trophic level is the **producers** (green plants), the second the **herbivores**, the third the **small carnivores**, and so on.\n\n**(b) Energy transfer.**\n\nOn average only about **10%** of the energy at one trophic level passes to the next. This is the **ten per cent law**. The other 90% is lost as heat, used in the organism's own respiration and life processes, or never eaten at all.\n\nThe organisms of the second trophic level are the **herbivores**, which are the **primary consumers**.\n\n(It is this steep loss that keeps food chains short — usually three or four steps — since after four levels barely any of the original energy is left.)\n\n**(c) Why the concentration is highest in humans.**\n\nThis is **biological magnification**.\n\nCertain harmful chemicals — pesticides such as DDT, and heavy metals — are **non-biodegradable**. They are not broken down, and they are not excreted; they accumulate in the body tissues of the organism that takes them in.\n\nSo at each step of the food chain, a consumer eats **many** organisms from the level below and takes on the whole of their accumulated load. The chemical becomes progressively more concentrated the further up the chain you go, even though the **energy** available is shrinking by 90% each step.\n\nHuman beings occupy the **top** of most food chains, and eat from several chains at once — crops, herbivores and fish alike. The accumulated chemicals from all of those levels therefore end up concentrated in us, which is why the maximum concentration is found in human beings.",
+      "marks": 5,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "env-001",
+      "chapter": "Our Environment",
+      "topic": "Food chain",
+      "type": "mcq",
+      "q": "In a food chain, green plants are called:",
+      "solution": "**Producers** — they make their own food by photosynthesis and so bring energy into the ecosystem in the first place.\n\nEvery other organism, directly or indirectly, is living off what the producers captured from sunlight.",
+      "marks": 1,
+      "options": [
+        "consumers",
+        "producers",
+        "decomposers",
+        "predators"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "env-002",
+      "chapter": "Our Environment",
+      "topic": "Ten per cent law",
+      "type": "mcq",
+      "q": "According to the ten per cent law, the energy transferred to the next trophic level is:",
+      "solution": "Only about **10%** passes on; the other 90% is lost as heat, used in respiration, or never eaten.\n\nThis is why food chains rarely have more than four or five links — after four steps only $0.01\\%$ of the original energy is left, which will not support anybody.",
+      "marks": 1,
+      "options": [
+        "10% of the energy at the previous level",
+        "90%",
+        "50%",
+        "100%"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "env-003",
+      "chapter": "Our Environment",
+      "topic": "Biodegradable",
+      "type": "mcq",
+      "q": "Which of these is non-biodegradable?",
+      "solution": "**Plastic** cannot be broken down by decomposers, so it stays in the environment for hundreds of years.\n\nThe others are biodegradable — bacteria and fungi return them to the soil as simple substances.",
+      "marks": 1,
+      "options": [
+        "Paper",
+        "Cow dung",
+        "Plastic",
+        "Vegetable peel"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "env-004",
+      "chapter": "Our Environment",
+      "topic": "Ozone layer",
+      "type": "mcq",
+      "q": "The ozone layer protects us by absorbing:",
+      "solution": "Ozone ($\\text{O}_{3}$) in the stratosphere absorbs most of the Sun's **ultraviolet** radiation, which would otherwise cause skin cancer, cataracts and damage to crops.\n\nOzone at ground level, by contrast, is a pollutant. The same molecule is a shield high up and a poison low down.",
+      "marks": 1,
+      "options": [
+        "infrared rays",
+        "ultraviolet rays",
+        "radio waves",
+        "visible light"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "env-005",
+      "chapter": "Our Environment",
+      "topic": "Biomagnification",
+      "type": "mcq",
+      "q": "The increase in concentration of harmful chemicals at each higher trophic level is called:",
+      "solution": "**Biomagnification.** Pesticides such as DDT are not excreted and not broken down, so they accumulate in fatty tissue.\n\nEach predator eats many prey and takes on all their accumulated load, so the concentration multiplies at every step.\n\nThe top predator — often a bird of prey, and sometimes us — carries the worst of it.",
+      "marks": 1,
+      "options": [
+        "eutrophication",
+        "biomagnification",
+        "biodegradation",
+        "bioremediation"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "env-006",
+      "chapter": "Our Environment",
+      "topic": "Ten per cent law",
+      "type": "numeric",
+      "q": "If producers capture $10000$ J of energy, how many joules reach the secondary consumers?",
+      "solution": "Producers $10000$ J $\\to$ primary consumers $1000$ J $\\to$ secondary consumers $\\mathbf{100}$ J.\n\nTwo steps, two factors of ten. Energy dwindles very fast up a food chain.",
+      "marks": 2,
+      "answer": 100,
+      "tolerance": 1
+    },
+    {
+      "id": "env-007",
+      "chapter": "Our Environment",
+      "topic": "Trophic levels",
+      "type": "numeric",
+      "q": "In the food chain grass $\\to$ grasshopper $\\to$ frog $\\to$ snake $\\to$ eagle, how many trophic levels are there?",
+      "solution": "$\\mathbf{5}$ — producer, primary consumer, secondary, tertiary and quaternary consumer.\n\nFive is about as long as a food chain gets, precisely because of the ten per cent law.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "env-008",
+      "chapter": "Our Environment",
+      "topic": "Energy at each level",
+      "type": "numeric",
+      "q": "If $100\\%$ of energy is at the producer level, what percentage reaches the tertiary consumer?",
+      "solution": "$100 \\to 10 \\to 1 \\to \\mathbf{0.1}\\%$ — three transfers, three factors of ten.",
+      "marks": 2,
+      "answer": 0.1,
+      "tolerance": 0.01
+    },
+    {
+      "id": "env-009",
+      "chapter": "Our Environment",
+      "topic": "Ozone",
+      "type": "numeric",
+      "q": "How many oxygen atoms are present in one molecule of ozone?",
+      "solution": "$\\text{O}_{3}$ — $\\mathbf{3}$ atoms, as against the two in ordinary oxygen.\n\nIt is formed high in the atmosphere when UV light splits $\\text{O}_{2}$ and the free atoms join other oxygen molecules.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "env-010",
+      "chapter": "Our Environment",
+      "topic": "R's of waste",
+      "type": "numeric",
+      "q": "How many R's are there in the traditional waste management approach: reduce, reuse, recycle?",
+      "solution": "$\\mathbf{3}$ — and they are in order of importance.\n\n**Reduce** comes first because waste not created needs no handling at all; recycling comes last because it still costs energy.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "env-011",
+      "chapter": "Our Environment",
+      "topic": "Food chain and trophic levels",
+      "type": "long",
+      "q": "Define a food chain and a food web, and explain the ten per cent law with an example.",
+      "solution": "**Food chain.** A series of organisms through which energy passes, each eating the one before it.\n\n*Example:* grass $\\to$ grasshopper $\\to$ frog $\\to$ snake $\\to$ eagle.\n\n**Trophic levels** are the steps: producers (green plants), primary consumers (herbivores), secondary consumers (small carnivores), tertiary consumers (large carnivores).\n\n**Food web.** In reality organisms eat several different things and are eaten by several others, so the chains cross and form a **web**.\n\nA web is far more stable than a single chain: if one prey species disappears, the predator has alternatives.\n\n**Ten per cent law.** Only about **10%** of the energy at one level reaches the next.\n\n*Worked example.* If plants capture $10000$ J:\n\n• Herbivores get $1000$ J\n\n• Small carnivores get $100$ J\n\n• Large carnivores get $10$ J\n\n**Where the other 90% goes:** used in respiration, lost as heat, spent moving about, or simply never eaten (roots, bark, bones).\n\n**Two consequences.** Food chains are short, because after four or five steps there is nothing left to support anyone. And the higher an animal feeds, the fewer of them the land can support — which is also the argument that a vegetarian diet feeds more people from the same field.",
+      "marks": 3
+    },
+    {
+      "id": "env-012",
+      "chapter": "Our Environment",
+      "topic": "Ozone depletion",
+      "type": "long",
+      "q": "What is the ozone layer? Explain how it is being depleted and what is being done about it.",
+      "solution": "**What it is.** A layer of ozone ($\\text{O}_{3}$) in the stratosphere, about $15$–$35$ km up. It absorbs most of the Sun's ultraviolet radiation.\n\n**How it forms:** UV light splits an oxygen molecule, and the free atoms join other $\\text{O}_{2}$ molecules:\n\n$\\text{O}_{2} \\xrightarrow{\\text{UV}} \\text{O} + \\text{O}$, then $\\text{O} + \\text{O}_{2} \\to \\text{O}_{3}$\n\n**Why it matters.** Without it, ultraviolet reaching the ground would cause skin cancer and cataracts, damage the immune system, kill plankton and reduce crop yields.\n\n**Depletion.** **Chlorofluorocarbons (CFCs)**, used in refrigerators, air conditioners and aerosol sprays, are so stable that nothing destroys them at ground level. They drift up over years, and UV light there releases chlorine atoms:\n\n$\\text{Cl} + \\text{O}_{3} \\to \\text{ClO} + \\text{O}_{2}$, then $\\text{ClO} + \\text{O} \\to \\text{Cl} + \\text{O}_{2}$\n\nThe chlorine atom comes back **unchanged** and does it again — so a single atom destroys thousands of ozone molecules.\n\nA severe thinning, the 'ozone hole', was found over Antarctica in 1985.\n\n**The response.** The **Montreal Protocol** (1987) required CFCs to be phased out worldwide, and they have been replaced by HFCs and hydrocarbons.\n\nThe layer is now slowly recovering and is expected to be back to its 1980 state around the middle of this century. It is the clearest case there is of an environmental problem identified, agreed on and actually fixed.",
+      "marks": 3
+    },
+    {
+      "id": "env-014",
+      "chapter": "Our Environment",
+      "topic": "Ecosystem",
+      "type": "long",
+      "q": "What is an ecosystem? Name its biotic and abiotic components, and explain why decomposers are essential.",
+      "solution": "**Ecosystem** — all the living organisms in an area together with the non-living surroundings they interact with.\n\n**Biotic (living) components:**\n\n• **Producers** — green plants, which make food by photosynthesis.\n\n• **Consumers** — herbivores, carnivores, omnivores and parasites.\n\n• **Decomposers** — bacteria and fungi.\n\n**Abiotic (non-living) components:** air, water, soil, sunlight, temperature, minerals.\n\n**Types:** natural (forest, lake, ocean, grassland) and artificial (a garden, a crop field, an aquarium). Artificial ecosystems need human maintenance to survive.\n\n**Why decomposers are essential.**\n\n1. They break down dead bodies and waste, returning nitrogen, phosphorus and carbon to the soil where plants can use them again.\n\n2. Without them, **nutrients would be locked up in corpses forever**, and the soil would eventually run out of everything plants need.\n\n3. They also clear away dead matter that would otherwise accumulate.\n\nProducers and consumers make the energy **flow** one way through the ecosystem, from the Sun and out again as heat. Decomposers are what make the **matter** go round in a circle instead of running out.",
+      "marks": 3
+    },
+    {
+      "id": "env-015",
+      "chapter": "Our Environment",
+      "topic": "Environmental problems",
+      "type": "long",
+      "q": "Explain biomagnification with an example, and state why the use of non-biodegradable pesticides is a serious problem.",
+      "solution": "**Biomagnification.** The concentration of a harmful chemical increases at each higher trophic level.\n\n**Why it happens.** The chemical is **fat-soluble**, so it is stored rather than excreted, and it is **not biodegradable**, so it is not broken down.\n\nEach predator eats many prey animals over its lifetime and inherits the whole of their accumulated load.\n\n**Example — DDT in a lake.**\n\n• Water: $0.003$ ppm\n\n• Plankton: $0.04$ ppm\n\n• Small fish: $0.5$ ppm\n\n• Large fish: $2$ ppm\n\n• Fish-eating birds: $25$ ppm\n\nThe concentration in the birds is roughly **eight thousand times** that in the water, from a level in the water that looked entirely harmless.\n\n**Why non-biodegradable pesticides are so serious.**\n\n1. They **persist** for decades, long after their use has stopped.\n\n2. They **reach us**: humans eat at the top of several food chains, and DDT has been found in mothers' milk.\n\n3. They **kill indiscriminately**, including the pollinators and predatory insects that control pests naturally.\n\n4. Pests **develop resistance**, so ever more is needed for ever less effect.\n\n**Alternatives:** biopesticides, biological control using a pest's natural enemies, crop rotation, and integrated pest management.",
+      "marks": 2
+    }
+  ]
+}

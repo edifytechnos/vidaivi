@@ -1,0 +1,186 @@
+{
+  "id": "lib-c12p-moving-charges",
+  "title": "Moving Charges and Magnetism",
+  "chapter": "Chapter Test 4",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12mcm-101",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Circular motion in a magnetic field",
+      "type": "numeric",
+      "q": "A charged particle gains a speed of $10^6$ m s$^{-1}$ when accelerated from rest through a potential difference of $10$ kV. It then enters a region of magnetic field of $0 \\cdot 4$ T, at right angles to its velocity. Find the radius of its circular path, in centimetres.",
+      "solution": "The particle's charge and mass are not given separately, so find the **ratio** $q/m$ from the acceleration stage and use it in the magnetic stage.\n\n**Step 1 — the acceleration.** All the electrical work becomes kinetic energy :\n\n$$qV = \\frac{1}{2}mv^2 \\quad\\Longrightarrow\\quad \\frac{q}{m} = \\frac{v^2}{2V}.$$\n\nSubstituting $v = 10^6$ m s$^{-1}$ and $V = 10\\,000$ V :\n\n$$\\frac{q}{m} = \\frac{\\left(10^6\\right)^2}{2 \\times 10^4} = \\frac{10^{12}}{2 \\times 10^4} = 5 \\times 10^7\\ \\text{C kg}^{-1}.$$\n\n**Step 2 — the circular path.** With $\\vec{v} \\perp \\vec{B}$ the magnetic force supplies the centripetal force :\n\n$$qvB = \\frac{mv^2}{r} \\quad\\Longrightarrow\\quad r = \\frac{mv}{qB} = \\frac{v}{(q/m)B}.$$\n\n**Step 3 — substitute.**\n\n$$r = \\frac{10^6}{\\left(5 \\times 10^7\\right)\\left(0 \\cdot 4\\right)} = \\frac{10^6}{2 \\times 10^7} = 0 \\cdot 05\\ \\text{m} = \\mathbf{5}\\ \\text{cm}.$$",
+      "marks": 2,
+      "source": "CBSE 2025",
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "mcm-002",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Work done by a magnetic force",
+      "type": "mcq",
+      "q": "The work done by a magnetic force on a moving charge is always:",
+      "solution": "The magnetic force is always perpendicular to the velocity, and a force at right angles to the motion does **no work**.\n\nSo a magnetic field can change a charge's **direction** but never its speed or kinetic energy.\n\nA string whirling a stone in a circle: it steers constantly and never speeds the stone up.",
+      "marks": 1,
+      "options": [
+        "positive",
+        "negative",
+        "zero",
+        "equal to the kinetic energy"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "mcm-003",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Biot-Savart law",
+      "type": "mcq",
+      "q": "The magnetic field at the centre of a circular coil of $N$ turns, radius $r$, carrying current $I$, is:",
+      "solution": "$B = \\mathbf{\\dfrac{\\mu_{0}NI}{2r}}$ at the centre of the coil.\n\nDo not confuse it with the field of a long straight wire, $\\dfrac{\\mu_{0}I}{2\\pi r}$ — the $\\pi$ is the giveaway as to which is which.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\mu_{0}NI}{2r}$",
+        "$\\dfrac{\\mu_{0}NI}{2\\pi r}$",
+        "$\\dfrac{\\mu_{0}I}{2\\pi r}$",
+        "$\\dfrac{\\mu_{0}NI}{r}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "mcm-004",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Ampere's circuital law",
+      "type": "mcq",
+      "q": "The magnetic field inside a long solenoid of $n$ turns per unit length carrying current $I$ is:",
+      "solution": "Ampere's law gives $B = \\mathbf{\\mu_{0}nI}$, uniform along the axis and (ideally) zero outside.\n\nIt depends on turns **per metre**, not on the total number — a longer solenoid with the same winding density has the same internal field.",
+      "marks": 1,
+      "options": [
+        "$\\mu_{0}nI$",
+        "$\\dfrac{\\mu_{0}nI}{2}$",
+        "$\\dfrac{\\mu_{0}I}{2\\pi n}$",
+        "zero"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "mcm-005",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Moving coil galvanometer",
+      "type": "mcq",
+      "q": "In a moving coil galvanometer, the radial magnetic field is used so that:",
+      "solution": "A radial field keeps the coil's plane always parallel to $\\vec{B}$, so the torque is $NIAB$ with no $\\sin\\theta$ in it.\n\nThe deflection is then **directly proportional** to the current, and the scale can be evenly divided.\n\nWithout it, equal current steps would give unequal gaps on the dial.",
+      "marks": 1,
+      "options": [
+        "the coil rotates faster",
+        "the deflection is proportional to the current",
+        "the coil does not heat up",
+        "the resistance stays constant"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mcm-006",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Force on a conductor",
+      "type": "numeric",
+      "q": "A straight wire of length $0.5$ m carrying $4$ A lies perpendicular to a field of $0.2$ T. Find the force on it, in newtons.",
+      "solution": "$F = BIl\\sin\\theta = 0.2 \\times 4 \\times 0.5 \\times 1 = \\mathbf{0.4}$ N.",
+      "marks": 2,
+      "answer": 0.4,
+      "tolerance": 0.01
+    },
+    {
+      "id": "mcm-007",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Field of a straight wire",
+      "type": "numeric",
+      "q": "Find the magnetic field (in $10^{-6}$ T) at $2$ cm from a long straight wire carrying $10$ A. Take $\\mu_{0} = 4\\pi \\times 10^{-7}$ T m/A.",
+      "solution": "$B = \\dfrac{\\mu_{0}I}{2\\pi r} = \\dfrac{4\\pi \\times 10^{-7} \\times 10}{2\\pi \\times 0.02} = \\dfrac{2 \\times 10^{-6} \\times 10}{0.02} = 1 \\times 10^{-4}$ T.\n\nThat is $\\mathbf{100} \\times 10^{-6}$ T, about twice the Earth's own field.",
+      "marks": 2,
+      "answer": 100,
+      "tolerance": 1
+    },
+    {
+      "id": "mcm-008",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Radius of a circular path",
+      "type": "numeric",
+      "q": "A charged particle of mass $m$, charge $q$ and speed $v$ moves perpendicular to a field $B$. If $m = 2 \\times 10^{-26}$ kg, $q = 1.6 \\times 10^{-19}$ C, $v = 4 \\times 10^{5}$ m/s and $B = 0.5$ T, find the radius of its circular path, in metres.",
+      "solution": "The magnetic force provides the centripetal force:\n\n$qvB = \\dfrac{mv^{2}}{r} \\Rightarrow r = \\dfrac{mv}{qB}$.\n\n$r = \\dfrac{\\left(2 \\times 10^{-26}\\right)\\left(4 \\times 10^{5}\\right)}{\\left(1.6 \\times 10^{-19}\\right)(0.5)} = \\dfrac{8 \\times 10^{-21}}{8 \\times 10^{-20}} = \\mathbf{0.1}$ m.\n\n$r = mv/qB$ is the formula behind every mass spectrometer: at the same speed and field, heavier ions swing wider.",
+      "marks": 2,
+      "answer": 0.1,
+      "tolerance": 0.002
+    },
+    {
+      "id": "mcm-009",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Solenoid",
+      "type": "numeric",
+      "q": "A solenoid has $500$ turns per metre and carries $2$ A. Find the field inside, in $10^{-4}$ T. Take $\\mu_{0} = 4\\pi \\times 10^{-7}$ T m/A.",
+      "solution": "$B = \\mu_{0}nI = 4\\pi \\times 10^{-7} \\times 500 \\times 2 = 4\\pi \\times 10^{-4}$ T.\n\n$4\\pi \\approx 12.57$, so the answer is $\\mathbf{12.57} \\times 10^{-4}$ T.",
+      "marks": 2,
+      "answer": 12.57,
+      "tolerance": 0.1
+    },
+    {
+      "id": "mcm-010",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Torque on a coil",
+      "type": "numeric",
+      "q": "A coil of $50$ turns and area $0.1$ m$^{2}$ carries $2$ A in a field of $0.5$ T, with its plane parallel to the field. Find the torque, in N m.",
+      "solution": "$\\tau = NIAB\\sin\\theta$, and with the plane parallel to $\\vec{B}$ the normal is perpendicular to it, so $\\theta = 90°$:\n\n$\\tau = 50 \\times 2 \\times 0.1 \\times 0.5 = \\mathbf{5}$ N m.\n\nThe angle in the formula is between the field and the coil's **normal**, not its plane — reading that wrongly costs the whole mark.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.01
+    },
+    {
+      "id": "mcm-011",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Biot-Savart law",
+      "type": "long",
+      "q": "State the Biot-Savart law and use it to find the magnetic field at the centre of a circular current loop of radius $R$ carrying current $I$.",
+      "solution": "**The law.** A small element $d\\vec{l}$ of a wire carrying current $I$ contributes, at a point $\\vec{r}$ away,\n\n$dB = \\dfrac{\\mu_{0}}{4\\pi}\\dfrac{I\\,dl\\sin\\theta}{r^{2}}$,\n\ndirected perpendicular to both $d\\vec{l}$ and $\\vec{r}$.\n\n**At the centre of a loop**, every element is at the same distance $R$ and is perpendicular to the radius, so $\\theta = 90°$ and $\\sin\\theta = 1$.\n\nEvery element's contribution points the same way (out of the plane), so the magnitudes simply add:\n\n$B = \\dfrac{\\mu_{0}I}{4\\pi R^{2}}\\displaystyle\\oint dl = \\dfrac{\\mu_{0}I}{4\\pi R^{2}}\\left(2\\pi R\\right) = \\mathbf{\\dfrac{\\mu_{0}I}{2R}}$.\n\nThe circle is the one shape where every piece of wire is equally placed — which is why this integral is doable by hand at all.",
+      "marks": 3
+    },
+    {
+      "id": "mcm-012",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Force between parallel currents",
+      "type": "long",
+      "q": "Derive the expression for the force per unit length between two long parallel wires carrying currents $I_{1}$ and $I_{2}$, separated by $d$, and state when they attract.",
+      "solution": "Wire 1 creates, at wire 2's position, a field\n\n$B_{1} = \\dfrac{\\mu_{0}I_{1}}{2\\pi d}$,\n\nperpendicular to wire 2.\n\nThe force on a length $l$ of wire 2 is $F = B_{1}I_{2}l$, so\n\n$\\mathbf{\\dfrac{F}{l} = \\dfrac{\\mu_{0}I_{1}I_{2}}{2\\pi d}}$.\n\n**Direction:** currents in the **same** direction attract; opposite currents repel.\n\nThis is the definition of the ampere in the older SI: two such wires one metre apart, carrying one ampere each, pull on one another with $2 \\times 10^{-7}$ N per metre.",
+      "marks": 3
+    },
+    {
+      "id": "mcm-013",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Cyclotron",
+      "type": "long",
+      "q": "Explain the working of a cyclotron, derive its frequency, and state one limitation.",
+      "solution": "**Construction.** Two hollow D-shaped electrodes in a uniform magnetic field, with an alternating voltage across the gap.\n\n**Working.** Inside a dee there is no electric field, so the magnetic force alone acts and the particle travels a semicircle. Each time it crosses the gap the alternating voltage has reversed, so it is accelerated again — and a faster particle simply traces a bigger semicircle.\n\n**The frequency.** From $qvB = \\dfrac{mv^{2}}{r}$ we get $r = \\dfrac{mv}{qB}$, so the time for a semicircle is\n\n$t = \\dfrac{\\pi r}{v} = \\dfrac{\\pi m}{qB}$ — **independent of speed and radius**.\n\n$f = \\dfrac{qB}{2\\pi m}$, the cyclotron frequency.\n\nThat independence is the whole trick: one fixed radio frequency keeps working as the particle speeds up.\n\n**Limitation.** At relativistic speeds the mass increases, the frequency drifts out of step with the supply, and the particle falls out of resonance. (A cyclotron also cannot accelerate neutral particles or, usefully, electrons, which reach relativistic speeds almost at once.)",
+      "marks": 5
+    },
+    {
+      "id": "mcm-014",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Galvanometer to ammeter",
+      "type": "long",
+      "q": "A galvanometer of resistance $G$ gives full-scale deflection for current $I_{g}$. Show how to convert it into an ammeter reading up to $I$, and explain why an ammeter must have low resistance.",
+      "solution": "Connect a small resistance $S$ (a **shunt**) in parallel with the galvanometer, so that the excess current bypasses it.\n\nThe two are in parallel, so the potential differences are equal:\n\n$I_{g}G = \\left(I - I_{g}\\right)S \\Rightarrow \\mathbf{S = \\dfrac{I_{g}G}{I - I_{g}}}$.\n\n**Why low resistance:** an ammeter is placed **in series** with the circuit, so any resistance it adds reduces the very current it is trying to measure.\n\nThe parallel shunt also lowers the combination's resistance below $G$, which is exactly what is wanted. A voltmeter, connected in parallel, needs the opposite: a large series resistance.",
+      "marks": 3
+    },
+    {
+      "id": "mcm-015",
+      "chapter": "Moving Charges and Magnetism",
+      "topic": "Helical path",
+      "type": "long",
+      "q": "A charged particle enters a uniform magnetic field at an angle $\\theta$ to it (with $0 < \\theta < 90°$). Describe its path and explain why.",
+      "solution": "Split the velocity into two parts.\n\n**Along the field** ($v\\cos\\theta$): the magnetic force on this component is zero, so it continues unchanged — steady motion straight along $\\vec{B}$.\n\n**Across the field** ($v\\sin\\theta$): this component feels a force $qvB\\sin\\theta$ always perpendicular to it, giving uniform circular motion of radius $r = \\dfrac{mv\\sin\\theta}{qB}$.\n\nA circle combined with a steady drift at right angles to its plane is a **helix**.\n\nThe distance advanced in one full turn is the **pitch**, $p = v\\cos\\theta \\times \\dfrac{2\\pi m}{qB}$.\n\nIt is a spring stretched along the field line — and it is how charged particles from the Sun spiral down Earth's field lines to make the aurora.",
+      "marks": 2
+    }
+  ]
+}

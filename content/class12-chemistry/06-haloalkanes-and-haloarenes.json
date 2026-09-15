@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12c-haloalkanes",
+  "title": "Haloalkanes and Haloarenes",
+  "chapter": "Chapter Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12hal-101",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Substitution versus elimination",
+      "type": "long",
+      "q": "Give a reason for the following: $(\\text{CH}_3)_3\\text{C}-\\text{Br}$ on reaction with $\\text{NaOCH}_3$ gives an alkene as the main product and not an ether.",
+      "solution": "Two reactions compete here, and the structure of the substrate decides which wins.\n\n**Why substitution fails.** $(\\text{CH}_3)_3\\text{C}-\\text{Br}$ is a **tertiary** halide. The carbon bearing the bromine carries three bulky methyl groups, so it is **sterically hindered** — the methoxide ion cannot reach it from behind to attack, which rules out the $S_N2$ path.\n\n(An $S_N1$ path would be possible, but methoxide is a strong base and its basicity dominates its nucleophilicity, as below.)\n\n**Why elimination wins.** $\\text{CH}_3\\text{O}^-$ is a **strong base** as well as a nucleophile. Rather than attacking the crowded carbon, it removes a $\\beta$-hydrogen — one of the nine on the three methyl groups, all freely accessible — and the bromide leaves at the same time.\n\nThis is an **E2** elimination, and it gives 2-methylprop-1-ene :\n\n$$(\\text{CH}_3)_3\\text{C}-\\text{Br} + \\text{CH}_3\\text{O}^- \\longrightarrow (\\text{CH}_3)_2\\text{C}=\\text{CH}_2 + \\text{CH}_3\\text{OH} + \\text{Br}^-$$\n\n**In short:** the carbon is hindered but the $\\beta$-hydrogens are not, and a strong bulky base takes the accessible route. This is why Williamson's ether synthesis must be carried out with a **primary** halide and a bulky alkoxide, never the other way round.",
+      "marks": 2,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "hal-001",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "SN1 and SN2",
+      "type": "mcq",
+      "q": "The $\\text{S}_{\\text{N}}2$ mechanism is favoured by:",
+      "solution": "$\\text{S}_{\\text{N}}2$ needs the nucleophile to attack the carbon from the back, so **less crowding is better**: primary $>$ secondary $>$ tertiary.\n\nTertiary halides go by $\\text{S}_{\\text{N}}1$ instead, because their carbocation is well stabilised and the back is completely blocked.",
+      "marks": 1,
+      "options": [
+        "tertiary halides",
+        "primary halides",
+        "aromatic halides",
+        "vinyl halides"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "hal-002",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Reactivity of haloarenes",
+      "type": "mcq",
+      "q": "Chlorobenzene is much less reactive than chloroethane towards nucleophilic substitution because:",
+      "solution": "A lone pair on chlorine overlaps with the ring's $\\pi$ system, giving the **C–Cl bond partial double-bond character**. It becomes shorter and stronger, so the chloride is far harder to displace.\n\nThe $sp^{2}$ carbon is also smaller and holds the bond more tightly, and the electron-rich ring repels an approaching nucleophile.",
+      "marks": 1,
+      "options": [
+        "the ring is electron poor",
+        "the C-Cl bond has partial double bond character due to resonance",
+        "chlorine is more electronegative",
+        "benzene is a liquid"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "hal-003",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Optical activity",
+      "type": "mcq",
+      "q": "A carbon atom bonded to four different groups is called:",
+      "solution": "Such a carbon is **chiral**, and the molecule is not superimposable on its mirror image.\n\nThe two forms are **enantiomers** and rotate plane-polarised light equally in opposite directions.\n\nYour two hands: same parts, same joints, and no way to lay one on the other and have them match.",
+      "marks": 1,
+      "options": [
+        "a chiral (asymmetric) carbon",
+        "a primary carbon",
+        "a quaternary carbon",
+        "an allylic carbon"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "hal-004",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Wurtz reaction",
+      "type": "mcq",
+      "q": "The reaction of an alkyl halide with sodium in dry ether gives:",
+      "solution": "This is the **Wurtz reaction**: $2\\text{R–X} + 2\\text{Na} \\to \\text{R–R} + 2\\text{NaX}$.\n\nIt is useful for making **symmetrical** alkanes with an even number of carbons. With two different halides it gives a mixture of three products, so it is rarely used that way.",
+      "marks": 1,
+      "options": [
+        "an alkene",
+        "an alcohol",
+        "an alkane with double the carbon atoms",
+        "an ether"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "hal-005",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Saytzeff rule",
+      "type": "mcq",
+      "q": "According to Saytzeff's rule, dehydrohalogenation gives mainly:",
+      "solution": "The **more substituted** alkene predominates, because alkyl groups stabilise the double bond by hyperconjugation.\n\nSo 2-bromobutane with alcoholic KOH gives mainly but-2-ene, not but-1-ene.\n\nThe more alkyl groups hanging on the double bond, the more hyperconjugative structures available, and the more stable the product.",
+      "marks": 1,
+      "options": [
+        "the less substituted alkene",
+        "the more substituted (more stable) alkene",
+        "an alcohol",
+        "an equal mixture"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "hal-006",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Number of isomers",
+      "type": "numeric",
+      "q": "How many structural isomers (including positional) are possible for $\\text{C}_{4}\\text{H}_{9}\\text{Br}$?",
+      "solution": "1-bromobutane, 2-bromobutane, 1-bromo-2-methylpropane and 2-bromo-2-methylpropane — $\\mathbf{4}$ in all.\n\nTwo are based on the straight chain and two on the branched, and of them only 2-bromobutane is chiral.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "hal-007",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Chiral carbon",
+      "type": "numeric",
+      "q": "Find the number of chiral carbon atoms in 2-bromobutane, $\\text{CH}_{3}\\text{CHBrCH}_{2}\\text{CH}_{3}$.",
+      "solution": "Carbon 2 carries $\\text{H}$, $\\text{Br}$, $\\text{CH}_{3}$ and $\\text{C}_{2}\\text{H}_{5}$ — four different groups, so it is chiral.\n\nNo other carbon qualifies, so the answer is $\\mathbf{1}$, and the compound exists as a pair of enantiomers.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "hal-008",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Products of Wurtz",
+      "type": "numeric",
+      "q": "How many different alkanes can be formed when a mixture of $\\text{CH}_{3}\\text{Cl}$ and $\\text{C}_{2}\\text{H}_{5}\\text{Cl}$ undergoes the Wurtz reaction?",
+      "solution": "The radicals can pair in three ways: $\\text{CH}_{3}$–$\\text{CH}_{3}$ (ethane), $\\text{CH}_{3}$–$\\text{C}_{2}\\text{H}_{5}$ (propane), $\\text{C}_{2}\\text{H}_{5}$–$\\text{C}_{2}\\text{H}_{5}$ (butane).\n\n$\\mathbf{3}$ products — and separating them is why the cross-Wurtz reaction is a poor synthesis.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "hal-009",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of chloroform, $\\text{CHCl}_{3}$, in g/mol. (C $= 12$, H $= 1$, Cl $= 35.5$.)",
+      "solution": "$12 + 1 + 3(35.5) = 13 + 106.5 = \\mathbf{119.5}$ g/mol.",
+      "marks": 2,
+      "answer": 119.5,
+      "tolerance": 0.2
+    },
+    {
+      "id": "hal-010",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Isomers of dichlorobenzene",
+      "type": "numeric",
+      "q": "How many isomers are possible for dichlorobenzene, $\\text{C}_{6}\\text{H}_{4}\\text{Cl}_{2}$?",
+      "solution": "Ortho (1,2), meta (1,3) and para (1,4) — $\\mathbf{3}$.\n\nThe para isomer is the most symmetrical, packs best in a crystal, and so has the highest melting point despite having the lowest boiling point of the three.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "hal-012",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Preparation of haloalkanes",
+      "type": "long",
+      "q": "Give three methods of preparing haloalkanes from alcohols, with equations.",
+      "solution": "**1. With a hydrogen halide.**\n\n$\\text{R–OH} + \\text{HX} \\to \\text{R–X} + \\text{H}_{2}\\text{O}$\n\nThe order of reactivity is $\\text{HI} > \\text{HBr} > \\text{HCl}$, and of alcohols tertiary $>$ secondary $>$ primary. Primary alcohols with HCl need anhydrous $\\text{ZnCl}_{2}$ (the Lucas reagent).\n\n**2. With phosphorus halides.**\n\n$3\\text{R–OH} + \\text{PCl}_{3} \\to 3\\text{R–Cl} + \\text{H}_{3}\\text{PO}_{3}$\n\n$\\text{R–OH} + \\text{PCl}_{5} \\to \\text{R–Cl} + \\text{POCl}_{3} + \\text{HCl}$\n\n**3. With thionyl chloride — the best method.**\n\n$\\text{R–OH} + \\text{SOCl}_{2} \\to \\text{R–Cl} + \\text{SO}_{2}\\uparrow + \\text{HCl}\\uparrow$\n\nBoth by-products are gases and escape, so the product needs almost no purification. This is the **Darzens procedure**, and it is preferred in the laboratory for exactly that reason.",
+      "marks": 3
+    },
+    {
+      "id": "hal-013",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Haloarenes",
+      "type": "long",
+      "q": "Explain why haloarenes are less reactive than haloalkanes towards nucleophilic substitution, and describe the conditions under which chlorobenzene will react.",
+      "solution": "**Three reasons.**\n\n1. **Resonance.** A lone pair on the halogen delocalises into the ring, giving the C–Cl bond partial double-bond character. It is shorter ($169$ pm against $177$ pm in chloromethane) and stronger, so it is much harder to break.\n\n2. **Hybridisation.** The carbon is $sp^{2}$ (33% s character) rather than $sp^{3}$ (25%). The orbital is smaller and closer to the nucleus, so the bond is stronger.\n\n3. **Electrostatic repulsion.** The $\\pi$ cloud repels the approaching nucleophile, and there is no back side to attack — it is blocked by the ring.\n\n**Conditions that force a reaction.**\n\n• **Harsh conditions:** chlorobenzene with aqueous NaOH at $623$ K and $300$ atm gives phenol — the Dow process.\n\n• **Electron-withdrawing groups ortho or para** to the halogen make it far easier, by stabilising the intermediate carbanion. 2,4-dinitrochlorobenzene reacts with warm aqueous NaOH, and 2,4,6-trinitrochlorobenzene with plain warm water.\n\nA group **meta** to the halogen does not help at all, since the negative charge of the intermediate never reaches that position — which is strong evidence for the mechanism.",
+      "marks": 5
+    },
+    {
+      "id": "hal-014",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Optical isomerism",
+      "type": "long",
+      "q": "Define enantiomers and racemic mixture, and explain why an $\\text{S}_{\\text{N}}1$ reaction on an optically active halide gives a racemic product.",
+      "solution": "**Enantiomers** — stereoisomers that are non-superimposable mirror images. They are identical in every ordinary physical property except that they rotate plane-polarised light equally in opposite directions, and they behave differently towards other chiral molecules.\n\n**Racemic mixture** — an equimolar mixture of the two, denoted $(\\pm)$. Its rotations cancel, so it is **optically inactive by external compensation**.\n\n**Why $\\text{S}_{\\text{N}}1$ racemises.** The first step is ionisation to a **carbocation**, which is $sp^{2}$ and **planar**. Whatever chirality the starting material had is destroyed at that moment.\n\nThe nucleophile can then attack either face with equal ease, giving equal amounts of the two enantiomers — a racemic mixture.\n\n$\\text{S}_{\\text{N}}2$, by contrast, gives a single inverted product, because the nucleophile must come in from the back and the carbon never becomes planar.\n\nIn practice $\\text{S}_{\\text{N}}1$ products show slightly more inversion than retention: the departing leaving group shields the front face for an instant before it drifts away.",
+      "marks": 3
+    },
+    {
+      "id": "hal-015",
+      "chapter": "Haloalkanes and Haloarenes",
+      "topic": "Environmental effects",
+      "type": "long",
+      "q": "Discuss the environmental effects of chlorofluorocarbons and DDT.",
+      "solution": "**Chlorofluorocarbons (freons).** Stable, non-toxic and non-flammable, they were ideal refrigerants — and that stability is the problem. Nothing destroys them in the lower atmosphere, so they drift up to the stratosphere over years.\n\nThere, ultraviolet light breaks off a chlorine radical:\n\n$\\text{CF}_{2}\\text{Cl}_{2} \\xrightarrow{\\;h\nu\\;} \\dot{\\text{C}}\\text{F}_{2}\\text{Cl} + \\dot{\\text{Cl}}$\n\n$\\dot{\\text{Cl}} + \\text{O}_{3} \\to \\text{ClO}\\dot{} + \\text{O}_{2}$, and $\\text{ClO}\\dot{} + \\dot{\\text{O}} \\to \\dot{\\text{Cl}} + \\text{O}_{2}$\n\nThe chlorine radical is **regenerated**, so one atom destroys many thousands of ozone molecules — a chain reaction, which is why such small quantities did such damage. The Montreal Protocol phased them out.\n\n**DDT.** A cheap and effective insecticide that saved millions of lives from malaria and typhus. But it is **fat-soluble and not biodegradable**, so it accumulates in fatty tissue and concentrates up the food chain — **biomagnification**.\n\nIn birds of prey it thinned eggshells badly enough to collapse populations, and insects developed resistance. It is now banned in most countries, though the WHO still permits limited indoor use against malaria — a genuine trade-off rather than a simple verdict.",
+      "marks": 2
+    }
+  ]
+}

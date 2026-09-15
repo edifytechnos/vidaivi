@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12p-emi",
+  "title": "Electromagnetic Induction",
+  "chapter": "Chapter Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12emi-101",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Mutual inductance",
+      "type": "long",
+      "q": "Obtain an expression for the mutual inductance of two long coaxial solenoids, each of length $l$, wound one over the other.",
+      "solution": "Let the inner solenoid have radius $r_1$ and $N_1$ turns, and the outer one radius $r_2$ and $N_2$ turns, both of length $l$ and sharing an axis. Write $n_1 = N_1/l$ and $n_2 = N_2/l$ for the turns per unit length.\n\n**Step 1 — drive the outer coil.** Pass a current $I_2$ through solenoid 2. Inside a long solenoid the field is uniform :\n\n$$B_2 = \\mu_0 n_2 I_2.$$\n\n**Step 2 — find the flux it links through the inner coil.** The inner solenoid lies entirely within that field, so each of its turns links flux $B_2 \\times \\pi r_1^2$ — the area is the **inner** one, because the field outside solenoid 1 still exists but solenoid 1 only encloses its own cross-section. Over $N_1$ turns,\n\n$$\\Phi_1 = N_1 B_2 \\pi r_1^2 = N_1 \\mu_0 n_2 I_2 \\pi r_1^2.$$\n\n**Step 3 — read off the mutual inductance** from $\\Phi_1 = M_{12} I_2$ :\n\n$$M_{12} = \\mu_0 n_2 N_1 \\pi r_1^2 = \\frac{\\mu_0 N_1 N_2 \\pi r_1^2}{l}.$$\n\nUsing $N_1 = n_1 l$ this is also\n\n$$M = \\mu_0 n_1 n_2 \\pi r_1^2 \\, l.$$\n\n**Step 4 — note the symmetry.** Driving the inner coil instead and computing the flux through the outer one gives the identical expression, so\n\n$$M_{12} = M_{21} = M,$$\n\nwhich is the general reciprocity result for mutual inductance. The area that appears is always the **smaller** cross-section, since that is what limits the shared flux.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "emi-001",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Faraday's law",
+      "type": "mcq",
+      "q": "The induced emf in a circuit is proportional to the:",
+      "solution": "Faraday's law: $\\varepsilon = -\\dfrac{d\\Phi}{dt}$ — it is the **rate of change** of flux that matters, not the flux itself.\n\nA coil sitting still in the strongest magnet in the world has no emf at all. Motion, or a changing field, is the whole story.",
+      "marks": 1,
+      "options": [
+        "magnetic flux through it",
+        "rate of change of magnetic flux through it",
+        "current in it",
+        "resistance of the circuit"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "emi-002",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Lenz's law",
+      "type": "mcq",
+      "q": "Lenz's law is a consequence of the conservation of:",
+      "solution": "The induced current always opposes the change producing it. If it helped instead, the motion would speed up on its own and generate still more current — energy from nowhere.\n\nThe minus sign in Faraday's law is **conservation of energy** written as a sign.",
+      "marks": 1,
+      "options": [
+        "charge",
+        "energy",
+        "momentum",
+        "magnetic flux"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "emi-003",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Motional emf",
+      "type": "mcq",
+      "q": "A rod of length $l$ moves with velocity $v$ perpendicular to a field $B$. The emf induced across it is:",
+      "solution": "$\\varepsilon = \\mathbf{Blv}$ when $B$, $l$ and $v$ are mutually perpendicular.\n\nIt comes from the magnetic force on the free charges in the moving rod: they are pushed to the ends until the electric field they build up balances the push.",
+      "marks": 1,
+      "options": [
+        "$Blv$",
+        "$\\dfrac{Bl}{v}$",
+        "$\\dfrac{Bv}{l}$",
+        "$Bl^{2}v$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "emi-004",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Self-inductance",
+      "type": "mcq",
+      "q": "The self-inductance of a coil depends on:",
+      "solution": "$L$ is fixed by **geometry** (turns, area, length) and by the core's permeability — not by what the current happens to be doing.\n\nFor a solenoid, $L = \\mu_{0}n^{2}Al$. Inductance is to current what mass is to velocity: a property of the object, describing how hard it is to change.",
+      "marks": 1,
+      "options": [
+        "the current through it",
+        "the emf applied to it",
+        "its geometry and the core material",
+        "the rate of change of current"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "emi-005",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Eddy currents",
+      "type": "mcq",
+      "q": "Eddy currents are reduced in a transformer core by:",
+      "solution": "**Laminating** — building the core from thin sheets separated by insulating varnish — breaks the loops eddy currents would flow in, raising their resistance and cutting the heat loss.\n\nEddy currents are not always a nuisance: the same effect gives induction hobs and magnetic braking.",
+      "marks": 1,
+      "options": [
+        "using a thicker core",
+        "laminating the core",
+        "increasing the number of turns",
+        "using a copper core"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "emi-006",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Induced emf",
+      "type": "numeric",
+      "q": "The magnetic flux through a coil changes from $0.02$ Wb to $0.06$ Wb in $0.1$ s. Find the magnitude of the induced emf, in volts.",
+      "solution": "$\\varepsilon = \\left|\\dfrac{\\Delta\\Phi}{\\Delta t}\\right| = \\dfrac{0.06 - 0.02}{0.1} = \\mathbf{0.4}$ V.",
+      "marks": 2,
+      "answer": 0.4,
+      "tolerance": 0.01
+    },
+    {
+      "id": "emi-007",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Motional emf",
+      "type": "numeric",
+      "q": "A rod of length $0.5$ m moves at $4$ m/s perpendicular to a field of $0.2$ T. Find the emf induced, in volts.",
+      "solution": "$\\varepsilon = Blv = 0.2 \\times 0.5 \\times 4 = \\mathbf{0.4}$ V.",
+      "marks": 2,
+      "answer": 0.4,
+      "tolerance": 0.01
+    },
+    {
+      "id": "emi-008",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Self-inductance",
+      "type": "numeric",
+      "q": "A current changing at $200$ A/s in a coil induces an emf of $4$ V. Find the self-inductance, in henry.",
+      "solution": "$\\varepsilon = L\\dfrac{dI}{dt} \\Rightarrow L = \\dfrac{4}{200} = \\mathbf{0.02}$ H $= 20$ mH.",
+      "marks": 2,
+      "answer": 0.02,
+      "tolerance": 0.001
+    },
+    {
+      "id": "emi-009",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Energy stored in an inductor",
+      "type": "numeric",
+      "q": "Find the energy stored (in joules) in a $0.5$ H inductor carrying $4$ A.",
+      "solution": "$U = \\tfrac12 LI^{2} = \\tfrac12 \\times 0.5 \\times 16 = \\mathbf{4}$ J.\n\nIt is stored in the magnetic field, and it is what makes a spark jump when an inductive circuit is broken — the energy has to go somewhere.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.01
+    },
+    {
+      "id": "emi-010",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Mutual inductance",
+      "type": "numeric",
+      "q": "Two coils have a mutual inductance of $0.5$ H. Find the emf induced in the second coil (in volts) when the current in the first changes at $10$ A/s.",
+      "solution": "$\\varepsilon_{2} = M\\dfrac{dI_{1}}{dt} = 0.5 \\times 10 = \\mathbf{5}$ V.\n\nMutual inductance is the same number whichever coil is driven — a pleasant symmetry that a transformer relies on.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.01
+    },
+    {
+      "id": "emi-012",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Self-inductance of a solenoid",
+      "type": "long",
+      "q": "Derive the self-inductance of a long solenoid of $N$ turns, length $l$ and cross-sectional area $A$.",
+      "solution": "**Field inside:** $B = \\mu_{0}nI$ with $n = \\dfrac{N}{l}$.\n\n**Flux through one turn:** $\\Phi = BA = \\mu_{0}\\dfrac{N}{l}IA$.\n\n**Total flux linkage:** $N\\Phi = \\mu_{0}\\dfrac{N^{2}A}{l}I$.\n\nSince $N\\Phi = LI$ by definition,\n\n$\\mathbf{L = \\dfrac{\\mu_{0}N^{2}A}{l}} = \\mu_{0}n^{2}Al$.\n\nNote the **square** on $N$: each extra turn both makes more flux and links more of it, so doubling the turns quadruples the inductance.\n\nAn iron core multiplies this by $\\mu_{r}$, which is why real inductors have one.",
+      "marks": 3
+    },
+    {
+      "id": "emi-013",
+      "chapter": "Electromagnetic Induction",
+      "topic": "AC generator",
+      "type": "long",
+      "q": "Explain the principle and working of an AC generator, and derive the expression for the emf it produces.",
+      "solution": "**Principle.** A coil rotating in a magnetic field has a continuously changing flux through it, so by Faraday's law an emf is induced.\n\n**Working.** The coil is spun at constant angular speed $\\omega$ between the poles of a magnet; two **slip rings** and brushes carry the current out without ever reversing the connections — which is what keeps the output alternating.\n\n**Derivation.** With the coil's normal at angle $\\omega t$ to $\\vec{B}$, the flux through $N$ turns is\n\n$\\Phi = NBA\\cos\\omega t$.\n\n$\\varepsilon = -\\dfrac{d\\Phi}{dt} = NBA\\omega\\sin\\omega t$.\n\nSo $\\varepsilon = \\varepsilon_{0}\\sin\\omega t$ with $\\mathbf{\\varepsilon_{0} = NBA\\omega}$.\n\n**Reading the result:** the emf is greatest when the coil's plane is **parallel** to the field (the flux is then changing fastest, though it is momentarily zero), and zero when the plane is perpendicular to it (maximum flux, but changing at that instant not at all).\n\nA DC generator differs in one part only: a split-ring commutator instead of slip rings, which flips the connections every half turn.",
+      "marks": 5
+    },
+    {
+      "id": "emi-014",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Eddy currents",
+      "type": "long",
+      "q": "What are eddy currents? Give two useful applications and two ways of reducing them where they are unwanted.",
+      "solution": "**What they are.** Circulating currents induced in the body of a solid conductor when the magnetic flux through it changes. They swirl in closed loops, like eddies in water — hence the name — and dissipate energy as heat.\n\n**Useful applications.**\n\n1. **Electromagnetic braking** in trains — a magnetic field applied to the rotating disc induces eddy currents whose own field opposes the motion, and the brake never touches the wheel, so nothing wears out.\n\n2. **Induction furnaces and induction hobs** — the eddy currents induced in the metal heat it directly.\n\n(Also the speedometer's drag cup and induction-type energy meters.)\n\n**Reducing them.**\n\n1. **Laminating** the core into thin insulated sheets, which cuts the loops.\n\n2. Using a material of **higher resistivity**, such as silicon steel, so less current flows for the same induced emf.\n\nBoth work the same way: raise the resistance of the path the eddy current would take.",
+      "marks": 3
+    },
+    {
+      "id": "emi-015",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Flux and its change",
+      "type": "long",
+      "q": "A coil of 100 turns and area $0.05$ m$^{2}$ is held perpendicular to a field of $0.4$ T. It is turned through $90°$ in $0.2$ s. Find the average emf induced.",
+      "solution": "**Initial flux linkage:** the plane is perpendicular to $\\vec{B}$, so the normal is along it and $\\cos 0 = 1$:\n\n$N\\Phi_{1} = 100 \\times 0.4 \\times 0.05 = 2$ Wb.\n\n**Final flux linkage:** turned through $90°$, the normal is now perpendicular to $\\vec{B}$, so the flux is $0$.\n\n$\\varepsilon = \\left|\\dfrac{\\Delta(N\\Phi)}{\\Delta t}\\right| = \\dfrac{2 - 0}{0.2} = \\mathbf{10}$ V.\n\nThis is the **average** emf over the turn; the instantaneous value varies as $\\sin\\omega t$ throughout it.",
+      "marks": 2
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "id": "lib-alc-energetics",
+  "title": "Chemical Energetics",
+  "chapter": "Topic Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alc3-001",
+      "chapter": "Chemical Energetics",
+      "topic": "Enthalpy change",
+      "type": "mcq",
+      "q": "For an exothermic reaction:",
+      "solution": "Heat is released, so the products are **lower** in energy than the reactants and $\\Delta H$ is **negative**.\n\nCombustion, neutralisation and most displacement reactions are exothermic.",
+      "marks": 1,
+      "options": [
+        "$\\Delta H$ is positive",
+        "$\\Delta H$ is negative",
+        "$\\Delta H = 0$",
+        "the products are higher in energy"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc3-002",
+      "chapter": "Chemical Energetics",
+      "topic": "Hess's law",
+      "type": "mcq",
+      "q": "Hess's law states that the enthalpy change of a reaction:",
+      "solution": "$\\Delta H$ depends only on the **initial and final states**, not on the path between them.\n\nIt follows directly from conservation of energy, and it is what allows enthalpy changes that cannot be measured directly to be calculated from ones that can.",
+      "marks": 1,
+      "options": [
+        "depends on the route taken",
+        "is independent of the route taken",
+        "is always negative",
+        "equals the activation energy"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc3-003",
+      "chapter": "Chemical Energetics",
+      "topic": "Standard conditions",
+      "type": "mcq",
+      "q": "Standard conditions for enthalpy changes are:",
+      "solution": "$\\mathbf{298}$ K ($25$°C) and $\\mathbf{100}$ kPa, with all solutions at $1$ mol dm$^{-3}$ and each substance in its standard state.\n\nWithout a fixed reference, values could not be compared or tabulated.",
+      "marks": 1,
+      "options": [
+        "$298$ K and $100$ kPa",
+        "$273$ K and $101$ kPa",
+        "$0$ K and $1$ atm",
+        "$373$ K and $100$ kPa"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alc3-004",
+      "chapter": "Chemical Energetics",
+      "topic": "Bond enthalpy",
+      "type": "mcq",
+      "q": "Bond breaking is:",
+      "solution": "**Breaking** bonds always requires energy — endothermic. **Making** bonds releases it.\n\n$\\Delta H = \\sum(\\text{bonds broken}) - \\sum(\\text{bonds made})$, and the sign of the result tells you which dominates.",
+      "marks": 1,
+      "options": [
+        "exothermic",
+        "endothermic",
+        "neither",
+        "spontaneous"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alc3-005",
+      "chapter": "Chemical Energetics",
+      "topic": "Enthalpy of formation",
+      "type": "mcq",
+      "q": "The standard enthalpy of formation of an element in its standard state is:",
+      "solution": "**Zero**, by definition — forming an element from itself involves no change.\n\nIt is the reference point from which every other formation enthalpy is measured, exactly as sea level is for altitude.",
+      "marks": 1,
+      "options": [
+        "zero",
+        "positive",
+        "negative",
+        "undefined"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alc3-006",
+      "chapter": "Chemical Energetics",
+      "topic": "Enthalpy of combustion",
+      "type": "numeric",
+      "q": "Burning $0.5$ mol of a fuel releases $700$ kJ. Find the enthalpy of combustion per mole, in kJ/mol (give the magnitude).",
+      "solution": "$\\dfrac{700}{0.5} = \\mathbf{1400}$ kJ/mol, and $\\Delta H_{c} = -1400$ kJ/mol — the minus sign says exothermic.",
+      "marks": 2,
+      "answer": 1400,
+      "tolerance": 10
+    },
+    {
+      "id": "alc3-007",
+      "chapter": "Chemical Energetics",
+      "topic": "Heat released",
+      "type": "numeric",
+      "q": "Find the heat energy (in kJ) released when $100$ g of water cools by $20$ K. Take $c = 4.18$ J g$^{-1}$K$^{-1}$.",
+      "solution": "$q = mc\\Delta T = 100 \\times 4.18 \\times 20 = 8360$ J $= \\mathbf{8.36}$ kJ.",
+      "marks": 2,
+      "answer": 8.36,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alc3-008",
+      "chapter": "Chemical Energetics",
+      "topic": "Bond enthalpies",
+      "type": "numeric",
+      "q": "A reaction breaks bonds totalling $1200$ kJ and makes bonds totalling $1500$ kJ. Find $\\Delta H$, in kJ/mol.",
+      "solution": "$\\Delta H = 1200 - 1500 = \\mathbf{-300}$ kJ/mol — exothermic, since more energy came out than went in.",
+      "marks": 2,
+      "answer": -300,
+      "tolerance": 5
+    },
+    {
+      "id": "alc3-009",
+      "chapter": "Chemical Energetics",
+      "topic": "Hess's law",
+      "type": "numeric",
+      "q": "For $\\text{A} \\to \\text{B}$, $\\Delta H = +50$ kJ/mol, and for $\\text{B} \\to \\text{C}$, $\\Delta H = -80$ kJ/mol. Find $\\Delta H$ for $\\text{A} \\to \\text{C}$, in kJ/mol.",
+      "solution": "$50 + (-80) = \\mathbf{-30}$ kJ/mol.\n\nEnthalpy changes along a route simply add — which is Hess's law in its simplest form.",
+      "marks": 2,
+      "answer": -30,
+      "tolerance": 1
+    },
+    {
+      "id": "alc3-010",
+      "chapter": "Chemical Energetics",
+      "topic": "Enthalpy of neutralisation",
+      "type": "numeric",
+      "q": "Neutralising $0.05$ mol of HCl with NaOH releases $2.85$ kJ. Find the enthalpy of neutralisation, in kJ/mol (give the magnitude).",
+      "solution": "$\\dfrac{2.85}{0.05} = \\mathbf{57}$ kJ/mol.\n\nIt is close to $-57$ kJ/mol for **every** strong acid with a strong base, because the reaction is always the same one: $\\text{H}^{+} + \\text{OH}^{-} \\to \\text{H}_{2}\\text{O}$.",
+      "marks": 2,
+      "answer": 57,
+      "tolerance": 1
+    },
+    {
+      "id": "alc3-011",
+      "chapter": "Chemical Energetics",
+      "topic": "Hess's law",
+      "type": "long",
+      "q": "State Hess's law and use it to explain how the enthalpy of formation of methane is found, given that it cannot be measured directly.",
+      "solution": "**Hess's law.** The total enthalpy change of a reaction is **independent of the route**, provided the initial and final states are the same.\n\nIt is conservation of energy applied to chemistry: if two routes gave different values, energy could be created by going one way and back the other.\n\n**The problem with methane.** Its formation,\n\n$\\text{C}(s) + 2\\text{H}_{2}(g) \\to \\text{CH}_{4}(g)$,\n\ncannot be carried out directly in a calorimeter: the reaction is slow, incomplete, and produces a mixture of hydrocarbons.\n\n**The indirect route.** Enthalpies of **combustion** are easy to measure, and everything burns to the same products.\n\nConstruct a cycle: from the elements, either form methane and burn it, or burn the elements directly. Both routes end at $\\text{CO}_{2}$ and $\\text{H}_{2}\\text{O}$.\n\n$\\Delta H_{f}(\\text{CH}_{4}) = \\left[\\Delta H_{c}(\\text{C}) + 2\\Delta H_{c}(\\text{H}_{2})\\right] - \\Delta H_{c}(\\text{CH}_{4})$\n\n**Substituting:** $-394 + 2(-286) - (-890)$\n\n$= -394 - 572 + 890 = \\mathbf{-76}$ kJ/mol\n\n**The general rules for cycles.**\n\n• Using **combustion** data, the arrows point **down** to the combustion products: $\\Delta H_{r} = \\sum\\Delta H_{c}(\\text{reactants}) - \\sum\\Delta H_{c}(\\text{products})$.\n\n• Using **formation** data, the arrows point **up** from the elements, so the subtraction is the other way round: $\\Delta H_{r} = \\sum\\Delta H_{f}(\\text{products}) - \\sum\\Delta H_{f}(\\text{reactants})$.\n\nDrawing the arrows before writing anything down is what keeps the signs right.",
+      "marks": 3
+    },
+    {
+      "id": "alc3-012",
+      "chapter": "Chemical Energetics",
+      "topic": "Measuring enthalpy of combustion",
+      "type": "long",
+      "q": "Describe an experiment to determine the enthalpy of combustion of ethanol, and explain why the result is usually well below the data book value.",
+      "solution": "**Method.**\n\n1. Weigh a spirit burner containing ethanol.\n\n2. Measure a known mass of water (say $100$ g) into a copper calorimeter and record its temperature.\n\n3. Burn the ethanol beneath the calorimeter, stirring, until the temperature has risen by about $20$ K.\n\n4. Extinguish the flame and **immediately reweigh** the burner.\n\n**Calculation.**\n\n$q = mc\\Delta T$ for the **water**\n\n$n = \\dfrac{\\text{mass of ethanol burnt}}{46}$\n\n$\\Delta H_{c} = -\\dfrac{q}{n}$\n\n**Why the answer is too small — typically half the true value of $-1367$ kJ/mol.**\n\n1. **Heat loss to the surroundings** — to the air, the calorimeter, the stand. This is much the largest error.\n\n2. **Incomplete combustion**, shown by soot on the base of the calorimeter. Some ethanol has become carbon monoxide or carbon, releasing far less energy.\n\n3. **Evaporation** of ethanol between weighings, so the mass burnt is overestimated.\n\n4. **Non-standard conditions**, and the heat capacity of the calorimeter itself being ignored.\n\n**Improvements:** use a draught shield, lag the calorimeter, keep the wick close to the base, and burn the fuel in **excess oxygen** in a bomb calorimeter — which is how the accurate data book values are obtained.\n\n**Note the direction of the error is predictable:** every one of these losses makes the measured value too small. A result larger than the true one would signal a mistake in the arithmetic, not a poor experiment.",
+      "marks": 3
+    },
+    {
+      "id": "alc3-013",
+      "chapter": "Chemical Energetics",
+      "topic": "Born-Haber cycles",
+      "type": "long",
+      "q": "Define lattice enthalpy and explain how a Born-Haber cycle is used to find it for sodium chloride, listing the steps involved.",
+      "solution": "**Lattice enthalpy** (of formation) is the enthalpy change when one mole of an ionic compound is formed from its **gaseous ions**:\n\n$\\text{Na}^{+}(g) + \\text{Cl}^{-}(g) \\to \\text{NaCl}(s)$\n\nIt is always strongly **exothermic**, and it cannot be measured directly — gaseous ions cannot be assembled in a calorimeter.\n\n**The Born-Haber cycle** applies Hess's law, routing from the elements to the solid either directly (the enthalpy of formation) or the long way round through gaseous ions.\n\n**The steps for NaCl.**\n\n1. **Atomisation of sodium** — $\\text{Na}(s) \\to \\text{Na}(g)$, endothermic.\n\n2. **First ionisation energy** — $\\text{Na}(g) \\to \\text{Na}^{+}(g) + e^{-}$, endothermic.\n\n3. **Atomisation of chlorine** — $\\tfrac12\\text{Cl}_{2}(g) \\to \\text{Cl}(g)$, endothermic (half the bond enthalpy).\n\n4. **First electron affinity** — $\\text{Cl}(g) + e^{-} \\to \\text{Cl}^{-}(g)$, exothermic.\n\n5. **Lattice enthalpy** — the gaseous ions come together, strongly exothermic.\n\n**By Hess's law:**\n\n$\\Delta H_{f} = \\Delta H_{at}(\\text{Na}) + IE_{1} + \\Delta H_{at}(\\text{Cl}) + EA_{1} + \\Delta H_{\\text{lattice}}$\n\nEverything but the lattice enthalpy is measurable, so it is found by difference: about $-787$ kJ/mol for NaCl.\n\n**What the value depends on.** Lattice enthalpy is more exothermic for **smaller, more highly charged** ions, since the electrostatic attraction goes as $\\dfrac{q_{1}q_{2}}{r}$.\n\nMgO ($-3791$ kJ/mol) is far larger than NaCl, because both ions carry double charges and are smaller — which is why MgO melts at $2852$°C and is used to line furnaces.\n\n**A deeper use:** comparing the experimental lattice enthalpy with one calculated on a purely ionic model reveals how much **covalent character** a compound has. AgCl's discrepancy is large; NaCl's is small.",
+      "marks": 5
+    },
+    {
+      "id": "alc3-014",
+      "chapter": "Chemical Energetics",
+      "topic": "Bond enthalpies",
+      "type": "long",
+      "q": "Explain what mean bond enthalpy is, use bond enthalpies to estimate $\\Delta H$ for the combustion of methane, and say why the answer differs from the data book value.",
+      "solution": "**Mean bond enthalpy** is the average energy to break one mole of a given bond, **averaged over many different compounds**.\n\nThe four C–H bonds in methane do not in fact require equal energies — the first needs $435$ kJ/mol and the last $339$ — so the tabulated $412$ is an average.\n\n**The calculation for $\\text{CH}_{4} + 2\\text{O}_{2} \\to \\text{CO}_{2} + 2\\text{H}_{2}\\text{O}$.**\n\n**Bonds broken:** 4 C–H $= 4(412) = 1648$; 2 O=O $= 2(496) = 992$. Total $= 2640$ kJ.\n\n**Bonds made:** 2 C=O $= 2(805) = 1610$; 4 O–H $= 4(463) = 1852$. Total $= 3462$ kJ.\n\n$\\Delta H = 2640 - 3462 = \\mathbf{-822}$ kJ/mol\n\n**The data book value is $-890$ kJ/mol.** Three reasons for the discrepancy:\n\n1. **Bond enthalpies are averages** taken across many compounds, not values for this particular molecule.\n\n2. **Bond enthalpies apply to gases.** The tabulated combustion value has the water as a **liquid**, and condensing it releases a further $44$ kJ/mol per mole — which accounts for most of the gap.\n\n3. Bond enthalpy calculations ignore the enthalpy changes of state altogether.\n\n**So the method is an estimate, useful where no data exists**, but Hess cycles built from measured formation or combustion enthalpies are always more accurate — because those refer to the actual substances involved.",
+      "marks": 3
+    },
+    {
+      "id": "alc3-015",
+      "chapter": "Chemical Energetics",
+      "topic": "Enthalpy of solution",
+      "type": "long",
+      "q": "Explain enthalpy of solution in terms of lattice enthalpy and hydration enthalpy, and use it to account for some dissolvings being exothermic and others endothermic.",
+      "solution": "**Dissolving an ionic solid is two processes at once.**\n\n**1. Breaking the lattice** — the ions must be separated into the gas phase. This costs the **lattice enthalpy**, and is strongly **endothermic**.\n\n**2. Hydrating the ions** — water molecules surround each ion, their $\\delta-$ oxygens facing cations and their $\\delta+$ hydrogens facing anions. This releases the **hydration enthalpy**, and is **exothermic**.\n\n$\\Delta H_{\\text{solution}} = -\\Delta H_{\\text{lattice}} + \\sum\\Delta H_{\\text{hydration}}$\n\n**The two are large and nearly equal**, so the difference between them — the enthalpy of solution — is comparatively small and can fall either way.\n\n**Exothermic dissolving.** Hydration releases more than the lattice costs. Anhydrous $\\text{CaCl}_{2}$ warms its water noticeably, which is why it is used in self-heating tins and as a drying agent.\n\n**Endothermic dissolving.** The lattice costs more than hydration returns. Ammonium nitrate cools its solution sharply — the basis of instant cold packs for sports injuries.\n\n**What decides which.** Small, highly charged ions have both a large lattice enthalpy and a large hydration enthalpy, so the outcome depends on which grows faster.\n\n**A point worth making:** an endothermic dissolving still happens, which shows that enthalpy is not the whole story. The **entropy** increase, as an ordered lattice becomes freely moving ions, drives it — and that is why $\\Delta G = \\Delta H - T\\Delta S$ is needed to decide feasibility rather than $\\Delta H$ alone.",
+      "marks": 2
+    }
+  ]
+}

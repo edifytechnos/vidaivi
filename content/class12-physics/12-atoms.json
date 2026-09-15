@@ -1,0 +1,186 @@
+{
+  "id": "lib-c12p-atoms",
+  "title": "Atoms",
+  "chapter": "Chapter Test 12",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12atm-101",
+      "chapter": "Atoms",
+      "topic": "Bohr model",
+      "type": "numeric",
+      "q": "A hydrogen atom initially in the ground state absorbs a photon which excites it to the $n = 5$ level. Find the wavelength of the photon, in nanometres, to the nearest nanometre. (Take $hc = 1240$ eV nm.)",
+      "solution": "**Step 1 — the energy levels.** In the Bohr model,\n\n$$E_n = -\\frac{13 \\cdot 6}{n^2}\\ \\text{eV}.$$\n\nSo $E_1 = -13 \\cdot 6$ eV and $E_5 = -\\dfrac{13 \\cdot 6}{25} = -0 \\cdot 544$ eV.\n\n**Step 2 — the energy absorbed.**\n\n$$\\Delta E = E_5 - E_1 = -0 \\cdot 544 - (-13 \\cdot 6) = 13 \\cdot 056\\ \\text{eV},$$\n\nwhich is $13 \\cdot 6\\left(1 - \\dfrac{1}{25}\\right)$.\n\n**Step 3 — the wavelength.** The photon must carry exactly that energy, so\n\n$$\\lambda = \\frac{hc}{\\Delta E} = \\frac{1240\\ \\text{eV nm}}{13 \\cdot 056\\ \\text{eV}} \\approx \\mathbf{95}\\ \\text{nm}.$$\n\nThat is in the ultraviolet, as every transition ending on $n = 1$ — the Lyman series — must be.",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 95,
+      "tolerance": 1
+    },
+    {
+      "id": "atm-002",
+      "chapter": "Atoms",
+      "topic": "Bohr's quantisation",
+      "type": "mcq",
+      "q": "In Bohr's model, the angular momentum of an electron in the $n$th orbit is:",
+      "solution": "$L = mvr = \\mathbf{\\dfrac{nh}{2\\pi}}$ — angular momentum comes only in whole multiples of $\\dfrac{h}{2\\pi}$.\n\nDe Broglie later explained why: the orbit must hold a whole number of electron wavelengths, or the wave would cancel itself out.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{nh}{2\\pi}$",
+        "$\\dfrac{h}{2\\pi n}$",
+        "$nh$",
+        "$\\dfrac{n^{2}h}{2\\pi}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "atm-003",
+      "chapter": "Atoms",
+      "topic": "Energy levels of hydrogen",
+      "type": "mcq",
+      "q": "The energy of the $n$th level of the hydrogen atom is:",
+      "solution": "$E_{n} = \\mathbf{\\dfrac{-13.6}{n^{2}}}$ eV.\n\nThe **negative** sign means the electron is bound: energy must be supplied to free it. At $n = \\infty$ the energy is zero, which is what 'just free' means.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{-13.6}{n}$ eV",
+        "$\\dfrac{-13.6}{n^{2}}$ eV",
+        "$-13.6\\,n^{2}$ eV",
+        "$+\\dfrac{13.6}{n^{2}}$ eV"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "atm-004",
+      "chapter": "Atoms",
+      "topic": "Spectral series",
+      "type": "mcq",
+      "q": "The Balmer series of hydrogen lies in the:",
+      "solution": "Balmer lines end on $n = 2$ and fall in the **visible** region — which is why they were the first to be discovered, by eye.\n\nLyman (ending on $n=1$) is ultraviolet; Paschen, Brackett and Pfund are infrared.",
+      "marks": 1,
+      "options": [
+        "ultraviolet",
+        "visible region",
+        "infrared",
+        "X-ray region"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "atm-005",
+      "chapter": "Atoms",
+      "topic": "Ionisation energy",
+      "type": "mcq",
+      "q": "The ionisation energy of a hydrogen atom in its ground state is:",
+      "solution": "It is the energy to lift the electron from $n = 1$ ($-13.6$ eV) to $n = \\infty$ ($0$ eV): $\\mathbf{13.6}$ eV.\n\nFrom the first excited state $n = 2$ it would take only $3.4$ eV.",
+      "marks": 1,
+      "options": [
+        "3.4 eV",
+        "13.6 eV",
+        "1.51 eV",
+        "27.2 eV"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "atm-006",
+      "chapter": "Atoms",
+      "topic": "Energy level",
+      "type": "numeric",
+      "q": "Find the energy (in eV) of the $n = 2$ level of the hydrogen atom. Give the magnitude.",
+      "solution": "$E_{2} = \\dfrac{-13.6}{4} = -3.4$ eV, so the magnitude is $\\mathbf{3.4}$ eV.",
+      "marks": 2,
+      "answer": 3.4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "atm-007",
+      "chapter": "Atoms",
+      "topic": "Transition energy",
+      "type": "numeric",
+      "q": "Find the energy (in eV) of the photon emitted when a hydrogen atom falls from $n = 3$ to $n = 2$, correct to two decimal places.",
+      "solution": "$E_{3} = \\dfrac{-13.6}{9} = -1.51$ eV and $E_{2} = -3.40$ eV.\n\n$\\Delta E = -1.51 - (-3.40) = \\mathbf{1.89}$ eV — the red H-alpha line of the Balmer series, at $656$ nm.",
+      "marks": 2,
+      "answer": 1.89,
+      "tolerance": 0.03
+    },
+    {
+      "id": "atm-008",
+      "chapter": "Atoms",
+      "topic": "Bohr radius",
+      "type": "numeric",
+      "q": "The radius of the $n$th Bohr orbit is $r_{n} = 0.53\\,n^{2}$ Å. Find the radius of the $n = 3$ orbit, in Å, correct to two decimal places.",
+      "solution": "$r_{3} = 0.53 \\times 9 = \\mathbf{4.77}$ Å.\n\nThe orbits spread out as $n^{2}$, so the atom grows very quickly when it is excited — an $n = 10$ hydrogen atom is a hundred times wider than its ground state.",
+      "marks": 2,
+      "answer": 4.77,
+      "tolerance": 0.05
+    },
+    {
+      "id": "atm-009",
+      "chapter": "Atoms",
+      "topic": "Wavelength of a transition",
+      "type": "numeric",
+      "q": "Find the wavelength (in nm) of the photon emitted in a transition of energy $1.89$ eV. Take $hc = 1240$ eV nm, correct to the nearest nm.",
+      "solution": "$\\lambda = \\dfrac{hc}{E} = \\dfrac{1240}{1.89} \\approx \\mathbf{656}$ nm — deep red, the line that dominates the colour of hydrogen gas discharge tubes and of solar prominences.",
+      "marks": 2,
+      "answer": 656,
+      "tolerance": 3
+    },
+    {
+      "id": "atm-010",
+      "chapter": "Atoms",
+      "topic": "Number of spectral lines",
+      "type": "numeric",
+      "q": "How many different spectral lines are possible when hydrogen atoms de-excite from the $n = 4$ level?",
+      "solution": "The number of downward transitions from level $n$ is $\\dfrac{n(n-1)}{2} = \\dfrac{4 \\times 3}{2} = \\mathbf{6}$.\n\nThey are $4\\to3$, $4\\to2$, $4\\to1$, $3\\to2$, $3\\to1$, $2\\to1$ — every pair of levels gives one line, which is why the count is a combination.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "atm-011",
+      "chapter": "Atoms",
+      "topic": "Bohr's postulates",
+      "type": "long",
+      "q": "State Bohr's postulates and use them to derive the radius of the $n$th orbit of the hydrogen atom.",
+      "solution": "**Postulate 1.** The electron moves in certain stable circular orbits without radiating, contrary to classical electromagnetism.\n\n**Postulate 2.** Only orbits with angular momentum $mvr = \\dfrac{nh}{2\\pi}$ are allowed.\n\n**Postulate 3.** Radiation is emitted or absorbed only when the electron jumps between orbits, with $h\nu = E_{i} - E_{f}$.\n\n**Derivation.** The Coulomb attraction supplies the centripetal force:\n\n$\\dfrac{1}{4\\pi\\varepsilon_{0}}\\dfrac{e^{2}}{r^{2}} = \\dfrac{mv^{2}}{r}$.\n\nFrom the second postulate, $v = \\dfrac{nh}{2\\pi mr}$. Substituting:\n\n$\\dfrac{e^{2}}{4\\pi\\varepsilon_{0}r} = m\\left(\\dfrac{nh}{2\\pi mr}\\right)^{2}r = \\dfrac{n^{2}h^{2}}{4\\pi^{2}mr}$.\n\n$\\mathbf{r_{n} = \\dfrac{n^{2}h^{2}\\varepsilon_{0}}{\\pi m e^{2}}} = 0.53\\,n^{2}$ Å.\n\nThe first postulate is frankly an assertion — Bohr simply forbade the radiation that classical theory demanded, because atoms plainly do not collapse. It took quantum mechanics to explain why.",
+      "marks": 3
+    },
+    {
+      "id": "atm-012",
+      "chapter": "Atoms",
+      "topic": "Spectral series",
+      "type": "long",
+      "q": "Write the Rydberg formula and use it to describe the Lyman and Balmer series.",
+      "solution": "$\\dfrac{1}{\\lambda} = R\\left(\\dfrac{1}{n_{f}^{2}} - \\dfrac{1}{n_{i}^{2}}\\right)$, with $R = 1.097 \\times 10^{7}$ m$^{-1}$.\n\n**Lyman series:** $n_{f} = 1$, $n_{i} = 2, 3, 4, \\ldots$ — **ultraviolet**, since every jump ends at the deepest level and so releases the most energy.\n\n**Balmer series:** $n_{f} = 2$, $n_{i} = 3, 4, 5, \\ldots$ — **visible**, the series seen by eye in a discharge tube.\n\nEach series crowds together towards a **series limit** ($n_{i} \\to \\infty$), because the levels themselves crowd together as $-13.6/n^{2}$.\n\nThe whole spectrum is a fingerprint: it is how the composition of stars is read from their light.",
+      "marks": 3
+    },
+    {
+      "id": "atm-013",
+      "chapter": "Atoms",
+      "topic": "Alpha-particle scattering",
+      "type": "long",
+      "q": "Describe Rutherford's alpha-particle scattering experiment, its observations, and the conclusions drawn, and state one failure of the model it produced.",
+      "solution": "**Experiment.** Alpha particles from a radioactive source were fired at a very thin gold foil, and the flashes they made on a movable zinc sulphide screen were counted at various angles.\n\n**Observations.**\n\n1. Most passed almost straight through.\n\n2. A few were deflected through large angles.\n\n3. About one in $8000$ came **straight back**.\n\n**Conclusions.**\n\n1. The atom is mostly **empty space**.\n\n2. Its positive charge and nearly all its mass sit in a tiny **nucleus** (about $10^{-15}$ m across, against the atom's $10^{-10}$ m).\n\n3. Electrons orbit at a distance.\n\n**Failure of the model.** An orbiting electron is accelerating, so classical electromagnetism says it must radiate, lose energy and spiral into the nucleus within about $10^{-8}$ s.\n\nMatter exists, so it does not. The model also predicted a continuous spectrum, whereas atoms emit sharp lines. Bohr's postulates were the response to both failures.",
+      "marks": 5
+    },
+    {
+      "id": "atm-014",
+      "chapter": "Atoms",
+      "topic": "Energy of the hydrogen atom",
+      "type": "long",
+      "q": "Show that the total energy of the electron in the $n$th orbit of hydrogen is $E_{n} = \\dfrac{-13.6}{n^{2}}$ eV, and explain the meaning of the negative sign.",
+      "solution": "**Kinetic energy.** From $\\dfrac{1}{4\\pi\\varepsilon_{0}}\\dfrac{e^{2}}{r^{2}} = \\dfrac{mv^{2}}{r}$:\n\n$K = \\tfrac12 mv^{2} = \\dfrac{e^{2}}{8\\pi\\varepsilon_{0}r}$.\n\n**Potential energy.** $U = \\dfrac{-e^{2}}{4\\pi\\varepsilon_{0}r}$, taken as zero at infinity.\n\n**Total.**\n\n$E = K + U = \\dfrac{e^{2}}{8\\pi\\varepsilon_{0}r} - \\dfrac{e^{2}}{4\\pi\\varepsilon_{0}r} = \\dfrac{-e^{2}}{8\\pi\\varepsilon_{0}r}$.\n\nPutting in $r_{n} = 0.53\\,n^{2}$ Å gives $\\mathbf{E_{n} = \\dfrac{-13.6}{n^{2}}\\text{ eV}}$.\n\n**The negative sign** means the electron is **bound**: its energy is lower than that of a free electron at rest, so work must be done to remove it. Notice also $E = -K$ — a result that holds for any inverse-square attraction, gravity included.",
+      "marks": 3
+    },
+    {
+      "id": "atm-015",
+      "chapter": "Atoms",
+      "topic": "de Broglie and Bohr",
+      "type": "long",
+      "q": "Show how de Broglie's hypothesis explains Bohr's quantisation condition.",
+      "solution": "De Broglie proposed that the electron in an orbit is a **wave**, of wavelength $\\lambda = \\dfrac{h}{mv}$.\n\nFor that wave to survive going round the orbit again and again, it must join up with itself — otherwise successive turns would interfere destructively and cancel it out.\n\nSo the circumference must hold a **whole number** of wavelengths:\n\n$2\\pi r = n\\lambda = \\dfrac{nh}{mv}$.\n\nRearranging:\n\n$mvr = \\dfrac{nh}{2\\pi}$ — **exactly Bohr's second postulate**. ∎\n\nWhat Bohr had to assume, de Broglie derived. It is the same idea as the standing waves on a guitar string: only certain wavelengths fit, so only certain notes exist.",
+      "marks": 2
+    }
+  ]
+}

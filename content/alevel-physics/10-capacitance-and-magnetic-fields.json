@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-capacitance",
+  "title": "Capacitance and Magnetic Fields",
+  "chapter": "Topic Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp10-001",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Capacitance",
+      "type": "mcq",
+      "q": "Capacitance is defined as:",
+      "solution": "$C = \\dfrac{Q}{V}$, in farads — the charge stored per volt.\n\nIt depends only on the geometry and the dielectric, not on how much charge happens to be on the plates.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{Q}{V}$",
+        "$QV$",
+        "$\\dfrac{V}{Q}$",
+        "$\\tfrac12 QV$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp10-002",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Energy stored",
+      "type": "mcq",
+      "q": "The energy stored in a capacitor is:",
+      "solution": "$E = \\tfrac12 QV = \\tfrac12 CV^{2} = \\dfrac{Q^{2}}{2C}$.\n\nThe $\\tfrac12$ is there because the voltage rises from zero to $V$ as the capacitor charges, so the average voltage doing the work is $\\dfrac{V}{2}$.",
+      "marks": 1,
+      "options": [
+        "$QV$",
+        "$\\tfrac12 QV$",
+        "$\\dfrac{Q}{V}$",
+        "$CV$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp10-003",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Capacitors in series",
+      "type": "mcq",
+      "q": "For capacitors in series, the combined capacitance is found from:",
+      "solution": "In **series** the reciprocals add — the opposite way round from resistors.\n\nIn **parallel** capacitances simply add, which is the resistor rule reversed as well.",
+      "marks": 1,
+      "options": [
+        "$C = C_{1} + C_{2}$",
+        "$\\dfrac{1}{C} = \\dfrac{1}{C_{1}} + \\dfrac{1}{C_{2}}$",
+        "$C = C_{1}C_{2}$",
+        "$C = \\dfrac{C_{1}}{C_{2}}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp10-004",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Force on a conductor",
+      "type": "mcq",
+      "q": "The force on a straight wire of length $L$ carrying current $I$ at angle $\\theta$ to a field $B$ is:",
+      "solution": "$F = \\mathbf{BIL\\sin\\theta}$ — greatest when the wire is perpendicular to the field, and **zero** when it lies along it.",
+      "marks": 1,
+      "options": [
+        "$BIL$",
+        "$BIL\\sin\\theta$",
+        "$BIL\\cos\\theta$",
+        "$\\dfrac{BI}{L}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp10-005",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Force on a moving charge",
+      "type": "mcq",
+      "q": "A charge moving parallel to a magnetic field experiences:",
+      "solution": "$F = qvB\\sin\\theta$, and $\\theta = 0$ gives **zero**.\n\nA magnetic field acts only on motion that **cuts across** it — and even then the force is perpendicular to the velocity, so it does no work.",
+      "marks": 1,
+      "options": [
+        "$qvB$",
+        "zero force",
+        "$\\dfrac{qv}{B}$",
+        "$qvB^{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp10-006",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Charge stored",
+      "type": "numeric",
+      "q": "Find the charge (in $\\mu$C) on a $10\\,\\mu$F capacitor charged to $12$ V.",
+      "solution": "$Q = CV = 10 \\times 12 = \\mathbf{120}\\,\\mu$C.",
+      "marks": 2,
+      "answer": 120,
+      "tolerance": 1
+    },
+    {
+      "id": "alp10-007",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Energy stored",
+      "type": "numeric",
+      "q": "Find the energy (in J) stored in a $200\\,\\mu$F capacitor at $100$ V.",
+      "solution": "$E = \\tfrac12 CV^{2} = \\tfrac12 \\times 200 \\times 10^{-6} \\times 10^{4} = \\mathbf{1}$ J.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0.02
+    },
+    {
+      "id": "alp10-008",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Capacitors in parallel",
+      "type": "numeric",
+      "q": "Find the combined capacitance (in $\\mu$F) of $4\\,\\mu$F and $6\\,\\mu$F in parallel.",
+      "solution": "In parallel they add: $\\mathbf{10}\\,\\mu$F.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp10-009",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Force on a conductor",
+      "type": "numeric",
+      "q": "Find the force (in N) on a $0.2$ m wire carrying $5$ A perpendicular to a $0.4$ T field.",
+      "solution": "$F = BIL = 0.4 \\times 5 \\times 0.2 = \\mathbf{0.4}$ N.",
+      "marks": 2,
+      "answer": 0.4,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alp10-010",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Time constant",
+      "type": "numeric",
+      "q": "Find the time constant (in s) of a circuit with $R = 2\\,\\text{M}\\Omega$ and $C = 5\\,\\mu$F.",
+      "solution": "$\\tau = RC = 2 \\times 10^{6} \\times 5 \\times 10^{-6} = \\mathbf{10}$ s.\n\nAfter one time constant the charge has fallen to $37\\%$ of its initial value.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.2
+    },
+    {
+      "id": "alp10-011",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Capacitor discharge",
+      "type": "long",
+      "q": "Derive the exponential discharge equation for a capacitor, define the time constant, and explain how to find $RC$ from a graph.",
+      "solution": "**Setting up.** A charged capacitor discharges through a resistor $R$. At any instant\n\n$V = IR$ and $Q = CV$, and $I = -\\dfrac{dQ}{dt}$ (negative because the charge is falling).\n\n$-\\dfrac{dQ}{dt}R = \\dfrac{Q}{C}$\n\n$\\dfrac{dQ}{Q} = -\\dfrac{dt}{RC}$\n\n**Integrating:**\n\n$\\ln\\dfrac{Q}{Q_{0}} = -\\dfrac{t}{RC}$\n\n$\\mathbf{Q = Q_{0}e^{-t/RC}}$\n\nThe same form holds for $V$ and for $I$, since all three are proportional.\n\n**The time constant** $\\tau = RC$, in seconds, is the time for the charge to fall to $\\dfrac{1}{e} = 37\\%$ of its initial value.\n\nAfter $2\\tau$ about $14\\%$ remains, after $5\\tau$ less than $1\\%$ — which is the usual working definition of 'fully discharged'.\n\n**Finding $RC$ from a graph.** Take logarithms:\n\n$\\ln Q = \\ln Q_{0} - \\dfrac{t}{RC}$\n\nPlot **$\\ln Q$ against $t$**: a straight line of gradient $-\\dfrac{1}{RC}$ and intercept $\\ln Q_{0}$.\n\n**Why the log plot is better** than reading the $37\\%$ point off the curve: it uses **every** data point, averages out the random errors, and confirms that the decay really is exponential — a curve that fails to straighten was never exponential to begin with.",
+      "marks": 3
+    },
+    {
+      "id": "alp10-012",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Magnetic force on a charge",
+      "type": "long",
+      "q": "Derive the radius of the circular path of a charged particle in a magnetic field, and explain why a magnetic field does no work.",
+      "solution": "**Derivation.** For a charge moving perpendicular to the field, the magnetic force provides the centripetal force:\n\n$qvB = \\dfrac{mv^{2}}{r}$\n\n$\\mathbf{r = \\dfrac{mv}{qB}} = \\dfrac{p}{qB}$\n\n**Reading the formula:** faster or heavier particles curve **less**; a stronger field or a larger charge curves them **more**.\n\n**The period** is $T = \\dfrac{2\\pi m}{qB}$ — independent of speed and radius, which is the principle the cyclotron depends on.\n\n**Why no work is done.** Work requires a force component **along** the displacement:\n\n$W = Fs\\cos\\theta$\n\nThe magnetic force $q\\vec{v}\\times\\vec{B}$ is always **perpendicular** to the velocity, so $\\theta = 90°$ and $\\cos\\theta = 0$.\n\n**Therefore the speed and kinetic energy never change** — only the direction does. A magnetic field is a perfect steering mechanism and a useless accelerator.\n\n**A consequence worth stating:** this is why particle accelerators use **electric** fields to speed particles up and **magnetic** fields to bend them round the ring. Neither could do the other's job.\n\n**And why the aurora exists:** charged particles from the Sun spiral along the Earth's field lines without gaining energy, and are funnelled towards the poles.",
+      "marks": 3
+    },
+    {
+      "id": "alp10-013",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Capacitors in combination",
+      "type": "long",
+      "q": "Explain why capacitors in series combine like resistors in parallel, and find the combined capacitance and energy stored when $6\\,\\mu$F and $3\\,\\mu$F in series are charged to $12$ V.",
+      "solution": "**Why the rule is reversed.** In series, the same **charge** $Q$ sits on every capacitor — the inner plates are isolated, so whatever charge leaves one arrives on the next.\n\nThe **voltages add**:\n\n$V = V_{1} + V_{2} = \\dfrac{Q}{C_{1}} + \\dfrac{Q}{C_{2}}$\n\n$\\dfrac{Q}{C} = Q\\left(\\dfrac{1}{C_{1}} + \\dfrac{1}{C_{2}}\\right)$\n\n$\\mathbf{\\dfrac{1}{C} = \\dfrac{1}{C_{1}} + \\dfrac{1}{C_{2}}}$\n\nThe reciprocals add because $C$ sits in the **denominator** of $V = \\dfrac{Q}{C}$, whereas $R$ sits in the numerator of $V = IR$. That single difference reverses both rules.\n\n**The calculation.**\n\n$\\dfrac{1}{C} = \\dfrac16 + \\dfrac13 = \\dfrac12$, so $C = \\mathbf{2\\,\\mu}$F.\n\n**Energy:**\n\n$E = \\tfrac12 CV^{2} = \\tfrac12 \\times 2 \\times 10^{-6} \\times 144 = \\mathbf{1.44 \\times 10^{-4}}$ J\n\n**Checking by looking at each capacitor.** The charge on each is $Q = CV = 2 \\times 10^{-6} \\times 12 = 24\\,\\mu$C.\n\n$V_{1} = \\dfrac{24}{6} = 4$ V and $V_{2} = \\dfrac{24}{3} = 8$ V, which add to $12$ V ✓\n\n**Note the smaller capacitor takes the larger voltage** — the opposite of the resistor case, and worth remembering when choosing components by voltage rating.",
+      "marks": 5
+    },
+    {
+      "id": "alp10-014",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "The Hall effect",
+      "type": "long",
+      "q": "Explain the Hall effect, derive the Hall voltage, and give one application.",
+      "solution": "**The effect.** A current-carrying conductor is placed in a magnetic field perpendicular to the current. A potential difference appears **across** the conductor, perpendicular to **both** the current and the field.\n\n**Why.** The moving charge carriers experience a magnetic force $qvB$ pushing them sideways. They accumulate on one face, leaving the opposite face with the opposite charge.\n\nThe separated charges set up a **transverse electric field**, which opposes further accumulation. Equilibrium is reached when the electric force balances the magnetic one:\n\n$qE = qvB \\Rightarrow E = vB$\n\nSince $E = \\dfrac{V_{H}}{d}$ across a slab of width $d$:\n\n$V_{H} = vBd$\n\nSubstituting $I = nAvq$ with $A = dt$ (thickness $t$):\n\n$\\mathbf{V_{H} = \\dfrac{BI}{ntq}}$\n\n**Why the slab is thin.** $V_{H}$ is inversely proportional to $t$, so a thin specimen gives a bigger, more measurable voltage.\n\n**Why a semiconductor rather than a metal.** $n$ is far smaller in a semiconductor, so the Hall voltage is thousands of times larger.\n\n**Applications.**\n\n1. **Hall probes** measure magnetic flux density directly, since $V_{H} \\propto B$ with everything else fixed.\n\n2. **Position and speed sensors** in cars and in brushless motors, detecting a passing magnet without contact.\n\n3. **Determining the sign of the charge carriers** — the polarity of $V_{H}$ reveals whether they are negative (electrons) or positive (holes), which was historic evidence for hole conduction in semiconductors.",
+      "marks": 3
+    },
+    {
+      "id": "alp10-015",
+      "chapter": "Capacitance and Magnetic Fields",
+      "topic": "Uses of capacitors",
+      "type": "long",
+      "q": "Give three uses of capacitors, explaining the property of a capacitor that each depends on.",
+      "solution": "**1. Smoothing a rectified supply.** After rectification the output is a series of humps rather than steady DC.\n\nA capacitor across the output **charges at each peak and discharges slowly** through the load between peaks, filling in the dips. The ripple is reduced, and a larger $RC$ compared with the time between peaks means a smoother output.\n\n*The property used:* a capacitor stores charge and releases it gradually.\n\n**2. Timing circuits.** Charging or discharging through a resistor takes a predictable time $\\tau = RC$.\n\nFlashing indicators, delay circuits and the timing of a camera flash all use this. Changing $R$ or $C$ changes the interval, which is why such circuits are adjustable.\n\n*The property used:* the exponential, calculable charging time.\n\n**3. Delivering a large burst of energy.** A camera flash or a defibrillator charges a capacitor slowly from a small supply, then discharges it in **milliseconds**.\n\nThe energy is modest but the **power** is enormous, because $P = \\dfrac{E}{t}$ and $t$ is tiny. A defibrillator delivers about $300$ J in $5$ ms — $60$ kW, which no battery could supply directly.\n\n*The property used:* a capacitor can be discharged far faster than it is charged.\n\n**4. Blocking DC while passing AC**, since a capacitor's reactance $\\dfrac{1}{\\omega C}$ is infinite at zero frequency — used to couple amplifier stages without passing their DC bias.\n\n**A safety note:** a large capacitor in a television or a power supply holds a dangerous charge **long after the equipment is unplugged**, and must be deliberately discharged before anyone works on it.",
+      "marks": 2
+    }
+  ]
+}

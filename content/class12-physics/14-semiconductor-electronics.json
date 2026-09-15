@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12p-semiconductors",
+  "title": "Semiconductor Electronics",
+  "chapter": "Chapter Test 14",
+  "teacher": null,
+  "order": 14,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12sem-101",
+      "chapter": "Semiconductor Electronics",
+      "topic": "p-n junction",
+      "type": "long",
+      "q": "Explain the formation of the depletion region in a p-n junction.",
+      "solution": "A p-n junction is formed when a p-type and an n-type semiconductor are joined. Two processes then act, and the depletion region is where they reach balance.\n\n**Step 1 — diffusion.** The n-side has a high concentration of free electrons and the p-side a high concentration of holes. Because of this concentration gradient, electrons **diffuse** from n to p and holes diffuse from p to n.\n\n**Step 2 — immobile ions are left behind.** An electron leaving the n-side leaves behind a positively charged donor ion, fixed in the lattice. A hole leaving the p-side leaves behind a negatively charged acceptor ion. So a layer of **positive** charge builds up just inside the n-side and a layer of **negative** charge just inside the p-side.\n\n**Step 3 — the region is depleted of mobile carriers.** Near the junction the electrons that arrived recombine with holes, so this narrow region is left with almost **no free charge carriers** — only the immobile ions. This is the **depletion region**, typically of the order of a micrometre wide.\n\n**Step 4 — the barrier stops the process.** The separated ionic charges set up an electric field pointing from the n-side to the p-side, and with it a potential difference called the **barrier potential** (about $0 \\cdot 3$ V for germanium, $0 \\cdot 7$ V for silicon).\n\nThis field **opposes** further diffusion: it pushes electrons back towards the n-side and holes back towards the p-side. Diffusion continues only until the drift caused by this field exactly cancels the diffusion current.\n\n**Equilibrium.** At that point the net current across the junction is zero, and the depletion region is stable at a definite width.",
+      "marks": 3,
+      "source": "CBSE 2022"
+    },
+    {
+      "id": "sem-001",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Intrinsic semiconductors",
+      "type": "mcq",
+      "q": "In an intrinsic semiconductor at room temperature, the number of free electrons is:",
+      "solution": "In a pure semiconductor every free electron leaves behind exactly one hole, so $n_{e} = n_{h} = n_{i}$.\n\nDoping is what breaks the balance — and $n_{e}n_{h} = n_{i}^{2}$ still holds even then.",
+      "marks": 1,
+      "options": [
+        "greater than the number of holes",
+        "less than the number of holes",
+        "equal to the number of holes",
+        "zero"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "sem-002",
+      "chapter": "Semiconductor Electronics",
+      "topic": "n-type semiconductor",
+      "type": "mcq",
+      "q": "Silicon doped with phosphorus gives:",
+      "solution": "Phosphorus is pentavalent: four of its electrons bond with the silicon neighbours and the fifth is left over, nearly free.\n\nExtra **negative** carriers make it **n-type**; the phosphorus is called a donor.\n\nTrivalent dopants (boron, aluminium) leave a bond short and make it p-type.",
+      "marks": 1,
+      "options": [
+        "a p-type semiconductor",
+        "an n-type semiconductor",
+        "an insulator",
+        "an intrinsic semiconductor"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "sem-003",
+      "chapter": "Semiconductor Electronics",
+      "topic": "p-n junction",
+      "type": "mcq",
+      "q": "The depletion region of a p-n junction contains:",
+      "solution": "Electrons and holes diffuse across and recombine, leaving behind the **fixed charged ions** of the dopant atoms and almost no mobile carriers.\n\nThose ions set up the barrier potential — about $0.7$ V in silicon, $0.3$ V in germanium — which is what makes the junction one-way.",
+      "marks": 1,
+      "options": [
+        "free electrons only",
+        "holes only",
+        "immobile ions and almost no free carriers",
+        "no charge at all"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "sem-004",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Forward bias",
+      "type": "mcq",
+      "q": "In forward bias, the width of the depletion region:",
+      "solution": "Forward bias pushes majority carriers **towards** the junction, which cancels some of the fixed charge and **narrows** the depletion layer.\n\nThe barrier falls, current flows easily. Reverse bias does the opposite: the layer widens and only a tiny leakage current gets through.",
+      "marks": 1,
+      "options": [
+        "increases",
+        "decreases",
+        "stays the same",
+        "becomes infinite"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "sem-005",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Rectifier",
+      "type": "mcq",
+      "q": "A full-wave rectifier converts:",
+      "solution": "A full-wave rectifier uses **both** halves of the input — two diodes with a centre-tapped transformer, or four in a bridge.\n\nIts output ripple frequency is **twice** the input frequency ($100$ Hz for a $50$ Hz mains), which makes it much easier to smooth than a half-wave rectifier's.",
+      "marks": 1,
+      "options": [
+        "AC to DC using one diode",
+        "both halves of the AC cycle to DC",
+        "DC to AC",
+        "only the positive half cycle to DC"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "sem-006",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Barrier potential",
+      "type": "numeric",
+      "q": "A silicon diode has a barrier potential of $0.7$ V. If it is connected in series with a $100\\,\\Omega$ resistor across a $3.7$ V supply in forward bias, find the current, in mA.",
+      "solution": "The diode drops $0.7$ V, leaving $3.7 - 0.7 = 3$ V across the resistor.\n\n$I = \\dfrac{3}{100} = 0.03$ A $= \\mathbf{30}$ mA.\n\nTreating the forward diode as a fixed $0.7$ V drop is the standard simplification, and it is accurate enough for every circuit in this chapter.",
+      "marks": 2,
+      "answer": 30,
+      "tolerance": 0.5
+    },
+    {
+      "id": "sem-007",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Ripple frequency",
+      "type": "numeric",
+      "q": "A full-wave rectifier is fed from a $50$ Hz AC supply. Find the ripple frequency of its output, in Hz.",
+      "solution": "Both halves of each cycle produce an output pulse, so the output repeats **twice** per input cycle: $\\mathbf{100}$ Hz.\n\nA half-wave rectifier would give $50$ Hz.",
+      "marks": 2,
+      "answer": 100,
+      "tolerance": 1
+    },
+    {
+      "id": "sem-008",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Energy gap",
+      "type": "numeric",
+      "q": "Find the maximum wavelength (in nm) of light that a photodiode of band gap $2.0$ eV can detect. Take $hc = 1240$ eV nm.",
+      "solution": "The photon must carry at least the band gap energy:\n\n$\\lambda_{\\max} = \\dfrac{hc}{E_{g}} = \\dfrac{1240}{2.0} = \\mathbf{620}$ nm.\n\nLonger wavelengths are too feeble per photon to lift an electron across the gap, however bright the light.",
+      "marks": 2,
+      "answer": 620,
+      "tolerance": 5
+    },
+    {
+      "id": "sem-009",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Carrier concentration",
+      "type": "numeric",
+      "q": "In a doped semiconductor, $n_{i} = 10^{16}$ m$^{-3}$ and $n_{e} = 10^{20}$ m$^{-3}$. Find $n_{h}$, in m$^{-3}$ (give the power of ten only, i.e. $x$ where $n_h = 10^{x}$).",
+      "solution": "The mass-action law holds in a doped semiconductor too:\n\n$n_{e}n_{h} = n_{i}^{2} \\Rightarrow n_{h} = \\dfrac{\\left(10^{16}\\right)^{2}}{10^{20}} = \\dfrac{10^{32}}{10^{20}} = 10^{12}$ m$^{-3}$.\n\nSo $x = \\mathbf{12}$. Doping has raised the electrons by $10^{4}$ and pushed the holes down by the same factor — the product is fixed.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0
+    },
+    {
+      "id": "sem-010",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Zener diode",
+      "type": "numeric",
+      "q": "A Zener diode of breakdown voltage $6$ V is used with a series resistance of $200\\,\\Omega$ across a $10$ V supply, with no load connected. Find the current through the Zener, in mA.",
+      "solution": "The Zener holds $6$ V, so the resistor carries $10 - 6 = 4$ V.\n\n$I = \\dfrac{4}{200} = 0.02$ A $= \\mathbf{20}$ mA.\n\nA Zener works in **reverse** breakdown, where the voltage across it barely changes however the current varies — which is exactly what makes it a voltage regulator.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.5
+    },
+    {
+      "id": "sem-012",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Full-wave rectifier",
+      "type": "long",
+      "q": "Explain the working of a full-wave rectifier with a centre-tapped transformer, and state why a capacitor is connected across the output.",
+      "solution": "**Arrangement.** The secondary of a centre-tapped transformer feeds two diodes, and the load sits between the centre tap and the diodes' joined output ends.\n\n**During the first half cycle** the upper end of the secondary is positive, so diode $D_{1}$ is forward biased and conducts while $D_{2}$ is reverse biased and blocks. Current flows through the load in one direction.\n\n**During the second half cycle** the polarity reverses: $D_{2}$ conducts, $D_{1}$ blocks — and the current flows through the load in the **same** direction as before.\n\nSo both halves of the input contribute, and the output is a series of unidirectional humps at twice the supply frequency.\n\n**The capacitor** (a filter) charges up at each peak and discharges slowly through the load between peaks, filling in the dips. The output becomes nearly steady DC with a small ripple.\n\nA bigger capacitance, or a bigger load resistance, means a slower discharge and less ripple — the time constant $RC$ must be long compared with the time between peaks.",
+      "marks": 3
+    },
+    {
+      "id": "sem-013",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Energy bands",
+      "type": "long",
+      "q": "Explain the difference between conductors, insulators and semiconductors on the basis of energy bands, and explain why a semiconductor's resistance falls with temperature.",
+      "solution": "**Conductor.** The valence and conduction bands **overlap**, or the conduction band is partly filled. Electrons can move to nearby empty states with almost no energy, so current flows freely.\n\n**Insulator.** A large forbidden gap, $E_{g} > 3$ eV (diamond, about $5.5$ eV). Thermal energy at room temperature is only about $0.026$ eV, so effectively no electron ever crosses.\n\n**Semiconductor.** A small gap, $E_{g} \\approx 1$ eV (silicon $1.1$ eV, germanium $0.7$ eV). At absolute zero it is an insulator; at room temperature a few electrons make it across.\n\n**Why resistance falls with temperature.** Heating gives more electrons enough energy to cross the gap, and the number that succeeds rises **exponentially**.\n\nEach one leaves a hole behind, so carriers are created in pairs and the carrier count grows steeply. That swamps the small increase in scattering, so the resistance **falls** — the opposite of a metal, where the carrier count is fixed and only the scattering changes.\n\nThis is why semiconductors are used as thermistors, and why a chip has to be kept cool to behave predictably.",
+      "marks": 5
+    },
+    {
+      "id": "sem-014",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Zener diode as a regulator",
+      "type": "long",
+      "q": "Explain how a Zener diode maintains a constant voltage across a load, and why it is always operated in reverse bias.",
+      "solution": "**Reverse bias, deliberately.** A Zener is heavily doped, so its depletion layer is very thin and breakdown occurs at a low, sharply defined reverse voltage. Beyond that point the current rises steeply while the voltage across the diode stays almost constant.\n\nThat flat part of the characteristic is the whole point — and it exists **only** in reverse bias. Forward biased, a Zener is just an ordinary diode.\n\n**As a regulator.** The Zener is connected in parallel with the load, with a series resistance $R_{s}$ from the supply.\n\n• If the **supply voltage rises**, more current flows, but the extra goes through the Zener and is dropped across $R_{s}$ — the load voltage is unchanged.\n\n• If the **load draws more current**, the Zener current falls by the same amount, the total through $R_{s}$ stays put, and again the load voltage holds.\n\nThe Zener acts as a reservoir that absorbs or gives up whatever current is needed to keep its own voltage fixed.\n\nThe breakdown does the diode no harm, provided $R_{s}$ limits the current below its power rating.",
+      "marks": 3
+    },
+    {
+      "id": "sem-015",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Diode characteristics",
+      "type": "long",
+      "q": "Describe the V-I characteristic of a p-n junction diode in forward and reverse bias.",
+      "solution": "**Forward bias.** Almost no current flows until the applied voltage overcomes the barrier — the **knee** or cut-in voltage, about $0.7$ V for silicon and $0.3$ V for germanium.\n\nPast that the current rises very steeply and nearly exponentially: a small further increase in voltage gives a large increase in current. The diode's resistance is low.\n\n**Reverse bias.** Only a tiny **leakage current** flows, of the order of microamperes (germanium) or nanoamperes (silicon), caused by minority carriers. It is almost independent of the voltage.\n\nAt a large enough reverse voltage the diode **breaks down** and the current shoots up. For an ordinary diode this is destructive; for a Zener it is the normal operating region.\n\nThe two halves of the graph are wildly different in scale, which is why the reverse axis is usually drawn in microamperes and the forward one in milliamperes — that asymmetry *is* the diode.",
+      "marks": 2
+    }
+  ]
+}

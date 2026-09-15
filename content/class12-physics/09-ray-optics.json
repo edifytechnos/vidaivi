@@ -1,0 +1,186 @@
+{
+  "id": "lib-c12p-ray-optics",
+  "title": "Ray Optics and Optical Instruments",
+  "chapter": "Chapter Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12ray-101",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Prism",
+      "type": "numeric",
+      "q": "The refractive index of an equilateral triangular prism kept in air is $\\sqrt{2}$. Calculate the angle of minimum deviation, in degrees.",
+      "solution": "For a prism at minimum deviation the light passes symmetrically through it, and\n\n$$\\mu = \\frac{\\sin\\left(\\dfrac{A + \\delta_m}{2}\\right)}{\\sin\\left(\\dfrac{A}{2}\\right)}.$$\n\n**Substitute** $A = 60^\\circ$ (the prism is equilateral) and $\\mu = \\sqrt{2}$. Since $\\sin 30^\\circ = \\dfrac{1}{2}$ :\n\n$$\\sqrt{2} = \\frac{\\sin\\left(\\dfrac{60^\\circ + \\delta_m}{2}\\right)}{\\dfrac{1}{2}} \\quad\\Longrightarrow\\quad \\sin\\left(\\frac{60^\\circ + \\delta_m}{2}\\right) = \\frac{\\sqrt{2}}{2} = \\frac{1}{\\sqrt{2}}.$$\n\n**Solve.**\n\n$$\\frac{60^\\circ + \\delta_m}{2} = 45^\\circ \\quad\\Longrightarrow\\quad 60^\\circ + \\delta_m = 90^\\circ \\quad\\Longrightarrow\\quad \\delta_m = \\mathbf{30^\\circ}.$$\n\n(The critical angle for the same material is $C = \\sin^{-1}\\left(\\dfrac{1}{\\sqrt2}\\right) = 45^\\circ$.)",
+      "marks": 2,
+      "source": "CBSE 2022",
+      "answer": 30,
+      "tolerance": 0
+    },
+    {
+      "id": "ray-002",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Total internal reflection",
+      "type": "mcq",
+      "q": "Total internal reflection can occur only when light travels:",
+      "solution": "It needs the ray to bend **away** from the normal, which happens only going from **denser to rarer** — and only beyond the critical angle.\n\n$\\sin C = \\dfrac{1}{\\mu}$ (rarer medium being air). It is what keeps light inside an optical fibre and what makes a diamond sparkle.",
+      "marks": 1,
+      "options": [
+        "from rarer to denser medium",
+        "from denser to rarer medium",
+        "along the normal",
+        "through a vacuum"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ray-003",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Power of a lens",
+      "type": "mcq",
+      "q": "The power of a lens of focal length $50$ cm is:",
+      "solution": "$P = \\dfrac{1}{f\\text{ (in metres)}} = \\dfrac{1}{0.5} = \\mathbf{2}$ D.\n\nThe focal length must be in **metres** — the single most common slip here.",
+      "marks": 1,
+      "options": [
+        "2 D",
+        "0.5 D",
+        "50 D",
+        "0.02 D"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "ray-004",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Refractive index",
+      "type": "mcq",
+      "q": "Light travels from air into a medium of refractive index $1.5$. Its speed in the medium is:",
+      "solution": "$\\mu = \\dfrac{c}{v} \\Rightarrow v = \\dfrac{3 \\times 10^{8}}{1.5} = \\mathbf{2 \\times 10^{8}}$ m/s.\n\nThe frequency does not change when light enters a new medium — the wavelength does, and with it the speed.",
+      "marks": 1,
+      "options": [
+        "$1.5 \\times 3 \\times 10^{8}$ m/s",
+        "$2 \\times 10^{8}$ m/s",
+        "$3 \\times 10^{8}$ m/s",
+        "$4.5 \\times 10^{8}$ m/s"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ray-005",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Compound microscope",
+      "type": "mcq",
+      "q": "In a compound microscope, the objective forms an image that is:",
+      "solution": "The object sits just beyond the objective's focus, so the objective forms a **real, inverted, magnified** image inside the tube.\n\nThe eyepiece then acts as a simple magnifier on that image, giving a final image that is virtual, further magnified, and still inverted with respect to the object.",
+      "marks": 1,
+      "options": [
+        "virtual and erect",
+        "real, inverted and magnified",
+        "real and diminished",
+        "virtual and magnified"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ray-006",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Mirror formula",
+      "type": "numeric",
+      "q": "An object is placed $30$ cm in front of a concave mirror of focal length $20$ cm. Find the image distance, in cm (give the magnitude).",
+      "solution": "Using magnitudes with the real-is-positive convention: $\\dfrac{1}{v} = \\dfrac{1}{f} - \\dfrac{1}{u} = \\dfrac{1}{20} - \\dfrac{1}{30} = \\dfrac{3 - 2}{60} = \\dfrac{1}{60}$.\n\n$v = \\mathbf{60}$ cm — a real, inverted image, magnified twice, formed on the same side as the object.",
+      "marks": 2,
+      "answer": 60,
+      "tolerance": 0.5
+    },
+    {
+      "id": "ray-007",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Lens formula",
+      "type": "numeric",
+      "q": "An object is $20$ cm from a convex lens of focal length $10$ cm. Find the image distance, in cm (give the magnitude).",
+      "solution": "Working in magnitudes for a real object and a converging lens, $\\dfrac{1}{v} = \\dfrac{1}{f} - \\dfrac{1}{u}$:\n\n$\\dfrac{1}{v} = \\dfrac{1}{10} - \\dfrac{1}{20} = \\dfrac{1}{20}$, so $v = \\mathbf{20}$ cm.\n\nAn object at $2f$ gives an image at $2f$, the same size and inverted — the one case worth remembering without calculation.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.5
+    },
+    {
+      "id": "ray-008",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Critical angle",
+      "type": "numeric",
+      "q": "Find the critical angle (in degrees) for a medium of refractive index $2$ in contact with air.",
+      "solution": "$\\sin C = \\dfrac{1}{\\mu} = \\dfrac12 \\Rightarrow C = \\mathbf{30°}$.\n\nThe higher the refractive index, the smaller the critical angle — which is why diamond ($\\mu = 2.42$, $C \\approx 24°$) traps light so well.",
+      "marks": 2,
+      "answer": 30,
+      "tolerance": 0.5
+    },
+    {
+      "id": "ray-009",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Power of a combination",
+      "type": "numeric",
+      "q": "Two thin lenses of powers $+3$ D and $-1$ D are placed in contact. Find the power of the combination, in dioptres.",
+      "solution": "Powers in contact simply add: $3 + (-1) = \\mathbf{2}$ D.\n\nThe combination has focal length $\\dfrac{1}{2} = 0.5$ m, and it is converging.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "ray-010",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Magnification",
+      "type": "numeric",
+      "q": "An object $4$ cm tall gives an image $12$ cm tall. Find the magnitude of the magnification.",
+      "solution": "$|m| = \\dfrac{h_{i}}{h_{o}} = \\dfrac{12}{4} = \\mathbf{3}$.\n\nA negative $m$ would mean the image is inverted; a magnitude greater than 1 means enlarged.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.05
+    },
+    {
+      "id": "ray-011",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Lens maker's formula",
+      "type": "long",
+      "q": "State the lens maker's formula and use it to find the focal length of a biconvex lens of refractive index $1.5$ with both radii $20$ cm.",
+      "solution": "$\\dfrac{1}{f} = \\left(\\mu - 1\\right)\\left(\\dfrac{1}{R_{1}} - \\dfrac{1}{R_{2}}\\right)$.\n\nFor a biconvex lens, $R_{1} = +20$ cm and $R_{2} = -20$ cm (the second surface curves the other way).\n\n$\\dfrac1f = (1.5 - 1)\\left(\\dfrac{1}{20} - \\dfrac{1}{-20}\\right) = 0.5 \\times \\dfrac{2}{20} = \\dfrac{1}{20}$.\n\n$f = \\mathbf{20}$ cm, converging.\n\nThe formula also explains why a lens behaves differently in water: $\\mu$ is the refractive index **relative to the surrounding medium**, so a glass lens in water is much weaker, and a lens of lower index than its surroundings changes from converging to diverging.",
+      "marks": 3
+    },
+    {
+      "id": "ray-012",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Refraction through a prism",
+      "type": "long",
+      "q": "Derive the relation between the angle of prism $A$, the angle of minimum deviation $\\delta_{m}$ and the refractive index $\\mu$.",
+      "solution": "At minimum deviation the ray passes **symmetrically**: the angles of incidence and emergence are equal ($i = e$), and so are the two refraction angles ($r_{1} = r_{2} = r$).\n\n**From the prism geometry:** $A = r_{1} + r_{2} = 2r$, so $r = \\dfrac{A}{2}$.\n\n**From the deviation:** $\\delta = i + e - A$, so at minimum $\\delta_{m} = 2i - A$, giving $i = \\dfrac{A + \\delta_{m}}{2}$.\n\n**Snell's law at the first face:**\n\n$\\mu = \\dfrac{\\sin i}{\\sin r} = \\mathbf{\\dfrac{\\sin\\left(\\dfrac{A + \\delta_{m}}{2}\\right)}{\\sin\\left(\\dfrac{A}{2}\\right)}}$.\n\nThe symmetry at minimum deviation is not an accident: the path is reversible, and the deviation curve is flat at its lowest point, so the symmetric path is the one that achieves it.",
+      "marks": 3
+    },
+    {
+      "id": "ray-013",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Compound microscope",
+      "type": "long",
+      "q": "Draw in words the ray diagram of a compound microscope and derive its magnifying power when the final image is at the near point.",
+      "solution": "**Arrangement.** The objective has a short focal length $f_{o}$; the object is placed just beyond $f_{o}$, so a real, inverted, magnified image forms inside the tube. That image falls just inside the eyepiece's focus, and the eyepiece magnifies it further into a virtual image at the near point.\n\n**Objective's magnification:** $m_{o} = \\dfrac{v_{o}}{u_{o}}$, which for a tube of length $L$ is approximately $\\dfrac{L}{f_{o}}$.\n\n**Eyepiece's magnification** (image at near point $D$): $m_{e} = 1 + \\dfrac{D}{f_{e}}$.\n\n**Total:**\n\n$\\mathbf{m = \\dfrac{L}{f_{o}}\\left(1 + \\dfrac{D}{f_{e}}\\right)}$.\n\nSo both focal lengths must be **short** — which is exactly how a microscope is built, and why the objective sits so close to the slide.\n\nWith the image at infinity instead (relaxed eye), $m_{e} = \\dfrac{D}{f_{e}}$ and the total is a little smaller but more comfortable to look through for long.",
+      "marks": 5
+    },
+    {
+      "id": "ray-014",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Total internal reflection",
+      "type": "long",
+      "q": "State the conditions for total internal reflection and explain how an optical fibre uses it.",
+      "solution": "**Conditions.**\n\n1. Light must travel from a **denser** medium to a **rarer** one.\n\n2. The angle of incidence must exceed the **critical angle** $C$, where $\\sin C = \\dfrac{\\mu_{\\text{rarer}}}{\\mu_{\\text{denser}}}$.\n\n**In an optical fibre.** A core of high refractive index is surrounded by cladding of lower index. Light entering at a shallow enough angle strikes the core–cladding boundary beyond the critical angle and is **totally** reflected — no refracted ray escapes and, unlike a mirror, nothing is absorbed.\n\nIt bounces along the fibre this way for kilometres, following its bends, with very little loss.\n\n'Total' is the operative word: an ordinary mirror loses a few per cent at every bounce, and over thousands of reflections that would leave nothing.",
+      "marks": 3
+    },
+    {
+      "id": "ray-015",
+      "chapter": "Ray Optics and Optical Instruments",
+      "topic": "Refraction at a spherical surface",
+      "type": "long",
+      "q": "An object is placed $15$ cm in front of a convex lens of focal length $10$ cm. Find the position and nature of the image.",
+      "solution": "Using the Cartesian convention with $u = -15$ cm and $f = +10$ cm:\n\n$\\dfrac1v - \\dfrac{1}{u} = \\dfrac1f \\Rightarrow \\dfrac1v = \\dfrac{1}{10} + \\dfrac{1}{-15} = \\dfrac{3 - 2}{30} = \\dfrac{1}{30}$.\n\n$v = \\mathbf{+30}$ cm — positive, so the image is **real** and on the far side of the lens.\n\n**Magnification:** $m = \\dfrac{v}{u} = \\dfrac{30}{-15} = -2$, so the image is **inverted and twice the size**.\n\nThe object lies between $f$ and $2f$, and that always gives a real, inverted, magnified image beyond $2f$ — which is exactly how a projector is set up.",
+      "marks": 2
+    }
+  ]
+}

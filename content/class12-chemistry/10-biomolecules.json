@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12c-biomolecules",
+  "title": "Biomolecules",
+  "chapter": "Chapter Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-101",
+      "chapter": "Biomolecules",
+      "topic": "Protein structure",
+      "type": "mcq",
+      "q": "An $\\alpha$-helix is a structural feature of :",
+      "solution": "The $\\alpha$-helix is a form of the **secondary structure of proteins** — the way a polypeptide chain coils up locally.\n\nIn it, the chain winds into a right-handed spiral held in place by **intramolecular hydrogen bonds** between the $\\text{C}=\\text{O}$ of one amino acid residue and the $\\text{N}-\\text{H}$ of the residue four places along the chain.\n\nChecking the others:\n\n- **Sucrose** is a disaccharide — a single small molecule of glucose and fructose, with no chain to coil.\n- **Starch** is a polysaccharide; amylose does form a helix, but it is held by a different arrangement and the $\\alpha$-helix specifically names the protein structure.\n- **Nucleotides** are the individual building blocks of nucleic acids; DNA's structure is a **double helix**, and that is a different thing again.\n\nSo the $\\alpha$-helix belongs to **polypeptides**.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "Sucrose",
+        "Starch",
+        "Polypeptides",
+        "Nucleotides"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "bio-002",
+      "chapter": "Biomolecules",
+      "topic": "Reducing sugars",
+      "type": "mcq",
+      "q": "Which of these is a non-reducing sugar?",
+      "solution": "**Sucrose** is non-reducing: the glycosidic link joins glucose's C1 to fructose's C2, so neither anomeric carbon is free to open into a carbonyl.\n\nMaltose and lactose keep one free anomeric carbon and **are** reducing. Fructose, though a ketose, is reducing too, because in alkali it isomerises to an aldose.",
+      "marks": 1,
+      "options": [
+        "Glucose",
+        "Fructose",
+        "Maltose",
+        "Sucrose"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "bio-003",
+      "chapter": "Biomolecules",
+      "topic": "Proteins",
+      "type": "mcq",
+      "q": "The bond joining two amino acids in a protein is:",
+      "solution": "A **peptide bond** ($-\\text{CO–NH}-$), formed by condensation between one amino acid's carboxyl group and the next one's amino group, losing water.\n\nIt has partial double-bond character, so it is planar and rigid — which is exactly what makes the $\\alpha$-helix and $\\beta$-sheet possible.",
+      "marks": 1,
+      "options": [
+        "a glycosidic bond",
+        "a peptide bond",
+        "a phosphodiester bond",
+        "a hydrogen bond"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "bio-004",
+      "chapter": "Biomolecules",
+      "topic": "Denaturation",
+      "type": "mcq",
+      "q": "Denaturation of a protein destroys its:",
+      "solution": "Heat, acid or heavy metals break the hydrogen bonds and other weak interactions that hold the chain's **shape**, so the secondary and tertiary structure is lost.\n\nThe **primary structure** — the sequence, held by covalent peptide bonds — survives.\n\nBoiling an egg is denaturation: the same molecules, permanently rearranged, and no amount of cooling puts them back.",
+      "marks": 1,
+      "options": [
+        "primary structure",
+        "secondary and tertiary structure",
+        "peptide bonds",
+        "amino acid composition"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "bio-005",
+      "chapter": "Biomolecules",
+      "topic": "Nucleic acids",
+      "type": "mcq",
+      "q": "The sugar present in RNA is:",
+      "solution": "RNA contains **ribose**; DNA contains 2-deoxyribose, which lacks the oxygen at C2.\n\nThat missing $-\\text{OH}$ is why DNA is chemically far more stable — and so the right molecule for storing information long-term, while RNA does the short-lived work.",
+      "marks": 1,
+      "options": [
+        "deoxyribose",
+        "ribose",
+        "glucose",
+        "fructose"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "bio-006",
+      "chapter": "Biomolecules",
+      "topic": "Number of amino acids",
+      "type": "numeric",
+      "q": "How many naturally occurring amino acids are found in proteins?",
+      "solution": "$\\mathbf{20}$ standard amino acids, of which about ten are **essential** — the human body cannot make them and they must come from food.\n\nAll twenty share the same backbone and differ only in the side chain $-\\text{R}$.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0
+    },
+    {
+      "id": "bio-007",
+      "chapter": "Biomolecules",
+      "topic": "Peptide bonds",
+      "type": "numeric",
+      "q": "How many peptide bonds are present in a linear tripeptide?",
+      "solution": "A chain of $n$ amino acids has $n - 1$ peptide bonds, so a tripeptide has $\\mathbf{2}$.\n\nLike fence posts and the panels between them.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "bio-008",
+      "chapter": "Biomolecules",
+      "topic": "Molar mass of glucose",
+      "type": "numeric",
+      "q": "Find the molar mass of glucose, $\\text{C}_{6}\\text{H}_{12}\\text{O}_{6}$, in g/mol. (C $= 12$, H $= 1$, O $= 16$.)",
+      "solution": "$6(12) + 12(1) + 6(16) = 72 + 12 + 96 = \\mathbf{180}$ g/mol.",
+      "marks": 2,
+      "answer": 180,
+      "tolerance": 0.5
+    },
+    {
+      "id": "bio-009",
+      "chapter": "Biomolecules",
+      "topic": "Chiral centres",
+      "type": "numeric",
+      "q": "How many chiral carbon atoms does glucose have in its open-chain form?",
+      "solution": "Carbons 2, 3, 4 and 5 each carry four different groups — $\\mathbf{4}$ chiral centres.\n\nThat gives $2^{4} = 16$ possible stereoisomers, of which D-glucose is one. (In the cyclic form C1 also becomes chiral, producing the $\\alpha$ and $\\beta$ anomers.)",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "bio-010",
+      "chapter": "Biomolecules",
+      "topic": "Base pairs",
+      "type": "numeric",
+      "q": "In a DNA double helix, adenine pairs with thymine through how many hydrogen bonds?",
+      "solution": "A–T pair with **2** hydrogen bonds; G–C with 3.\n\nThis is why DNA rich in G–C needs a higher temperature to separate the strands — three ties are harder to undo than two.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "bio-011",
+      "chapter": "Biomolecules",
+      "topic": "Structure of glucose",
+      "type": "long",
+      "q": "Give the evidence for the open-chain structure of glucose, and explain why a cyclic structure had to be proposed.",
+      "solution": "**Evidence for the open chain.**\n\n1. **Molecular formula** $\\text{C}_{6}\\text{H}_{12}\\text{O}_{6}$; on prolonged heating with HI it gives **n-hexane**, so all six carbons are in a straight chain.\n\n2. **Reacts with hydroxylamine** to give an oxime and adds HCN to give a cyanohydrin — so a **carbonyl** group is present.\n\n3. **Reduces Tollens' and Fehling's** and is oxidised by bromine water to gluconic acid — so it is an **aldehyde**, not a ketone.\n\n4. **Acetylation with acetic anhydride gives a penta-acetate** — so there are **five $-\\text{OH}$ groups**, one on each of the other carbons.\n\n5. **Nitric acid oxidation gives saccharic acid**, a dicarboxylic acid — so there is a primary alcohol at the far end.\n\n**Why the open chain is not enough.**\n\n1. Glucose does **not** give the Schiff's test, and does not form a bisulphite addition compound — behaviour unlike a normal aldehyde.\n\n2. The pentaacetate does not react with hydroxylamine, implying no free $-\\text{CHO}$.\n\n3. Glucose exists as **two crystalline forms**, $\\alpha$ ($110°$C, $+111°$ rotation) and $\\beta$ ($150°$C, $+19.2°$), which in solution slowly converge to $+52.5°$ — **mutarotation**.\n\n**Resolution.** Glucose is mainly a **six-membered cyclic hemiacetal** (pyranose), formed when the C5 hydroxyl adds to the C1 aldehyde. C1 becomes chiral, giving the $\\alpha$ and $\\beta$ anomers, and mutarotation is the two forms equilibrating through a trace of the open chain.",
+      "marks": 3
+    },
+    {
+      "id": "bio-012",
+      "chapter": "Biomolecules",
+      "topic": "Structure of proteins",
+      "type": "long",
+      "q": "Describe the primary, secondary, tertiary and quaternary structures of proteins.",
+      "solution": "**Primary.** The **sequence** of amino acids in the chain, held by covalent peptide bonds. Change one residue and the whole protein may fail — sickle-cell anaemia is a single substitution in haemoglobin.\n\n**Secondary.** The local folding of the backbone, held by **hydrogen bonds** between the C=O and N–H groups:\n\n• **$\\alpha$-helix** — a right-handed coil, hydrogen bonded within the chain (keratin in hair and wool).\n\n• **$\\beta$-pleated sheet** — extended chains hydrogen bonded side by side (silk fibroin).\n\n**Tertiary.** The overall three-dimensional shape of one chain, held by hydrogen bonds, disulphide bridges, ionic bonds and **hydrophobic interactions** — the last of which drive non-polar side chains into the interior, away from water.\n\nThis is the level that creates an enzyme's active site, and so the level on which function depends.\n\n**Quaternary.** The arrangement of **two or more chains** into one functional unit. Haemoglobin is four subunits, and its ability to bind oxygen cooperatively exists only because of that arrangement.\n\n**Fibrous proteins** (keratin, collagen) are long, insoluble and structural; **globular proteins** (haemoglobin, enzymes, insulin) are folded, soluble and functional.",
+      "marks": 3
+    },
+    {
+      "id": "bio-013",
+      "chapter": "Biomolecules",
+      "topic": "Vitamins and nucleic acids",
+      "type": "long",
+      "q": "Classify vitamins and give the deficiency disease of four of them. Then state the two differences between DNA and RNA and the function of each.",
+      "solution": "**Vitamins** fall into two classes:\n\n• **Fat soluble** — A, D, E, K. Stored in the liver and fatty tissue, so an overdose is possible.\n\n• **Water soluble** — the B group and C. Not stored (except $\\text{B}_{12}$), so they must be supplied regularly.\n\n**Deficiency diseases:**\n\n• **A** — xerophthalmia, night blindness\n\n• **$\\text{B}_{1}$** — beri-beri\n\n• **C** — scurvy\n\n• **D** — rickets in children, osteomalacia in adults\n\n• **K** — poor blood clotting\n\n**DNA against RNA:**\n\n1. **Sugar:** DNA has 2-deoxyribose; RNA has ribose.\n\n2. **Bases:** DNA uses thymine; RNA uses uracil in its place. Both use adenine, guanine and cytosine.\n\n3. **Structure:** DNA is a double helix; RNA is usually single-stranded.\n\n**Functions.** DNA stores the hereditary information and replicates it. RNA carries out its instructions: messenger RNA copies the message, transfer RNA brings the amino acids, ribosomal RNA is part of the machine that joins them.\n\nThe missing $-\\text{OH}$ at C2 makes DNA much the more stable of the two, which is exactly what an archive needs and a working copy does not.",
+      "marks": 5
+    },
+    {
+      "id": "bio-014",
+      "chapter": "Biomolecules",
+      "topic": "Enzymes",
+      "type": "long",
+      "q": "What are enzymes? Describe their characteristics and mechanism of action.",
+      "solution": "**What they are.** Biological catalysts, almost all of them globular proteins, that speed up the reactions of living systems — often by a factor of $10^{6}$ to $10^{12}$.\n\n**Characteristics.**\n\n1. **Highly specific** — one enzyme, usually one substrate. Maltase acts on maltose and on nothing else.\n\n2. **Efficient** at very low concentration.\n\n3. **Work under mild conditions** — body temperature, near-neutral pH, atmospheric pressure. Compare the Haber process, which needs $700$ K and $200$ atm to do something nitrogen-fixing bacteria manage in soil.\n\n4. **Sensitive** to temperature and pH, because both denature the protein. Each has an optimum.\n\n**Mechanism.**\n\n**Step 1.** The substrate binds at the **active site**, a pocket whose shape and chemistry fit it — the *lock and key* picture, refined into *induced fit*, in which the enzyme closes round the substrate.\n\n**Step 2.** The enzyme–substrate complex reacts. The enzyme holds the substrate in the right orientation, strains the bond to be broken, and offers acidic or basic groups — **lowering the activation energy**.\n\n**Step 3.** The product leaves and the enzyme is free to start again, unchanged.\n\nAn enzyme changes the **rate**, never the position of equilibrium.",
+      "marks": 3
+    },
+    {
+      "id": "bio-015",
+      "chapter": "Biomolecules",
+      "topic": "Amino acids",
+      "type": "long",
+      "q": "What are zwitterions? Explain why amino acids are high-melting solids and why they have an isoelectric point.",
+      "solution": "**Zwitterion.** An amino acid does not exist as $\\text{H}_{2}\\text{N–CHR–COOH}$. The carboxyl group is acidic and the amino group basic, so the proton transfers internally:\n\n$\\text{H}_{3}\\overset{+}{\\text{N}}\\text{–CHR–COO}^{-}$\n\nThe molecule is **internally ionised** while remaining overall neutral.\n\n**Why they are high-melting solids.** Being ionic, they form a crystal held by strong electrostatic forces, so they melt high (often with decomposition, above $200$°C) — quite unlike comparable amines or acids, which are liquids. They are soluble in water and nearly insoluble in organic solvents, for the same reason.\n\n**Isoelectric point.** In acid, the zwitterion takes another proton and becomes a **cation**; in alkali it loses one and becomes an **anion**.\n\nAt one particular pH — the **isoelectric point** — the two forms exactly balance and the molecule carries **no net charge**. There it does not migrate in an electric field, and its solubility is at a minimum.\n\nThat is precisely what makes **electrophoresis** work: at a chosen pH, different amino acids carry different charges and travel at different speeds, so a mixture separates.",
+      "marks": 2
+    }
+  ]
+}

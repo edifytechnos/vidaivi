@@ -1,0 +1,192 @@
+{
+  "id": "lib-c12-probability",
+  "title": "Probability",
+  "chapter": "Chapter Test 13",
+  "teacher": null,
+  "order": 13,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12prb-101",
+      "chapter": "Probability",
+      "topic": "Conditional probability",
+      "type": "mcq",
+      "q": "If $P(A|B) = P(A'|B)$, then which of the following statements is true?",
+      "solution": "For any event $A$ and any $B$ with $P(B) > 0$, the conditional probabilities of an event and its complement must add to 1 :\n\n$$P(A|B) + P(A'|B) = 1.$$\n\nWe are told the two are **equal**, so writing each as $x$ :\n\n$$x + x = 1 \\quad\\Longrightarrow\\quad x = \\frac12.$$\n\nTherefore $P(A|B) = \\dfrac{1}{2}$.\n\nNothing here forces $A$ and $B$ to be independent or to have equal probabilities — the condition only fixes the conditional probability at one half.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "$P(A|B) = \\dfrac{1}{2}$",
+        "$P(A \\cap B) = P(B)$",
+        "$P(A) = P(B)$",
+        "$A$ and $B$ are independent"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c12prb-102",
+      "chapter": "Probability",
+      "topic": "Addition theorem",
+      "type": "numeric",
+      "q": "For two events $A$ and $B$, if $P(A) = 0 \\cdot 4$, $P(B) = 0 \\cdot 8$ and $P(B/A) = 0 \\cdot 6$, then find $P(A \\cup B)$.",
+      "solution": "**Step 1 — find $P(A \\cap B)$ from the conditional probability.** By definition\n\n$$P(B/A) = \\frac{P(A \\cap B)}{P(A)} \\quad\\Longrightarrow\\quad P(A \\cap B) = P(B/A) \\times P(A).$$\n\nSo\n\n$$P(A \\cap B) = 0 \\cdot 6 \\times 0 \\cdot 4 = 0 \\cdot 24.$$\n\n**Step 2 — apply the addition theorem.**\n\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0 \\cdot 4 + 0 \\cdot 8 - 0 \\cdot 24.$$\n\n$$P(A \\cup B) = 1 \\cdot 2 - 0 \\cdot 24 = \\mathbf{0 \\cdot 96}.$$\n\n(Sensible: a probability just under 1, as it must be.)",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 0.96,
+      "tolerance": 0.001
+    },
+    {
+      "id": "c12p-002",
+      "chapter": "Probability",
+      "topic": "Independent events",
+      "type": "mcq",
+      "q": "Events $A$ and $B$ are independent if:",
+      "solution": "Independent means knowing one tells you nothing about the other, which is exactly $P(A \\mid B) = P(A)$ — and multiplying up gives $\\mathbf{P(A \\cap B) = P(A)P(B)}$.\n\n**Independent is not the same as mutually exclusive.** Mutually exclusive events are the *most* dependent there is: if one happens, the other certainly did not.",
+      "marks": 1,
+      "options": [
+        "$P(A \\cap B) = P(A) + P(B)$",
+        "$P(A \\cap B) = P(A)P(B)$",
+        "$P(A \\cup B) = P(A)P(B)$",
+        "$A \\cap B = \\varnothing$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "c12p-003",
+      "chapter": "Probability",
+      "topic": "Binomial mean",
+      "type": "mcq",
+      "q": "For a binomial distribution with $n$ trials and success probability $p$, the mean is:",
+      "solution": "Mean $= \\mathbf{np}$; variance $= npq$.\n\nToss a fair coin $100$ times and you expect $100 \\times \\tfrac12 = 50$ heads — the mean is just 'how many trials times how often it works'.",
+      "marks": 1,
+      "options": [
+        "$np$",
+        "$npq$",
+        "$\\sqrt{npq}$",
+        "$p$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c12p-004",
+      "chapter": "Probability",
+      "topic": "A die",
+      "type": "mcq",
+      "q": "A fair die is thrown once. The probability of getting a number greater than 4 is:",
+      "solution": "The favourable outcomes are $5$ and $6$ — two out of six.\n\n$P = \\dfrac{2}{6} = \\mathbf{\\dfrac13}$.\n\nNote 'greater than 4' excludes 4 itself; 'at least 4' would not.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{1}{6}$",
+        "$\\dfrac{1}{3}$",
+        "$\\dfrac{1}{2}$",
+        "$\\dfrac{2}{3}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "c12p-005",
+      "chapter": "Probability",
+      "topic": "Total probability",
+      "type": "mcq",
+      "q": "If $E_{1}, E_{2}, \\ldots, E_{n}$ partition the sample space, then $P(A)$ equals:",
+      "solution": "This is the **theorem of total probability**: split the sample space into non-overlapping cases, work out $A$'s chance inside each, and weight each by how likely that case is.\n\n$P(A) = \\mathbf{\\displaystyle\\sum P(E_{i})P(A \\mid E_{i})}$.\n\nThree factories make a company's bulbs; the chance a random bulb is faulty is each factory's fault rate weighted by its share of production.",
+      "marks": 1,
+      "options": [
+        "$\\displaystyle\\sum P(E_{i})$",
+        "$\\displaystyle\\sum P(E_{i})P(A \\mid E_{i})$",
+        "$\\displaystyle\\prod P(A \\mid E_{i})$",
+        "$P(A \\mid E_{1})$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "c12p-007",
+      "chapter": "Probability",
+      "topic": "Coin tosses",
+      "type": "numeric",
+      "q": "A fair coin is tossed three times. Find the probability of getting exactly two heads.",
+      "solution": "There are $2^{3} = 8$ equally likely outcomes.\n\nExactly two heads: HHT, HTH, THH — three of them.\n\n$P = \\dfrac{3}{8} = \\mathbf{0.375}$.\n\nBinomially: $\\binom{3}{2}\\left(\\tfrac12\\right)^{2}\\left(\\tfrac12\\right)^{1} = 3 \\times \\tfrac18$.",
+      "marks": 2,
+      "answer": 0.375,
+      "tolerance": 0.001
+    },
+    {
+      "id": "c12p-008",
+      "chapter": "Probability",
+      "topic": "Two dice",
+      "type": "numeric",
+      "q": "Two fair dice are thrown. Find the probability that the sum is 7, correct to three decimal places.",
+      "solution": "There are $36$ equally likely outcomes, and six give a sum of 7: $(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)$.\n\n$P = \\dfrac{6}{36} = \\dfrac16 \\approx \\mathbf{0.167}$.\n\nSeven is the most likely total precisely because it has the most ways of happening — every face of the first die can be partnered.",
+      "marks": 2,
+      "answer": 0.167,
+      "tolerance": 0.002
+    },
+    {
+      "id": "c12p-009",
+      "chapter": "Probability",
+      "topic": "Binomial mean",
+      "type": "numeric",
+      "q": "A fair die is thrown 30 times. Find the mean number of sixes.",
+      "solution": "This is binomial with $n = 30$ and $p = \\tfrac16$.\n\nMean $= np = 30 \\times \\tfrac16 = \\mathbf{5}$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "c12p-010",
+      "chapter": "Probability",
+      "topic": "At least one",
+      "type": "numeric",
+      "q": "The probability that a student passes a test is $0.8$. If two students take it independently, find the probability that at least one passes.",
+      "solution": "Go through the complement — 'at least one' is almost always easier backwards.\n\n$P(\\text{neither passes}) = 0.2 \\times 0.2 = 0.04$.\n\n$P(\\text{at least one}) = 1 - 0.04 = \\mathbf{0.96}$.\n\nCounting the one way it can fail beats counting the three ways it can succeed.",
+      "marks": 2,
+      "answer": 0.96,
+      "tolerance": 0.001
+    },
+    {
+      "id": "c12p-011",
+      "chapter": "Probability",
+      "topic": "Bayes' theorem",
+      "type": "long",
+      "q": "Two bags are given. Bag A holds 3 red and 5 black balls; Bag B holds 4 red and 4 black. A bag is chosen at random and a ball drawn from it turns out to be red. Find the probability that it came from Bag A.",
+      "solution": "Let $E_{A}$, $E_{B}$ be the choice of bag, each with probability $\\tfrac12$, and $R$ the event 'red ball'.\n\n$P(R \\mid E_{A}) = \\dfrac38$, $\\quad P(R \\mid E_{B}) = \\dfrac48 = \\dfrac12$.\n\n**Total probability of red:**\n\n$P(R) = \\tfrac12 \\times \\tfrac38 + \\tfrac12 \\times \\tfrac12 = \\tfrac{3}{16} + \\tfrac{4}{16} = \\tfrac{7}{16}$.\n\n**Bayes:**\n\n$P(E_{A} \\mid R) = \\dfrac{\\tfrac12 \\times \\tfrac38}{\\tfrac{7}{16}} = \\dfrac{\\tfrac{3}{16}}{\\tfrac{7}{16}} = \\mathbf{\\dfrac37}$.\n\nBefore the draw both bags were equally likely; the red ball is evidence, and it tilts belief towards the bag with more red in it. Bayes' theorem is exactly the arithmetic of changing your mind.",
+      "marks": 3
+    },
+    {
+      "id": "c12p-012",
+      "chapter": "Probability",
+      "topic": "Probability distribution",
+      "type": "long",
+      "q": "Two fair coins are tossed. Let $X$ be the number of heads. Write the probability distribution of $X$ and find its mean.",
+      "solution": "The four equally likely outcomes are HH, HT, TH, TT.\n\n$P(X = 0) = \\tfrac14$ (TT)\n\n$P(X = 1) = \\tfrac24 = \\tfrac12$ (HT, TH)\n\n$P(X = 2) = \\tfrac14$ (HH)\n\n**Check:** the probabilities add to $1$. ✓\n\n**Mean** $= \\sum x_{i}p_{i} = 0\\left(\\tfrac14\\right) + 1\\left(\\tfrac12\\right) + 2\\left(\\tfrac14\\right) = \\mathbf{1}$.\n\nWhich matches the binomial mean $np = 2 \\times \\tfrac12 = 1$. ✓",
+      "marks": 3
+    },
+    {
+      "id": "c12p-013",
+      "chapter": "Probability",
+      "topic": "Binomial distribution",
+      "type": "long",
+      "q": "A fair die is thrown 4 times. Find the probability of getting a six exactly twice, and the probability of getting at least one six.",
+      "solution": "Binomial with $n = 4$, $p = \\tfrac16$, $q = \\tfrac56$.\n\n**Exactly two sixes:**\n\n$P(X = 2) = \\binom{4}{2}\\left(\\tfrac16\\right)^{2}\\left(\\tfrac56\\right)^{2} = 6 \\times \\dfrac{1}{36} \\times \\dfrac{25}{36} = \\dfrac{150}{1296} = \\mathbf{\\dfrac{25}{216}} \\approx 0.116$.\n\n**At least one six** — use the complement:\n\n$P(X \\ge 1) = 1 - P(X = 0) = 1 - \\left(\\tfrac56\\right)^{4} = 1 - \\dfrac{625}{1296} = \\mathbf{\\dfrac{671}{1296}} \\approx 0.518$.\n\nJust over half — which surprises most people, and is the whole reason gamblers have historically lost money on this bet.",
+      "marks": 5
+    },
+    {
+      "id": "c12p-014",
+      "chapter": "Probability",
+      "topic": "Independent events",
+      "type": "long",
+      "q": "$A$ and $B$ are independent events with $P(A) = 0.3$ and $P(B) = 0.4$. Find $P(A \\cup B)$ and $P(A \\mid B)$.",
+      "solution": "**Independence** gives $P(A \\cap B) = 0.3 \\times 0.4 = 0.12$.\n\n**Addition rule:**\n\n$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0.3 + 0.4 - 0.12 = \\mathbf{0.58}$.\n\n**Conditional:**\n\n$P(A \\mid B) = \\dfrac{0.12}{0.4} = \\mathbf{0.3} = P(A)$ — which is what independence means: knowing $B$ changes nothing.\n\nSubtracting the overlap matters: without it the shared region would be counted twice.",
+      "marks": 3
+    },
+    {
+      "id": "c12p-015",
+      "chapter": "Probability",
+      "topic": "Conditional probability from a pack",
+      "type": "long",
+      "q": "A card is drawn from a well-shuffled pack of 52. Given that it is a face card, find the probability that it is a king.",
+      "solution": "The condition shrinks the sample space to the face cards only.\n\nFace cards: jack, queen, king in each of four suits $= 12$ cards.\n\nKings among them: $4$.\n\n$P(\\text{king} \\mid \\text{face card}) = \\dfrac{4}{12} = \\mathbf{\\dfrac13}$.\n\nUnconditionally the answer would have been $\\tfrac{4}{52} = \\tfrac{1}{13}$. The information is worth a lot here — it removed 40 cards from consideration.",
+      "marks": 2
+    }
+  ]
+}

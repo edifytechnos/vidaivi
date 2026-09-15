@@ -1,0 +1,192 @@
+{
+  "id": "lib-c12c-coordination",
+  "title": "Coordination Compounds",
+  "chapter": "Chapter Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12coo-101",
+      "chapter": "Coordination Compounds",
+      "topic": "Oxidation state",
+      "type": "mcq",
+      "q": "The oxidation state of Fe in $[\\text{Fe}(\\text{CO})_5]$ is :",
+      "solution": "Carbon monoxide is a **neutral** ligand — it bonds through the lone pair on carbon without carrying any charge.\n\nThe complex $[\\text{Fe}(\\text{CO})_5]$ has no charge shown outside the square brackets, so the whole entity is neutral. Letting $x$ be the oxidation state of iron :\n\n$$x + 5 \\times 0 = 0 \\quad\\Longrightarrow\\quad x = \\mathbf{0}.$$\n\nMetal carbonyls are the standard example of a metal in the **zero** oxidation state. The bonding works because CO is a strong $\\pi$-acceptor: it accepts back-donation of electron density from the filled metal $d$ orbitals into its own empty $\\pi^*$ orbitals, which is what stabilises a metal that would otherwise be too electron-rich.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$+2$",
+        "$0$",
+        "$+3$",
+        "$+5$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "c12coo-102",
+      "chapter": "Coordination Compounds",
+      "topic": "IUPAC nomenclature",
+      "type": "long",
+      "q": "Write the IUPAC name of the following complex: $[\\text{Co}(\\text{NH}_3)_4(\\text{H}_2\\text{O})\\text{Cl}]\\text{Cl}_2$",
+      "solution": "**Step 1 — split the compound.** The complex ion is $[\\text{Co}(\\text{NH}_3)_4(\\text{H}_2\\text{O})\\text{Cl}]^{2+}$ and the counter ions are two $\\text{Cl}^-$.\n\n**Step 2 — find the oxidation state of cobalt.** Ammine and aqua are neutral; the chlorido ligand inside the sphere carries $-1$. Letting the cobalt be $x$ :\n\n$$x + 4(0) + 0 + (-1) = +2 \\quad\\Longrightarrow\\quad x = +3.$$\n\n**Step 3 — name the ligands in alphabetical order**, ignoring the multiplying prefixes when alphabetising :\n\n- **ammine** ($\\text{NH}_3$), four of them → tetraammine\n- **aqua** ($\\text{H}_2\\text{O}$), one → aqua\n- **chlorido** ($\\text{Cl}^-$), one → chlorido\n\nAlphabetically: a**mm**ine before a**q**ua before **c**hlorido.\n\n**Step 4 — assemble.** Ligands first, then the metal with its oxidation state in Roman numerals, then the counter ion. The complex ion is a cation, so the metal keeps its ordinary name.\n\n$$\\textbf{Tetraammineaquachloridocobalt(III) chloride}$$",
+      "marks": 2,
+      "source": "CBSE 2022"
+    },
+    {
+      "id": "coo-002",
+      "chapter": "Coordination Compounds",
+      "topic": "Oxidation state",
+      "type": "mcq",
+      "q": "The oxidation state of iron in $\\text{K}_{4}[\\text{Fe}(\\text{CN})_{6}]$ is:",
+      "solution": "Four $\\text{K}^{+}$ give $+4$, so the complex ion is $[\\text{Fe}(\\text{CN})_{6}]^{4-}$.\n\nWith six $\\text{CN}^{-}$ at $-6$: $x - 6 = -4 \\Rightarrow x = \\mathbf{+2}$.",
+      "marks": 1,
+      "options": [
+        "+2",
+        "+3",
+        "+4",
+        "0"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "coo-003",
+      "chapter": "Coordination Compounds",
+      "topic": "Chelate",
+      "type": "mcq",
+      "q": "Ethylenediamine (en) is an example of a:",
+      "solution": "Ethylenediamine donates through **two** nitrogen atoms, so it is **bidentate** and forms a five-membered chelate ring.\n\nEDTA, with four oxygens and two nitrogens, is hexadentate. Chelating ligands make unusually stable complexes — the **chelate effect** — which is why EDTA is used to treat lead poisoning.",
+      "marks": 1,
+      "options": [
+        "monodentate ligand",
+        "bidentate ligand",
+        "tridentate ligand",
+        "hexadentate ligand"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "coo-004",
+      "chapter": "Coordination Compounds",
+      "topic": "Crystal field theory",
+      "type": "mcq",
+      "q": "In an octahedral complex, the d orbitals split into:",
+      "solution": "In an octahedral field the $\\mathbf{t_{2g}}$ set ($d_{xy}, d_{yz}, d_{zx}$) lies **lower** and the $e_{g}$ set ($d_{x^{2}-y^{2}}, d_{z^{2}}$) higher.\n\nThe $e_{g}$ orbitals point **straight at** the ligands and so are repelled more. In a **tetrahedral** field the order is reversed, and the splitting is smaller.",
+      "marks": 1,
+      "options": [
+        "$t_{2g}$ (lower) and $e_{g}$ (higher)",
+        "$e_{g}$ (lower) and $t_{2g}$ (higher)",
+        "three equal sets",
+        "no splitting at all"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "coo-005",
+      "chapter": "Coordination Compounds",
+      "topic": "Isomerism",
+      "type": "mcq",
+      "q": "$[\\text{Co}(\\text{NH}_{3})_{4}\\text{Cl}_{2}]^{+}$ shows which kind of isomerism?",
+      "solution": "An octahedral $\\text{MA}_{4}\\text{B}_{2}$ complex has the two chlorides either **adjacent (cis)** or **opposite (trans)** — geometrical isomerism.\n\nThe cis isomer is violet and the trans green, so they can be told apart by eye. (The cis isomer of the closely related platinum complex is the anticancer drug cisplatin; the trans isomer is inactive.)",
+      "marks": 1,
+      "options": [
+        "Ionisation",
+        "Geometrical (cis-trans)",
+        "Linkage",
+        "Optical only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "coo-006",
+      "chapter": "Coordination Compounds",
+      "topic": "Oxidation state",
+      "type": "numeric",
+      "q": "Find the oxidation state of platinum in $[\\text{Pt}(\\text{NH}_{3})_{2}\\text{Cl}_{2}]$.",
+      "solution": "Ammonia is neutral and each chloride is $-1$; the complex as a whole is neutral.\n\n$x + 0 + (-2) = 0 \\Rightarrow x = \\mathbf{+2}$ — this is cisplatin (in its cis form).",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "coo-007",
+      "chapter": "Coordination Compounds",
+      "topic": "Ions in solution",
+      "type": "numeric",
+      "q": "How many ions are produced in solution by one formula unit of $[\\text{Co}(\\text{NH}_{3})_{6}]\\text{Cl}_{3}$?",
+      "solution": "The complex ion $[\\text{Co}(\\text{NH}_{3})_{6}]^{3+}$ stays intact, and three $\\text{Cl}^{-}$ ions go free.\n\n$1 + 3 = \\mathbf{4}$ ions.\n\nWerner established the structure of exactly these compounds by counting the chloride precipitated with silver nitrate.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "coo-008",
+      "chapter": "Coordination Compounds",
+      "topic": "Unpaired electrons",
+      "type": "numeric",
+      "q": "Find the number of unpaired electrons in $[\\text{Fe}(\\text{CN})_{6}]^{4-}$. (Fe has atomic number 26; $\\text{CN}^{-}$ is a strong field ligand.)",
+      "solution": "$\\text{Fe}^{2+}$ is $3d^{6}$.\n\n$\\text{CN}^{-}$ is a **strong field** ligand, so the splitting $\\Delta_{o}$ exceeds the pairing energy and all six electrons crowd into the lower $t_{2g}$ set: $t_{2g}^{6}e_{g}^{0}$.\n\nUnpaired electrons: $\\mathbf{0}$ — the complex is **diamagnetic** and low-spin.\n\nWith a weak field ligand such as water, the same $\\text{Fe}^{2+}$ gives four unpaired electrons and is paramagnetic. The metal has not changed; the ligand has.",
+      "marks": 2,
+      "answer": 0,
+      "tolerance": 0
+    },
+    {
+      "id": "coo-009",
+      "chapter": "Coordination Compounds",
+      "topic": "Coordination number",
+      "type": "numeric",
+      "q": "Find the coordination number of the central metal in $[\\text{Cr}(\\text{en})_{3}]^{3+}$, where en is bidentate.",
+      "solution": "Each ethylenediamine donates through two nitrogens, so three of them give $3 \\times 2 = \\mathbf{6}$.\n\nCoordination number counts **donor atoms**, not ligand molecules — the point of the question.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "coo-010",
+      "chapter": "Coordination Compounds",
+      "topic": "Charge on the complex ion",
+      "type": "numeric",
+      "q": "Find the charge on the complex ion in $\\text{K}_{3}[\\text{Fe}(\\text{CN})_{6}]$ (give the magnitude).",
+      "solution": "Three potassium ions carry $+3$, so the complex ion must be $3-$ for neutrality.\n\nMagnitude $= \\mathbf{3}$, and the iron is then $+3$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "coo-012",
+      "chapter": "Coordination Compounds",
+      "topic": "Crystal field theory",
+      "type": "long",
+      "q": "Explain the crystal field splitting in an octahedral complex, and how the ligand decides whether the complex is high spin or low spin.",
+      "solution": "**The splitting.** The six ligands approach along the $x$, $y$ and $z$ axes. The $e_{g}$ orbitals ($d_{x^{2}-y^{2}}$, $d_{z^{2}}$) point directly at them and are pushed **up** in energy; the $t_{2g}$ orbitals ($d_{xy}$, $d_{yz}$, $d_{zx}$) point between the ligands and settle **down**.\n\nThe gap is $\\Delta_{o}$, with $e_{g}$ at $+0.6\\Delta_{o}$ and $t_{2g}$ at $-0.4\\Delta_{o}$ relative to the average.\n\n**High spin or low spin** is a contest between $\\Delta_{o}$ and the pairing energy $P$:\n\n• **Weak field ligand** ($\\Delta_{o} < P$): cheaper to climb into $e_{g}$ than to pair up. Electrons spread out — **high spin**, strongly paramagnetic.\n\n• **Strong field ligand** ($\\Delta_{o} > P$): cheaper to pair up. Electrons fill $t_{2g}$ first — **low spin**.\n\n**Spectrochemical series** (weak to strong):\n\n$\\text{I}^{-} < \\text{Br}^{-} < \\text{Cl}^{-} < \\text{F}^{-} < \\text{OH}^{-} < \\text{H}_{2}\\text{O} < \\text{NH}_{3} < \\text{en} < \\text{NO}_{2}^{-} < \\text{CN}^{-} < \\text{CO}$\n\nOnly $d^{4}$ to $d^{7}$ have a choice; $d^{1}$–$d^{3}$ and $d^{8}$–$d^{10}$ have only one arrangement available.",
+      "marks": 3
+    },
+    {
+      "id": "coo-013",
+      "chapter": "Coordination Compounds",
+      "topic": "Isomerism in coordination compounds",
+      "type": "long",
+      "q": "Describe the types of isomerism shown by coordination compounds, with an example of each.",
+      "solution": "**Structural isomerism** — different bonds.\n\n1. **Ionisation isomerism** — the ion inside and outside the sphere swap. $[\\text{Co}(\\text{NH}_{3})_{5}\\text{SO}_{4}]\\text{Br}$ and $[\\text{Co}(\\text{NH}_{3})_{5}\\text{Br}]\\text{SO}_{4}$: one gives a precipitate with $\\text{BaCl}_{2}$, the other with $\\text{AgNO}_{3}$.\n\n2. **Linkage isomerism** — an ambidentate ligand binds through a different atom. $[\\text{Co}(\\text{NH}_{3})_{5}(\\text{NO}_{2})]^{2+}$ (through N, yellow) and $[\\text{Co}(\\text{NH}_{3})_{5}(\\text{ONO})]^{2+}$ (through O, red).\n\n3. **Coordination isomerism** — ligands are exchanged between a complex cation and a complex anion. $[\\text{Co}(\\text{NH}_{3})_{6}][\\text{Cr}(\\text{CN})_{6}]$ and $[\\text{Cr}(\\text{NH}_{3})_{6}][\\text{Co}(\\text{CN})_{6}]$.\n\n4. **Hydrate isomerism** — water inside or outside the sphere. $[\\text{Cr}(\\text{H}_{2}\\text{O})_{6}]\\text{Cl}_{3}$ (violet) and $[\\text{Cr}(\\text{H}_{2}\\text{O})_{5}\\text{Cl}]\\text{Cl}_{2}\\cdot\\text{H}_{2}\\text{O}$ (green).\n\n**Stereoisomerism** — same bonds, different arrangement in space.\n\n5. **Geometrical (cis–trans).** $[\\text{Pt}(\\text{NH}_{3})_{2}\\text{Cl}_{2}]$ — the cis form is the anticancer drug cisplatin, the trans form is useless. Same atoms, same bonds, completely different medicine.\n\n6. **Optical.** $[\\text{Co}(\\text{en})_{3}]^{3+}$ exists as two non-superimposable mirror images, which rotate plane-polarised light in opposite directions.",
+      "marks": 5
+    },
+    {
+      "id": "coo-014",
+      "chapter": "Coordination Compounds",
+      "topic": "Applications",
+      "type": "long",
+      "q": "Give three applications of coordination compounds.",
+      "solution": "1. **Medicine.** *Cis*-platin, $[\\text{Pt}(\\text{NH}_{3})_{2}\\text{Cl}_{2}]$, treats several cancers by binding to DNA. **EDTA** complexes lead and is used in lead poisoning; **desferrioxamine** removes excess iron.\n\n2. **In living things.** **Haemoglobin** is an iron–porphyrin complex that carries oxygen; **chlorophyll** is the magnesium analogue that captures light; **vitamin $\\text{B}_{12}$** is a cobalt complex.\n\n3. **Extraction of metals.** Gold and silver are leached from their ores as cyanide complexes, $[\\text{Au}(\\text{CN})_{2}]^{-}$, and then displaced with zinc.\n\n4. **Analysis.** EDTA titration measures the hardness of water; $\\text{Ni}^{2+}$ is estimated as its red dimethylglyoxime complex.\n\n5. **Photography.** Unexposed silver bromide is dissolved away as $[\\text{Ag}(\\text{S}_{2}\\text{O}_{3})_{2}]^{3-}$ during fixing.\n\n6. **Catalysis.** Wilkinson's catalyst for hydrogenation, and the Ziegler–Natta catalyst for polymerising ethene.",
+      "marks": 3
+    },
+    {
+      "id": "coo-015",
+      "chapter": "Coordination Compounds",
+      "topic": "IUPAC nomenclature",
+      "type": "long",
+      "q": "Write the IUPAC name of $[\\text{Co}(\\text{NH}_{3})_{4}\\text{Cl}_{2}]\\text{Cl}$ and state the rules you used.",
+      "solution": "**Name:** tetraamminedichloridocobalt(III) chloride.\n\n**Rules applied:**\n\n1. The **cation is named first**, then the anion — so the complex ion, then 'chloride'.\n\n2. **Ligands are named before the metal**, in alphabetical order. 'Ammine' before 'chlorido' alphabetically (a before c).\n\n3. **Prefixes** di-, tri-, tetra- give the number of each ligand, and are **ignored** when alphabetising.\n\n4. **Anionic ligands end in -o**: chlorido, cyanido, hydroxido. Neutral ligands keep their names, with the special cases aqua ($\\text{H}_{2}\\text{O}$), ammine ($\\text{NH}_{3}$), carbonyl ($\\text{CO}$).\n\n5. The **oxidation state** of the metal follows in Roman numerals in brackets. Here: $x + 0 - 2 = +1 \\Rightarrow x = +3$.\n\n6. If the complex ion were an **anion**, the metal would take the suffix **-ate**: $[\\text{Fe}(\\text{CN})_{6}]^{3-}$ is hexacyanidoferrate(III), using the Latin stem.",
+      "marks": 2
+    }
+  ]
+}

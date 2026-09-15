@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12p-em-waves",
+  "title": "Electromagnetic Waves",
+  "chapter": "Chapter Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12emw-101",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Photon momentum",
+      "type": "mcq",
+      "q": "Which of the following electromagnetic waves has photons of largest momentum?",
+      "solution": "The momentum of a photon is\n\n$$p = \\frac{h}{\\lambda} = \\frac{hf}{c},$$\n\nso momentum rises with **frequency** and falls with wavelength.\n\nRanking the four by frequency, lowest first :\n\n$$\\text{AM radio} < \\text{TV} < \\text{microwaves} < \\text{X-rays}.$$\n\nX-rays sit at around $10^{18}$ Hz, while AM radio is around $10^6$ Hz — a factor of $10^{12}$. So **X-rays** carry photons of by far the largest momentum.\n\nThe same ordering gives photon *energy*, since $E = hf = pc$; for photons, energy and momentum are proportional.",
+      "marks": 1,
+      "source": "CBSE 2025",
+      "options": [
+        "X-rays",
+        "AM radio waves",
+        "Microwaves",
+        "TV waves"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "emw-002",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Nature of EM waves",
+      "type": "mcq",
+      "q": "Electromagnetic waves are:",
+      "solution": "$\\vec{E}$ and $\\vec{B}$ both oscillate **perpendicular** to the direction of travel, and perpendicular to each other — so EM waves are **transverse**.\n\nIt is why light can be polarised; sound, being longitudinal, cannot.",
+      "marks": 1,
+      "options": [
+        "longitudinal",
+        "transverse",
+        "sometimes longitudinal",
+        "mechanical"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "emw-003",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Speed of EM waves",
+      "type": "mcq",
+      "q": "The speed of electromagnetic waves in vacuum is given by:",
+      "solution": "$c = \\mathbf{\\dfrac{1}{\\sqrt{\\mu_{0}\\varepsilon_{0}}}} \\approx 3 \\times 10^{8}$ m/s.\n\nTwo constants measured in laboratory experiments on charges and currents combine to give the speed of light — the clue that told Maxwell light *is* an electromagnetic wave.",
+      "marks": 1,
+      "options": [
+        "$\\sqrt{\\mu_{0}\\varepsilon_{0}}$",
+        "$\\dfrac{1}{\\sqrt{\\mu_{0}\\varepsilon_{0}}}$",
+        "$\\dfrac{\\mu_{0}}{\\varepsilon_{0}}$",
+        "$\\mu_{0}\\varepsilon_{0}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "emw-004",
+      "chapter": "Electromagnetic Waves",
+      "topic": "The spectrum",
+      "type": "mcq",
+      "q": "Which of these has the shortest wavelength?",
+      "solution": "In order of decreasing wavelength: radio → microwave → infrared → visible → ultraviolet → X-rays → **gamma rays**.\n\nGamma rays are the shortest and the most energetic, since $E = hf$ and short wavelength means high frequency.",
+      "marks": 1,
+      "options": [
+        "Radio waves",
+        "Infrared",
+        "Ultraviolet",
+        "Gamma rays"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "emw-005",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Uses",
+      "type": "mcq",
+      "q": "Infrared waves are used in:",
+      "solution": "Infrared is emitted by warm bodies and is easily absorbed, so it is used in **remote controls, thermal imaging and physiotherapy**.\n\nRadar uses microwaves; sterilisation uses ultraviolet; broadcasting uses radio waves.",
+      "marks": 1,
+      "options": [
+        "radar",
+        "remote controls and thermal imaging",
+        "sterilising surgical instruments",
+        "radio broadcasting"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "emw-006",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Wavelength from frequency",
+      "type": "numeric",
+      "q": "Find the wavelength (in metres) of an electromagnetic wave of frequency $100$ MHz in vacuum. Take $c = 3 \\times 10^{8}$ m/s.",
+      "solution": "$\\lambda = \\dfrac{c}{f} = \\dfrac{3 \\times 10^{8}}{1 \\times 10^{8}} = \\mathbf{3}$ m — an FM radio wave.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.05
+    },
+    {
+      "id": "emw-007",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Field amplitudes",
+      "type": "numeric",
+      "q": "An EM wave in vacuum has an electric field amplitude of $60$ V/m. Find the magnetic field amplitude, in units of $10^{-7}$ T. Take $c = 3 \\times 10^{8}$ m/s.",
+      "solution": "$E_{0} = cB_{0} \\Rightarrow B_{0} = \\dfrac{60}{3 \\times 10^{8}} = 2 \\times 10^{-7}$ T.\n\nSo the answer is $\\mathbf{2}$ (in units of $10^{-7}$ T).\n\nThe magnetic part always looks tiny in SI units, but the two carry **equal energy** — the numbers differ only because of how the units were defined.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "emw-008",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Energy of a photon",
+      "type": "numeric",
+      "q": "Find the energy (in eV) of a photon of wavelength $620$ nm. Take $hc = 1240$ eV nm.",
+      "solution": "$E = \\dfrac{hc}{\\lambda} = \\dfrac{1240}{620} = \\mathbf{2}$ eV — orange light.\n\n$hc = 1240$ eV nm is the single most useful number to memorise in this part of the syllabus.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "emw-009",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Frequency from wavelength",
+      "type": "numeric",
+      "q": "Find the frequency (in $10^{14}$ Hz) of light of wavelength $600$ nm in vacuum. Take $c = 3 \\times 10^{8}$ m/s.",
+      "solution": "$f = \\dfrac{c}{\\lambda} = \\dfrac{3 \\times 10^{8}}{600 \\times 10^{-9}} = 5 \\times 10^{14}$ Hz.\n\nSo the answer is $\\mathbf{5}$ (in units of $10^{14}$ Hz).",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.1
+    },
+    {
+      "id": "emw-010",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Displacement current",
+      "type": "numeric",
+      "q": "The electric flux between the plates of a capacitor changes at $10^{6}$ V m/s. Find the displacement current, in units of $10^{-6}$ A. Take $\\varepsilon_{0} = 8.85 \\times 10^{-12}$ SI units.",
+      "solution": "$I_{d} = \\varepsilon_{0}\\dfrac{d\\Phi_{E}}{dt} = 8.85 \\times 10^{-12} \\times 10^{6} = 8.85 \\times 10^{-6}$ A.\n\nSo the answer is $\\mathbf{8.85}$ (in units of $10^{-6}$ A).",
+      "marks": 2,
+      "answer": 8.85,
+      "tolerance": 0.1
+    },
+    {
+      "id": "emw-011",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Displacement current",
+      "type": "long",
+      "q": "What is displacement current? Show that it makes Ampere's circuital law consistent for a charging capacitor.",
+      "solution": "**The problem.** Take a charging capacitor and apply Ampere's law to a loop around the connecting wire. Choose a flat surface cutting the wire and the enclosed current is $I$. Choose instead a bulging surface that passes **between the plates** — the same loop — and no conduction current crosses it at all.\n\nAmpere's law would give two different answers for the same loop, which cannot be.\n\n**Maxwell's fix.** Between the plates the electric field is growing, so there is a changing electric flux. Define\n\n$I_{d} = \\varepsilon_{0}\\dfrac{d\\Phi_{E}}{dt}$.\n\n**Showing it works.** Between the plates, $E = \\dfrac{q}{\\varepsilon_{0}A}$, so $\\Phi_{E} = EA = \\dfrac{q}{\\varepsilon_{0}}$ and\n\n$I_{d} = \\varepsilon_{0}\\dfrac{d}{dt}\\left(\\dfrac{q}{\\varepsilon_{0}}\\right) = \\dfrac{dq}{dt} = I$.\n\nThe displacement current between the plates is exactly equal to the conduction current in the wire, so both surfaces now give the same answer. ∎\n\nThe modified law is $\\displaystyle\\oint\\vec{B}\\cdot d\\vec{l} = \\mu_{0}\\left(I_{c} + I_{d}\\right)$.",
+      "marks": 3
+    },
+    {
+      "id": "emw-012",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Properties of EM waves",
+      "type": "long",
+      "q": "List four properties of electromagnetic waves.",
+      "solution": "1. **Transverse.** $\\vec{E}$ and $\\vec{B}$ oscillate perpendicular to each other and to the direction of travel; $\\vec{E}\\times\\vec{B}$ points the way the wave goes.\n\n2. **No medium needed.** They travel through vacuum, at $c = 3 \\times 10^{8}$ m/s — unlike sound.\n\n3. **$E_{0} = cB_{0}$**, and the wave carries equal energy in its electric and magnetic parts.\n\n4. **They carry energy and momentum**, so they exert radiation pressure — which is how a solar sail works.\n\n5. They are produced by **accelerating charges**, and are not deflected by electric or magnetic fields (being uncharged themselves).",
+      "marks": 3
+    },
+    {
+      "id": "emw-013",
+      "chapter": "Electromagnetic Waves",
+      "topic": "The electromagnetic spectrum",
+      "type": "long",
+      "q": "Name the parts of the electromagnetic spectrum in order of increasing frequency, giving one source and one use of each.",
+      "solution": "**Radio waves** ($> 0.1$ m). Source: oscillating circuits, accelerated charges in an aerial. Use: broadcasting, mobile telephony.\n\n**Microwaves** (mm to cm). Source: klystrons, magnetrons. Use: radar, microwave ovens (they resonate with water molecules).\n\n**Infrared** ($700$ nm to $1$ mm). Source: hot bodies, molecular vibration. Use: thermal imaging, remote controls, physiotherapy.\n\n**Visible light** ($400$–$700$ nm). Source: the Sun, lamps, electronic transitions in atoms. Use: sight, photography, optical fibres.\n\n**Ultraviolet** ($1$–$400$ nm). Source: the Sun, arc lamps. Use: sterilising water and instruments; it causes sunburn, and the ozone layer absorbs most of it.\n\n**X-rays** ($10^{-3}$–$1$ nm). Source: rapid deceleration of high-energy electrons on a metal target. Use: medical imaging, crystallography.\n\n**Gamma rays** ($< 10^{-3}$ nm). Source: nuclear transitions, radioactive decay. Use: cancer treatment, sterilising medical supplies.\n\nThe whole spectrum is one phenomenon — only the frequency differs, and with it how the waves are made and what they interact with.",
+      "marks": 5
+    },
+    {
+      "id": "emw-014",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Energy and intensity",
+      "type": "long",
+      "q": "Write the expressions for the energy density of an electromagnetic wave and show that its electric and magnetic parts are equal.",
+      "solution": "**Electric energy density:** $u_{E} = \\tfrac12\\varepsilon_{0}E^{2}$.\n\n**Magnetic energy density:** $u_{B} = \\dfrac{B^{2}}{2\\mu_{0}}$.\n\n**Showing they are equal.** Use $E = cB$ and $c^{2} = \\dfrac{1}{\\mu_{0}\\varepsilon_{0}}$:\n\n$u_{E} = \\tfrac12\\varepsilon_{0}c^{2}B^{2} = \\tfrac12\\varepsilon_{0}\\cdot\\dfrac{1}{\\mu_{0}\\varepsilon_{0}}\\cdot B^{2} = \\dfrac{B^{2}}{2\\mu_{0}} = u_{B}$. ∎\n\nSo the total is $u = \\varepsilon_{0}E^{2}$ (using peak values, the average is $\\tfrac12\\varepsilon_{0}E_{0}^{2}$), split exactly half and half between the two fields.\n\nNeither field is the senior partner — each one's change creates the other, which is what keeps the wave going.",
+      "marks": 3
+    },
+    {
+      "id": "emw-015",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Radiation pressure",
+      "type": "long",
+      "q": "Explain why electromagnetic waves exert pressure on a surface, and state how the pressure differs for an absorbing and a reflecting surface.",
+      "solution": "An EM wave carries momentum as well as energy: $p = \\dfrac{U}{c}$ for energy $U$.\n\nWhen the wave strikes a surface, that momentum is delivered, and a rate of change of momentum is a force. Force per unit area is pressure.\n\n**Perfectly absorbing surface:** all the momentum is given up, so $P = \\dfrac{I}{c}$.\n\n**Perfectly reflecting surface:** the wave leaves with its momentum reversed, so twice as much is transferred: $P = \\dfrac{2I}{c}$.\n\nIt is the difference between catching a ball and bouncing it back — the bounce pushes you twice as hard.\n\nThe effect is tiny for sunlight (about $5\\,\\mu$Pa) but real: it shapes comet tails and is the basis of solar sails.",
+      "marks": 2
+    }
+  ]
+}

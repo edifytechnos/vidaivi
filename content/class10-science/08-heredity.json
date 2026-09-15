@@ -1,0 +1,191 @@
+{
+  "id": "lib-c10s-heredity",
+  "title": "Heredity",
+  "chapter": "Chapter Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10her-101",
+      "chapter": "Heredity",
+      "topic": "Mendel's experiments",
+      "type": "long",
+      "q": "Mendel crossed a pure tall pea plant (TT) with a pure short pea plant (tt) and obtained all tall plants in the $F_1$ generation.\n\n(a) What is the gene combination present in the plants of the $F_1$ generation?\n\n(b) Give a reason why only tall plants are observed in the $F_1$ progeny.\n\n(c) What will be the ratio of the plants obtained in the $F_2$ generation when the $F_1$ plants are self-pollinated?",
+      "solution": "**(a) The $F_1$ gene combination.**\n\nThe tall parent is TT and can only give a **T** gamete. The short parent is tt and can only give a **t** gamete. Every offspring therefore receives one of each :\n\n$$\\text{TT} \\times \\text{tt} \\longrightarrow \\text{all } \\mathbf{Tt}$$\n\nSo all $F_1$ plants are **Tt** — heterozygous.\n\n**(b) Why they are all tall.**\n\nThe allele **T** (tall) is **dominant** over **t** (short), which is recessive. In a heterozygote Tt, only the dominant allele expresses itself in the appearance of the plant. The recessive t allele is present and is passed on, but it is masked and does not show.\n\nSo every Tt plant looks tall, even though it carries the gene for shortness.\n\n**(c) The $F_2$ ratio.**\n\nSelf-pollinating $\\text{Tt} \\times \\text{Tt}$: each parent gives T or t with equal chance, so the four equally likely combinations are\n\n$$\\text{TT}, \\quad \\text{Tt}, \\quad \\text{tT}, \\quad \\text{tt}.$$\n\n**Genotypic ratio:** TT : Tt : tt $=$ **1 : 2 : 1**\n\n**Phenotypic ratio:** the first three all look tall, only tt is short, so tall : short $=$ **3 : 1**\n\nThe reappearance of the short plants in $F_2$, after none appeared in $F_1$, is the observation that showed Mendel the recessive allele had been carried through unchanged rather than blended away.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "her-001",
+      "chapter": "Heredity",
+      "topic": "Mendel",
+      "type": "mcq",
+      "q": "Mendel carried out his experiments on:",
+      "solution": "The **garden pea** ($\\textit{Pisum sativum}$) — well chosen: it has clear contrasting characters, grows quickly, self-pollinates naturally, and can be cross-pollinated by hand.\n\nCareful choice of material is half of a good experiment.",
+      "marks": 1,
+      "options": [
+        "maize",
+        "garden pea",
+        "wheat",
+        "fruit fly"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "her-002",
+      "chapter": "Heredity",
+      "topic": "Monohybrid cross",
+      "type": "mcq",
+      "q": "In a monohybrid cross between two heterozygous tall plants (Tt), the phenotypic ratio in the F2 generation is:",
+      "solution": "$\\text{Tt} \\times \\text{Tt}$ gives TT, Tt, Tt, tt.\n\nTall : short $= \\mathbf{3:1}$ by appearance, while the **genotypic** ratio is $1:2:1$.\n\nThe two ratios describe the same four boxes — one counts what you see, the other what is there.",
+      "marks": 1,
+      "options": [
+        "1:1",
+        "3:1",
+        "9:3:3:1",
+        "1:2:1"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "her-003",
+      "chapter": "Heredity",
+      "topic": "Dihybrid cross",
+      "type": "mcq",
+      "q": "The phenotypic ratio in the F2 generation of a dihybrid cross is:",
+      "solution": "$\\mathbf{9:3:3:1}$.\n\nIt is simply $3:1$ happening twice independently, which is exactly what Mendel's **law of independent assortment** says: the two characters are inherited without reference to each other.",
+      "marks": 1,
+      "options": [
+        "3:1",
+        "1:2:1",
+        "9:3:3:1",
+        "1:1:1:1"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "her-004",
+      "chapter": "Heredity",
+      "topic": "Sex determination",
+      "type": "mcq",
+      "q": "In humans, the sex of a child is determined by:",
+      "solution": "The mother contributes an X chromosome every time. The **father** contributes either X (giving a girl) or Y (giving a boy).\n\nSo the sex of the child is decided entirely by which sperm arrives first, and it is a 50:50 chance.\n\nWomen have been blamed for the sex of their children throughout history. The biology says otherwise, plainly.",
+      "marks": 1,
+      "options": [
+        "the mother's chromosomes",
+        "the father's chromosome contributed",
+        "the temperature during development",
+        "the mother's diet"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "her-005",
+      "chapter": "Heredity",
+      "topic": "Dominant and recessive",
+      "type": "mcq",
+      "q": "A trait that appears in the F1 generation of a cross between two pure-breeding parents is:",
+      "solution": "The trait that shows in F1 is **dominant**; the one that disappears is recessive.\n\nThe recessive trait has not been lost — it reappears in a quarter of the F2, which is exactly how Mendel deduced that inherited factors come in pairs and stay separate.",
+      "marks": 1,
+      "options": [
+        "recessive",
+        "dominant",
+        "co-dominant",
+        "mutant"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "her-006",
+      "chapter": "Heredity",
+      "topic": "Punnett square",
+      "type": "numeric",
+      "q": "In a cross $\\text{Tt} \\times \\text{Tt}$, what percentage of the offspring are expected to be short (tt)?",
+      "solution": "The four possibilities are TT, Tt, Tt, tt — one in four is tt.\n\n$\\mathbf{25}\\%$.",
+      "marks": 2,
+      "answer": 25,
+      "tolerance": 0.5
+    },
+    {
+      "id": "her-007",
+      "chapter": "Heredity",
+      "topic": "Chromosomes",
+      "type": "numeric",
+      "q": "How many pairs of autosomes are present in a human cell?",
+      "solution": "$23$ pairs in total, of which one pair is the **sex chromosomes**, leaving $\\mathbf{22}$ pairs of autosomes.",
+      "marks": 2,
+      "answer": 22,
+      "tolerance": 0
+    },
+    {
+      "id": "her-008",
+      "chapter": "Heredity",
+      "topic": "Monohybrid genotypic ratio",
+      "type": "numeric",
+      "q": "In a cross $\\text{Tt} \\times \\text{Tt}$, how many of the four offspring in a Punnett square are heterozygous?",
+      "solution": "TT, **Tt**, **Tt**, tt — $\\mathbf{2}$ heterozygotes, which is the '2' in the $1:2:1$ genotypic ratio.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "her-009",
+      "chapter": "Heredity",
+      "topic": "Dihybrid",
+      "type": "numeric",
+      "q": "In the F2 generation of a dihybrid cross, out of 16 offspring, how many show both dominant traits?",
+      "solution": "The $9:3:3:1$ ratio puts $\\mathbf{9}$ of the 16 in the both-dominant class.",
+      "marks": 2,
+      "answer": 9,
+      "tolerance": 0
+    },
+    {
+      "id": "her-010",
+      "chapter": "Heredity",
+      "topic": "Sex chromosomes",
+      "type": "numeric",
+      "q": "What is the probability (as a percentage) that a human child will be male?",
+      "solution": "The father's sperm carries X or Y with equal likelihood, so the chance is $\\mathbf{50}\\%$ for each child.\n\nAnd it is $50\\%$ **every time** — a family with four daughters has exactly the same odds on the fifth child as anyone else. Chance has no memory.",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 0.5
+    },
+    {
+      "id": "her-012",
+      "chapter": "Heredity",
+      "topic": "Monohybrid cross",
+      "type": "long",
+      "q": "Work out a monohybrid cross between a pure tall pea plant (TT) and a pure short one (tt) up to the F2 generation, showing both ratios.",
+      "solution": "**Parents:** TT (tall) $\\times$ tt (short).\n\n**Gametes:** all T from one parent, all t from the other.\n\n**F1 generation:** every plant is **Tt** — all **tall**, since T is dominant.\n\nThe short character has not disappeared; it is carried, unseen.\n\n**F1 self-pollinated:** $\\text{Tt} \\times \\text{Tt}$.\n\n**Punnett square:**\n\n• T $\\times$ T $\\to$ **TT** (tall)\n\n• T $\\times$ t $\\to$ **Tt** (tall)\n\n• t $\\times$ T $\\to$ **Tt** (tall)\n\n• t $\\times$ t $\\to$ **tt** (short)\n\n**F2 phenotypic ratio:** 3 tall : 1 short.\n\n**F2 genotypic ratio:** 1 TT : 2 Tt : 1 tt.\n\n**The conclusion that matters:** the short trait reappeared in the F2 after being invisible in the F1. Inherited factors therefore stay **separate and intact** — they do not blend, which was the prevailing belief before Mendel.",
+      "marks": 3
+    },
+    {
+      "id": "her-013",
+      "chapter": "Heredity",
+      "topic": "Sex determination",
+      "type": "long",
+      "q": "Explain sex determination in humans with a diagram in words, and discuss why the belief that a woman determines a child's sex is scientifically wrong.",
+      "solution": "**The chromosomes.** Humans have 23 pairs: 22 pairs of autosomes and one pair of sex chromosomes.\n\n• **Female:** XX\n\n• **Male:** XY\n\n**Gametes.**\n\n• The mother is XX, so **every egg carries an X**. She has no other option to give.\n\n• The father is XY, so **half his sperm carry X and half carry Y**.\n\n**Fertilisation.**\n\n• X (egg) + X (sperm) $\\to$ **XX**, a girl\n\n• X (egg) + Y (sperm) $\\to$ **XY**, a boy\n\n**The conclusion.** The mother's contribution is the same whatever the outcome. The sex of the child depends entirely on which of the father's two kinds of sperm reaches the egg first — a 50:50 chance he does not control either.\n\n**Why this matters.** In many societies women have been blamed, abandoned or worse for bearing daughters. The biology is unambiguous: the mother's chromosomes cannot determine sex, because she has only X to give.\n\nIndia's declining child sex ratio is a consequence of acting on that false belief, and it is why prenatal sex determination is a criminal offence here.",
+      "marks": 5
+    },
+    {
+      "id": "her-014",
+      "chapter": "Heredity",
+      "topic": "Acquired and inherited traits",
+      "type": "long",
+      "q": "Distinguish between acquired and inherited traits, and explain why acquired traits are not inherited.",
+      "solution": "**Inherited traits** — present in the genes and passed to the offspring. Eye colour, blood group, the shape of the nose, free or attached earlobes.\n\n**Acquired traits** — developed during an individual's lifetime, in response to use, injury or environment. Muscles built by exercise, a scar, a language learned, the weight gained or lost.\n\n**Why acquired traits are not inherited.** Only changes in the **germ cells** — eggs and sperm — are passed on. Changes in **somatic** (body) cells are not.\n\nExercising a muscle changes the muscle cells; it does nothing to the DNA in the reproductive cells, and so there is no mechanism by which it could reach the next generation.\n\n**The classic experiment.** August Weismann cut the tails off mice for more than twenty generations. Every generation was born with a full tail. The characteristic was acquired, and it was never inherited, however often it was imposed.\n\n**Why this matters for evolution.** It rules out Lamarck's idea that a giraffe's stretching lengthens its offspring's neck. Evolution works the other way round: variation appears **first**, by chance, in the germ cells — and the environment then selects among what is already there.",
+      "marks": 3
+    },
+    {
+      "id": "her-015",
+      "chapter": "Heredity",
+      "topic": "Variation",
+      "type": "long",
+      "q": "What is variation? Distinguish somatic from germinal variation and explain the importance of variation for a species.",
+      "solution": "**Variation** — the differences between individuals of the same species, in appearance, physiology or behaviour.\n\n**Somatic variation** — arises in the body cells during an individual's life. It affects only that individual and is **not inherited**. A scar, a suntan, a muscle built by training.\n\n**Germinal variation** — arises in the reproductive cells, by mutation or by the reshuffling of genes at meiosis and fertilisation. It **is inherited**, and it is the only kind that matters for evolution.\n\n**Where germinal variation comes from:**\n\n1. **Crossing over** during meiosis, which swaps stretches between chromosomes.\n\n2. **Independent assortment** of the chromosomes into gametes.\n\n3. **Random fertilisation** — any sperm may meet any egg.\n\n4. **Mutation** — a change in the DNA itself.\n\n**Why variation matters.** A species faces a changing world: new diseases, new predators, a shifting climate.\n\nIf every individual is identical, a single threat that defeats one defeats all of them. If the population varies, some individuals are likely to survive by chance, and they pass on whatever let them do it.\n\nVariation is a species' insurance policy against a future nobody can predict.",
+      "marks": 2
+    }
+  ]
+}

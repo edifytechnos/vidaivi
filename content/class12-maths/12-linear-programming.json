@@ -1,0 +1,193 @@
+{
+  "id": "lib-c12-linear-programming",
+  "title": "Linear Programming",
+  "chapter": "Chapter Test 12",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12lp-201",
+      "chapter": "Linear Programming",
+      "topic": "Unbounded feasible regions",
+      "type": "long",
+      "q": "Solve the following linear programming problem graphically :\n\nMaximise $Z = x + 2y$\n\nsubject to the constraints\n\n$$x - y \\geq 0, \\qquad x - 2y \\geq -2, \\qquad x \\geq 0,\\ y \\geq 0.$$",
+      "solution": "**Step 1 — rewrite the constraints as regions.**\n\n$x - y \\geq 0$ becomes $y \\leq x$ — on or below the line $y = x$.\n\n$x - 2y \\geq -2$ becomes $y \\leq \\dfrac{x + 2}{2}$ — on or below the line through $(0, 1)$ and $(2, 2)$.\n\nTogether with $x \\geq 0$ and $y \\geq 0$, the feasible region lies in the first quadrant below both lines.\n\n**Step 2 — find the corner points.** The two lines meet where $y = x$ and $2y = x + 2$ :\n\n$$2x = x + 2 \\quad\\Longrightarrow\\quad x = 2,\\ y = 2.$$\n\nSo the corners are $(0, 0)$ and $(2, 2)$.\n\n**Step 3 — notice that the region is unbounded.** Nothing places an upper limit on $x$. Taking $y = 0$, every point $(x, 0)$ with $x \\geq 0$ satisfies all four constraints, and $x$ may be as large as we like.\n\n**Step 4 — test the objective on that unbounded part.** Along $y = 0$,\n\n$$Z = x + 2(0) = x,$$\n\nwhich increases without limit as $x \\to \\infty$.\n\n**Conclusion.**\n\n$$\\textbf{$Z$ has no maximum value — the problem is unbounded.}$$\n\nThe corner-point values ($Z = 0$ at the origin, $Z = 6$ at $(2,2)$) are **not** the answer. This is the case the corner-point method has to be used carefully in: on an unbounded region it gives a maximum only if one exists, and here it does not. The method still works for the **minimum**, which is $Z = 0$ at the origin.",
+      "marks": 3,
+      "source": "CBSE 2025"
+    },
+    {
+      "id": "c12lp-102",
+      "chapter": "Linear Programming",
+      "topic": "Corner point method",
+      "type": "mcq",
+      "q": "The corner points of the feasible region in the graphical representation of a linear programming problem are $(2, 72)$, $(15, 20)$ and $(40, 15)$. If $z = 18x + 9y$ is the objective function, then :",
+      "solution": "By the corner point method, the optimum of a linear objective over a bounded feasible region occurs at one of its corners — so simply evaluate $z = 18x + 9y$ at each.\n\n**At $(2, 72)$ :**\n\n$$z = 18(2) + 9(72) = 36 + 648 = 684.$$\n\n**At $(15, 20)$ :**\n\n$$z = 18(15) + 9(20) = 270 + 180 = 450.$$\n\n**At $(40, 15)$ :**\n\n$$z = 18(40) + 9(15) = 720 + 135 = 855.$$\n\nComparing $684$, $450$ and $855$ :\n\n- the **maximum** is $855$, at $(40, 15)$;\n- the **minimum** is $450$, at $(15, 20)$.\n\nNote that the largest $y$-value does not give the largest $z$ — the coefficient of $x$ is twice that of $y$, so $x$ carries more weight.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$z$ is maximum at $(2, 72)$, minimum at $(15, 20)$",
+        "$z$ is maximum at $(40, 15)$, minimum at $(15, 20)$",
+        "$z$ is maximum at $(15, 20)$, minimum at $(40, 15)$",
+        "$z$ is maximum at $(40, 15)$, minimum at $(2, 72)$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "c12lp-101",
+      "chapter": "Linear Programming",
+      "topic": "What an LPP is",
+      "type": "mcq",
+      "q": "A linear programming problem deals with the optimization of a/an :",
+      "solution": "The name says it. A linear programming problem consists of :\n\n- an **objective function** that is linear in the decision variables, such as $Z = ax + by$ — this is what is maximised or minimised;\n- a set of **linear constraints**, written as inequalities such as $2x + 3y \\leq 12$;\n- usually non-negativity conditions $x \\geq 0$, $y \\geq 0$.\n\nBoth the thing being optimised and the region it is optimised over are linear, which is exactly why the optimum can always be found at a **corner point** of the feasible region. If the objective were quadratic or exponential, that corner-point method would fail.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "logarithmic function",
+        "linear function",
+        "quadratic function",
+        "exponential function"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lp-003",
+      "chapter": "Linear Programming",
+      "topic": "Feasible points",
+      "type": "mcq",
+      "q": "Which of these points satisfies $x + y \\le 4$, $x \\ge 0$, $y \\ge 0$?",
+      "solution": "Test each: $(3,2)$ gives $5 > 4$ ✗; $(-1,1)$ breaks $x \\ge 0$ ✗; $(5,0)$ gives $5 > 4$ ✗.\n\n$(1, 2)$ gives $3 \\le 4$ and both coordinates non-negative. ✓",
+      "marks": 1,
+      "options": [
+        "$(3, 2)$",
+        "$(1, 2)$",
+        "$(-1, 1)$",
+        "$(5, 0)$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lp-004",
+      "chapter": "Linear Programming",
+      "topic": "Unbounded regions",
+      "type": "mcq",
+      "q": "If the feasible region of an LPP is unbounded, then the objective function:",
+      "solution": "An unbounded region stretches away forever in some direction, and an objective function that grows in that direction never stops growing — so a **maximum may not exist**.\n\nThe standard test: a maximum claimed at a corner is genuine only if the open half-plane $Z > $ (that value) has no point of the feasible region in it.",
+      "marks": 1,
+      "options": [
+        "always has a maximum",
+        "always has a minimum",
+        "may have no maximum",
+        "has neither maximum nor minimum"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "lp-005",
+      "chapter": "Linear Programming",
+      "topic": "Constraints",
+      "type": "mcq",
+      "q": "In every linear programming problem in the Class 12 syllabus, the constraints $x \\ge 0$, $y \\ge 0$ are present because:",
+      "solution": "$x$ and $y$ stand for numbers of chairs, kilograms of fertiliser, hours of machine time — none of which can be negative.\n\nThey are called the **non-negativity constraints**, and they come from the real problem, not from the mathematics.",
+      "marks": 1,
+      "options": [
+        "they make the graph easier to draw",
+        "the variables represent quantities that cannot be negative",
+        "they are required by the corner point theorem",
+        "they bound the feasible region"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lp-006",
+      "chapter": "Linear Programming",
+      "topic": "Evaluating at a corner",
+      "type": "numeric",
+      "q": "The corner points of a feasible region are $(0,0)$, $(4,0)$, $(3,2)$ and $(0,3)$. Find the maximum value of $Z = 5x + 3y$.",
+      "solution": "Evaluate $Z$ at every corner:\n\n$(0,0) \\to 0$; $(4,0) \\to 20$; $(3,2) \\to 15 + 6 = 21$; $(0,3) \\to 9$.\n\nMaximum $= \\mathbf{21}$ at $(3, 2)$.\n\nFour arithmetic lines and the answer is settled — that is the whole power of the corner point theorem.",
+      "marks": 2,
+      "answer": 21,
+      "tolerance": 0
+    },
+    {
+      "id": "lp-007",
+      "chapter": "Linear Programming",
+      "topic": "Minimum at a corner",
+      "type": "numeric",
+      "q": "For the same corner points $(0,0)$, $(4,0)$, $(3,2)$, $(0,3)$, find the minimum value of $Z = 2x + 7y$.",
+      "solution": "$(0,0) \\to 0$; $(4,0) \\to 8$; $(3,2) \\to 20$; $(0,3) \\to 21$.\n\nMinimum $= \\mathbf{0}$ at the origin.\n\nWhen both coefficients are positive and the origin is feasible, the origin always wins the minimum.",
+      "marks": 2,
+      "answer": 0,
+      "tolerance": 0
+    },
+    {
+      "id": "lp-008",
+      "chapter": "Linear Programming",
+      "topic": "Intersection of constraints",
+      "type": "numeric",
+      "q": "Find the value of $Z = x + y$ at the point where $x + 2y = 10$ meets $2x + y = 10$.",
+      "solution": "Adding the equations: $3x + 3y = 20 \\Rightarrow x + y = \\dfrac{20}{3} \\approx \\mathbf{6.667}$.\n\nNo need to find $x$ and $y$ separately — the objective function asked only for their sum. Looking for that shortcut is worth a few seconds in an exam.",
+      "marks": 2,
+      "answer": 6.667,
+      "tolerance": 0.01
+    },
+    {
+      "id": "lp-009",
+      "chapter": "Linear Programming",
+      "topic": "Counting corner points",
+      "type": "numeric",
+      "q": "How many corner points does the feasible region $x \\ge 0$, $y \\ge 0$, $x + y \\le 5$ have?",
+      "solution": "The region is the triangle with vertices $(0,0)$, $(5,0)$ and $(0,5)$ — $\\mathbf{3}$ corner points.\n\nSketching the region first, however roughly, is always faster than reasoning about it in the abstract.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "lp-010",
+      "chapter": "Linear Programming",
+      "topic": "Maximum over a triangle",
+      "type": "numeric",
+      "q": "Maximise $Z = 4x + y$ subject to $x + y \\le 5$, $x \\ge 0$, $y \\ge 0$. Give the maximum value.",
+      "solution": "Corners: $(0,0) \\to 0$; $(5,0) \\to 20$; $(0,5) \\to 5$.\n\nMaximum $= \\mathbf{20}$ at $(5, 0)$.\n\n$x$ is worth four times as much as $y$ per unit and costs the same in the constraint, so everything goes into $x$.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0
+    },
+    {
+      "id": "lp-012",
+      "chapter": "Linear Programming",
+      "topic": "Formulating an LPP",
+      "type": "long",
+      "q": "A shopkeeper makes two kinds of gift box. Box A needs 2 hours of labour and returns ₹30 profit; Box B needs 3 hours and returns ₹40. There are 60 hours of labour available and at most 25 boxes can be sold in total. Formulate this as a linear programming problem.",
+      "solution": "**Decision variables.** Let $x$ = number of Box A and $y$ = number of Box B.\n\n**Objective.** Maximise $Z = 30x + 40y$ (profit in rupees).\n\n**Constraints.**\n\nLabour: $2x + 3y \\le 60$\n\nSales: $x + y \\le 25$\n\nNon-negativity: $x \\ge 0,\\; y \\ge 0$\n\nFormulating is three questions in order: what am I choosing, what am I trying to make big, and what is stopping me. Each line of the problem becomes exactly one of those.",
+      "marks": 3
+    },
+    {
+      "id": "lp-013",
+      "chapter": "Linear Programming",
+      "topic": "A complete problem",
+      "type": "long",
+      "q": "Maximise $Z = 60x + 40y$ subject to $2x + 3y \\le 60$, $x + y \\le 25$, $x \\ge 0$, $y \\ge 0$.",
+      "solution": "**Corner points.** The boundary lines are $2x + 3y = 60$ and $x + y = 25$.\n\nThey meet where $2x + 3(25 - x) = 60 \\Rightarrow 75 - x = 60 \\Rightarrow x = 15$, $y = 10$.\n\nAlso on the axes: $x + y = 25$ meets the $x$-axis at $(25, 0)$, but that fails $2x + 3y \\le 60$ ($50 \\le 60$ ✓ — it is feasible).\n\nAnd $2x + 3y = 60$ meets the $y$-axis at $(0, 20)$, which satisfies $x + y \\le 25$. ✓\n\nSo the corners are $(0,0)$, $(25,0)$, $(15,10)$ and $(0,20)$.\n\n**Evaluate $Z = 60x + 40y$:**\n\n$(0,0) \\to 0$; $(25,0) \\to 1500$; $(15,10) \\to 900 + 400 = 1300$; $(0,20) \\to 800$.\n\n**Maximum $= 1500$ at $(25, 0)$.**\n\nThe intersection point is not always the winner — it has to be checked against the axis corners like any other.",
+      "marks": 5
+    },
+    {
+      "id": "lp-014",
+      "chapter": "Linear Programming",
+      "topic": "Minimum over an unbounded region",
+      "type": "long",
+      "q": "Minimise $Z = 3x + 5y$ subject to $x + y \\ge 2$, $x \\ge 0$, $y \\ge 0$, and explain why the answer is trustworthy even though the region is unbounded.",
+      "solution": "The corner points of this unbounded region are $(2, 0)$ and $(0, 2)$.\n\n$Z(2,0) = 6$ and $Z(0,2) = 10$, so the candidate minimum is $6$.\n\n**The check for an unbounded region:** does $3x + 5y < 6$ contain any feasible point?\n\nOn the feasible region $x + y \\ge 2$, and since $3x + 5y \\ge 3(x + y) \\ge 6$, no feasible point can beat $6$.\n\n**Minimum $= 6$ at $(2, 0)$.**\n\nFor an unbounded region the corner values are only candidates until that half-plane test is done — and a *minimum* with positive coefficients is the case that usually survives it.",
+      "marks": 3
+    },
+    {
+      "id": "lp-015",
+      "chapter": "Linear Programming",
+      "topic": "Reading the answer back",
+      "type": "long",
+      "q": "An LPP in $x$ (tables) and $y$ (chairs) has its maximum profit at the corner point $(7.5,\\; 12)$. Explain what a manufacturer should actually do.",
+      "solution": "The mathematics is right but the answer is not usable: you cannot make half a table.\n\nThe feasible **integer** points nearby have to be tested — $(7, 12)$ and, if it satisfies every constraint, $(8, 12)$ — and whichever gives the larger profit **while remaining feasible** is the plan.\n\nA corner point may be fractional; the recommendation must not be. (Problems where the variables must be whole numbers are called integer programming, and they are genuinely harder — which is why Class 12 problems are set so the corner comes out whole.)",
+      "marks": 2
+    }
+  ]
+}

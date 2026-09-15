@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-quantum",
+  "title": "Quantum and Nuclear Physics",
+  "chapter": "Topic Test 12",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp12-001",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Photon energy",
+      "type": "mcq",
+      "q": "The energy of a photon of frequency $f$ is:",
+      "solution": "$E = \\mathbf{hf} = \\dfrac{hc}{\\lambda}$, with $h = 6.63 \\times 10^{-34}$ J s.\n\nEnergy comes in discrete packets, and the size of each packet depends on the frequency alone.",
+      "marks": 1,
+      "options": [
+        "$hf$",
+        "$\\dfrac{h}{f}$",
+        "$hf^{2}$",
+        "$\\dfrac{f}{h}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp12-002",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Photoelectric effect",
+      "type": "mcq",
+      "q": "Increasing the intensity of light of fixed frequency increases:",
+      "solution": "Intensity is the **number of photons per second**, so it governs how many electrons are emitted — not how energetic each is.\n\nThe kinetic energy is fixed by the **frequency**: $E_{k,\\max} = hf - \\phi$.",
+      "marks": 1,
+      "options": [
+        "the maximum kinetic energy of the electrons",
+        "the number of photoelectrons per second",
+        "the work function",
+        "the threshold frequency"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp12-003",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "de Broglie",
+      "type": "mcq",
+      "q": "The de Broglie wavelength of a particle of momentum $p$ is:",
+      "solution": "$\\lambda = \\mathbf{\\dfrac{h}{p}}$.\n\nEverything has one, but for anything macroscopic it is around $10^{-34}$ m — far too small to produce any observable effect.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{h}{p}$",
+        "$hp$",
+        "$\\dfrac{p}{h}$",
+        "$\\dfrac{h}{p^{2}}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp12-004",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Energy levels",
+      "type": "mcq",
+      "q": "An electron falling between two energy levels emits a photon of energy:",
+      "solution": "$hf = E_{1} - E_{2}$, the **difference** between the levels.\n\nBecause the levels are discrete, only certain differences are possible — which is why atoms emit **line** spectra rather than a continuous range, and why each element's spectrum is a fingerprint.",
+      "marks": 1,
+      "options": [
+        "$E_{1} + E_{2}$",
+        "$E_{1} - E_{2}$",
+        "$\\dfrac{E_{1}}{E_{2}}$",
+        "$hE$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp12-005",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Radioactive decay",
+      "type": "mcq",
+      "q": "The activity of a radioactive sample is:",
+      "solution": "$A = \\mathbf{\\lambda N}$ — the decay constant times the number of undecayed nuclei, in becquerels.\n\nAs $N$ falls, so does the activity, and both decay exponentially with the same half-life.",
+      "marks": 1,
+      "options": [
+        "$\\lambda N$",
+        "$\\dfrac{N}{\\lambda}$",
+        "$\\lambda + N$",
+        "$N^{2}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp12-006",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Photon energy",
+      "type": "numeric",
+      "q": "Find the energy (in eV) of a photon of wavelength $400$ nm. Take $hc = 1240$ eV nm.",
+      "solution": "$E = \\dfrac{1240}{400} = \\mathbf{3.1}$ eV — violet light, at the edge of the visible range.",
+      "marks": 2,
+      "answer": 3.1,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp12-007",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Photoelectric effect",
+      "type": "numeric",
+      "q": "Light of photon energy $4.5$ eV falls on a metal of work function $2.3$ eV. Find the maximum kinetic energy of the photoelectrons, in eV.",
+      "solution": "$E_{k,\\max} = hf - \\phi = 4.5 - 2.3 = \\mathbf{2.2}$ eV.",
+      "marks": 2,
+      "answer": 2.2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp12-008",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Half-life and decay constant",
+      "type": "numeric",
+      "q": "A nuclide has a decay constant of $0.0231$ s$^{-1}$. Find its half-life, in s.",
+      "solution": "$t_{1/2} = \\dfrac{0.693}{\\lambda} = \\dfrac{0.693}{0.0231} = \\mathbf{30}$ s.",
+      "marks": 2,
+      "answer": 30,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alp12-009",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Activity",
+      "type": "numeric",
+      "q": "A sample contains $10^{12}$ undecayed nuclei with decay constant $10^{-3}$ s$^{-1}$. Find the activity, in $10^{9}$ Bq.",
+      "solution": "$A = \\lambda N = 10^{-3} \\times 10^{12} = 10^{9}$ Bq, so the answer is $\\mathbf{1}$.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp12-010",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Mass-energy",
+      "type": "numeric",
+      "q": "Find the energy (in MeV) equivalent to a mass defect of $0.005$ u. Take $1$ u $= 931.5$ MeV/c$^{2}$.",
+      "solution": "$E = 0.005 \\times 931.5 = \\mathbf{4.66}$ MeV.",
+      "marks": 2,
+      "answer": 4.66,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp12-011",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "The photoelectric effect",
+      "type": "long",
+      "q": "Describe the photoelectric effect, state the observations that the wave theory cannot explain, and show how the photon model accounts for each.",
+      "solution": "**The effect.** Electrons are emitted from a metal surface when light of a high enough frequency falls on it.\n\n**Three observations wave theory cannot explain.**\n\n1. **A threshold frequency exists.** Below it, no electrons are emitted however intense the light or however long you wait.\n\n*Wave theory predicts* that any frequency should work eventually, as energy accumulates.\n\n*Photon model:* one photon gives all its energy $hf$ to one electron. If $hf < \\phi$, no single photon can free it, and energy from two photons is not pooled.\n\n2. **Emission is instantaneous** — within about $10^{-9}$ s, even in very dim light.\n\n*Wave theory predicts* a delay of minutes or hours while enough energy arrives.\n\n*Photon model:* the transaction is a single event, so there is nothing to wait for.\n\n3. **Maximum kinetic energy depends on frequency, not intensity.**\n\n*Wave theory predicts* that brighter light carries more energy and should give faster electrons.\n\n*Photon model:* brighter means **more photons**, not more energetic ones. Each electron still receives exactly $hf$.\n\n**Einstein's equation:**\n\n$hf = \\phi + E_{k,\\max}$\n\n**The decisive test.** A graph of stopping potential against frequency is a straight line of gradient $\\dfrac{h}{e}$ — the **same for every metal** — with its intercept on the frequency axis at the threshold.\n\nMillikan set out to disprove Einstein's equation and ended by measuring $h$ with it.",
+      "marks": 3
+    },
+    {
+      "id": "alp12-012",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Wave-particle duality",
+      "type": "long",
+      "q": "Explain wave-particle duality, and describe the evidence for the wave nature of electrons and the particle nature of light.",
+      "solution": "**The idea.** Both radiation and matter show **wave** behaviour in some experiments and **particle** behaviour in others. Neither picture alone is complete; which one appears depends on what is being measured.\n\n**Evidence for the wave nature of electrons — the Davisson-Germer experiment.** Electrons accelerated through a known potential were fired at a nickel crystal, and the scattered beam showed clear **diffraction maxima**.\n\nDiffraction is a wave phenomenon that particles cannot produce. The wavelength deduced from the pattern agreed with $\\lambda = \\dfrac{h}{p}$ to within one per cent.\n\n**Its practical consequence:** the electron microscope. Accelerated electrons have wavelengths thousands of times shorter than light, so they resolve detail an optical microscope never could.\n\n**Evidence for the particle nature of light — the photoelectric effect.** The existence of a threshold frequency, the instantaneous emission, and the independence of electron energy from intensity all require light to arrive in discrete quanta.\n\n**Also the Compton effect**, in which an X-ray photon colliding with an electron loses energy and changes wavelength exactly as a billiard-ball collision would predict.\n\n**How to hold the two together.** The wave model describes how radiation **propagates** — interference, diffraction, refraction. The particle model describes how it **interacts** with matter — emission and absorption.\n\nThe two never contradict each other in a single experiment, because no experiment shows both at once. Light is neither a wave nor a particle in the everyday sense; those are two familiar models we borrow to describe something that is neither.",
+      "marks": 3
+    },
+    {
+      "id": "alp12-013",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Radioactive decay",
+      "type": "long",
+      "q": "State the law of radioactive decay, derive $N = N_{0}e^{-\\lambda t}$, explain why decay is random yet predictable, and describe how the half-life is found from a graph.",
+      "solution": "**The law.** The rate of decay is proportional to the number of undecayed nuclei present:\n\n$-\\dfrac{dN}{dt} = \\lambda N$\n\n**Derivation.** Separating and integrating from $N_{0}$ at $t = 0$:\n\n$\\displaystyle\\int\\dfrac{dN}{N} = -\\lambda\\int dt$\n\n$\\ln\\dfrac{N}{N_{0}} = -\\lambda t$\n\n$\\mathbf{N = N_{0}e^{-\\lambda t}}$\n\n**Half-life.** Putting $N = \\dfrac{N_{0}}{2}$:\n\n$t_{1/2} = \\dfrac{\\ln 2}{\\lambda} = \\dfrac{0.693}{\\lambda}$\n\n**Random yet predictable.** It is impossible to say **which** nucleus will decay next or **when** any particular one will. A nucleus does not age: its chance of decaying in the next second is the same as it was a thousand years ago.\n\nYet a sample contains perhaps $10^{20}$ nuclei, and with such numbers the **statistical** behaviour is precise. It is the same reason a life insurer can predict how many claims it will receive without knowing who will make them.\n\n**The randomness is directly observable** as the irregular clicking of a Geiger counter, and as the fluctuation in repeated counts of the same sample.\n\n**Finding the half-life from a graph.** Plot **$\\ln A$ against $t$**, giving a straight line of gradient $-\\lambda$. Then $t_{1/2} = \\dfrac{0.693}{\\lambda}$.\n\nThe log plot uses every point, averages out the counting fluctuations, and confirms that the decay really is exponential — which reading a single half-life off the curve would not.\n\n**Do not forget to subtract the background count** before plotting; it is always present and it does not decay.",
+      "marks": 5
+    },
+    {
+      "id": "alp12-014",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Nuclear binding energy",
+      "type": "long",
+      "q": "Define mass defect and binding energy, explain the binding energy per nucleon curve, and show why both fission and fusion release energy.",
+      "solution": "**Mass defect.** The mass of a nucleus is **less** than the total mass of its separate nucleons.\n\n$\\Delta m = Zm_{p} + Nm_{n} - M_{\\text{nucleus}}$\n\n**Binding energy** is the energy equivalent of that missing mass, $E = \\Delta mc^{2}$ — the energy needed to pull the nucleus completely apart, or released when it is assembled.\n\n**Binding energy per nucleon** is the meaningful comparison between nuclei, since it measures how tightly each nucleon is held.\n\n**The curve.** It rises steeply for light nuclei, peaks at about $8.8$ MeV per nucleon near $A = 56$ (iron and nickel), then falls slowly to about $7.6$ MeV at $A = 238$.\n\nA **higher** value means a **more stable** nucleus, so iron sits at the bottom of the energy valley.\n\n**Fission.** A heavy nucleus at $7.6$ MeV per nucleon splits into two middling ones at about $8.5$ MeV per nucleon. Each of $236$ nucleons becomes more tightly bound by roughly $0.9$ MeV, releasing around $200$ MeV in total.\n\n**Fusion.** Two very light nuclei, low on the steeply rising part of the curve, combine into one much higher up. The gain **per nucleon** is far larger than in fission — which is why the Sun outperforms any reactor.\n\n**Both processes move matter towards $A = 56$**, from either direction. Energy is released whenever nucleons roll downhill into a deeper well.\n\n**And nothing can be released beyond iron**, which is why fusion in a dying star stops there — and why everything heavier than iron was made in the supernova that followed.",
+      "marks": 3
+    },
+    {
+      "id": "alp12-015",
+      "chapter": "Quantum and Nuclear Physics",
+      "topic": "Energy levels and spectra",
+      "type": "long",
+      "q": "Explain how discrete energy levels give rise to line spectra, and distinguish emission from absorption spectra.",
+      "solution": "**Discrete levels.** An electron in an atom can occupy only certain energy levels. It cannot sit between them — the intermediate energies simply do not exist for it.\n\n**Emission.** When an electron falls from a higher level to a lower one, the difference is carried away as a single photon:\n\n$hf = E_{2} - E_{1}$\n\nBecause only certain differences are possible, only certain frequencies appear — **bright lines** on a dark background.\n\n**Absorption.** White light passed through a cool gas loses exactly those photons whose energy matches a level difference, since only they can lift an electron between levels.\n\nThe result is a continuous spectrum crossed by **dark lines**, at precisely the frequencies the same gas would emit.\n\n**Why the lines coincide.** The same energy gaps govern both processes — one going up, the other coming down.\n\n**Why this matters.** Every element has a unique set of levels and therefore a unique spectrum — a fingerprint that identifies it at any distance.\n\n**Helium was discovered in the Sun** before it was found on Earth, from an unexplained line in the solar spectrum in 1868. Its name comes from *helios*.\n\nThe composition of stars, the expansion of the universe (through the redshift of known lines), and the presence of particular molecules in interstellar clouds are all read from spectra.\n\n**And it was the line spectrum of hydrogen that forced quantum theory into existence:** classical physics predicted a continuous spectrum and an atom that collapsed in $10^{-8}$ s. Discrete energy levels were the answer to both.",
+      "marks": 2
+    }
+  ]
+}

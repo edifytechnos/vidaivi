@@ -1,0 +1,193 @@
+{
+  "id": "lib-c12-differential-equations",
+  "title": "Differential Equations",
+  "chapter": "Chapter Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12de-101",
+      "chapter": "Differential Equations",
+      "topic": "Integrating factor",
+      "type": "mcq",
+      "q": "The integrating factor of the differential equation $x\\dfrac{dy}{dx} - y = x^4 - 3x$ is :",
+      "solution": "First put the equation into standard linear form $\\dfrac{dy}{dx} + Py = Q$ by dividing through by $x$ :\n\n$$\\frac{dy}{dx} - \\frac{1}{x}y = x^3 - 3.$$\n\nSo $P = -\\dfrac{1}{x}$.\n\nThe integrating factor is\n\n$$\\text{I.F.} = e^{\\int P\\,dx} = e^{\\int -\\frac{1}{x}dx} = e^{-\\log x} = e^{\\log x^{-1}} = x^{-1}.$$\n\nThe step that is easy to skip is the division by $x$ — reading $P$ off the equation before it is in standard form gives the wrong answer.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "$x$",
+        "$-x$",
+        "$x^{-1}$",
+        "$\\log\\left(x^{-1}\\right)$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12de-102",
+      "chapter": "Differential Equations",
+      "topic": "Integrating factor",
+      "type": "mcq",
+      "q": "The integrating factor of the differential equation $\\left(1 - x^2\\right)\\dfrac{dy}{dx} + xy = ax$, $-1 < x < 1$, is :",
+      "solution": "Divide through by $\\left(1 - x^2\\right)$ to reach standard form :\n\n$$\\frac{dy}{dx} + \\frac{x}{1 - x^2}\\,y = \\frac{ax}{1 - x^2}, \\qquad P = \\frac{x}{1 - x^2}.$$\n\nNow integrate $P$. Put $u = 1 - x^2$, so $du = -2x\\,dx$ and $x\\,dx = -\\tfrac12 du$ :\n\n$$\\int \\frac{x}{1 - x^2}dx = -\\frac12\\int\\frac{du}{u} = -\\frac12\\log u = -\\frac12\\log\\left(1 - x^2\\right).$$\n\n(The condition $-1 < x < 1$ is what makes $1 - x^2$ positive, so the logarithm is defined.)\n\nTherefore\n\n$$\\text{I.F.} = e^{-\\frac12\\log(1 - x^2)} = \\left(1 - x^2\\right)^{-1/2} = \\frac{1}{\\sqrt{1 - x^2}}.$$",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "$\\dfrac{1}{\\sqrt{1 - x^2}}$",
+        "$\\sqrt{1 - x^2}$",
+        "$\\dfrac{1}{\\sqrt{x^2 - 1}}$",
+        "$\\sqrt{x^2 - 1}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c12de-103",
+      "chapter": "Differential Equations",
+      "topic": "Integrating factor",
+      "type": "mcq",
+      "q": "The integrating factor of the differential equation $\\dfrac{dy}{dx} + y\\tan x = 2x + x^2\\tan x$ is :",
+      "solution": "The equation is already in standard linear form $\\dfrac{dy}{dx} + Py = Q$, with\n\n$$P = \\tan x.$$\n\nSo\n\n$$\\text{I.F.} = e^{\\int \\tan x\\,dx} = e^{\\log|\\sec x|} = \\sec x.$$\n\n(Recall $\\int \\tan x\\,dx = \\log|\\sec x| + c$.)\n\nAs a check, multiplying the equation by $\\sec x$ gives $\\dfrac{d}{dx}\\left(y\\sec x\\right) = \\left(2x + x^2\\tan x\\right)\\sec x$, and the right-hand side is exactly $\\dfrac{d}{dx}\\left(x^2 \\sec x\\right)$ — so the solution is $y\\sec x = x^2\\sec x + c$, i.e. $y = x^2 + c\\cos x$.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "$e^{\\sec x}$",
+        "$\\sec x + \\tan x$",
+        "$\\sec x$",
+        "$\\cos x$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "de-004",
+      "chapter": "Differential Equations",
+      "topic": "Arbitrary constants",
+      "type": "mcq",
+      "q": "The general solution of a differential equation of order $n$ contains:",
+      "solution": "Each integration introduces one constant, and reaching the solution of an $n$th-order equation takes $n$ of them.\n\nSo the general solution carries $\\mathbf{n}$ arbitrary constants — and it takes $n$ extra pieces of information (initial conditions) to pin down a particular solution.",
+      "marks": 1,
+      "options": [
+        "one arbitrary constant",
+        "$n$ arbitrary constants",
+        "$n - 1$ arbitrary constants",
+        "no arbitrary constant"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "de-005",
+      "chapter": "Differential Equations",
+      "topic": "Variable separable",
+      "type": "mcq",
+      "q": "Which of these is a variable-separable differential equation?",
+      "solution": "$\\dfrac{dy}{dx} = xy$ tears apart cleanly: $\\dfrac{dy}{y} = x\\,dx$, one variable on each side.\n\nThe others mix $x$ and $y$ in a sum, which no rearrangement separates — those need the linear or homogeneous method instead.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{dy}{dx} = x + y$",
+        "$\\dfrac{dy}{dx} = xy$",
+        "$\\dfrac{dy}{dx} = \\dfrac{x + y}{x - y}$",
+        "$\\dfrac{dy}{dx} + y = x$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "de-006",
+      "chapter": "Differential Equations",
+      "topic": "Degree",
+      "type": "numeric",
+      "q": "Find the degree of the differential equation $\\left(\\dfrac{d^{2}y}{dx^{2}}\\right)^{2} + \\left(\\dfrac{dy}{dx}\\right)^{4} = x$.",
+      "solution": "The highest derivative is $\\dfrac{d^{2}y}{dx^{2}}$, and it appears to the power $\\mathbf{2}$.\n\nThe fourth power on the first derivative does not matter — degree looks only at the highest-order derivative.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "de-007",
+      "chapter": "Differential Equations",
+      "topic": "Particular solution",
+      "type": "numeric",
+      "q": "Solve $\\dfrac{dy}{dx} = 2x$ given that $y = 3$ when $x = 0$, and find the value of $y$ when $x = 1$.",
+      "solution": "Integrating: $y = x^{2} + C$.\n\nThe condition $y(0) = 3$ gives $C = 3$, so $y = x^{2} + 3$.\n\nAt $x = 1$: $y = \\mathbf{4}$.\n\nThe condition is what picks one curve out of the whole family.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "de-008",
+      "chapter": "Differential Equations",
+      "topic": "Integrating factor at a point",
+      "type": "numeric",
+      "q": "For $\\dfrac{dy}{dx} + \\dfrac{2y}{x} = x$, the integrating factor is a function of $x$. Find its value at $x = 3$.",
+      "solution": "$P = \\dfrac{2}{x}$, so the factor is $e^{\\int \\frac{2}{x}dx} = e^{2\\log x} = x^{2}$.\n\nAt $x = 3$: $\\mathbf{9}$.\n\n$e^{\\log(\\text{something})}$ collapsing back to that something is the step worth watching for — it is what keeps integrating factors from looking frightening.",
+      "marks": 2,
+      "answer": 9,
+      "tolerance": 0
+    },
+    {
+      "id": "de-009",
+      "chapter": "Differential Equations",
+      "topic": "Exponential growth",
+      "type": "numeric",
+      "q": "Solve $\\dfrac{dy}{dx} = y$ with $y = 2$ when $x = 0$, and find $y$ when $x = \\log 2$.",
+      "solution": "Separating: $\\dfrac{dy}{y} = dx \\Rightarrow \\log|y| = x + c \\Rightarrow y = Ae^{x}$.\n\n$y(0) = 2$ gives $A = 2$, so $y = 2e^{x}$.\n\nAt $x = \\log 2$: $y = 2e^{\\log 2} = 2 \\times 2 = \\mathbf{4}$.\n\n'Rate of change equals current size' is the equation of every compound-interest account and every growing culture of bacteria.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "de-010",
+      "chapter": "Differential Equations",
+      "topic": "Order",
+      "type": "numeric",
+      "q": "Find the order of the differential equation $\\left(\\dfrac{d^{3}y}{dx^{3}}\\right)^{2} + \\sin\\left(\\dfrac{dy}{dx}\\right) = 0$.",
+      "solution": "The highest derivative appearing is $\\dfrac{d^{3}y}{dx^{3}}$, so the order is $\\mathbf{3}$.\n\nIts **degree** is undefined, by the way: $\\sin\\left(\\tfrac{dy}{dx}\\right)$ stops the equation ever being a polynomial in the derivatives.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "de-011",
+      "chapter": "Differential Equations",
+      "topic": "Variable separable",
+      "type": "long",
+      "q": "Solve: $\\dfrac{dy}{dx} = \\dfrac{1 + y^{2}}{1 + x^{2}}$.",
+      "solution": "Separate the variables — each side gets only its own letter:\n\n$\\dfrac{dy}{1 + y^{2}} = \\dfrac{dx}{1 + x^{2}}$.\n\nIntegrate both sides:\n\n$\\tan^{-1}y = \\tan^{-1}x + C$.\n\n$\\mathbf{y = \\tan\\left(\\tan^{-1}x + C\\right)}$, or equivalently $\\tan^{-1}y - \\tan^{-1}x = C$.\n\nLeaving the answer in the inverse-tangent form is perfectly acceptable, and usually tidier.",
+      "marks": 3
+    },
+    {
+      "id": "de-012",
+      "chapter": "Differential Equations",
+      "topic": "Linear differential equation",
+      "type": "long",
+      "q": "Solve: $\\dfrac{dy}{dx} + 2y = e^{3x}$.",
+      "solution": "It is linear with $P = 2$ and $Q = e^{3x}$, so the integrating factor is $e^{\\int 2dx} = e^{2x}$.\n\nMultiply through:\n\n$e^{2x}\\dfrac{dy}{dx} + 2e^{2x}y = e^{5x} \\Rightarrow \\dfrac{d}{dx}\\left(ye^{2x}\\right) = e^{5x}$.\n\nIntegrate both sides:\n\n$ye^{2x} = \\dfrac{e^{5x}}{5} + C$.\n\n$\\mathbf{y = \\dfrac{e^{3x}}{5} + Ce^{-2x}}$.\n\nThe integrating factor's only job is to make the left-hand side collapse into a single derivative — after that it is ordinary integration.",
+      "marks": 3
+    },
+    {
+      "id": "de-013",
+      "chapter": "Differential Equations",
+      "topic": "Homogeneous differential equation",
+      "type": "long",
+      "q": "Solve: $\\dfrac{dy}{dx} = \\dfrac{x + y}{x}$.",
+      "solution": "Every term has the same total degree, so put $y = vx$, giving $\\dfrac{dy}{dx} = v + x\\dfrac{dv}{dx}$.\n\nThe right-hand side becomes $\\dfrac{x + vx}{x} = 1 + v$.\n\nSo $v + x\\dfrac{dv}{dx} = 1 + v \\Rightarrow x\\dfrac{dv}{dx} = 1$.\n\n$dv = \\dfrac{dx}{x} \\Rightarrow v = \\log|x| + C$.\n\nSubstituting back $v = \\dfrac{y}{x}$:\n\n$\\mathbf{y = x\\left(\\log|x| + C\\right)}$.\n\n**Check:** differentiating gives $\\dfrac{dy}{dx} = \\log|x| + C + 1 = \\dfrac{y}{x} + 1 = \\dfrac{x+y}{x}$. ✓\n\nThe substitution $y = vx$ measures $y$ in units of $x$; in those units the equation forgets its scale and separates.",
+      "marks": 5
+    },
+    {
+      "id": "de-014",
+      "chapter": "Differential Equations",
+      "topic": "Forming a differential equation",
+      "type": "long",
+      "q": "Form the differential equation of the family of circles $x^{2} + y^{2} = a^{2}$, where $a$ is arbitrary.",
+      "solution": "There is **one** arbitrary constant, so the differential equation will be of order one — differentiate once and eliminate $a$.\n\n$2x + 2y\\dfrac{dy}{dx} = 0$.\n\n$a$ has already vanished, because it only ever appeared as a constant:\n\n$\\mathbf{x + y\\dfrac{dy}{dx} = 0}$.\n\nRead it geometrically: the slope at any point is $-\\tfrac{x}{y}$, which says the tangent is perpendicular to the radius — true of every circle centred at the origin, whatever its size. That is exactly what removing $a$ means.",
+      "marks": 3
+    },
+    {
+      "id": "de-015",
+      "chapter": "Differential Equations",
+      "topic": "Particular solution",
+      "type": "long",
+      "q": "Find the particular solution of $\\dfrac{dy}{dx} = \\dfrac{y}{x}$ given that $y = 2$ when $x = 1$.",
+      "solution": "Separate: $\\dfrac{dy}{y} = \\dfrac{dx}{x}$.\n\nIntegrate: $\\log|y| = \\log|x| + c \\Rightarrow y = Ax$.\n\nApply $y(1) = 2$: $A = 2$.\n\n$\\mathbf{y = 2x}$ — one straight line out of the whole family of lines through the origin.",
+      "marks": 2
+    }
+  ]
+}

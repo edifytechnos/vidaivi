@@ -96,7 +96,7 @@
       "topic": "Reading the discriminant carefully",
       "type": "mcq",
       "marks": 1,
-      "q": "The discriminant of the quadratic equation $bx^{2} + ax + c = 0$, where $b \\neq 0$, is:",
+      "q": "The discriminant of the quadratic equation $bx^{2} + ax + c = 0$, where $b \neq 0$, is:",
       "options": [
         "$b^{2} - 4ac$",
         "$a^{2} - 4bc$",
@@ -174,8 +174,8 @@
       "source": "CBSE 2024",
       "type": "long",
       "marks": 5,
-      "q": "Find the value of $k$ for which the quadratic equation\n\n$$(k + 1)x^{2} - 6(k + 1)x + 3(k + 9) = 0,\\quad k \\neq -1$$\n\nhas real and equal roots.",
-      "solution": "**Equal roots means $D = 0$.** Here $a = k+1$, $b = -6(k+1)$, $c = 3(k+9)$.\n\n$D = \\big[-6(k+1)\\big]^{2} - 4(k+1)\\cdot 3(k+9)$\n\n$= 36(k+1)^{2} - 12(k+1)(k+9)$\n\n**Take out the common factor** $12(k+1)$ instead of expanding everything:\n\n$= 12(k+1)\\Big[3(k+1) - (k+9)\\Big]$\n\n$= 12(k+1)\\big[3k + 3 - k - 9\\big]$\n\n$= 12(k+1)(2k - 6)$\n\n**Set it to zero:**\n\n$12(k+1)(2k-6) = 0 \\Rightarrow k = -1$ or $k = 3$\n\nThe question rules out $k = -1$ — and rightly so: at $k = -1$ every term vanishes except the constant and it is not a quadratic at all. So\n\n$k = \\mathbf{3}$\n\n**Check:** at $k = 3$ the equation is $4x^{2} - 24x + 36 = 0$, i.e. $4(x - 3)^{2} = 0$ — equal roots at $x = 3$ ✓\n\nThe condition $k \\neq -1$ in the question is not fine print; it is a hint. It tells you $(k+1)$ is about to appear as a factor, and that one of the two answers you find will have to be thrown away.",
+      "q": "Find the value of $k$ for which the quadratic equation\n\n$$(k + 1)x^{2} - 6(k + 1)x + 3(k + 9) = 0,\\quad k \neq -1$$\n\nhas real and equal roots.",
+      "solution": "**Equal roots means $D = 0$.** Here $a = k+1$, $b = -6(k+1)$, $c = 3(k+9)$.\n\n$D = \\big[-6(k+1)\\big]^{2} - 4(k+1)\\cdot 3(k+9)$\n\n$= 36(k+1)^{2} - 12(k+1)(k+9)$\n\n**Take out the common factor** $12(k+1)$ instead of expanding everything:\n\n$= 12(k+1)\\Big[3(k+1) - (k+9)\\Big]$\n\n$= 12(k+1)\\big[3k + 3 - k - 9\\big]$\n\n$= 12(k+1)(2k - 6)$\n\n**Set it to zero:**\n\n$12(k+1)(2k-6) = 0 \\Rightarrow k = -1$ or $k = 3$\n\nThe question rules out $k = -1$ — and rightly so: at $k = -1$ every term vanishes except the constant and it is not a quadratic at all. So\n\n$k = \\mathbf{3}$\n\n**Check:** at $k = 3$ the equation is $4x^{2} - 24x + 36 = 0$, i.e. $4(x - 3)^{2} = 0$ — equal roots at $x = 3$ ✓\n\nThe condition $k \neq -1$ in the question is not fine print; it is a hint. It tells you $(k+1)$ is about to appear as a factor, and that one of the two answers you find will have to be thrown away.",
       "chapter": "Quadratic Equations"
     },
     {

@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12p-current-electricity",
+  "title": "Current Electricity",
+  "chapter": "Chapter Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12cur-101",
+      "chapter": "Current Electricity",
+      "topic": "Drift velocity and current density",
+      "type": "long",
+      "q": "A potential difference $V$ is applied across a conductor of length $l$ and cross-sectional area $A$. How will the (i) electric field $E$, (ii) drift velocity $v_d$, and (iii) current density $j$ be affected when (a) $V$ is doubled and (b) $l$ is halved (keeping other factors constant)?",
+      "solution": "Start from the three relations that connect these quantities.\n\n$$E = \\frac{V}{l}, \\qquad v_d = \\frac{e\\tau}{m}E, \\qquad j = n e v_d = \\sigma E.$$\n\nThe key observation is that **all three depend on $V$ and $l$ only through the combination $E = V/l$**. So whatever multiplies $E$ multiplies $v_d$ and $j$ by the same factor.\n\n**(a) $V$ is doubled**, with $l$ unchanged.\n\n$$E = \\frac{2V}{l} \\quad\\text{— doubled.}$$\n\nSince $v_d \\propto E$ and $j \\propto E$ :\n\n- $E$ becomes **twice**,\n- $v_d$ becomes **twice**,\n- $j$ becomes **twice**.\n\n**(b) $l$ is halved**, with $V$ unchanged.\n\n$$E = \\frac{V}{l/2} = \\frac{2V}{l} \\quad\\text{— also doubled.}$$\n\nSo again :\n\n- $E$ becomes **twice**,\n- $v_d$ becomes **twice**,\n- $j$ becomes **twice**.\n\n**The point of the question** is that halving the length has exactly the same effect as doubling the voltage: both double the field, and everything else follows from the field. Note that $n$, $\\tau$, $e$ and $m$ are properties of the material, untouched by either change.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "cur-001",
+      "chapter": "Current Electricity",
+      "topic": "Ohm's law",
+      "type": "mcq",
+      "q": "The resistance of a wire of length $l$ and cross-sectional area $A$ is:",
+      "solution": "$R = \\mathbf{\\dfrac{\\rho l}{A}}$.\n\nLonger pipe, more resistance; wider pipe, less. Resistivity $\\rho$ is the property of the material itself, independent of the shape you cut it into.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\rho l}{A}$",
+        "$\\dfrac{\\rho A}{l}$",
+        "$\\rho l A$",
+        "$\\dfrac{l}{\\rho A}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "cur-002",
+      "chapter": "Current Electricity",
+      "topic": "Drift velocity",
+      "type": "mcq",
+      "q": "The drift velocity of free electrons in a conductor is typically of the order of:",
+      "solution": "Drift velocity is astonishingly slow — about $\\mathbf{10^{-4}}$ m/s, a fraction of a millimetre per second.\n\nThe lamp still lights instantly because the **electric field** travels at nearly the speed of light and sets every electron in the wire moving at once.\n\nA pipe already full of water: open the tap and water comes out immediately, though any one molecule crawls along.",
+      "marks": 1,
+      "options": [
+        "$10^{8}$ m/s",
+        "$10^{6}$ m/s",
+        "$10^{-4}$ m/s",
+        "$10^{3}$ m/s"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "cur-003",
+      "chapter": "Current Electricity",
+      "topic": "Resistances in parallel",
+      "type": "mcq",
+      "q": "Two resistors of $6\\,\\Omega$ and $3\\,\\Omega$ are connected in parallel. The equivalent resistance is:",
+      "solution": "$\\dfrac{1}{R} = \\dfrac16 + \\dfrac13 = \\dfrac12 \\Rightarrow R = \\mathbf{2\\,\\Omega}$.\n\nIn parallel the answer is always less than the smallest branch — opening a second checkout lane can only shorten the queue.",
+      "marks": 1,
+      "options": [
+        "$9\\,\\Omega$",
+        "$2\\,\\Omega$",
+        "$4.5\\,\\Omega$",
+        "$18\\,\\Omega$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cur-004",
+      "chapter": "Current Electricity",
+      "topic": "Kirchhoff's rules",
+      "type": "mcq",
+      "q": "Kirchhoff's junction rule is a statement of the conservation of:",
+      "solution": "The junction rule says the current in equals the current out — no charge piles up at a junction. That is **conservation of charge**.\n\nThe loop rule, by contrast, is conservation of **energy**: go round a closed loop and the potential returns to where it started.",
+      "marks": 1,
+      "options": [
+        "energy",
+        "charge",
+        "momentum",
+        "current density"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cur-005",
+      "chapter": "Current Electricity",
+      "topic": "Internal resistance",
+      "type": "mcq",
+      "q": "A cell of emf $\\varepsilon$ and internal resistance $r$ drives a current $I$ through an external resistance $R$. The terminal voltage is:",
+      "solution": "$V = \\mathbf{\\varepsilon - Ir}$ — some of the emf is spent driving the current through the cell's own resistance.\n\nIt is why a torch battery reads $1.5$ V unloaded and less while the bulb is on, and why an old battery 'sags' badly: $r$ has grown.",
+      "marks": 1,
+      "options": [
+        "$\\varepsilon + Ir$",
+        "$\\varepsilon - Ir$",
+        "$\\varepsilon r$",
+        "$\\dfrac{\\varepsilon}{r}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cur-006",
+      "chapter": "Current Electricity",
+      "topic": "Ohm's law",
+      "type": "numeric",
+      "q": "A potential difference of $12$ V is applied across a $4\\,\\Omega$ resistor. Find the current, in amperes.",
+      "solution": "$I = \\dfrac{V}{R} = \\dfrac{12}{4} = \\mathbf{3}$ A.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "cur-007",
+      "chapter": "Current Electricity",
+      "topic": "Power",
+      "type": "numeric",
+      "q": "Find the power (in watts) dissipated in a $5\\,\\Omega$ resistor carrying a current of $2$ A.",
+      "solution": "$P = I^{2}R = (2)^{2} \\times 5 = \\mathbf{20}$ W.\n\n$P = VI$ and $P = V^{2}/R$ are the same law in different clothes — pick the form matching the quantities you were given.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0
+    },
+    {
+      "id": "cur-008",
+      "chapter": "Current Electricity",
+      "topic": "Resistivity",
+      "type": "numeric",
+      "q": "A wire of length $2$ m and cross-sectional area $1 \\times 10^{-6}$ m$^{2}$ has resistance $4\\,\\Omega$. Find its resistivity in units of $10^{-6}\\,\\Omega$ m.",
+      "solution": "$\\rho = \\dfrac{RA}{l} = \\dfrac{4 \\times 10^{-6}}{2} = 2 \\times 10^{-6}\\,\\Omega$ m.\n\nSo the answer is $\\mathbf{2}$ (in units of $10^{-6}\\,\\Omega$ m).",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "cur-009",
+      "chapter": "Current Electricity",
+      "topic": "Internal resistance",
+      "type": "numeric",
+      "q": "A cell of emf $2$ V and internal resistance $0.5\\,\\Omega$ is connected to a $1.5\\,\\Omega$ resistor. Find the current in amperes.",
+      "solution": "$I = \\dfrac{\\varepsilon}{R + r} = \\dfrac{2}{1.5 + 0.5} = \\mathbf{1}$ A.\n\nThe internal resistance sits in series with everything else — forgetting it is the classic slip in this chapter.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "cur-010",
+      "chapter": "Current Electricity",
+      "topic": "Charge and current",
+      "type": "numeric",
+      "q": "A current of $0.5$ A flows for $2$ minutes. Find the charge that passes, in coulombs.",
+      "solution": "$q = It = 0.5 \\times 120 = \\mathbf{60}$ C.\n\nMinutes must become seconds first — the ampere is a coulomb per **second**.",
+      "marks": 2,
+      "answer": 60,
+      "tolerance": 0
+    },
+    {
+      "id": "cur-012",
+      "chapter": "Current Electricity",
+      "topic": "Wheatstone bridge",
+      "type": "long",
+      "q": "State the balance condition of a Wheatstone bridge and explain what 'balanced' means physically.",
+      "solution": "With resistances $P$, $Q$, $R$, $S$ in the four arms and a galvanometer across the bridge, the balance condition is\n\n$\\mathbf{\\dfrac{P}{Q} = \\dfrac{R}{S}}$.\n\n**Physically**, balance means the two ends of the galvanometer sit at the **same potential**, so no current flows through it.\n\nThe bridge then reports a *ratio*, and the reading does not depend on the supply voltage or on the galvanometer's own resistance — which is why it measures an unknown resistance so precisely.\n\nIt is a null method: instead of measuring a quantity, you adjust until there is nothing to measure, and a zero can be spotted far more accurately than a number can be read.",
+      "marks": 3
+    },
+    {
+      "id": "cur-013",
+      "chapter": "Current Electricity",
+      "topic": "Kirchhoff's rules applied",
+      "type": "long",
+      "q": "Two cells of emf $2$ V and $4$ V with internal resistances $1\\,\\Omega$ and $2\\,\\Omega$ are connected in parallel across an external resistance of $10\\,\\Omega$. Using Kirchhoff's rules, find the current through the external resistance.",
+      "solution": "Let the potential across the parallel combination be $V$.\n\n**Junction rule:** the currents the two cells deliver add up to the current through $R$.\n\nCurrent from cell 1: $\\dfrac{2 - V}{1}$. From cell 2: $\\dfrac{4 - V}{2}$. Through $R$: $\\dfrac{V}{10}$.\n\n$\\dfrac{2 - V}{1} + \\dfrac{4 - V}{2} = \\dfrac{V}{10}$.\n\nMultiply by $10$: $20 - 10V + 20 - 5V = V \\Rightarrow 40 = 16V \\Rightarrow V = 2.5$ V.\n\n$I = \\dfrac{V}{R} = \\dfrac{2.5}{10} = \\mathbf{0.25}$ A.\n\n**Worth noticing:** $V = 2.5$ V is above cell 1's emf of $2$ V, so cell 1 is being **charged** by cell 2 — the current through it runs backwards. The algebra tells you that without your having to guess it in advance.",
+      "marks": 5
+    },
+    {
+      "id": "cur-014",
+      "chapter": "Current Electricity",
+      "topic": "Resistance and temperature",
+      "type": "long",
+      "q": "Explain why the resistance of a metal increases with temperature while that of a semiconductor decreases.",
+      "solution": "**Metals.** The number of free electrons hardly changes with temperature, but the lattice ions vibrate harder, so electrons collide more often and the relaxation time $\\tau$ falls.\n\nSince $\\rho = \\dfrac{m}{ne^{2}\\tau}$, a smaller $\\tau$ means a larger $\\rho$ — **resistance rises**.\n\n**Semiconductors.** Here heating breaks many more electrons free, so $n$ rises steeply — exponentially — and that swamps the fall in $\\tau$.\n\n$\\rho$ therefore **falls**: a semiconductor conducts better when hot.\n\nIn a metal the crowd is fixed and the corridor gets busier; in a semiconductor the crowd itself multiplies.",
+      "marks": 3
+    },
+    {
+      "id": "cur-015",
+      "chapter": "Current Electricity",
+      "topic": "Cells in series and parallel",
+      "type": "long",
+      "q": "$n$ identical cells, each of emf $\\varepsilon$ and internal resistance $r$, are connected in series across an external resistance $R$. Write the current, and say when this arrangement is better than connecting them in parallel.",
+      "solution": "**In series:** the emfs add and so do the internal resistances.\n\n$I = \\dfrac{n\\varepsilon}{R + nr}$.\n\n**In parallel:** $I = \\dfrac{\\varepsilon}{R + r/n}$.\n\n**When series wins:** if $R \\gg r$, the $nr$ hardly matters and the current is nearly $n$ times bigger. So series is for a **large external resistance**.\n\n**When parallel wins:** if $R \\ll r$, the internal resistance dominates, and dividing it by $n$ is what helps.\n\nRule of thumb: put the cells in series when the load is the bottleneck, in parallel when the cells themselves are.",
+      "marks": 2
+    }
+  ]
+}

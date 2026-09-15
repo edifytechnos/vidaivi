@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-cells",
+  "title": "Cells and Organisation",
+  "chapter": "Topic Test 1",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igb1-001",
+      "chapter": "Cells and Organisation",
+      "topic": "Characteristics of living organisms",
+      "type": "mcq",
+      "q": "Which of these is **not** one of the seven characteristics of living organisms?",
+      "solution": "The seven are movement, respiration, sensitivity, growth, reproduction, excretion and nutrition — **MRS GREN**.\n\n**Combustion** is burning, a chemical process that living things do not carry out.",
+      "marks": 1,
+      "options": [
+        "Respiration",
+        "Excretion",
+        "Combustion",
+        "Sensitivity"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igb1-002",
+      "chapter": "Cells and Organisation",
+      "topic": "Plant and animal cells",
+      "type": "mcq",
+      "q": "Which structure is found in a plant cell but not in an animal cell?",
+      "solution": "The **cell wall**, made of cellulose, gives the plant cell its rigid shape and support.\n\nPlant cells also have **chloroplasts** and a large permanent **vacuole**. All four structures listed as options are in both — only the wall is exclusive.",
+      "marks": 1,
+      "options": [
+        "Nucleus",
+        "Cell wall",
+        "Cytoplasm",
+        "Cell membrane"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb1-003",
+      "chapter": "Cells and Organisation",
+      "topic": "Diffusion",
+      "type": "mcq",
+      "q": "Diffusion is the net movement of particles:",
+      "solution": "Particles move **down** the concentration gradient, from where they are crowded to where they are not, by their own random motion.\n\nIt needs **no energy** from the cell — which is exactly what distinguishes it from active transport.",
+      "marks": 1,
+      "options": [
+        "from low to high concentration",
+        "from high to low concentration",
+        "against a concentration gradient",
+        "only in liquids"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb1-004",
+      "chapter": "Cells and Organisation",
+      "topic": "Osmosis",
+      "type": "mcq",
+      "q": "Osmosis is the movement of:",
+      "solution": "Osmosis is the diffusion of **water** through a partially permeable membrane, from a **dilute** solution (high water potential) to a **concentrated** one.\n\nThe membrane lets water through and holds the solute back — which is why only the water moves.",
+      "marks": 1,
+      "options": [
+        "any particles through a membrane",
+        "water from a dilute to a concentrated solution through a partially permeable membrane",
+        "water from a concentrated to a dilute solution",
+        "solute particles only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb1-005",
+      "chapter": "Cells and Organisation",
+      "topic": "Enzymes",
+      "type": "mcq",
+      "q": "Enzymes are denatured at high temperature because:",
+      "solution": "Heat breaks the weak bonds holding the protein's shape, so the **active site** no longer fits the substrate.\n\nThe change is **permanent** — cooling does not restore it, which is why a boiled egg never un-boils.",
+      "marks": 1,
+      "options": [
+        "they dissolve",
+        "their active site changes shape",
+        "they are used up",
+        "the substrate evaporates"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb1-006",
+      "chapter": "Cells and Organisation",
+      "topic": "Levels of organisation",
+      "type": "numeric",
+      "q": "How many levels are there in the sequence: cell, tissue, organ, organ system, organism?",
+      "solution": "$\\mathbf{5}$ — each level is built from the one before, with new capabilities appearing at every step.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "igb1-007",
+      "chapter": "Cells and Organisation",
+      "topic": "Characteristics",
+      "type": "numeric",
+      "q": "How many characteristics of living organisms are there (MRS GREN)?",
+      "solution": "$\\mathbf{7}$ — movement, respiration, sensitivity, growth, reproduction, excretion, nutrition.",
+      "marks": 2,
+      "answer": 7,
+      "tolerance": 0
+    },
+    {
+      "id": "igb1-008",
+      "chapter": "Cells and Organisation",
+      "topic": "Magnification",
+      "type": "numeric",
+      "q": "A cell appears $50$ mm long under a microscope, and its real length is $0.1$ mm. Find the magnification.",
+      "solution": "$\\text{Magnification} = \\dfrac{\\text{image size}}{\\text{actual size}} = \\dfrac{50}{0.1} = \\mathbf{500}$.\n\nBoth measurements must be in the **same unit** before dividing — that is where this calculation usually goes wrong.",
+      "marks": 2,
+      "answer": 500,
+      "tolerance": 1
+    },
+    {
+      "id": "igb1-009",
+      "chapter": "Cells and Organisation",
+      "topic": "Optimum pH",
+      "type": "numeric",
+      "q": "At approximately what pH does the stomach enzyme pepsin work best?",
+      "solution": "About pH $\\mathbf{2}$ — strongly acidic, which is why the stomach produces hydrochloric acid.\n\nOther enzymes have quite different optima: salivary amylase works near pH $7$ and is destroyed the moment it reaches the stomach.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igb1-010",
+      "chapter": "Cells and Organisation",
+      "topic": "Enzyme optimum temperature",
+      "type": "numeric",
+      "q": "At approximately what temperature (in °C) do most human enzymes work best?",
+      "solution": "About $\\mathbf{37}$°C, which is body temperature — no coincidence.\n\nAbove about $40$°C the rate falls sharply as the enzymes denature, which is why a high fever is dangerous.",
+      "marks": 2,
+      "answer": 37,
+      "tolerance": 1
+    },
+    {
+      "id": "igb1-011",
+      "chapter": "Cells and Organisation",
+      "topic": "Cell structures",
+      "type": "long",
+      "q": "Name five structures found in a plant cell and give the function of each.",
+      "solution": "**Cell wall** — a rigid layer of cellulose outside the membrane. Gives support and shape, and stops the cell bursting when it takes in water.\n\n**Cell membrane** — partially permeable; controls what enters and leaves.\n\n**Cytoplasm** — the jelly where most chemical reactions take place.\n\n**Nucleus** — contains the DNA and controls the cell's activities.\n\n**Chloroplasts** — contain chlorophyll and carry out photosynthesis. Found in the green parts only, never in the roots.\n\n**Vacuole** — a large permanent sac of cell sap. When full it presses outwards against the wall, making the cell **turgid**, and it is this pressure that holds a non-woody plant upright.\n\n**Mitochondria** — release energy by aerobic respiration. Plants respire too, all the time.\n\nA wilting plant is one whose vacuoles have lost water, so the cells are no longer pressing against their walls.",
+      "marks": 3
+    },
+    {
+      "id": "igb1-012",
+      "chapter": "Cells and Organisation",
+      "topic": "Osmosis in cells",
+      "type": "long",
+      "q": "Describe what happens to a plant cell and an animal cell when each is placed in pure water, and explain the difference.",
+      "solution": "**Plant cell in pure water.** Water enters by osmosis and the vacuole swells, pressing the contents against the cell wall.\n\nThe cell becomes **turgid**. The strong cellulose wall resists the pressure, so the cell stops expanding and does **not** burst. Turgidity is the normal, healthy state for a plant cell.\n\n**Animal cell in pure water.** Water enters by osmosis and the cell swells, but there is **no wall** to resist it.\n\nThe cell swells until the membrane bursts — **lysis**. A red blood cell in pure water bursts within seconds.\n\n**The difference** is entirely the cell wall.\n\n**In concentrated solution**, both lose water. The plant cell's membrane pulls away from the wall — **plasmolysis** — and the plant wilts, though it can often recover. The animal cell shrinks and crinkles.\n\n**Why it matters medically:** intravenous drips must be at the **same** concentration as blood plasma. Pure water would burst the patient's red blood cells.",
+      "marks": 3
+    },
+    {
+      "id": "igb1-013",
+      "chapter": "Cells and Organisation",
+      "topic": "Enzymes",
+      "type": "long",
+      "q": "What are enzymes? Explain the lock-and-key model, and describe how temperature and pH affect enzyme activity.",
+      "solution": "**What they are.** Biological catalysts — proteins that speed up reactions in living things without being used up.\n\n**Lock and key.** Each enzyme has an **active site** with a particular shape. Only a substrate of the matching shape can fit into it, which is why enzymes are so **specific** — one enzyme, usually one reaction.\n\nThe enzyme and substrate form a complex, the reaction takes place, the products leave, and the enzyme is free to start again.\n\n**Temperature.**\n\n• As it rises, molecules move faster, collide more often, and the rate **increases**.\n\n• At the **optimum** (about $37$°C for human enzymes) the rate is greatest.\n\n• Above it, the rate falls **sharply**, because heat breaks the bonds holding the protein's shape. The active site is distorted and the enzyme is **denatured** — permanently.\n\nNote the asymmetry of the graph: the rise is gradual, the fall is a cliff. Cold enzymes are slow but unharmed; hot ones are destroyed.\n\n**pH.** Each enzyme has an optimum — pepsin at about pH $2$, amylase near pH $7$, trypsin at about pH $8$. Away from it the shape is disturbed, and far from it the enzyme denatures.\n\nThat is why digestion needs an acidic stomach and an alkaline small intestine: different enzymes, different conditions.",
+      "marks": 5
+    },
+    {
+      "id": "igb1-014",
+      "chapter": "Cells and Organisation",
+      "topic": "Diffusion, osmosis and active transport",
+      "type": "long",
+      "q": "Compare diffusion, osmosis and active transport.",
+      "solution": "**Diffusion** — the net movement of particles from high to low concentration, by random motion.\n\n• **Down** the gradient\n\n• **No energy** required\n\n• *Example:* oxygen entering the blood in the alveoli\n\n**Osmosis** — the diffusion of **water** through a partially permeable membrane, from a dilute to a concentrated solution.\n\n• **Down** the water gradient\n\n• **No energy** required\n\n• *Example:* water entering root hair cells\n\n**Active transport** — movement of particles **against** the concentration gradient, using a carrier protein.\n\n• **Up** the gradient\n\n• **Energy required**, from respiration (ATP)\n\n• *Example:* mineral ions taken into root hairs from very dilute soil water; glucose reabsorbed in the kidney\n\n**The test that separates them:** a cell poisoned so that it cannot respire continues to take up substances by diffusion and osmosis, but active transport stops at once.\n\nDiffusion is rolling downhill; active transport is pushing uphill, and pushing costs.",
+      "marks": 3
+    },
+    {
+      "id": "igb1-015",
+      "chapter": "Cells and Organisation",
+      "topic": "Surface area and volume",
+      "type": "long",
+      "q": "Explain why large organisms need specialised exchange surfaces, while a single-celled organism does not.",
+      "solution": "**The problem.** As anything grows, its **volume** increases faster than its **surface area**.\n\nDouble every length and the surface area becomes $4$ times larger, while the volume becomes $8$ times larger. The **surface area to volume ratio therefore falls**.\n\n**Why that matters.** The volume decides how much oxygen the organism needs and how much waste it makes. The surface decides how fast those can be exchanged.\n\n**A single-celled organism** such as Amoeba has an enormous surface area for its tiny volume, and no part of it is far from the outside. Diffusion across the membrane is entirely sufficient.\n\n**A large organism** has far too little surface for its bulk, and its inner cells are many centimetres from the outside — a distance diffusion cannot cover in any useful time.\n\n**The solution — specialised exchange surfaces**, all of them built to the same recipe:\n\n• **Large surface area** — alveoli, villi, root hairs, gill filaments\n\n• **Thin** — one cell thick, so the diffusion distance is short\n\n• **Good blood supply** — to keep the concentration gradient steep\n\n• **Moist**, since gases must dissolve to cross\n\nPlus a **transport system** to carry substances the rest of the way. Human lungs pack about $80$ m$^{2}$ of surface into a chest a few litres in volume — the whole design is an answer to a problem of geometry.",
+      "marks": 2
+    }
+  ]
+}

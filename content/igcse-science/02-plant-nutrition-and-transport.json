@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-plants",
+  "title": "Plant Nutrition and Transport",
+  "chapter": "Topic Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igb2-001",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Photosynthesis",
+      "type": "mcq",
+      "q": "The word equation for photosynthesis is:",
+      "solution": "$\\text{carbon dioxide} + \\text{water} \\xrightarrow{\\text{light, chlorophyll}} \\text{glucose} + \\text{oxygen}$\n\nThe first option is **respiration** — which is very nearly photosynthesis in reverse.",
+      "marks": 1,
+      "options": [
+        "glucose + oxygen → carbon dioxide + water",
+        "carbon dioxide + water → glucose + oxygen",
+        "glucose → carbon dioxide + alcohol",
+        "water → hydrogen + oxygen"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb2-002",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Limiting factors",
+      "type": "mcq",
+      "q": "On a bright, warm day the rate of photosynthesis in a greenhouse is most likely limited by:",
+      "solution": "With plenty of light and warmth, the factor in shortest supply is **carbon dioxide** — the air holds only about $0.04\\%$.\n\nThis is why commercial greenhouses are enriched with $\\text{CO}_{2}$: it is the cheapest of the three factors to increase and usually the one holding the crop back.",
+      "marks": 1,
+      "options": [
+        "light intensity",
+        "temperature",
+        "carbon dioxide concentration",
+        "water"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igb2-003",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Leaf structure",
+      "type": "mcq",
+      "q": "Most photosynthesis in a leaf takes place in the:",
+      "solution": "The **palisade mesophyll** — tall cells packed with chloroplasts, arranged in a column just under the transparent upper epidermis where the light is strongest.\n\nEvery feature of a leaf is an adaptation: thin for short diffusion distances, broad for a large surface, with air spaces below and stomata to let carbon dioxide in.",
+      "marks": 1,
+      "options": [
+        "upper epidermis",
+        "palisade mesophyll",
+        "spongy mesophyll",
+        "xylem"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb2-004",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Transpiration",
+      "type": "mcq",
+      "q": "Transpiration is the loss of water vapour from a plant mainly through the:",
+      "solution": "Through the **stomata** — pores in the lower epidermis, each controlled by a pair of guard cells.\n\nIt is the unavoidable cost of opening those pores to let carbon dioxide in, and the resulting **transpiration pull** is what draws water up the whole plant.",
+      "marks": 1,
+      "options": [
+        "roots",
+        "stomata",
+        "xylem",
+        "flowers"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb2-005",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Xylem and phloem",
+      "type": "mcq",
+      "q": "Xylem vessels carry:",
+      "solution": "**Xylem** carries water and dissolved minerals **upwards** from the roots, through dead, hollow tubes.\n\n**Phloem** carries dissolved food from the leaves to wherever it is needed — up or down — through living cells. Xylem is a dead pipe; phloem is a living pump.",
+      "marks": 1,
+      "options": [
+        "food from leaves to roots",
+        "water from roots to leaves",
+        "oxygen to the cells",
+        "hormones only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb2-006",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Photosynthesis equation",
+      "type": "numeric",
+      "q": "In the balanced equation $6\\text{CO}_{2} + 6\\text{H}_{2}\\text{O} \\to \\text{C}_{6}\\text{H}_{12}\\text{O}_{6} + a\\text{O}_{2}$, find $a$.",
+      "solution": "$\\mathbf{6}$ — and every one of those oxygen atoms comes from the **water**, not the carbon dioxide.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "igb2-007",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Limiting factors",
+      "type": "numeric",
+      "q": "How many main limiting factors of photosynthesis are there (light, carbon dioxide, temperature)?",
+      "solution": "$\\mathbf{3}$. At any moment the rate is set by whichever is in **shortest supply** — increasing the others makes no difference at all until that one is raised.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "igb2-008",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Stomata",
+      "type": "numeric",
+      "q": "How many guard cells surround one stoma?",
+      "solution": "$\\mathbf{2}$. They change shape as water enters or leaves them, opening the pore by day and closing it at night — when no photosynthesis is happening and water would only be wasted.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "igb2-009",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Mineral requirements",
+      "type": "numeric",
+      "q": "How many of these minerals do plants need in large amounts: nitrate, magnesium, sodium?",
+      "solution": "**Nitrate** ✓ (for making amino acids and proteins) and **magnesium** ✓ (for making chlorophyll).\n\n**Sodium** is not a major plant requirement. So $\\mathbf{2}$.\n\nA nitrate shortage stunts growth; a magnesium shortage yellows the leaves, because no chlorophyll can be made.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "igb2-010",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Transpiration rate",
+      "type": "numeric",
+      "q": "A potometer shows a water uptake of $12$ mm in $4$ minutes. Find the rate in mm per minute.",
+      "solution": "$\\dfrac{12}{4} = \\mathbf{3}$ mm/min.\n\nA potometer measures **water uptake**, which is close to but not identical with transpiration — a little water is also used in photosynthesis and retained in the plant.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igb2-011",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Photosynthesis experiments",
+      "type": "long",
+      "q": "Describe how you would test a leaf for starch, and how you would show that light is necessary for photosynthesis.",
+      "solution": "**Testing a leaf for starch.**\n\n1. **Boil the leaf in water** for a minute — this kills it and breaks down the cell membranes.\n\n2. **Boil it in ethanol** in a water bath, to dissolve out the green chlorophyll. The ethanol must be heated in a **water bath, not over a flame**, because it is highly flammable.\n\n3. **Dip the leaf in hot water** to soften it — ethanol leaves it brittle.\n\n4. **Add iodine solution.** Blue-black means starch is present; orange-brown means it is not.\n\n**Showing that light is necessary.**\n\n1. **Destarch** the plant by leaving it in the dark for 48 hours, so any starch found afterwards must be newly made. This step is essential — without it the test proves nothing.\n\n2. Cover part of one leaf with **black paper or foil**, leaving the rest exposed.\n\n3. Leave the plant in **bright light** for several hours.\n\n4. Test the whole leaf for starch.\n\n**Result.** The exposed part turns blue-black; the covered part stays orange-brown.\n\n**Why it is a fair test.** The two halves are on the **same leaf**, so temperature, water, carbon dioxide and the plant itself are identical. Light is the only variable — which is what makes the conclusion safe.",
+      "marks": 3
+    },
+    {
+      "id": "igb2-012",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Transpiration",
+      "type": "long",
+      "q": "What is transpiration? Describe four factors that affect its rate and explain each.",
+      "solution": "**Transpiration** — the loss of water vapour from a plant, mostly through the stomata of the leaves.\n\nWater evaporates from the mesophyll cell surfaces into the air spaces and diffuses out through the stomata. The resulting **transpiration pull** draws the whole column of water up the xylem.\n\n**Factors affecting the rate.**\n\n1. **Light intensity.** Brighter light opens the stomata for photosynthesis, so more water escapes. Transpiration is far slower at night.\n\n2. **Temperature.** Warmth gives water molecules more energy to evaporate and speeds their diffusion. Rate increases.\n\n3. **Humidity.** Damp air reduces the concentration gradient between the leaf and the outside, so less water diffuses out. Rate decreases — which is why plants in a sealed greenhouse wilt less.\n\n4. **Wind speed.** Moving air carries away the humid layer at the leaf surface, keeping the gradient steep. Rate increases.\n\n**Why plants tolerate it.** Transpiration is not the point of having stomata — it is the price of opening them to admit carbon dioxide. A plant cannot photosynthesise without losing water.\n\n**Its uses:** it draws water and minerals up from the roots, and evaporation cools the leaf. Desert plants reduce it with a thick waxy cuticle, sunken stomata and reduced leaves — a cactus's spines are leaves.",
+      "marks": 3
+    },
+    {
+      "id": "igb2-013",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Leaf structure and adaptation",
+      "type": "long",
+      "q": "Describe the structure of a leaf and explain how each feature adapts it for photosynthesis.",
+      "solution": "**Broad and flat** — a large surface area to catch as much light as possible, and for gas exchange.\n\n**Thin** — carbon dioxide has only a short distance to diffuse to reach the photosynthesising cells.\n\n**Waxy cuticle** — a transparent waterproof layer that lets light through while reducing water loss.\n\n**Upper epidermis** — transparent, with no chloroplasts, so light passes straight through to the cells below.\n\n**Palisade mesophyll** — tall cells packed with chloroplasts, arranged in a column immediately under the epidermis, where the light is strongest. This is where most photosynthesis happens, and its position is no accident.\n\n**Spongy mesophyll** — loosely packed cells with large **air spaces**, allowing carbon dioxide to reach every cell by diffusion and oxygen to leave.\n\n**Stomata** — pores in the lower epidermis, each with two guard cells, letting carbon dioxide in and water vapour and oxygen out. They are on the **underside**, away from direct sun, which reduces water loss.\n\n**Veins (xylem and phloem)** — deliver water and minerals and carry the sugar away, and also support the leaf so it stays spread out.\n\nEvery feature answers the same question: get light and carbon dioxide to the chloroplasts, and get the sugar away, while losing as little water as possible.",
+      "marks": 5
+    },
+    {
+      "id": "igb2-014",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Mineral nutrition",
+      "type": "long",
+      "q": "Name two mineral ions plants need, state what each is used for, and describe the symptoms of deficiency.",
+      "solution": "**Nitrate ions ($\\text{NO}_{3}^{-}$)**\n\n• *Used for:* making **amino acids**, and hence proteins — needed for growth, enzymes and new cells.\n\n• *Deficiency:* **stunted growth** and pale yellowish older leaves, since the plant moves what nitrogen it has to the new growth.\n\n**Magnesium ions ($\\text{Mg}^{2+}$)**\n\n• *Used for:* making **chlorophyll** — a magnesium atom sits at the centre of every chlorophyll molecule.\n\n• *Deficiency:* **chlorosis** — yellowing between the leaf veins, and poor growth, because without chlorophyll the plant cannot photosynthesise.\n\n**How they are taken up.** Both are absorbed from the soil by the **root hair cells**, by **active transport** — the soil solution is far more dilute than the cell contents, so the plant must spend energy to pull them in against the gradient.\n\n**Root hairs** are adapted for this: long and thin, giving an enormous total surface area, with many mitochondria to supply the energy.\n\nThis is what fertiliser is for — **NPK** stands for nitrogen, phosphorus and potassium, the three most often in short supply.",
+      "marks": 3
+    },
+    {
+      "id": "igb2-015",
+      "chapter": "Plant Nutrition and Transport",
+      "topic": "Translocation",
+      "type": "long",
+      "q": "What is translocation? Compare xylem and phloem.",
+      "solution": "**Translocation** — the movement of sucrose and amino acids through the **phloem**, from where they are made or stored (the **source**) to where they are used (the **sink**).\n\nA source is usually a photosynthesising leaf; a sink may be a growing shoot, a root, a developing fruit or a storage organ. **The direction can change with the season** — a potato tuber is a sink in summer and a source in spring.\n\n**Xylem**\n\n• Carries **water and mineral ions**\n\n• **Upwards only**, roots to leaves\n\n• Made of **dead**, hollow cells with lignified walls\n\n• Driven by **transpiration pull** — no energy from the plant\n\n**Phloem**\n\n• Carries **sucrose and amino acids**\n\n• **Both directions**, source to sink\n\n• Made of **living** sieve tube cells with companion cells\n\n• Driven by **active transport** — energy is required\n\n**The ringing experiment** shows the difference: remove a ring of bark (which contains the phloem) from a tree trunk and sugars accumulate in a swelling above the ring, while water continues to reach the leaves through the xylem deeper in the wood.",
+      "marks": 2
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "id": "lib-c10s-control-coordination",
+  "title": "Control and Coordination",
+  "chapter": "Chapter Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10cc-101",
+      "chapter": "Control and Coordination",
+      "topic": "Hormones",
+      "type": "long",
+      "q": "Name the hormone released and the gland which secretes it in human beings during scary situations. How does the body respond to enable it to deal with the situation?",
+      "solution": "**The hormone.** **Adrenaline** (also called epinephrine).\n\n**The gland.** The **adrenal gland**, specifically the adrenal medulla. There is one adrenal gland sitting on top of each kidney.\n\n**How the body responds.** Adrenaline is secreted directly into the blood and carried to many organs at once, preparing the body for what is often called the *fight-or-flight* response :\n\n- **Heart** — beats faster and harder, so more oxygen reaches the muscles.\n- **Breathing rate** — increases, and the diaphragm and rib muscles contract more rapidly, taking in more oxygen.\n- **Blood supply is redirected.** The small arteries around the skin and the digestive system **contract**, cutting the blood flow to organs that are not needed immediately. That blood is diverted to the **skeletal muscles**, which may need to act at once. This is also why a frightened person looks pale.\n- **Liver** — breaks down stored glycogen into glucose, raising the blood sugar so the muscles have fuel available.\n- **Pupils** — dilate, letting in more light.\n\nAll of this together makes more oxygen and more glucose available to the muscles more quickly, so the body is ready either to fight the danger or to run from it.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "cc-001",
+      "chapter": "Control and Coordination",
+      "topic": "Neuron",
+      "type": "mcq",
+      "q": "The gap between two neurons is called a:",
+      "solution": "The **synapse**. The electrical signal reaching the axon's end releases chemicals that cross the gap and start a new impulse in the next neuron.\n\nThat chemical step is what makes the signal travel **one way only** — and it is where most drugs that affect the mind do their work.",
+      "marks": 1,
+      "options": [
+        "dendrite",
+        "synapse",
+        "axon",
+        "nerve"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cc-002",
+      "chapter": "Control and Coordination",
+      "topic": "Reflex action",
+      "type": "mcq",
+      "q": "A reflex action is controlled by the:",
+      "solution": "The **spinal cord** completes a reflex arc without waiting for the brain.\n\nPulling a hand from a hot object takes about $0.01$ s. Routing the decision through the brain would take much longer — and by then the burn has happened.\n\nThe brain is told afterwards, which is why you feel the pain **after** your hand has already moved.",
+      "marks": 1,
+      "options": [
+        "cerebrum",
+        "cerebellum",
+        "spinal cord",
+        "medulla"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "cc-003",
+      "chapter": "Control and Coordination",
+      "topic": "Brain",
+      "type": "mcq",
+      "q": "The part of the brain that maintains posture and balance is the:",
+      "solution": "The **cerebellum**. It coordinates precise voluntary movement and keeps you balanced.\n\nWalking a straight line, riding a bicycle or picking up a pencil all depend on it. Alcohol affects it early, which is why unsteadiness is one of the first visible signs of drunkenness.",
+      "marks": 1,
+      "options": [
+        "cerebrum",
+        "cerebellum",
+        "medulla",
+        "pons"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cc-004",
+      "chapter": "Control and Coordination",
+      "topic": "Plant hormones",
+      "type": "mcq",
+      "q": "The hormone responsible for the bending of a shoot towards light is:",
+      "solution": "**Auxin**. Light causes it to gather on the **shaded** side, where it makes those cells elongate more.\n\nOne side grows longer than the other, so the shoot bends towards the light — **phototropism**.\n\nThe plant does not turn; it grows crooked in a useful direction.",
+      "marks": 1,
+      "options": [
+        "cytokinin",
+        "auxin",
+        "abscisic acid",
+        "ethylene"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cc-005",
+      "chapter": "Control and Coordination",
+      "topic": "Human hormones",
+      "type": "mcq",
+      "q": "Which hormone regulates the level of sugar in the blood?",
+      "solution": "**Insulin**, made by the pancreas. It lets cells take up glucose, lowering blood sugar.\n\nToo little insulin means glucose stays in the blood — **diabetes**.\n\nThyroxine controls metabolism, adrenaline prepares the body for emergency, testosterone controls male development.",
+      "marks": 1,
+      "options": [
+        "Thyroxine",
+        "Insulin",
+        "Adrenaline",
+        "Testosterone"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cc-006",
+      "chapter": "Control and Coordination",
+      "topic": "Parts of the brain",
+      "type": "numeric",
+      "q": "How many main parts does the human brain have (forebrain, midbrain, hindbrain)?",
+      "solution": "$\\mathbf{3}$ — forebrain (thinking, sensing), midbrain (involuntary reflexes of the eye and head), hindbrain (balance, breathing, heartbeat).",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "cc-007",
+      "chapter": "Control and Coordination",
+      "topic": "Reflex arc",
+      "type": "numeric",
+      "q": "How many neurons are minimally involved in a simple reflex arc (sensory, relay, motor)?",
+      "solution": "$\\mathbf{3}$ — a **sensory** neuron carries the signal in, a **relay** neuron in the spinal cord passes it across, and a **motor** neuron carries the command to the muscle.\n\nThe shortest possible route from sensing to acting.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "cc-008",
+      "chapter": "Control and Coordination",
+      "topic": "Endocrine glands",
+      "type": "numeric",
+      "q": "How many lobes does the human thyroid gland have?",
+      "solution": "$\\mathbf{2}$, joined by an isthmus and sitting in front of the windpipe.\n\nIt makes thyroxine, which needs **iodine** — and a shortage of iodine causes goitre, which is why table salt is iodised.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "cc-009",
+      "chapter": "Control and Coordination",
+      "topic": "Nervous system",
+      "type": "numeric",
+      "q": "How many pairs of cranial nerves arise from the human brain?",
+      "solution": "$\\mathbf{12}$ pairs of cranial nerves, plus $31$ pairs of spinal nerves.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0
+    },
+    {
+      "id": "cc-010",
+      "chapter": "Control and Coordination",
+      "topic": "Plant hormones",
+      "type": "numeric",
+      "q": "How many of these are plant hormones: auxin, insulin, gibberellin, cytokinin, adrenaline?",
+      "solution": "**Auxin**, **gibberellin** and **cytokinin** ✓ are plant hormones.\n\n**Insulin** and **adrenaline** are animal hormones.\n\nSo $\\mathbf{3}$. (Abscisic acid and ethylene complete the plant list.)",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "cc-012",
+      "chapter": "Control and Coordination",
+      "topic": "Human brain",
+      "type": "long",
+      "q": "Name the three main parts of the human brain and give two functions of each.",
+      "solution": "**Forebrain — the cerebrum.**\n\n• The seat of **thinking, memory, reasoning and intelligence**.\n\n• Receives and interprets **sensory information** — sight, hearing, smell, touch — and issues **voluntary** commands.\n\n• Also holds the centres for hunger and thirst (the hypothalamus).\n\n**Midbrain.**\n\n• Controls **involuntary reflexes of the eye** — the pupil's response to light, and changes in the lens.\n\n• Reflex movements of the head and neck towards a sound or a sight.\n\n**Hindbrain — cerebellum, pons and medulla.**\n\n• **Cerebellum:** precision of voluntary movement, posture and **balance**.\n\n• **Medulla:** the involuntary essentials — **heartbeat, breathing, blood pressure**, swallowing and vomiting.\n\n• **Pons:** regulates breathing.\n\n**Protection.** The brain sits in a bony skull, wrapped in three membranes with cerebrospinal fluid between them, which cushions it against shock.\n\nThe split is worth remembering as: the forebrain decides, the cerebellum executes smoothly, and the medulla keeps you alive without being asked.",
+      "marks": 3
+    },
+    {
+      "id": "cc-013",
+      "chapter": "Control and Coordination",
+      "topic": "Hormones",
+      "type": "long",
+      "q": "Name five hormones in the human body, giving the gland that makes each, its function, and the effect of its deficiency or excess.",
+      "solution": "**1. Growth hormone** — pituitary. Controls the growth of the body.\n\n*Deficiency in childhood:* dwarfism. *Excess:* gigantism.\n\n**2. Thyroxine** — thyroid. Regulates carbohydrate, protein and fat metabolism.\n\n*Deficiency of iodine:* goitre, the swollen neck. This is why salt is iodised.\n\n**3. Insulin** — pancreas. Lowers blood glucose by helping cells take it up.\n\n*Deficiency:* diabetes mellitus — glucose stays in the blood and spills into the urine.\n\n**4. Adrenaline** — adrenal gland. The emergency hormone: heart rate and breathing speed up, blood is redirected to the muscles, the pupils widen.\n\nThis is the 'fight or flight' response, and it is why you feel your heart pound before an examination.\n\n**5. Testosterone (testes) and oestrogen (ovaries)** — the secondary sexual characteristics at puberty.\n\n**The principle of feedback.** Hormone levels are controlled by **feedback**: when blood sugar rises, insulin is released; as the sugar falls, insulin release slows.\n\nTiming and quantity both matter — a hormone released too much, too little, or at the wrong time does harm rather than good.",
+      "marks": 5
+    },
+    {
+      "id": "cc-014",
+      "chapter": "Control and Coordination",
+      "topic": "Tropisms",
+      "type": "long",
+      "q": "What are tropic movements? Describe four types with examples.",
+      "solution": "**Definition.** Directional growth movements of a plant in response to a stimulus. They are **slow** and involve actual growth, not muscle.\n\n**1. Phototropism** — response to light. Shoots grow **towards** it (positive), roots **away** (negative).\n\n**2. Geotropism** — response to gravity. Roots grow **downwards** (positive), shoots **upwards** (negative). This is why a seed germinates correctly whichever way up it was sown.\n\n**3. Hydrotropism** — response to water. Roots grow towards moisture, and will bend sideways to reach it.\n\n**4. Chemotropism** — response to a chemical. The pollen tube grows down the style towards the ovule.\n\n**5. Thigmotropism** — response to touch. A tendril coils round whatever it meets, because the cells on the side away from the support grow faster.\n\n**How they work:** the hormone **auxin** redistributes itself, gathering on one side and making those cells elongate more. Unequal growth on the two sides bends the organ.\n\n**Compare nastic movements**, such as the touch-me-not folding its leaves — those are **not** directional and involve no growth, only a rapid change in water content of the cells.",
+      "marks": 3
+    },
+    {
+      "id": "cc-015",
+      "chapter": "Control and Coordination",
+      "topic": "Nervous and hormonal control",
+      "type": "long",
+      "q": "Compare nervous and hormonal coordination in animals.",
+      "solution": "**Nervous coordination**\n\n• *Medium:* electrical impulses along neurons.\n\n• *Speed:* very fast — milliseconds.\n\n• *Duration:* brief; the effect ends as soon as the signal stops.\n\n• *Target:* precise — one specific muscle or gland.\n\n**Hormonal coordination**\n\n• *Medium:* chemicals carried in the bloodstream.\n\n• *Speed:* slower — seconds to hours.\n\n• *Duration:* long-lasting, sometimes over years (growth, puberty).\n\n• *Target:* widespread — every cell with the right receptor responds.\n\n**Why both are needed.** Pulling a hand from a flame must happen in milliseconds and in one arm — that is nervous. Growing up, or regulating blood sugar all day, must happen slowly and everywhere at once — that is hormonal.\n\nThey also work together: **adrenaline** is released on a nerve signal and then acts hormonally throughout the body, which is why fright is instant but the shakiness lasts several minutes.",
+      "marks": 2
+    }
+  ]
+}

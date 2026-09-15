@@ -1,0 +1,190 @@
+{
+  "id": "lib-c10s-life-processes",
+  "title": "Life Processes",
+  "chapter": "Chapter Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "lif-001",
+      "chapter": "Life Processes",
+      "topic": "Nutrition",
+      "type": "mcq",
+      "q": "The mode of nutrition in which an organism makes its own food is called:",
+      "solution": "**Autotrophic** — 'self-feeding'. Green plants build glucose from carbon dioxide and water using sunlight.\n\nEverything else is heterotrophic and ultimately depends on them.",
+      "marks": 1,
+      "options": [
+        "heterotrophic",
+        "autotrophic",
+        "saprophytic",
+        "parasitic"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lif-002",
+      "chapter": "Life Processes",
+      "topic": "Photosynthesis",
+      "type": "mcq",
+      "q": "The site of photosynthesis in a plant cell is the:",
+      "solution": "The **chloroplast**, which holds the green pigment chlorophyll that traps sunlight.\n\n$6\\text{CO}_{2} + 6\\text{H}_{2}\\text{O} \\xrightarrow{\\text{light, chlorophyll}} \\text{C}_{6}\\text{H}_{12}\\text{O}_{6} + 6\\text{O}_{2}$",
+      "marks": 1,
+      "options": [
+        "mitochondrion",
+        "chloroplast",
+        "nucleus",
+        "ribosome"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lif-003",
+      "chapter": "Life Processes",
+      "topic": "Respiration",
+      "type": "mcq",
+      "q": "In humans, the exchange of gases takes place in the:",
+      "solution": "The **alveoli** — tiny balloon-like sacs, richly supplied with blood capillaries and with walls one cell thick.\n\nThere are about 300 million of them, giving a surface area of roughly $80$ m$^{2}$ — the size of a badminton court, folded into the chest.",
+      "marks": 1,
+      "options": [
+        "trachea",
+        "bronchi",
+        "alveoli",
+        "larynx"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "lif-004",
+      "chapter": "Life Processes",
+      "topic": "Transport",
+      "type": "mcq",
+      "q": "The blood vessel that carries oxygenated blood from the lungs to the heart is the:",
+      "solution": "The **pulmonary vein** — and it is the one vein in the body that carries **oxygenated** blood.\n\nThe pulmonary artery is the matching exception in reverse: an artery carrying deoxygenated blood.\n\nArteries and veins are defined by **direction** (away from or towards the heart), not by what they carry.",
+      "marks": 1,
+      "options": [
+        "pulmonary artery",
+        "pulmonary vein",
+        "aorta",
+        "vena cava"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lif-005",
+      "chapter": "Life Processes",
+      "topic": "Excretion",
+      "type": "mcq",
+      "q": "The functional unit of the kidney is the:",
+      "solution": "The **nephron**. Each kidney has about a million of them.\n\nEach nephron filters the blood at the glomerulus and then **reabsorbs** what the body needs — glucose, amino acids, salts and most of the water — along the tubule. What is left is urine.",
+      "marks": 1,
+      "options": [
+        "neuron",
+        "nephron",
+        "alveolus",
+        "villus"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "lif-006",
+      "chapter": "Life Processes",
+      "topic": "Chambers of the heart",
+      "type": "numeric",
+      "q": "How many chambers does the human heart have?",
+      "solution": "$\\mathbf{4}$ — two atria on top and two ventricles below.\n\nFour chambers keep oxygenated and deoxygenated blood completely separate, which is what makes the high metabolic rate of a warm-blooded animal possible.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "lif-007",
+      "chapter": "Life Processes",
+      "topic": "Photosynthesis equation",
+      "type": "numeric",
+      "q": "In the equation $6\\text{CO}_{2} + 6\\text{H}_{2}\\text{O} \\to \\text{C}_{6}\\text{H}_{12}\\text{O}_{6} + a\\,\\text{O}_{2}$, find $a$.",
+      "solution": "Six oxygen molecules are released: $a = \\mathbf{6}$.\n\nAll of that oxygen comes from the **water**, not the carbon dioxide — proved with isotopically labelled water.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "lif-008",
+      "chapter": "Life Processes",
+      "topic": "ATP from respiration",
+      "type": "numeric",
+      "q": "How many molecules of carbon dioxide are produced when one molecule of glucose is completely oxidised in aerobic respiration?",
+      "solution": "$\\text{C}_{6}\\text{H}_{12}\\text{O}_{6} + 6\\text{O}_{2} \\to 6\\text{CO}_{2} + 6\\text{H}_{2}\\text{O} + \\text{energy}$\n\nOne carbon atom in glucose, one molecule of $\\text{CO}_{2}$ out: $\\mathbf{6}$.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "lif-009",
+      "chapter": "Life Processes",
+      "topic": "Kidneys",
+      "type": "numeric",
+      "q": "How many nephrons, approximately, are present in one human kidney (in lakhs)?",
+      "solution": "About one million, which is $\\mathbf{10}$ lakh.\n\nThe huge number is what gives the kidney its reserve: a person can live normally on one kidney, or on a fraction of one.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0
+    },
+    {
+      "id": "lif-010",
+      "chapter": "Life Processes",
+      "topic": "Anaerobic respiration",
+      "type": "numeric",
+      "q": "How many molecules of ethanol are produced from one molecule of glucose in anaerobic respiration in yeast?",
+      "solution": "$\\text{C}_{6}\\text{H}_{12}\\text{O}_{6} \\to 2\\text{C}_{2}\\text{H}_{5}\\text{OH} + 2\\text{CO}_{2} + \\text{energy}$\n\n$\\mathbf{2}$ — and this is fermentation, the basis of bread, beer and wine.\n\nIt releases far less energy than aerobic respiration, because the glucose is only partly broken down.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "lif-011",
+      "chapter": "Life Processes",
+      "topic": "Photosynthesis",
+      "type": "long",
+      "q": "Define photosynthesis, write its equation, and describe the three events that take place during it.",
+      "solution": "**Definition.** The process by which green plants use light energy to make carbohydrates from carbon dioxide and water.\n\n$6\\text{CO}_{2} + 6\\text{H}_{2}\\text{O} \\xrightarrow{\\text{sunlight, chlorophyll}} \\text{C}_{6}\\text{H}_{12}\\text{O}_{6} + 6\\text{O}_{2}$\n\n**The three events:**\n\n1. **Absorption of light energy by chlorophyll.**\n\n2. **Conversion of light energy to chemical energy, and the splitting of water** into hydrogen and oxygen. The oxygen released to the air comes from here.\n\n3. **Reduction of carbon dioxide to carbohydrate** using that hydrogen.\n\nThese need not happen at the same time — in some plants the last step runs at night.\n\n**Raw materials:** carbon dioxide (through the stomata), water (from the roots), sunlight and chlorophyll.\n\nIt is worth seeing photosynthesis and respiration side by side: one stores the Sun's energy in glucose, the other releases it. Almost every calorie eaten anywhere on Earth passed through step 3 of this list.",
+      "marks": 3
+    },
+    {
+      "id": "lif-012",
+      "chapter": "Life Processes",
+      "topic": "Human digestive system",
+      "type": "long",
+      "q": "Trace the path of food through the human alimentary canal, naming the digestive juices and what each acts on.",
+      "solution": "**Mouth.** Teeth grind the food; **saliva** adds **salivary amylase**, which begins the digestion of starch into sugar. (This is why bread tastes sweet if chewed long enough.)\n\n**Oesophagus.** Peristalsis — waves of muscular contraction — pushes the food down. It works even upside down.\n\n**Stomach.** **Gastric juice** contains:\n\n• **Hydrochloric acid** — kills bacteria and makes the medium acidic for pepsin\n\n• **Pepsin** — digests proteins\n\n• **Mucus** — protects the stomach lining from its own acid\n\n**Small intestine** — where digestion is completed and absorption happens.\n\n• **Bile** from the liver makes the medium alkaline and **emulsifies fat**, breaking it into small droplets.\n\n• **Pancreatic juice** — trypsin for proteins, lipase for emulsified fats, amylase for starch.\n\n• **Intestinal juice** completes the job.\n\nAbsorption is through the **villi** — finger-like projections that give an enormous surface area and carry blood capillaries.\n\n**Large intestine.** Water is absorbed; the rest is passed out through the anus.\n\nNote that bile contains no enzyme at all: its work is entirely physical and chemical preparation.",
+      "marks": 3
+    },
+    {
+      "id": "lif-013",
+      "chapter": "Life Processes",
+      "topic": "Human heart and circulation",
+      "type": "long",
+      "q": "Describe the structure of the human heart and explain why double circulation is necessary.",
+      "solution": "**Structure.** Four chambers — right atrium, right ventricle, left atrium, left ventricle. Valves between and beyond them keep the blood moving one way only.\n\n**The path of blood.**\n\n1. Deoxygenated blood from the body enters the **right atrium** through the vena cava.\n\n2. It passes to the **right ventricle**, which pumps it through the pulmonary artery to the lungs.\n\n3. Oxygenated blood returns by the pulmonary vein to the **left atrium**.\n\n4. It passes to the **left ventricle**, which pumps it through the aorta to the whole body.\n\nThe **left ventricle has the thickest wall**, because it must push blood all the way round the body; the right ventricle only reaches the lungs next door.\n\n**Why double circulation.** Blood passes through the heart **twice** in one complete circuit — once for the lungs, once for the body.\n\n1. It keeps oxygenated and deoxygenated blood **completely separate**, so the tissues get blood that is fully loaded.\n\n2. It allows **high pressure** for the body circuit without damaging the delicate lungs, which get their own gentler circuit.\n\nWarm-blooded animals need a great deal of energy to keep their temperature up, and that needs efficient oxygen delivery. Fish, with a single circulation, cannot manage it.",
+      "marks": 5
+    },
+    {
+      "id": "lif-014",
+      "chapter": "Life Processes",
+      "topic": "Excretion",
+      "type": "long",
+      "q": "Explain how urine is formed in the kidney, and describe the principle of dialysis.",
+      "solution": "**Urine formation — three steps in each nephron.**\n\n1. **Filtration.** Blood enters the glomerulus under pressure, and water, glucose, amino acids, salts and urea are forced out into Bowman's capsule. Blood cells and proteins are too large and stay behind.\n\n2. **Selective reabsorption.** As the filtrate travels along the tubule, the body takes back what it needs — **all** the glucose, most of the water, and the useful salts. (Glucose in the urine is a sign of diabetes: there was more than the tubule could recover.)\n\n3. **Secretion.** Some extra waste is added directly into the tubule from the blood.\n\nWhat is left is urine, which passes down the ureters to the bladder.\n\n**The scale of it:** about $180$ litres is filtered each day, and only $1$ to $2$ litres leaves as urine. Nearly everything is reclaimed.\n\n**Dialysis.** When the kidneys fail, blood is pumped through tubes of a **selectively permeable membrane** suspended in a dialysing fluid.\n\nThat fluid has the same concentration of glucose and salts as normal blood, but **no urea**. So urea diffuses out down its concentration gradient, while the useful substances have no gradient to follow and stay put.\n\nThere is no reabsorption step, which is why dialysis is far less efficient than a kidney and must be repeated every few days.",
+      "marks": 3
+    },
+    {
+      "id": "lif-015",
+      "chapter": "Life Processes",
+      "topic": "Transport in plants",
+      "type": "long",
+      "q": "Distinguish between the transport of water and of food in plants.",
+      "solution": "**Water — the xylem.**\n\n• Carried from the roots to the leaves, **upwards only**.\n\n• Moves through dead, hollow tube-like cells (vessels and tracheids).\n\n• Driven by **transpiration pull**: water evaporating from the leaves draws the whole column up, helped by root pressure at night.\n\n• **No energy is spent** by the plant — the Sun does the work.\n\n**Food — the phloem.**\n\n• Carried from the leaves to wherever it is needed — **both up and down**, to growing tips, roots and storage organs. This is **translocation**.\n\n• Moves through living cells (sieve tubes with companion cells).\n\n• Driven by **active transport**: sugar is loaded into the phloem using **ATP**, water follows by osmosis, and the pressure pushes the solution along.\n\n• **Energy is spent.**\n\nThe clearest contrast is that xylem is a dead pipe carrying one way, and phloem is a living pump that can reverse direction with the seasons.",
+      "marks": 2
+    }
+  ]
+}

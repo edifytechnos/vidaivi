@@ -1,0 +1,189 @@
+{
+  "id": "lib-c12-application-of-derivatives",
+  "title": "Application of Derivatives",
+  "chapter": "Chapter Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12aod-201",
+      "chapter": "Application of Derivatives",
+      "topic": "Increasing and decreasing functions",
+      "type": "long",
+      "q": "Find the intervals in which the function $f(x) = 5x^{3/2} - 3x^{5/2}$, $x > 0$, is (i) increasing (ii) decreasing.",
+      "solution": "**Step 1 — differentiate.**\n\n$$f'(x) = 5 \\cdot \\frac{3}{2}x^{1/2} - 3 \\cdot \\frac{5}{2}x^{3/2} = \\frac{15}{2}x^{1/2} - \\frac{15}{2}x^{3/2}.$$\n\n**Step 2 — factorise**, which is what makes the sign readable :\n\n$$f'(x) = \\frac{15}{2}x^{1/2}\\left(1 - x\\right) = \\frac{15}{2}\\sqrt{x}\\,(1 - x).$$\n\n**Step 3 — read off the sign.** For $x > 0$ the factor $\\dfrac{15}{2}\\sqrt{x}$ is always **positive**, so the sign of $f'(x)$ is decided entirely by $(1 - x)$ :\n\n- $0 < x < 1$ : $(1 - x) > 0$, so $f'(x) > 0$ — **increasing**.\n- $x = 1$ : $f'(x) = 0$ — a stationary point.\n- $x > 1$ : $(1 - x) < 0$, so $f'(x) < 0$ — **decreasing**.\n\n**Answer.**\n\n(i) $f$ is increasing on $(0, 1)$.\n\n(ii) $f$ is decreasing on $(1, \\infty)$.\n\nThe function therefore has a maximum at $x = 1$, where $f(1) = 5 - 3 = 2$.",
+      "marks": 2,
+      "source": "CBSE 2025"
+    },
+    {
+      "id": "c12aod-202",
+      "chapter": "Application of Derivatives",
+      "topic": "Related rates",
+      "type": "numeric",
+      "q": "The side of an equilateral triangle is increasing at the rate of 3 cm/s. At what rate is its area increasing when the side of the triangle is 15 cm? Give your answer in cm²/s, correct to two decimal places.",
+      "solution": "**Step 1 — write the relation.** For an equilateral triangle of side $a$,\n\n$$A = \\frac{\\sqrt{3}}{4}a^2.$$\n\n**Step 2 — differentiate with respect to time**, using the chain rule :\n\n$$\\frac{dA}{dt} = \\frac{\\sqrt{3}}{4} \\cdot 2a \\cdot \\frac{da}{dt} = \\frac{\\sqrt{3}}{2}\\,a\\,\\frac{da}{dt}.$$\n\n**Step 3 — substitute** $a = 15$ cm and $\\dfrac{da}{dt} = 3$ cm/s :\n\n$$\\frac{dA}{dt} = \\frac{\\sqrt{3}}{2} \\times 15 \\times 3 = \\frac{45\\sqrt{3}}{2} = 22 \\cdot 5\\sqrt{3}.$$\n\n**Step 4 — evaluate.**\n\n$$\\frac{dA}{dt} \\approx \\mathbf{38 \\cdot 97}\\ \\text{cm}^2\\text{/s}.$$\n\nNote that the answer depends on the side length at that instant — the area of a growing triangle speeds up as it gets bigger, because $A$ goes as $a^2$ while $a$ grows steadily.",
+      "marks": 3,
+      "source": "CBSE 2025",
+      "answer": 38.97,
+      "tolerance": 0.02
+    },
+    {
+      "id": "c12aod-101",
+      "chapter": "Application of Derivatives",
+      "topic": "Strictly decreasing functions",
+      "type": "mcq",
+      "q": "If $f(x) = a(x - \\cos x)$ is strictly decreasing in $\\mathbb{R}$, then $a$ belongs to :",
+      "solution": "Differentiate :\n\n$$f'(x) = a\\left(1 + \\sin x\\right).$$\n\nNow $\\sin x \\geq -1$ for every real $x$, so $1 + \\sin x \\geq 0$ always — it is zero only at isolated points where $\\sin x = -1$.\n\nFor $f$ to be **strictly decreasing** we need $f'(x) \\leq 0$ throughout (and not identically zero on any interval). Since $1 + \\sin x$ is never negative, this forces\n\n$$a < 0.$$\n\nIf $a > 0$ the function would be strictly increasing, and $a = 0$ makes $f$ constant — neither is decreasing. So $a \\in (-\\infty, 0)$.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$\\{0\\}$",
+        "$(0, \\infty)$",
+        "$(-\\infty, 0)$",
+        "$(-\\infty, \\infty)$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12aod-102",
+      "chapter": "Application of Derivatives",
+      "topic": "Rate of change",
+      "type": "numeric",
+      "q": "If the sides of a square are decreasing at the rate of $1 \\cdot 5$ cm/s, find the rate of decrease of its perimeter, in cm/s.",
+      "solution": "Let the side be $a$ and the perimeter $P$. For a square,\n\n$$P = 4a.$$\n\nDifferentiate with respect to time :\n\n$$\\frac{dP}{dt} = 4\\,\\frac{da}{dt}.$$\n\nThe side is decreasing at $1 \\cdot 5$ cm/s, so $\\left|\\dfrac{da}{dt}\\right| = 1 \\cdot 5$ and\n\n$$\\left|\\frac{dP}{dt}\\right| = 4 \\times 1 \\cdot 5 = \\mathbf{6}\\ \\text{cm/s}.$$\n\nThe perimeter is decreasing at 6 cm/s. Note this does not depend on the size of the square — the relation $P = 4a$ is linear, so the rates are always in the ratio 4 : 1.",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aod-103",
+      "chapter": "Application of Derivatives",
+      "topic": "Motion in a straight line",
+      "type": "numeric",
+      "q": "If the distance travelled by a particle in $t$ seconds is given by $S = 72t + 3t^2 - t^3$, find the time, in seconds, taken by the particle to come to rest.",
+      "solution": "The particle is at rest when its velocity is zero. Velocity is the derivative of distance :\n\n$$v = \\frac{dS}{dt} = 72 + 6t - 3t^2.$$\n\nSet $v = 0$ :\n\n$$72 + 6t - 3t^2 = 0.$$\n\nDivide through by $-3$ :\n\n$$t^2 - 2t - 24 = 0 \\quad\\Longrightarrow\\quad (t - 6)(t + 4) = 0.$$\n\nSo $t = 6$ or $t = -4$. Time cannot be negative, so\n\n$$t = \\mathbf{6}\\ \\text{seconds}.$$",
+      "marks": 2,
+      "source": "CBSE 2026",
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aod-104",
+      "chapter": "Application of Derivatives",
+      "topic": "Local maxima and minima",
+      "type": "numeric",
+      "q": "If $M$ and $m$ denote the local maximum and local minimum values of the function $f(x) = x + \\dfrac{1}{x}$ $(x \neq 0)$ respectively, find the value of $(M - m)$.",
+      "solution": "**Step 1 — stationary points.**\n\n$$f'(x) = 1 - \\frac{1}{x^2} = 0 \\quad\\Longrightarrow\\quad x^2 = 1 \\quad\\Longrightarrow\\quad x = \\pm 1.$$\n\n**Step 2 — classify them.** $f''(x) = \\dfrac{2}{x^3}$.\n\nAt $x = 1$ : $f''(1) = 2 > 0$, so this is a local **minimum**, with $m = f(1) = 1 + 1 = 2$.\n\nAt $x = -1$ : $f''(-1) = -2 < 0$, so this is a local **maximum**, with $M = f(-1) = -1 - 1 = -2$.\n\n**Step 3 — subtract.**\n\n$$M - m = -2 - 2 = \\mathbf{-4}.$$\n\nThis looks wrong at first glance — the local maximum value is *smaller* than the local minimum value. It is correct: the two stationary points sit on opposite branches of the curve, separated by the asymptote at $x = 0$, so neither is a maximum or minimum of the whole function.",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": -4,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aod-105",
+      "chapter": "Application of Derivatives",
+      "topic": "Local maxima and minima",
+      "type": "numeric",
+      "q": "Find the local minimum value of the function $f(x) = 4x^2 + \\dfrac{1}{x}$ $(x \neq 0)$.",
+      "solution": "**Step 1 — stationary points.**\n\n$$f'(x) = 8x - \\frac{1}{x^2} = 0 \\quad\\Longrightarrow\\quad 8x = \\frac{1}{x^2} \\quad\\Longrightarrow\\quad 8x^3 = 1 \\quad\\Longrightarrow\\quad x = \\frac{1}{2}.$$\n\n**Step 2 — classify.**\n\n$$f''(x) = 8 + \\frac{2}{x^3}, \\qquad f''\\!\\left(\\tfrac12\\right) = 8 + 16 = 24 > 0,$$\n\nso $x = \\dfrac{1}{2}$ gives a local **minimum**.\n\n**Step 3 — the value.**\n\n$$f\\!\\left(\\frac12\\right) = 4 \\times \\frac14 + \\frac{1}{1/2} = 1 + 2 = \\mathbf{3}.$$\n\n(There is no local maximum: $f'$ has only this one zero.)",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aod-106",
+      "chapter": "Application of Derivatives",
+      "topic": "Absolute maxima and minima",
+      "type": "long",
+      "q": "Find the absolute maximum and minimum values of the function $f(x) = 12x^{4/3} - 6x^{1/3}$, $x \\in [0, 1]$.",
+      "solution": "On a **closed** interval the absolute extremes occur either at a stationary point inside or at an endpoint, so find all three kinds of candidate.\n\n**Step 1 — differentiate.**\n\n$$f'(x) = 12 \\cdot \\frac{4}{3}x^{1/3} - 6 \\cdot \\frac{1}{3}x^{-2/3} = 16x^{1/3} - 2x^{-2/3}.$$\n\n**Step 2 — stationary points.** Setting $f'(x) = 0$ and multiplying through by $x^{2/3}$ :\n\n$$16x - 2 = 0 \\quad\\Longrightarrow\\quad x = \\frac{1}{8},$$\n\nwhich lies inside $[0, 1]$.\n\n**Step 3 — evaluate at every candidate.**\n\n$$f(0) = 0,$$\n$$f\\!\\left(\\tfrac18\\right) = 12\\left(\\tfrac18\\right)^{4/3} - 6\\left(\\tfrac18\\right)^{1/3} = 12 \\cdot \\frac{1}{16} - 6 \\cdot \\frac12 = \\frac34 - 3 = -\\frac94,$$\n$$f(1) = 12 - 6 = 6.$$\n\n**Step 4 — compare.**\n\nThe **absolute maximum** is $\\mathbf{6}$, at $x = 1$.\n\nThe **absolute minimum** is $\\mathbf{-\\dfrac{9}{4}} = -2 \\cdot 25$, at $x = \\dfrac18$.",
+      "marks": 3,
+      "source": "CBSE 2024"
+    },
+    {
+      "id": "c12aod-107",
+      "chapter": "Application of Derivatives",
+      "topic": "Strictly increasing functions",
+      "type": "long",
+      "q": "Show that $f(x) = e^{x} - e^{-x} + x - \\tan^{-1} x$ is strictly increasing in $\\mathbb{R}$.",
+      "solution": "A function is strictly increasing on $\\mathbb{R}$ if $f'(x) > 0$ for every real $x$.\n\n**Differentiate.**\n\n$$f'(x) = e^{x} + e^{-x} + 1 - \\frac{1}{1 + x^2}.$$\n\n(The derivative of $-e^{-x}$ is $+e^{-x}$, and the derivative of $-\\tan^{-1}x$ is $-\\dfrac{1}{1+x^2}$.)\n\n**Bound the two parts separately.**\n\nFirst, by AM–GM applied to the positive numbers $e^x$ and $e^{-x}$,\n\n$$e^{x} + e^{-x} \\geq 2\\sqrt{e^{x} \\cdot e^{-x}} = 2.$$\n\nSecond, since $1 + x^2 \\geq 1$ for every real $x$, we have $\\dfrac{1}{1+x^2} \\leq 1$ and therefore\n\n$$1 - \\frac{1}{1 + x^2} \\geq 0.$$\n\n**Add them.**\n\n$$f'(x) \\geq 2 + 0 = 2 > 0$$\n\nfor every $x \\in \\mathbb{R}$.\n\nSince the derivative is strictly positive everywhere, $f$ is **strictly increasing on $\\mathbb{R}$**.",
+      "marks": 3,
+      "source": "CBSE 2024"
+    },
+    {
+      "id": "aod-004",
+      "chapter": "Application of Derivatives",
+      "topic": "Maximum value",
+      "type": "mcq",
+      "q": "The maximum value of $\\sin x + \\cos x$ is:",
+      "solution": "Write it as a single wave: $\\sin x + \\cos x = \\sqrt{2}\\,\\sin\\left(x + \\tfrac{\\pi}{4}\\right)$.\n\nA sine never exceeds $1$, so the maximum is $\\mathbf{\\sqrt{2}}$, reached at $x = \\tfrac{\\pi}{4}$.\n\nTwo waves of equal height a quarter-turn apart add up to one wave, taller by a factor of $\\sqrt{2}$ — never to twice the height, because they never peak together.",
+      "marks": 1,
+      "options": [
+        "1",
+        "2",
+        "$\\sqrt{2}$",
+        "$\\dfrac{1}{\\sqrt{2}}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "aod-005",
+      "chapter": "Application of Derivatives",
+      "topic": "Second derivative test",
+      "type": "mcq",
+      "q": "If $f'(c) = 0$ and $f''(c) > 0$, then at $x = c$ the function $f$ has:",
+      "solution": "$f'(c) = 0$ says the tangent is flat; $f''(c) > 0$ says the curve is bending upwards there — a valley floor.\n\nSo $f$ has a **local minimum** at $c$. (Bending downwards, $f''(c) < 0$, would make it a peak.)",
+      "marks": 1,
+      "options": [
+        "a local maximum",
+        "a local minimum",
+        "a point of inflection",
+        "no conclusion possible"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "aod-009",
+      "chapter": "Application of Derivatives",
+      "topic": "Approximation using differentials",
+      "type": "numeric",
+      "q": "Use differentials to find the approximate value of $\\sqrt{36.6}$, correct to three decimal places.",
+      "solution": "Take $y = \\sqrt{x}$ with $x = 36$ and $\\Delta x = 0.6$.\n\n$\\dfrac{dy}{dx} = \\dfrac{1}{2\\sqrt{x}} = \\dfrac{1}{12}$.\n\n$\\Delta y \\approx \\dfrac{1}{12} \\times 0.6 = 0.05$, so $\\sqrt{36.6} \\approx 6 + 0.05 = \\mathbf{6.05}$.\n\n(The true value is $6.0498\\ldots$) The tangent line is a good stand-in for the curve as long as you do not walk far from the point of contact.",
+      "marks": 2,
+      "answer": 6.05,
+      "tolerance": 0.005
+    },
+    {
+      "id": "aod-010",
+      "chapter": "Application of Derivatives",
+      "topic": "The sliding ladder",
+      "type": "numeric",
+      "q": "A $5$ m ladder leans against a wall. Its foot slides away from the wall at $2$ cm/s. How fast (in cm/s) is the top sliding down when the foot is $3$ m from the wall?",
+      "solution": "With $x$ along the ground and $y$ up the wall, $x^{2} + y^{2} = 25$.\n\nDifferentiate with respect to time: $2x\\dfrac{dx}{dt} + 2y\\dfrac{dy}{dt} = 0 \\Rightarrow \\dfrac{dy}{dt} = -\\dfrac{x}{y}\\dfrac{dx}{dt}$.\n\nWhen $x = 3$, $y = 4$. So $\\dfrac{dy}{dt} = -\\dfrac{3}{4}(2) = -1.5$ cm/s.\n\nThe top slides **down** at $\\mathbf{1.5}$ cm/s — the minus sign is the direction, the number is the speed.",
+      "marks": 2,
+      "answer": 1.5,
+      "tolerance": 0.01
+    },
+    {
+      "id": "aod-014",
+      "chapter": "Application of Derivatives",
+      "topic": "Absolute maximum and minimum",
+      "type": "long",
+      "q": "Find the absolute maximum and absolute minimum values of $f(x) = x^{3} - 3x$ on the interval $[-2, 3]$.",
+      "solution": "On a closed interval the extremes can only sit at a critical point or at an endpoint, so check all of them.\n\n$f'(x) = 3x^{2} - 3 = 0 \\Rightarrow x = \\pm 1$, and both lie inside $[-2, 3]$.\n\n$f(-2) = -8 + 6 = -2$\n\n$f(-1) = -1 + 3 = 2$\n\n$f(1) = 1 - 3 = -2$\n\n$f(3) = 27 - 9 = 18$\n\n**Absolute maximum $= 18$ at $x = 3$; absolute minimum $= -2$, reached at both $x = -2$ and $x = 1$.**\n\nThe local peak at $x = -1$ is not the highest point on the interval — a local champion need not be the national one.",
+      "marks": 3
+    },
+    {
+      "id": "aod-015",
+      "chapter": "Application of Derivatives",
+      "topic": "Approximate change",
+      "type": "long",
+      "q": "The radius of a sphere is measured as $9$ cm with an error of $0.03$ cm. Find the approximate error in its calculated surface area.",
+      "solution": "$S = 4\\pi r^{2}$, so $\\dfrac{dS}{dr} = 8\\pi r$.\n\n$\\Delta S \\approx 8\\pi r\\,\\Delta r = 8\\pi(9)(0.03) = \\mathbf{2.16\\pi}$ cm$^{2} \\approx 6.79$ cm$^{2}$.\n\nA small slip in the radius is magnified about $8\\pi r$ times in the surface area — which is why measuring the radius carefully matters far more than it looks.",
+      "marks": 2
+    }
+  ]
+}

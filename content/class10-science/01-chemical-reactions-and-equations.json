@@ -1,0 +1,191 @@
+{
+  "id": "lib-c10s-chemical-reactions",
+  "title": "Chemical Reactions and Equations",
+  "chapter": "Chapter Test 1",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10cre-101",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Balancing equations",
+      "type": "numeric",
+      "q": "In order to balance the following chemical equation, find the value of $y$ :\n\n$$x\\ \\text{Pb(NO}_3)_2 \\xrightarrow{\\ \\text{Heat}\\ } 2\\ \\text{PbO} + y\\ \\text{NO}_2 + \\text{O}_2$$",
+      "solution": "Balance one element at a time, and take them in the order that leaves the fewest unknowns.\n\n**Lead.** There are 2 lead atoms on the right (in $2\\ \\text{PbO}$) and $x$ on the left, so\n\n$$x = 2.$$\n\n**Nitrogen.** With $x = 2$, the left side has $2 \\times 2 = 4$ nitrogen atoms. All of them end up in $\\text{NO}_2$, so\n\n$$y = 4.$$\n\n**Oxygen — the check.** Left side: $2 \\times 6 = 12$ oxygen atoms. Right side: $2$ (in PbO) $+\\ 4 \\times 2 = 8$ (in $\\text{NO}_2$) $+\\ 2$ (in $\\text{O}_2$) $= 12$. ✓\n\nThe balanced equation is\n\n$$2\\ \\text{Pb(NO}_3)_2 \\xrightarrow{\\ \\text{Heat}\\ } 2\\ \\text{PbO} + 4\\ \\text{NO}_2 + \\text{O}_2$$\n\nso $y = \\mathbf{4}$ (and $x = 2$).",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "cre-001",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Balancing equations",
+      "type": "mcq",
+      "q": "A chemical equation is balanced to satisfy the law of:",
+      "solution": "Atoms are neither created nor destroyed in a chemical change, so each element must appear in equal numbers on both sides — the **law of conservation of mass**.\n\nA reaction rearranges the same building blocks; it never adds or removes any.",
+      "marks": 1,
+      "options": [
+        "constant proportions",
+        "conservation of mass",
+        "multiple proportions",
+        "gaseous volumes"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cre-002",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Types of reactions",
+      "type": "mcq",
+      "q": "$\\text{CaO} + \\text{H}_{2}\\text{O} \\to \\text{Ca(OH)}_{2}$ is an example of a:",
+      "solution": "Two substances join to make one — a **combination** reaction.\n\nIt is also strongly **exothermic**: slaking lime releases enough heat to boil the water it is mixed with.",
+      "marks": 1,
+      "options": [
+        "decomposition reaction",
+        "combination reaction",
+        "displacement reaction",
+        "double displacement reaction"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cre-003",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Oxidation and reduction",
+      "type": "mcq",
+      "q": "In the reaction $\\text{CuO} + \\text{H}_{2} \\to \\text{Cu} + \\text{H}_{2}\\text{O}$, the substance reduced is:",
+      "solution": "**$\\text{CuO}$ loses oxygen**, so it is **reduced** (to copper).\n\n$\\text{H}_{2}$ gains oxygen, so it is oxidised. Both happen together, which is why such reactions are called **redox**.",
+      "marks": 1,
+      "options": [
+        "$\\text{H}_{2}$",
+        "$\\text{CuO}$",
+        "$\\text{Cu}$",
+        "$\\text{H}_{2}\\text{O}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cre-004",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Corrosion",
+      "type": "mcq",
+      "q": "The black coating that forms on silver articles is:",
+      "solution": "Silver reacts with traces of hydrogen sulphide in the air to give black **silver sulphide**.\n\nCopper goes green ($\\text{CuCO}_{3}\\cdot\\text{Cu(OH)}_{2}$) and iron goes brown (hydrated $\\text{Fe}_{2}\\text{O}_{3}$). Three metals, three different corrosion products.",
+      "marks": 1,
+      "options": [
+        "$\\text{Ag}_{2}\\text{O}$",
+        "$\\text{Ag}_{2}\\text{S}$",
+        "$\\text{AgCl}$",
+        "$\\text{Ag}_{2}\\text{CO}_{3}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cre-005",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Rancidity",
+      "type": "mcq",
+      "q": "Chips are packed in nitrogen gas to prevent:",
+      "solution": "Flushing the packet with **nitrogen** displaces oxygen, so the fats cannot oxidise and turn rancid.\n\nAntioxidants and airtight containers do the same job by other means. Nitrogen is chosen because it is cheap, plentiful and almost completely unreactive.",
+      "marks": 1,
+      "options": [
+        "crushing",
+        "oxidation of the oils",
+        "moisture entering",
+        "bacterial growth only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "cre-007",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Coefficients",
+      "type": "numeric",
+      "q": "In the balanced equation for the burning of magnesium, $a\\,\\text{Mg} + \\text{O}_{2} \\to b\\,\\text{MgO}$, find the value of $b$.",
+      "solution": "$2\\text{Mg} + \\text{O}_{2} \\to 2\\text{MgO}$, so $b = \\mathbf{2}$.\n\nThe oxygen molecule supplies two atoms, so two magnesium atoms are needed to take them.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "cre-008",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of calcium carbonate, $\\text{CaCO}_{3}$, in g/mol. (Ca $= 40$, C $= 12$, O $= 16$.)",
+      "solution": "$40 + 12 + 3(16) = 40 + 12 + 48 = \\mathbf{100}$ g/mol.",
+      "marks": 2,
+      "answer": 100,
+      "tolerance": 0.5
+    },
+    {
+      "id": "cre-009",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Number of atoms",
+      "type": "numeric",
+      "q": "How many atoms in total are present in one formula unit of $\\text{Ca(OH)}_{2}$?",
+      "solution": "One Ca, two O and two H: $1 + 2 + 2 = \\mathbf{5}$.\n\nThe subscript outside the bracket multiplies everything inside it.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "cre-010",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Balancing",
+      "type": "numeric",
+      "q": "In $\\text{Pb(NO}_{3})_{2} \\to \\text{PbO} + a\\,\\text{NO}_{2} + b\\,\\text{O}_{2}$, the balanced equation uses $2\\,\\text{Pb(NO}_{3})_{2}$. Find $a$.",
+      "solution": "$2\\text{Pb(NO}_{3})_{2} \\to 2\\text{PbO} + 4\\text{NO}_{2} + \\text{O}_{2}$.\n\nFour nitrogen atoms on the left give four $\\text{NO}_{2}$: $a = \\mathbf{4}$.\n\nThis is the reaction that gives the brown fumes when lead nitrate is heated in a test tube.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "cre-011",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Types of reactions",
+      "type": "long",
+      "q": "Define and give one balanced example each of a decomposition, a displacement and a double displacement reaction.",
+      "solution": "**Decomposition** — one substance breaks into two or more.\n\n$2\\text{Pb(NO}_{3})_{2} \\xrightarrow{\\text{heat}} 2\\text{PbO} + 4\\text{NO}_{2} + \\text{O}_{2}$\n\nDecomposition can be driven by heat, light (silver chloride greying in sunlight) or electricity (electrolysis of water).\n\n**Displacement** — a more reactive element pushes out a less reactive one.\n\n$\\text{Fe} + \\text{CuSO}_{4} \\to \\text{FeSO}_{4} + \\text{Cu}$\n\nThe blue solution fades and a red-brown deposit appears on the iron nail.\n\n**Double displacement** — two compounds exchange partners.\n\n$\\text{Na}_{2}\\text{SO}_{4} + \\text{BaCl}_{2} \\to \\text{BaSO}_{4}\\downarrow + 2\\text{NaCl}$\n\nWhen one product is insoluble it falls out as a **precipitate**, which is what drives the reaction forward.",
+      "marks": 3
+    },
+    {
+      "id": "cre-012",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Oxidation and reduction",
+      "type": "long",
+      "q": "Define oxidation and reduction in terms of oxygen and hydrogen, and identify both in $\\text{ZnO} + \\text{C} \\to \\text{Zn} + \\text{CO}$.",
+      "solution": "**Oxidation** — gain of oxygen, or loss of hydrogen.\n\n**Reduction** — loss of oxygen, or gain of hydrogen.\n\n**In the given reaction:**\n\n• $\\text{ZnO}$ **loses** oxygen $\\to$ **reduced** to Zn.\n\n• $\\text{C}$ **gains** oxygen $\\to$ **oxidised** to CO.\n\nSo carbon is the **reducing agent** and zinc oxide the **oxidising agent**.\n\nThe two always happen together — one substance can only lose oxygen if another takes it. That is why the pair is called a **redox** reaction, and why identifying one half tells you the other.",
+      "marks": 3
+    },
+    {
+      "id": "cre-013",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Corrosion and rancidity",
+      "type": "long",
+      "q": "What is corrosion? Describe the rusting of iron and three ways to prevent it. Then explain rancidity and how it is prevented.",
+      "solution": "**Corrosion** — the gradual eating away of a metal by the attack of air, moisture or chemicals around it.\n\n**Rusting** needs **both air and water**: neither alone will do it, which is why iron does not rust in dry air or in boiled, air-free water.\n\n$4\\text{Fe} + 3\\text{O}_{2} + x\\text{H}_{2}\\text{O} \\to 2\\text{Fe}_{2}\\text{O}_{3}\\cdot x\\text{H}_{2}\\text{O}$\n\nRust flakes away instead of sticking, so fresh metal is always exposed and the attack works inwards until the object is destroyed.\n\n**Prevention.**\n\n1. **Painting, oiling or greasing** — keeps air and water off.\n\n2. **Galvanising** — a coat of zinc, which corrodes in the iron's place and protects it even where the coating is scratched.\n\n3. **Alloying** — stainless steel (iron with chromium and nickel) does not rust at all.\n\n**Rancidity** — the oxidation of fats and oils in food, giving an unpleasant smell and taste.\n\n**Prevented by:** adding **antioxidants**; packing in **nitrogen**; refrigeration; and keeping food in airtight containers away from light.",
+      "marks": 5
+    },
+    {
+      "id": "cre-014",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Balancing an equation",
+      "type": "long",
+      "q": "Balance: $\\text{Fe} + \\text{H}_{2}\\text{O} \\to \\text{Fe}_{3}\\text{O}_{4} + \\text{H}_{2}$, showing the steps.",
+      "solution": "**Step 1 — count both sides.** Left: 1 Fe, 2 H, 1 O. Right: 3 Fe, 2 H, 4 O.\n\n**Step 2 — balance iron.** Put 3 in front of Fe.\n\n$3\\text{Fe} + \\text{H}_{2}\\text{O} \\to \\text{Fe}_{3}\\text{O}_{4} + \\text{H}_{2}$\n\n**Step 3 — balance oxygen.** Four are needed on the left, so put 4 in front of water.\n\n$3\\text{Fe} + 4\\text{H}_{2}\\text{O} \\to \\text{Fe}_{3}\\text{O}_{4} + \\text{H}_{2}$\n\n**Step 4 — balance hydrogen.** Eight on the left, so 4 molecules of hydrogen on the right.\n\n$\\mathbf{3\\text{Fe} + 4\\text{H}_{2}\\text{O} \\to \\text{Fe}_{3}\\text{O}_{4} + 4\\text{H}_{2}}$\n\n**Check:** Fe 3 = 3, H 8 = 8, O 4 = 4. ✓\n\nNever change a formula to balance an equation — only the numbers in front.",
+      "marks": 3
+    },
+    {
+      "id": "cre-015",
+      "chapter": "Chemical Reactions and Equations",
+      "topic": "Exothermic and endothermic",
+      "type": "long",
+      "q": "Distinguish between exothermic and endothermic reactions with one example each, and give one everyday instance of each.",
+      "solution": "**Exothermic** — heat is **given out**, so the surroundings warm up.\n\n$\\text{CaO} + \\text{H}_{2}\\text{O} \\to \\text{Ca(OH)}_{2} + \\text{heat}$\n\nEveryday: **respiration** — glucose is oxidised in our cells, releasing the energy that keeps us warm and moving. Also the burning of any fuel.\n\n**Endothermic** — heat is **absorbed**, so the surroundings cool.\n\n$\\text{CaCO}_{3} + \\text{heat} \\to \\text{CaO} + \\text{CO}_{2}$\n\nEveryday: **photosynthesis** — plants take in energy from sunlight to build glucose from carbon dioxide and water.\n\nThe two examples are worth holding together: respiration and photosynthesis are very nearly one another's reverse, and between them they move energy from the Sun into everything that lives.",
+      "marks": 2
+    }
+  ]
+}

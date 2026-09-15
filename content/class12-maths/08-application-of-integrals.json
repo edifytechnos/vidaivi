@@ -1,0 +1,187 @@
+{
+  "id": "lib-c12-application-of-integrals",
+  "title": "Application of Integrals",
+  "chapter": "Chapter Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12aoi-101",
+      "chapter": "Application of Integrals",
+      "topic": "Area of a sector",
+      "type": "numeric",
+      "q": "The area of the region bounded by the line $y = mx$ $(m > 0)$, the curve $x^2 + y^2 = 4$ and the $x$-axis in the first quadrant is $\\dfrac{\\pi}{2}$ square units. Find the value of $m$.",
+      "solution": "The three boundaries — the $x$-axis, the line $y = mx$ and the circle of radius 2 — enclose a **circular sector** with its vertex at the origin.\n\nLet $\\theta$ be the angle the line makes with the $x$-axis, so $m = \\tan\\theta$.\n\n**Area of the sector.** For a circle of radius $r$, a sector of angle $\\theta$ has area\n\n$$\\frac{1}{2}r^2\\theta = \\frac{1}{2}(2)^2\\theta = 2\\theta.$$\n\n**Set it equal to the given area.**\n\n$$2\\theta = \\frac{\\pi}{2} \\quad\\Longrightarrow\\quad \\theta = \\frac{\\pi}{4}.$$\n\n**Recover $m$.**\n\n$$m = \\tan\\frac{\\pi}{4} = \\mathbf{1}.$$\n\nSo the line is $y = x$, which indeed cuts the first quadrant exactly in half — and a quarter-disc of radius 2 has area $\\pi$, half of which is $\\dfrac{\\pi}{2}$. The answer checks out.",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "c12aoi-102",
+      "chapter": "Application of Integrals",
+      "topic": "Area between curves",
+      "type": "long",
+      "q": "Find the area of the region bounded by the curves $x^2 = y$, $y = x + 2$ and the $x$-axis, using integration.",
+      "solution": "**Step 1 — find every corner of the region.**\n\nThe line meets the $x$-axis where $x + 2 = 0$, that is at $(-2, 0)$.\n\nThe parabola meets the $x$-axis where $x^2 = 0$, that is at $(0, 0)$.\n\nThe line meets the parabola where $x^2 = x + 2$, so $x^2 - x - 2 = 0$ and $(x-2)(x+1) = 0$, giving $x = -1$ and $x = 2$. The intersection that borders our region is $(-1, 1)$.\n\nSo the region is the closed figure with corners $(-2, 0)$, $(-1, 1)$ and $(0, 0)$: up the **line** from $(-2,0)$ to $(-1,1)$, down the **parabola** from $(-1,1)$ to $(0,0)$, then back along the **$x$-axis**.\n\n**Step 2 — split the integral at $x = -1$**, where the upper boundary changes from the line to the parabola.\n\n$$\\text{Area} = \\int_{-2}^{-1}(x + 2)\\,dx \\;+\\; \\int_{-1}^{0} x^2\\,dx.$$\n\n**Step 3 — evaluate each piece.**\n\n$$\\int_{-2}^{-1}(x+2)\\,dx = \\left[\\frac{x^2}{2} + 2x\\right]_{-2}^{-1} = \\left(\\frac12 - 2\\right) - \\left(2 - 4\\right) = -\\frac32 + 2 = \\frac12.$$\n\n$$\\int_{-1}^{0} x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_{-1}^{0} = 0 - \\left(-\\frac13\\right) = \\frac13.$$\n\n**Step 4 — add.**\n\n$$\\text{Area} = \\frac12 + \\frac13 = \\frac{5}{6}\\ \\text{square units}.$$\n\n**Check.** The first piece is a triangle with base 1 and height 1, area $\\tfrac12$ — which matches. The second is the small area under the parabola from $-1$ to $0$, comfortably less than the $1 \\times 1$ square containing it. Both pieces are sensible.",
+      "marks": 5,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "aoi-002",
+      "chapter": "Application of Integrals",
+      "topic": "Area of a circle",
+      "type": "mcq",
+      "q": "The area enclosed by the circle $x^{2} + y^{2} = a^{2}$, found by integration, is:",
+      "solution": "By symmetry the area is $4\\displaystyle\\int_{0}^{a}\\sqrt{a^{2} - x^{2}}\\,dx$.\n\nThat standard integral evaluates to $\\dfrac{\\pi a^{2}}{4}$, so the total is $\\mathbf{\\pi a^{2}}$ — the formula you already knew, now proved rather than remembered.",
+      "marks": 1,
+      "options": [
+        "$\\pi a$",
+        "$2\\pi a$",
+        "$\\pi a^{2}$",
+        "$4\\pi a^{2}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "aoi-003",
+      "chapter": "Application of Integrals",
+      "topic": "Which variable to integrate",
+      "type": "mcq",
+      "q": "To find the area of a region bounded by a curve and the **$y$-axis** between $y = c$ and $y = d$, you integrate:",
+      "solution": "Strips drawn against the $y$-axis are **horizontal**: their length is $x$ and their thickness is $dy$.\n\nSo the area is $\\displaystyle\\int_{c}^{d}x\\,dy$, with $x$ written as a function of $y$ first.\n\nChoose the direction of the strips that lets you describe the region in one piece — that choice is most of the work.",
+      "marks": 1,
+      "options": [
+        "$\\displaystyle\\int_{c}^{d} y\\,dx$",
+        "$\\displaystyle\\int_{c}^{d} x\\,dy$",
+        "$\\displaystyle\\int_{c}^{d} y\\,dy$",
+        "$\\displaystyle\\int_{c}^{d} x\\,dx$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "aoi-004",
+      "chapter": "Application of Integrals",
+      "topic": "Area under a straight line",
+      "type": "mcq",
+      "q": "The area bounded by $y = x$, the $x$-axis and the lines $x = 0$, $x = 4$ is:",
+      "solution": "$\\displaystyle\\int_{0}^{4}x\\,dx = \\left[\\dfrac{x^{2}}{2}\\right]_{0}^{4} = \\mathbf{8}$ square units.\n\n**Check:** it is a right triangle of base $4$ and height $4$, area $\\tfrac12(4)(4) = 8$. ✓",
+      "marks": 1,
+      "options": [
+        "4 sq units",
+        "8 sq units",
+        "16 sq units",
+        "2 sq units"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "aoi-005",
+      "chapter": "Application of Integrals",
+      "topic": "Area below the axis",
+      "type": "mcq",
+      "q": "When a curve dips below the $x$-axis over part of the interval, the area of the region is found by:",
+      "solution": "A definite integral counts area below the axis as **negative**, so a single integral across a sign change returns the *difference* of the two areas, not their total.\n\nSplit at the crossing points and add the modulus of each piece.\n\nBank statements do the same thing: a balance of zero does not mean nothing happened.",
+      "marks": 1,
+      "options": [
+        "integrating as usual — the signs sort themselves out",
+        "splitting the interval and taking the modulus of each part",
+        "squaring the integrand",
+        "integrating with respect to $y$ instead"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "aoi-006",
+      "chapter": "Application of Integrals",
+      "topic": "Area under a line",
+      "type": "numeric",
+      "q": "Find the area (in square units) bounded by $y = 2x$, the $x$-axis and the lines $x = 0$ and $x = 3$.",
+      "solution": "$\\displaystyle\\int_{0}^{3}2x\\,dx = \\left[x^{2}\\right]_{0}^{3} = \\mathbf{9}$ square units.\n\n**Check:** a triangle of base $3$ and height $6$ — $\\tfrac12(3)(6) = 9$. ✓",
+      "marks": 2,
+      "answer": 9,
+      "tolerance": 0
+    },
+    {
+      "id": "aoi-007",
+      "chapter": "Application of Integrals",
+      "topic": "Area under a parabola",
+      "type": "numeric",
+      "q": "Find the area (in square units) bounded by $y = x^{2}$, the $x$-axis and the lines $x = 1$ and $x = 2$, correct to three decimal places.",
+      "solution": "$\\displaystyle\\int_{1}^{2}x^{2}dx = \\left[\\dfrac{x^{3}}{3}\\right]_{1}^{2} = \\dfrac{8}{3} - \\dfrac{1}{3} = \\dfrac{7}{3} \\approx \\mathbf{2.333}$ square units.",
+      "marks": 2,
+      "answer": 2.333,
+      "tolerance": 0.002
+    },
+    {
+      "id": "aoi-008",
+      "chapter": "Application of Integrals",
+      "topic": "Area of an ellipse",
+      "type": "numeric",
+      "q": "The area of the ellipse $\\dfrac{x^{2}}{9} + \\dfrac{y^{2}}{4} = 1$ is $k\\pi$. Find $k$.",
+      "solution": "For $\\dfrac{x^{2}}{a^{2}} + \\dfrac{y^{2}}{b^{2}} = 1$ the enclosed area is $\\pi ab$.\n\nHere $a = 3$, $b = 2$, so the area is $6\\pi$ and $k = \\mathbf{6}$.\n\nAn ellipse is a circle that has been stretched by $a$ one way and $b$ the other, so its area is the unit circle's $\\pi$ times both stretches.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "aoi-009",
+      "chapter": "Application of Integrals",
+      "topic": "Area between two curves",
+      "type": "numeric",
+      "q": "Find the area (in square units) of the region between $y = x$ and $y = x^{2}$ from $x = 0$ to $x = 1$, correct to three decimal places.",
+      "solution": "Between $0$ and $1$ the line sits above the parabola, so integrate the gap:\n\n$\\displaystyle\\int_{0}^{1}\\left(x - x^{2}\\right)dx = \\left[\\dfrac{x^{2}}{2} - \\dfrac{x^{3}}{3}\\right]_{0}^{1} = \\dfrac12 - \\dfrac13 = \\dfrac16 \\approx \\mathbf{0.167}$.\n\n**Top curve minus bottom curve** — deciding which is which is the only place this goes wrong.",
+      "marks": 2,
+      "answer": 0.167,
+      "tolerance": 0.002
+    },
+    {
+      "id": "aoi-010",
+      "chapter": "Application of Integrals",
+      "topic": "Area under a sine wave",
+      "type": "numeric",
+      "q": "Find the area (in square units) bounded by $y = \\sin x$ and the $x$-axis from $x = 0$ to $x = \\pi$.",
+      "solution": "$\\displaystyle\\int_{0}^{\\pi}\\sin x\\,dx = \\left[-\\cos x\\right]_{0}^{\\pi} = -(-1) + 1 = \\mathbf{2}$ square units.\n\nA neat result: one arch of a sine wave, peak height $1$, encloses exactly $2$.\n\nCareful over $[0, 2\\pi]$: the second arch is below the axis, and the plain integral would come out $0$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "aoi-011",
+      "chapter": "Application of Integrals",
+      "topic": "Area between a line and a parabola",
+      "type": "long",
+      "q": "Find the area of the region enclosed by the parabola $y = x^{2}$ and the line $y = x + 2$.",
+      "solution": "**Where do they meet?** $x^{2} = x + 2 \\Rightarrow x^{2} - x - 2 = 0 \\Rightarrow (x - 2)(x + 1) = 0$, so $x = -1$ and $x = 2$.\n\nBetween those points the line is on top (test $x = 0$: line $2$, parabola $0$).\n\nArea $= \\displaystyle\\int_{-1}^{2}\\left[(x + 2) - x^{2}\\right]dx = \\left[\\dfrac{x^{2}}{2} + 2x - \\dfrac{x^{3}}{3}\\right]_{-1}^{2}$.\n\nAt $x = 2$: $2 + 4 - \\tfrac83 = \\tfrac{10}{3}$. At $x = -1$: $\\tfrac12 - 2 + \\tfrac13 = -\\tfrac76$.\n\nArea $= \\dfrac{10}{3} + \\dfrac76 = \\dfrac{20 + 7}{6} = \\mathbf{\\dfrac{9}{2}}$ square units.\n\nFind the meeting points first: they are the limits, and without them there is nothing to integrate between.",
+      "marks": 3
+    },
+    {
+      "id": "aoi-012",
+      "chapter": "Application of Integrals",
+      "topic": "Quarter of a circle",
+      "type": "long",
+      "q": "Find the area of the region in the first quadrant enclosed by the circle $x^{2} + y^{2} = 16$ and the coordinate axes.",
+      "solution": "In the first quadrant, $y = \\sqrt{16 - x^{2}}$ with $x$ running from $0$ to $4$.\n\nArea $= \\displaystyle\\int_{0}^{4}\\sqrt{16 - x^{2}}\\,dx$.\n\nUsing $\\displaystyle\\int\\sqrt{a^{2} - x^{2}}dx = \\dfrac{x}{2}\\sqrt{a^{2} - x^{2}} + \\dfrac{a^{2}}{2}\\sin^{-1}\\dfrac{x}{a}$ with $a = 4$:\n\nAt $x = 4$: $0 + 8\\sin^{-1}(1) = 8 \\times \\tfrac{\\pi}{2} = 4\\pi$. At $x = 0$: $0$.\n\nArea $= \\mathbf{4\\pi}$ square units, which is a quarter of $\\pi(4)^{2} = 16\\pi$ — as it must be. ✓",
+      "marks": 3
+    },
+    {
+      "id": "aoi-014",
+      "chapter": "Application of Integrals",
+      "topic": "Splitting at a sign change",
+      "type": "long",
+      "q": "Find the area bounded by the curve $y = x^{3}$, the $x$-axis and the lines $x = -2$ and $x = 1$.",
+      "solution": "$y = x^{3}$ is **below** the axis for $x < 0$ and above it for $x > 0$, so split at $0$ and take each piece's modulus.\n\n$\\displaystyle\\int_{-2}^{0}x^{3}dx = \\left[\\dfrac{x^{4}}{4}\\right]_{-2}^{0} = 0 - 4 = -4$, so that piece has area $4$.\n\n$\\displaystyle\\int_{0}^{1}x^{3}dx = \\dfrac14$.\n\nTotal area $= 4 + \\dfrac14 = \\mathbf{\\dfrac{17}{4}}$ square units.\n\nIntegrating straight through from $-2$ to $1$ would have returned $-\\tfrac{15}{4}$ — the difference of the two areas, which is not what was asked.",
+      "marks": 3
+    },
+    {
+      "id": "aoi-015",
+      "chapter": "Application of Integrals",
+      "topic": "A region bounded by moduli",
+      "type": "long",
+      "q": "Find the area of the region bounded by $|x| + |y| = 1$.",
+      "solution": "In the first quadrant the equation is $x + y = 1$, a straight line from $(1, 0)$ to $(0, 1)$.\n\nThe moduli reflect that line into all four quadrants, so the region is a square with vertices $(1,0)$, $(0,1)$, $(-1,0)$, $(0,-1)$.\n\nFirst-quadrant area $= \\displaystyle\\int_{0}^{1}(1 - x)dx = \\left[x - \\dfrac{x^{2}}{2}\\right]_{0}^{1} = \\dfrac12$.\n\nBy symmetry the total is $4 \\times \\tfrac12 = \\mathbf{2}$ square units.\n\n**Check:** it is a square whose diagonals are both $2$, and a square's area is half the product of its diagonals: $\\tfrac12(2)(2) = 2$. ✓",
+      "marks": 2
+    }
+  ]
+}

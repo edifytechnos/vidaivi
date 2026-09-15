@@ -1,0 +1,191 @@
+{
+  "id": "lib-c10s-metals-non-metals",
+  "title": "Metals and Non-metals",
+  "chapter": "Chapter Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10mnm-101",
+      "chapter": "Metals and Non-metals",
+      "topic": "Extraction of metals",
+      "type": "long",
+      "q": "With the help of chemical equations, list the two main differences between roasting and calcination. How is the metal obtained from the product of roasting or calcination? Write the chemical equation for the reaction involved.",
+      "solution": "Both are steps that convert an ore into the **metal oxide**, because an oxide is the easiest form to reduce. They differ in which ore they are used on and in the conditions.\n\n**Roasting.** The ore is heated strongly **in the presence of excess air**. It is used for **sulphide** ores.\n\n$$2\\ \\text{ZnS} + 3\\ \\text{O}_2 \\xrightarrow{\\ \\text{Heat}\\ } 2\\ \\text{ZnO} + 2\\ \\text{SO}_2$$\n\n**Calcination.** The ore is heated strongly **in the absence or limited supply of air**. It is used for **carbonate** ores (and to drive off water from hydrated ores).\n\n$$\\text{ZnCO}_3 \\xrightarrow{\\ \\text{Heat}\\ } \\text{ZnO} + \\text{CO}_2$$\n\n**The two main differences, then :**\n\n1. Roasting is carried out in **excess air**; calcination in the **absence or limited supply** of air.\n2. Roasting is applied to **sulphide** ores and releases $\\text{SO}_2$; calcination is applied to **carbonate** ores and releases $\\text{CO}_2$.\n\n**Obtaining the metal.** The metal oxide produced by either process is then **reduced**, usually by heating with carbon (coke), which takes the oxygen away :\n\n$$\\text{ZnO} + \\text{C} \\xrightarrow{\\ \\text{Heat}\\ } \\text{Zn} + \\text{CO}$$\n\nThe zinc is obtained as a vapour and is condensed. For the most reactive metals — sodium, magnesium, aluminium — carbon is not a strong enough reducing agent, and **electrolytic reduction** of the molten ore is used instead.",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "mnm-001",
+      "chapter": "Metals and Non-metals",
+      "topic": "Physical properties",
+      "type": "mcq",
+      "q": "Which of these is a non-metal that conducts electricity?",
+      "solution": "**Graphite**, a form of carbon, conducts because each carbon uses only three of its four valence electrons for bonding — the fourth is free to move.\n\nIt is the standard exception to 'non-metals do not conduct', along with the fact that graphite is soft and slippery while diamond, the same element, is the hardest natural substance.",
+      "marks": 1,
+      "options": [
+        "Sulphur",
+        "Graphite",
+        "Phosphorus",
+        "Iodine"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mnm-002",
+      "chapter": "Metals and Non-metals",
+      "topic": "Reactivity series",
+      "type": "mcq",
+      "q": "Which metal displaces copper from copper sulphate solution?",
+      "solution": "**Iron** stands above copper in the reactivity series, so it displaces it:\n\n$\\text{Fe} + \\text{CuSO}_{4} \\to \\text{FeSO}_{4} + \\text{Cu}$\n\nThe blue solution fades to pale green and a red-brown deposit appears on the iron. Silver, gold and platinum are all below copper and do nothing.",
+      "marks": 1,
+      "options": [
+        "Silver",
+        "Gold",
+        "Iron",
+        "Platinum"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "mnm-003",
+      "chapter": "Metals and Non-metals",
+      "topic": "Ionic compounds",
+      "type": "mcq",
+      "q": "Ionic compounds have high melting points because:",
+      "solution": "Every ion is held by strong **electrostatic attraction** to all its oppositely charged neighbours throughout the lattice.\n\nBreaking that lattice apart takes a great deal of energy, so the melting and boiling points are high.",
+      "marks": 1,
+      "options": [
+        "they are hard",
+        "the electrostatic forces between ions are strong",
+        "they are soluble in water",
+        "they conduct electricity"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mnm-004",
+      "chapter": "Metals and Non-metals",
+      "topic": "Extraction of metals",
+      "type": "mcq",
+      "q": "The process of heating a sulphide ore strongly in the presence of excess air is called:",
+      "solution": "**Roasting** — for sulphide ores, heating in excess air converts them to the oxide:\n\n$2\\text{ZnS} + 3\\text{O}_{2} \\to 2\\text{ZnO} + 2\\text{SO}_{2}$\n\n**Calcination** is the carbonate equivalent, done in **limited** air:\n\n$\\text{ZnCO}_{3} \\to \\text{ZnO} + \\text{CO}_{2}$\n\nEither way the point is the same: get to the oxide, which is easy to reduce.",
+      "marks": 1,
+      "options": [
+        "calcination",
+        "roasting",
+        "smelting",
+        "refining"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mnm-005",
+      "chapter": "Metals and Non-metals",
+      "topic": "Alloys",
+      "type": "mcq",
+      "q": "Brass is an alloy of:",
+      "solution": "**Brass** is copper and zinc. Bronze is copper and **tin**; steel is iron and carbon; solder is lead and tin.\n\nAlloying changes the properties: brass is harder than copper and resists corrosion better, and amalgams are alloys with mercury.",
+      "marks": 1,
+      "options": [
+        "copper and tin",
+        "copper and zinc",
+        "iron and carbon",
+        "copper and nickel"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "mnm-006",
+      "chapter": "Metals and Non-metals",
+      "topic": "Valency",
+      "type": "numeric",
+      "q": "Find the valency of magnesium, whose atom has 2 electrons in its outermost shell.",
+      "solution": "Magnesium loses both outer electrons to reach the stable configuration of neon, so its valency is $\\mathbf{2}$ and it forms $\\text{Mg}^{2+}$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "mnm-007",
+      "chapter": "Metals and Non-metals",
+      "topic": "Formula",
+      "type": "numeric",
+      "q": "In the formula of aluminium oxide, how many oxygen atoms are present per formula unit?",
+      "solution": "Aluminium is $+3$ and oxygen is $-2$. The lowest common multiple is 6, needing two $\\text{Al}^{3+}$ and three $\\text{O}^{2-}$:\n\n$\\text{Al}_{2}\\text{O}_{3}$ — so $\\mathbf{3}$ oxygen atoms.\n\nCross over the charges to get the subscripts.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "mnm-008",
+      "chapter": "Metals and Non-metals",
+      "topic": "Electrons transferred",
+      "type": "numeric",
+      "q": "How many electrons are transferred from each sodium atom when sodium chloride is formed?",
+      "solution": "Sodium has one electron in its outermost shell and loses it to chlorine, becoming $\\text{Na}^{+}$: $\\mathbf{1}$.\n\nChlorine, needing one to complete its shell, takes it and becomes $\\text{Cl}^{-}$. The two ions then attract each other, and that attraction is the ionic bond.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "mnm-009",
+      "chapter": "Metals and Non-metals",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of aluminium oxide, $\\text{Al}_{2}\\text{O}_{3}$, in g/mol. (Al $= 27$, O $= 16$.)",
+      "solution": "$2(27) + 3(16) = 54 + 48 = \\mathbf{102}$ g/mol.",
+      "marks": 2,
+      "answer": 102,
+      "tolerance": 0.5
+    },
+    {
+      "id": "mnm-010",
+      "chapter": "Metals and Non-metals",
+      "topic": "Reactivity series",
+      "type": "numeric",
+      "q": "How many of these metals react with cold water: sodium, potassium, magnesium, copper?",
+      "solution": "**Sodium** ✓ and **potassium** ✓ react vigorously with cold water — potassium so violently that the hydrogen catches fire.\n\n**Magnesium** reacts only with hot water; **copper** does not react with water at all.\n\nSo $\\mathbf{2}$ — and the answer is simply the reactivity series read off from the top.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "mnm-012",
+      "chapter": "Metals and Non-metals",
+      "topic": "Ionic bonding",
+      "type": "long",
+      "q": "Explain the formation of magnesium chloride by electron transfer, and give three properties of ionic compounds.",
+      "solution": "**Formation.** Magnesium has 2 electrons in its outer shell; chlorine has 7 and needs 1.\n\nMagnesium gives **one electron to each of two** chlorine atoms:\n\n$\\text{Mg} \\to \\text{Mg}^{2+} + 2e^{-}$\n\n$2\\text{Cl} + 2e^{-} \\to 2\\text{Cl}^{-}$\n\nEvery ion now has a noble-gas configuration, and the opposite charges hold them together as $\\text{MgCl}_{2}$.\n\n**Properties of ionic compounds:**\n\n1. **Hard, brittle crystalline solids** — the lattice is rigid, and a blow that slides one layer brings like charges together, so the crystal splits cleanly.\n\n2. **High melting and boiling points** — strong electrostatic forces throughout the lattice.\n\n3. **Soluble in water, insoluble in petrol and kerosene** — water's polar molecules pull the ions apart; non-polar solvents cannot.\n\n4. **Conduct when molten or dissolved, not when solid.** Conduction needs ions **free to move**, and in the solid they are locked in place. This is the most telling test for an ionic compound.",
+      "marks": 3
+    },
+    {
+      "id": "mnm-013",
+      "chapter": "Metals and Non-metals",
+      "topic": "Corrosion and alloys",
+      "type": "long",
+      "q": "What is corrosion? Explain how galvanisation and alloying prevent it, and give the composition and one use of three alloys.",
+      "solution": "**Corrosion** — the surface of a metal is attacked by air, moisture or chemicals and slowly eaten away.\n\n**Galvanisation.** Iron is coated with **zinc**, by dipping it in molten zinc or by electroplating. Zinc is more reactive than iron, so even if the coating is scratched the **zinc corrodes first** and the iron is protected.\n\nThat is the real advantage over painting: paint protects only where it is intact.\n\n**Alloying.** Mixing the metal with another element changes its properties, often making it resist corrosion entirely. **Stainless steel** — iron with chromium and nickel — does not rust at all, because the chromium forms a thin, tough, adherent oxide film.\n\n**Three alloys:**\n\n• **Brass** — copper + zinc. Used for taps, musical instruments, electrical fittings.\n\n• **Bronze** — copper + tin. Used for statues, bells, medals.\n\n• **Stainless steel** — iron + chromium + nickel. Used for cutlery, utensils, surgical instruments.\n\n• **Solder** — lead + tin, with a low melting point, used for joining electrical wires.\n\nAlloying also changes hardness and conductivity: pure gold is too soft for jewellery, so it is alloyed with copper or silver — which is what carat measures.",
+      "marks": 5
+    },
+    {
+      "id": "mnm-014",
+      "chapter": "Metals and Non-metals",
+      "topic": "Properties of metals and non-metals",
+      "type": "long",
+      "q": "Give four differences between metals and non-metals, and name one exception to each.",
+      "solution": "1. **Physical state.** Metals are solids at room temperature — *except mercury*, which is liquid. Non-metals may be solid, liquid or gas — *bromine* is the liquid one.\n\n2. **Lustre.** Metals are shiny — non-metals are dull, *except iodine and graphite*, which have a lustre.\n\n3. **Conductivity.** Metals conduct heat and electricity — *except* that lead and mercury conduct poorly. Non-metals do not — *except graphite*.\n\n4. **Malleability and ductility.** Metals can be beaten into sheets and drawn into wires — *except* zinc and manganese, which are brittle. Non-metals are brittle.\n\n5. **Oxides.** Metal oxides are basic; non-metal oxides are acidic — *except* aluminium and zinc oxides, which are **amphoteric** (they react with both acids and bases).\n\n6. **Electron behaviour.** Metals lose electrons and form positive ions; non-metals gain them and form negative ions.\n\nThe exceptions are worth memorising as a set — they are almost guaranteed to be asked.",
+      "marks": 3
+    },
+    {
+      "id": "mnm-015",
+      "chapter": "Metals and Non-metals",
+      "topic": "Reactivity series",
+      "type": "long",
+      "q": "What is the reactivity series? Explain how a displacement reaction can be used to place two metals in it.",
+      "solution": "**The reactivity series** is a list of metals in order of how readily they lose electrons and form positive ions, most reactive first:\n\nK, Na, Ca, Mg, Al, Zn, Fe, Pb, (H), Cu, Hg, Ag, Au\n\n**Using displacement.** A more reactive metal displaces a less reactive one from its salt solution. So put a strip of metal A into a solution of metal B's salt:\n\n• **If a deposit of B forms**, A is more reactive than B.\n\n• **If nothing happens**, A is less reactive.\n\n**Example.** An iron nail in copper sulphate goes red-brown and the blue solution fades, so **iron is above copper**. Copper in iron sulphate does nothing at all, which confirms the order from the other direction.\n\n**Why the series is useful:** it predicts which metals react with water or with acid, which ores need electrolysis rather than carbon, and which metal will protect another from corrosion.",
+      "marks": 2
+    }
+  ]
+}

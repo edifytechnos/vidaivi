@@ -1,0 +1,192 @@
+{
+  "id": "lib-igs-coordination",
+  "title": "Coordination, Reproduction and Inheritance",
+  "chapter": "Topic Test 4",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "cie0653-102",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Hormones",
+      "type": "mcq",
+      "q": "Which statement about adrenaline is correct?",
+      "solution": "**The correct statement.** Adrenaline is a hormone, and every hormone is produced by an **endocrine gland**. Adrenaline comes from the **adrenal glands**, one sitting on top of each kidney.\n\n**Why each of the others is wrong.**\n\n*Transported in the red blood cells.* Hormones are carried **dissolved in the blood plasma**, not inside red blood cells. Red cells are packed with haemoglobin and carry oxygen.\n\n*Only one target organ.* Adrenaline is the clearest counter-example there is — it acts on the **heart** (raising the rate), the **liver** (releasing glucose), the **lungs and airways**, the **muscles**, the **skin** and the **eyes**, all at once. That breadth is what makes it useful in an emergency.\n\n*Reduces the size of the pupils.* It does the opposite: adrenaline makes the pupils **dilate**, letting in more light so the danger can be seen more clearly.",
+      "marks": 1,
+      "source": "Cambridge 0653 Jun 2024",
+      "options": [
+        "It is produced by a gland",
+        "It is transported in the red blood cells",
+        "It only has one target organ",
+        "It reduces the size of the pupils"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "cie0653-103",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Sexual reproduction",
+      "type": "mcq",
+      "q": "Which statement about sexual reproduction is **always** correct?",
+      "solution": "The word **always** is doing the work here — three of the options are true only sometimes, or never.\n\n**The correct statement.** Sexual reproduction is *defined* by **fertilisation**: the fusion of the nucleus of a male gamete with the nucleus of a female gamete to form a zygote. That happens in every case without exception, which is exactly what the question asks for.\n\n**Why each of the others is wrong.**\n\n*Only one parent.* That describes **asexual** reproduction. Sexual reproduction usually involves two parents — though a self-pollinating plant is a single organism, it still produces two kinds of gamete whose nuclei fuse, which is why the fusion, not the parent count, is the defining feature.\n\n*Genetically identical offspring.* The opposite. Because the gametes are made by **meiosis** — with independent assortment and crossing over — and because which two gametes meet is random, sexual reproduction produces **variation**. Identical offspring come from asexual reproduction.\n\n*Only in animals.* Plants reproduce sexually too, which is what flowers are for. So do fungi and many single-celled organisms.",
+      "marks": 1,
+      "source": "Cambridge 0653 Jun 2024",
+      "options": [
+        "It involves only one parent",
+        "It involves the fusion of nuclei",
+        "It produces genetically identical offspring",
+        "It takes place only in animals"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb4-002",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Hormones",
+      "type": "mcq",
+      "q": "Insulin is produced by the:",
+      "solution": "The **pancreas**. Insulin lowers blood glucose by making cells take it up and the liver store it as glycogen.\n\n**Glucagon**, also from the pancreas, does the opposite. The two together hold blood sugar steady — a textbook example of negative feedback.",
+      "marks": 1,
+      "options": [
+        "liver",
+        "pancreas",
+        "kidney",
+        "thyroid"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb4-003",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Homeostasis",
+      "type": "mcq",
+      "q": "Homeostasis is the maintenance of:",
+      "solution": "Homeostasis keeps the **internal** environment steady — temperature, blood glucose, water content, pH — however the outside changes.\n\nEnzymes work only within narrow limits, so this is not a luxury: it is what makes complex life possible.",
+      "marks": 1,
+      "options": [
+        "a constant external environment",
+        "a constant internal environment",
+        "a constant body size",
+        "constant hormone levels only"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igb4-004",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Inheritance",
+      "type": "mcq",
+      "q": "A gene is:",
+      "solution": "A **gene** is a length of DNA that codes for one protein (or polypeptide).\n\nGenes sit on **chromosomes**, and different versions of the same gene are called **alleles** — brown and blue eye colour, for instance.",
+      "marks": 1,
+      "options": [
+        "a length of DNA coding for a protein",
+        "a whole chromosome",
+        "a type of cell",
+        "a protein"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igb4-006",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Chromosomes",
+      "type": "numeric",
+      "q": "How many chromosomes are in a normal human body cell?",
+      "solution": "$\\mathbf{46}$ — 23 pairs, one of each pair from each parent.",
+      "marks": 2,
+      "answer": 46,
+      "tolerance": 0
+    },
+    {
+      "id": "igb4-007",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Monohybrid cross",
+      "type": "numeric",
+      "q": "In a cross $\\text{Tt} \\times \\text{Tt}$, what percentage of offspring are expected to show the recessive characteristic?",
+      "solution": "Only $tt$ shows the recessive trait, and it is one of the four possibilities: $\\mathbf{25}\\%$.",
+      "marks": 2,
+      "answer": 25,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igb4-008",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Sex determination",
+      "type": "numeric",
+      "q": "What is the probability, as a percentage, that a child will be female?",
+      "solution": "$\\mathbf{50}\\%$ — the father's sperm carries an X or a Y with equal likelihood, and the mother can only supply an X.",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igb4-009",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Reflex arc",
+      "type": "numeric",
+      "q": "How many neurons are involved in a simple reflex arc (sensory, relay, motor)?",
+      "solution": "$\\mathbf{3}$. The relay neuron sits in the spinal cord and lets the response happen without waiting for the brain.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "igb4-010",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Gametes",
+      "type": "numeric",
+      "q": "How many chromosomes are in a human egg cell?",
+      "solution": "$\\mathbf{23}$ — half the body-cell number. Fertilisation restores 46, so the number stays constant from generation to generation.",
+      "marks": 2,
+      "answer": 23,
+      "tolerance": 0
+    },
+    {
+      "id": "igb4-011",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Homeostasis",
+      "type": "long",
+      "q": "Explain how body temperature is controlled in humans, describing what happens when you are too hot and when you are too cold.",
+      "solution": "**The controller.** The **hypothalamus** in the brain monitors the temperature of the blood and compares it with about $37$°C.\n\n**When too hot:**\n\n1. **Sweating** — sweat glands release sweat, and its evaporation takes heat from the skin. This is the main cooling mechanism, and it fails in very humid air, when sweat cannot evaporate.\n\n2. **Vasodilation** — the arterioles supplying the skin capillaries widen, so more warm blood flows near the surface and heat is lost by radiation. This is why the skin flushes.\n\n3. **Hairs lie flat**, trapping no insulating air.\n\n**When too cold:**\n\n1. **Shivering** — rapid involuntary muscle contraction, which releases heat through respiration.\n\n2. **Vasoconstriction** — the skin arterioles narrow, so less blood reaches the surface and less heat is lost. The skin goes pale.\n\n3. **Hairs stand up**, trapping a layer of insulating air. In humans this only produces goose pimples — an inheritance from furrier ancestors.\n\n4. **Sweating stops**, and the metabolic rate rises.\n\n**Negative feedback.** Every response acts to **reverse** the change that triggered it, which is what keeps the temperature oscillating narrowly about the set point rather than drifting away from it.\n\nThe same principle controls blood glucose and water balance.",
+      "marks": 3
+    },
+    {
+      "id": "igb4-012",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Monohybrid inheritance",
+      "type": "long",
+      "q": "Explain the terms dominant, recessive, homozygous and heterozygous, and work out a cross between a heterozygous tall pea plant and a short one.",
+      "solution": "**Dominant** — an allele that shows in the phenotype even when only one copy is present. Written with a **capital** letter.\n\n**Recessive** — an allele that shows only when **both** copies are present. Lower case.\n\n**Homozygous** — both alleles the same ($TT$ or $tt$). Also called pure-breeding.\n\n**Heterozygous** — the two alleles different ($Tt$). Such an organism shows the dominant trait but **carries** the recessive one.\n\n**The cross: $Tt \\times tt$.**\n\nGametes from the tall parent: $T$ or $t$. From the short parent: $t$ only.\n\n**Punnett square:**\n\n$T \\times t \\to Tt$ (tall)\n\n$T \\times t \\to Tt$ (tall)\n\n$t \\times t \\to tt$ (short)\n\n$t \\times t \\to tt$ (short)\n\n**Ratio: 1 tall : 1 short**, or $50\\%$ each.\n\n**Why this cross is useful.** Crossing an unknown dominant-looking individual with a homozygous recessive is the **test cross**: if any offspring show the recessive trait, the unknown parent must have been heterozygous. It is how breeders identify carriers.",
+      "marks": 3
+    },
+    {
+      "id": "igb4-013",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "The nervous and endocrine systems",
+      "type": "long",
+      "q": "Compare nervous and hormonal control, and describe a reflex arc with an example.",
+      "solution": "**Nervous control**\n\n• *Signal:* electrical impulses along neurons\n\n• *Speed:* very fast — milliseconds\n\n• *Duration:* short-lived\n\n• *Target:* precise — one muscle or gland\n\n**Hormonal control**\n\n• *Signal:* chemicals in the bloodstream\n\n• *Speed:* slower — seconds to hours\n\n• *Duration:* long-lasting, sometimes years\n\n• *Target:* widespread — every cell with the right receptor\n\n**Why both.** Pulling a hand from a flame needs milliseconds and one arm; growing up needs years and the whole body. Neither system could do the other's job.\n\n**A reflex arc — touching something hot:**\n\n1. **Receptor** in the skin detects the heat.\n\n2. **Sensory neuron** carries the impulse to the spinal cord.\n\n3. **Relay neuron** passes it straight across.\n\n4. **Motor neuron** carries the command out.\n\n5. **Effector** — the biceps contracts and the hand is withdrawn.\n\n**The brain is informed afterwards**, which is why you feel the pain **after** your hand has moved. Routing the decision through conscious thought would take tenths of a second, and the burn would already have happened.\n\n**Other reflexes:** blinking, the pupil narrowing in bright light, the knee jerk, coughing.",
+      "marks": 5
+    },
+    {
+      "id": "igb4-014",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Variation and selection",
+      "type": "long",
+      "q": "Distinguish between continuous and discontinuous variation, and explain natural selection with an example.",
+      "solution": "**Continuous variation** — a whole range of values with no distinct categories, usually controlled by **several genes** and strongly influenced by the environment. Plotted, it gives a bell-shaped curve. *Examples: height, mass, leaf length.*\n\n**Discontinuous variation** — distinct categories with nothing in between, usually controlled by **one gene** and little affected by the environment. *Examples: blood group, tongue rolling, attached or free earlobes.*\n\n**Natural selection, in four steps:**\n\n1. **Variation** exists within a population.\n\n2. **More offspring are produced than can survive** — resources are limited, so there is competition.\n\n3. Individuals with **advantageous** characteristics are more likely to survive and reproduce.\n\n4. They pass those alleles on, so the advantageous allele becomes **more common** in the next generation.\n\n**Example — antibiotic resistance.** In any large population of bacteria, a few happen to carry a mutation giving resistance. When the antibiotic is applied, the non-resistant bacteria die and the resistant ones survive and multiply. Within a few generations the whole population is resistant.\n\n**The crucial point:** the antibiotic did not *cause* the resistance. The mutation was already there, by chance, and the antibiotic merely selected for it.\n\nThis is why an antibiotic course must be finished, and why they should not be prescribed for viral infections.",
+      "marks": 3
+    },
+    {
+      "id": "igb4-015",
+      "chapter": "Coordination, Reproduction and Inheritance",
+      "topic": "Sexual and asexual reproduction",
+      "type": "long",
+      "q": "Compare sexual and asexual reproduction, giving the advantages of each.",
+      "solution": "**Sexual reproduction**\n\n• Two parents; gametes fuse at fertilisation\n\n• Offspring show **variation** — genetically different from both parents and from each other\n\n• *Advantage:* variation lets a population adapt to a changing environment or a new disease. It is the raw material of evolution.\n\n• *Disadvantage:* slow, and it requires a mate\n\n**Asexual reproduction**\n\n• One parent; no gametes\n\n• Offspring are genetically identical **clones**\n\n• *Advantage:* fast, needs no mate, and every offspring inherits a combination already proved to work in that environment\n\n• *Disadvantage:* no variation, so the whole population is vulnerable to a single disease or change\n\n**Where each is seen.** Many organisms use both: a strawberry plant sends out runners in a good season and flowers to reproduce sexually as well. Aphids reproduce asexually through the summer and sexually before winter.\n\n**The trade-off in practice.** Commercial bananas are clones, propagated vegetatively for consistency — and a single fungal disease has already wiped out one worldwide variety and now threatens its replacement.\n\nUniformity is an advantage until the environment changes, and then it is a catastrophe.",
+      "marks": 2
+    }
+  ]
+}

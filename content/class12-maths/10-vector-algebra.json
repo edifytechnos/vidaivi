@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12-vector-algebra",
+  "title": "Vector Algebra",
+  "chapter": "Chapter Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12vec-201",
+      "chapter": "Vector Algebra",
+      "topic": "Area from diagonals",
+      "type": "numeric",
+      "q": "The diagonals of a parallelogram are given by $\\vec{a} = 2\\hat{i} - \\hat{j} + \\hat{k}$ and $\\vec{b} = \\hat{i} + 3\\hat{j} - \\hat{k}$. Find the area of the parallelogram, correct to two decimal places.",
+      "solution": "When the **diagonals** are given (not the sides), the area is **half** the magnitude of their cross product :\n\n$$\\text{Area} = \\frac{1}{2}\\left|\\vec{a} \\times \\vec{b}\\right|.$$\n\n**Step 1 — the cross product.**\n\n$$\\vec{a} \\times \\vec{b} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 2 & -1 & 1 \\\\ 1 & 3 & -1 \\end{vmatrix}$$\n\n$$= \\hat{i}\\left[(-1)(-1) - (1)(3)\\right] - \\hat{j}\\left[(2)(-1) - (1)(1)\\right] + \\hat{k}\\left[(2)(3) - (-1)(1)\\right]$$\n\n$$= \\hat{i}(1 - 3) - \\hat{j}(-2 - 1) + \\hat{k}(6 + 1) = -2\\hat{i} + 3\\hat{j} + 7\\hat{k}.$$\n\n**Step 2 — its magnitude.**\n\n$$\\left|\\vec{a} \\times \\vec{b}\\right| = \\sqrt{(-2)^2 + 3^2 + 7^2} = \\sqrt{4 + 9 + 49} = \\sqrt{62} \\approx 7 \\cdot 874.$$\n\n**Step 3 — halve it.**\n\n$$\\text{Area} = \\frac{\\sqrt{62}}{2} \\approx \\mathbf{3 \\cdot 94}\\ \\text{square units}.$$\n\nThe factor of $\\frac12$ is the whole point of the question: using $\\left|\\vec a \\times \\vec b\\right|$ directly would be the area of the parallelogram whose **sides** are $\\vec a$ and $\\vec b$, which is twice this one.",
+      "marks": 2,
+      "source": "CBSE 2025",
+      "answer": 3.94,
+      "tolerance": 0.02
+    },
+    {
+      "id": "c12vec-202",
+      "chapter": "Vector Algebra",
+      "topic": "Angle between vectors",
+      "type": "numeric",
+      "q": "Two kite strings are represented by the vectors $\\vec{a} = 3\\hat{i} + \\hat{j} + 2\\hat{k}$ and $\\vec{b} = 2\\hat{i} - 2\\hat{j} + 4\\hat{k}$. Determine the angle formed between the kite strings, in degrees, correct to one decimal place.",
+      "solution": "Use the dot product definition of the angle :\n\n$$\\cos\\theta = \\frac{\\vec{a} \\cdot \\vec{b}}{\\left|\\vec{a}\\right|\\left|\\vec{b}\\right|}.$$\n\n**Step 1 — the dot product.**\n\n$$\\vec{a} \\cdot \\vec{b} = (3)(2) + (1)(-2) + (2)(4) = 6 - 2 + 8 = 12.$$\n\n**Step 2 — the magnitudes.**\n\n$$\\left|\\vec{a}\\right| = \\sqrt{9 + 1 + 4} = \\sqrt{14} \\approx 3 \\cdot 742,$$\n$$\\left|\\vec{b}\\right| = \\sqrt{4 + 4 + 16} = \\sqrt{24} = 2\\sqrt{6} \\approx 4 \\cdot 899.$$\n\n**Step 3 — substitute.**\n\n$$\\cos\\theta = \\frac{12}{\\sqrt{14} \\times 2\\sqrt{6}} = \\frac{12}{2\\sqrt{84}} = \\frac{6}{\\sqrt{84}} = \\frac{3}{\\sqrt{21}} \\approx 0 \\cdot 6547.$$\n\n**Step 4 — take the inverse cosine.**\n\n$$\\theta = \\cos^{-1}(0 \\cdot 6547) \\approx \\mathbf{49 \\cdot 1^\\circ}.$$\n\nExactly, $\\theta = \\cos^{-1}\\left(\\dfrac{3}{\\sqrt{21}}\\right)$.",
+      "marks": 2,
+      "source": "CBSE 2025",
+      "answer": 49.1,
+      "tolerance": 0.15
+    },
+    {
+      "id": "c12vec-203",
+      "chapter": "Vector Algebra",
+      "topic": "Vector of given magnitude and direction",
+      "type": "long",
+      "q": "Find a vector of magnitude 21 units in the direction **opposite** to that of $\\overrightarrow{AB}$, where $A$ and $B$ are the points $A(2, 1, 3)$ and $B(8, -1, 0)$ respectively.",
+      "solution": "**Step 1 — find $\\overrightarrow{AB}$.** Subtract the position vector of $A$ from that of $B$ :\n\n$$\\overrightarrow{AB} = (8 - 2)\\hat{i} + (-1 - 1)\\hat{j} + (0 - 3)\\hat{k} = 6\\hat{i} - 2\\hat{j} - 3\\hat{k}.$$\n\n**Step 2 — its magnitude.**\n\n$$\\left|\\overrightarrow{AB}\\right| = \\sqrt{6^2 + (-2)^2 + (-3)^2} = \\sqrt{36 + 4 + 9} = \\sqrt{49} = 7.$$\n\n(A clean 7 — a good sign the arithmetic is right.)\n\n**Step 3 — the unit vector.**\n\n$$\\hat{AB} = \\frac{6\\hat{i} - 2\\hat{j} - 3\\hat{k}}{7}.$$\n\n**Step 4 — reverse it and scale to 21.** The opposite direction means multiplying by $-1$, and the magnitude wanted is 21 :\n\n$$\\vec{v} = -21 \\times \\frac{6\\hat{i} - 2\\hat{j} - 3\\hat{k}}{7} = -3\\left(6\\hat{i} - 2\\hat{j} - 3\\hat{k}\\right).$$\n\n$$\\vec{v} = -18\\hat{i} + 6\\hat{j} + 9\\hat{k}.$$\n\n**Check.** $\\left|\\vec{v}\\right| = \\sqrt{324 + 36 + 81} = \\sqrt{441} = 21$ ✓, and every component has the opposite sign to $\\overrightarrow{AB}$, so the direction is reversed.",
+      "marks": 2,
+      "source": "CBSE 2025"
+    },
+    {
+      "id": "c12vec-204",
+      "chapter": "Vector Algebra",
+      "topic": "Section formula",
+      "type": "numeric",
+      "q": "During a cricket match, the bowler, the wicketkeeper and the leg slip fielder are in a line, at positions $\\vec{B} = 2\\hat{i} + 8\\hat{j}$, $\\vec{W} = 6\\hat{i} + 12\\hat{j}$ and $\\vec{F} = 12\\hat{i} + 18\\hat{j}$ respectively. The wicketkeeper divides the line segment joining the bowler and the leg slip fielder in the ratio $m : 3$. Find $m$.",
+      "solution": "By the section formula, if $\\vec{W}$ divides $\\vec{B}\\vec{F}$ internally in the ratio $m : n$, then\n\n$$\\vec{W} = \\frac{m\\vec{F} + n\\vec{B}}{m + n}.$$\n\nHere $n = 3$, so take the $\\hat{i}$ components and solve for $m$.\n\n**Step 1 — the $\\hat{i}$ equation.**\n\n$$6 = \\frac{12m + 2(3)}{m + 3} \\quad\\Longrightarrow\\quad 6(m + 3) = 12m + 6.$$\n\n**Step 2 — solve.**\n\n$$6m + 18 = 12m + 6 \\quad\\Longrightarrow\\quad 12 = 6m \\quad\\Longrightarrow\\quad m = \\mathbf{2}.$$\n\n**Step 3 — check against the $\\hat{j}$ components**, which must agree if the three points really are collinear :\n\n$$\\frac{2(18) + 3(8)}{2 + 3} = \\frac{36 + 24}{5} = \\frac{60}{5} = 12 \\ \\checkmark$$\n\nThat matches the $\\hat{j}$ component of $\\vec{W}$, so the ratio is $\\mathbf{2 : 3}$ and the points are indeed collinear.",
+      "marks": 3,
+      "source": "CBSE 2025",
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "c12vec-101",
+      "chapter": "Vector Algebra",
+      "topic": "Dot product of unit vectors",
+      "type": "mcq",
+      "q": "If $\\vec{a}$, $\\vec{b}$ and $\\vec{c}$ are unit vectors such that $\\vec{a} + \\vec{b} + \\vec{c} = \\vec{0}$, then $\\left(\\vec{a}\\cdot\\vec{b} + \\vec{b}\\cdot\\vec{c} + \\vec{c}\\cdot\\vec{a}\\right)$ is equal to :",
+      "solution": "Square the given condition by taking the dot product of $\\vec{a} + \\vec{b} + \\vec{c}$ with itself :\n\n$$\\left|\\vec{a} + \\vec{b} + \\vec{c}\\right|^2 = 0.$$\n\nExpanding the left side,\n\n$$\\left|\\vec{a}\\right|^2 + \\left|\\vec{b}\\right|^2 + \\left|\\vec{c}\\right|^2 + 2\\left(\\vec{a}\\cdot\\vec{b} + \\vec{b}\\cdot\\vec{c} + \\vec{c}\\cdot\\vec{a}\\right) = 0.$$\n\nEach vector is a **unit** vector, so each squared magnitude is 1 :\n\n$$3 + 2\\left(\\vec{a}\\cdot\\vec{b} + \\vec{b}\\cdot\\vec{c} + \\vec{c}\\cdot\\vec{a}\\right) = 0.$$\n\nTherefore\n\n$$\\vec{a}\\cdot\\vec{b} + \\vec{b}\\cdot\\vec{c} + \\vec{c}\\cdot\\vec{a} = -\\frac{3}{2}.$$",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "$\\dfrac{3}{2}$",
+        "$\\dfrac{1}{2}$",
+        "$-\\dfrac{1}{2}$",
+        "$-\\dfrac{3}{2}$"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12vec-102",
+      "chapter": "Vector Algebra",
+      "topic": "Angle between vectors",
+      "type": "numeric",
+      "q": "If $\\vec{a}$, $\\vec{b}$ and $\\vec{c}$ are three unit vectors such that $\\vec{a} + \\vec{b} - \\vec{c} = \\vec{0}$, find the angle between $\\vec{a}$ and $\\vec{c}$, in degrees.",
+      "solution": "**Step 1 — use the condition.** Rearranged, $\\vec{c} = \\vec{a} + \\vec{b}$.\n\n**Step 2 — find $\\vec{a}\\cdot\\vec{b}$.** Take the magnitude of both sides and square :\n\n$$\\left|\\vec{c}\\right|^2 = \\left|\\vec{a} + \\vec{b}\\right|^2 = \\left|\\vec{a}\\right|^2 + \\left|\\vec{b}\\right|^2 + 2\\,\\vec{a}\\cdot\\vec{b}.$$\n\nAll three are unit vectors, so $1 = 1 + 1 + 2\\,\\vec{a}\\cdot\\vec{b}$, giving\n\n$$\\vec{a}\\cdot\\vec{b} = -\\frac12.$$\n\n**Step 3 — find $\\vec{a}\\cdot\\vec{c}$.**\n\n$$\\vec{a}\\cdot\\vec{c} = \\vec{a}\\cdot\\left(\\vec{a} + \\vec{b}\\right) = \\left|\\vec{a}\\right|^2 + \\vec{a}\\cdot\\vec{b} = 1 - \\frac12 = \\frac12.$$\n\n**Step 4 — the angle.** Since $\\left|\\vec{a}\\right| = \\left|\\vec{c}\\right| = 1$,\n\n$$\\cos\\theta = \\frac{\\vec{a}\\cdot\\vec{c}}{\\left|\\vec{a}\\right|\\left|\\vec{c}\\right|} = \\frac12 \\quad\\Longrightarrow\\quad \\theta = 60^\\circ.$$",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": 60,
+      "tolerance": 0
+    },
+    {
+      "id": "vec-003",
+      "chapter": "Vector Algebra",
+      "topic": "Cross product of unit vectors",
+      "type": "mcq",
+      "q": "$\\hat{i} \\times \\hat{j}$ equals:",
+      "solution": "The unit vectors follow the right-hand cycle $\\hat{i} \\to \\hat{j} \\to \\hat{k} \\to \\hat{i}$: each crossed with the next gives the one after.\n\nSo $\\hat{i} \\times \\hat{j} = \\mathbf{\\hat{k}}$, while $\\hat{j} \\times \\hat{i} = -\\hat{k}$ — the cross product is **not** commutative.\n\nPoint the fingers of your right hand along the first vector, curl them towards the second, and your thumb shows the answer.",
+      "marks": 1,
+      "options": [
+        "$\\hat{k}$",
+        "$-\\hat{k}$",
+        "0",
+        "$\\hat{i} + \\hat{j}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "vec-004",
+      "chapter": "Vector Algebra",
+      "topic": "Unit vector",
+      "type": "mcq",
+      "q": "A unit vector in the direction of $\\vec{a} = \\hat{i} + \\hat{j} + \\hat{k}$ is:",
+      "solution": "Divide the vector by its own magnitude. Here $\\left|\\vec{a}\\right| = \\sqrt{1 + 1 + 1} = \\sqrt3$.\n\n$\\hat{a} = \\mathbf{\\dfrac{\\hat{i} + \\hat{j} + \\hat{k}}{\\sqrt{3}}}$.\n\nA unit vector keeps the direction and throws away the length — a signpost, not a journey.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\hat{i} + \\hat{j} + \\hat{k}}{3}$",
+        "$\\dfrac{\\hat{i} + \\hat{j} + \\hat{k}}{\\sqrt{3}}$",
+        "$\\hat{i} + \\hat{j} + \\hat{k}$",
+        "$\\dfrac{\\hat{i} + \\hat{j} + \\hat{k}}{\\sqrt{2}}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "vec-005",
+      "chapter": "Vector Algebra",
+      "topic": "Projection",
+      "type": "mcq",
+      "q": "The projection of $\\vec{a}$ on $\\vec{b}$ is:",
+      "solution": "The projection of $\\vec{a}$ **on** $\\vec{b}$ is the length of $\\vec{a}$'s shadow along $\\vec{b}$:\n\n$\\left|\\vec{a}\\right|\\cos\\theta = \\dfrac{\\vec{a}\\cdot\\vec{b}}{\\left|\\vec{b}\\right|}$.\n\nDivide by the vector you are projecting **onto** — that is the half students most often get the wrong way round.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\vec{a}\\cdot\\vec{b}}{\\left|\\vec{a}\\right|}$",
+        "$\\dfrac{\\vec{a}\\cdot\\vec{b}}{\\left|\\vec{b}\\right|}$",
+        "$\\vec{a}\\cdot\\vec{b}$",
+        "$\\dfrac{\\left|\\vec{a}\\times\\vec{b}\\right|}{\\left|\\vec{b}\\right|}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "vec-009",
+      "chapter": "Vector Algebra",
+      "topic": "Area of a parallelogram",
+      "type": "numeric",
+      "q": "Find the area of the parallelogram whose adjacent sides are $\\vec{a} = \\hat{i}$ and $\\vec{b} = \\hat{j} + \\hat{k}$.",
+      "solution": "Area $= \\left|\\vec{a} \\times \\vec{b}\\right|$.\n\n$\\vec{a} \\times \\vec{b} = \\hat{i} \\times \\left(\\hat{j} + \\hat{k}\\right) = \\hat{k} - \\hat{j}$.\n\nIts magnitude is $\\sqrt{1 + 1} = \\sqrt2 \\approx \\mathbf{1.414}$ square units.\n\nThe cross product's **length** is the area of the parallelogram; its **direction** is the normal to that parallelogram. One product, two pieces of information.",
+      "marks": 2,
+      "answer": 1.414,
+      "tolerance": 0.01
+    },
+    {
+      "id": "vec-010",
+      "chapter": "Vector Algebra",
+      "topic": "Collinear vectors",
+      "type": "numeric",
+      "q": "If $\\vec{a} = 2\\hat{i} + 3\\hat{j} + 4\\hat{k}$ and $\\vec{b} = 4\\hat{i} + \\mu\\hat{j} + 8\\hat{k}$ are parallel, find $\\mu$.",
+      "solution": "Parallel vectors are scalar multiples, and $\\vec{b}$ is clearly $2\\vec{a}$ in its first and third components.\n\nSo $\\mu = 2 \\times 3 = \\mathbf{6}$.\n\nEquivalently: the components must be in the same ratio, $\\dfrac{4}{2} = \\dfrac{\\mu}{3} = \\dfrac{8}{4}$.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "vec-012",
+      "chapter": "Vector Algebra",
+      "topic": "Projection",
+      "type": "long",
+      "q": "Find the projection of $\\vec{a} = 2\\hat{i} + 3\\hat{j} + 2\\hat{k}$ on $\\vec{b} = \\hat{i} + 2\\hat{j} + \\hat{k}$.",
+      "solution": "Projection $= \\dfrac{\\vec{a}\\cdot\\vec{b}}{\\left|\\vec{b}\\right|}$.\n\n$\\vec{a}\\cdot\\vec{b} = 2 + 6 + 2 = 10$.\n\n$\\left|\\vec{b}\\right| = \\sqrt{1 + 4 + 1} = \\sqrt6$.\n\nProjection $= \\mathbf{\\dfrac{10}{\\sqrt6}} \\approx 4.08$.\n\nPicture the sun directly overhead of $\\vec{b}$: this is the length of $\\vec{a}$'s shadow lying along it.",
+      "marks": 3
+    },
+    {
+      "id": "vec-013",
+      "chapter": "Vector Algebra",
+      "topic": "Area of a triangle",
+      "type": "long",
+      "q": "Find the area of the triangle with vertices $A(1, 1, 1)$, $B(1, 2, 3)$ and $C(2, 3, 1)$.",
+      "solution": "Build two edge vectors from the same corner:\n\n$\\vec{AB} = \\hat{j} + 2\\hat{k}$ and $\\vec{AC} = \\hat{i} + 2\\hat{j}$.\n\n$\\vec{AB} \\times \\vec{AC} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 0 & 1 & 2 \\\\ 1 & 2 & 0 \\end{vmatrix}$\n\n$= \\hat{i}\\left(1(0) - 2(2)\\right) - \\hat{j}\\left(0(0) - 2(1)\\right) + \\hat{k}\\left(0(2) - 1(1)\\right) = -4\\hat{i} + 2\\hat{j} - \\hat{k}$.\n\nMagnitude $= \\sqrt{16 + 4 + 1} = \\sqrt{21}$.\n\nThe cross product gives the **parallelogram**, and a triangle is half of it:\n\nArea $= \\mathbf{\\dfrac{\\sqrt{21}}{2}} \\approx 2.29$ square units.",
+      "marks": 5
+    },
+    {
+      "id": "vec-014",
+      "chapter": "Vector Algebra",
+      "topic": "Section formula",
+      "type": "long",
+      "q": "Find the position vector of the point that divides the join of $A(1, 2, 3)$ and $B(4, 5, 6)$ internally in the ratio $2 : 1$.",
+      "solution": "For an internal division in the ratio $m : n$:\n\n$\\vec{r} = \\dfrac{m\\vec{b} + n\\vec{a}}{m + n}$ — note the **cross-over**: the far point gets the near weight.\n\n$\\vec{r} = \\dfrac{2\\left(4\\hat{i} + 5\\hat{j} + 6\\hat{k}\\right) + 1\\left(\\hat{i} + 2\\hat{j} + 3\\hat{k}\\right)}{3}$\n\n$= \\dfrac{9\\hat{i} + 12\\hat{j} + 15\\hat{k}}{3} = \\mathbf{3\\hat{i} + 4\\hat{j} + 5\\hat{k}}$.\n\nSo the point is $(3, 4, 5)$, two-thirds of the way from $A$ to $B$ — which a glance at the coordinates confirms. ✓",
+      "marks": 3
+    },
+    {
+      "id": "vec-015",
+      "chapter": "Vector Algebra",
+      "topic": "Direction cosines",
+      "type": "long",
+      "q": "Find the direction cosines of the vector $\\vec{a} = \\hat{i} + 2\\hat{j} + 2\\hat{k}$, and verify that their squares add to 1.",
+      "solution": "$\\left|\\vec{a}\\right| = \\sqrt{1 + 4 + 4} = 3$.\n\nThe direction cosines are the components of the unit vector:\n\n$l = \\dfrac13, \\quad m = \\dfrac23, \\quad n = \\dfrac23$.\n\n$l^{2} + m^{2} + n^{2} = \\dfrac{1 + 4 + 4}{9} = 1$. ✓\n\nThey are the cosines of the angles the vector makes with the three axes, and the identity holds for every direction in space — it *is* Pythagoras for the unit vector.",
+      "marks": 2
+    }
+  ]
+}

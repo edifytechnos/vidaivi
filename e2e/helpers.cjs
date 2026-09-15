@@ -679,6 +679,146 @@ async function assessCapChecks() {
   delete process.env.ASSESS_DAILY_CAP;
 }
 
+// --- Removing a student removes their answers and their photographs ---
+//
+// `remove` used to delete the login and the attempts and stop, which left the
+// `grading` rows and every uploaded photo behind for good — and nothing could
+// reach them afterwards, because `answerimage`'s own remove keys on the
+// caller's own partition. Vidai holds photographs of minors' handwriting, so
+// "remove this student" has to mean the photographs go too.
+//
+// This drives the real handler against a fake Table Storage and a fake blob
+// container, so it needs no account and no network.
+async function studentRemoveCascadeChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, { ...(rows.get(k) || {}), ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    // Unlike the other harnesses this one really lists, because the cascade is
+    // only meaningful if the rows it walks are actually there.
+    listEntities: (opts) => {
+      const want = pkOf(opts && opts.queryOptions && opts.queryOptions.filter);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (want !== null && row.partitionKey !== want) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  // Every blob the handler asks to delete is recorded here.
+  const deleted = [];
+  const blobs = new Set();
+  const fakeContainer = () => ({
+    getBlockBlobClient: (name) => ({
+      deleteIfExists: async () => {
+        deleted.push(name);
+        return { succeeded: blobs.delete(name) };
+      },
+    }),
+  });
+
+  process.env.ADMIN_USERNAME = "e2e-admin";
+  process.env.ADMIN_PASSWORD = "e2e-password";
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    .replace("async function answerContainer() {", "async function answerContainer() { return __fakeContainer(); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, ADMIN_TOKEN_TTL_MS, adminEpoch };";
+  new Function("module", "exports", "require", "__fakeTable", "__fakeContainer", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable, fakeContainer
+  );
+  const t = mod.exports.__t;
+
+  const session = t.signSession("vad", "e2e-admin", t.ADMIN_TOKEN_TTL_MS, {
+    ep: await t.adminEpoch(),
+  });
+
+  // One student of this admin, with two attempts and three graded answers
+  // carrying four photographs between them.
+  const user = "cascadekid7";
+  const pk = `stu~${user}`;
+  rows.set(key("students", "student", user), {
+    partitionKey: "student", rowKey: user, teacherSub: "adm~e2e-admin", name: "Cascade Kid",
+  });
+  rows.set(key("attempts", pk, "t1"), { partitionKey: pk, rowKey: "t1" });
+  rows.set(key("attempts", pk, "t2"), { partitionKey: pk, rowKey: "t2" });
+  const photo = (n) => `${pk}/t1/q${n}/1789000000000-abc${n}.jpg`;
+  rows.set(key("grading", pk, "t1~q1"), {
+    partitionKey: pk, rowKey: "t1~q1", images: JSON.stringify([photo(1), photo(2)]),
+  });
+  rows.set(key("grading", pk, "t1~q2"), {
+    partitionKey: pk, rowKey: "t1~q2", images: JSON.stringify([photo(3)]), status: "marked",
+  });
+  rows.set(key("grading", pk, "t2~q1"), {
+    partitionKey: pk, rowKey: "t2~q1", images: JSON.stringify([photo(4)]),
+  });
+  [1, 2, 3, 4].forEach((n) => blobs.add(photo(n)));
+
+  // A second student's row, to prove the cascade stays inside one partition.
+  const other = "stu~someoneelse9";
+  rows.set(key("grading", other, "t9~q1"), {
+    partitionKey: other, rowKey: "t9~q1", images: JSON.stringify([`${other}/t9/q1/keep.jpg`]),
+  });
+  blobs.add(`${other}/t9/q1/keep.jpg`);
+
+  const c = { res: null };
+  await t.handlers.students(c, {
+    method: "POST",
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+    body: { action: "remove", username: user },
+  });
+  const out = (c.res && c.res.body) || {};
+
+  check(c.res.status === 200, `removing a student succeeds (${c.res.status})`);
+  check(out.removedAttempts === 2, `its two attempts go (${out.removedAttempts})`);
+  check(out.removedAnswers === 3, `its three graded answers go (${out.removedAnswers})`);
+  check(out.removedPhotos === 4, `and all four photographs go (${out.removedPhotos})`);
+
+  check(!rows.has(key("students", "student", user)), "the login itself is gone");
+  const left = [...rows.keys()].filter((k) => k.startsWith("grading/") && k.includes(pk));
+  check(left.length === 0, `no grading row is left behind (${left.length})`);
+  check(blobs.size === 1, `no photograph is left in the container (${blobs.size} left)`);
+
+  // The one that would have been a silent disaster: a cascade that walked the
+  // whole table instead of one partition.
+  check(
+    rows.has(key("grading", other, "t9~q1")) && blobs.has(`${other}/t9/q1/keep.jpg`),
+    "another student's answers and photos are untouched"
+  );
+  check(
+    deleted.every((n) => n.startsWith(pk + "/")),
+    `only this student's blobs were asked for (${deleted.length} deletes)`
+  );
+
+  delete process.env.ADMIN_USERNAME;
+  delete process.env.ADMIN_PASSWORD;
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
@@ -686,6 +826,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
     return totpHandlerChecks();
   })
   .then(() => assessCapChecks())
+  .then(() => studentRemoveCascadeChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
     process.exit(failures ? 1 : 0);

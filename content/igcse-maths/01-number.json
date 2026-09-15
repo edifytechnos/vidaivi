@@ -1,0 +1,187 @@
+{
+  "id": "lib-ig-number",
+  "title": "Number",
+  "chapter": "Topic Test 1",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "cie0580-101",
+      "chapter": "Number",
+      "topic": "Factors",
+      "type": "numeric",
+      "q": "Find the greatest odd number that is a factor of 140 and a factor of 210.",
+      "solution": "A number that is a factor of both 140 and 210 is a factor of their **highest common factor**, so start there.\n\n**Step 1 — prime factorise.**\n\n$$140 = 2^2 \\times 5 \\times 7, \\qquad 210 = 2 \\times 3 \\times 5 \\times 7$$\n\n**Step 2 — take the common part**, using the lowest power of each shared prime :\n\n$$\\text{HCF} = 2 \\times 5 \\times 7 = 70.$$\n\n**Step 3 — find the greatest odd factor of 70.** Strip out every factor of 2 :\n\n$$70 = 2 \\times 35,$$\n\nso the odd part is $35 = 5 \\times 7$.\n\n**Check.** $140 \\div 35 = 4$ and $210 \\div 35 = 6$ — both whole numbers, and 35 is odd. The answer is $\\mathbf{35}$.",
+      "marks": 2,
+      "source": "Cambridge 0580 Jun 2024",
+      "answer": 35,
+      "tolerance": 0
+    },
+    {
+      "id": "cie0580-105",
+      "chapter": "Number",
+      "topic": "Recurring decimals",
+      "type": "long",
+      "q": "Write $0 \\cdot 1\\dot{4}\\dot{6}$ as a fraction in its simplest form. You must show all your working.",
+      "solution": "The dots mark **46** as the repeating block, so the number is $0 \\cdot 1464646\\ldots$ — the 1 does not repeat, the 46 does.\n\n**Step 1 — name it.**\n\n$$x = 0 \\cdot 1464646\\ldots$$\n\n**Step 2 — shift past the non-repeating part.** One digit (the 1) comes before the repeat, so multiply by 10 :\n\n$$10x = 1 \\cdot 464646\\ldots$$\n\n**Step 3 — shift a whole repeat further.** The block is two digits long, so multiply by a further 100 :\n\n$$1000x = 146 \\cdot 464646\\ldots$$\n\n**Step 4 — subtract.** The tails are identical and cancel exactly :\n\n$$1000x - 10x = 146 \\cdot 4646\\ldots - 1 \\cdot 4646\\ldots$$\n$$990x = 145$$\n\n**Step 5 — solve and simplify.**\n\n$$x = \\frac{145}{990}.$$\n\nBoth are divisible by 5 :\n\n$$x = \\frac{29}{198}.$$\n\nSince $29$ is prime and does not divide $198$, this is in its simplest form.\n\n**Check.** $29 \\div 198 = 0 \\cdot 146464\\ldots$ ✓",
+      "marks": 3,
+      "source": "Cambridge 0580 Jun 2024"
+    },
+    {
+      "id": "ign-002",
+      "chapter": "Number",
+      "topic": "Percentages",
+      "type": "mcq",
+      "q": "A price of $\\$80$ is increased by $15\\%$. The new price is:",
+      "solution": "Multiply by $1.15$ in one step: $80 \\times 1.15 = \\mathbf{\\$92}$.\n\nThe multiplier method is quicker and far less error-prone than finding the increase and adding it — and it is the only sensible way to handle repeated changes.",
+      "marks": 1,
+      "options": [
+        "$\\$92$",
+        "$\\$95$",
+        "$\\$88$",
+        "$\\$68$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "ign-003",
+      "chapter": "Number",
+      "topic": "HCF and LCM",
+      "type": "mcq",
+      "q": "The lowest common multiple of $12$ and $18$ is:",
+      "solution": "$12 = 2^{2} \\times 3$ and $18 = 2 \\times 3^{2}$.\n\nThe LCM takes each prime to its **highest** power: $2^{2} \\times 3^{2} = \\mathbf{36}$.\n\nThe HCF takes the **lowest** power: $2 \\times 3 = 6$. Note $6 \\times 36 = 216 = 12 \\times 18$ — the product of HCF and LCM is always the product of the numbers.",
+      "marks": 1,
+      "options": [
+        "6",
+        "36",
+        "72",
+        "216"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ign-004",
+      "chapter": "Number",
+      "topic": "Ratio",
+      "type": "mcq",
+      "q": "A sum of $\\$450$ is shared between Amina and Ben in the ratio $4:5$. Ben receives:",
+      "solution": "Total parts $= 4 + 5 = 9$, so one part $= \\dfrac{450}{9} = \\$50$.\n\nBen has 5 parts: $5 \\times 50 = \\mathbf{\\$250}$.\n\nAlways find the value of one part first — it makes every ratio question the same question.",
+      "marks": 1,
+      "options": [
+        "$\\$200$",
+        "$\\$250$",
+        "$\\$225$",
+        "$\\$180$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ign-005",
+      "chapter": "Number",
+      "topic": "Bounds",
+      "type": "mcq",
+      "q": "A length is measured as $12.4$ cm, correct to $1$ decimal place. The lower bound is:",
+      "solution": "To 1 decimal place, anything from $12.35$ up to (but not including) $12.45$ rounds to $12.4$.\n\nThe lower bound is $\\mathbf{12.35}$ cm and the upper bound $12.45$ cm — **half a unit** either side of the last recorded digit.",
+      "marks": 1,
+      "options": [
+        "12.3 cm",
+        "12.35 cm",
+        "12.39 cm",
+        "12.4 cm"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ign-006",
+      "chapter": "Number",
+      "topic": "Percentage change",
+      "type": "numeric",
+      "q": "A shirt costing $\\$40$ is sold for $\\$34$. Find the percentage loss.",
+      "solution": "Loss $= 40 - 34 = \\$6$.\n\nPercentage loss $= \\dfrac{6}{40} \\times 100 = \\mathbf{15}\\%$.\n\nPercentage change is always measured against the **original** value.",
+      "marks": 2,
+      "answer": 15,
+      "tolerance": 0.1
+    },
+    {
+      "id": "ign-007",
+      "chapter": "Number",
+      "topic": "Compound interest",
+      "type": "numeric",
+      "q": "Find the value (in dollars) of $\\$2000$ invested for $2$ years at $5\\%$ per year compound interest.",
+      "solution": "$2000 \\times 1.05^{2} = 2000 \\times 1.1025 = \\mathbf{\\$2205}$.\n\nSimple interest would have given $\\$2200$. The extra $\\$5$ is the interest earned on the first year's interest — small here, and enormous over thirty years.",
+      "marks": 2,
+      "answer": 2205,
+      "tolerance": 1
+    },
+    {
+      "id": "ign-008",
+      "chapter": "Number",
+      "topic": "Standard form",
+      "type": "numeric",
+      "q": "Calculate $\\left(3 \\times 10^{5}\\right) \\times \\left(2 \\times 10^{-2}\\right)$, giving the answer as $a \\times 10^{n}$. Find $n$.",
+      "solution": "Numbers: $3 \\times 2 = 6$. Powers: $10^{5} \\times 10^{-2} = 10^{3}$.\n\n$6 \\times 10^{3}$, so $n = \\mathbf{3}$.\n\nMultiply the fronts, add the indices — and then check the front is between 1 and 10.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "ign-009",
+      "chapter": "Number",
+      "topic": "Reverse percentage",
+      "type": "numeric",
+      "q": "After a $20\\%$ discount, a jacket costs $\\$64$. Find its original price, in dollars.",
+      "solution": "The sale price is $80\\%$ of the original, so the multiplier is $0.8$.\n\nOriginal $= \\dfrac{64}{0.8} = \\mathbf{\\$80}$.\n\n**Divide** by the multiplier to go backwards. Taking $20\\%$ of $64$ and adding it gives $76.80$ — wrong, and the commonest mistake in this topic.",
+      "marks": 2,
+      "answer": 80,
+      "tolerance": 0.5
+    },
+    {
+      "id": "ign-010",
+      "chapter": "Number",
+      "topic": "HCF",
+      "type": "numeric",
+      "q": "Find the highest common factor of $36$ and $60$.",
+      "solution": "$36 = 2^{2} \\times 3^{2}$ and $60 = 2^{2} \\times 3 \\times 5$.\n\nTake each shared prime to its **lowest** power: $2^{2} \\times 3 = \\mathbf{12}$.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0
+    },
+    {
+      "id": "ign-012",
+      "chapter": "Number",
+      "topic": "Ratio and proportion",
+      "type": "long",
+      "q": "The ratio of boys to girls in a school is $7:8$. There are $120$ girls. Find the number of boys and the total number of students. If 30 more boys join, find the new ratio in its simplest form.",
+      "solution": "**One part.** 8 parts $= 120$ girls, so one part $= 15$.\n\n**Boys:** $7 \\times 15 = \\mathbf{105}$.\n\n**Total:** $105 + 120 = \\mathbf{225}$ students.\n\n**After 30 more boys:** $105 + 30 = 135$ boys, still $120$ girls.\n\n$135 : 120$\n\nDivide both by their HCF, $15$:\n\n$\\mathbf{9 : 8}$.\n\n**Check:** $9 \\times 15 = 135$ ✓ and $8 \\times 15 = 120$ ✓.",
+      "marks": 3
+    },
+    {
+      "id": "ign-013",
+      "chapter": "Number",
+      "topic": "Upper and lower bounds",
+      "type": "long",
+      "q": "A rectangle measures $8.4$ cm by $6.2$ cm, each correct to $1$ decimal place. Find the upper and lower bounds of its area and of its perimeter.",
+      "solution": "**The bounds of each measurement** are half a unit either side:\n\nLength: $8.35 \\le l < 8.45$\n\nWidth: $6.15 \\le w < 6.25$\n\n**Area.** Largest area comes from both upper bounds, smallest from both lower:\n\nUpper $= 8.45 \\times 6.25 = \\mathbf{52.8125}$ cm$^{2}$\n\nLower $= 8.35 \\times 6.15 = \\mathbf{51.3525}$ cm$^{2}$\n\n**Perimeter.** $P = 2(l + w)$:\n\nUpper $= 2(8.45 + 6.25) = \\mathbf{29.4}$ cm\n\nLower $= 2(8.35 + 6.15) = \\mathbf{29.0}$ cm\n\n**Worth noticing.** The calculated area is $8.4 \\times 6.2 = 52.08$ cm$^{2}$, but the true value could be anywhere across a range of nearly $1.5$ cm$^{2}$.\n\nSmall uncertainties in the measurements become a much larger uncertainty in the area, because the error in each dimension multiplies the whole of the other. This is why an answer should never be quoted to more figures than the measurements justify.\n\n**A caution:** for a quantity involving **division**, the largest result comes from the largest numerator with the **smallest** denominator.",
+      "marks": 5
+    },
+    {
+      "id": "ign-014",
+      "chapter": "Number",
+      "topic": "Percentages in context",
+      "type": "long",
+      "q": "A shopkeeper buys an item for $\\$250$ and wants to make a $30\\%$ profit. She then offers a $10\\%$ discount on her selling price. Find the final selling price and her actual percentage profit.",
+      "solution": "**Selling price with $30\\%$ profit:**\n\n$250 \\times 1.3 = \\$325$.\n\n**After a $10\\%$ discount:**\n\n$325 \\times 0.9 = \\mathbf{\\$292.50}$.\n\n**Actual profit:** $292.50 - 250 = \\$42.50$.\n\n**Actual percentage profit:**\n\n$\\dfrac{42.50}{250} \\times 100 = \\mathbf{17\\%}$.\n\n**The trap.** $30\\% - 10\\% = 20\\%$ is **wrong**, because the two percentages are taken of different amounts — the profit of the cost price, the discount of the selling price.\n\nThe combined multiplier is $1.3 \\times 0.9 = 1.17$, which is a $17\\%$ rise, and that single number tells the whole story.",
+      "marks": 3
+    },
+    {
+      "id": "ign-015",
+      "chapter": "Number",
+      "topic": "Number problems",
+      "type": "long",
+      "q": "Express $360$ as a product of its prime factors, and hence find the smallest integer $k$ such that $360k$ is a perfect square.",
+      "solution": "**Prime factorisation.** Divide repeatedly:\n\n$360 = 2 \\times 180 = 2 \\times 2 \\times 90 = 2 \\times 2 \\times 2 \\times 45 = 2^{3} \\times 3^{2} \\times 5$.\n\n**For a perfect square**, every prime must appear to an **even** power.\n\n• $2^{3}$ — odd, needs one more $2$\n\n• $3^{2}$ — already even ✓\n\n• $5^{1}$ — odd, needs one more $5$\n\nSo $k = 2 \\times 5 = \\mathbf{10}$.\n\n**Check:** $360 \\times 10 = 3600 = 60^{2}$ ✓\n\nThe same idea handles cubes: there, every index must be a multiple of **three**.",
+      "marks": 2
+    }
+  ]
+}

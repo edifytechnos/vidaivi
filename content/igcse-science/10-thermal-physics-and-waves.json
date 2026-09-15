@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-thermal-waves",
+  "title": "Thermal Physics and Waves",
+  "chapter": "Topic Test 10",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igp2-001",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Heat transfer",
+      "type": "mcq",
+      "q": "Heat transfer through a vacuum can only occur by:",
+      "solution": "**Radiation** — infrared electromagnetic waves, which need no medium at all.\n\nThat is how the Sun's energy crosses $150$ million km of empty space. Conduction needs particles in contact; convection needs a fluid to circulate.",
+      "marks": 1,
+      "options": [
+        "conduction",
+        "convection",
+        "radiation",
+        "evaporation"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igp2-002",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Conduction",
+      "type": "mcq",
+      "q": "Metals are good conductors of heat because they contain:",
+      "solution": "**Free (delocalised) electrons** move rapidly through the metal, carrying energy from the hot end to the cold far faster than vibration alone could.\n\nNon-metals have no free electrons and must rely on vibrations passing from atom to atom, which is why they are poor conductors.",
+      "marks": 1,
+      "options": [
+        "free electrons",
+        "large atoms",
+        "many neutrons",
+        "tightly bound electrons"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igp2-003",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Waves",
+      "type": "mcq",
+      "q": "In a transverse wave, the particles vibrate:",
+      "solution": "**Perpendicular** to the direction the wave travels — water waves, light, and a wave on a rope.\n\nIn a **longitudinal** wave, such as sound, the particles vibrate **along** the direction of travel, making compressions and rarefactions.",
+      "marks": 1,
+      "options": [
+        "along the direction of travel",
+        "perpendicular to the direction of travel",
+        "in circles",
+        "not at all"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igp2-004",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Wave equation",
+      "type": "mcq",
+      "q": "The wave equation is:",
+      "solution": "$\\mathbf{v = f\\lambda}$ — speed equals frequency times wavelength.\n\nIn a given medium the speed is fixed, so a higher frequency must mean a shorter wavelength. The two are inversely related.",
+      "marks": 1,
+      "options": [
+        "$v = f\\lambda$",
+        "$v = \\dfrac{f}{\\lambda}$",
+        "$f = v\\lambda$",
+        "$\\lambda = vf$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igp2-005",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Reflection",
+      "type": "mcq",
+      "q": "When a wave is reflected, the angle of incidence is:",
+      "solution": "$\\angle i = \\angle r$, both measured **from the normal**.\n\nIt holds for light, sound, water waves — every kind of wave.",
+      "marks": 1,
+      "options": [
+        "greater than the angle of reflection",
+        "less than the angle of reflection",
+        "equal to the angle of reflection",
+        "always 90°"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igp2-006",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Wave equation",
+      "type": "numeric",
+      "q": "A wave has frequency $50$ Hz and wavelength $4$ m. Find its speed, in m/s.",
+      "solution": "$v = f\\lambda = 50 \\times 4 = \\mathbf{200}$ m/s.",
+      "marks": 2,
+      "answer": 200,
+      "tolerance": 1
+    },
+    {
+      "id": "igp2-007",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Frequency and period",
+      "type": "numeric",
+      "q": "A wave has a period of $0.02$ s. Find its frequency, in Hz.",
+      "solution": "$f = \\dfrac{1}{T} = \\dfrac{1}{0.02} = \\mathbf{50}$ Hz.\n\nFrequency and period are reciprocals: one counts waves per second, the other seconds per wave.",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igp2-008",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Speed of sound",
+      "type": "numeric",
+      "q": "An echo returns after $3$ s from a cliff $510$ m away. Find the speed of sound, in m/s.",
+      "solution": "The sound travels **there and back**: $2 \\times 510 = 1020$ m.\n\n$v = \\dfrac{1020}{3} = \\mathbf{340}$ m/s.\n\nForgetting to double the distance is the standard error in every echo question.",
+      "marks": 2,
+      "answer": 340,
+      "tolerance": 2
+    },
+    {
+      "id": "igp2-009",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Wavelength",
+      "type": "numeric",
+      "q": "Light of speed $3 \\times 10^{8}$ m/s has frequency $5 \\times 10^{14}$ Hz. Find its wavelength in nm.",
+      "solution": "$\\lambda = \\dfrac{v}{f} = \\dfrac{3 \\times 10^{8}}{5 \\times 10^{14}} = 6 \\times 10^{-7}$ m $= \\mathbf{600}$ nm — orange light.",
+      "marks": 2,
+      "answer": 600,
+      "tolerance": 5
+    },
+    {
+      "id": "igp2-010",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Refractive index",
+      "type": "numeric",
+      "q": "Light slows from $3 \\times 10^{8}$ m/s to $2 \\times 10^{8}$ m/s entering glass. Find the refractive index.",
+      "solution": "$n = \\dfrac{c}{v} = \\dfrac{3 \\times 10^{8}}{2 \\times 10^{8}} = \\mathbf{1.5}$.",
+      "marks": 2,
+      "answer": 1.5,
+      "tolerance": 0.02
+    },
+    {
+      "id": "igp2-011",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Heat transfer",
+      "type": "long",
+      "q": "Describe conduction, convection and radiation, and explain how a vacuum flask reduces all three.",
+      "solution": "**Conduction.** Energy passes through a solid as vibrating particles jostle their neighbours, and in metals also by **free electrons**. It needs particles in contact, so it does not happen in a vacuum.\n\n**Convection.** Warm fluid expands, becomes less dense, and **rises**; cooler fluid sinks to take its place, setting up a **convection current**. It happens only in liquids and gases, since it needs the material itself to move.\n\n**Radiation.** Infrared waves, emitted by every object above absolute zero. **No medium is needed**, and dark matt surfaces emit and absorb best while shiny silvered ones reflect.\n\n**The vacuum flask — each feature defeats one mechanism:**\n\n1. **The vacuum between the double walls** stops **conduction and convection** entirely: no particles, no transfer.\n\n2. **Silvered surfaces** on both sides of the vacuum **reflect radiation** back the way it came.\n\n3. **The stopper** stops convection and **evaporation** through the top — the biggest loss of all from a hot drink.\n\n4. **The plastic case and supports** are poor conductors, minimising the small leak through the flask's neck.\n\nIt is the clearest example in the syllabus of a design answering a physical analysis point by point — and the same flask keeps cold drinks cold, because it blocks heat travelling in either direction.",
+      "marks": 3
+    },
+    {
+      "id": "igp2-012",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Waves",
+      "type": "long",
+      "q": "Compare transverse and longitudinal waves, define wavelength, frequency, amplitude and period, and state the wave equation.",
+      "solution": "**Transverse waves** — particles vibrate **perpendicular** to the direction of travel.\n\n*Examples:* light and all electromagnetic waves, water waves, waves on a rope, S-waves in an earthquake.\n\nThey have crests and troughs, and **can be polarised**.\n\n**Longitudinal waves** — particles vibrate **along** the direction of travel.\n\n*Examples:* sound, P-waves in an earthquake.\n\nThey have compressions and rarefactions, **cannot be polarised**, and cannot travel through a vacuum, since they need particles to compress.\n\n**The quantities.**\n\n• **Wavelength ($\\lambda$)** — the distance between two consecutive identical points, in metres.\n\n• **Frequency ($f$)** — waves passing a point per second, in hertz.\n\n• **Amplitude** — the maximum displacement from the rest position. It determines **loudness** for sound and **brightness** for light.\n\n• **Period ($T$)** — the time for one complete wave, $T = \\dfrac{1}{f}$.\n\n**Wave equation:** $\\mathbf{v = f\\lambda}$.\n\n**Note what a wave carries.** Energy travels along a wave, but the particles themselves only vibrate about a fixed position — a cork on water bobs up and down while the wave moves past it.",
+      "marks": 3
+    },
+    {
+      "id": "igp2-013",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Light",
+      "type": "long",
+      "q": "State the laws of reflection and refraction, explain total internal reflection, and give two applications.",
+      "solution": "**Laws of reflection.**\n\n1. The angle of incidence equals the angle of reflection, both measured from the **normal**.\n\n2. The incident ray, the reflected ray and the normal lie in the same plane.\n\n**Refraction.** Light changes speed on entering a new medium and therefore bends.\n\n• Into a **denser** medium (air $\\to$ glass): slows down, bends **towards** the normal.\n\n• Into a **less dense** medium (glass $\\to$ air): speeds up, bends **away** from the normal.\n\n**Snell's law:** $n = \\dfrac{\\sin i}{\\sin r}$.\n\n**Total internal reflection.** Going from dense to less dense, the refracted ray bends further from the normal as the angle of incidence grows. At the **critical angle** it grazes along the boundary at $90°$.\n\nBeyond that angle, **no light escapes at all** — it is entirely reflected back inside.\n\n**Two conditions:** dense to less dense, and the angle of incidence greater than the critical angle. $\\sin C = \\dfrac{1}{n}$, which gives about $42°$ for glass.\n\n**Applications.**\n\n1. **Optical fibres** — light bounces along the core for kilometres with almost no loss, carrying telephone and internet traffic, and images in an endoscope.\n\n2. **Prisms in binoculars and periscopes**, which give a brighter image than mirrors because **nothing is absorbed** — 'total' is meant literally.\n\n3. **Diamonds** sparkle because their critical angle is only $24°$, so light entering is trapped and bounces many times before escaping.",
+      "marks": 5
+    },
+    {
+      "id": "igp2-014",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Thermal expansion",
+      "type": "long",
+      "q": "Explain thermal expansion in terms of particles, and give two useful applications and two problems it causes.",
+      "solution": "**The explanation.** Heating gives particles more kinetic energy, so they vibrate more vigorously and push their neighbours slightly further away. The average spacing increases, and the object expands.\n\nThe particles themselves do **not** get bigger — only the gaps between them.\n\n**Gases expand most** (particles almost free), then liquids, then solids (particles most tightly bound).\n\n**Useful applications.**\n\n1. **Liquid-in-glass thermometers** — mercury or alcohol expands up a narrow tube, and the narrowness magnifies a small expansion into a visible movement.\n\n2. **Bimetallic strips** — brass and iron riveted together expand by different amounts, so the strip bends on heating. Used in thermostats and fire alarms.\n\n3. **Riveting and shrink-fitting** — a hot metal tyre is fitted to a wheel and grips tightly as it cools.\n\n**Problems.**\n\n1. **Railway lines** buckle in hot weather, so expansion gaps are left between rails.\n\n2. **Bridges and pipelines** need roller bearings or expansion loops, or they tear their own supports apart.\n\n**Water is the great exception.** Between $0$°C and $4$°C it **contracts** on heating, and ice is **less dense** than water — which is why ice floats, why ponds freeze from the top down, and why fish survive the winter.",
+      "marks": 3
+    },
+    {
+      "id": "igp2-015",
+      "chapter": "Thermal Physics and Waves",
+      "topic": "Sound",
+      "type": "long",
+      "q": "Describe how sound is produced and transmitted, explain why sound cannot travel through a vacuum, and describe how an echo can be used to measure distance.",
+      "solution": "**Production.** A vibrating object — a string, a drum skin, vocal cords — pushes the air next to it back and forth, creating alternate **compressions** (crowded particles) and **rarefactions** (spread out).\n\n**Transmission.** These pass outward as a **longitudinal wave**, each layer of air pushing the next. The air itself does not travel with the sound; it only vibrates about its position.\n\n**Why not through a vacuum.** Sound needs **particles to compress**. A vacuum has none, so there is nothing to carry the disturbance.\n\n**The bell jar experiment** shows it: an electric bell inside a jar grows fainter and fainter as the air is pumped out, until the hammer can be seen striking in complete silence. Light still passes, because electromagnetic waves need no medium.\n\n**Speed.** About $340$ m/s in air, faster in liquids, and faster still in solids — roughly $5000$ m/s in steel — because the particles are closer and pass the disturbance on more quickly. This is the **opposite** of light.\n\n**Echoes and distance.** A pulse is sent out, and the time $t$ for its return is measured:\n\n$\\text{distance} = \\dfrac{v \\times t}{2}$\n\nThe **halving** is essential — the sound has travelled there **and back**.\n\nThis is how **sonar** measures the depth of the sea, how **ultrasound** images an unborn child, and how a bat navigates in complete darkness.",
+      "marks": 2
+    }
+  ]
+}

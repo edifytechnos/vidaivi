@@ -1,0 +1,197 @@
+{
+  "id": "lib-c12-matrices",
+  "title": "Matrices",
+  "chapter": "Chapter Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12mtx-001",
+      "chapter": "Matrices",
+      "topic": "Matrix multiplication",
+      "type": "mcq",
+      "q": "If $A$ and $B$ are two non-zero square matrices of the same order such that $(A + B)^2 = A^2 + B^2$, then :",
+      "solution": "Expand the left side, remembering that matrix multiplication does **not** commute, so the two cross terms must be kept separate :\n\n$$(A + B)^2 = (A + B)(A + B) = A^2 + AB + BA + B^2.$$\n\nSetting this equal to $A^2 + B^2$ :\n\n$$A^2 + AB + BA + B^2 = A^2 + B^2 \\quad\\Longrightarrow\\quad AB + BA = O.$$\n\nTherefore\n\n$$AB = -BA.$$\n\nNote that $AB = O$ is **not** forced — it is one way to satisfy $AB + BA = O$, but not the only one, and the question asks what must be true.",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "$AB = O$",
+        "$AB = -BA$",
+        "$BA = O$",
+        "$AB = BA$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "c12mtx-002",
+      "chapter": "Matrices",
+      "topic": "Skew-symmetric matrices",
+      "type": "mcq",
+      "q": "$A$ and $B$ are skew-symmetric matrices of the same order. $AB$ is symmetric, if :",
+      "solution": "Skew-symmetric means $A' = -A$ and $B' = -B$.\n\nTake the transpose of the product, remembering that transposing reverses the order :\n\n$$(AB)' = B'A' = (-B)(-A) = BA.$$\n\n$AB$ is symmetric exactly when $(AB)' = AB$, which by the line above means\n\n$$BA = AB.$$\n\nSo $AB$ is symmetric precisely when $A$ and $B$ commute.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$AB = O$",
+        "$AB = -BA$",
+        "$AB = BA$",
+        "$BA = O$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12mtx-003",
+      "chapter": "Matrices",
+      "topic": "Determinant of a skew-symmetric matrix",
+      "type": "mcq",
+      "q": "Let $A$ be a skew-symmetric matrix of order 3. If $|A| = x$, then $(2023)^x$ is equal to :",
+      "solution": "For a skew-symmetric matrix $A' = -A$. Take determinants of both sides, using $|A'| = |A|$ and $|kA| = k^n|A|$ for an $n \\times n$ matrix — here $n = 3$ :\n\n$$|A| = |A'| = |-A| = (-1)^3 |A| = -|A|.$$\n\nSo $|A| = -|A|$, giving $2|A| = 0$ and therefore\n\n$$|A| = 0 \\quad\\Rightarrow\\quad x = 0.$$\n\nHence $(2023)^x = (2023)^0 = \\mathbf{1}$.\n\n(The determinant of **every** skew-symmetric matrix of odd order is 0 — this is the argument for it.)",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$2023$",
+        "$\\dfrac{1}{2023}$",
+        "$(2023)^2$",
+        "$1$"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12mtx-004",
+      "chapter": "Matrices",
+      "topic": "Order of a matrix product",
+      "type": "mcq",
+      "q": "If $A$ is a $2 \\times 3$ matrix such that $AB$ and $AB'$ both are defined, then the order of the matrix $B$ is :",
+      "solution": "Let $B$ be of order $m \\times n$.\n\n**$AB$ is defined.** $A$ is $2 \\times 3$, so the number of rows of $B$ must match the number of columns of $A$ :\n\n$$m = 3.$$\n\n**$AB'$ is defined.** $B'$ is $n \\times m$, and for $A\\,B'$ the rows of $B'$ must again be 3 :\n\n$$n = 3.$$\n\nSo $B$ is a $3 \\times 3$ matrix.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$2 \\times 2$",
+        "$2 \\times 1$",
+        "$3 \\times 2$",
+        "$3 \\times 3$"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12mtx-005",
+      "chapter": "Matrices",
+      "topic": "Symmetric and skew-symmetric parts",
+      "type": "mcq",
+      "q": "If $\\begin{pmatrix} 2 & 0 \\\\ 5 & 4 \\end{pmatrix} = P + Q$, where $P$ is a symmetric and $Q$ is a skew-symmetric matrix, then $Q$ is equal to :",
+      "solution": "Any square matrix splits uniquely as\n\n$$A = \\underbrace{\\tfrac{1}{2}(A + A')}_{\\text{symmetric } P} + \\underbrace{\\tfrac{1}{2}(A - A')}_{\\text{skew-symmetric } Q}.$$\n\nHere $A = \\begin{pmatrix} 2 & 0 \\\\ 5 & 4 \\end{pmatrix}$, so $A' = \\begin{pmatrix} 2 & 5 \\\\ 0 & 4 \\end{pmatrix}$ and\n\n$$A - A' = \\begin{pmatrix} 0 & -5 \\\\ 5 & 0 \\end{pmatrix}.$$\n\nHalving,\n\n$$Q = \\frac{1}{2}\\begin{pmatrix} 0 & -5 \\\\ 5 & 0 \\end{pmatrix} = \\begin{pmatrix} 0 & -5/2 \\\\ 5/2 & 0 \\end{pmatrix}.$$\n\nCheck: the leading diagonal is zero and the off-diagonal entries are negatives of each other, as a skew-symmetric matrix requires.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$\\begin{pmatrix} 2 & 5/2 \\\\ 5/2 & 4 \\end{pmatrix}$",
+        "$\\begin{pmatrix} 0 & 5/2 \\\\ -5/2 & 0 \\end{pmatrix}$",
+        "$\\begin{pmatrix} 0 & -5/2 \\\\ 5/2 & 0 \\end{pmatrix}$",
+        "$\\begin{pmatrix} 2 & -5/2 \\\\ -5/2 & 4 \\end{pmatrix}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12mtx-006",
+      "chapter": "Matrices",
+      "topic": "Order of a matrix",
+      "type": "numeric",
+      "q": "If a matrix has 36 elements, how many possible orders can it have?",
+      "solution": "An $m \\times n$ matrix has $mn$ elements, so we need every ordered pair of positive integers with\n\n$$m \\times n = 36.$$\n\nThat is one order per **divisor** of 36, taking each divisor as the number of rows. The divisors of $36 = 2^2 \\times 3^2$ are\n\n$$1,\\ 2,\\ 3,\\ 4,\\ 6,\\ 9,\\ 12,\\ 18,\\ 36,$$\n\nand there are $(2+1)(2+1) = 9$ of them. The orders are $1\\times36$, $2\\times18$, $3\\times12$, $4\\times9$, $6\\times6$, $9\\times4$, $12\\times3$, $18\\times2$, $36\\times1$.\n\nSo there are **9** possible orders.",
+      "marks": 2,
+      "source": "CBSE 2024",
+      "answer": 9,
+      "tolerance": 0
+    },
+    {
+      "id": "c12mtx-007",
+      "chapter": "Matrices",
+      "topic": "Adjoint of a matrix",
+      "type": "numeric",
+      "q": "If $A \\cdot (\\text{adj } A) = \\begin{pmatrix} 3 & 0 & 0 \\\\ 0 & 3 & 0 \\\\ 0 & 0 & 3 \\end{pmatrix}$, then find the value of $|A| + |\\text{adj } A|$.",
+      "solution": "**Finding $|A|$.** The defining property of the adjoint is\n\n$$A \\cdot (\\text{adj } A) = |A| \\, I.$$\n\nThe given matrix is $3I$, so $|A| = 3$.\n\n**Finding $|\\text{adj } A|$.** For an $n \\times n$ matrix, $|\\text{adj } A| = |A|^{\\,n-1}$. Here $n = 3$, so\n\n$$|\\text{adj } A| = |A|^2 = 3^2 = 9.$$\n\n**Adding.**\n\n$$|A| + |\\text{adj } A| = 3 + 9 = \\mathbf{12}.$$",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 12,
+      "tolerance": 0
+    },
+    {
+      "id": "c12mat-008",
+      "chapter": "Matrices",
+      "topic": "Powers of a matrix",
+      "type": "numeric",
+      "q": "If $A = \\begin{pmatrix} 1 & 1 \\\\ 1 & 1 \\end{pmatrix}$ and $A^{2} = kA$, find $k$.",
+      "solution": "$A^{2} = \\begin{pmatrix} 1 & 1 \\\\ 1 & 1 \\end{pmatrix}\\begin{pmatrix} 1 & 1 \\\\ 1 & 1 \\end{pmatrix} = \\begin{pmatrix} 2 & 2 \\\\ 2 & 2 \\end{pmatrix}$.\n\nThat is $2A$, so $k = \\mathbf{2}$.\n\nIn general, for this matrix $A^{n} = 2^{\\,n-1}A$ — each multiplication doubles it, never changes its shape.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "c12mat-009",
+      "chapter": "Matrices",
+      "topic": "Counting matrices",
+      "type": "numeric",
+      "q": "How many different $3 \\times 3$ matrices can be formed whose every entry is either $0$ or $1$?",
+      "solution": "There are $3 \\times 3 = 9$ cells, and each is an independent two-way switch.\n\n$2^{9} = \\mathbf{512}$.\n\nNine light switches on a wall: every on/off pattern is one matrix.",
+      "marks": 2,
+      "answer": 512,
+      "tolerance": 0
+    },
+    {
+      "id": "c12mat-010",
+      "chapter": "Matrices",
+      "topic": "Transpose",
+      "type": "numeric",
+      "q": "If $A = \\begin{pmatrix} 2 & -1 \\\\ 3 & 4 \\end{pmatrix}$, find the sum of all the elements of $A + A^{T}$.",
+      "solution": "$A^{T} = \\begin{pmatrix} 2 & 3 \\\\ -1 & 4 \\end{pmatrix}$, so $A + A^{T} = \\begin{pmatrix} 4 & 2 \\\\ 2 & 8 \\end{pmatrix}$.\n\nSum of the entries $= 4 + 2 + 2 + 8 = \\mathbf{16}$.\n\nQuicker route: transposing moves entries around but never changes their total, so the entries of $A + A^{T}$ add to twice the total of $A$ — and $2 - 1 + 3 + 4 = 8$, giving $16$.",
+      "marks": 2,
+      "answer": 16,
+      "tolerance": 0
+    },
+    {
+      "id": "c12mat-011",
+      "chapter": "Matrices",
+      "topic": "Symmetric and skew-symmetric parts",
+      "type": "long",
+      "q": "Express $A = \\begin{pmatrix} 3 & 5 \\\\ 1 & -1 \\end{pmatrix}$ as the sum of a symmetric and a skew-symmetric matrix.",
+      "solution": "Every square matrix splits as $A = \\tfrac12\\left(A + A^{T}\\right) + \\tfrac12\\left(A - A^{T}\\right)$ — the balanced part plus the unbalanced part.\n\n$A^{T} = \\begin{pmatrix} 3 & 1 \\\\ 5 & -1 \\end{pmatrix}$.\n\n**Symmetric part:** $\\tfrac12\\left(A + A^{T}\\right) = \\tfrac12\\begin{pmatrix} 6 & 6 \\\\ 6 & -2 \\end{pmatrix} = \\begin{pmatrix} 3 & 3 \\\\ 3 & -1 \\end{pmatrix}$.\n\n**Skew-symmetric part:** $\\tfrac12\\left(A - A^{T}\\right) = \\tfrac12\\begin{pmatrix} 0 & 4 \\\\ -4 & 0 \\end{pmatrix} = \\begin{pmatrix} 0 & 2 \\\\ -2 & 0 \\end{pmatrix}$.\n\n**Check:** the two add back to $A$. ✓\n\nIt is the same trick as writing a number as its average with a partner plus the half-difference — one piece symmetric, one piece signed.",
+      "marks": 3
+    },
+    {
+      "id": "c12mat-012",
+      "chapter": "Matrices",
+      "topic": "Matrix polynomial",
+      "type": "long",
+      "q": "If $A = \\begin{pmatrix} 3 & 1 \\\\ -1 & 2 \\end{pmatrix}$, show that $A^{2} - 5A + 7I = O$.",
+      "solution": "$A^{2} = \\begin{pmatrix} 3 & 1 \\\\ -1 & 2 \\end{pmatrix}\\begin{pmatrix} 3 & 1 \\\\ -1 & 2 \\end{pmatrix} = \\begin{pmatrix} 8 & 5 \\\\ -5 & 3 \\end{pmatrix}$.\n\n(First entry: $3(3) + 1(-1) = 8$; then $3(1) + 1(2) = 5$; $-1(3) + 2(-1) = -5$; $-1(1) + 2(2) = 3$.)\n\n$5A = \\begin{pmatrix} 15 & 5 \\\\ -5 & 10 \\end{pmatrix}$ and $7I = \\begin{pmatrix} 7 & 0 \\\\ 0 & 7 \\end{pmatrix}$.\n\n$A^{2} - 5A + 7I = \\begin{pmatrix} 8 - 15 + 7 & 5 - 5 + 0 \\\\ -5 + 5 + 0 & 3 - 10 + 7 \\end{pmatrix} = \\begin{pmatrix} 0 & 0 \\\\ 0 & 0 \\end{pmatrix} = O$. ✓\n\nThis is the Cayley–Hamilton identity for this matrix: every square matrix satisfies its own characteristic equation.",
+      "marks": 3
+    },
+    {
+      "id": "c12mat-013",
+      "chapter": "Matrices",
+      "topic": "Solving a matrix equation",
+      "type": "long",
+      "q": "Find the matrix $X$ such that $2A + 3X = 5B$, where $A = \\begin{pmatrix} -3 & 5 \\\\ 2 & 1 \\end{pmatrix}$ and $B = \\begin{pmatrix} 4 & 1 \\\\ 2 & 3 \\end{pmatrix}$.",
+      "solution": "Rearrange exactly as you would a number equation:\n\n$3X = 5B - 2A \\Rightarrow X = \\tfrac13\\left(5B - 2A\\right)$.\n\n$5B = \\begin{pmatrix} 20 & 5 \\\\ 10 & 15 \\end{pmatrix}$, $\\quad 2A = \\begin{pmatrix} -6 & 10 \\\\ 4 & 2 \\end{pmatrix}$.\n\n$5B - 2A = \\begin{pmatrix} 26 & -5 \\\\ 6 & 13 \\end{pmatrix}$.\n\n$X = \\tfrac13\\begin{pmatrix} 26 & -5 \\\\ 6 & 13 \\end{pmatrix} = \\begin{pmatrix} \\tfrac{26}{3} & -\\tfrac{5}{3} \\\\ 2 & \\tfrac{13}{3} \\end{pmatrix}$.\n\nMatrices add and scale entry by entry, so the algebra is ordinary algebra done 4 times at once.",
+      "marks": 5
+    },
+    {
+      "id": "c12mat-014",
+      "chapter": "Matrices",
+      "topic": "Transpose of a product",
+      "type": "long",
+      "q": "For $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ and $B = \\begin{pmatrix} 0 & 1 \\\\ 1 & 2 \\end{pmatrix}$, verify that $(AB)^{T} = B^{T}A^{T}$.",
+      "solution": "$AB = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}\\begin{pmatrix} 0 & 1 \\\\ 1 & 2 \\end{pmatrix} = \\begin{pmatrix} 2 & 5 \\\\ 4 & 11 \\end{pmatrix}$, so $(AB)^{T} = \\begin{pmatrix} 2 & 4 \\\\ 5 & 11 \\end{pmatrix}$.\n\n$B^{T} = \\begin{pmatrix} 0 & 1 \\\\ 1 & 2 \\end{pmatrix}$ and $A^{T} = \\begin{pmatrix} 1 & 3 \\\\ 2 & 4 \\end{pmatrix}$.\n\n$B^{T}A^{T} = \\begin{pmatrix} 0 & 1 \\\\ 1 & 2 \\end{pmatrix}\\begin{pmatrix} 1 & 3 \\\\ 2 & 4 \\end{pmatrix} = \\begin{pmatrix} 2 & 4 \\\\ 5 & 11 \\end{pmatrix}$. ✓\n\nThe **order reverses**, and that is the whole point: taking off a coat and then a shirt undoes dressing in the opposite order to putting them on.",
+      "marks": 3
+    },
+    {
+      "id": "c12mat-015",
+      "chapter": "Matrices",
+      "topic": "Proof",
+      "type": "long",
+      "q": "Show that for any square matrix $A$, the matrix $A - A^{T}$ is skew-symmetric.",
+      "solution": "Let $B = A - A^{T}$. Take the transpose:\n\n$B^{T} = \\left(A - A^{T}\\right)^{T} = A^{T} - \\left(A^{T}\\right)^{T} = A^{T} - A$.\n\nBut $A^{T} - A = -\\left(A - A^{T}\\right) = -B$.\n\n$B^{T} = -B$ is precisely the definition of **skew-symmetric**. ∎\n\nTwo facts do all the work: transpose distributes over subtraction, and $\\left(A^{T}\\right)^{T} = A$ — a mirror image of a mirror image is the original.",
+      "marks": 2
+    }
+  ]
+}

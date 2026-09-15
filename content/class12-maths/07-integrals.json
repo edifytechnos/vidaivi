@@ -1,0 +1,194 @@
+{
+  "id": "lib-c12-integrals",
+  "title": "Integrals",
+  "chapter": "Chapter Test 7",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12int-201",
+      "chapter": "Integrals",
+      "topic": "Integration by half-angle",
+      "type": "long",
+      "q": "Find : $\\displaystyle\\int \\frac{x + \\sin x}{1 + \\cos x}\\,dx$",
+      "solution": "The half-angle identities turn this into something recognisable. Recall\n\n$$1 + \\cos x = 2\\cos^2\\frac{x}{2}, \\qquad \\sin x = 2\\sin\\frac{x}{2}\\cos\\frac{x}{2}.$$\n\n**Step 1 — split the fraction and substitute.**\n\n$$\\frac{x + \\sin x}{1 + \\cos x} = \\frac{x}{2\\cos^2\\frac{x}{2}} + \\frac{2\\sin\\frac{x}{2}\\cos\\frac{x}{2}}{2\\cos^2\\frac{x}{2}}$$\n\n$$= \\frac{x}{2}\\sec^2\\frac{x}{2} + \\tan\\frac{x}{2}.$$\n\n**Step 2 — recognise the result as a product rule run backwards.** Differentiate $x\\tan\\dfrac{x}{2}$ :\n\n$$\\frac{d}{dx}\\left(x\\tan\\frac{x}{2}\\right) = \\tan\\frac{x}{2} + x \\cdot \\frac{1}{2}\\sec^2\\frac{x}{2},$$\n\nwhich is **exactly** the integrand from Step 1.\n\n**Step 3 — write the answer.**\n\n$$\\int \\frac{x + \\sin x}{1 + \\cos x}\\,dx = x\\tan\\frac{x}{2} + C.$$\n\n**Check numerically.** At $x = 1$, the derivative of $x\\tan(x/2)$ is $1 \\cdot 19553$ and the integrand is $1 \\cdot 19553$ — they agree.",
+      "marks": 3,
+      "source": "CBSE 2025"
+    },
+    {
+      "id": "c12int-102",
+      "chapter": "Integrals",
+      "topic": "Definite integral of a modulus",
+      "type": "numeric",
+      "q": "Evaluate : $\\displaystyle\\int_{0}^{\\pi/2} \\left|\\sin x - \\cos x\\right|\\,dx$. Give your answer correct to three decimal places.",
+      "solution": "The modulus must be removed before integrating, so first find where the inside changes sign.\n\n**Step 1 — the crossing point.** $\\sin x = \\cos x$ at $x = \\dfrac{\\pi}{4}$ on this interval. For $0 \\leq x < \\dfrac{\\pi}{4}$ we have $\\cos x > \\sin x$; for $\\dfrac{\\pi}{4} < x \\leq \\dfrac{\\pi}{2}$ we have $\\sin x > \\cos x$.\n\n**Step 2 — split the integral accordingly.**\n\n$$I = \\int_{0}^{\\pi/4}\\left(\\cos x - \\sin x\\right)dx + \\int_{\\pi/4}^{\\pi/2}\\left(\\sin x - \\cos x\\right)dx.$$\n\n**Step 3 — first piece.**\n\n$$\\int_{0}^{\\pi/4}(\\cos x - \\sin x)\\,dx = \\Bigl[\\sin x + \\cos x\\Bigr]_{0}^{\\pi/4} = \\left(\\tfrac{1}{\\sqrt2} + \\tfrac{1}{\\sqrt2}\\right) - (0 + 1) = \\sqrt2 - 1.$$\n\n**Step 4 — second piece.**\n\n$$\\int_{\\pi/4}^{\\pi/2}(\\sin x - \\cos x)\\,dx = \\Bigl[-\\cos x - \\sin x\\Bigr]_{\\pi/4}^{\\pi/2} = (0 - 1) - \\left(-\\tfrac{1}{\\sqrt2} - \\tfrac{1}{\\sqrt2}\\right) = \\sqrt2 - 1.$$\n\n**Step 5 — add.**\n\n$$I = 2\\left(\\sqrt2 - 1\\right) = 2\\sqrt2 - 2 \\approx \\mathbf{0 \\cdot 828}.$$\n\nThe two halves coming out equal is no accident — the graph is symmetric about $x = \\dfrac{\\pi}{4}$.",
+      "marks": 2,
+      "source": "CBSE 2023",
+      "answer": 0.828,
+      "tolerance": 0.002
+    },
+    {
+      "id": "c12int-103",
+      "chapter": "Integrals",
+      "topic": "Definite integrals by property",
+      "type": "long",
+      "q": "Evaluate : $\\displaystyle\\int_{0}^{\\pi/4} \\log\\left(1 + \\tan x\\right)\\,dx$",
+      "solution": "This is the classic use of the property $\\displaystyle\\int_0^a f(x)\\,dx = \\int_0^a f(a - x)\\,dx$.\n\n**Step 1 — name the integral and apply the property** with $a = \\dfrac{\\pi}{4}$ :\n\n$$I = \\int_{0}^{\\pi/4}\\log\\left(1 + \\tan x\\right)dx = \\int_{0}^{\\pi/4}\\log\\left(1 + \\tan\\left(\\tfrac{\\pi}{4} - x\\right)\\right)dx.$$\n\n**Step 2 — simplify the new integrand.** Using $\\tan\\left(\\tfrac{\\pi}{4} - x\\right) = \\dfrac{1 - \\tan x}{1 + \\tan x}$ :\n\n$$1 + \\tan\\left(\\tfrac{\\pi}{4} - x\\right) = 1 + \\frac{1 - \\tan x}{1 + \\tan x} = \\frac{(1 + \\tan x) + (1 - \\tan x)}{1 + \\tan x} = \\frac{2}{1 + \\tan x}.$$\n\n**Step 3 — split the logarithm.**\n\n$$I = \\int_{0}^{\\pi/4}\\log\\left(\\frac{2}{1 + \\tan x}\\right)dx = \\int_{0}^{\\pi/4}\\log 2\\,dx - \\int_{0}^{\\pi/4}\\log\\left(1 + \\tan x\\right)dx.$$\n\nThe second term is $I$ itself, and the first is $\\log 2$ times the length of the interval :\n\n$$I = \\frac{\\pi}{4}\\log 2 - I.$$\n\n**Step 4 — solve for $I$.**\n\n$$2I = \\frac{\\pi}{4}\\log 2 \\quad\\Longrightarrow\\quad I = \\frac{\\pi}{8}\\log 2 \\approx 0 \\cdot 272.$$",
+      "marks": 3,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "c12int-101",
+      "chapter": "Integrals",
+      "topic": "Trigonometric integrals",
+      "type": "mcq",
+      "q": "$\\displaystyle\\int \\frac{\\cos 2x}{\\cos^2 x\\,\\sin^2 x}\\,dx$ is equal to :",
+      "solution": "Write the numerator in terms of $\\cos^2$ and $\\sin^2$ using $\\cos 2x = \\cos^2 x - \\sin^2 x$ :\n\n$$\\frac{\\cos 2x}{\\cos^2 x \\sin^2 x} = \\frac{\\cos^2 x - \\sin^2 x}{\\cos^2 x \\sin^2 x} = \\frac{\\cos^2 x}{\\cos^2 x \\sin^2 x} - \\frac{\\sin^2 x}{\\cos^2 x \\sin^2 x}.$$\n\nEach term simplifies :\n\n$$= \\frac{1}{\\sin^2 x} - \\frac{1}{\\cos^2 x} = \\operatorname{cosec}^2 x - \\sec^2 x.$$\n\nNow integrate term by term, using $\\int \\operatorname{cosec}^2 x\\,dx = -\\cot x$ and $\\int \\sec^2 x\\,dx = \\tan x$ :\n\n$$\\int \\left(\\operatorname{cosec}^2 x - \\sec^2 x\\right) dx = -\\cot x - \\tan x + c.$$",
+      "marks": 1,
+      "source": "CBSE 2024",
+      "options": [
+        "$\\cot x + \\tan x + c$",
+        "$-\\cot x + \\tan x + c$",
+        "$-\\cot x - \\tan x + c$",
+        "$\\cot x - \\tan x + c$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "int-002",
+      "chapter": "Integrals",
+      "topic": "A useful pattern",
+      "type": "mcq",
+      "q": "$\\displaystyle\\int e^{x}\\left[f(x) + f'(x)\\right]dx$ equals:",
+      "solution": "Differentiate the answer and the pattern shows itself: $\\dfrac{d}{dx}\\left[e^{x}f(x)\\right] = e^{x}f(x) + e^{x}f'(x)$, which is the integrand.\n\nSo the integral is $\\mathbf{e^{x}f(x) + C}$.\n\nSpotting 'a function **plus** its own derivative, both riding on $e^{x}$' turns a hard-looking integral into one line.",
+      "marks": 1,
+      "options": [
+        "$e^{x}f'(x) + C$",
+        "$e^{x}f(x) + C$",
+        "$f(x) + C$",
+        "$e^{x} + f(x) + C$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "int-003",
+      "chapter": "Integrals",
+      "topic": "Definite integral",
+      "type": "mcq",
+      "q": "$\\displaystyle\\int_{0}^{\\pi/2}\\sin x\\,dx$ equals:",
+      "solution": "$\\displaystyle\\int \\sin x\\,dx = -\\cos x$.\n\n$\\left[-\\cos x\\right]_{0}^{\\pi/2} = -\\cos\\tfrac{\\pi}{2} + \\cos 0 = 0 + 1 = \\mathbf{1}$.\n\nIt is the area under one quarter-wave of the sine curve.",
+      "marks": 1,
+      "options": [
+        "0",
+        "1",
+        "$\\dfrac{\\pi}{2}$",
+        "-1"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "int-004",
+      "chapter": "Integrals",
+      "topic": "Standard integrals",
+      "type": "mcq",
+      "q": "$\\displaystyle\\int \\sec^{2}x\\,dx$ equals:",
+      "solution": "Integration undoes differentiation, and $\\dfrac{d}{dx}\\tan x = \\sec^{2}x$.\n\nSo the answer is $\\mathbf{\\tan x + C}$.",
+      "marks": 1,
+      "options": [
+        "$\\tan x + C$",
+        "$\\sec x\\tan x + C$",
+        "$\\cot x + C$",
+        "$\\log|\\sec x| + C$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "int-005",
+      "chapter": "Integrals",
+      "topic": "Property of definite integrals",
+      "type": "mcq",
+      "q": "$\\displaystyle\\int_{a}^{b} f(x)\\,dx$ is always equal to:",
+      "solution": "Substituting $t = a + b - x$ maps the interval onto itself, just walked backwards, so the area is unchanged:\n\n$\\displaystyle\\int_{a}^{b} f(x)dx = \\int_{a}^{b} f(a + b - x)dx$.\n\nReading a bookshelf from the right instead of the left does not change how many books are on it — and this property cracks a whole family of exam integrals.",
+      "marks": 1,
+      "options": [
+        "$\\displaystyle\\int_{a}^{b} f(a + b - x)\\,dx$",
+        "$\\displaystyle\\int_{a}^{b} f(-x)\\,dx$",
+        "$\\displaystyle\\int_{a}^{b} f(x - a)\\,dx$",
+        "$\\displaystyle -\\int_{a}^{b} f(x)\\,dx$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "int-007",
+      "chapter": "Integrals",
+      "topic": "Definite integral",
+      "type": "numeric",
+      "q": "Evaluate $\\displaystyle\\int_{1}^{2}\\left(2x + 1\\right)dx$.",
+      "solution": "$\\displaystyle\\int (2x + 1)dx = x^{2} + x$.\n\n$\\left[x^{2} + x\\right]_{1}^{2} = (4 + 2) - (1 + 1) = 6 - 2 = \\mathbf{4}$.\n\n**Check with geometry:** it is a trapezium of parallel sides $3$ and $5$ and width $1$, area $\\tfrac{3+5}{2} = 4$. ✓",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "int-008",
+      "chapter": "Integrals",
+      "topic": "Exponential integral",
+      "type": "numeric",
+      "q": "Evaluate $\\displaystyle\\int_{0}^{1} e^{x}\\,dx$, correct to three decimal places.",
+      "solution": "$\\left[e^{x}\\right]_{0}^{1} = e - 1 \\approx 2.718 - 1 = \\mathbf{1.718}$.\n\n$e^{x}$ is the one function that is its own derivative and its own integral — which is why it turns up everywhere growth does.",
+      "marks": 2,
+      "answer": 1.718,
+      "tolerance": 0.002
+    },
+    {
+      "id": "int-009",
+      "chapter": "Integrals",
+      "topic": "Odd functions",
+      "type": "numeric",
+      "q": "Evaluate $\\displaystyle\\int_{-1}^{1} x^{3}\\,dx$.",
+      "solution": "$x^{3}$ is an **odd** function: $f(-x) = -f(x)$.\n\nOver a symmetric interval $[-a, a]$ every piece of area on the right is matched by an equal piece below the axis on the left, so they cancel: the value is $\\mathbf{0}$.\n\nRecognising odd symmetry saves the whole calculation — worth checking before integrating anything between $-a$ and $a$.",
+      "marks": 2,
+      "answer": 0,
+      "tolerance": 0
+    },
+    {
+      "id": "int-010",
+      "chapter": "Integrals",
+      "topic": "Substitution",
+      "type": "numeric",
+      "q": "Evaluate $\\displaystyle\\int_{0}^{1}\\dfrac{x}{1 + x^{2}}\\,dx$, correct to three decimal places.",
+      "solution": "Put $t = 1 + x^{2}$, so $dt = 2x\\,dx$ and $x\\,dx = \\tfrac{dt}{2}$.\n\nThe limits travel with the substitution: $x = 0 \\Rightarrow t = 1$ and $x = 1 \\Rightarrow t = 2$.\n\n$\\dfrac12\\displaystyle\\int_{1}^{2}\\dfrac{dt}{t} = \\dfrac12\\left[\\log t\\right]_{1}^{2} = \\dfrac{\\log 2}{2} \\approx \\mathbf{0.347}$.\n\nChanging the limits along with the variable saves you from ever substituting back.",
+      "marks": 3,
+      "answer": 0.347,
+      "tolerance": 0.002
+    },
+    {
+      "id": "int-013",
+      "chapter": "Integrals",
+      "topic": "Partial fractions",
+      "type": "long",
+      "q": "Evaluate $\\displaystyle\\int \\dfrac{x}{(x - 1)(x - 2)}\\,dx$.",
+      "solution": "Split the fraction: $\\dfrac{x}{(x-1)(x-2)} = \\dfrac{A}{x-1} + \\dfrac{B}{x-2}$.\n\nMultiplying up: $x = A(x - 2) + B(x - 1)$.\n\nPut $x = 1$: $1 = A(-1) \\Rightarrow A = -1$.\n\nPut $x = 2$: $2 = B(1) \\Rightarrow B = 2$.\n\n$\\displaystyle\\int\\left[\\dfrac{-1}{x-1} + \\dfrac{2}{x-2}\\right]dx = -\\log|x - 1| + 2\\log|x - 2| + C$.\n\n$= \\mathbf{\\log\\left|\\dfrac{(x-2)^{2}}{x - 1}\\right| + C}$.\n\nPartial fractions unmix a blended drink back into its ingredients — each of which you already know how to integrate.",
+      "marks": 5
+    },
+    {
+      "id": "int-014",
+      "chapter": "Integrals",
+      "topic": "Definite integral by substitution",
+      "type": "long",
+      "q": "Evaluate $\\displaystyle\\int_{0}^{\\pi/2}\\dfrac{\\sin x}{\\sin x + \\cos x}\\,dx$.",
+      "solution": "Call the integral $I$. Use $\\displaystyle\\int_{0}^{a}f(x)dx = \\int_{0}^{a}f(a - x)dx$ with $a = \\tfrac{\\pi}{2}$:\n\n$I = \\displaystyle\\int_{0}^{\\pi/2}\\dfrac{\\sin\\left(\\tfrac{\\pi}{2} - x\\right)}{\\sin\\left(\\tfrac{\\pi}{2} - x\\right) + \\cos\\left(\\tfrac{\\pi}{2} - x\\right)}dx = \\int_{0}^{\\pi/2}\\dfrac{\\cos x}{\\cos x + \\sin x}dx$.\n\nAdd the two expressions for $I$:\n\n$2I = \\displaystyle\\int_{0}^{\\pi/2}\\dfrac{\\sin x + \\cos x}{\\sin x + \\cos x}dx = \\int_{0}^{\\pi/2}1\\,dx = \\dfrac{\\pi}{2}$.\n\n$I = \\mathbf{\\dfrac{\\pi}{4}}$.\n\nNo antiderivative is ever found — the symmetry does all the work. Two awkward halves add to something trivial.",
+      "marks": 3
+    },
+    {
+      "id": "int-015",
+      "chapter": "Integrals",
+      "topic": "Trigonometric integral",
+      "type": "long",
+      "q": "Evaluate $\\displaystyle\\int \\sin^{2}x\\,dx$.",
+      "solution": "$\\sin^{2}x$ has no simple antiderivative as it stands, so lower the power first:\n\n$\\sin^{2}x = \\dfrac{1 - \\cos 2x}{2}$.\n\n$\\displaystyle\\int\\dfrac{1 - \\cos 2x}{2}dx = \\dfrac{x}{2} - \\dfrac{\\sin 2x}{4} + C$.\n\n$= \\mathbf{\\dfrac{x}{2} - \\dfrac{\\sin 2x}{4} + C}$.\n\nSquares of sine and cosine always go through the double-angle identity — it trades a power you cannot integrate for a wave you can.",
+      "marks": 2
+    }
+  ]
+}

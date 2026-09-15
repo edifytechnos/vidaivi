@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12p-nuclei",
+  "title": "Nuclei",
+  "chapter": "Chapter Test 13",
+  "teacher": null,
+  "order": 13,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12nuc-101",
+      "chapter": "Nuclei",
+      "topic": "Binding energy curve",
+      "type": "long",
+      "q": "Draw a diagram to show the variation of binding energy per nucleon with mass number for different nuclei, and mention its two features. Why do lighter nuclei usually undergo nuclear fusion?",
+      "solution": "**The curve.** Plot binding energy per nucleon $\\left(\\dfrac{B.E.}{A}\\right)$ in MeV on the vertical axis against mass number $A$ on the horizontal axis. The curve rises steeply for small $A$, flattens into a broad plateau around $A \\approx 50$–$80$, peaks near $A = 56$ (iron) at about $8 \\cdot 8$ MeV per nucleon, and then falls slowly, reaching roughly $7 \\cdot 6$ MeV per nucleon at $A = 238$ (uranium).\n\n**Two features.**\n\n1. **The curve is nearly flat, at about 8 MeV per nucleon, over most of the range $30 < A < 170$.** This means the nuclear force is **short-ranged and saturated** — a nucleon is bound only to its immediate neighbours, not to every other nucleon in the nucleus. If each nucleon attracted all the others, $B.E.$ would grow as $A^2$ and $B.E./A$ would rise steadily with $A$, which it plainly does not.\n\n2. **It is lower at both ends than in the middle.** Very light nuclei have a large fraction of their nucleons at the surface with fewer neighbours; very heavy nuclei suffer growing Coulomb repulsion between their many protons, which acts over the whole nucleus and is not saturated.\n\n**Why lighter nuclei fuse.**\n\nFor small $A$, the binding energy per nucleon **increases** with mass number. So when two light nuclei combine, the product sits higher on the curve than either parent: its nucleons are more tightly bound.\n\nThat gain in binding energy is released as energy, by $E = \\Delta m\\,c^2$ — the mass of the product is less than the sum of the masses of the reactants.\n\nFusion is therefore **exothermic for light nuclei**, which is why it powers the Sun. For the same reason, **fission** is exothermic for heavy nuclei: splitting a nucleus beyond the peak moves its fragments up the curve instead.",
+      "marks": 5,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "nuc-001",
+      "chapter": "Nuclei",
+      "topic": "Nuclear radius",
+      "type": "mcq",
+      "q": "The radius of a nucleus of mass number $A$ is proportional to:",
+      "solution": "$R = R_{0}A^{1/3}$ with $R_{0} = 1.2$ fm.\n\nSince volume $\\propto R^{3} \\propto A$, the **density of nuclear matter is the same for every nucleus** — about $2.3 \\times 10^{17}$ kg/m$^{3}$.\n\nNucleons pack like marbles in a bag: more marbles, bigger bag, same packing.",
+      "marks": 1,
+      "options": [
+        "$A$",
+        "$A^{1/3}$",
+        "$A^{2/3}$",
+        "$A^{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "nuc-002",
+      "chapter": "Nuclei",
+      "topic": "Mass defect",
+      "type": "mcq",
+      "q": "The mass of a nucleus is always:",
+      "solution": "The nucleus weighs **less**, and the missing mass $\\Delta m$ has become the binding energy, $E = \\Delta m c^{2}$.\n\nTo take the nucleus apart you must supply exactly that energy — which is the same as buying the missing mass back.",
+      "marks": 1,
+      "options": [
+        "greater than the sum of its nucleons' masses",
+        "less than the sum of its nucleons' masses",
+        "equal to it",
+        "unrelated to it"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "nuc-003",
+      "chapter": "Nuclei",
+      "topic": "Binding energy per nucleon",
+      "type": "mcq",
+      "q": "The binding energy per nucleon is greatest for nuclei of mass number around:",
+      "solution": "The curve peaks near $A \\approx \\mathbf{56}$ — iron and nickel, the most tightly bound nuclei there are.\n\nEverything lighter can release energy by **fusion**, everything heavier by **fission**, and both roads lead towards iron. It is why iron is the end of the line inside a dying star.",
+      "marks": 1,
+      "options": [
+        "4",
+        "56",
+        "150",
+        "238"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "nuc-004",
+      "chapter": "Nuclei",
+      "topic": "Isotopes",
+      "type": "mcq",
+      "q": "Two nuclei are isotopes if they have the same:",
+      "solution": "**Isotopes** share the atomic number $Z$ — the same element, different numbers of neutrons.\n\nIsobars share the mass number $A$; isotones share the neutron number.",
+      "marks": 1,
+      "options": [
+        "mass number",
+        "atomic number",
+        "number of neutrons",
+        "binding energy"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "nuc-005",
+      "chapter": "Nuclei",
+      "topic": "Radioactive decay",
+      "type": "mcq",
+      "q": "The half-life of a radioactive sample is $T$. After $3T$, the fraction remaining is:",
+      "solution": "Each half-life halves what is left: $\\tfrac12 \\to \\tfrac14 \\to \\mathbf{\\tfrac18}$.\n\nDecay never quite reaches zero — it is exponential, so it always halves and never runs out on paper.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac13$",
+        "$\\dfrac18$",
+        "$\\dfrac16$",
+        "zero"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "nuc-006",
+      "chapter": "Nuclei",
+      "topic": "Half-life",
+      "type": "numeric",
+      "q": "A radioactive sample has a half-life of $10$ days. Starting from $80$ g, find the mass (in g) remaining after $30$ days.",
+      "solution": "Three half-lives: $80 \\to 40 \\to 20 \\to \\mathbf{10}$ g.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.1
+    },
+    {
+      "id": "nuc-007",
+      "chapter": "Nuclei",
+      "topic": "Nuclear radius",
+      "type": "numeric",
+      "q": "Find the radius (in fm) of a nucleus with $A = 27$, taking $R_{0} = 1.2$ fm.",
+      "solution": "$R = R_{0}A^{1/3} = 1.2 \\times 27^{1/3} = 1.2 \\times 3 = \\mathbf{3.6}$ fm.",
+      "marks": 2,
+      "answer": 3.6,
+      "tolerance": 0.05
+    },
+    {
+      "id": "nuc-008",
+      "chapter": "Nuclei",
+      "topic": "Mass-energy",
+      "type": "numeric",
+      "q": "Find the energy equivalent (in MeV) of a mass defect of $0.002$ u. Take $1$ u $= 931$ MeV/c$^{2}$, correct to three decimal places.",
+      "solution": "$E = 0.002 \\times 931 = \\mathbf{1.862}$ MeV.\n\nThe conversion $1\\text{ u} = 931$ MeV is the workhorse of this chapter — worth committing to memory.",
+      "marks": 2,
+      "answer": 1.862,
+      "tolerance": 0.02
+    },
+    {
+      "id": "nuc-009",
+      "chapter": "Nuclei",
+      "topic": "Decay constant",
+      "type": "numeric",
+      "q": "A sample has a half-life of $693$ s. Find its decay constant, in units of $10^{-3}$ s$^{-1}$. Take $\\log_{e}2 = 0.693$.",
+      "solution": "$\\lambda = \\dfrac{0.693}{T_{1/2}} = \\dfrac{0.693}{693} = 1 \\times 10^{-3}$ s$^{-1}$.\n\nSo the answer is $\\mathbf{1}$ (in units of $10^{-3}$ s$^{-1}$).",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0.02
+    },
+    {
+      "id": "nuc-010",
+      "chapter": "Nuclei",
+      "topic": "Binding energy",
+      "type": "numeric",
+      "q": "A nucleus of mass number $16$ has a binding energy per nucleon of $8$ MeV. Find its total binding energy, in MeV.",
+      "solution": "$BE = 16 \\times 8 = \\mathbf{128}$ MeV.\n\nOxygen-16 really is close to this — one of the most tightly bound of the light nuclei.",
+      "marks": 2,
+      "answer": 128,
+      "tolerance": 1
+    },
+    {
+      "id": "nuc-011",
+      "chapter": "Nuclei",
+      "topic": "Binding energy curve",
+      "type": "long",
+      "q": "Sketch in words the graph of binding energy per nucleon against mass number, and use it to explain why both fission and fusion release energy.",
+      "solution": "**The shape.** The curve rises steeply for light nuclei, reaching about $8.8$ MeV per nucleon near $A = 56$, then falls slowly to about $7.6$ MeV per nucleon at $A = 238$.\n\nA **higher** binding energy per nucleon means a **more stable** nucleus.\n\n**Fission.** A heavy nucleus ($A \\approx 240$, about $7.6$ MeV per nucleon) splits into two middling ones ($A \\approx 120$, about $8.5$ MeV per nucleon). Each nucleon becomes more tightly bound, and the difference — roughly $0.9$ MeV per nucleon, so around $200$ MeV in total — is released.\n\n**Fusion.** Two very light nuclei join to make one that sits higher on the steeply rising part of the curve, again releasing the difference. Per nucleon fusion releases even more than fission, which is why the Sun outperforms any reactor.\n\nBoth processes move nuclei **towards $A = 56$**, which is the deepest valley of stability — energy is released whenever matter rolls downhill towards iron.",
+      "marks": 3
+    },
+    {
+      "id": "nuc-012",
+      "chapter": "Nuclei",
+      "topic": "Radioactive decay law",
+      "type": "long",
+      "q": "State the law of radioactive decay and derive the relation between half-life and decay constant.",
+      "solution": "**The law.** The rate of decay is proportional to the number of undecayed nuclei present:\n\n$-\\dfrac{dN}{dt} = \\lambda N$.\n\n**Solving.** Separate and integrate:\n\n$\\dfrac{dN}{N} = -\\lambda\\,dt \\Rightarrow \\log_{e}\\dfrac{N}{N_{0}} = -\\lambda t \\Rightarrow \\mathbf{N = N_{0}e^{-\\lambda t}}$.\n\n**Half-life.** Put $N = \\dfrac{N_{0}}{2}$ at $t = T_{1/2}$:\n\n$\\tfrac12 = e^{-\\lambda T_{1/2}} \\Rightarrow \\lambda T_{1/2} = \\log_{e}2$.\n\n$\\mathbf{T_{1/2} = \\dfrac{0.693}{\\lambda}}$.\n\nDecay is purely statistical: no individual nucleus ages or is 'due'. Which one goes next is unknowable, yet the behaviour of a mole of them is exactly predictable.",
+      "marks": 3
+    },
+    {
+      "id": "nuc-014",
+      "chapter": "Nuclei",
+      "topic": "Mass defect and binding energy",
+      "type": "long",
+      "q": "Calculate the binding energy of a helium nucleus, given: mass of proton $= 1.00728$ u, neutron $= 1.00867$ u, helium nucleus $= 4.00151$ u, and $1$ u $= 931$ MeV.",
+      "solution": "**Sum of the free nucleons' masses** ($2$ protons, $2$ neutrons):\n\n$2(1.00728) + 2(1.00867) = 2.01456 + 2.01734 = 4.03190$ u.\n\n**Mass defect:**\n\n$\\Delta m = 4.03190 - 4.00151 = 0.03039$ u.\n\n**Binding energy:**\n\n$BE = 0.03039 \\times 931 \\approx \\mathbf{28.3}$ MeV.\n\n**Per nucleon:** $\\dfrac{28.3}{4} \\approx 7.1$ MeV — unusually high for so light a nucleus, which is exactly why the alpha particle is so stable and why alpha decay happens at all.",
+      "marks": 3
+    },
+    {
+      "id": "nuc-015",
+      "chapter": "Nuclei",
+      "topic": "Nuclear force",
+      "type": "long",
+      "q": "State three properties of the nuclear force.",
+      "solution": "1. **Strongest of the known forces** — about $100$ times stronger than the electrostatic repulsion it has to overcome inside a nucleus.\n\n2. **Extremely short range** — effective only within a few femtometres. Beyond that it falls away to nothing, which is why very large nuclei become unstable: every proton repels every other across the whole nucleus, but only neighbours attract.\n\n3. **Charge independent** — the force between two protons, two neutrons, or a proton and a neutron is essentially the same. It acts on nucleons as nucleons, not as charges.\n\n4. It **saturates**: each nucleon interacts only with its immediate neighbours, which is why binding energy per nucleon is roughly constant rather than growing with $A$.",
+      "marks": 2
+    }
+  ]
+}

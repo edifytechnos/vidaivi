@@ -1,0 +1,197 @@
+{
+  "id": "lib-c12-inverse-trigonometry",
+  "title": "Inverse Trigonometric Functions",
+  "chapter": "Chapter Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12itf-201",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Composite of inverse functions",
+      "type": "mcq",
+      "q": "Evaluate : $\\tan^{-1}\\left[2\\sin\\left(2\\cos^{-1}\\dfrac{\\sqrt{3}}{2}\\right)\\right]$",
+      "solution": "Work strictly from the inside out.\n\n**Step 1 — the innermost inverse.** $\\cos^{-1}\\dfrac{\\sqrt{3}}{2}$ is the angle in $[0, \\pi]$ whose cosine is $\\dfrac{\\sqrt3}{2}$ :\n\n$$\\cos^{-1}\\frac{\\sqrt{3}}{2} = \\frac{\\pi}{6}.$$\n\n**Step 2 — double it.**\n\n$$2 \\times \\frac{\\pi}{6} = \\frac{\\pi}{3}.$$\n\n**Step 3 — take the sine.**\n\n$$\\sin\\frac{\\pi}{3} = \\frac{\\sqrt{3}}{2}.$$\n\n**Step 4 — double again.**\n\n$$2 \\times \\frac{\\sqrt{3}}{2} = \\sqrt{3}.$$\n\n**Step 5 — the outer inverse.**\n\n$$\\tan^{-1}\\sqrt{3} = \\frac{\\pi}{3},$$\n\nsince $\\dfrac{\\pi}{3}$ lies in the principal branch $\\left(-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right)$ and $\\tan\\dfrac{\\pi}{3} = \\sqrt3$.\n\nSo the value is $\\dfrac{\\pi}{3}$ — the same angle it passed through in the middle, which is a coincidence of the numbers rather than a shortcut.",
+      "marks": 1,
+      "source": "CBSE 2025",
+      "options": [
+        "$\\dfrac{\\pi}{6}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{\\pi}{2}$"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12itf-001",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Principal value branches",
+      "type": "mcq",
+      "q": "**Assertion (A):** The range of $\\left[\\sin^{-1} x + 2\\cos^{-1} x\\right]$ is $[0, \\pi]$.\n\n**Reason (R):** The principal value branch of $\\sin^{-1} x$ has range $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$.\n\nChoose the correct answer :",
+      "solution": "**Assertion.** Split the expression using $\\sin^{-1} x + \\cos^{-1} x = \\dfrac{\\pi}{2}$ :\n\n$$\\sin^{-1} x + 2\\cos^{-1} x = \\left(\\sin^{-1} x + \\cos^{-1} x\\right) + \\cos^{-1} x = \\frac{\\pi}{2} + \\cos^{-1} x.$$\n\nSince $\\cos^{-1} x$ runs over $[0, \\pi]$, the whole expression runs over\n\n$$\\left[\\frac{\\pi}{2},\\ \\frac{3\\pi}{2}\\right],$$\n\nnot $[0, \\pi]$. A is **false**.\n\n**Reason.** The principal value branch of $\\sin^{-1}$ is indeed $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$. R is **true**.\n\nSo A is false but R is true.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "Both A and R are true, and R is the correct explanation of A",
+        "Both A and R are true, but R is not the correct explanation of A",
+        "A is true but R is false",
+        "A is false but R is true"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "c12itf-002",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Principal value branches",
+      "type": "mcq",
+      "q": "**Assertion (A):** The range of the function $f(x) = 2\\sin^{-1} x + \\dfrac{3\\pi}{2}$, where $x \\in [-1, 1]$, is $\\left[\\dfrac{\\pi}{2}, \\dfrac{5\\pi}{2}\\right]$.\n\n**Reason (R):** The range of the principal value branch of $\\sin^{-1}(x)$ is $[0, \\pi]$.\n\nChoose the correct answer :",
+      "solution": "**Assertion.** On $[-1, 1]$ the value of $\\sin^{-1} x$ runs over $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$, so\n\n$$2\\sin^{-1} x \\in [-\\pi, \\pi] \\quad\\Rightarrow\\quad 2\\sin^{-1} x + \\frac{3\\pi}{2} \\in \\left[-\\pi + \\frac{3\\pi}{2},\\ \\pi + \\frac{3\\pi}{2}\\right] = \\left[\\frac{\\pi}{2},\\ \\frac{5\\pi}{2}\\right].$$\n\nA is **true**.\n\n**Reason.** The principal value branch of $\\sin^{-1}$ has range $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$, **not** $[0, \\pi]$ — that is the range of $\\cos^{-1}$. R is **false**.\n\nSo A is true but R is false. (Note that the assertion was worked out *using* the correct range, which is why a false reason sits beside a true assertion.)",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "Both A and R are true, and R is the correct explanation of A",
+        "Both A and R are true, but R is not the correct explanation of A",
+        "A is true but R is false",
+        "A is false but R is true"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "c12itf-003",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Values outside the branch",
+      "type": "mcq",
+      "q": "Evaluate : $\\cos^{-1}\\left(\\cos \\dfrac{7\\pi}{3}\\right)$",
+      "solution": "$\\cos^{-1}$ must return a value in its principal branch $[0, \\pi]$, and $\\dfrac{7\\pi}{3}$ is outside it. So reduce the angle first, using the $2\\pi$-periodicity of cosine:\n\n$$\\frac{7\\pi}{3} - 2\\pi = \\frac{7\\pi - 6\\pi}{3} = \\frac{\\pi}{3}.$$\n\nTherefore $\\cos\\dfrac{7\\pi}{3} = \\cos\\dfrac{\\pi}{3}$, and since $\\dfrac{\\pi}{3}$ **is** in $[0, \\pi]$,\n\n$$\\cos^{-1}\\left(\\cos \\frac{7\\pi}{3}\\right) = \\frac{\\pi}{3}.$$\n\nThe trap is answering $\\dfrac{7\\pi}{3}$ — the identity $\\cos^{-1}(\\cos\\theta) = \\theta$ only holds when $\\theta$ is already in the branch.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{7\\pi}{3}$",
+        "$\\dfrac{2\\pi}{3}$",
+        "$-\\dfrac{\\pi}{3}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c12itf-004",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Composite of inverse functions",
+      "type": "mcq",
+      "q": "Find the value of $\\sin\\left[\\cot^{-1}\\left(\\cos\\left(\\tan^{-1} 1\\right)\\right)\\right]$.",
+      "solution": "Work from the inside out.\n\n**Step 1.** $\\tan^{-1} 1 = \\dfrac{\\pi}{4}$.\n\n**Step 2.** $\\cos\\dfrac{\\pi}{4} = \\dfrac{1}{\\sqrt{2}}$.\n\n**Step 3.** Let $\\theta = \\cot^{-1}\\left(\\dfrac{1}{\\sqrt{2}}\\right)$, so $\\cot\\theta = \\dfrac{1}{\\sqrt{2}}$ and therefore $\\tan\\theta = \\sqrt{2}$.\n\nDraw the right triangle: opposite $= \\sqrt{2}$, adjacent $= 1$, so hypotenuse $= \\sqrt{2 + 1} = \\sqrt{3}$.\n\n**Step 4.** Hence\n\n$$\\sin\\theta = \\frac{\\sqrt{2}}{\\sqrt{3}} = \\sqrt{\\frac{2}{3}} = \\frac{\\sqrt{6}}{3} \\approx 0.8165.$$",
+      "marks": 1,
+      "source": "CBSE 2026",
+      "options": [
+        "$\\dfrac{\\sqrt{6}}{3}$",
+        "$\\dfrac{1}{\\sqrt{2}}$",
+        "$\\dfrac{\\sqrt{3}}{2}$",
+        "$\\dfrac{1}{\\sqrt{3}}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "c12itf-005",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Domain",
+      "type": "long",
+      "q": "Find the domain of $y = \\sin^{-1}\\left(x^2 - 4\\right)$.",
+      "solution": "$\\sin^{-1}(t)$ is defined only for $-1 \\leq t \\leq 1$, so the condition is\n\n$$-1 \\leq x^2 - 4 \\leq 1.$$\n\nAdd 4 throughout:\n\n$$3 \\leq x^2 \\leq 5.$$\n\nNow $x^2 \\geq 3$ means $|x| \\geq \\sqrt{3}$, and $x^2 \\leq 5$ means $|x| \\leq \\sqrt{5}$. Together,\n\n$$\\sqrt{3} \\leq |x| \\leq \\sqrt{5},$$\n\nwhich covers $x$ on both sides of zero. The domain is therefore\n\n$$\\left[-\\sqrt{5},\\ -\\sqrt{3}\\right] \\cup \\left[\\sqrt{3},\\ \\sqrt{5}\\right].$$\n\n(Numerically, about $[-2.236, -1.732] \\cup [1.732, 2.236]$.)",
+      "marks": 2,
+      "source": "CBSE 2023"
+    },
+    {
+      "id": "c12itf-006",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Domain and range",
+      "type": "long",
+      "q": "Find the domain of $f(x) = \\cos^{-1}\\left(1 - x^2\\right)$. Also, find its range.",
+      "solution": "**Domain.** $\\cos^{-1}(t)$ needs $-1 \\leq t \\leq 1$, so\n\n$$-1 \\leq 1 - x^2 \\leq 1.$$\n\nThe right inequality gives $-x^2 \\leq 0$, true for every $x$. The left gives\n\n$$-1 \\leq 1 - x^2 \\Rightarrow x^2 \\leq 2 \\Rightarrow -\\sqrt{2} \\leq x \\leq \\sqrt{2}.$$\n\nSo the domain is $\\left[-\\sqrt{2},\\ \\sqrt{2}\\right]$.\n\n**Range.** As $x$ runs over that interval, $x^2$ runs over $[0, 2]$, so $1 - x^2$ runs over the **whole** of $[-1, 1]$. Since $\\cos^{-1}$ maps $[-1, 1]$ onto $[0, \\pi]$ and is continuous, the range is\n\n$$[0, \\pi].$$",
+      "marks": 2,
+      "source": "CBSE 2024"
+    },
+    {
+      "id": "c12itf-007",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Domain and range",
+      "type": "long",
+      "q": "Find the domain and range of $f(x) = 2\\sin^{-1}(1 - x)$.",
+      "solution": "**Domain.** The inner value must lie in $[-1, 1]$ :\n\n$$-1 \\leq 1 - x \\leq 1.$$\n\nSubtract 1 : $-2 \\leq -x \\leq 0$. Multiply by $-1$ and turn the inequalities round :\n\n$$0 \\leq x \\leq 2.$$\n\nThe domain is $[0, 2]$.\n\n**Range.** Over that domain $1 - x$ takes every value in $[-1, 1]$, so $\\sin^{-1}(1 - x)$ takes every value in $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$. Doubling,\n\n$$f(x) \\in [-\\pi,\\ \\pi].$$",
+      "marks": 2,
+      "source": "CBSE 2024"
+    },
+    {
+      "id": "c12itf-008",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Principal values",
+      "type": "long",
+      "q": "If $\\sin^{-1}(x)$ is defined from $[-1, 1]$ to its principal value branch, find the value of\n\n$$\\sin^{-1}\\left(-\\frac{1}{2}\\right) - \\sin^{-1}(1).$$",
+      "solution": "Both terms must be read inside the principal branch $\\left[-\\dfrac{\\pi}{2}, \\dfrac{\\pi}{2}\\right]$.\n\n**First term.** $\\sin\\theta = -\\dfrac{1}{2}$ with $\\theta$ in the branch gives $\\theta = -\\dfrac{\\pi}{6}$.\n\n**Second term.** $\\sin\\theta = 1$ gives $\\theta = \\dfrac{\\pi}{2}$.\n\nSubtracting,\n\n$$-\\frac{\\pi}{6} - \\frac{\\pi}{2} = -\\frac{\\pi}{6} - \\frac{3\\pi}{6} = -\\frac{4\\pi}{6} = -\\frac{2\\pi}{3}.$$\n\n(About $-2.094$ radians.)",
+      "marks": 2,
+      "source": "CBSE 2024"
+    },
+    {
+      "id": "itf-008",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "A classic sum",
+      "type": "numeric",
+      "q": "It is given that $\\tan^{-1}(1) + \\tan^{-1}(2) + \\tan^{-1}(3) = k\\pi$. Find $k$.",
+      "solution": "Take the first two: $\\tan^{-1}1 + \\tan^{-1}2$. Since $1 \\times 2 > 1$, the formula carries a $\\pi$:\n\n$\\tan^{-1}1 + \\tan^{-1}2 = \\pi + \\tan^{-1}\\dfrac{1 + 2}{1 - 2} = \\pi + \\tan^{-1}(-3) = \\pi - \\tan^{-1}3$.\n\nAdding $\\tan^{-1}3$ gives $\\pi$, so $k = \\mathbf{1}$.\n\nThe $1 \\times 2 > 1$ check is the bit most students drop — it is the equivalent of noticing the clock has gone past midnight and the date must change too.",
+      "marks": 2,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "itf-009",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Double angle",
+      "type": "numeric",
+      "q": "Find the value of $\\sin\\left(2\\sin^{-1}\\tfrac{3}{5}\\right)$, correct to two decimal places.",
+      "solution": "Let $\\theta = \\sin^{-1}\\tfrac35$, so $\\sin\\theta = \\tfrac35$ and (from the $3$–$4$–$5$ triangle) $\\cos\\theta = \\tfrac45$.\n\n$\\sin 2\\theta = 2\\sin\\theta\\cos\\theta = 2 \\times \\tfrac35 \\times \\tfrac45 = \\tfrac{24}{25} = \\mathbf{0.96}$.",
+      "marks": 2,
+      "answer": 0.96,
+      "tolerance": 0.01
+    },
+    {
+      "id": "itf-010",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Principal value",
+      "type": "numeric",
+      "q": "The principal value of $\\cot^{-1}\\left(-\\tfrac{1}{\\sqrt{3}}\\right)$ is $\\dfrac{k\\pi}{3}$. Find $k$.",
+      "solution": "$\\cot^{-1}$ answers from $(0, \\pi)$.\n\n$\\cot\\theta = -\\tfrac{1}{\\sqrt3}$ means $\\tan\\theta = -\\sqrt3$, and the angle in $(0, \\pi)$ with that tangent is $\\tfrac{2\\pi}{3}$.\n\nSo the principal value is $\\tfrac{2\\pi}{3}$ and $k = \\mathbf{2}$.\n\nNote $\\cot^{-1}$ of a negative number is **obtuse**, never negative — unlike $\\tan^{-1}$. The two look alike and behave differently.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "itf-011",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Addition formula",
+      "type": "numeric",
+      "q": "If $\\tan^{-1}\\tfrac{1}{2} + \\tan^{-1}\\tfrac{1}{3} = \\dfrac{k\\pi}{4}$, find $k$.",
+      "solution": "Here $xy = \\tfrac12 \\times \\tfrac13 = \\tfrac16 < 1$, so the plain formula applies:\n\n$\\tan^{-1}x + \\tan^{-1}y = \\tan^{-1}\\dfrac{x + y}{1 - xy} = \\tan^{-1}\\dfrac{\\tfrac12 + \\tfrac13}{1 - \\tfrac16} = \\tan^{-1}\\dfrac{\\tfrac56}{\\tfrac56} = \\tan^{-1}1 = \\tfrac{\\pi}{4}$.\n\nSo $k = \\mathbf{1}$.",
+      "marks": 3,
+      "answer": 1,
+      "tolerance": 0
+    },
+    {
+      "id": "itf-012",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Simplify",
+      "type": "long",
+      "q": "Simplify: $\\tan^{-1}\\left(\\sqrt{\\dfrac{1 - \\cos x}{1 + \\cos x}}\\right)$, where $0 < x < \\pi$.",
+      "solution": "Use the half-angle identities $1 - \\cos x = 2\\sin^{2}\\tfrac{x}{2}$ and $1 + \\cos x = 2\\cos^{2}\\tfrac{x}{2}$:\n\n$\\sqrt{\\dfrac{2\\sin^{2}\\tfrac{x}{2}}{2\\cos^{2}\\tfrac{x}{2}}} = \\left|\\tan\\tfrac{x}{2}\\right|$.\n\nFor $0 < x < \\pi$ we have $0 < \\tfrac{x}{2} < \\tfrac{\\pi}{2}$, so $\\tan\\tfrac{x}{2} > 0$ and the modulus drops away.\n\n$\\tan^{-1}\\left(\\tan\\tfrac{x}{2}\\right) = \\mathbf{\\dfrac{x}{2}}$, since $\\tfrac{x}{2}$ is inside the principal branch.\n\nThe half-angle substitution is the crowbar for anything under a square root with $1 \\pm \\cos x$ in it — it turns a root into a ratio.",
+      "marks": 3
+    },
+    {
+      "id": "itf-014",
+      "chapter": "Inverse Trigonometric Functions",
+      "topic": "Solving an equation",
+      "type": "long",
+      "q": "Solve for $x$: $\\tan^{-1}\\left(\\dfrac{x - 1}{x - 2}\\right) + \\tan^{-1}\\left(\\dfrac{x + 1}{x + 2}\\right) = \\dfrac{\\pi}{4}$.",
+      "solution": "Apply $\\tan^{-1}a + \\tan^{-1}b = \\tan^{-1}\\dfrac{a + b}{1 - ab}$ and set the result equal to $\\tan^{-1}1$:\n\n$\\dfrac{\\dfrac{x-1}{x-2} + \\dfrac{x+1}{x+2}}{1 - \\dfrac{(x-1)(x+1)}{(x-2)(x+2)}} = 1$\n\n**Numerator:** $\\dfrac{(x-1)(x+2) + (x+1)(x-2)}{(x-2)(x+2)} = \\dfrac{(x^{2}+x-2) + (x^{2}-x-2)}{x^{2}-4} = \\dfrac{2x^{2}-4}{x^{2}-4}$.\n\n**Denominator:** $1 - \\dfrac{x^{2}-1}{x^{2}-4} = \\dfrac{(x^{2}-4) - (x^{2}-1)}{x^{2}-4} = \\dfrac{-3}{x^{2}-4}$.\n\nDividing, the $(x^{2}-4)$ cancels: $\\dfrac{2x^{2}-4}{-3} = 1 \\Rightarrow 2x^{2} - 4 = -3 \\Rightarrow x^{2} = \\tfrac12$.\n\n$x = \\mathbf{\\pm\\dfrac{1}{\\sqrt{2}}}$. Both values keep every denominator non-zero, so both are accepted.",
+      "marks": 5
+    }
+  ]
+}

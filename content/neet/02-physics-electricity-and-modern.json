@@ -1,0 +1,250 @@
+{
+  "id": "lib-neet-physics-2",
+  "title": "NEET Physics: Electricity, Magnetism and Modern Physics",
+  "chapter": "Practice Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "neetp2-001",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Electrostatics",
+      "type": "mcq",
+      "q": "Two charges are separated by a distance $r$ in air. If the space between them is filled with a medium of dielectric constant $K$, the force becomes:",
+      "solution": "$F = \\dfrac{1}{4\\pi\\varepsilon_{0}K}\\dfrac{q_{1}q_{2}}{r^{2}}$, so the force is reduced to $\\mathbf{\\dfrac{F}{K}}$.\n\nThe medium polarises and partly cancels the field, which is exactly what the dielectric constant measures.",
+      "marks": 4,
+      "options": [
+        "$KF$",
+        "$\\dfrac{F}{K}$",
+        "$K^{2}F$",
+        "unchanged"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp2-002",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Capacitance",
+      "type": "mcq",
+      "q": "Three capacitors of $3\\,\\mu$F each are connected in series. The equivalent capacitance is:",
+      "solution": "$\\dfrac1C = \\dfrac13 + \\dfrac13 + \\dfrac13 = 1$, so $C = \\mathbf{1\\,\\mu}$F.\n\n$n$ identical capacitors in series give $\\dfrac{C}{n}$; in parallel, $nC$.",
+      "marks": 4,
+      "options": [
+        "$9\\,\\mu$F",
+        "$3\\,\\mu$F",
+        "$1\\,\\mu$F",
+        "$\\dfrac13\\,\\mu$F"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetp2-003",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Current electricity",
+      "type": "mcq",
+      "q": "The drift velocity of electrons in a conductor is of the order of:",
+      "solution": "About $\\mathbf{10^{-4}}$ m/s — a fraction of a millimetre per second.\n\nA lamp lights instantly nonetheless, because the **electric field** travels at nearly the speed of light and sets every electron in the wire moving at once.",
+      "marks": 4,
+      "options": [
+        "$10^{8}$ m/s",
+        "$10^{3}$ m/s",
+        "$10^{-4}$ m/s",
+        "$10^{-8}$ m/s"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetp2-004",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Wheatstone bridge",
+      "type": "mcq",
+      "q": "A Wheatstone bridge is balanced when:",
+      "solution": "$\\dfrac{P}{Q} = \\dfrac{R}{S}$, and the galvanometer then reads **zero** because its two ends are at the same potential.\n\nA null method is far more accurate than reading a deflection, and the balance point does not depend on the supply voltage.",
+      "marks": 4,
+      "options": [
+        "$\\dfrac{P}{Q} = \\dfrac{R}{S}$",
+        "$PQ = RS$",
+        "$P + Q = R + S$",
+        "$P = Q = R = S$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "neetp2-005",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Magnetic effects",
+      "type": "mcq",
+      "q": "A charged particle moving parallel to a magnetic field experiences a force of:",
+      "solution": "$F = qvB\\sin\\theta$, and for parallel motion $\\theta = 0$, so the force is **zero**.\n\nA magnetic field acts only on the component of velocity that **cuts across** it.",
+      "marks": 4,
+      "options": [
+        "$qvB$",
+        "zero",
+        "$\\dfrac{qv}{B}$",
+        "$qB$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp2-006",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Moving coil galvanometer",
+      "type": "mcq",
+      "q": "To convert a galvanometer into an ammeter, connect:",
+      "solution": "A **low resistance (shunt) in parallel** carries most of the current and keeps the meter's overall resistance low — essential, since an ammeter goes **in series** with the circuit.\n\nA voltmeter needs the opposite: a high resistance in series.",
+      "marks": 4,
+      "options": [
+        "a high resistance in series",
+        "a low resistance in parallel",
+        "a high resistance in parallel",
+        "a low resistance in series"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp2-007",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Electromagnetic induction",
+      "type": "mcq",
+      "q": "Lenz's law is a consequence of the conservation of:",
+      "solution": "**Energy.** The induced current opposes the change producing it, so work must be done against that opposition — and that work is exactly the electrical energy generated.\n\nIf the current helped instead, the motion would accelerate on its own and energy would come from nowhere.",
+      "marks": 4,
+      "options": [
+        "charge",
+        "momentum",
+        "energy",
+        "mass"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetp2-008",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Alternating current",
+      "type": "mcq",
+      "q": "In a purely inductive AC circuit, the current:",
+      "solution": "In a pure inductor the current **lags** by $90°$; in a pure capacitor it **leads** by $90°$.\n\nIn both cases the power factor is zero, so the average power consumed over a cycle is nil — a *wattless* current.",
+      "marks": 4,
+      "options": [
+        "leads the voltage by 90°",
+        "lags the voltage by 90°",
+        "is in phase with the voltage",
+        "is zero"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp2-009",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Ray optics",
+      "type": "mcq",
+      "q": "The refractive index of a medium in which light travels at $2 \\times 10^{8}$ m/s is:",
+      "solution": "$\\mu = \\dfrac{c}{v} = \\dfrac{3 \\times 10^{8}}{2 \\times 10^{8}} = \\mathbf{1.5}$ — about the value for ordinary glass.",
+      "marks": 4,
+      "options": [
+        "1.5",
+        "2.0",
+        "0.67",
+        "3.0"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "neetp2-010",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Wave optics",
+      "type": "mcq",
+      "q": "In Young's double slit experiment, if the distance between the slits is halved, the fringe width:",
+      "solution": "$\\beta = \\dfrac{\\lambda D}{d}$, so halving $d$ **doubles** the fringe width.\n\nThe inverse dependence on slit separation is the part most often misremembered.",
+      "marks": 4,
+      "options": [
+        "halves",
+        "doubles",
+        "is unchanged",
+        "becomes four times"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp2-011",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Photoelectric effect",
+      "type": "mcq",
+      "q": "The stopping potential in a photoelectric experiment depends on:",
+      "solution": "$eV_{0} = h\nu - \\phi$, so it depends on the **frequency** and the work function — never on intensity.\n\nDoubling the intensity doubles the current and leaves $V_{0}$ exactly where it was. That single observation is what defeated the wave theory.",
+      "marks": 4,
+      "options": [
+        "the intensity of light",
+        "the frequency of the incident light",
+        "the distance of the source",
+        "the area of the cathode"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp2-012",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Atomic physics",
+      "type": "mcq",
+      "q": "The energy of an electron in the $n$th orbit of a hydrogen atom is proportional to:",
+      "solution": "$E_{n} = \\dfrac{-13.6}{n^{2}}$ eV — proportional to $\\dfrac{1}{n^{2}}$, and **negative** because the electron is bound.\n\nThe **radius**, by contrast, goes as $n^{2}$, so excited atoms are much larger.",
+      "marks": 4,
+      "options": [
+        "$n$",
+        "$n^{2}$",
+        "$\\dfrac{1}{n}$",
+        "$\\dfrac{1}{n^{2}}$"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "neetp2-013",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Nuclear physics",
+      "type": "mcq",
+      "q": "The binding energy per nucleon is maximum for nuclei of mass number around:",
+      "solution": "Near $A = \\mathbf{56}$ — iron and nickel, the most tightly bound nuclei there are.\n\nEverything lighter can release energy by fusion and everything heavier by fission, and both roads lead towards iron.",
+      "marks": 4,
+      "options": [
+        "4",
+        "56",
+        "120",
+        "238"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp2-014",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Semiconductors",
+      "type": "mcq",
+      "q": "In an n-type semiconductor, the majority carriers are:",
+      "solution": "A pentavalent dopant such as phosphorus contributes an extra, nearly free electron, so **electrons** are the majority carriers.\n\nHoles are still present as minority carriers, and $n_{e}n_{h} = n_{i}^{2}$ still holds.",
+      "marks": 4,
+      "options": [
+        "holes",
+        "electrons",
+        "protons",
+        "positive ions"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetp2-015",
+      "chapter": "Physics: Electricity, Magnetism and Modern Physics",
+      "topic": "Logic gates",
+      "type": "mcq",
+      "q": "The output of a NAND gate is low only when:",
+      "solution": "NAND is AND followed by NOT, so the output is low **only when both inputs are high**.\n\nNAND is a **universal gate** — every other logic gate can be built from NAND gates alone, which is why integrated circuits are full of them.",
+      "marks": 4,
+      "options": [
+        "both inputs are low",
+        "both inputs are high",
+        "one input is high",
+        "the inputs are different"
+      ],
+      "answer": 1
+    }
+  ]
+}

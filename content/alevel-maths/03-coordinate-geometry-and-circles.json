@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-coordinate-circles",
+  "title": "Coordinate Geometry and Circles",
+  "chapter": "Topic Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm3-001",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Equation of a circle",
+      "type": "mcq",
+      "q": "The centre of the circle $(x - 3)^{2} + (y + 2)^{2} = 25$ is:",
+      "solution": "For $(x - a)^{2} + (y - b)^{2} = r^{2}$ the centre is $(a, b)$.\n\nHere $y + 2 = y - (-2)$, so the centre is $\\mathbf{(3, -2)}$ and the radius is $5$. Watch the sign — it is always the opposite of what appears in the bracket.",
+      "marks": 1,
+      "options": [
+        "$(3, -2)$",
+        "$(-3, 2)$",
+        "$(3, 2)$",
+        "$(-3, -2)$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm3-002",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Perpendicular lines",
+      "type": "mcq",
+      "q": "A line perpendicular to $3x + 4y = 12$ has gradient:",
+      "solution": "Rearranged: $y = -\\dfrac34 x + 3$, so the gradient is $-\\dfrac34$.\n\nThe perpendicular gradient is the negative reciprocal: $\\mathbf{\\dfrac43}$.",
+      "marks": 1,
+      "options": [
+        "$-\\dfrac34$",
+        "$\\dfrac43$",
+        "$\\dfrac34$",
+        "$-\\dfrac43$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm3-003",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Tangent to a circle",
+      "type": "mcq",
+      "q": "The tangent to a circle at a point is:",
+      "solution": "**Perpendicular** to the radius at the point of contact.\n\nThis single fact turns most circle questions into straight-line questions: find the radius' gradient, take the negative reciprocal, and you have the tangent.",
+      "marks": 1,
+      "options": [
+        "parallel to the radius there",
+        "perpendicular to the radius there",
+        "through the centre",
+        "of length equal to the radius"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm3-004",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "General form",
+      "type": "mcq",
+      "q": "The radius of the circle $x^{2} + y^{2} - 6x + 4y - 12 = 0$ is:",
+      "solution": "Complete the square in both variables:\n\n$(x - 3)^{2} - 9 + (y + 2)^{2} - 4 - 12 = 0$\n\n$(x - 3)^{2} + (y + 2)^{2} = 25$, so $r = \\mathbf{5}$.",
+      "marks": 1,
+      "options": [
+        "4",
+        "5",
+        "6",
+        "12"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm3-005",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Midpoint and distance",
+      "type": "mcq",
+      "q": "The distance between $(1, 2)$ and $(7, 10)$ is:",
+      "solution": "$d = \\sqrt{6^{2} + 8^{2}} = \\sqrt{100} = \\mathbf{10}$ — a $6$–$8$–$10$ triangle.",
+      "marks": 1,
+      "options": [
+        "10",
+        "8",
+        "14",
+        "$\\sqrt{10}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm3-006",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Radius",
+      "type": "numeric",
+      "q": "Find the radius of the circle $(x + 1)^{2} + (y - 4)^{2} = 49$.",
+      "solution": "$r^{2} = 49$, so $r = \\mathbf{7}$ (and the centre is $(-1, 4)$).",
+      "marks": 2,
+      "answer": 7,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm3-007",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Distance from the centre",
+      "type": "numeric",
+      "q": "A circle has centre $(2, 3)$ and radius $5$. Find the distance from the centre to the point $(6, 6)$.",
+      "solution": "$d = \\sqrt{4^{2} + 3^{2}} = \\mathbf{5}$.\n\nThe distance equals the radius, so the point lies **on** the circle.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm3-008",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Gradient of a radius",
+      "type": "numeric",
+      "q": "A circle has centre $(1, 2)$ and passes through $(4, 6)$. Find the gradient of the tangent at $(4, 6)$.",
+      "solution": "Gradient of the radius $= \\dfrac{6 - 2}{4 - 1} = \\dfrac43$.\n\nThe tangent is perpendicular, so its gradient is $-\\dfrac34 = \\mathbf{-0.75}$.",
+      "marks": 2,
+      "answer": -0.75,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alm3-009",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Midpoint",
+      "type": "numeric",
+      "q": "The points $A(1, 5)$ and $B(7, -3)$ are the ends of a diameter. Find the $x$-coordinate of the centre.",
+      "solution": "The centre is the midpoint: $\\dfrac{1 + 7}{2} = \\mathbf{4}$ (and $y = 1$).",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alm3-010",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Length of a chord",
+      "type": "numeric",
+      "q": "A circle of radius $13$ has a chord at a perpendicular distance $5$ from the centre. Find the length of the chord.",
+      "solution": "Half the chord, the distance and the radius form a right-angled triangle:\n\nhalf-chord $= \\sqrt{13^{2} - 5^{2}} = \\sqrt{144} = 12$.\n\nFull chord $= \\mathbf{24}$.\n\nThe perpendicular from the centre always **bisects** the chord — that is what makes the triangle right-angled.",
+      "marks": 2,
+      "answer": 24,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alm3-011",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Equation of a circle",
+      "type": "long",
+      "q": "Find the equation of the circle with centre $(2, -3)$ passing through $(6, 0)$, and determine whether $(5, 1)$ lies inside, on, or outside it.",
+      "solution": "**Radius** — the distance from the centre to the given point:\n\n$r = \\sqrt{(6-2)^{2} + (0+3)^{2}} = \\sqrt{16 + 9} = 5$.\n\n**Equation:**\n\n$\\mathbf{(x - 2)^{2} + (y + 3)^{2} = 25}$\n\n**Testing $(5, 1)$.** Find its distance from the centre:\n\n$d = \\sqrt{(5-2)^{2} + (1+3)^{2}} = \\sqrt{9 + 16} = 5$.\n\n$d = r$, so the point lies **on** the circle.\n\n**The general test:** compare the distance from the centre with the radius — less means inside, equal means on, greater means outside.\n\nEquivalently, substitute into the left-hand side: less than $25$ is inside, equal is on, greater is outside. No square roots needed that way.",
+      "marks": 3
+    },
+    {
+      "id": "alm3-012",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Tangents",
+      "type": "long",
+      "q": "Find the equation of the tangent to the circle $x^{2} + y^{2} = 25$ at the point $(3, 4)$.",
+      "solution": "**Check the point is on the circle:** $9 + 16 = 25$ ✓\n\n**Gradient of the radius** from $(0,0)$ to $(3,4)$:\n\n$m_{r} = \\dfrac{4 - 0}{3 - 0} = \\dfrac43$\n\n**Gradient of the tangent** — perpendicular, so the negative reciprocal:\n\n$m_{t} = -\\dfrac34$\n\n**Equation through $(3, 4)$:**\n\n$y - 4 = -\\tfrac34(x - 3)$\n\n$4y - 16 = -3x + 9$\n\n$\\mathbf{3x + 4y = 25}$\n\n**Check $(3,4)$:** $9 + 16 = 25$ ✓\n\n**A pattern worth noticing:** for the circle $x^{2} + y^{2} = r^{2}$, the tangent at $(x_{1}, y_{1})$ is always $x x_{1} + y y_{1} = r^{2}$ — here $3x + 4y = 25$ directly. Derive it once and it saves the whole calculation afterwards.",
+      "marks": 3
+    },
+    {
+      "id": "alm3-013",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Line and circle intersection",
+      "type": "long",
+      "q": "Find where the line $y = x + 1$ meets the circle $x^{2} + y^{2} - 4x - 6y + 8 = 0$, and find the length of the chord.",
+      "solution": "**Substitute the line into the circle:**\n\n$x^{2} + (x+1)^{2} - 4x - 6(x+1) + 8 = 0$\n\n$x^{2} + x^{2} + 2x + 1 - 4x - 6x - 6 + 8 = 0$\n\n$2x^{2} - 8x + 3 = 0$\n\n**Solve:**\n\n$x = \\dfrac{8 \\pm \\sqrt{64 - 24}}{4} = \\dfrac{8 \\pm \\sqrt{40}}{4} = 2 \\pm \\dfrac{\\sqrt{10}}{2}$\n\nSo $x \\approx 3.58$ or $x \\approx 0.42$, and $y = x + 1$ gives $y \\approx 4.58$ and $y \\approx 1.42$.\n\n**Length of the chord.** The two $x$-values differ by $\\sqrt{10}$, and since the line has gradient 1 the $y$-values differ by the same amount:\n\n$\\text{length} = \\sqrt{10 + 10} = \\sqrt{20} = \\mathbf{2\\sqrt{5}} \\approx 4.47$\n\n**The discriminant told us the answer in advance:** $64 - 24 = 40 > 0$, so the line **cuts** the circle at two points. Zero would have meant a tangent, and negative that they never meet.\n\n**A check.** Completing the square gives centre $(2, 3)$ and radius $\\sqrt5$. The distance from $(2,3)$ to the line $x - y + 1 = 0$ is $\\dfrac{|2 - 3 + 1|}{\\sqrt2} = 0$ — the line passes **through the centre**, so the chord is a **diameter** of length $2\\sqrt5$ ✓",
+      "marks": 5
+    },
+    {
+      "id": "alm3-014",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "Perpendicular bisector",
+      "type": "long",
+      "q": "Find the centre of the circle passing through $A(0, 0)$, $B(6, 0)$ and $C(0, 8)$.",
+      "solution": "**The idea.** The centre is equidistant from all three points, so it lies on the **perpendicular bisector** of each chord. Two of them are enough.\n\n**Perpendicular bisector of $AB$.** $AB$ lies along the $x$-axis from $(0,0)$ to $(6,0)$, so its bisector is the vertical line\n\n$x = 3$.\n\n**Perpendicular bisector of $AC$.** $AC$ lies along the $y$-axis from $(0,0)$ to $(0,8)$, so its bisector is the horizontal line\n\n$y = 4$.\n\n**Centre: $\\mathbf{(3, 4)}$.**\n\n**Check all three distances:**\n\nTo $A$: $\\sqrt{9 + 16} = 5$\n\nTo $B$: $\\sqrt{9 + 16} = 5$\n\nTo $C$: $\\sqrt{9 + 16} = 5$ ✓\n\n**Radius $5$**, and the equation is $(x-3)^{2} + (y-4)^{2} = 25$.\n\n**A shortcut available here:** the angle at $A$ is $90°$, so $BC$ is a **diameter** (the angle in a semicircle), and the centre is simply the midpoint of $BC$ — namely $(3, 4)$. Spotting the right angle saves the whole construction.",
+      "marks": 3
+    },
+    {
+      "id": "alm3-015",
+      "chapter": "Coordinate Geometry and Circles",
+      "topic": "General equation of a circle",
+      "type": "long",
+      "q": "Show that $x^{2} + y^{2} + 2x - 8y + 8 = 0$ represents a circle, and find its centre and radius.",
+      "solution": "**Complete the square in each variable separately.**\n\n$x^{2} + 2x = (x + 1)^{2} - 1$\n\n$y^{2} - 8y = (y - 4)^{2} - 16$\n\n**Substitute:**\n\n$(x + 1)^{2} - 1 + (y - 4)^{2} - 16 + 8 = 0$\n\n$(x + 1)^{2} + (y - 4)^{2} = 9$\n\nThis is the standard form, so it **is** a circle, with **centre $\\mathbf{(-1, 4)}$** and **radius $\\mathbf{3}$**.\n\n**When is it not a circle?** If the right-hand side came out **negative**, no real points would satisfy the equation; if **zero**, the 'circle' would be the single point at the centre.\n\n**How to recognise a circle from the general form $x^{2} + y^{2} + 2gx + 2fy + c = 0$:**\n\n• The coefficients of $x^{2}$ and $y^{2}$ must be **equal**\n\n• There must be **no $xy$ term**\n\n• Centre $(-g, -f)$, radius $\\sqrt{g^{2} + f^{2} - c}$, which must be real\n\nHere $g = 1$, $f = -4$, $c = 8$: radius $= \\sqrt{1 + 16 - 8} = 3$ ✓",
+      "marks": 2
+    }
+  ]
+}

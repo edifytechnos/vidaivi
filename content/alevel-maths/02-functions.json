@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-functions",
+  "title": "Functions",
+  "chapter": "Topic Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm2-001",
+      "chapter": "Functions",
+      "topic": "Composite functions",
+      "type": "mcq",
+      "q": "If $f(x) = 2x + 1$ and $g(x) = x^{2}$, then $fg(x)$ is:",
+      "solution": "$fg(x)$ means $f(g(x))$ — apply $g$ **first**:\n\n$f\\left(x^{2}\\right) = \\mathbf{2x^{2} + 1}$.\n\n$gf(x) = (2x + 1)^{2}$, which is quite different. Composition is not commutative.",
+      "marks": 1,
+      "options": [
+        "$2x^{2} + 1$",
+        "$(2x+1)^{2}$",
+        "$2x^{2} + 2x$",
+        "$4x^{2}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm2-002",
+      "chapter": "Functions",
+      "topic": "Inverse functions",
+      "type": "mcq",
+      "q": "If $f(x) = 3x - 5$, then $f^{-1}(x)$ is:",
+      "solution": "Set $y = 3x - 5$ and make $x$ the subject: $x = \\dfrac{y + 5}{3}$.\n\n$f^{-1}(x) = \\mathbf{\\dfrac{x + 5}{3}}$.\n\n**Check:** $f^{-1}(f(2)) = f^{-1}(1) = 2$ ✓",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{x + 5}{3}$",
+        "$\\dfrac{x - 5}{3}$",
+        "$3x + 5$",
+        "$\\dfrac{1}{3x - 5}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm2-003",
+      "chapter": "Functions",
+      "topic": "One-to-one functions",
+      "type": "mcq",
+      "q": "A function has an inverse only if it is:",
+      "solution": "The function must be **one-to-one**: each output comes from exactly one input, or the 'inverse' would have to give two answers at once.\n\n$f(x) = x^{2}$ has no inverse over all of $\\mathbb{R}$, but does on the restricted domain $x \\ge 0$. Restricting the domain is the standard fix.",
+      "marks": 1,
+      "options": [
+        "continuous",
+        "one-to-one",
+        "increasing",
+        "a polynomial"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm2-004",
+      "chapter": "Functions",
+      "topic": "Transformations",
+      "type": "mcq",
+      "q": "The graph of $y = f(x - 3)$ is the graph of $y = f(x)$:",
+      "solution": "**3 units right** — the counter-intuitive one.\n\nTo get the same output, $x$ must now be 3 larger, so every point moves right. Changes **inside** the bracket affect $x$ and work backwards; changes **outside** affect $y$ and behave as expected.",
+      "marks": 1,
+      "options": [
+        "translated 3 units left",
+        "translated 3 units right",
+        "stretched by factor 3",
+        "reflected in the $y$-axis"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm2-005",
+      "chapter": "Functions",
+      "topic": "Range",
+      "type": "mcq",
+      "q": "The range of $f(x) = x^{2} + 4$ for $x \\in \\mathbb{R}$ is:",
+      "solution": "$x^{2} \\ge 0$, so $x^{2} + 4 \\ge 4$, and the value $4$ **is** attained, at $x = 0$.\n\nRange: $\\mathbf{f(x) \\ge 4}$ — with the equality included.",
+      "marks": 1,
+      "options": [
+        "$f(x) \\ge 0$",
+        "$f(x) \\ge 4$",
+        "$f(x) > 4$",
+        "all real values"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm2-006",
+      "chapter": "Functions",
+      "topic": "Composite functions",
+      "type": "numeric",
+      "q": "If $f(x) = x + 2$ and $g(x) = 3x$, find $fg(4)$.",
+      "solution": "$g(4) = 12$, then $f(12) = \\mathbf{14}$.\n\nWork from the inside out, exactly as the brackets say.",
+      "marks": 2,
+      "answer": 14,
+      "tolerance": 0
+    },
+    {
+      "id": "alm2-007",
+      "chapter": "Functions",
+      "topic": "Inverse functions",
+      "type": "numeric",
+      "q": "If $f(x) = 2x - 7$, find $f^{-1}(5)$.",
+      "solution": "Ask: what input gives $5$?\n\n$2x - 7 = 5 \\Rightarrow x = \\mathbf{6}$.\n\nSolving directly is quicker than finding the whole inverse function.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "alm2-008",
+      "chapter": "Functions",
+      "topic": "Range",
+      "type": "numeric",
+      "q": "For $f(x) = (x - 3)^{2} + 5$, find the least value in the range.",
+      "solution": "The square is never negative and is zero at $x = 3$, so the least value is $\\mathbf{5}$.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm2-009",
+      "chapter": "Functions",
+      "topic": "Self-inverse",
+      "type": "numeric",
+      "q": "If $f(x) = \\dfrac{1}{x}$ for $x \ne 0$, find $ff(3)$.",
+      "solution": "$f(3) = \\tfrac13$, and $f\\left(\\tfrac13\\right) = \\mathbf{3}$.\n\n$f$ is its own inverse — a **self-inverse** function, and its graph is symmetrical about the line $y = x$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alm2-010",
+      "chapter": "Functions",
+      "topic": "Transformations",
+      "type": "numeric",
+      "q": "The graph of $y = f(x)$ passes through $(2, 5)$. Find the $y$-coordinate of the corresponding point on $y = 3f(x) - 1$.",
+      "solution": "$3(5) - 1 = \\mathbf{14}$, at the same $x$-coordinate $2$.\n\nBoth changes are **outside** the function, so they act on $y$ directly and in the order written.",
+      "marks": 2,
+      "answer": 14,
+      "tolerance": 0
+    },
+    {
+      "id": "alm2-011",
+      "chapter": "Functions",
+      "topic": "Inverse functions",
+      "type": "long",
+      "q": "The function $f$ is defined by $f(x) = x^{2} - 4x + 7$ for $x \\ge 2$. Find $f^{-1}(x)$ and state its domain and range.",
+      "solution": "**Why the restriction matters.** Completing the square gives\n\n$f(x) = (x - 2)^{2} + 3$,\n\na parabola with its vertex at $x = 2$. Restricting to $x \\ge 2$ takes only the increasing half, making $f$ **one-to-one** — and so invertible.\n\n**Finding the inverse.** Let $y = (x - 2)^{2} + 3$:\n\n$(x - 2)^{2} = y - 3$\n\n$x - 2 = \\pm\\sqrt{y - 3}$\n\nSince $x \\ge 2$, take the **positive** root:\n\n$x = 2 + \\sqrt{y - 3}$\n\n$\\mathbf{f^{-1}(x) = 2 + \\sqrt{x - 3}}$\n\n**Domain and range — they swap.**\n\nThe range of $f$ is $f(x) \\ge 3$, so the **domain of $f^{-1}$ is $x \\ge 3$**.\n\nThe domain of $f$ is $x \\ge 2$, so the **range of $f^{-1}$ is $f^{-1}(x) \\ge 2$**.\n\n**Check:** $f(5) = 12$, and $f^{-1}(12) = 2 + 3 = 5$ ✓\n\nThe graphs of $f$ and $f^{-1}$ are reflections of each other in the line $y = x$.",
+      "marks": 3
+    },
+    {
+      "id": "alm2-012",
+      "chapter": "Functions",
+      "topic": "Composite functions",
+      "type": "long",
+      "q": "Given $f(x) = 2x + 3$ and $g(x) = x^{2} - 1$, find $fg(x)$ and $gf(x)$, and solve $fg(x) = gf(x)$.",
+      "solution": "**$fg(x)$** — apply $g$ first:\n\n$f\\left(x^{2} - 1\\right) = 2\\left(x^{2} - 1\\right) + 3 = \\mathbf{2x^{2} + 1}$\n\n**$gf(x)$** — apply $f$ first:\n\n$g(2x + 3) = (2x + 3)^{2} - 1 = 4x^{2} + 12x + 9 - 1 = \\mathbf{4x^{2} + 12x + 8}$\n\n**Setting them equal:**\n\n$2x^{2} + 1 = 4x^{2} + 12x + 8$\n\n$0 = 2x^{2} + 12x + 7$\n\n$x = \\dfrac{-12 \\pm \\sqrt{144 - 56}}{4} = \\dfrac{-12 \\pm \\sqrt{88}}{4}$\n\n$\\mathbf{x = \\dfrac{-6 \\pm \\sqrt{22}}{2}}$, that is $x \\approx -0.65$ or $x \\approx -5.35$.\n\n**The general lesson:** $fg$ and $gf$ are different functions, and they agree only at isolated points. The order of composition always matters — putting on socks then shoes is not the same as shoes then socks.",
+      "marks": 3
+    },
+    {
+      "id": "alm2-013",
+      "chapter": "Functions",
+      "topic": "Transformations of graphs",
+      "type": "long",
+      "q": "Describe the sequence of transformations that maps $y = x^{2}$ onto $y = 2(x - 3)^{2} + 1$, and state the vertex of the image.",
+      "solution": "**Work from the inside outwards**, which is the order the transformations are applied.\n\n**1. $(x - 3)^{2}$** — translation of $\\begin{pmatrix} 3 \\\\ 0 \\end{pmatrix}$, i.e. **3 units right**.\n\n**2. $2(x-3)^{2}$** — stretch parallel to the $y$-axis, **scale factor 2**.\n\n**3. $+1$** — translation of $\\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix}$, i.e. **1 unit up**.\n\n**Vertex.** The original vertex $(0, 0)$ moves to $(3, 0)$, stays at $(3, 0)$ under the stretch (since $y = 0$), then rises to $\\mathbf{(3, 1)}$.\n\n**Check:** at $x = 3$, $y = 0 + 1 = 1$ ✓\n\n**Why the order matters.** Stretching before translating up gives the same answer here only because the vertex sits on $y = 0$. In general, $2f(x) + 1$ and $2\\left[f(x) + 1\\right]$ are different functions.\n\n**The summary worth memorising:**\n\n• $f(x + a)$ — translate **left** by $a$ (inside the bracket, so backwards)\n\n• $f(x) + a$ — translate **up** by $a$\n\n• $af(x)$ — stretch vertically by $a$\n\n• $f(ax)$ — stretch horizontally by $\\dfrac{1}{a}$ (again, the reciprocal)\n\n• $-f(x)$ — reflect in the $x$-axis; $f(-x)$ — reflect in the $y$-axis",
+      "marks": 5
+    },
+    {
+      "id": "alm2-014",
+      "chapter": "Functions",
+      "topic": "Domain and range",
+      "type": "long",
+      "q": "For $f(x) = \\dfrac{1}{x - 2}$, state the largest possible domain and the corresponding range, and describe the graph.",
+      "solution": "**Domain.** The denominator must not be zero:\n\n$x - 2 \ne 0$, so the domain is $\\mathbf{x \\in \\mathbb{R},\\; x \ne 2}$.\n\n**Range.** A fraction with a non-zero numerator can never itself be zero, however large $x$ becomes.\n\nRange: $\\mathbf{f(x) \\in \\mathbb{R},\\; f(x) \ne 0}$.\n\n**The graph** is the standard hyperbola $y = \\dfrac1x$ translated **2 units right**.\n\n• **Vertical asymptote** at $x = 2$ — as $x$ approaches 2 from above, $f(x) \\to +\\infty$; from below, $f(x) \\to -\\infty$.\n\n• **Horizontal asymptote** at $y = 0$ — the curve approaches the $x$-axis but never touches it.\n\nTwo branches, in opposite quadrants about the point $(2, 0)$.\n\n**Notice the symmetry between domain and range:** the excluded input corresponds to the vertical asymptote, and the excluded output to the horizontal one. That is not a coincidence — this function is self-inverse up to the translation.",
+      "marks": 3
+    },
+    {
+      "id": "alm2-015",
+      "chapter": "Functions",
+      "topic": "The modulus function",
+      "type": "long",
+      "q": "Sketch in words $y = |x - 3|$ and solve the equation $|x - 3| = 5$.",
+      "solution": "**The graph.** $y = |x - 3|$ is a **V shape** with its vertex at $(3, 0)$.\n\nFor $x \\ge 3$ it is the line $y = x - 3$, of gradient $+1$; for $x < 3$ it is $y = 3 - x$, of gradient $-1$. The modulus reflects the negative part up above the axis.\n\n**Solving $|x - 3| = 5$.** The distance from $x$ to 3 is 5, so $x$ is 5 either side of 3:\n\n$x - 3 = 5 \\Rightarrow x = 8$\n\n$x - 3 = -5 \\Rightarrow x = -2$\n\n$\\mathbf{x = 8 \\text{ or } x = -2}$\n\n**Check:** $|8 - 3| = 5$ ✓ and $|-2 - 3| = |-5| = 5$ ✓\n\n**Reading modulus as distance** makes these questions much easier. $|x - a| < b$ says 'within $b$ of $a$', giving $a - b < x < a + b$ — a single interval, not two.\n\n**A caution:** squaring both sides also works ($(x-3)^{2} = 25$) but can introduce solutions that do not satisfy the original equation, so every answer must be checked.",
+      "marks": 2
+    }
+  ]
+}

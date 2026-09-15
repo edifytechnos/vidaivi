@@ -1,0 +1,190 @@
+{
+  "id": "lib-ig-transformations",
+  "title": "Transformations and Vectors",
+  "chapter": "Topic Test 7",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igv-001",
+      "chapter": "Transformations and Vectors",
+      "topic": "Types of transformation",
+      "type": "mcq",
+      "q": "Which transformation does **not** preserve the size of a shape?",
+      "solution": "Reflection, rotation and translation are **congruent** transformations — the image is the same size and shape as the object.\n\n**Enlargement** changes the size (unless the scale factor is $\\pm 1$), producing a **similar** figure rather than a congruent one.",
+      "marks": 1,
+      "options": [
+        "Reflection",
+        "Rotation",
+        "Translation",
+        "Enlargement"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "igv-002",
+      "chapter": "Transformations and Vectors",
+      "topic": "Translation vector",
+      "type": "mcq",
+      "q": "A translation by the vector $\\begin{pmatrix} 3 \\\\ -2 \\end{pmatrix}$ moves a point:",
+      "solution": "The top number is the movement in $x$ and the bottom in $y$.\n\n$+3$ means **3 right**; $-2$ means **2 down**.",
+      "marks": 1,
+      "options": [
+        "3 left and 2 up",
+        "3 right and 2 down",
+        "3 up and 2 right",
+        "3 down and 2 left"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igv-003",
+      "chapter": "Transformations and Vectors",
+      "topic": "Vector magnitude",
+      "type": "mcq",
+      "q": "The magnitude of the vector $\\begin{pmatrix} 3 \\\\ 4 \\end{pmatrix}$ is:",
+      "solution": "$\\left|\\vec{v}\\right| = \\sqrt{3^{2} + 4^{2}} = \\sqrt{25} = \\mathbf{5}$ — Pythagoras on the two components.",
+      "marks": 1,
+      "options": [
+        "5",
+        "7",
+        "12",
+        "$\\sqrt{7}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igv-004",
+      "chapter": "Transformations and Vectors",
+      "topic": "Enlargement",
+      "type": "mcq",
+      "q": "A shape is enlarged by scale factor $3$. Its area is multiplied by:",
+      "solution": "Area scales as the **square** of the linear scale factor: $3^{2} = \\mathbf{9}$.\n\nVolume would scale as the cube, $27$.",
+      "marks": 1,
+      "options": [
+        "3",
+        "6",
+        "9",
+        "27"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igv-005",
+      "chapter": "Transformations and Vectors",
+      "topic": "Rotation",
+      "type": "mcq",
+      "q": "A rotation of $90°$ clockwise about the origin maps $(2, 3)$ to:",
+      "solution": "A $90°$ **clockwise** rotation about the origin sends $(x, y) \\to (y, -x)$.\n\n$(2, 3) \\to \\mathbf{(3, -2)}$.\n\nAnticlockwise would be $(x, y) \\to (-y, x)$, giving $(-3, 2)$. Tracing the point on a sketch is faster than trying to remember which is which.",
+      "marks": 1,
+      "options": [
+        "$(3, -2)$",
+        "$(-3, 2)$",
+        "$(-2, -3)$",
+        "$(3, 2)$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igv-006",
+      "chapter": "Transformations and Vectors",
+      "topic": "Vector addition",
+      "type": "numeric",
+      "q": "If $\\vec{a} = \\begin{pmatrix} 2 \\\\ 5 \\end{pmatrix}$ and $\\vec{b} = \\begin{pmatrix} 3 \\\\ -1 \\end{pmatrix}$, find the $y$-component of $\\vec{a} + \\vec{b}$.",
+      "solution": "Add the components separately: $5 + (-1) = \\mathbf{4}$.\n\n(The $x$-component is $2 + 3 = 5$.)",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "igv-007",
+      "chapter": "Transformations and Vectors",
+      "topic": "Scalar multiple",
+      "type": "numeric",
+      "q": "If $\\vec{a} = \\begin{pmatrix} 4 \\\\ -3 \\end{pmatrix}$, find the magnitude of $2\\vec{a}$.",
+      "solution": "$2\\vec{a} = \\begin{pmatrix} 8 \\\\ -6 \\end{pmatrix}$, and $\\left|2\\vec{a}\\right| = \\sqrt{64 + 36} = \\mathbf{10}$.\n\nQuicker: $\\left|\\vec{a}\\right| = 5$, and multiplying a vector by $2$ doubles its length.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igv-008",
+      "chapter": "Transformations and Vectors",
+      "topic": "Enlargement",
+      "type": "numeric",
+      "q": "A rectangle of area $12$ cm$^{2}$ is enlarged by scale factor $2.5$. Find the new area, in cm$^{2}$.",
+      "solution": "$12 \\times 2.5^{2} = 12 \\times 6.25 = \\mathbf{75}$ cm$^{2}$.",
+      "marks": 2,
+      "answer": 75,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igv-009",
+      "chapter": "Transformations and Vectors",
+      "topic": "Reflection",
+      "type": "numeric",
+      "q": "The point $(5, 2)$ is reflected in the $y$-axis. Find the $x$-coordinate of the image.",
+      "solution": "Reflecting in the $y$-axis changes the **sign of $x$** and leaves $y$ alone: $(5, 2) \\to (-5, 2)$.\n\nSo the answer is $\\mathbf{-5}$. Reflecting in the $x$-axis would do the opposite.",
+      "marks": 2,
+      "answer": -5,
+      "tolerance": 0
+    },
+    {
+      "id": "igv-010",
+      "chapter": "Transformations and Vectors",
+      "topic": "Vector magnitude",
+      "type": "numeric",
+      "q": "Find the magnitude of $\\begin{pmatrix} -6 \\\\ 8 \\end{pmatrix}$.",
+      "solution": "$\\sqrt{36 + 64} = \\sqrt{100} = \\mathbf{10}$.\n\nThe components are squared, so the minus sign makes no difference — a magnitude is never negative.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igv-011",
+      "chapter": "Transformations and Vectors",
+      "topic": "Describing transformations",
+      "type": "long",
+      "q": "State what must be given to describe fully each of: a reflection, a rotation, a translation and an enlargement.",
+      "solution": "**Reflection** — name the **mirror line**, by its equation ($y = x$, $x = 2$, the $y$-axis).\n\n**Rotation** — three things: the **centre**, the **angle**, and the **direction** (clockwise or anticlockwise). All three, or the description is incomplete.\n\n($180°$ is the exception: the direction does not matter.)\n\n**Translation** — the **column vector** $\\begin{pmatrix} x \\\\ y \\end{pmatrix}$.\n\n**Enlargement** — the **centre** and the **scale factor**.\n\n**Marks are given for each part of the description**, so 'a rotation' alone scores almost nothing while 'a rotation of $90°$ anticlockwise about $(0,0)$' scores full marks.\n\n**Negative and fractional scale factors.** A scale factor between $0$ and $1$ makes the image **smaller** (still called an enlargement); a **negative** one puts the image on the opposite side of the centre and turns it upside down.",
+      "marks": 3
+    },
+    {
+      "id": "igv-012",
+      "chapter": "Transformations and Vectors",
+      "topic": "Vector geometry",
+      "type": "long",
+      "q": "$OABC$ is a parallelogram with $\\vec{OA} = \\vec{a}$ and $\\vec{OC} = \\vec{c}$. Express $\\vec{OB}$, $\\vec{AC}$ and $\\vec{AB}$ in terms of $\\vec{a}$ and $\\vec{c}$.",
+      "solution": "**$\\vec{OB}$** — the diagonal. Go $O$ to $A$, then $A$ to $B$; and $\\vec{AB} = \\vec{OC} = \\vec{c}$ since $ABCO$ is a parallelogram:\n\n$\\vec{OB} = \\mathbf{\\vec{a} + \\vec{c}}$.\n\n**$\\vec{AC}$** — the other diagonal. Travel back along $\\vec{OA}$ and then along $\\vec{OC}$:\n\n$\\vec{AC} = \\vec{AO} + \\vec{OC} = \\mathbf{-\\vec{a} + \\vec{c}}$, or $\\vec{c} - \\vec{a}$.\n\n**$\\vec{AB}$** $= \\mathbf{\\vec{c}}$, because $AB$ is parallel and equal to $OC$.\n\n**The method.** Any journey can be broken into steps along vectors you already know. Going **backwards** along a vector is the same as **subtracting** it.\n\n**A useful pair to remember:** in a parallelogram the diagonals are $\\vec{a} + \\vec{c}$ and $\\vec{c} - \\vec{a}$ — sum and difference. That is also why the diagonals of a rhombus are perpendicular: when $\\left|\\vec{a}\\right| = \\left|\\vec{c}\\right|$, the sum and difference are at right angles.",
+      "marks": 3
+    },
+    {
+      "id": "igv-013",
+      "chapter": "Transformations and Vectors",
+      "topic": "Combined transformations",
+      "type": "long",
+      "q": "Triangle $T$ has vertices $(1,1)$, $(3,1)$, $(1,4)$. It is reflected in the $x$-axis to give $T'$, and $T'$ is then translated by $\\begin{pmatrix} 2 \\\\ 5 \\end{pmatrix}$ to give $T''$. Find the vertices of $T''$ and describe the single transformation from $T$ to $T''$.",
+      "solution": "**Reflection in the $x$-axis** — change the sign of $y$:\n\n$(1,1) \\to (1,-1)$, $\\quad (3,1) \\to (3,-1)$, $\\quad (1,4) \\to (1,-4)$.\n\n**Then translate by $\\begin{pmatrix} 2 \\\\ 5 \\end{pmatrix}$** — add 2 to each $x$, 5 to each $y$:\n\n$(1,-1) \\to \\mathbf{(3, 4)}$\n\n$(3,-1) \\to \\mathbf{(5, 4)}$\n\n$(1,-4) \\to \\mathbf{(3, 1)}$\n\n**The single transformation.** A reflection followed by a translation **perpendicular to** the mirror line is another reflection — here in a line parallel to the $x$-axis.\n\nBut the translation has a horizontal part too, so it is a **glide reflection**: a reflection in $y = 2.5$ followed by a translation of $\\begin{pmatrix} 2 \\\\ 0 \\end{pmatrix}$ along it.\n\n**Check with one vertex:** $(1,1)$ reflected in $y = 2.5$ gives $(1, 4)$, then $2$ right gives $(3, 4)$ ✓\n\n**Worth knowing:** the order matters. Reflecting **after** translating would give a different answer, because transformations do not generally commute.",
+      "marks": 5
+    },
+    {
+      "id": "igv-014",
+      "chapter": "Transformations and Vectors",
+      "topic": "Enlargement with a negative scale factor",
+      "type": "long",
+      "q": "Explain what happens to a shape under an enlargement with scale factor $-2$ about the origin, and find the image of $(3, 1)$.",
+      "solution": "**A negative scale factor** does two things at once:\n\n1. The image is **twice the size**, as a factor of $2$ would do.\n\n2. The image is on the **opposite side of the centre**, and **turned through $180°$**.\n\n**The image of $(3, 1)$:** multiply both coordinates by $-2$:\n\n$(3, 1) \\to \\mathbf{(-6, -2)}$.\n\n**Check the geometry.** Draw a line from $(3,1)$ through the origin and continue it past the origin. The image lies on that line, twice as far from the centre, on the far side. ✓\n\n**Equivalently:** an enlargement by $-2$ is the same as an enlargement by $+2$ **followed by** a rotation of $180°$ about the same centre.\n\nIt is exactly what a pinhole camera does: the image is inverted and on the opposite side of the hole.",
+      "marks": 3
+    },
+    {
+      "id": "igv-015",
+      "chapter": "Transformations and Vectors",
+      "topic": "Column vectors",
+      "type": "long",
+      "q": "If $\\vec{a} = \\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}$ and $\\vec{b} = \\begin{pmatrix} -1 \\\\ 4 \\end{pmatrix}$, find $2\\vec{a} - \\vec{b}$ and its magnitude.",
+      "solution": "**$2\\vec{a}$:** $\\begin{pmatrix} 6 \\\\ 2 \\end{pmatrix}$.\n\n**Subtract $\\vec{b}$**, component by component:\n\n$2\\vec{a} - \\vec{b} = \\begin{pmatrix} 6 - (-1) \\\\ 2 - 4 \\end{pmatrix} = \\mathbf{\\begin{pmatrix} 7 \\\\ -2 \\end{pmatrix}}$.\n\n**Magnitude:**\n\n$\\sqrt{7^{2} + (-2)^{2}} = \\sqrt{49 + 4} = \\sqrt{53} \\approx \\mathbf{7.28}$.\n\n**Watch the double negative** in the first component: subtracting $-1$ adds $1$. That is the commonest slip in vector arithmetic, and it is worth writing the subtraction out in full rather than doing it in your head.",
+      "marks": 2
+    }
+  ]
+}

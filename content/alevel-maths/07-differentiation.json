@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-differentiation",
+  "title": "Differentiation",
+  "chapter": "Topic Test 7",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm7-001",
+      "chapter": "Differentiation",
+      "topic": "Power rule",
+      "type": "mcq",
+      "q": "$\\dfrac{d}{dx}\\left(x^{5}\\right)$ equals:",
+      "solution": "$\\dfrac{d}{dx}x^{n} = nx^{n-1}$, so the answer is $\\mathbf{5x^{4}}$ — bring the power down, then reduce it by one.",
+      "marks": 1,
+      "options": [
+        "$5x^{4}$",
+        "$x^{4}$",
+        "$5x^{6}$",
+        "$\\dfrac{x^{6}}{6}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm7-002",
+      "chapter": "Differentiation",
+      "topic": "Chain rule",
+      "type": "mcq",
+      "q": "$\\dfrac{d}{dx}\\left(3x + 1\\right)^{4}$ equals:",
+      "solution": "Differentiate the outside, keep the inside, then multiply by the derivative of the inside:\n\n$4(3x+1)^{3} \\times 3 = \\mathbf{12(3x+1)^{3}}$.\n\nForgetting that final factor of 3 is the classic chain rule slip.",
+      "marks": 1,
+      "options": [
+        "$4(3x+1)^{3}$",
+        "$12(3x+1)^{3}$",
+        "$3(3x+1)^{3}$",
+        "$(3x+1)^{3}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm7-003",
+      "chapter": "Differentiation",
+      "topic": "Stationary points",
+      "type": "mcq",
+      "q": "At a stationary point of a curve:",
+      "solution": "A stationary point is where the tangent is horizontal, so $\\mathbf{\\dfrac{dy}{dx} = 0}$.\n\nThe **second** derivative then classifies it: negative means a maximum, positive a minimum, and zero needs further investigation.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{dy}{dx} = 0$",
+        "$\\dfrac{d^{2}y}{dx^{2}} = 0$",
+        "$y = 0$",
+        "$x = 0$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm7-004",
+      "chapter": "Differentiation",
+      "topic": "Product rule",
+      "type": "mcq",
+      "q": "$\\dfrac{d}{dx}(uv)$ equals:",
+      "solution": "$\\mathbf{u'v + uv'}$ — differentiate each factor in turn, leaving the other alone, and add.\n\nThe quotient rule is $\\dfrac{u'v - uv'}{v^{2}}$, where the **order matters** because of the minus sign.",
+      "marks": 1,
+      "options": [
+        "$u'v'$",
+        "$u'v + uv'$",
+        "$u'v - uv'$",
+        "$\\dfrac{u'}{v'}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm7-005",
+      "chapter": "Differentiation",
+      "topic": "Rate of change",
+      "type": "mcq",
+      "q": "$\\dfrac{dy}{dx}$ represents:",
+      "solution": "It is the **rate of change** of $y$ with respect to $x$ — the gradient of the curve at that point, and the speedometer reading if $y$ is distance and $x$ is time.",
+      "marks": 1,
+      "options": [
+        "the value of $y$",
+        "the rate of change of $y$ with respect to $x$",
+        "the area under the curve",
+        "the value of $x$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm7-006",
+      "chapter": "Differentiation",
+      "topic": "Differentiation",
+      "type": "numeric",
+      "q": "If $y = x^{3} - 6x$, find $\\dfrac{dy}{dx}$ at $x = 2$.",
+      "solution": "$\\dfrac{dy}{dx} = 3x^{2} - 6$, and at $x = 2$: $12 - 6 = \\mathbf{6}$.",
+      "marks": 2,
+      "answer": 6,
+      "tolerance": 0
+    },
+    {
+      "id": "alm7-007",
+      "chapter": "Differentiation",
+      "topic": "Stationary points",
+      "type": "numeric",
+      "q": "Find the $x$-coordinate of the stationary point of $y = x^{2} - 8x + 3$.",
+      "solution": "$\\dfrac{dy}{dx} = 2x - 8 = 0 \\Rightarrow x = \\mathbf{4}$.\n\n$\\dfrac{d^{2}y}{dx^{2}} = 2 > 0$, so it is a minimum.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "alm7-008",
+      "chapter": "Differentiation",
+      "topic": "Second derivative",
+      "type": "numeric",
+      "q": "If $y = x^{4}$, find $\\dfrac{d^{2}y}{dx^{2}}$ at $x = 1$.",
+      "solution": "$\\dfrac{dy}{dx} = 4x^{3}$ and $\\dfrac{d^{2}y}{dx^{2}} = 12x^{2}$, which at $x = 1$ is $\\mathbf{12}$.",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0
+    },
+    {
+      "id": "alm7-009",
+      "chapter": "Differentiation",
+      "topic": "Tangent gradient",
+      "type": "numeric",
+      "q": "Find the gradient of the tangent to $y = \\dfrac{1}{x}$ at $x = 2$.",
+      "solution": "$y = x^{-1}$, so $\\dfrac{dy}{dx} = -x^{-2} = -\\dfrac{1}{x^{2}}$.\n\nAt $x = 2$: $-\\dfrac14 = \\mathbf{-0.25}$ — negative, as the curve is falling there.",
+      "marks": 2,
+      "answer": -0.25,
+      "tolerance": 0.01
+    },
+    {
+      "id": "alm7-010",
+      "chapter": "Differentiation",
+      "topic": "Connected rates",
+      "type": "numeric",
+      "q": "The radius of a circle increases at $2$ cm/s. Find the rate of increase of the area (in cm$^{2}$/s) when $r = 5$, as a multiple of $\\pi$.",
+      "solution": "$\\dfrac{dA}{dt} = \\dfrac{dA}{dr} \\times \\dfrac{dr}{dt} = 2\\pi r \\times 2 = 4\\pi r$.\n\nAt $r = 5$: $20\\pi$, so the answer is $\\mathbf{20}$.\n\nThe chain rule is what links the two rates.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0
+    },
+    {
+      "id": "alm7-011",
+      "chapter": "Differentiation",
+      "topic": "Stationary points",
+      "type": "long",
+      "q": "Find the stationary points of $y = x^{3} - 3x^{2} - 9x + 5$ and determine their nature.",
+      "solution": "**Differentiate and set to zero:**\n\n$\\dfrac{dy}{dx} = 3x^{2} - 6x - 9 = 3\\left(x^{2} - 2x - 3\\right) = 3(x - 3)(x + 1)$\n\n$x = 3$ or $x = -1$.\n\n**Find the $y$ values:**\n\n$y(3) = 27 - 27 - 27 + 5 = -22$\n\n$y(-1) = -1 - 3 + 9 + 5 = 10$\n\n**Classify with the second derivative:**\n\n$\\dfrac{d^{2}y}{dx^{2}} = 6x - 6$\n\nAt $x = 3$: $12 > 0$ — a **minimum** at $\\mathbf{(3, -22)}$.\n\nAt $x = -1$: $-12 < 0$ — a **maximum** at $\\mathbf{(-1, 10)}$.\n\n**A sketch check.** A positive cubic rises from the bottom left, reaches a local maximum at $(-1, 10)$, falls to a local minimum at $(3, -22)$, then rises again — which is exactly what the two classifications say.\n\n**Note the maximum is higher than the minimum but is only local:** the curve goes above 10 further to the right, and below $-22$ further to the left.",
+      "marks": 3
+    },
+    {
+      "id": "alm7-012",
+      "chapter": "Differentiation",
+      "topic": "Tangent and normal",
+      "type": "long",
+      "q": "Find the equations of the tangent and the normal to $y = x^{2} - 3x + 4$ at the point where $x = 2$.",
+      "solution": "**The point.** $y = 4 - 6 + 4 = 2$, so the point is $(2, 2)$.\n\n**The gradient.**\n\n$\\dfrac{dy}{dx} = 2x - 3$, which at $x = 2$ is $1$.\n\n**Tangent** — gradient 1 through $(2, 2)$:\n\n$y - 2 = 1(x - 2) \\Rightarrow \\mathbf{y = x}$\n\n**Normal** — perpendicular, so gradient $-1$:\n\n$y - 2 = -1(x - 2) \\Rightarrow \\mathbf{y = -x + 4}$, or $x + y = 4$.\n\n**Check:** the two gradients multiply to $-1$ ✓, and both lines pass through $(2,2)$ ✓\n\n**The routine for every such question:**\n\n1. Find the $y$-coordinate by substituting into the **curve**.\n\n2. Differentiate and substitute to get the gradient.\n\n3. Use $y - y_{1} = m(x - x_{1})$.\n\n4. For the normal, replace $m$ by $-\\dfrac{1}{m}$.\n\nA tangent of gradient **zero** gives the horizontal line $y = y_{1}$, and its normal is the **vertical** line $x = x_{1}$ — which has no gradient at all, so the reciprocal rule has to be abandoned in that one case.",
+      "marks": 3
+    },
+    {
+      "id": "alm7-013",
+      "chapter": "Differentiation",
+      "topic": "Optimisation",
+      "type": "long",
+      "q": "A rectangular enclosure is to be made against a straight wall, using $60$ m of fencing for the other three sides. Find the dimensions that give the greatest area, and that area.",
+      "solution": "**Set up.** Let the two sides perpendicular to the wall be $x$, and the side parallel to it be $y$.\n\n**Constraint:** $2x + y = 60$, so $y = 60 - 2x$.\n\n**Objective:**\n\n$A = xy = x(60 - 2x) = 60x - 2x^{2}$\n\nGetting the area in terms of **one** variable is the whole point of the constraint.\n\n**Differentiate and set to zero:**\n\n$\\dfrac{dA}{dx} = 60 - 4x = 0 \\Rightarrow x = 15$\n\n**Confirm it is a maximum:**\n\n$\\dfrac{d^{2}A}{dx^{2}} = -4 < 0$ ✓\n\n**The answer.** $x = 15$ m, $y = 60 - 30 = 30$ m, giving\n\n$A = 15 \\times 30 = \\mathbf{450}$ m$^{2}$.\n\n**Check the sensible range:** $0 < x < 30$, and $x = 15$ is comfortably inside it ✓\n\n**Worth noticing:** the optimal shape is **twice as wide as it is deep** — not a square. The wall does the work of one side for free, so it pays to make that side the long one.\n\n**The general recipe:** write the quantity to be optimised, use the constraint to reduce it to one variable, differentiate, set to zero, and confirm with the second derivative.",
+      "marks": 5
+    },
+    {
+      "id": "alm7-014",
+      "chapter": "Differentiation",
+      "topic": "Chain, product and quotient rules",
+      "type": "long",
+      "q": "Differentiate: (a) $y = (2x^{2} + 1)^{5}$, (b) $y = x^{2}\\sqrt{x + 1}$, (c) $y = \\dfrac{x}{x^{2}+1}$.",
+      "solution": "**(a) Chain rule.**\n\nOutside $(\\;)^{5}$, inside $2x^{2} + 1$ with derivative $4x$:\n\n$\\dfrac{dy}{dx} = 5\\left(2x^{2}+1\\right)^{4} \\times 4x = \\mathbf{20x\\left(2x^{2}+1\\right)^{4}}$\n\n**(b) Product rule**, with the chain rule inside it.\n\n$u = x^{2}$, $u' = 2x$; $v = (x+1)^{1/2}$, $v' = \\tfrac12(x+1)^{-1/2}$.\n\n$\\dfrac{dy}{dx} = 2x\\sqrt{x+1} + \\dfrac{x^{2}}{2\\sqrt{x+1}}$\n\nOver a common denominator:\n\n$= \\dfrac{4x(x+1) + x^{2}}{2\\sqrt{x+1}} = \\mathbf{\\dfrac{5x^{2} + 4x}{2\\sqrt{x+1}}}$\n\n**(c) Quotient rule.**\n\n$u = x$, $u' = 1$; $v = x^{2}+1$, $v' = 2x$.\n\n$\\dfrac{dy}{dx} = \\dfrac{1\\left(x^{2}+1\\right) - x(2x)}{\\left(x^{2}+1\\right)^{2}} = \\mathbf{\\dfrac{1 - x^{2}}{\\left(x^{2}+1\\right)^{2}}}$\n\n**Choosing the right rule:** a **power of a bracket** wants the chain rule; **two things multiplied** want the product rule; **one thing over another** wants the quotient rule — though a quotient can always be rewritten as a product with a negative power if that is easier.",
+      "marks": 3
+    },
+    {
+      "id": "alm7-015",
+      "chapter": "Differentiation",
+      "topic": "Connected rates of change",
+      "type": "long",
+      "q": "A spherical balloon is inflated so that its volume increases at $100$ cm$^{3}$/s. Find the rate at which the radius is increasing when $r = 5$ cm.",
+      "solution": "**The chain of dependence.** $V$ depends on $r$, and $r$ depends on $t$:\n\n$\\dfrac{dV}{dt} = \\dfrac{dV}{dr} \\times \\dfrac{dr}{dt}$\n\n**Differentiate the volume:**\n\n$V = \\dfrac43\\pi r^{3} \\Rightarrow \\dfrac{dV}{dr} = 4\\pi r^{2}$\n\n(Which is the surface area — new volume is added as a thin shell over the whole surface, so this makes sense.)\n\n**Substitute:**\n\n$100 = 4\\pi(25) \\times \\dfrac{dr}{dt}$\n\n$\\dfrac{dr}{dt} = \\dfrac{100}{100\\pi} = \\dfrac{1}{\\pi} \\approx \\mathbf{0.318}$ cm/s.\n\n**How the rate changes.** At $r = 10$ the same inflow gives $\\dfrac{dr}{dt} = \\dfrac{100}{400\\pi} \\approx 0.08$ cm/s — four times slower.\n\nThe bigger the balloon, the more slowly it appears to grow at a fixed rate of inflation, because the same volume is spread over a surface four times as large.\n\n**The method for every connected-rates problem:** write down the rate you are given and the rate you want, find the formula linking the two quantities, and let the chain rule join them up.",
+      "marks": 2
+    }
+  ]
+}

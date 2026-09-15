@@ -1,0 +1,190 @@
+{
+  "id": "lib-alp-deformation",
+  "title": "Deformation of Solids",
+  "chapter": "Topic Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alp6-001",
+      "chapter": "Deformation of Solids",
+      "topic": "Hooke's law",
+      "type": "mcq",
+      "q": "Hooke's law states that, up to the limit of proportionality:",
+      "solution": "$F = kx$ — the extension is **proportional** to the applied force, up to the limit of proportionality.\n\nBeyond that point the graph curves, though the material may still return to its original length until the **elastic limit** is passed.",
+      "marks": 1,
+      "options": [
+        "force is proportional to extension",
+        "force is proportional to length",
+        "extension is constant",
+        "stress is constant"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp6-002",
+      "chapter": "Deformation of Solids",
+      "topic": "Young modulus",
+      "type": "mcq",
+      "q": "The Young modulus is defined as:",
+      "solution": "$E = \\dfrac{\\text{stress}}{\\text{strain}} = \\dfrac{F/A}{x/L} = \\dfrac{FL}{Ax}$, in pascals.\n\nUnlike the spring constant $k$, it is a property of the **material** and does not depend on the specimen's size or shape.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{\\text{stress}}{\\text{strain}}$",
+        "$\\dfrac{\\text{strain}}{\\text{stress}}$",
+        "$\\text{stress} \\times \\text{strain}$",
+        "$\\dfrac{F}{x}$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alp6-003",
+      "chapter": "Deformation of Solids",
+      "topic": "Stress and strain",
+      "type": "mcq",
+      "q": "Tensile strain is:",
+      "solution": "Strain $= \\dfrac{\\text{extension}}{\\text{original length}}$ — a **ratio**, so it has no units.\n\nStress is $\\dfrac{F}{A}$, measured in pascals.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{F}{A}$",
+        "$\\dfrac{x}{L}$",
+        "$Fx$",
+        "$\\dfrac{L}{x}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp6-004",
+      "chapter": "Deformation of Solids",
+      "topic": "Elastic and plastic",
+      "type": "mcq",
+      "q": "A material deformed beyond its elastic limit will:",
+      "solution": "Past the **elastic limit** the deformation is **plastic** — permanent. The material does not return to its original length when the load is removed.\n\nBending a paperclip is deliberate plastic deformation; a spring stretched past this point is ruined.",
+      "marks": 1,
+      "options": [
+        "return to its original length",
+        "not return to its original length",
+        "break immediately",
+        "become stronger"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp6-005",
+      "chapter": "Deformation of Solids",
+      "topic": "Strain energy",
+      "type": "mcq",
+      "q": "The elastic strain energy stored in a stretched spring is:",
+      "solution": "$E = \\mathbf{\\tfrac12 kx^{2}}$, which is the **area under the force-extension graph**.\n\nThe $\\tfrac12$ appears because the force rises from zero to $kx$, so the average force doing the work is $\\tfrac12 kx$.",
+      "marks": 1,
+      "options": [
+        "$kx$",
+        "$\\tfrac12 kx^{2}$",
+        "$kx^{2}$",
+        "$\\tfrac12 kx$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alp6-006",
+      "chapter": "Deformation of Solids",
+      "topic": "Hooke's law",
+      "type": "numeric",
+      "q": "A spring of stiffness $200$ N/m is stretched $0.05$ m. Find the force, in N.",
+      "solution": "$F = kx = 200 \\times 0.05 = \\mathbf{10}$ N.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp6-007",
+      "chapter": "Deformation of Solids",
+      "topic": "Strain energy",
+      "type": "numeric",
+      "q": "Find the energy (in J) stored in a spring of stiffness $400$ N/m stretched by $0.1$ m.",
+      "solution": "$E = \\tfrac12 kx^{2} = \\tfrac12(400)(0.01) = \\mathbf{2}$ J.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alp6-008",
+      "chapter": "Deformation of Solids",
+      "topic": "Stress",
+      "type": "numeric",
+      "q": "Find the stress (in MPa) in a wire of cross-sectional area $2 \\times 10^{-6}$ m$^{2}$ carrying a load of $40$ N.",
+      "solution": "$\\sigma = \\dfrac{F}{A} = \\dfrac{40}{2 \\times 10^{-6}} = 2 \\times 10^{7}$ Pa $= \\mathbf{20}$ MPa.",
+      "marks": 2,
+      "answer": 20,
+      "tolerance": 0.5
+    },
+    {
+      "id": "alp6-009",
+      "chapter": "Deformation of Solids",
+      "topic": "Strain",
+      "type": "numeric",
+      "q": "A wire of original length $2$ m stretches by $1$ mm. Find the strain, in units of $10^{-4}$.",
+      "solution": "$\\varepsilon = \\dfrac{0.001}{2} = 5 \\times 10^{-4}$, so the answer is $\\mathbf{5}$.\n\nStrain is dimensionless and is usually very small for a metal.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alp6-010",
+      "chapter": "Deformation of Solids",
+      "topic": "Young modulus",
+      "type": "numeric",
+      "q": "A material has stress $20$ MPa at a strain of $1 \\times 10^{-4}$. Find the Young modulus, in GPa.",
+      "solution": "$E = \\dfrac{2 \\times 10^{7}}{1 \\times 10^{-4}} = 2 \\times 10^{11}$ Pa $= \\mathbf{200}$ GPa.\n\nThat is about right for steel.",
+      "marks": 2,
+      "answer": 200,
+      "tolerance": 5
+    },
+    {
+      "id": "alp6-011",
+      "chapter": "Deformation of Solids",
+      "topic": "Young modulus experiment",
+      "type": "long",
+      "q": "Describe an experiment to measure the Young modulus of a metal wire, including the measurements taken and the main sources of uncertainty.",
+      "solution": "**Apparatus.** A long thin wire clamped at one end, running horizontally over a pulley to a hanger, or hung vertically from the ceiling. A **reference wire** alongside it carries a vernier scale to eliminate any sag of the support.\n\n**Measurements.**\n\n1. **Original length $L$** — with a metre rule, from the clamp to the marker. Use a **long** wire ($2$ m or more).\n\n2. **Diameter $d$** — with a **micrometer**, at several points along the wire and in two perpendicular directions at each, then averaged. Area $= \\dfrac{\\pi d^{2}}{4}$.\n\n3. **Extension $x$** — with the vernier, adding masses in steps and reading each time.\n\n4. **Force $F = mg$** for each load.\n\n**Analysis.** Plot **$F$ against $x$**. The gradient is $\\dfrac{EA}{L}$, so\n\n$E = \\dfrac{\\text{gradient} \\times L}{A}$\n\nUsing a graph rather than a single reading averages out random errors and shows at once where the proportionality fails.\n\n**Main sources of uncertainty.**\n\n• **The diameter dominates**, because it is squared: a $1\\%$ error in $d$ gives a $2\\%$ error in $E$.\n\n• The extension is tiny — hence the long wire, which makes it larger and proportionally easier to measure.\n\n• The wire must not be kinked, and must be straightened by a small initial load before readings begin.\n\n**Safety:** wear eye protection and place a box beneath the masses — a snapping wire releases its stored energy suddenly.",
+      "marks": 3
+    },
+    {
+      "id": "alp6-012",
+      "chapter": "Deformation of Solids",
+      "topic": "Stress-strain graphs",
+      "type": "long",
+      "q": "Describe the stress-strain graph for a ductile metal, marking the important points, and compare it with a brittle material.",
+      "solution": "**A ductile metal, such as copper.**\n\n1. **Straight line from the origin** — Hooke's law holds, and the gradient is the **Young modulus**.\n\n2. **Limit of proportionality** — the graph starts to curve.\n\n3. **Elastic limit**, just beyond it — up to here the material still returns to its original length.\n\n4. **Yield point** — the material suddenly extends a great deal for little extra stress. Plastic (permanent) deformation begins.\n\n5. **Ultimate tensile stress** — the maximum the material can bear.\n\n6. **Necking and fracture** — a narrow waist forms and the specimen breaks.\n\n**A brittle material, such as glass or cast iron.** The graph is a **straight line right up to fracture**, with no yield region and no plastic deformation at all.\n\nIt may be very strong and very stiff, but it gives **no warning** before failing.\n\n**The practical significance.** A ductile beam sags visibly before it collapses; a brittle one shatters without notice. That is why structures are built from steel rather than cast iron, and why glass is used in compression rather than tension.\n\n**Area under the graph** $=$ energy per unit volume. A ductile metal's large plastic region means it absorbs far more energy before breaking — it is **tough**, which is a different property from being strong.",
+      "marks": 3
+    },
+    {
+      "id": "alp6-013",
+      "chapter": "Deformation of Solids",
+      "topic": "Strain energy",
+      "type": "long",
+      "q": "A wire of length $1.5$ m and area $1 \\times 10^{-6}$ m$^{2}$ has Young modulus $2 \\times 10^{11}$ Pa. Find the extension under a $50$ N load, and the elastic energy stored.",
+      "solution": "**Extension.** From $E = \\dfrac{FL}{Ax}$:\n\n$x = \\dfrac{FL}{AE} = \\dfrac{50 \\times 1.5}{\\left(1 \\times 10^{-6}\\right)\\left(2 \\times 10^{11}\\right)}$\n\n$= \\dfrac{75}{2 \\times 10^{5}} = 3.75 \\times 10^{-4}$ m $= \\mathbf{0.375}$ mm\n\n**Elastic energy.** Since the force rose from zero to $50$ N:\n\n$E_{\\text{stored}} = \\tfrac12 Fx = \\tfrac12(50)\\left(3.75 \\times 10^{-4}\\right) = \\mathbf{9.4 \\times 10^{-3}}$ J\n\n**Checking the numbers are sensible.** The strain is $\\dfrac{3.75 \\times 10^{-4}}{1.5} = 2.5 \\times 10^{-4}$, and the stress is $50$ MPa — both well within steel's elastic range, so using $E$ was legitimate.\n\n**How little energy that is.** About $9$ mJ, roughly what it takes to lift a gram by a metre. Metals are stiff, so they store very little energy for a given force — which is why springs are coiled: the coil converts a large extension of the whole spring into a small strain in the wire.\n\n**A rubber band**, by contrast, stretches enormously and stores far more energy per kilogram, though it is far weaker.",
+      "marks": 5
+    },
+    {
+      "id": "alp6-014",
+      "chapter": "Deformation of Solids",
+      "topic": "Springs in combination",
+      "type": "long",
+      "q": "Derive the effective spring constant for two springs in series and in parallel, and explain the results physically.",
+      "solution": "**In series** (one hanging below the other).\n\nEach spring carries the **same force** $F$, and the extensions **add**:\n\n$x = x_{1} + x_{2} = \\dfrac{F}{k_{1}} + \\dfrac{F}{k_{2}}$\n\n$\\dfrac{F}{k} = F\\left(\\dfrac{1}{k_{1}} + \\dfrac{1}{k_{2}}\\right)$\n\n$\\mathbf{\\dfrac{1}{k} = \\dfrac{1}{k_{1}} + \\dfrac{1}{k_{2}}}$\n\nThe combination is **weaker** than either spring alone — for two identical springs, $\\dfrac{k}{2}$.\n\n*Physically:* a longer spring stretches further for the same pull, and joining two in series simply makes a longer spring.\n\n**In parallel** (side by side, sharing the load).\n\nEach has the **same extension** $x$, and the forces **add**:\n\n$F = k_{1}x + k_{2}x = (k_{1} + k_{2})x$\n\n$\\mathbf{k = k_{1} + k_{2}}$\n\nThe combination is **stiffer** — for two identical springs, $2k$.\n\n*Physically:* two springs share the load, so each stretches only half as much as one would.\n\n**Note the resemblance to resistors**, with the rules exactly reversed: springs in series combine like resistors in **parallel**. The reason is that $k$ measures stiffness (resistance to extension) while $R$ measures resistance to current, and series and parallel swap which quantity is shared.",
+      "marks": 3
+    },
+    {
+      "id": "alp6-015",
+      "chapter": "Deformation of Solids",
+      "topic": "Material properties",
+      "type": "long",
+      "q": "Define stiffness, strength, toughness, ductility and brittleness, and give a material that is notable for each.",
+      "solution": "**Stiffness** — resistance to deformation, measured by the **Young modulus**. A stiff material extends little for a given stress.\n\n*Diamond* is the stiffest natural material ($E \\approx 1200$ GPa), against steel's $200$ GPa.\n\n**Strength** — the stress a material can bear before breaking, the **ultimate tensile stress**.\n\n*Steel* is strong; so, remarkably for its weight, is spider silk.\n\n**Toughness** — the **energy** absorbed before fracture, the area under the stress-strain curve. A tough material resists the spread of cracks.\n\n*Rubber and mild steel* are tough.\n\n**Ductility** — the ability to be drawn into a wire, undergoing large plastic deformation without breaking.\n\n*Copper and gold* are highly ductile — gold can be beaten into leaf a few hundred atoms thick.\n\n**Brittleness** — fracturing with little or no plastic deformation, and no warning.\n\n*Glass, ceramics and cast iron* are brittle.\n\n**The distinctions matter.** Glass is **strong** in the sense that it needs a large stress to break, but it is not **tough** — a tiny surface crack concentrates the stress and it shatters.\n\nA material can be strong and brittle (glass), tough and not very strong (rubber), or stiff and brittle (ceramic). Choosing a material means deciding which of these properties the job actually requires — and getting it wrong is how bridges fail.",
+      "marks": 2
+    }
+  ]
+}

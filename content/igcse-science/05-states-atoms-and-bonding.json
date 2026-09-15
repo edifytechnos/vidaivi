@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-atoms-bonding",
+  "title": "States of Matter, Atoms and Bonding",
+  "chapter": "Topic Test 5",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igc1-001",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "States of matter",
+      "type": "mcq",
+      "q": "In which state are particles closest together and in fixed positions?",
+      "solution": "In a **solid** the particles are packed closely in a regular arrangement and can only vibrate about fixed positions.\n\nThat is why a solid has a fixed shape and volume, and why it cannot be compressed.",
+      "marks": 1,
+      "options": [
+        "Solid",
+        "Liquid",
+        "Gas",
+        "All the same"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igc1-002",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Atomic structure",
+      "type": "mcq",
+      "q": "The mass number of an atom is the number of:",
+      "solution": "**Mass number $=$ protons $+$ neutrons**, because those are the particles with appreciable mass.\n\nThe **atomic number** is the number of protons alone, and it is what decides which element the atom is. Electrons weigh almost nothing by comparison.",
+      "marks": 1,
+      "options": [
+        "protons",
+        "protons + neutrons",
+        "electrons",
+        "neutrons"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc1-003",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Isotopes",
+      "type": "mcq",
+      "q": "Isotopes of an element have the same number of:",
+      "solution": "Isotopes share the **proton** number — so they are the same element, with the same chemistry — but differ in neutrons and therefore in mass.\n\nCarbon-12 and carbon-14 both have 6 protons, with 6 and 8 neutrons. Chemistry is decided by electrons, and the electron count follows the protons.",
+      "marks": 1,
+      "options": [
+        "neutrons",
+        "protons",
+        "nucleons",
+        "mass"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc1-004",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Ionic bonding",
+      "type": "mcq",
+      "q": "An ionic bond is formed by:",
+      "solution": "A metal **loses** electrons to become a positive ion; a non-metal **gains** them to become negative. The opposite charges then attract.\n\nA **covalent** bond, by contrast, is a shared pair — the route non-metals take with each other.",
+      "marks": 1,
+      "options": [
+        "sharing electrons",
+        "transferring electrons from a metal to a non-metal",
+        "attraction between nuclei",
+        "transferring protons"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc1-005",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Covalent bonding",
+      "type": "mcq",
+      "q": "How many covalent bonds does a carbon atom usually form?",
+      "solution": "Carbon has four outer electrons and shares all of them, forming **4** covalent bonds.\n\nThat is why carbon can build chains, rings and three-dimensional networks — and why organic chemistry is as large as the rest of chemistry put together.",
+      "marks": 1,
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "igc1-006",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Atomic structure",
+      "type": "numeric",
+      "q": "An atom has atomic number $11$ and mass number $23$. How many neutrons does it have?",
+      "solution": "Neutrons $=$ mass number $-$ atomic number $= 23 - 11 = \\mathbf{12}$.\n\n(This is sodium, with 11 protons and 11 electrons.)",
+      "marks": 2,
+      "answer": 12,
+      "tolerance": 0
+    },
+    {
+      "id": "igc1-007",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Electron arrangement",
+      "type": "numeric",
+      "q": "How many electrons fill the second shell of an atom?",
+      "solution": "$\\mathbf{8}$. The shells fill $2, 8, 8$ for the first twenty elements.\n\nA full outer shell is why the noble gases are so unreactive, and the pursuit of one is why everything else bonds at all.",
+      "marks": 2,
+      "answer": 8,
+      "tolerance": 0
+    },
+    {
+      "id": "igc1-008",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Ionic charge",
+      "type": "numeric",
+      "q": "What is the charge on a magnesium ion? (Give the number only; magnesium has 2 outer electrons.)",
+      "solution": "Magnesium loses both outer electrons to reach a full shell, becoming $\\text{Mg}^{2+}$.\n\nThe answer is $\\mathbf{2}$, and the charge is positive.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "igc1-009",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Relative atomic mass",
+      "type": "numeric",
+      "q": "Chlorine has two isotopes: $75\\%$ of mass $35$ and $25\\%$ of mass $37$. Find its relative atomic mass.",
+      "solution": "$\\dfrac{75 \\times 35 + 25 \\times 37}{100} = \\dfrac{2625 + 925}{100} = \\mathbf{35.5}$.\n\nThis is why relative atomic masses are so often not whole numbers — they are weighted averages over a mixture of isotopes.",
+      "marks": 2,
+      "answer": 35.5,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igc1-010",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Number of atoms",
+      "type": "numeric",
+      "q": "How many atoms are present in one molecule of $\\text{Ca(OH)}_{2}$?",
+      "solution": "$1$ Ca $+ 2$ O $+ 2$ H $= \\mathbf{5}$ atoms.\n\nThe subscript outside the bracket multiplies everything inside it.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "igc1-011",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "States of matter",
+      "type": "long",
+      "q": "Describe the arrangement and movement of particles in solids, liquids and gases, and explain melting and evaporation in terms of particles.",
+      "solution": "**Solid.** Particles are packed closely in a regular arrangement, held by strong forces, **vibrating** about fixed positions. Fixed shape, fixed volume, cannot be compressed.\n\n**Liquid.** Particles are still close together but **randomly arranged**, with weaker forces, and can **slide past one another**. Fixed volume but no fixed shape — a liquid takes the shape of its container.\n\n**Gas.** Particles are far apart, in **rapid random motion**, with negligible forces between them. No fixed shape or volume, and easily compressed — most of a gas is empty space.\n\n**Melting.** Heating gives the particles more kinetic energy until their vibrations are violent enough to **overcome the forces holding them in place**. The regular arrangement breaks down and they begin to slide past one another.\n\n**Note:** the temperature stays constant during melting, because the energy is going into breaking the forces rather than into faster motion.\n\n**Evaporation.** Some particles at the **surface** happen to have more energy than average and escape into the air. It occurs at **any** temperature, unlike boiling, which happens throughout the liquid at a fixed temperature.\n\nBecause the fastest particles leave, the average energy of those remaining falls — so **evaporation cools** what is left behind. That is exactly how sweating works.",
+      "marks": 3
+    },
+    {
+      "id": "igc1-012",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Ionic and covalent bonding",
+      "type": "long",
+      "q": "Compare ionic and covalent bonding, with an example of each, and explain why ionic compounds conduct electricity only when molten or dissolved.",
+      "solution": "**Ionic bonding.** Electrons are **transferred** from a metal to a non-metal, and the resulting oppositely charged ions attract.\n\n*Example — sodium chloride.* Sodium ($2,8,1$) gives its outer electron to chlorine ($2,8,7$), forming $\\text{Na}^{+}$ and $\\text{Cl}^{-}$, both with full shells.\n\n*Properties:* high melting point, hard, brittle, soluble in water, conducts when molten or dissolved.\n\n**Covalent bonding.** Two non-metals **share** pairs of electrons.\n\n*Example — water.* Each hydrogen shares a pair with oxygen, giving all three atoms full shells.\n\n*Properties:* usually low melting and boiling points (for simple molecules), often insoluble in water, and **does not conduct** — there are no charged particles free to move.\n\n**Why ionic compounds conduct only when molten or dissolved.**\n\nConduction requires **charged particles that can move**. In a solid ionic lattice the ions are held rigidly in place — the charges are there, but they cannot go anywhere.\n\nMelting or dissolving breaks the lattice apart and frees the ions, which can then carry current towards the electrodes.\n\nThis is a useful practical test: a substance that conducts when molten but not when solid is ionic; one that conducts as a solid is a metal (or graphite).",
+      "marks": 3
+    },
+    {
+      "id": "igc1-013",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Atomic structure",
+      "type": "long",
+      "q": "Describe the structure of an atom, define isotopes, and calculate the relative atomic mass of an element with isotopes of mass $63$ ($69\\%$) and $65$ ($31\\%$).",
+      "solution": "**Structure.** A tiny, dense **nucleus** of protons and neutrons, surrounded by electrons in shells.\n\n• **Proton** — charge $+1$, mass $1$, in the nucleus\n\n• **Neutron** — charge $0$, mass $1$, in the nucleus\n\n• **Electron** — charge $-1$, mass negligible ($\\tfrac{1}{1836}$), in shells\n\nAn atom is **neutral**, so protons $=$ electrons. The nucleus holds nearly all the mass in a very small part of the volume.\n\n**Isotopes.** Atoms of the same element with the **same number of protons but different numbers of neutrons**.\n\nThey have identical chemistry, because chemistry depends on the electrons, and the electron count follows the protons. They differ in mass and in physical properties such as density and rate of diffusion.\n\n**The calculation.**\n\n$A_{r} = \\dfrac{69 \\times 63 + 31 \\times 65}{100} = \\dfrac{4347 + 2015}{100} = \\dfrac{6362}{100} = \\mathbf{63.62}$\n\n(This is copper.)\n\n**A check on any such answer:** the result must lie **between** the two isotope masses, and closer to the more abundant one. $63.62$ is between $63$ and $65$ and nearer $63$ ✓",
+      "marks": 5
+    },
+    {
+      "id": "igc1-014",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Diffusion",
+      "type": "long",
+      "q": "What is diffusion? Describe an experiment to show it in gases, and explain why some gases diffuse faster than others.",
+      "solution": "**Diffusion** — the spreading of particles from a region of high concentration to one of low concentration, by their own random motion, until evenly distributed.\n\n**The classic experiment.** A long glass tube has a cotton wool plug soaked in **concentrated ammonia** at one end and one soaked in **concentrated hydrochloric acid** at the other. Both are inserted at the same moment.\n\nAfter a few minutes a **white ring** of ammonium chloride appears where the two gases meet:\n\n$\\text{NH}_{3} + \\text{HCl} \\to \\text{NH}_{4}\\text{Cl}$\n\n**The result.** The ring forms **nearer the hydrochloric acid end** — so ammonia has travelled further in the same time.\n\n**Why.** Ammonia has a relative molecular mass of $17$; hydrogen chloride has $36.5$. At the same temperature all molecules have the same average kinetic energy, so the **lighter** ones must move **faster**.\n\n$\\text{KE} = \\tfrac12 mv^{2}$, so less mass means more speed for the same energy.\n\n**Also affecting the rate:** temperature (hotter means faster) and the state (gases diffuse far faster than liquids, since their particles move more freely and are further apart).\n\nIt is why a smell spreads across a room, and why it spreads faster on a warm day.",
+      "marks": 3
+    },
+    {
+      "id": "igc1-015",
+      "chapter": "States of Matter, Atoms and Bonding",
+      "topic": "Giant structures",
+      "type": "long",
+      "q": "Compare the structures and properties of diamond, graphite and sodium chloride.",
+      "solution": "**Diamond — giant covalent.**\n\nEach carbon is bonded to **four** others in a rigid three-dimensional tetrahedral network. Every valence electron is used in bonding.\n\n*Properties:* the hardest natural substance, very high melting point (all those strong bonds must be broken), and a **non-conductor** — no free electrons at all.\n\n*Uses:* cutting tools, drill tips.\n\n**Graphite — giant covalent, layered.**\n\nEach carbon bonds to **three** others in flat hexagonal sheets, with only weak forces between the sheets. The fourth electron is **delocalised** along the layer.\n\n*Properties:* soft and slippery (the layers slide), high melting point (the bonds within each layer are strong), and a **good conductor**.\n\n*Uses:* pencil leads, lubricants, electrodes.\n\n**Sodium chloride — giant ionic.**\n\nA regular three-dimensional lattice of $\\text{Na}^{+}$ and $\\text{Cl}^{-}$ ions, each surrounded by six of the opposite charge.\n\n*Properties:* high melting point, hard but **brittle** (a blow slides one layer and brings like charges together, splitting the crystal), soluble in water, conducts **only when molten or dissolved**.\n\n**The common thread:** all three are giant structures with high melting points, because melting means breaking bonds throughout the lattice. What differs is whether charge can move — and diamond, graphite and salt give three different answers.",
+      "marks": 2
+    }
+  ]
+}

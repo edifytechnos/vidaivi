@@ -1,0 +1,190 @@
+{
+  "id": "lib-igs-stoichiometry",
+  "title": "Stoichiometry and Chemical Energetics",
+  "chapter": "Topic Test 6",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "igc2-001",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "The mole",
+      "type": "mcq",
+      "q": "One mole of any substance contains:",
+      "solution": "**Avogadro's number**, $6.02 \\times 10^{23}$ particles.\n\nIt is simply a counting unit, like 'a dozen' — chosen so that one mole of a substance has a mass in grams equal to its relative formula mass.",
+      "marks": 1,
+      "options": [
+        "$6.02 \\times 10^{23}$ particles",
+        "$1$ gram",
+        "$22.4$ particles",
+        "$100$ particles"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "igc2-002",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Conservation of mass",
+      "type": "mcq",
+      "q": "In a chemical reaction, the total mass of the products is:",
+      "solution": "**Equal** — atoms are rearranged, never created or destroyed.\n\nAn apparent loss usually means a gas has escaped; an apparent gain usually means a gas from the air has been taken in, as when magnesium burns.",
+      "marks": 1,
+      "options": [
+        "greater than the reactants",
+        "less than the reactants",
+        "equal to the reactants",
+        "unrelated"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "igc2-003",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Exothermic reactions",
+      "type": "mcq",
+      "q": "In an exothermic reaction:",
+      "solution": "**Exothermic** means heat is given out, so the surroundings warm up and $\\Delta H$ is **negative**.\n\nCombustion, respiration, neutralisation and most displacement reactions are exothermic.",
+      "marks": 1,
+      "options": [
+        "heat is absorbed and the temperature falls",
+        "heat is released and the temperature rises",
+        "there is no energy change",
+        "only light is produced"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc2-004",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Bond energy",
+      "type": "mcq",
+      "q": "In a chemical reaction, breaking bonds is:",
+      "solution": "**Breaking** bonds always requires energy — it is **endothermic**. **Making** bonds releases it.\n\nWhether the reaction overall gives out or takes in heat depends on which is larger: if more energy is released making new bonds than was spent breaking old ones, the reaction is exothermic.",
+      "marks": 1,
+      "options": [
+        "exothermic",
+        "endothermic",
+        "neither",
+        "always spontaneous"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc2-005",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Empirical formula",
+      "type": "mcq",
+      "q": "The empirical formula of a compound shows:",
+      "solution": "The **empirical** formula is the simplest ratio; the **molecular** formula is the actual count.\n\nGlucose is $\\text{C}_{6}\\text{H}_{12}\\text{O}_{6}$ molecularly but $\\text{CH}_{2}\\text{O}$ empirically. Ionic compounds only ever have an empirical formula, since there are no molecules.",
+      "marks": 1,
+      "options": [
+        "the actual number of atoms in a molecule",
+        "the simplest whole number ratio of atoms",
+        "the mass of the compound",
+        "the number of moles"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "igc2-006",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Moles from mass",
+      "type": "numeric",
+      "q": "How many moles are there in $36$ g of water? ($M_{r}$ of $\\text{H}_{2}\\text{O} = 18$.)",
+      "solution": "$n = \\dfrac{\\text{mass}}{M_{r}} = \\dfrac{36}{18} = \\mathbf{2}$ mol.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "igc2-007",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Mass from moles",
+      "type": "numeric",
+      "q": "Find the mass (in g) of $0.5$ mol of $\\text{CaCO}_{3}$. ($M_{r} = 100$.)",
+      "solution": "$\\text{mass} = n \\times M_{r} = 0.5 \\times 100 = \\mathbf{50}$ g.",
+      "marks": 2,
+      "answer": 50,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igc2-008",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Relative formula mass",
+      "type": "numeric",
+      "q": "Find the relative formula mass of $\\text{H}_{2}\\text{SO}_{4}$. (H $= 1$, S $= 32$, O $= 16$.)",
+      "solution": "$2(1) + 32 + 4(16) = 2 + 32 + 64 = \\mathbf{98}$.",
+      "marks": 2,
+      "answer": 98,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igc2-009",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Percentage composition",
+      "type": "numeric",
+      "q": "Find the percentage by mass of oxygen in water, $\\text{H}_{2}\\text{O}$ ($M_{r} = 18$), correct to one decimal place.",
+      "solution": "$\\dfrac{16}{18} \\times 100 = \\mathbf{88.9}\\%$.\n\nWater is nearly nine-tenths oxygen by mass, though two-thirds of its atoms are hydrogen — mass and number are quite different questions.",
+      "marks": 2,
+      "answer": 88.9,
+      "tolerance": 0.3
+    },
+    {
+      "id": "igc2-010",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Gas volume",
+      "type": "numeric",
+      "q": "What volume (in dm$^{3}$) does $1$ mol of any gas occupy at room temperature and pressure?",
+      "solution": "$\\mathbf{24}$ dm$^{3}$ at RTP (and about $22.4$ dm$^{3}$ at s.t.p.).\n\nThe same for **every** gas, because the molecules are so far apart that their own size makes no difference — which is Avogadro's law.",
+      "marks": 2,
+      "answer": 24,
+      "tolerance": 0.5
+    },
+    {
+      "id": "igc2-011",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Mole calculations",
+      "type": "long",
+      "q": "Calculate the mass of magnesium oxide formed when $6$ g of magnesium burns completely in oxygen. ($\\text{Mg} = 24$, $\\text{O} = 16$.)",
+      "solution": "**Equation:** $2\\text{Mg} + \\text{O}_{2} \\to 2\\text{MgO}$\n\n**Moles of magnesium:**\n\n$n = \\dfrac{6}{24} = 0.25$ mol.\n\n**Mole ratio.** From the equation, $2$ Mg give $2$ MgO — a $1:1$ ratio, so $0.25$ mol of MgO is formed.\n\n**Mass of MgO.** $M_{r} = 24 + 16 = 40$:\n\n$\\text{mass} = 0.25 \\times 40 = \\mathbf{10}$ g.\n\n**Check by conservation of mass.** The oxygen gained must be $10 - 6 = 4$ g, which is $\\dfrac{4}{32} = 0.125$ mol of $\\text{O}_{2}$.\n\nAnd the equation says $2$ Mg need $1$ $\\text{O}_{2}$, so $0.25$ mol of Mg needs $0.125$ mol ✓\n\n**The three-step method** works for every such question: **mass $\\to$ moles $\\to$ (ratio) $\\to$ moles $\\to$ mass**. The balanced equation supplies the ratio and nothing else does.",
+      "marks": 3
+    },
+    {
+      "id": "igc2-012",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Empirical formula",
+      "type": "long",
+      "q": "A compound contains $40\\%$ carbon, $6.7\\%$ hydrogen and $53.3\\%$ oxygen by mass. Find its empirical formula, and its molecular formula given that its relative molecular mass is $180$.",
+      "solution": "**Take 100 g**, so the percentages become masses in grams.\n\n**Divide each by its relative atomic mass to get moles:**\n\nC: $\\dfrac{40}{12} = 3.33$\n\nH: $\\dfrac{6.7}{1} = 6.7$\n\nO: $\\dfrac{53.3}{16} = 3.33$\n\n**Divide through by the smallest** ($3.33$):\n\nC: $1$, $\\quad$ H: $2$, $\\quad$ O: $1$\n\n**Empirical formula: $\\mathbf{\\text{CH}_{2}\\text{O}}$.**\n\n**Molecular formula.** The empirical mass is $12 + 2 + 16 = 30$.\n\n$\\dfrac{180}{30} = 6$, so multiply every subscript by 6:\n\n$\\mathbf{\\text{C}_{6}\\text{H}_{12}\\text{O}_{6}}$ — glucose.\n\n**The method in one line:** percentage $\\to$ moles $\\to$ simplest ratio. And if the ratio comes out as something like $1 : 1.5$, multiply everything by 2 rather than rounding.",
+      "marks": 3
+    },
+    {
+      "id": "igc2-013",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Energetics",
+      "type": "long",
+      "q": "Explain exothermic and endothermic reactions using energy level diagrams and bond energies, and calculate $\\Delta H$ for a reaction in which $2500$ kJ is needed to break bonds and $2800$ kJ is released in making them.",
+      "solution": "**Exothermic.** Heat is released, the surroundings warm, and $\\Delta H$ is **negative**.\n\nOn an energy level diagram, the products are **below** the reactants; the difference is the energy given out.\n\n*Examples:* combustion, respiration, neutralisation, most displacement reactions.\n\n**Endothermic.** Heat is absorbed, the surroundings cool, and $\\Delta H$ is **positive**.\n\nThe products are **above** the reactants.\n\n*Examples:* thermal decomposition, photosynthesis, dissolving ammonium nitrate.\n\n**Both diagrams show an activation energy hump** — the energy needed to get started, even for an exothermic reaction. Petrol does not ignite on its own.\n\n**Bond energies.**\n\n• **Breaking** bonds is endothermic (energy in)\n\n• **Making** bonds is exothermic (energy out)\n\n$\\Delta H = \\text{energy to break bonds} - \\text{energy released making bonds}$\n\n**The calculation:**\n\n$\\Delta H = 2500 - 2800 = \\mathbf{-300}$ kJ/mol.\n\n**Negative, so the reaction is exothermic** — more energy came out forming the new bonds than went in breaking the old ones.\n\nThat is the whole basis of a fuel: the bonds in carbon dioxide and water are stronger than those in the hydrocarbon and oxygen, and the difference is what heats the house.",
+      "marks": 5
+    },
+    {
+      "id": "igc2-014",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Concentration",
+      "type": "long",
+      "q": "Define concentration, and calculate the concentration in mol/dm$^{3}$ of a solution containing $4$ g of $\\text{NaOH}$ in $250$ cm$^{3}$. ($M_{r}$ of $\\text{NaOH} = 40$.)",
+      "solution": "**Concentration** — the amount of solute dissolved in a given volume of solution.\n\n$\\text{concentration (mol/dm}^{3}) = \\dfrac{\\text{moles of solute}}{\\text{volume in dm}^{3}}$\n\n**Moles of NaOH:**\n\n$n = \\dfrac{4}{40} = 0.1$ mol.\n\n**Volume in dm$^{3}$.** $1$ dm$^{3} = 1000$ cm$^{3}$, so\n\n$250$ cm$^{3} = 0.25$ dm$^{3}$.\n\n**Concentration:**\n\n$c = \\dfrac{0.1}{0.25} = \\mathbf{0.4}$ mol/dm$^{3}$.\n\n**In g/dm$^{3}$:** $0.4 \\times 40 = 16$ g/dm$^{3}$.\n\n**The unit trap.** Volumes are measured in cm$^{3}$ in the laboratory and used in dm$^{3}$ in the formula. Converting **before** dividing — not after — is what keeps titration calculations honest.",
+      "marks": 3
+    },
+    {
+      "id": "igc2-015",
+      "chapter": "Stoichiometry and Chemical Energetics",
+      "topic": "Balancing equations",
+      "type": "long",
+      "q": "Balance $\\text{C}_{3}\\text{H}_{8} + \\text{O}_{2} \\to \\text{CO}_{2} + \\text{H}_{2}\\text{O}$ and state the mole ratio of propane to oxygen.",
+      "solution": "**Balance carbon first.** Three carbons on the left need $3\\text{CO}_{2}$:\n\n$\\text{C}_{3}\\text{H}_{8} + \\text{O}_{2} \\to 3\\text{CO}_{2} + \\text{H}_{2}\\text{O}$\n\n**Then hydrogen.** Eight hydrogens need $4\\text{H}_{2}\\text{O}$:\n\n$\\text{C}_{3}\\text{H}_{8} + \\text{O}_{2} \\to 3\\text{CO}_{2} + 4\\text{H}_{2}\\text{O}$\n\n**Oxygen last**, since it appears in two products. The right side now has $3(2) + 4(1) = 10$ oxygen atoms, which is $5\\text{O}_{2}$:\n\n$\\mathbf{\\text{C}_{3}\\text{H}_{8} + 5\\text{O}_{2} \\to 3\\text{CO}_{2} + 4\\text{H}_{2}\\text{O}}$\n\n**Check:** C $3 = 3$ ✓, H $8 = 8$ ✓, O $10 = 10$ ✓\n\n**Mole ratio of propane to oxygen: $\\mathbf{1 : 5}$.**\n\n**The order matters.** Balance carbon, then hydrogen, then oxygen — oxygen last because it is in several compounds, so leaving it until the end means only one number is left to adjust.\n\nThat $1:5$ ratio is why a gas burner needs a good air supply: burning propane takes five times its own volume of oxygen, and without it the flame goes yellow and sooty.",
+      "marks": 2
+    }
+  ]
+}

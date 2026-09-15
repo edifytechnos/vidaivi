@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-integration",
+  "title": "Integration",
+  "chapter": "Topic Test 8",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm8-001",
+      "chapter": "Integration",
+      "topic": "Power rule",
+      "type": "mcq",
+      "q": "$\\displaystyle\\int x^{4}\\,dx$ equals:",
+      "solution": "$\\displaystyle\\int x^{n}dx = \\dfrac{x^{n+1}}{n+1} + c$, so the answer is $\\mathbf{\\dfrac{x^{5}}{5} + c}$.\n\nRaise the power, then divide by the new power — the exact reverse of differentiating. And never omit the $+c$.",
+      "marks": 1,
+      "options": [
+        "$4x^{3} + c$",
+        "$\\dfrac{x^{5}}{5} + c$",
+        "$\\dfrac{x^{3}}{3} + c$",
+        "$x^{5} + c$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm8-002",
+      "chapter": "Integration",
+      "topic": "Definite integrals",
+      "type": "mcq",
+      "q": "$\\displaystyle\\int_{1}^{3} 2x\\,dx$ equals:",
+      "solution": "$\\left[x^{2}\\right]_{1}^{3} = 9 - 1 = \\mathbf{8}$.\n\nA definite integral needs no constant — it cancels when the limits are substituted.",
+      "marks": 1,
+      "options": [
+        "4",
+        "8",
+        "9",
+        "6"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm8-003",
+      "chapter": "Integration",
+      "topic": "Area under a curve",
+      "type": "mcq",
+      "q": "The area between a curve and the $x$-axis from $x = a$ to $x = b$ is:",
+      "solution": "$\\displaystyle\\int_{a}^{b}y\\,dx$ — a stack of infinitely thin rectangles of height $y$ and width $dx$.\n\nWhere the curve dips below the axis the integral returns a **negative** value, so such regions must be split off and their moduli taken.",
+      "marks": 1,
+      "options": [
+        "$\\displaystyle\\int_{a}^{b} y\\,dx$",
+        "$\\displaystyle\\int_{a}^{b} x\\,dy$",
+        "$\\dfrac{dy}{dx}$",
+        "$y(b) - y(a)$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm8-004",
+      "chapter": "Integration",
+      "topic": "Reverse chain rule",
+      "type": "mcq",
+      "q": "$\\displaystyle\\int (2x + 1)^{3}\\,dx$ equals:",
+      "solution": "Raise the power and divide by the new power **and** by the derivative of the bracket:\n\n$\\dfrac{(2x+1)^{4}}{4 \\times 2} = \\mathbf{\\dfrac{(2x+1)^{4}}{8} + c}$.\n\nThat extra division by 2 undoes the factor the chain rule would have introduced.",
+      "marks": 1,
+      "options": [
+        "$\\dfrac{(2x+1)^{4}}{4} + c$",
+        "$\\dfrac{(2x+1)^{4}}{8} + c$",
+        "$3(2x+1)^{2} + c$",
+        "$\\dfrac{(2x+1)^{4}}{2} + c$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm8-005",
+      "chapter": "Integration",
+      "topic": "Volume of revolution",
+      "type": "mcq",
+      "q": "The volume generated when the area under $y = f(x)$ from $a$ to $b$ is rotated about the $x$-axis is:",
+      "solution": "$V = \\mathbf{\\pi\\displaystyle\\int_{a}^{b}y^{2}dx}$.\n\nEach thin slice is a disc of radius $y$ and thickness $dx$, so its volume is $\\pi y^{2}\\,dx$ — the formula is simply the area of a circle, integrated.",
+      "marks": 1,
+      "options": [
+        "$\\pi\\displaystyle\\int_{a}^{b} y\\,dx$",
+        "$\\pi\\displaystyle\\int_{a}^{b} y^{2}\\,dx$",
+        "$2\\pi\\displaystyle\\int_{a}^{b} y\\,dx$",
+        "$\\displaystyle\\int_{a}^{b} y^{2}\\,dx$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm8-006",
+      "chapter": "Integration",
+      "topic": "Definite integral",
+      "type": "numeric",
+      "q": "Evaluate $\\displaystyle\\int_{0}^{2} 3x^{2}\\,dx$.",
+      "solution": "$\\left[x^{3}\\right]_{0}^{2} = \\mathbf{8}$.",
+      "marks": 2,
+      "answer": 8,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm8-007",
+      "chapter": "Integration",
+      "topic": "Definite integral",
+      "type": "numeric",
+      "q": "Evaluate $\\displaystyle\\int_{1}^{4} \\dfrac{1}{\\sqrt{x}}\\,dx$.",
+      "solution": "$\\dfrac{1}{\\sqrt x} = x^{-1/2}$, and $\\displaystyle\\int x^{-1/2}dx = 2x^{1/2}$.\n\n$\\left[2\\sqrt{x}\\right]_{1}^{4} = 4 - 2 = \\mathbf{2}$.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm8-008",
+      "chapter": "Integration",
+      "topic": "Area",
+      "type": "numeric",
+      "q": "Find the area between $y = x^{2}$ and the $x$-axis from $x = 0$ to $x = 3$.",
+      "solution": "$\\displaystyle\\int_{0}^{3}x^{2}dx = \\left[\\dfrac{x^{3}}{3}\\right]_{0}^{3} = \\mathbf{9}$.",
+      "marks": 2,
+      "answer": 9,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alm8-009",
+      "chapter": "Integration",
+      "topic": "Finding the constant",
+      "type": "numeric",
+      "q": "A curve has $\\dfrac{dy}{dx} = 4x$ and passes through $(1, 5)$. Find $y$ when $x = 2$.",
+      "solution": "$y = 2x^{2} + c$, and $(1,5)$ gives $5 = 2 + c$, so $c = 3$.\n\n$y = 2x^{2} + 3$, and at $x = 2$: $\\mathbf{11}$.\n\nThe point is what pins down the constant, picking one curve out of the family.",
+      "marks": 2,
+      "answer": 11,
+      "tolerance": 0
+    },
+    {
+      "id": "alm8-010",
+      "chapter": "Integration",
+      "topic": "Volume of revolution",
+      "type": "numeric",
+      "q": "The area under $y = x$ from $0$ to $3$ is rotated about the $x$-axis. Find the volume as a multiple of $\\pi$.",
+      "solution": "$V = \\pi\\displaystyle\\int_{0}^{3}x^{2}dx = \\pi\\left[\\dfrac{x^{3}}{3}\\right]_{0}^{3} = 9\\pi$, so the answer is $\\mathbf{9}$.\n\nIt is a cone of radius 3 and height 3: $\\tfrac13\\pi(9)(3) = 9\\pi$ ✓",
+      "marks": 2,
+      "answer": 9,
+      "tolerance": 0
+    },
+    {
+      "id": "alm8-011",
+      "chapter": "Integration",
+      "topic": "Area between curves",
+      "type": "long",
+      "q": "Find the area enclosed between the curve $y = x^{2}$ and the line $y = 2x$.",
+      "solution": "**Find where they meet:**\n\n$x^{2} = 2x \\Rightarrow x(x - 2) = 0$, so $x = 0$ and $x = 2$.\n\n**Which is on top?** Test $x = 1$: the line gives $2$, the curve gives $1$ — the **line** is above.\n\n**Integrate the difference:**\n\n$A = \\displaystyle\\int_{0}^{2}\\left(2x - x^{2}\\right)dx = \\left[x^{2} - \\dfrac{x^{3}}{3}\\right]_{0}^{2}$\n\n$= 4 - \\dfrac{8}{3} = \\mathbf{\\dfrac{4}{3}}$\n\n**Why 'top minus bottom' works even below the axis.** The difference $y_{\\text{top}} - y_{\\text{bottom}}$ is positive throughout, whether or not the region itself lies above the $x$-axis.\n\nSo the sign problem that plagues single-curve areas does not arise here — provided the curves do not cross inside the interval. If they did, the region would have to be split at the crossing point.\n\n**A sanity check:** the region sits inside a $2 \\times 4$ rectangle of area 8, and $\\tfrac43$ is a plausible fraction of it.",
+      "marks": 3
+    },
+    {
+      "id": "alm8-012",
+      "chapter": "Integration",
+      "topic": "Integration by substitution",
+      "type": "long",
+      "q": "Evaluate $\\displaystyle\\int_{0}^{1} x\\left(x^{2} + 1\\right)^{3}\\,dx$ using a substitution.",
+      "solution": "**Choose the substitution** $u = x^{2} + 1$, because its derivative $2x$ is (up to a constant) the other factor present.\n\n$\\dfrac{du}{dx} = 2x \\Rightarrow x\\,dx = \\dfrac{du}{2}$\n\n**Change the limits with the variable** — that way there is no need to substitute back:\n\n$x = 0 \\Rightarrow u = 1$\n\n$x = 1 \\Rightarrow u = 2$\n\n**Rewrite and integrate:**\n\n$\\displaystyle\\int_{1}^{2} u^{3}\\,\\dfrac{du}{2} = \\dfrac12\\left[\\dfrac{u^{4}}{4}\\right]_{1}^{2} = \\dfrac{1}{8}\\left(16 - 1\\right) = \\mathbf{\\dfrac{15}{8}}$\n\n**How to spot the right substitution:** look for a function and (a multiple of) its own derivative sitting in the same integral. Here $x^{2}+1$ and $x$ are exactly that pair.\n\n**The commonest mistake** is changing the variable and leaving the old limits in place — $\\displaystyle\\int_{0}^{1}$ with $u$ inside would be wrong by a long way.",
+      "marks": 3
+    },
+    {
+      "id": "alm8-013",
+      "chapter": "Integration",
+      "topic": "Volumes of revolution",
+      "type": "long",
+      "q": "The region bounded by $y = \\sqrt{x}$, the $x$-axis and $x = 4$ is rotated through $360°$ about the $x$-axis. Find the volume, and then the volume if the same region is rotated about the $y$-axis.",
+      "solution": "**About the $x$-axis.**\n\n$V = \\pi\\displaystyle\\int_{0}^{4}y^{2}\\,dx = \\pi\\int_{0}^{4}x\\,dx = \\pi\\left[\\dfrac{x^{2}}{2}\\right]_{0}^{4} = \\mathbf{8\\pi}$\n\n**About the $y$-axis.** Now the slices are horizontal discs, so integrate with respect to $y$:\n\n$V = \\pi\\displaystyle\\int x^{2}\\,dy$\n\nFrom $y = \\sqrt x$ we get $x = y^{2}$, so $x^{2} = y^{4}$. The region runs from $y = 0$ to $y = 2$ (since $\\sqrt4 = 2$).\n\nBut this rotation sweeps out the **cylinder** of radius 4 and height 2 **minus** the solid under the curve:\n\n$V = \\pi(4)^{2}(2) - \\pi\\displaystyle\\int_{0}^{2}y^{4}\\,dy = 32\\pi - \\pi\\left[\\dfrac{y^{5}}{5}\\right]_{0}^{2}$\n\n$= 32\\pi - \\dfrac{32\\pi}{5} = \\mathbf{\\dfrac{128\\pi}{5}}$\n\n**The lesson.** The same region gives quite different solids about the two axes — $8\\pi \\approx 25$ against $\\dfrac{128\\pi}{5} \\approx 80$.\n\n**The method to hold on to:** rotating about the $x$-axis means slicing perpendicular to it and integrating $\\pi y^{2}\\,dx$; about the $y$-axis, $\\pi x^{2}\\,dy$ — and everything must be rewritten in terms of the variable you are integrating with respect to, limits included.",
+      "marks": 5
+    },
+    {
+      "id": "alm8-014",
+      "chapter": "Integration",
+      "topic": "The trapezium rule",
+      "type": "long",
+      "q": "Use the trapezium rule with 4 intervals to estimate $\\displaystyle\\int_{0}^{2}\\sqrt{1 + x^{2}}\\,dx$, and state whether the estimate is too large or too small.",
+      "solution": "**Set up.** With 4 intervals, $h = \\dfrac{2 - 0}{4} = 0.5$, and the ordinates are at $x = 0, 0.5, 1, 1.5, 2$.\n\n$y_{0} = \\sqrt1 = 1$\n\n$y_{1} = \\sqrt{1.25} = 1.118$\n\n$y_{2} = \\sqrt2 = 1.414$\n\n$y_{3} = \\sqrt{3.25} = 1.803$\n\n$y_{4} = \\sqrt5 = 2.236$\n\n**Apply the rule:**\n\n$\\displaystyle\\int \\approx \\dfrac{h}{2}\\left[y_{0} + y_{4} + 2\\left(y_{1} + y_{2} + y_{3}\\right)\\right]$\n\n$= \\dfrac{0.5}{2}\\left[1 + 2.236 + 2(1.118 + 1.414 + 1.803)\\right]$\n\n$= 0.25\\left[3.236 + 2(4.335)\\right] = 0.25(11.906) = \\mathbf{2.977}$\n\n**Too large or too small?** The curve $\\sqrt{1 + x^{2}}$ is **concave up** over this interval, so each chord lies **above** the curve and every trapezium slightly **overestimates** its strip.\n\nThe estimate is therefore **too large**. (The true value is $2.958$.)\n\n**The general rule:** convex (concave up) curves give an overestimate, concave ones an underestimate — and more intervals always improve the accuracy, with the error falling as $h^{2}$.",
+      "marks": 3
+    },
+    {
+      "id": "alm8-015",
+      "chapter": "Integration",
+      "topic": "Integration as the reverse of differentiation",
+      "type": "long",
+      "q": "Explain why $\\displaystyle\\int x^{-1}dx$ is a special case, and state the standard results for $\\displaystyle\\int e^{x}dx$, $\\displaystyle\\int \\sin x\\,dx$ and $\\displaystyle\\int \\cos x\\,dx$.",
+      "solution": "**Why $x^{-1}$ is special.** The power rule gives\n\n$\\displaystyle\\int x^{n}dx = \\dfrac{x^{n+1}}{n+1} + c$,\n\nand at $n = -1$ the denominator would be **zero**. The rule simply does not apply.\n\nThat one gap is filled by the logarithm:\n\n$\\displaystyle\\int \\dfrac{1}{x}dx = \\ln|x| + c$\n\n**The modulus matters.** The curve $y = \\tfrac1x$ exists for negative $x$ too, and $\\ln$ of a negative number does not.\n\n**The standard results:**\n\n$\\displaystyle\\int e^{x}dx = e^{x} + c$ — the function that is its own integral as well as its own derivative\n\n$\\displaystyle\\int \\sin x\\,dx = -\\cos x + c$ — **note the minus**\n\n$\\displaystyle\\int \\cos x\\,dx = \\sin x + c$\n\n**Where the minus signs go.** Differentiating: $\\sin \\to \\cos \\to -\\sin \\to -\\cos \\to \\sin$. Integrating runs the cycle backwards, so the minus appears on the **integral** of sine and on the **derivative** of cosine — the opposite way round.\n\n**Always check by differentiating your answer.** It takes a moment and catches every sign error.",
+      "marks": 2
+    }
+  ]
+}

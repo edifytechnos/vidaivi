@@ -1,0 +1,250 @@
+{
+  "id": "lib-neet-chemistry-1",
+  "title": "NEET Chemistry: Physical Chemistry",
+  "chapter": "Practice Test 3",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "neetc1-001",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Mole concept",
+      "type": "mcq",
+      "q": "The number of molecules in $22$ g of $\\text{CO}_{2}$ is:",
+      "solution": "$n = \\dfrac{22}{44} = 0.5$ mol, so the number of molecules is $0.5 \\times 6.02 \\times 10^{23} = \\mathbf{3.01 \\times 10^{23}}$.\n\nAlways convert mass to **moles** first; the Avogadro constant then does the rest.",
+      "marks": 4,
+      "options": [
+        "$6.02 \\times 10^{23}$",
+        "$3.01 \\times 10^{23}$",
+        "$1.2 \\times 10^{24}$",
+        "$22$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-002",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Atomic structure",
+      "type": "mcq",
+      "q": "The maximum number of electrons in a sub-shell with $l = 2$ is:",
+      "solution": "$l = 2$ is the **d** sub-shell, with five orbitals holding two electrons each — $\\mathbf{10}$.\n\nIn general the capacity is $2(2l + 1)$: s $2$, p $6$, d $10$, f $14$.",
+      "marks": 4,
+      "options": [
+        "2",
+        "6",
+        "10",
+        "14"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc1-003",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Chemical bonding",
+      "type": "mcq",
+      "q": "The hybridisation of carbon in ethene is:",
+      "solution": "Each carbon forms three $\\sigma$ bonds and is therefore $\\mathbf{sp^{2}}$ hybridised, with a leftover $p$ orbital forming the $\\pi$ bond.\n\nThe molecule is **planar** with $120°$ angles, and the $\\pi$ bond is what locks the geometry and gives E-Z isomerism.",
+      "marks": 4,
+      "options": [
+        "$sp$",
+        "$sp^{2}$",
+        "$sp^{3}$",
+        "$sp^{3}d$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-004",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Thermodynamics",
+      "type": "mcq",
+      "q": "For a spontaneous process at constant temperature and pressure:",
+      "solution": "$\\Delta G = \\Delta H - T\\Delta S$, and a process is spontaneous when $\\Delta G$ is **negative**.\n\nAn endothermic reaction can still be spontaneous if $\\Delta S$ is large enough — which is why ammonium nitrate dissolves while cooling its own solution.",
+      "marks": 4,
+      "options": [
+        "$\\Delta G > 0$",
+        "$\\Delta G < 0$",
+        "$\\Delta H < 0$ always",
+        "$\\Delta S < 0$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-005",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Equilibrium",
+      "type": "mcq",
+      "q": "For $\\text{N}_{2} + 3\\text{H}_{2} \\rightleftharpoons 2\\text{NH}_{3}$, increasing the pressure shifts the equilibrium:",
+      "solution": "There are 4 moles of gas on the left and 2 on the right, so raising the pressure shifts the equilibrium **right**, towards fewer molecules.\n\nLe Chatelier's principle: the system acts to relieve the imposed pressure.",
+      "marks": 4,
+      "options": [
+        "to the left",
+        "to the right",
+        "no change",
+        "the reaction stops"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-006",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Ionic equilibrium",
+      "type": "mcq",
+      "q": "The pH of $0.001$ M HCl is:",
+      "solution": "$[\\text{H}^{+}] = 10^{-3}$, so $\\text{pH} = \\mathbf{3}$.",
+      "marks": 4,
+      "options": [
+        "1",
+        "2",
+        "3",
+        "11"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc1-007",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Buffer solutions",
+      "type": "mcq",
+      "q": "A buffer solution of pH $9$ can be made from:",
+      "solution": "A **basic** buffer is needed for pH 9, so a weak base with its salt: $\\text{NH}_{4}\\text{OH}/\\text{NH}_{4}\\text{Cl}$.\n\nThe ethanoic acid buffer works near pH $4.7$, its $\\text{p}K_{a}$. A strong acid with its salt is not a buffer at all.",
+      "marks": 4,
+      "options": [
+        "$\\text{CH}_{3}\\text{COOH}$ and $\\text{CH}_{3}\\text{COONa}$",
+        "$\\text{NH}_{4}\\text{OH}$ and $\\text{NH}_{4}\\text{Cl}$",
+        "HCl and NaCl",
+        "$\\text{H}_{2}\\text{SO}_{4}$ and $\\text{Na}_{2}\\text{SO}_{4}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-008",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Electrochemistry",
+      "type": "mcq",
+      "q": "During the electrolysis of molten NaCl, the product at the cathode is:",
+      "solution": "Reduction always occurs at the **cathode**, and in the molten salt the only cation present is $\\text{Na}^{+}$:\n\n$\\text{Na}^{+} + e^{-} \\to \\text{Na}$\n\nIn **aqueous** solution the answer would be hydrogen instead, because water is easier to reduce than sodium ions.",
+      "marks": 4,
+      "options": [
+        "chlorine",
+        "sodium",
+        "hydrogen",
+        "oxygen"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-009",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Chemical kinetics",
+      "type": "mcq",
+      "q": "The half-life of a first order reaction:",
+      "solution": "$t_{1/2} = \\dfrac{0.693}{k}$ — **no** concentration term.\n\nA constant half-life is the signature of first order kinetics, and it is why radioactive decay is described the same way.",
+      "marks": 4,
+      "options": [
+        "depends on the initial concentration",
+        "is independent of the initial concentration",
+        "increases with time",
+        "is always 1 second"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-010",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Solutions",
+      "type": "mcq",
+      "q": "Which of these is **not** a colligative property?",
+      "solution": "Colligative properties depend only on the **number** of solute particles. **Optical rotation** depends entirely on the identity and structure of the molecule.\n\nThe four colligative properties are relative lowering of vapour pressure, elevation of boiling point, depression of freezing point and osmotic pressure.",
+      "marks": 4,
+      "options": [
+        "Osmotic pressure",
+        "Elevation of boiling point",
+        "Optical rotation",
+        "Depression of freezing point"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc1-011",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "van't Hoff factor",
+      "type": "mcq",
+      "q": "The van't Hoff factor for $\\text{K}_{2}\\text{SO}_{4}$, assuming complete dissociation, is:",
+      "solution": "$\\text{K}_{2}\\text{SO}_{4} \\to 2\\text{K}^{+} + \\text{SO}_{4}^{2-}$ — **three** particles from one formula unit, so $i = \\mathbf{3}$.\n\nThat triples every colligative effect compared with an equal concentration of a non-electrolyte.",
+      "marks": 4,
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc1-012",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Surface chemistry",
+      "type": "mcq",
+      "q": "Physisorption differs from chemisorption in that it:",
+      "solution": "**Physisorption** relies on weak van der Waals forces: low enthalpy (about $20$ kJ/mol), **reversible**, and it **decreases** with rising temperature.\n\n**Chemisorption** forms real chemical bonds, is largely irreversible, and needs an activation energy — so it first increases with temperature.",
+      "marks": 4,
+      "options": [
+        "involves chemical bonds",
+        "is reversible and has low enthalpy",
+        "is irreversible",
+        "increases with temperature"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-013",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Solid state",
+      "type": "mcq",
+      "q": "The number of atoms per unit cell in a face-centred cubic lattice is:",
+      "solution": "Corners: $8 \\times \\tfrac18 = 1$. Faces: $6 \\times \\tfrac12 = 3$. Total $= \\mathbf{4}$.\n\nA simple cubic cell has 1 and a body-centred cubic cell has 2. Counting the shares correctly is the whole calculation.",
+      "marks": 4,
+      "options": [
+        "1",
+        "2",
+        "4",
+        "8"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "neetc1-014",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Redox",
+      "type": "mcq",
+      "q": "The oxidation number of chromium in $\\text{K}_{2}\\text{Cr}_{2}\\text{O}_{7}$ is:",
+      "solution": "$2(+1) + 2x + 7(-2) = 0 \\Rightarrow 2x = 12 \\Rightarrow x = \\mathbf{+6}$.\n\nThat high oxidation state is why dichromate is such a useful oxidising agent, and why it turns green ($\\text{Cr}^{3+}$) as it is reduced.",
+      "marks": 4,
+      "options": [
+        "+3",
+        "+6",
+        "+7",
+        "+2"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "neetc1-015",
+      "chapter": "Chemistry: Physical Chemistry",
+      "topic": "Gaseous state",
+      "type": "mcq",
+      "q": "At constant temperature, the volume of a fixed mass of gas is halved. Its pressure:",
+      "solution": "Boyle's law, $pV = $ constant, so the pressure **doubles**.\n\nMicroscopically: the molecules hit each square metre of wall twice as often, while their speed is unchanged because the temperature is.",
+      "marks": 4,
+      "options": [
+        "halves",
+        "doubles",
+        "is unchanged",
+        "becomes four times"
+      ],
+      "answer": 1
+    }
+  ]
+}

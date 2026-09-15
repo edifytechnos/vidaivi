@@ -1,0 +1,190 @@
+{
+  "id": "lib-c10s-electricity",
+  "title": "Electricity",
+  "chapter": "Chapter Test 11",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "el-001",
+      "chapter": "Electricity",
+      "topic": "Ohm's law",
+      "type": "mcq",
+      "q": "Ohm's law states that, at constant temperature, the current through a conductor is:",
+      "solution": "$V = IR$ — the current is **directly proportional** to the potential difference, provided the temperature does not change.\n\nA graph of $V$ against $I$ is a straight line through the origin, and its slope is the resistance.",
+      "marks": 1,
+      "options": [
+        "inversely proportional to the potential difference",
+        "directly proportional to the potential difference",
+        "independent of the potential difference",
+        "proportional to the square of the potential difference"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "el-002",
+      "chapter": "Electricity",
+      "topic": "Resistance",
+      "type": "mcq",
+      "q": "The resistance of a wire depends on its:",
+      "solution": "$R = \\dfrac{\\rho l}{A}$, and $\\rho$ itself depends on the material and on the temperature.\n\nIt does **not** depend on the current or the voltage — those are what resistance acts on, not what it is made of.",
+      "marks": 1,
+      "options": [
+        "length only",
+        "area of cross-section only",
+        "length, area, material and temperature",
+        "current only"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "el-003",
+      "chapter": "Electricity",
+      "topic": "Series circuit",
+      "type": "mcq",
+      "q": "In a series circuit, which quantity is the same through every component?",
+      "solution": "There is only one path, so the same **current** flows through everything.\n\nThe **voltage** divides between the components in proportion to their resistances. In a **parallel** circuit it is the other way round: the voltage is shared and the current divides.",
+      "marks": 1,
+      "options": [
+        "Potential difference",
+        "Current",
+        "Resistance",
+        "Power"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "el-004",
+      "chapter": "Electricity",
+      "topic": "Heating effect",
+      "type": "mcq",
+      "q": "The heat produced in a resistor is given by:",
+      "solution": "**Joule's law of heating:** $H = I^{2}Rt$, equivalently $VIt$ or $\\dfrac{V^{2}}{R}t$.\n\nNote the **square** on the current: doubling the current makes four times the heat. That is why transmission lines are run at high voltage and low current.",
+      "marks": 1,
+      "options": [
+        "$VIt$ only",
+        "$I^{2}Rt$",
+        "$\\dfrac{I}{R}t$",
+        "$IRt$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "el-005",
+      "chapter": "Electricity",
+      "topic": "Electric power",
+      "type": "mcq",
+      "q": "The commercial unit of electrical energy is the:",
+      "solution": "The **kilowatt-hour**, one 'unit' on an electricity bill.\n\n$1$ kWh $= 1000$ W $\\times 3600$ s $= 3.6 \\times 10^{6}$ J. The joule is far too small to bill with.",
+      "marks": 1,
+      "options": [
+        "watt",
+        "joule",
+        "kilowatt-hour",
+        "volt"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "el-006",
+      "chapter": "Electricity",
+      "topic": "Ohm's law",
+      "type": "numeric",
+      "q": "A $220$ V supply drives a current of $5$ A through an appliance. Find its resistance, in ohms.",
+      "solution": "$R = \\dfrac{V}{I} = \\dfrac{220}{5} = \\mathbf{44}\\,\\Omega$.",
+      "marks": 2,
+      "answer": 44,
+      "tolerance": 0.5
+    },
+    {
+      "id": "el-007",
+      "chapter": "Electricity",
+      "topic": "Resistors in series",
+      "type": "numeric",
+      "q": "Three resistors of $2\\,\\Omega$, $3\\,\\Omega$ and $5\\,\\Omega$ are joined in series. Find the equivalent resistance, in ohms.",
+      "solution": "In series they simply add: $2 + 3 + 5 = \\mathbf{10}\\,\\Omega$.\n\nThe total is always **greater** than the largest one.",
+      "marks": 2,
+      "answer": 10,
+      "tolerance": 0.1
+    },
+    {
+      "id": "el-008",
+      "chapter": "Electricity",
+      "topic": "Resistors in parallel",
+      "type": "numeric",
+      "q": "Two resistors of $6\\,\\Omega$ and $3\\,\\Omega$ are joined in parallel. Find the equivalent resistance, in ohms.",
+      "solution": "$\\dfrac{1}{R} = \\dfrac16 + \\dfrac13 = \\dfrac12 \\Rightarrow R = \\mathbf{2}\\,\\Omega$.\n\nThe total is always **less** than the smallest branch — adding another path can only make it easier for current to flow.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0.05
+    },
+    {
+      "id": "el-009",
+      "chapter": "Electricity",
+      "topic": "Electric power",
+      "type": "numeric",
+      "q": "Find the power (in watts) of a bulb that draws $0.5$ A from a $220$ V supply.",
+      "solution": "$P = VI = 220 \\times 0.5 = \\mathbf{110}$ W.",
+      "marks": 2,
+      "answer": 110,
+      "tolerance": 1
+    },
+    {
+      "id": "el-010",
+      "chapter": "Electricity",
+      "topic": "Energy consumed",
+      "type": "numeric",
+      "q": "An appliance of $1000$ W runs for $3$ hours a day. Find the energy consumed in a day, in kWh.",
+      "solution": "$E = 1$ kW $\\times 3$ h $= \\mathbf{3}$ kWh — three units on the bill.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.05
+    },
+    {
+      "id": "el-011",
+      "chapter": "Electricity",
+      "topic": "Series and parallel",
+      "type": "long",
+      "q": "Derive the equivalent resistance for resistors in series and in parallel, and explain why domestic circuits are wired in parallel.",
+      "solution": "**In series.** The same current $I$ flows through each, and the voltages add:\n\n$V = V_{1} + V_{2} + V_{3} = IR_{1} + IR_{2} + IR_{3}$\n\n$V = I(R_{1} + R_{2} + R_{3})$, so $\\mathbf{R_{s} = R_{1} + R_{2} + R_{3}}$.\n\n**In parallel.** The same voltage $V$ is across each, and the currents add:\n\n$I = I_{1} + I_{2} + I_{3} = \\dfrac{V}{R_{1}} + \\dfrac{V}{R_{2}} + \\dfrac{V}{R_{3}}$\n\n$\\mathbf{\\dfrac{1}{R_{p}} = \\dfrac{1}{R_{1}} + \\dfrac{1}{R_{2}} + \\dfrac{1}{R_{3}}}$.\n\n**Why houses are wired in parallel — three reasons:**\n\n1. **Every appliance gets the full $220$ V.** In series they would share the voltage, and a bulb would glow dimly whenever the fridge was on.\n\n2. **Each can be switched independently.** In series, switching one off would break the circuit and everything would go out — which is exactly how old Christmas lights behaved when one bulb failed.\n\n3. **Each appliance draws the current it needs**, rather than being limited by every other device in the chain.",
+      "marks": 3
+    },
+    {
+      "id": "el-012",
+      "chapter": "Electricity",
+      "topic": "Heating effect",
+      "type": "long",
+      "q": "State Joule's law of heating, derive it, and give three applications and one drawback.",
+      "solution": "**The law.** The heat produced in a resistor is proportional to the square of the current, to the resistance, and to the time:\n\n$H = I^{2}Rt$.\n\n**Derivation.** Charge $Q = It$ moving through a potential difference $V$ loses energy $W = VQ = VIt$.\n\nIn a pure resistor all of it becomes heat, and $V = IR$, so\n\n$H = (IR)It = \\mathbf{I^{2}Rt}$.\n\n**Applications.**\n\n1. **Electric heaters, irons, toasters, geysers** — a coil of high-resistance alloy (nichrome) that gets hot without melting or oxidising.\n\n2. **Filament lamps** — tungsten, with a very high melting point, heated until it glows white.\n\n3. **Fuses** — a thin wire of low melting point in series with the circuit. Excess current melts it and breaks the circuit before the wiring catches fire.\n\n**Drawback.** In anything that is *not* meant to produce heat — a motor, a transformer, a transmission line — this heat is wasted energy, and it can damage the equipment.\n\nIt is also why power is transmitted at high voltage: the loss is $I^{2}R$, so cutting the current tenfold cuts the loss a **hundredfold**.",
+      "marks": 3
+    },
+    {
+      "id": "el-013",
+      "chapter": "Electricity",
+      "topic": "Circuit problem",
+      "type": "long",
+      "q": "Two resistors of $6\\,\\Omega$ and $12\\,\\Omega$ are connected in parallel across a $12$ V battery. Find the equivalent resistance, the total current, the current in each, and the power dissipated in each.",
+      "solution": "**Equivalent resistance.**\n\n$\\dfrac{1}{R_{p}} = \\dfrac{1}{6} + \\dfrac{1}{12} = \\dfrac{2 + 1}{12} = \\dfrac{3}{12} = \\dfrac14$, so $R_{p} = \\mathbf{4\\,\\Omega}$.\n\n**Total current.** $I = \\dfrac{V}{R_{p}} = \\dfrac{12}{4} = \\mathbf{3}$ A.\n\n**Current in each branch.** Both have the full $12$ V across them:\n\n$I_{1} = \\dfrac{12}{6} = \\mathbf{2}$ A, $\\quad I_{2} = \\dfrac{12}{12} = \\mathbf{1}$ A.\n\n**Check:** $2 + 1 = 3$ A. ✓\n\n**Power.**\n\n$P_{1} = I_{1}^{2}R_{1} = 4 \\times 6 = \\mathbf{24}$ W\n\n$P_{2} = I_{2}^{2}R_{2} = 1 \\times 12 = \\mathbf{12}$ W\n\n**Total $= 36$ W**, which matches $VI = 12 \\times 3$. ✓\n\n**Worth noticing:** the **smaller** resistor takes the larger current and dissipates the greater power. In parallel, less resistance means more current, and power goes as $V^{2}/R$.",
+      "marks": 5
+    },
+    {
+      "id": "el-014",
+      "chapter": "Electricity",
+      "topic": "Domestic wiring",
+      "type": "long",
+      "q": "Describe domestic electric circuits, the purpose of the earth wire and the fuse, and why an overload is dangerous.",
+      "solution": "**The three wires.**\n\n• **Live** (red or brown) — at $220$ V.\n\n• **Neutral** (black or blue) — at $0$ V; the current returns along it.\n\n• **Earth** (green) — connected to a metal plate buried in the ground.\n\n**Two separate circuits** enter a house: a $15$ A line for heavy appliances (geyser, air conditioner) and a $5$ A line for lights and fans.\n\n**The earth wire.** It is connected to the metal body of an appliance. If the live wire touches that body, the current takes the earth wire's very low-resistance path straight to the ground instead of through anyone who touches it.\n\nThe surge also blows the fuse, so the fault is revealed rather than left waiting.\n\n**The fuse.** A thin wire of low melting point, placed in the **live** wire. Excess current melts it and breaks the circuit before the house wiring can overheat.\n\nIt must be in the live wire: in the neutral, the appliance would stay connected to $220$ V even after the fuse blew.\n\n**Overloading** happens when too many appliances are run from one socket, or when a short circuit gives the current a near-zero-resistance path. The current rises steeply, $I^{2}R$ heating follows the square of it, and the insulation can catch fire.\n\nThe fuse or the MCB is the last line of defence, which is why replacing a blown fuse with thicker wire is so dangerous.",
+      "marks": 3
+    },
+    {
+      "id": "el-015",
+      "chapter": "Electricity",
+      "topic": "Resistivity",
+      "type": "long",
+      "q": "Define resistivity, state its SI unit, and explain why copper is used for wiring and nichrome for heating elements.",
+      "solution": "**Resistivity** ($\\rho$) — the resistance of a conductor of unit length and unit cross-sectional area, from $R = \\dfrac{\\rho l}{A}$.\n\n**SI unit:** ohm metre ($\\Omega$ m).\n\nIt is a property of the **material**, not of the particular piece — a thick short wire and a thin long one of the same metal have the same resistivity and quite different resistances.\n\n**Why copper (and aluminium) for wiring.** Very **low** resistivity, about $1.6 \\times 10^{-8}$ $\\Omega$ m, so very little energy is wasted as heat along the wire. It is also ductile enough to draw into wire and does not corrode badly.\n\n**Why nichrome for heating elements.** Its resistivity is about **60 times** copper's, so a short coil produces a great deal of heat.\n\nMore importantly, nichrome has a **high melting point** and **does not oxidise readily even when red hot** — an iron coil would burn away in days.\n\nTwo different jobs, two opposite requirements: a wire should carry current without noticing, and a heating element should resist it as hard as it can.",
+      "marks": 2
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "id": "lib-c12c-amines",
+  "title": "Amines",
+  "chapter": "Chapter Test 9",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12ami-101",
+      "chapter": "Amines",
+      "topic": "Hinsberg test",
+      "type": "long",
+      "q": "How will you distinguish between $\\text{CH}_3\\text{CH}_2\\text{NH}_2$ and $(\\text{CH}_3\\text{CH}_2)_2\\text{NH}$ by the Hinsberg test?",
+      "solution": "The Hinsberg test treats the amine with **benzenesulphonyl chloride** ($\\text{C}_6\\text{H}_5\\text{SO}_2\\text{Cl}$, Hinsberg's reagent) and then with aqueous KOH. The two amines behave differently at the second stage.\n\n**Ethylamine (primary, $\\text{CH}_3\\text{CH}_2\\text{NH}_2$).**\n\nIt has **two** hydrogens on nitrogen. One is replaced by the sulphonyl group :\n\n$$\\text{C}_6\\text{H}_5\\text{SO}_2\\text{Cl} + \\text{H}_2\\text{N}\\text{C}_2\\text{H}_5 \\longrightarrow \\text{C}_6\\text{H}_5\\text{SO}_2\\text{NH}\\text{C}_2\\text{H}_5$$\n\nThe product still has an **N–H** hydrogen, and it is acidic because the strongly electron-withdrawing $-\\text{SO}_2-$ group stabilises the resulting anion. So the product **dissolves in alkali**, giving a clear solution.\n\n**Diethylamine (secondary, $(\\text{CH}_3\\text{CH}_2)_2\\text{NH}$).**\n\nIt has only **one** hydrogen on nitrogen, and that one is replaced :\n\n$$\\text{C}_6\\text{H}_5\\text{SO}_2\\text{Cl} + \\text{HN}(\\text{C}_2\\text{H}_5)_2 \\longrightarrow \\text{C}_6\\text{H}_5\\text{SO}_2\\text{N}(\\text{C}_2\\text{H}_5)_2$$\n\nThe product has **no N–H** left, so it is not acidic and is **insoluble in alkali** — it stays as a solid or an oily layer.\n\n**The distinction, in one line.**\n\n**Amine · Product with KOH(aq)**\n$\\text{CH}_3\\text{CH}_2\\text{NH}_2$ · soluble — clear solution\n$(\\text{CH}_3\\text{CH}_2)_2\\text{NH}$ · insoluble — solid or oily layer\n\n(A tertiary amine would not react with the reagent at all, having no N–H to replace.)",
+      "marks": 3,
+      "source": "CBSE 2022"
+    },
+    {
+      "id": "ami-001",
+      "chapter": "Amines",
+      "topic": "Basicity",
+      "type": "mcq",
+      "q": "In aqueous solution, the order of basicity among methylamines is:",
+      "solution": "Three effects pull in different directions: alkyl groups **release electrons** (helping), they **crowd** the nitrogen (hindering), and the protonated ion is **stabilised by hydration** through its N–H bonds (fewer N–H, less help).\n\nThe result in water is the famous irregular order: $\\mathbf{2° > 1° > 3°}$.\n\nIn the **gas phase**, with no solvent, the order is the simple $3° > 2° > 1°$ — proof that solvation is what distorts it.",
+      "marks": 1,
+      "options": [
+        "$(\\text{CH}_{3})_{3}\\text{N} > (\\text{CH}_{3})_{2}\\text{NH} > \\text{CH}_{3}\\text{NH}_{2}$",
+        "$(\\text{CH}_{3})_{2}\\text{NH} > \\text{CH}_{3}\\text{NH}_{2} > (\\text{CH}_{3})_{3}\\text{N}$",
+        "$\\text{CH}_{3}\\text{NH}_{2} > (\\text{CH}_{3})_{2}\\text{NH} > (\\text{CH}_{3})_{3}\\text{N}$",
+        "all are equally basic"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ami-002",
+      "chapter": "Amines",
+      "topic": "Aniline",
+      "type": "mcq",
+      "q": "Aniline is a weaker base than ammonia because:",
+      "solution": "The lone pair on nitrogen overlaps with the ring's $\\pi$ system and is **delocalised**, so it is much less available to accept a proton.\n\n$\\text{p}K_{b}$: aniline $9.4$, ammonia $4.75$ — aniline is thousands of times weaker.\n\nThe same delocalisation is why aniline activates the ring so strongly towards electrophilic substitution: what the nitrogen gives up, the ring gains.",
+      "marks": 1,
+      "options": [
+        "it is aromatic",
+        "the nitrogen lone pair is delocalised into the ring",
+        "it is a liquid",
+        "it has a larger molar mass"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ami-003",
+      "chapter": "Amines",
+      "topic": "Carbylamine reaction",
+      "type": "mcq",
+      "q": "The carbylamine reaction is a test for:",
+      "solution": "A **primary** amine with chloroform and alcoholic KOH gives an isocyanide, recognised instantly by its extremely offensive smell:\n\n$\\text{RNH}_{2} + \\text{CHCl}_{3} + 3\\text{KOH} \\to \\text{RNC} + 3\\text{KCl} + 3\\text{H}_{2}\\text{O}$\n\nSecondary and tertiary amines give no reaction, so it is a clean test for primary amines only.",
+      "marks": 1,
+      "options": [
+        "secondary amines",
+        "primary amines",
+        "tertiary amines",
+        "quaternary salts"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ami-004",
+      "chapter": "Amines",
+      "topic": "Diazonium salts",
+      "type": "mcq",
+      "q": "Benzenediazonium chloride is prepared by treating aniline with:",
+      "solution": "**Diazotisation:** nitrous acid, generated in situ from $\\text{NaNO}_{2}$ and HCl, at **$273$–$278$ K**.\n\n$\\text{C}_{6}\\text{H}_{5}\\text{NH}_{2} + \\text{NaNO}_{2} + 2\\text{HCl} \\to \\text{C}_{6}\\text{H}_{5}\\text{N}_{2}^{+}\\text{Cl}^{-} + \\text{NaCl} + 2\\text{H}_{2}\\text{O}$\n\nThe low temperature is essential: above about $278$ K the salt decomposes to phenol and nitrogen.",
+      "marks": 1,
+      "options": [
+        "$\\text{HNO}_{3}$ at $298$ K",
+        "$\\text{NaNO}_{2}$ and HCl at $273-278$ K",
+        "$\\text{NH}_{3}$",
+        "$\\text{Br}_{2}$ water"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ami-005",
+      "chapter": "Amines",
+      "topic": "Hofmann bromamide",
+      "type": "mcq",
+      "q": "Hofmann's bromamide degradation converts an amide to an amine with:",
+      "solution": "$\\text{RCONH}_{2} + \\text{Br}_{2} + 4\\text{NaOH} \\to \\text{RNH}_{2} + \\text{Na}_{2}\\text{CO}_{3} + 2\\text{NaBr} + 2\\text{H}_{2}\\text{O}$\n\nThe carbonyl carbon leaves as carbonate, so the amine has **one carbon fewer** than the amide, and it is always **primary**.\n\nThat makes it a rare way of going *down* the homologous series.",
+      "marks": 1,
+      "options": [
+        "the same number of carbon atoms",
+        "one carbon atom fewer",
+        "one carbon atom more",
+        "double the carbon atoms"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "ami-006",
+      "chapter": "Amines",
+      "topic": "Isomers",
+      "type": "numeric",
+      "q": "How many isomeric amines are possible with the formula $\\text{C}_{3}\\text{H}_{9}\\text{N}$?",
+      "solution": "Propan-1-amine, propan-2-amine (both primary), N-methylethanamine (secondary) and trimethylamine (tertiary) — $\\mathbf{4}$.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0
+    },
+    {
+      "id": "ami-007",
+      "chapter": "Amines",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of aniline, $\\text{C}_{6}\\text{H}_{5}\\text{NH}_{2}$, in g/mol. (C $= 12$, H $= 1$, N $= 14$.)",
+      "solution": "$6(12) + 7(1) + 14 = 72 + 7 + 14 = \\mathbf{93}$ g/mol.",
+      "marks": 2,
+      "answer": 93,
+      "tolerance": 0.5
+    },
+    {
+      "id": "ami-008",
+      "chapter": "Amines",
+      "topic": "Degree of amine",
+      "type": "numeric",
+      "q": "In how many of these is the nitrogen attached to exactly two carbon atoms: trimethylamine, diethylamine, aniline, N-methylaniline?",
+      "solution": "**Diethylamine** ✓ and **N-methylaniline** ✓ — both secondary.\n\nTrimethylamine has three, aniline one. So $\\mathbf{2}$.\n\nThe class of an amine is decided by the number of carbons on the **nitrogen**, not by the carbon skeleton — unlike alcohols.",
+      "marks": 2,
+      "answer": 2,
+      "tolerance": 0
+    },
+    {
+      "id": "ami-009",
+      "chapter": "Amines",
+      "topic": "Products of ammonolysis",
+      "type": "numeric",
+      "q": "How many amine products (excluding the quaternary salt) can form when excess ethyl bromide reacts with ammonia?",
+      "solution": "Primary, secondary and tertiary ethylamines — $\\mathbf{3}$ (and then the quaternary ammonium salt).\n\nEvery amine formed is itself a nucleophile, so the reaction keeps going. This is exactly why **ammonolysis is a poor preparation** and why a large excess of ammonia is used to favour the primary amine.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "ami-010",
+      "chapter": "Amines",
+      "topic": "Nitrogen in a compound",
+      "type": "numeric",
+      "q": "Find the percentage of nitrogen by mass in methanamine, $\\text{CH}_{3}\\text{NH}_{2}$ (molar mass $31$ g/mol; N $= 14$), correct to one decimal place.",
+      "solution": "$\\dfrac{14}{31} \\times 100 = \\mathbf{45.2}\\%$.",
+      "marks": 2,
+      "answer": 45.2,
+      "tolerance": 0.3
+    },
+    {
+      "id": "ami-012",
+      "chapter": "Amines",
+      "topic": "Basicity of amines",
+      "type": "long",
+      "q": "Explain the relative basicity of aliphatic amines, ammonia and aromatic amines, with the factors involved.",
+      "solution": "**Order:** aliphatic amines $>$ ammonia $\\gg$ aromatic amines.\n\n**Aliphatic amines vs ammonia.** Alkyl groups release electrons inductively, increasing the electron density on nitrogen and making the lone pair more available. They also stabilise the resulting ammonium ion.\n\n**Among aliphatic amines** the order in water is irregular — $2° > 1° > 3°$ — because three effects compete:\n\n1. **+I effect** — more alkyl groups, more basic.\n\n2. **Steric hindrance** — more alkyl groups, harder for a proton to reach.\n\n3. **Solvation** — the ammonium ion is stabilised by hydrogen bonding through its N–H bonds, and a tertiary amine's ion has only one.\n\n**Aromatic amines.** The lone pair is delocalised into the ring, so it is far less available. Aniline's $\\text{p}K_{b}$ is $9.4$ against ammonia's $4.75$.\n\nProtonating aniline also **destroys** the delocalisation, which costs energy the reaction cannot easily pay.\n\n**Substituted anilines:** electron-withdrawing groups ($-\\text{NO}_{2}$) reduce basicity further; electron-releasing groups ($-\\text{CH}_{3}$, $-\\text{OCH}_{3}$) increase it.",
+      "marks": 3
+    },
+    {
+      "id": "ami-013",
+      "chapter": "Amines",
+      "topic": "Diazonium salts",
+      "type": "long",
+      "q": "Describe the preparation of benzenediazonium chloride and four of its synthetic uses.",
+      "solution": "**Preparation (diazotisation).** Aniline in cold dilute HCl, treated with sodium nitrite at $273$–$278$ K:\n\n$\\text{C}_{6}\\text{H}_{5}\\text{NH}_{2} + \\text{NaNO}_{2} + 2\\text{HCl} \\to \\text{C}_{6}\\text{H}_{5}\\text{N}_{2}^{+}\\text{Cl}^{-} + \\text{NaCl} + 2\\text{H}_{2}\\text{O}$\n\nThe salt is unstable and is used in solution at once.\n\n**Uses — the $\\text{N}_{2}^{+}$ group is the best leaving group in organic chemistry**, because it leaves as nitrogen gas.\n\n1. **Sandmeyer reaction** — $\\text{CuCl}/\\text{HCl}$, $\\text{CuBr}/\\text{HBr}$ or $\\text{CuCN}/\\text{KCN}$ gives chloro-, bromo- or cyanobenzene.\n\n2. **Gattermann reaction** — copper powder and the halogen acid, doing the same job more cheaply but in poorer yield.\n\n3. **Replacement by other groups** — warm water gives phenol, KI gives iodobenzene (no catalyst needed), $\\text{HBF}_{4}$ then heat gives fluorobenzene, and hypophosphorous acid gives **benzene itself**.\n\n4. **Coupling reactions** — with phenol or aniline in mildly alkaline or acidic solution, giving intensely coloured **azo dyes**:\n\n$\\text{C}_{6}\\text{H}_{5}\\text{N}_{2}^{+}\\text{Cl}^{-} + \\text{C}_{6}\\text{H}_{5}\\text{OH} \\to p\\text{-hydroxyazobenzene}$\n\n**Why this matters synthetically.** Chlorobenzene cannot be made from benzene with any control over position, but a nitro group can be placed exactly where you want it, reduced to the amine, diazotised and replaced. The diazonium salt is the hinge of aromatic synthesis.",
+      "marks": 5
+    },
+    {
+      "id": "ami-014",
+      "chapter": "Amines",
+      "topic": "Distinguishing amines",
+      "type": "long",
+      "q": "How would you distinguish between primary, secondary and tertiary amines in the laboratory?",
+      "solution": "**1. Hinsberg's test** — with benzenesulphonyl chloride:\n\n• **Primary:** gives a sulphonamide with an N–H that is acidic, so the product **dissolves in alkali**.\n\n• **Secondary:** gives a sulphonamide with no N–H — a precipitate **insoluble in alkali**.\n\n• **Tertiary:** has no N–H at all and **does not react**.\n\nOne reagent, three different outcomes — which is why this is the standard test.\n\n**2. Carbylamine test** — chloroform and alcoholic KOH. Only a **primary** amine gives the foul-smelling isocyanide.\n\n**3. With nitrous acid at $273$ K:**\n\n• **Primary aliphatic:** brisk **nitrogen gas** and an alcohol.\n\n• **Primary aromatic:** a stable diazonium salt (which couples with phenol to give an orange dye).\n\n• **Secondary:** a yellow oily **nitrosamine**.\n\n• **Tertiary:** simply forms a salt.\n\nFor a written answer, always give the reagent, the observation and the conclusion.",
+      "marks": 3
+    },
+    {
+      "id": "ami-015",
+      "chapter": "Amines",
+      "topic": "Aniline in electrophilic substitution",
+      "type": "long",
+      "q": "Explain why aniline cannot be nitrated directly, and how the difficulty is overcome.",
+      "solution": "**Two problems.**\n\n1. **Nitrating mixture is strongly acidic,** so the aniline is protonated to the anilinium ion. That $-\\text{NH}_{3}^{+}$ group is strongly electron-**withdrawing** and *meta*-directing, so a substantial amount of the meta product is formed — the opposite of what the free amine would give.\n\n2. **Nitric acid is an oxidising agent,** and aniline is easily oxidised, so the reaction is messy and the yield poor.\n\n**The remedy — protect the amino group.** Acetylate it first:\n\n$\\text{C}_{6}\\text{H}_{5}\\text{NH}_{2} + (\\text{CH}_{3}\\text{CO})_{2}\\text{O} \\to \\text{C}_{6}\\text{H}_{5}\\text{NHCOCH}_{3}$ (acetanilide)\n\nThe amide nitrogen's lone pair is partly drawn into the carbonyl, so the group is **less basic** (it will not be protonated) and **less activating** — but still *ortho/para* directing.\n\nNitrate, then **hydrolyse** the amide back with acid or alkali:\n\nacetanilide $\\xrightarrow{\\text{HNO}_{3}/\\text{H}_{2}\\text{SO}_{4}}$ p-nitroacetanilide $\\xrightarrow{\\text{H}_{3}\\text{O}^{+}}$ p-nitroaniline\n\n**Protection and deprotection** is a general strategy in synthesis: put a group out of harm's way, do the chemistry, and restore it.",
+      "marks": 2
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "id": "lib-al-circular-measure",
+  "title": "Circular Measure",
+  "chapter": "Topic Test 4",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "alm4-001",
+      "chapter": "Circular Measure",
+      "topic": "Radians",
+      "type": "mcq",
+      "q": "$\\pi$ radians is equal to:",
+      "solution": "$\\pi$ rad $= \\mathbf{180°}$, so $1$ rad $\\approx 57.3°$.\n\nA radian is the angle subtended at the centre by an arc equal in length to the radius — which is why it is the natural unit for circle formulae.",
+      "marks": 1,
+      "options": [
+        "90°",
+        "180°",
+        "270°",
+        "360°"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm4-002",
+      "chapter": "Circular Measure",
+      "topic": "Arc length",
+      "type": "mcq",
+      "q": "The arc length of a sector of radius $r$ and angle $\\theta$ radians is:",
+      "solution": "$s = \\mathbf{r\\theta}$ — as simple as it gets, and **only** if $\\theta$ is in radians.\n\nIn degrees it would be $\\dfrac{\\theta}{360} \\times 2\\pi r$. This simplicity is the whole reason radians exist.",
+      "marks": 1,
+      "options": [
+        "$r\\theta$",
+        "$\\dfrac{r\\theta}{2}$",
+        "$\\dfrac12 r^{2}\\theta$",
+        "$2\\pi r\\theta$"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "alm4-003",
+      "chapter": "Circular Measure",
+      "topic": "Sector area",
+      "type": "mcq",
+      "q": "The area of a sector of radius $r$ and angle $\\theta$ radians is:",
+      "solution": "$A = \\mathbf{\\dfrac12 r^{2}\\theta}$.\n\n**Check with a full circle:** $\\theta = 2\\pi$ gives $\\tfrac12 r^{2}(2\\pi) = \\pi r^{2}$ ✓",
+      "marks": 1,
+      "options": [
+        "$r\\theta$",
+        "$\\dfrac12 r^{2}\\theta$",
+        "$\\pi r^{2}\\theta$",
+        "$\\dfrac12 r\\theta$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm4-004",
+      "chapter": "Circular Measure",
+      "topic": "Conversion",
+      "type": "mcq",
+      "q": "$\\dfrac{\\pi}{3}$ radians in degrees is:",
+      "solution": "$\\dfrac{\\pi}{3} = \\dfrac{180}{3} = \\mathbf{60°}$.\n\nWorth knowing on sight: $\\tfrac{\\pi}{6} = 30°$, $\\tfrac{\\pi}{4} = 45°$, $\\tfrac{\\pi}{3} = 60°$, $\\tfrac{\\pi}{2} = 90°$.",
+      "marks": 1,
+      "options": [
+        "30°",
+        "45°",
+        "60°",
+        "90°"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "alm4-005",
+      "chapter": "Circular Measure",
+      "topic": "Segment area",
+      "type": "mcq",
+      "q": "The area of a segment cut off by a chord is:",
+      "solution": "$\\text{segment} = \\text{sector} - \\text{triangle} = \\dfrac12 r^{2}\\theta - \\dfrac12 r^{2}\\sin\\theta = \\dfrac12 r^{2}\\left(\\theta - \\sin\\theta\\right)$.\n\nThe triangle is what is left when the segment is removed from the sector, so subtracting it isolates the segment.",
+      "marks": 1,
+      "options": [
+        "sector area $+$ triangle area",
+        "sector area $-$ triangle area",
+        "triangle area $-$ sector area",
+        "half the sector area"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "alm4-006",
+      "chapter": "Circular Measure",
+      "topic": "Arc length",
+      "type": "numeric",
+      "q": "Find the arc length of a sector of radius $8$ cm and angle $0.5$ radians.",
+      "solution": "$s = r\\theta = 8 \\times 0.5 = \\mathbf{4}$ cm.",
+      "marks": 2,
+      "answer": 4,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm4-007",
+      "chapter": "Circular Measure",
+      "topic": "Sector area",
+      "type": "numeric",
+      "q": "Find the area (in cm$^{2}$) of a sector of radius $6$ cm and angle $1.5$ radians.",
+      "solution": "$A = \\tfrac12 r^{2}\\theta = \\tfrac12 \\times 36 \\times 1.5 = \\mathbf{27}$ cm$^{2}$.",
+      "marks": 2,
+      "answer": 27,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alm4-008",
+      "chapter": "Circular Measure",
+      "topic": "Degrees to radians",
+      "type": "numeric",
+      "q": "Convert $135°$ to radians, in the form $\\dfrac{k\\pi}{4}$. Find $k$.",
+      "solution": "$135 \\times \\dfrac{\\pi}{180} = \\dfrac{3\\pi}{4}$, so $k = \\mathbf{3}$.",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0
+    },
+    {
+      "id": "alm4-009",
+      "chapter": "Circular Measure",
+      "topic": "Angle from arc",
+      "type": "numeric",
+      "q": "An arc of length $12$ cm subtends an angle at the centre of a circle of radius $4$ cm. Find the angle, in radians.",
+      "solution": "$\\theta = \\dfrac{s}{r} = \\dfrac{12}{4} = \\mathbf{3}$ radians (about $172°$).",
+      "marks": 2,
+      "answer": 3,
+      "tolerance": 0.05
+    },
+    {
+      "id": "alm4-010",
+      "chapter": "Circular Measure",
+      "topic": "Perimeter of a sector",
+      "type": "numeric",
+      "q": "Find the perimeter (in cm) of a sector of radius $5$ cm and angle $1.2$ radians.",
+      "solution": "Arc $= r\\theta = 5 \\times 1.2 = 6$ cm.\n\nPerimeter $=$ arc $+$ two radii $= 6 + 5 + 5 = \\mathbf{16}$ cm.\n\nThe two straight edges are the part most often forgotten.",
+      "marks": 2,
+      "answer": 16,
+      "tolerance": 0.1
+    },
+    {
+      "id": "alm4-011",
+      "chapter": "Circular Measure",
+      "topic": "Radians",
+      "type": "long",
+      "q": "Define a radian, derive the arc length and sector area formulae, and explain why radians are preferred in calculus.",
+      "solution": "**Definition.** One radian is the angle subtended at the centre of a circle by an arc **equal in length to the radius**.\n\n**Why $2\\pi$ radians is a full turn.** The full circumference is $2\\pi r$, which is $2\\pi$ radius-lengths, so a complete revolution is $2\\pi$ radians — hence $\\pi$ rad $= 180°$.\n\n**Arc length.** The arc is proportional to the angle. A full turn of $2\\pi$ gives the whole circumference $2\\pi r$, so an angle $\\theta$ gives\n\n$s = \\dfrac{\\theta}{2\\pi} \\times 2\\pi r = \\mathbf{r\\theta}$\n\n**Sector area.** The same proportion applied to the area:\n\n$A = \\dfrac{\\theta}{2\\pi} \\times \\pi r^{2} = \\mathbf{\\dfrac12 r^{2}\\theta}$\n\n**Why calculus needs radians.** $\\dfrac{d}{dx}\\sin x = \\cos x$ is true **only** in radians.\n\nIn degrees it would be $\\dfrac{\\pi}{180}\\cos x$ — every differentiation dragging an awkward constant along with it.\n\nThe root of it is the limit $\\displaystyle\\lim_{\\theta \\to 0}\\dfrac{\\sin\\theta}{\\theta} = 1$, which holds only in radians. The degree is a human convention (Babylonian, and chosen because $360$ has many factors); the radian is the unit the mathematics itself picks out.",
+      "marks": 3
+    },
+    {
+      "id": "alm4-012",
+      "chapter": "Circular Measure",
+      "topic": "Sector and segment",
+      "type": "long",
+      "q": "A sector of a circle of radius $10$ cm has angle $1.2$ radians. Find the arc length, the sector area, and the area of the segment cut off by the chord.",
+      "solution": "**Arc length:**\n\n$s = r\\theta = 10 \\times 1.2 = \\mathbf{12}$ cm.\n\n**Sector area:**\n\n$A = \\tfrac12 r^{2}\\theta = \\tfrac12 \\times 100 \\times 1.2 = \\mathbf{60}$ cm$^{2}$.\n\n**Triangle area.** The two radii and the chord make a triangle with included angle $\\theta$:\n\n$A_{\\triangle} = \\tfrac12 r^{2}\\sin\\theta = \\tfrac12 \\times 100 \\times \\sin 1.2 = 50 \\times 0.932 = 46.6$ cm$^{2}$.\n\n**Segment area:**\n\n$A_{\\text{seg}} = 60 - 46.6 = \\mathbf{13.4}$ cm$^{2}$.\n\n**Set the calculator to radians** before finding $\\sin 1.2$. In degree mode it returns $0.0209$ and the whole answer collapses — the single commonest error in this topic.\n\n**A sanity check:** the segment must be smaller than the sector, and it is, by a comfortable margin.",
+      "marks": 3
+    },
+    {
+      "id": "alm4-013",
+      "chapter": "Circular Measure",
+      "topic": "Composite areas",
+      "type": "long",
+      "q": "Two circles of radius $5$ cm have centres $8$ cm apart. Explain how to find the area common to both, and carry out the calculation.",
+      "solution": "**The shape.** The overlap is bounded by two arcs, and it is made of **two identical segments**, one from each circle.\n\n**Finding the half-angle.** Draw the line joining the centres and the common chord; they are perpendicular and bisect each other's segment.\n\nHalf the centre distance is $4$, and the radius is $5$, so for the half-angle $\\alpha$ at a centre:\n\n$\\cos\\alpha = \\dfrac{4}{5} \\Rightarrow \\alpha = 0.6435$ rad.\n\nThe full angle subtended at each centre is $\\theta = 2\\alpha = 1.287$ rad.\n\n**One segment:**\n\n$A_{\\text{seg}} = \\tfrac12 r^{2}\\left(\\theta - \\sin\\theta\\right) = \\tfrac12 \\times 25 \\times (1.287 - 0.960)$\n\n$= 12.5 \\times 0.327 = 4.09$ cm$^{2}$.\n\n**Total overlap** — two such segments:\n\n$2 \\times 4.09 = \\mathbf{8.18}$ cm$^{2}$.\n\n**A sanity check.** Each circle has area $78.5$ cm$^{2}$, and the centres are $8$ cm apart with radii of only $5$ — so the circles barely overlap. An answer of about $8$ cm$^{2}$, roughly a tenth of one circle, is exactly the right order of magnitude.\n\n**The general method** for any such problem: find the angle from the geometry, then assemble the answer from sectors, triangles and segments.",
+      "marks": 5
+    },
+    {
+      "id": "alm4-014",
+      "chapter": "Circular Measure",
+      "topic": "Applications",
+      "type": "long",
+      "q": "A circular running track has an inner radius of $30$ m. A runner covers a $120°$ arc of the inner edge. Find the distance run, and how much further a runner in a lane $1.2$ m further out would travel over the same arc.",
+      "solution": "**Convert to radians:**\n\n$120° = \\dfrac{120\\pi}{180} = \\dfrac{2\\pi}{3} \\approx 2.094$ rad.\n\n**Inner runner:**\n\n$s = r\\theta = 30 \\times 2.094 = \\mathbf{62.8}$ m.\n\n**Outer runner** ($r = 31.2$ m):\n\n$s = 31.2 \\times 2.094 = 65.3$ m.\n\n**Extra distance:**\n\n$65.3 - 62.8 = \\mathbf{2.5}$ m.\n\n**A neater route.** The difference depends only on the gap between the lanes:\n\n$\\Delta s = \\Delta r \\times \\theta = 1.2 \\times 2.094 = 2.5$ m ✓\n\n**Why staggered starts exist.** Over a full lap, $\\theta = 2\\pi$ and the outer runner covers $1.2 \\times 2\\pi \\approx 7.5$ m more — an enormous advantage in a sprint.\n\nThat is exactly why outer lanes start further forward, and the stagger is calculated by this formula. Notice it does not depend on the track's radius at all, only on the lane width.",
+      "marks": 3
+    },
+    {
+      "id": "alm4-015",
+      "chapter": "Circular Measure",
+      "topic": "Small angle approximations",
+      "type": "long",
+      "q": "State the small angle approximations for $\\sin\\theta$, $\\cos\\theta$ and $\\tan\\theta$, and use them to estimate $\\sin 0.05$ and $\\cos 0.05$.",
+      "solution": "**For small $\\theta$ measured in radians:**\n\n$\\sin\\theta \\approx \\theta$\n\n$\\tan\\theta \\approx \\theta$\n\n$\\cos\\theta \\approx 1 - \\dfrac{\\theta^{2}}{2}$\n\n**Estimates.**\n\n$\\sin 0.05 \\approx \\mathbf{0.05}$ (true value $0.049979$)\n\n$\\cos 0.05 \\approx 1 - \\dfrac{0.0025}{2} = \\mathbf{0.99875}$ (true value $0.9987503$)\n\nBoth are accurate to five decimal places.\n\n**Why they work.** For a small angle the arc, the chord and the vertical height are nearly the same length — the approximations are the first terms of the Taylor series, and the errors are of order $\\theta^{3}$.\n\n**They hold only in radians.** In degrees, $\\sin 0.05° = 0.00087$, nothing like $0.05$.\n\n**Where they are used:** the pendulum equation assumes $\\sin\\theta \\approx \\theta$, which is why a pendulum clock keeps time only for small swings; and the same approximation underlies the lens formulae in optics, where it is called the paraxial assumption.",
+      "marks": 2
+    }
+  ]
+}

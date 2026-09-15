@@ -1,0 +1,191 @@
+{
+  "id": "lib-c10s-acids-bases-salts",
+  "title": "Acids, Bases and Salts",
+  "chapter": "Chapter Test 2",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c10abs-101",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Conductivity of solutions",
+      "type": "mcq",
+      "q": "The bulb of an apparatus for testing electrical conduction will glow when the electrodes are placed in :\n\n(i) Dilute hydrochloric acid\n(ii) Dilute sulphuric acid\n(iii) Glucose solution\n(iv) Alcohol",
+      "solution": "A solution conducts electricity only if it contains **free ions** to carry the charge.\n\n**(i) Dilute hydrochloric acid.** HCl is a strong acid; in water it ionises completely :\n\n$$\\text{HCl} + \\text{H}_2\\text{O} \\longrightarrow \\text{H}_3\\text{O}^+ + \\text{Cl}^-$$\n\nPlenty of ions — **conducts**.\n\n**(ii) Dilute sulphuric acid.** Likewise a strong acid, giving $\\text{H}_3\\text{O}^+$ and $\\text{SO}_4^{2-}$ — **conducts**.\n\n**(iii) Glucose solution.** Glucose dissolves but does **not** ionise. It stays as neutral $\\text{C}_6\\text{H}_{12}\\text{O}_6$ molecules — no ions, so it does **not** conduct.\n\n**(iv) Alcohol.** A covalent compound that does not produce ions in water — does **not** conduct.\n\nSo the bulb glows for **(i) and (ii)** only.\n\nThe point of the question is that dissolving is not the same as ionising: both glucose and HCl dissolve freely, but only one of them releases ions.",
+      "marks": 1,
+      "source": "CBSE 2023",
+      "options": [
+        "(i) only",
+        "(ii) only",
+        "(i) and (ii)",
+        "(ii), (iii) and (iv)"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "abs-002",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Acid with metal",
+      "type": "mcq",
+      "q": "When a dilute acid reacts with a metal, the gas evolved is:",
+      "solution": "**Hydrogen**, and it is tested with a burning splint: it burns with a **pop** sound.\n\n$\\text{Zn} + \\text{H}_{2}\\text{SO}_{4} \\to \\text{ZnSO}_{4} + \\text{H}_{2}$",
+      "marks": 1,
+      "options": [
+        "oxygen",
+        "hydrogen",
+        "carbon dioxide",
+        "chlorine"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "abs-003",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Neutralisation",
+      "type": "mcq",
+      "q": "The reaction between an acid and a base to give salt and water is called:",
+      "solution": "**Neutralisation**: $\\text{Acid} + \\text{Base} \\to \\text{Salt} + \\text{Water}$.\n\n$\\text{NaOH} + \\text{HCl} \\to \\text{NaCl} + \\text{H}_{2}\\text{O}$\n\nIt is exothermic, which is why an antacid tablet gives quick relief and why mixing strong acid and alkali warms the beaker.",
+      "marks": 1,
+      "options": [
+        "oxidation",
+        "neutralisation",
+        "displacement",
+        "decomposition"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "abs-004",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Water of crystallisation",
+      "type": "mcq",
+      "q": "The formula of plaster of Paris is:",
+      "solution": "Plaster of Paris is $\\mathbf{\\text{CaSO}_{4}\\cdot\\tfrac12\\text{H}_{2}\\text{O}}$ — one water molecule shared between two formula units, which is why the half appears.\n\nIt is made by heating gypsum ($\\text{CaSO}_{4}\\cdot2\\text{H}_{2}\\text{O}$) to $373$ K, and it sets back to gypsum when mixed with water.",
+      "marks": 1,
+      "options": [
+        "$\\text{CaSO}_{4}\\cdot2\\text{H}_{2}\\text{O}$",
+        "$\\text{CaSO}_{4}\\cdot\\tfrac12\\text{H}_{2}\\text{O}$",
+        "$\\text{CaSO}_{4}$",
+        "$\\text{CaOCl}_{2}$"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "abs-005",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Indicators",
+      "type": "mcq",
+      "q": "Which of these turns red litmus blue?",
+      "solution": "**Soap solution** is basic, and a base turns red litmus **blue**.\n\nThe other three are acidic (citric, acetic and lactic acid respectively) and would leave red litmus red.",
+      "marks": 1,
+      "options": [
+        "Lemon juice",
+        "Vinegar",
+        "Soap solution",
+        "Curd"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "abs-006",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "pH",
+      "type": "numeric",
+      "q": "A solution has a hydrogen ion concentration of $10^{-5}$ mol/L. Find its pH.",
+      "solution": "$\\text{pH} = -\\log[\\text{H}^{+}] = -\\log 10^{-5} = \\mathbf{5}$ — weakly acidic.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "abs-007",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "pH and pOH",
+      "type": "numeric",
+      "q": "If a solution has pH $9$, find its pOH.",
+      "solution": "$\\text{pH} + \\text{pOH} = 14$, so $\\text{pOH} = 14 - 9 = \\mathbf{5}$ — the solution is basic.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "abs-008",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Molar mass",
+      "type": "numeric",
+      "q": "Find the molar mass of washing soda, $\\text{Na}_{2}\\text{CO}_{3}\\cdot10\\text{H}_{2}\\text{O}$, in g/mol. (Na $= 23$, C $= 12$, O $= 16$, H $= 1$.)",
+      "solution": "$\\text{Na}_{2}\\text{CO}_{3} = 46 + 12 + 48 = 106$.\n\n$10\\text{H}_{2}\\text{O} = 10 \\times 18 = 180$.\n\nTotal $= 106 + 180 = \\mathbf{286}$ g/mol — most of it is water of crystallisation.",
+      "marks": 2,
+      "answer": 286,
+      "tolerance": 1
+    },
+    {
+      "id": "abs-009",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Water of crystallisation",
+      "type": "numeric",
+      "q": "How many water molecules of crystallisation are present in blue vitriol (copper sulphate crystals)?",
+      "solution": "$\\text{CuSO}_{4}\\cdot5\\text{H}_{2}\\text{O}$ — $\\mathbf{5}$.\n\nHeating drives them off and the blue crystals turn **white**; adding water restores the blue, which is the standard test for water.",
+      "marks": 2,
+      "answer": 5,
+      "tolerance": 0
+    },
+    {
+      "id": "abs-010",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Times more acidic",
+      "type": "numeric",
+      "q": "How many times more acidic is a solution of pH $3$ than one of pH $6$?",
+      "solution": "Each pH unit is a factor of $10$ in $[\\text{H}^{+}]$, and the difference is $3$ units.\n\n$10^{3} = \\mathbf{1000}$ times more acidic.\n\nThe scale is logarithmic, which is why small-looking pH changes matter so much — a pH drop of $0.5$ in a lake is a serious event.",
+      "marks": 2,
+      "answer": 1000,
+      "tolerance": 0
+    },
+    {
+      "id": "abs-011",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "pH in everyday life",
+      "type": "long",
+      "q": "Give four examples of the importance of pH in everyday life.",
+      "solution": "1. **In our bodies.** The stomach makes hydrochloric acid at about pH $1.2$ to digest food. Too much causes acidity, treated with a mild base — an **antacid** such as magnesium hydroxide.\n\n2. **Tooth decay.** Bacteria in the mouth turn sugar into acid. Below **pH $5.5$** tooth enamel ($\\text{Ca}_{5}(\\text{PO}_{4})_{3}\\text{OH}$, the hardest material in the body) begins to dissolve. Toothpaste is basic and neutralises it.\n\n3. **Soil and crops.** Plants grow well only in a narrow pH range. Acidic soil is treated with **quicklime or chalk**; alkaline soil with organic matter or gypsum.\n\n4. **Acid rain and aquatic life.** Rain below pH $5.6$ runs into rivers and lakes. Below about pH $5.6$ fish cannot survive, so a whole lake can be sterilised by rain falling hundreds of miles away.\n\n5. **Stings.** A bee sting injects an acid, soothed by baking soda; a nettle sting also injects methanoic acid, and dock leaf sap is the traditional remedy.",
+      "marks": 3
+    },
+    {
+      "id": "abs-012",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Chlor-alkali process",
+      "type": "long",
+      "q": "What is the chlor-alkali process? Write the equation and name the three products with one use each.",
+      "solution": "**The process.** Electricity is passed through **brine**, a concentrated solution of sodium chloride:\n\n$2\\text{NaCl} + 2\\text{H}_{2}\\text{O} \\to 2\\text{NaOH} + \\text{Cl}_{2} + \\text{H}_{2}$\n\nIt is called chlor-alkali because the two main products are **chlor**ine and the **alkali** sodium hydroxide.\n\n**Products and where they go:**\n\n• **Chlorine** — at the anode. Used for water treatment, PVC, and bleaching powder.\n\n• **Hydrogen** — at the cathode. Used as a fuel, in margarine, and for making ammonia.\n\n• **Sodium hydroxide** — in the solution. Used for soaps and detergents, paper making, and degreasing metals.\n\nThe products are also combined again: chlorine with dry slaked lime gives **bleaching powder** ($\\text{CaOCl}_{2}$), and with sodium hydroxide gives household bleach.\n\nIt is an unusually economical industry — everything that comes out of the cell is worth selling.",
+      "marks": 3
+    },
+    {
+      "id": "abs-013",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Salts",
+      "type": "long",
+      "q": "Describe the preparation, properties and uses of (a) baking soda and (b) bleaching powder.",
+      "solution": "**(a) Baking soda, $\\text{NaHCO}_{3}$.**\n\n*Preparation:* $\\text{NaCl} + \\text{H}_{2}\\text{O} + \\text{CO}_{2} + \\text{NH}_{3} \\to \\text{NH}_{4}\\text{Cl} + \\text{NaHCO}_{3}$\n\n*Properties:* a mild, non-corrosive base. On heating,\n\n$2\\text{NaHCO}_{3} \\xrightarrow{\\text{heat}} \\text{Na}_{2}\\text{CO}_{3} + \\text{H}_{2}\\text{O} + \\text{CO}_{2}$\n\n*Uses:* in **baking powder** (with tartaric acid, whose job is to neutralise the sodium carbonate left behind — otherwise the cake would taste bitter); as an antacid; in soda-acid fire extinguishers.\n\nThe carbon dioxide released is what makes bread and cake rise.\n\n**(b) Bleaching powder, $\\text{CaOCl}_{2}$.**\n\n*Preparation:* $\\text{Ca(OH)}_{2} + \\text{Cl}_{2} \\to \\text{CaOCl}_{2} + \\text{H}_{2}\\text{O}$\n\n*Properties:* a pale yellow powder smelling strongly of chlorine, which it releases slowly on standing in air.\n\n*Uses:* bleaching cotton, linen and wood pulp; **disinfecting drinking water**; and as an oxidising agent in industry.\n\nNote that dry slaked lime is used, not a solution — with water the reaction takes a different course.",
+      "marks": 5
+    },
+    {
+      "id": "abs-014",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Strong and weak acids",
+      "type": "long",
+      "q": "Distinguish between a strong and a weak acid, with two examples of each, and describe how you would tell them apart in the laboratory.",
+      "solution": "**Strong acid** — ionises **completely** in water, giving many $\\text{H}^{+}$ ions. *Examples: HCl, $\\text{H}_{2}\\text{SO}_{4}$, $\\text{HNO}_{3}$.*\n\n**Weak acid** — ionises only **partly**, so most molecules stay intact. *Examples: acetic acid (vinegar), carbonic acid, citric acid.*\n\n**Telling them apart** (at the **same concentration**, which matters — a dilute strong acid can have a higher pH than a concentrated weak one):\n\n1. **pH / universal indicator** — the strong acid gives a much lower pH (about 1) than the weak (about 3–4).\n\n2. **Reaction with magnesium or carbonate** — the strong acid fizzes vigorously, the weak one slowly.\n\n3. **Electrical conductivity** — the strong acid conducts far better, because it has more ions. This is the most direct test, since it measures the ions themselves.\n\n**Strong is not the same as concentrated.** Strength is about how completely the acid ionises; concentration is about how much of it is in the water.",
+      "marks": 3
+    },
+    {
+      "id": "abs-015",
+      "chapter": "Acids, Bases and Salts",
+      "topic": "Neutralisation",
+      "type": "long",
+      "q": "What happens when dilute hydrochloric acid is added to sodium carbonate? Write the equation and describe the test for the gas evolved.",
+      "solution": "**Reaction.** Brisk effervescence — a gas is given off quickly:\n\n$\\text{Na}_{2}\\text{CO}_{3} + 2\\text{HCl} \\to 2\\text{NaCl} + \\text{H}_{2}\\text{O} + \\text{CO}_{2}\\uparrow$\n\n**Test for the gas.** Pass it through **limewater** (calcium hydroxide solution). It turns **milky**:\n\n$\\text{Ca(OH)}_{2} + \\text{CO}_{2} \\to \\text{CaCO}_{3}\\downarrow + \\text{H}_{2}\\text{O}$\n\n**A second stage worth knowing.** Pass excess gas through and the milkiness **disappears**, as the insoluble carbonate becomes soluble bicarbonate:\n\n$\\text{CaCO}_{3} + \\text{CO}_{2} + \\text{H}_{2}\\text{O} \\to \\text{Ca(HCO}_{3})_{2}$\n\nThis same pair of reactions builds stalactites in limestone caves — dissolving on the way down, depositing again as the gas escapes.",
+      "marks": 2
+    }
+  ]
+}
