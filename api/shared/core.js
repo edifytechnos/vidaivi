@@ -312,6 +312,316 @@ async function resolveRole(email) {
   return roleCache.set(normalized, role, ROLE_TTL_MS);
 }
 
+// ---------- What a plan allows, and what it costs ----------
+//
+// Every price and every limit lives in ONE row an admin edits from the
+// platform itself. Nothing here is a constant, because the first thing that
+// happens to a price is that it changes, and a deploy is a poor way to change
+// one.
+//
+// Money is in **paise, as integers**. A rupee is never a float: 499.00 read
+// back as 498.99999 is the kind of thing nobody notices until a customer does.
+// Rupees exist only at the edges, for display.
+const PLAN_TTL_MS = 60 * 1000;
+const planCache = makeCache(4);
+const PLAN_PK = "plan";
+const PLAN_RK = "current";
+
+// Used until an admin saves the row for the first time — so the platform is
+// never broken by a table that has not been written yet.
+const PLAN_DEFAULTS = {
+  trialDays: 30,
+  trialSubjects: 1,
+  trialTests: 3,
+  trialStudents: 3,
+  // A teacher paying the platform fee: their own subjects and tests are
+  // unlimited (0 means no limit); seats are not.
+  teacherMonthlyPaise: 9900,
+  teacherSubjects: 0,
+  teacherTests: 0,
+  teacherFreeStudents: 2,
+  perStudentMonthlyPaise: 4900,
+  // A ready-made subject, with every test in it.
+  subjectPaise: 49900,
+  subjectAttempts: 2,
+  // What anyone may try before paying for a shelf.
+  freeShelfSubjects: 1,
+  freeShelfTests: 3,
+  parentMaxChildren: 3,
+};
+
+async function planTable() {
+  const t = tableClient("platform");
+  await ensureTable(t);
+  return t;
+}
+
+/** The current rules, memoised. A number an admin changes takes effect on
+ *  their own instance at once and everywhere else within the TTL. */
+async function platformRules() {
+  const hit = planCache.get(PLAN_RK);
+  if (hit !== undefined) return hit;
+  let row = null;
+  try {
+    row = await (await planTable()).getEntity(PLAN_PK, PLAN_RK);
+  } catch {
+    row = null;
+  }
+  const rules = { ...PLAN_DEFAULTS };
+  for (const key of Object.keys(PLAN_DEFAULTS)) {
+    if (row && typeof row[key] === "number" && Number.isFinite(row[key])) rules[key] = row[key];
+  }
+  return planCache.set(PLAN_RK, rules, PLAN_TTL_MS);
+}
+
+// ---------- The account: which role they chose, and what they hold ----------
+//
+// PK is constant and RK is the Google sub, the same trade `tests` and
+// `subjects` already make. Defensible here and not elsewhere: this table holds
+// *teachers and parents*, never students, so it is hundreds of rows rather
+// than hundreds of thousands, and the admin's listing is one partition query
+// with a projection. It joins the outstanding re-partition work rather than
+// being a new kind of problem.
+const ACCOUNT_PK = "account";
+const ACCOUNT_SELECT = [
+  "PartitionKey",
+  "RowKey",
+  "chose",
+  "email",
+  "name",
+  "trialStartedAt",
+  "trialEndsAt",
+  "paidSeats",
+  "exempt",
+  "createdAt",
+];
+
+async function accountsTable() {
+  const t = tableClient("accounts");
+  await ensureTable(t);
+  return t;
+}
+
+async function accountRow(table, sub) {
+  try {
+    return await table.getEntity(ACCOUNT_PK, sub);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Everyone who already had an account keeps what they had.
+ *
+ * The pilot class was promised free forever, and limits arriving by surprise
+ * would bill the one teacher the whole pilot depends on. So the first time
+ * this runs, every existing profile is stamped as an exempt account; new
+ * sign-ups after that get an account row from `choose` instead and are not
+ * touched here.
+ *
+ * Guarded by a marker row, so it is once for the platform rather than once per
+ * cold start, and bounded so a large profiles table cannot stall a request.
+ */
+async function exemptLegacyAccounts(table) {
+  const state = tableClient("authstate");
+  await ensureTable(state);
+  try {
+    await state.getEntity("migration", "exempt-legacy");
+    return; // already done
+  } catch {}
+  try {
+    const profiles = tableClient("profiles");
+    await ensureTable(profiles);
+    const subs = [];
+    const iter = profiles.listEntities({
+      queryOptions: { filter: `PartitionKey eq 'profile'`, select: ["RowKey", "email", "name"] },
+    });
+    for await (const e of iter) {
+      subs.push({ sub: e.rowKey, email: e.email || "", name: e.name || "" });
+      if (subs.length >= 2000) break;
+    }
+    await inBatches(subs, 20, async (p) => {
+      // Never overwrite an account that already exists: a live trial must not
+      // be turned into a free-forever account by a migration.
+      if (await accountRow(table, p.sub)) return;
+      await table.upsertEntity(
+        {
+          partitionKey: ACCOUNT_PK,
+          rowKey: p.sub,
+          chose: "",
+          email: p.email,
+          name: p.name,
+          exempt: true,
+          paidSeats: 0,
+          createdAt: new Date().toISOString(),
+          legacy: true,
+        },
+        "Merge"
+      );
+    });
+    await state.upsertEntity(
+      { partitionKey: "migration", rowKey: "exempt-legacy", at: new Date().toISOString(), count: subs.length },
+      "Merge"
+    );
+  } catch {
+    // Best effort. A failed migration must not take the API down with it —
+    // it simply runs again on the next request.
+  }
+}
+
+/**
+ * Everything a caller is allowed to do, resolved once.
+ *
+ * Read this rather than recomputing a limit at the call site: two places
+ * deciding the same rule is how they come to disagree, which is the same
+ * reason `creditsAreLow` lives in exactly one function.
+ *
+ * `limit` of 0 means no limit. Every gate treats a *missing* answer as the
+ * tightest one, never the loosest.
+ */
+async function entitlements(who) {
+  const rules = await platformRules();
+  // An admin is never gated by a plan they themselves set.
+  if (who.role === "admin") {
+    return { plan: "admin", exempt: true, rules, subjects: 0, tests: 0, students: 0, shelfSubjects: 0, shelfTests: 0, trialEndsAt: "" };
+  }
+  const table = await accountsTable();
+  await exemptLegacyAccounts(table);
+  const row = await accountRow(table, who.id);
+
+  // Anyone who held an account before plans existed keeps everything they had.
+  // The pilot class was promised free forever, and a limit that arrives by
+  // surprise would bill the one teacher the whole pilot depends on.
+  if (row && row.exempt) {
+    return { plan: "exempt", exempt: true, rules, subjects: 0, tests: 0, students: 0, shelfSubjects: 0, shelfTests: 0, trialEndsAt: "" };
+  }
+
+  const chose = String((row && row.chose) || "");
+  const trialEndsAt = String((row && row.trialEndsAt) || "");
+  const onTrial = !!trialEndsAt && Date.parse(trialEndsAt) > Date.now();
+  const paidSeats = typeof row?.paidSeats === "number" ? row.paidSeats : 0;
+
+  if (chose === "teacher" && !onTrial) {
+    // The platform fee buys unlimited subjects and tests of their own; seats
+    // and ready-made content are still bought separately.
+    return {
+      plan: "teacher",
+      exempt: false,
+      rules,
+      chose,
+      trialEndsAt,
+      subjects: rules.teacherSubjects,
+      tests: rules.teacherTests,
+      students: rules.teacherFreeStudents + paidSeats,
+      shelfSubjects: rules.freeShelfSubjects,
+      shelfTests: rules.freeShelfTests,
+    };
+  }
+  if (chose === "parent") {
+    return {
+      plan: "parent",
+      exempt: false,
+      rules,
+      chose,
+      trialEndsAt,
+      subjects: rules.trialSubjects,
+      tests: rules.trialTests,
+      students: rules.parentMaxChildren,
+      shelfSubjects: rules.freeShelfSubjects,
+      shelfTests: rules.freeShelfTests,
+    };
+  }
+  // On trial, or has not chosen yet — the trial's limits either way, which is
+  // the safe direction to be wrong in.
+  return {
+    plan: onTrial ? "trial" : chose ? "lapsed" : "new",
+    exempt: false,
+    rules,
+    chose,
+    trialEndsAt,
+    subjects: rules.trialSubjects,
+    tests: rules.trialTests,
+    students: rules.trialStudents,
+    shelfSubjects: rules.freeShelfSubjects,
+    shelfTests: rules.freeShelfTests,
+  };
+}
+
+/**
+ * How many of `kind` this account already owns.
+ *
+ * One partition query with a one-property projection: the row bodies are not
+ * wanted, only the count. Bounded at the limit + 1, because "are they over"
+ * never needs the exact number once it is past.
+ */
+async function ownedCount(table, pk, ownerSub, stopAt) {
+  const safe = String(ownerSub).replace(/'/g, "''");
+  let n = 0;
+  const iter = table.listEntities({
+    queryOptions: { filter: `PartitionKey eq '${pk}' and ownerSub eq '${safe}'`, select: ["RowKey"] },
+  });
+  for await (const _ of iter) {
+    n += 1;
+    if (stopAt && n > stopAt) break;
+  }
+  return n;
+}
+
+/**
+ * The one shape every limit refusal takes: what you hit, and what to do about
+ * it. A bare "no" makes a person think the product is broken; a number and a
+ * price makes it a decision they can act on.
+ */
+function overLimit(context, what, used, limit, priceNote) {
+  return json(context, 402, {
+    error: `You have used ${used} of ${limit} ${what} on your current plan.${priceNote ? ` ${priceNote}` : ""}`,
+    limit,
+    used,
+  });
+}
+
+// ---------- What they have bought ----------
+//
+// PK is the buyer's own sub, RK the shelf they bought. "Do they own this
+// shelf" is therefore a point read inside their own partition — the right key
+// from the first line, unlike the two tables above.
+async function purchasesTable() {
+  const t = tableClient("purchases");
+  await ensureTable(t);
+  return t;
+}
+
+/** How many library copies this account already holds. Same shape as
+ *  `ownedCount`, but the thing that makes a row a copy is `copiedFrom`. */
+async function adoptedCount(tests, ownerSub, stopAt) {
+  const safe = String(ownerSub).replace(/'/g, "''");
+  let n = 0;
+  const iter = tests.listEntities({
+    queryOptions: {
+      filter: `PartitionKey eq 'test' and ownerSub eq '${safe}' and copiedFrom ne ''`,
+      select: ["RowKey"],
+    },
+  });
+  for await (const _ of iter) {
+    n += 1;
+    if (stopAt && n > stopAt) break;
+  }
+  return n;
+}
+
+async function ownsShelf(ownerSub, shelfId) {
+  if (!shelfId) return false;
+  try {
+    await (await purchasesTable()).getEntity(ownerSub, shelfId);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Rupees, for a message a person reads. Paise are the stored truth. */
+const rupees = (paise) => `₹${Math.round(paise) / 100}`;
+
 // ---------- Sessions (students, admins, teachers and parents) ----------
 //
 // One token shape for all three kinds:  <prefix>.<payload>.<hmac>
@@ -1580,6 +1890,35 @@ handlers.students = async (context, req) => {
       return json(context, 200, { username, password });
     }
 
+    // Seats. A student login is a real child's account, so this gate runs
+    // before the name is even read, and fails closed.
+    const seatEnt = await entitlements(who);
+    if (seatEnt.students > 0) {
+      const safeSub = who.id.replace(/'/g, "''");
+      let seats = 0;
+      const seatIter = students.listEntities({
+        queryOptions: {
+          filter: `PartitionKey eq 'student' and teacherSub eq '${safeSub}'`,
+          select: ["RowKey"],
+        },
+      });
+      for await (const _ of seatIter) {
+        seats += 1;
+        if (seats > seatEnt.students) break;
+      }
+      if (seats >= seatEnt.students) {
+        return overLimit(
+          context,
+          seatEnt.plan === "parent" ? "children" : "student accounts",
+          seats,
+          seatEnt.students,
+          seatEnt.plan === "parent"
+            ? ""
+            : `Each additional student is ${rupees(seatEnt.rules.perStudentMonthlyPaise)} a month.`
+        );
+      }
+    }
+
     const name = String(body.name || "").trim().slice(0, 60);
     const school = String(body.school || "").trim().slice(0, 80);
     const grade = String(body.grade || "").trim().slice(0, 20);
@@ -2093,6 +2432,37 @@ handlers.tests = async (context, req) => {
         if (!intoSubject) return json(context, 403, { error: "Not your subject" });
       }
 
+      // The library is where the money is: a shelf you own copies freely, and
+      // anything else spends the free allowance. The gate runs before any
+      // master is read, and counts what the caller already took — copies carry
+      // `copiedFrom`, which is exactly "came from the library".
+      const ent = await entitlements(who);
+      if (!ent.exempt && ent.shelfTests > 0) {
+        // Which shelf is being taken from decides whether it is already paid
+        // for. A mixed request is judged by its first master's shelf, which is
+        // the only case the UI can produce — the + and New subject both copy
+        // from one shelf at a time.
+        let shelfId = "";
+        try {
+          const first = await tests.getEntity("test", ids[0]);
+          shelfId = String(first.subjectId || "");
+        } catch {}
+        if (!(await ownsShelf(who.id, shelfId))) {
+          const taken = await adoptedCount(tests, who.id, ent.shelfTests);
+          if (taken + ids.length > ent.shelfTests) {
+            return json(context, 402, {
+              error:
+                `Your plan includes ${ent.shelfTests} ready-made tests and you have taken ${taken}. ` +
+                `The whole subject is ${rupees(ent.rules.subjectPaise)}, with every test in it.`,
+              limit: ent.shelfTests,
+              used: taken,
+              subjectPaise: ent.rules.subjectPaise,
+              shelfId,
+            });
+          }
+        }
+      }
+
       const copies = [];
       const failed = [];
       await inBatches(ids, 10, async (id) => {
@@ -2209,6 +2579,19 @@ handlers.tests = async (context, req) => {
     }
 
     if (action === "create") {
+      const ent = await entitlements(who);
+      if (ent.tests > 0) {
+        const have = await ownedCount(tests, "test", who.id, ent.tests);
+        if (have >= ent.tests) {
+          return overLimit(
+            context,
+            "tests",
+            have,
+            ent.tests,
+            `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`
+          );
+        }
+      }
       let id = String(t.id || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 60);
       if (!id) id = `${slugify(title)}-${crypto.randomInt(100, 1000)}`;
       try {
@@ -2445,6 +2828,23 @@ handlers.subjects = async (context, req) => {
     if (action === "create") {
       if (!board || !klass || !subject) {
         return json(context, 400, { error: "Board, class and subject are all required" });
+      }
+      // The gate runs before the row is built, and fails closed: a limit that
+      // cannot be read must not become an unlimited one.
+      const ent = await entitlements(who);
+      if (ent.subjects > 0) {
+        const have = await ownedCount(subjects, "subject", who.id, ent.subjects);
+        if (have >= ent.subjects) {
+          return overLimit(
+            context,
+            "subjects",
+            have,
+            ent.subjects,
+            ent.plan === "parent"
+              ? "A parent account holds one subject."
+              : `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`
+          );
+        }
       }
       const slug = slugify(`${board}${klass}${subject}`);
       const id = `${slug}-${crypto.randomBytes(3).toString("hex")}`;
@@ -3960,6 +4360,155 @@ handlers.aiusage = async (context, req) => {
     await table.createEntity({ ...next, used: 0, promptTokens: 0, completionTokens: 0, costMicroUsd: 0 });
   }
   return json(context, 200, { ok: true, month, teacherId, granted });
+};
+
+/**
+ * The account: which role they chose, and what their plan allows.
+ *
+ * `GET`  — the caller's own entitlements, so a screen can say what is left
+ *          before they hit a wall. Admins may add `?all=1` for the roster.
+ * `POST` — `choose` (once, at sign-up), and the admin's manual levers:
+ *          `exempt`, `extend`, `seats`, `grant` (a shelf), `rules`.
+ *
+ * Not named `admin…`: Azure reserves that route namespace and serves it as a
+ * 404 with no warning anywhere.
+ */
+handlers.accounts = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req, context);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+  if (who.kind === "student") return json(context, 403, { error: "Not for students" });
+  const table = await accountsTable();
+
+  if (req.method === "GET") {
+    if (who.role === "admin" && String((req.query && req.query.all) || "")) {
+      const rows = [];
+      const iter = table.listEntities({
+        queryOptions: { filter: `PartitionKey eq '${ACCOUNT_PK}'`, select: ACCOUNT_SELECT },
+      });
+      for await (const e of iter) {
+        rows.push({
+          sub: e.rowKey,
+          name: e.name || "",
+          email: e.email || "",
+          chose: e.chose || "",
+          trialEndsAt: e.trialEndsAt || "",
+          paidSeats: typeof e.paidSeats === "number" ? e.paidSeats : 0,
+          exempt: !!e.exempt,
+          createdAt: e.createdAt || "",
+        });
+        if (rows.length >= 500) break;
+      }
+      rows.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+      return json(context, 200, { accounts: rows, rules: await platformRules() });
+    }
+    const ent = await entitlements(who);
+    const row = await accountRow(table, who.id);
+    return json(context, 200, {
+      plan: ent.plan,
+      chose: String((row && row.chose) || ""),
+      trialEndsAt: ent.trialEndsAt || "",
+      limits: {
+        subjects: ent.subjects,
+        tests: ent.tests,
+        students: ent.students,
+        shelfTests: ent.shelfTests,
+      },
+      rules: ent.rules,
+    });
+  }
+
+  const body = getBody(req) || {};
+  const action = String(body.action || "");
+
+  if (action === "choose") {
+    const chose = body.chose === "teacher" ? "teacher" : body.chose === "parent" ? "parent" : "";
+    if (!chose) return json(context, 400, { error: "Choose teacher or parent" });
+    const existing = await accountRow(table, who.id);
+    // The choice is made once. Letting it be re-picked would let somebody
+    // restart the trial at will, and would move a roster of real children
+    // between two kinds of account.
+    if (existing && existing.chose) {
+      return json(context, 409, { error: "You have already chosen", chose: existing.chose });
+    }
+    const rules = await platformRules();
+    const now = new Date();
+    const ends = new Date(now.getTime() + rules.trialDays * 24 * 60 * 60 * 1000);
+    await table.upsertEntity(
+      {
+        partitionKey: ACCOUNT_PK,
+        rowKey: who.id,
+        chose,
+        email: who.email || "",
+        name: who.name || "",
+        trialStartedAt: now.toISOString(),
+        trialEndsAt: ends.toISOString(),
+        paidSeats: 0,
+        exempt: false,
+        createdAt: (existing && existing.createdAt) || now.toISOString(),
+      },
+      "Merge"
+    );
+    return json(context, 200, { ok: true, chose, trialEndsAt: ends.toISOString() });
+  }
+
+  if (who.role !== "admin") return json(context, 403, { error: "Admins only" });
+
+  if (action === "rules") {
+    const next = { partitionKey: PLAN_PK, rowKey: PLAN_RK, updatedAt: new Date().toISOString() };
+    for (const key of Object.keys(PLAN_DEFAULTS)) {
+      const v = Number(body[key]);
+      // Silently ignoring a bad number would save a price nobody typed.
+      if (body[key] !== undefined) {
+        if (!Number.isFinite(v) || v < 0) return json(context, 400, { error: `${key} must be a number` });
+        next[key] = Math.round(v);
+      }
+    }
+    await (await planTable()).upsertEntity(next, "Merge");
+    // The instance that saved is right at once; the rest inside the TTL.
+    planCache.drop(PLAN_RK);
+    return json(context, 200, { ok: true, rules: await platformRules() });
+  }
+
+  const sub = String(body.sub || "").trim();
+  if (!sub || sub.length > 200 || /[/\\#?]/.test(sub)) {
+    return json(context, 400, { error: "An account is needed" });
+  }
+
+  if (action === "grant") {
+    const shelfId = safeId(body.shelfId, 80);
+    if (!shelfId) return json(context, 400, { error: "A subject is needed" });
+    await (await purchasesTable()).upsertEntity(
+      {
+        partitionKey: sub,
+        rowKey: shelfId,
+        grantedBy: who.id,
+        grantedAt: new Date().toISOString(),
+        // Recorded even when nothing was charged, so the day payments arrive
+        // the history reads the same.
+        pricePaise: (await platformRules()).subjectPaise,
+      },
+      "Merge"
+    );
+    return json(context, 200, { ok: true, sub, shelfId });
+  }
+
+  const patch = { partitionKey: ACCOUNT_PK, rowKey: sub, updatedAt: new Date().toISOString() };
+  if (action === "exempt") {
+    patch.exempt = !!body.exempt;
+  } else if (action === "seats") {
+    const seats = Math.round(Number(body.seats));
+    if (!Number.isFinite(seats) || seats < 0) return json(context, 400, { error: "Seats must be a number" });
+    patch.paidSeats = seats;
+  } else if (action === "extend") {
+    const days = Math.round(Number(body.days));
+    if (!Number.isFinite(days) || days < 0) return json(context, 400, { error: "Days must be a number" });
+    patch.trialEndsAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+  } else {
+    return json(context, 400, { error: `Unknown action: ${action}` });
+  }
+  await table.upsertEntity(patch, "Merge");
+  return json(context, 200, { ok: true, sub });
 };
 
 // ---------- Releasing the answers ----------

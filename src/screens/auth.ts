@@ -3,6 +3,8 @@
 import { track } from "../analytics";
 import {
   adminLogin,
+  chooseRole,
+  fetchEntitlements,
   getProfile,
   isLoggedIn,
   isParent,
@@ -12,6 +14,7 @@ import {
   studentLogin,
 } from "../auth";
 import { setGuest } from "../attempts";
+import { openModal } from "../modal";
 import { app, escapeHtml, setUrl, topbar } from "../dom";
 import { showHome } from "./home";
 import { showSubjects } from "./subjects";
@@ -72,8 +75,14 @@ export function showWelcome(next?: () => void) {
     (profile) => {
       track("login_success", { from: "welcome" });
       setGuest(false);
-      if (!profile.phone) showPhoneForm(done);
-      else done();
+      // The role comes first: it decides which app they land in, and the
+      // phone number is a detail by comparison. The *server* decides whether
+      // to ask — the absence of a stored choice — so a reload or a second
+      // device cannot skip past it.
+      void showRoleChoiceIfNeeded(() => {
+        if (!profile.phone) showPhoneForm(done);
+        else done();
+      });
     },
     (message) => {
       errEl.textContent = message;
@@ -196,6 +205,61 @@ export function showAdminLogin(next: () => void) {
     }
   });
   document.getElementById("ad-back")!.addEventListener("click", () => showWelcome(next));
+}
+
+/**
+ * Parent or teacher, asked once.
+ *
+ * Only shown when the server says no choice is stored. An account that
+ * predates plans has one implicitly and is never asked — the same reason it is
+ * exempt from the limits.
+ */
+export async function showRoleChoiceIfNeeded(next: () => void): Promise<void> {
+  const ent = await fetchEntitlements();
+  // A failed call must not strand somebody on a chooser they cannot complete,
+  // and must not silently make the choice for them. Carry on; the next screen
+  // asks again.
+  if (!ent || ent.chose || ent.plan === "exempt" || ent.plan === "admin") {
+    next();
+    return;
+  }
+  const days = Number(ent.rules?.trialDays) || 30;
+  openModal({
+    title: "How will you use Vidai?",
+    description: `Pick the one that fits. Your ${days}-day trial starts now, and this is asked only once.`,
+    fields: [
+      {
+        name: "chose",
+        label: "",
+        kind: "cards",
+        required: true,
+        choices: [
+          {
+            value: "teacher",
+            label: "I teach a class",
+            hint: "Set tests, add your students, and mark what they hand in.",
+            badge: `${days}-day trial`,
+          },
+          {
+            value: "parent",
+            label: "I'm a parent",
+            hint: "Add your children and give them ready-made practice tests.",
+            badge: "Free to try",
+          },
+        ],
+      },
+    ],
+    submitLabel: "Start",
+    onSubmit: async (values) => {
+      const pick = values.chose === "teacher" ? "teacher" : "parent";
+      const res = await chooseRole(pick);
+      // 409 means it was already chosen — on another tab, most likely. That is
+      // not an error worth stopping for.
+      if (!res.ok && !/already/i.test(res.message || "")) return res.message || "Could not save that.";
+      track("role_chosen", { role: pick });
+      next();
+    },
+  });
 }
 
 export function showPhoneForm(next: () => void) {
