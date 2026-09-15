@@ -166,6 +166,12 @@ new code against *production's* tables, and compatibility runs one way only:
 new code reads old rows, old code cannot read new ones. Opening QA on such a PR
 migrates live data into a shape the live site cannot see.
 
+**Re-partitioning did not make a teacher's own test listing faster**, and that
+is worth knowing before you reach for a partition key again. It was never slow
+because of other teachers' rows: `visible()` gives every teacher all 125
+published masters, which is 65 KB of the 65 KB. A partition key fixes what
+*grows*; it does nothing about what is already big. Measure which one you have.
+
 Still outstanding, in order: bake published tests to immutable blobs on publish;
 then delete `LEGACY_TEST_PK` / `LEGACY_SUBJECT_PK` and the paths that read them,
 once both tables have drained.

@@ -689,6 +689,44 @@ So the change ships **dual-read** and the tables drain under ordinary traffic.
 that mentions them once both tables are empty of them. Until then the cost is
 one query against a partition that is usually empty.
 
+### What it actually bought, measured on production after the migration
+
+Verified against production once the drain had run, with the pre-merge numbers
+taken minutes earlier for comparison. **The library came back identical** — 125
+masters, all published, 1875 questions, 4037 marks, and every admin-visible row
+the same id for id.
+
+| Call | Before | After |
+|---|---|---|
+| `GET /api/tests` *(staff)* | 65 KB, 1.3–2.0s | 65 KB, **1.3–2.0s — unchanged** |
+| `GET /api/tests?library=1` | 65 KB, 0.7–1.4s | 65 KB, 0.7–1.3s |
+| `GET /api/subjects` *(staff)* | 4 KB, 0.95–1.5s | 4 KB, **0.58–0.97s** |
+| `GET /api/tests` *(student)* | whole-table scan | **42 B, one partition, ~0.5s** |
+
+**A member of staff's test listing did not get faster, and it was never going to.**
+It was not slow because of *other teachers' rows* — it was slow because
+`visible()` gives every teacher **all 125 published masters**, and that is most
+of the 126 rows and all of the 65 KB. The re-partition fixes the part that
+*grows*: the walk is now the caller's own work plus the library, so adding the
+five-hundredth teacher costs the other 499 nothing. It does not fix the part
+that is already big.
+
+**So the next thing to do is the one this measurement exposed**, and it is
+cheaper than it sounds: the client throws those masters away.
+`src/screens/editor/index.ts` filters `!t.platform` and My tests filters
+`!t.platform || isAdmin()`, so a teacher is sent 65 KB of library on every
+render in order to discard it. The masters are wanted only by `?library=1`,
+Browse and a shelf-scoped `?subjectId=`. Dropping them from the unscoped
+listing is a change to `visible()` and its callers, not to the storage shape.
+
+**One visible number changed, and it was wrong before.** A library shelf's card
+read **17 tests** and now reads **14**. Fourteen is right: the shelf holds
+exactly the fourteen `lib-c10-*` masters, which is what every caller has always
+been shown in it. The old count came from a walk of the **whole table** counting
+any row that named that `subjectId`, so it swept in three rows that reach nobody
+through the shelf; the new walk counts the caller's own partitions and the
+library, which is the question the card is asking. Stable at 14 across repeats.
+
 ### The test that would otherwise pass vacuously
 
 A listing returns the right rows whether it names a partition or scans the whole
@@ -737,6 +775,11 @@ Ranked, with the next architectural step first:
   lives in its owner's partition* below. What is left of it is one line of
   clean-up: `LEGACY_TEST_PK` / `LEGACY_SUBJECT_PK` and every path that reads
   them, once both tables have drained.
+- **Stop sending every teacher the whole library on every render.** The plain
+  `GET /api/tests` hands a teacher all 125 published masters — 65 KB — which the
+  client then filters out (`!t.platform`). It is the largest single thing left on
+  the hot path, and the measurement above is what exposed it. `?library=1`,
+  Browse and a shelf-scoped `?subjectId=` are the only callers that want them.
 - **Bake published tests to immutable blobs on publish.** Editing is already
   draft-only, so a published paper never changes — which makes it CDN-cacheable
   forever at `tests/<id>/<version>.json`. Forty students opening the same test
