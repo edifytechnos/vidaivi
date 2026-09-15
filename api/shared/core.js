@@ -1704,12 +1704,198 @@ handlers.reports = async (context, req) => {
 
 // ---------- Tests (DB-backed; Phase 1 of the product plan) ----------
 //
-// Table "tests": PK "test", RK = test id. Questions are stored as JSON
-// chunked across qc0..qcN string properties (Table Storage caps one string
-// property at 64KB). Taxonomy fields (board/klass/subject) are stored from
-// day one even though the UI is fixed to CBSE/12/Maths for now.
+// Table "tests": PK = WHO THE ROW BELONGS TO, RK = test id. Questions are
+// stored as JSON chunked across qc0..qcN string properties (Table Storage caps
+// one string property at 64KB). Taxonomy fields (board/klass/subject) are
+// stored from day one even though the UI is fixed to CBSE/12/Maths for now.
+//
+// The partition key was the constant "test" until the re-partition, which made
+// every listing a walk of the whole platform: "show me my twelve papers" read
+// every row every teacher had ever written. Seeding the library made that
+// visible rather than theoretical -- a teacher's home screen walked 126 rows
+// for the twelve it wanted, and the walk grows with the platform forever.
+//
+// Now a row lives in its owner's partition, so "my tests" is one bounded
+// partition query whose cost is the caller's own work and nothing else. The
+// same applies to "subjects". `ownerSub` is still stored on the row: it is the
+// authorization field that canManageTest() and visible() read, and nothing
+// about who may do what is decided by a partition key.
 
 const TEST_STATUSES = ["draft", "published", "archived"];
+
+// The library has a partition of its own. A master belongs to the platform
+// rather than to whichever admin typed it in, so `?library=1` is one partition
+// query instead of a walk past every teacher's drafts -- and an admin's own
+// personal drafts stay out of the library's way.
+//
+// "~" can begin neither a Google sub (digits) nor an admin id ("adm~..."), so
+// neither name can ever collide with a real owner.
+const PLATFORM_PK = "~platform";
+// A row whose ownerSub is missing. Table Storage accepts an empty partition
+// key, but a row nobody can name is worse than one parked somewhere visible.
+const ORPHAN_PK = "~orphan";
+
+// The pre-re-partition names. Rows written before the change still live here,
+// and every listing below reads them as a fallback and moves the ones it meets
+// (drainLegacy). DELETE THESE, and every `legacy` path that mentions them,
+// once both tables are empty of them -- the cost until then is one query
+// against a partition that is usually empty.
+const LEGACY_TEST_PK = "test";
+const LEGACY_SUBJECT_PK = "subject";
+
+/**
+ * Which partition a test or subject row belongs in.
+ *
+ * Read it from the ROW, never from the caller: a row's home is decided by
+ * whose it is, and a caller asking about someone else's row must not be able
+ * to move it by asking.
+ */
+function ownerPartition(row) {
+  if (row && row.platform) return PLATFORM_PK;
+  const owner = String((row && row.ownerSub) || "").trim();
+  return owner || ORPHAN_PK;
+}
+
+/** One partition key, escaped for an OData filter. */
+function pkFilter(pk) {
+  return `PartitionKey eq '${String(pk).replace(/'/g, "''")}'`;
+}
+
+/**
+ * Read one row by id from the partitions a caller could legitimately hold it
+ * in — their own, and the library's.
+ *
+ * With a constant partition key this was a single point read. With a real one
+ * the partition has to be named, and the set worth naming is exactly the set
+ * visible() would admit anyway. That is not a loosening: a caller who cannot
+ * name the partition cannot reach the row at all, so another teacher's test
+ * now reads as missing rather than as refused — one fewer way to learn that an
+ * id exists.
+ *
+ * Awaited in sequence on purpose. The caller's own partition is listed first
+ * and is the overwhelmingly common case, so this is usually ONE round trip;
+ * running all of them in parallel would pay for every candidate every time.
+ * The list is never longer than three.
+ */
+async function readByPartitions(table, partitions, rowKey, legacyPk) {
+  for (const pk of [...new Set([...partitions, legacyPk].filter(Boolean))]) {
+    try {
+      return await table.getEntity(pk, rowKey);
+    } catch {}
+  }
+  return null;
+}
+
+/**
+ * Write a row back, moving it into its real partition if it is still sitting
+ * in the legacy one.
+ *
+ * Every write goes through this, and that is what makes the lazy migration
+ * safe. A drain running at the same moment as an edit can only ever lose to
+ * it: the edit reads the legacy row, writes the real partition and drops the
+ * legacy twin, so the newest content is always the copy in the real partition.
+ * Without this the drain could copy a row a heartbeat before an edit landed in
+ * the legacy partition, and the edit would go down with it.
+ */
+async function saveRow(table, legacyPk, entity, mode = "Replace") {
+  const pk = ownerPartition(entity);
+  if (entity.partitionKey === pk) {
+    await table.updateEntity(entity, mode);
+    return entity;
+  }
+  const moved = { ...entity, partitionKey: pk };
+  delete moved.etag;
+  delete moved.timestamp;
+  // Replace, never Merge: this row is arriving in its partition for the first
+  // time, so there is nothing to merge with.
+  await table.upsertEntity(moved, "Replace");
+  try {
+    await table.deleteEntity(legacyPk, entity.rowKey);
+  } catch {}
+  return moved;
+}
+
+/**
+ * Move one row left behind by the re-partition into its real partition.
+ *
+ * Bounded by the caller's budget, exactly as backfillCounts is: one listing
+ * can never turn into a table-wide rewrite. The row is READ IN FULL first —
+ * the listing that met it projected the question chunks away, so building the
+ * new row from that projection would drop every question in it.
+ *
+ * The new row is written before the old one is deleted. A crash between the
+ * two leaves a duplicate, which walkPartitions already tolerates by preferring
+ * the copy in the real partition; a crash the other way round would lose the
+ * test.
+ */
+async function drainLegacy(table, legacyPk, rowKey, budget) {
+  if (!budget || budget.left <= 0) return;
+  budget.left--;
+  try {
+    const full = await table.getEntity(legacyPk, rowKey);
+    const pk = ownerPartition(full);
+    if (pk === legacyPk) return;
+    // Already in its real partition? Then this legacy copy is stale BY
+    // CONSTRUCTION, because saveRow writes the real partition first and drops
+    // the legacy twin second — a row present in both is one whose delete did
+    // not land. Copying it across would undo the edit that wrote the real one,
+    // so the stale copy is what goes.
+    let already = false;
+    try {
+      await table.getEntity(pk, rowKey);
+      already = true;
+    } catch {}
+    if (already) {
+      await table.deleteEntity(legacyPk, rowKey);
+      return;
+    }
+    await saveRow(table, legacyPk, full);
+  } catch {
+    // Best effort. A row that fails to move is simply read from the legacy
+    // partition again next time; never fail a listing over housekeeping.
+  }
+}
+
+/**
+ * Walk several partitions of one table as one stream.
+ *
+ * What used to be a single scan of every row on the platform is now a handful
+ * of queries, each naming its own PartitionKey (rule 2), whose combined size
+ * is the caller's own work plus the library — bounded by them, and no longer
+ * by how many teachers the platform has. `onRow` returns false to stop early.
+ *
+ * `legacyPk` is walked last and its rows are moved into their real partitions
+ * as they are met, so the tables migrate themselves under ordinary traffic and
+ * nothing is ever unreadable in the meantime. It is a content-preserving move
+ * of a row from one partition to another, which is why any caller may trigger
+ * it and not only the row's owner.
+ */
+async function walkPartitions(table, opts, onRow) {
+  const { partitions = [], select, legacyPk, budget } = opts;
+  const seen = new Set();
+  for (const pk of [...new Set(partitions.filter(Boolean))]) {
+    const iter = table.listEntities({ queryOptions: { filter: pkFilter(pk), select } });
+    for await (const row of iter) {
+      seen.add(row.rowKey);
+      if ((await onRow(row)) === false) return;
+    }
+  }
+  if (!legacyPk) return;
+  const iter = table.listEntities({ queryOptions: { filter: pkFilter(legacyPk), select } });
+  for await (const row of iter) {
+    // A duplicate left behind by an interrupted move. The real partition has
+    // already answered for this id, and by construction it is the newer copy.
+    if (seen.has(row.rowKey)) {
+      await drainLegacy(table, legacyPk, row.rowKey, budget);
+      continue;
+    }
+    const verdict = await onRow(row);
+    // After onRow, not before: the row is moved out from under a listing that
+    // has already had its look at it.
+    await drainLegacy(table, legacyPk, row.rowKey, budget);
+    if (verdict === false) return;
+  }
+}
 
 // Listing tests must never pull their questions off the wire. Without an
 // explicit projection Table Storage hands back every property — qc0..qcN
@@ -1726,6 +1912,11 @@ const TEST_META_SELECT = [
 // How many legacy rows one request may heal. Beyond it the rest keep their
 // fallback for the next listing, so no single request pays an unbounded cost.
 const COUNT_BACKFILL_BUDGET = 25;
+
+// The same bound for the re-partition drain, and deliberately its own number:
+// sharing one budget would let a listing full of unstamped counts starve the
+// migration, or the other way round.
+const LEGACY_DRAIN_BUDGET = 25;
 
 const SUBJECT_SELECT = [
   "PartitionKey", "RowKey", "board", "klass", "subject", "title", "ownerSub",
@@ -1771,8 +1962,15 @@ async function backfillCounts(tests, e, budget) {
   if (storedCounts(e) || budget.left <= 0) return e;
   budget.left--;
   try {
-    const counts = countsFromQuestions(unchunkQuestions(await tests.getEntity("test", e.rowKey)));
-    await tests.updateEntity({ partitionKey: "test", rowKey: e.rowKey, ...counts }, "Merge");
+    // The row's own partition, taken off the projected row — never a constant.
+    // A heal that guessed the partition would silently stop healing anything
+    // the moment the re-partition moved the row.
+    const full = await tests.getEntity(e.partitionKey, e.rowKey);
+    const counts = countsFromQuestions(unchunkQuestions(full));
+    await tests.updateEntity(
+      { partitionKey: e.partitionKey, rowKey: e.rowKey, ...counts },
+      "Merge"
+    );
     return { ...e, ...counts };
   } catch {
     return e; // derived data: a failed heal must never fail the listing
@@ -1959,18 +2157,30 @@ async function subjectForAdopter(who, master) {
   const subject = master.subject || "Maths";
   const subjects = tableClient("subjects");
   await ensureTable(subjects);
-  const iter = subjects.listEntities({
-    queryOptions: { filter: `PartitionKey eq 'subject'`, select: SUBJECT_SELECT },
-  });
-  for await (const e of iter) {
-    if (e.ownerSub !== who.id) continue;
-    if ((e.board || "") === board && (e.klass || "") === klass && (e.subject || "") === subject) {
-      return e.rowKey;
+  // The caller's own partition: the question is "which of MY subjects is this",
+  // which is precisely one partition now rather than every subject on the
+  // platform filtered down to one owner in memory.
+  let found = "";
+  await walkPartitions(
+    subjects,
+    {
+      partitions: [who.id],
+      select: SUBJECT_SELECT,
+      legacyPk: LEGACY_SUBJECT_PK,
+      budget: { left: LEGACY_DRAIN_BUDGET },
+    },
+    (e) => {
+      if (e.ownerSub !== who.id) return;
+      if ((e.board || "") === board && (e.klass || "") === klass && (e.subject || "") === subject) {
+        found = e.rowKey;
+        return false;
+      }
     }
-  }
+  );
+  if (found) return found;
   const id = `${slugify(`${board}${klass}${subject}`)}-${crypto.randomBytes(3).toString("hex")}`;
   const entity = {
-    partitionKey: "subject",
+    partitionKey: who.id,
     rowKey: id,
     board,
     klass,
@@ -1995,6 +2205,14 @@ handlers.tests = async (context, req) => {
   await ensureTable(tests);
   const isStaff = who.role === "teacher" || who.role === "admin";
 
+  // The partitions a member of staff may hold a test in: their own work, and
+  // the library. It is exactly the set canManageTest() admits — an admin may
+  // manage a master or their own test, a teacher only their own — so naming
+  // the partition can never reach a row the old code would have refused.
+  // A student's partition is their teacher's, and is resolved below, after the
+  // parent-as-child case has settled whose teacher that is.
+  const staffPartitions = isStaff ? [who.id, PLATFORM_PK] : [];
+
   if (req.method === "POST") {
     if (!isStaff) return json(context, 403, { error: "Teachers only" });
     const body = getBody(req);
@@ -2002,16 +2220,14 @@ handlers.tests = async (context, req) => {
 
     if (["publish", "unpublish", "archive", "delete"].includes(action)) {
       const id = String(body.id || "").trim();
-      let entity;
-      try {
-        entity = await tests.getEntity("test", id);
-      } catch {
-        return json(context, 404, { error: "Test not found" });
-      }
+      const entity = await readByPartitions(tests, staffPartitions, id, LEGACY_TEST_PK);
+      if (!entity) return json(context, 404, { error: "Test not found" });
       if (!canManageTest(who, entity)) return json(context, 403, { error: "Not your test" });
       if (action === "delete") {
         if (entity.status !== "draft") return json(context, 400, { error: "Only drafts can be deleted — archive instead" });
-        await tests.deleteEntity("test", id);
+        // The row's own partition, not a constant: a delete that named the
+        // wrong one would answer ok and leave the test standing.
+        await tests.deleteEntity(entity.partitionKey, id);
         return json(context, 200, { ok: true });
       }
       if (action === "publish") {
@@ -2031,18 +2247,14 @@ handlers.tests = async (context, req) => {
       }
       entity.status = action === "publish" ? "published" : action === "archive" ? "archived" : "draft";
       entity.updatedAt = new Date().toISOString();
-      await tests.updateEntity(entity, "Replace");
+      await saveRow(tests, LEGACY_TEST_PK, entity);
       return json(context, 200, { ok: true, status: entity.status });
     }
 
     if (action === "assign") {
       const id = String(body.id || "").trim();
-      let entity;
-      try {
-        entity = await tests.getEntity("test", id);
-      } catch {
-        return json(context, 404, { error: "Test not found" });
-      }
+      const entity = await readByPartitions(tests, staffPartitions, id, LEGACY_TEST_PK);
+      if (!entity) return json(context, 404, { error: "Test not found" });
       if (!canManageTest(who, entity)) return json(context, 403, { error: "Not your test" });
 
       const audience = body.audience === "selected" ? "selected" : "class";
@@ -2063,7 +2275,7 @@ handlers.tests = async (context, req) => {
       entity.audience = audience;
       entity.assignedTo = JSON.stringify(usernames);
       entity.updatedAt = new Date().toISOString();
-      await tests.updateEntity(entity, "Merge");
+      await saveRow(tests, LEGACY_TEST_PK, entity, "Merge");
       return json(context, 200, { ok: true, audience, assignedCount: usernames.length });
     }
 
@@ -2086,20 +2298,22 @@ handlers.tests = async (context, req) => {
       if (wantSubject) {
         const subjects = tableClient("subjects");
         await ensureTable(subjects);
-        try {
-          const row = await subjects.getEntity("subject", wantSubject);
-          if (row.ownerSub === who.id && !row.platform) intoSubject = row.rowKey;
-        } catch {}
+        // The caller's own partition only. A subject that is not theirs is not
+        // in it, so the 403 below is now reached without ever reading the row —
+        // the partition key enforces the rule the check states.
+        const row = await readByPartitions(subjects, [who.id], wantSubject, LEGACY_SUBJECT_PK);
+        if (row && row.ownerSub === who.id && !row.platform) intoSubject = row.rowKey;
         if (!intoSubject) return json(context, 403, { error: "Not your subject" });
       }
 
       const copies = [];
       const failed = [];
       await inBatches(ids, 10, async (id) => {
-        let master;
-        try {
-          master = await tests.getEntity("test", id);
-        } catch {
+        // A master is always in the library's partition, so this is one point
+        // read rather than a search — and a teacher naming their own test's id
+        // here cannot reach it, which the platform check below wanted anyway.
+        const master = await readByPartitions(tests, [PLATFORM_PK], id, LEGACY_TEST_PK);
+        if (!master) {
           failed.push(id);
           return;
         }
@@ -2110,7 +2324,9 @@ handlers.tests = async (context, req) => {
         const questions = unchunkQuestions(master);
         const copyId = `${slugify(master.title || "test")}-${crypto.randomBytes(3).toString("hex")}`.slice(0, 60);
         const entity = {
-          partitionKey: "test",
+          // The copy belongs to the teacher who took it, so it lands in their
+          // partition and never in the library's.
+          partitionKey: who.id,
           rowKey: copyId,
           title: String(master.title || "Test").slice(0, 120),
           chapter: String(master.chapter || "").slice(0, 60),
@@ -2164,7 +2380,7 @@ handlers.tests = async (context, req) => {
         if (checked.error) continue;
         const id = `sample-${slugify(sample.title || "test")}-${crypto.randomBytes(3).toString("hex")}`;
         const entity = {
-          partitionKey: "test",
+          partitionKey: who.id,
           rowKey: id,
           title: String(sample.title || "Sample test").slice(0, 120),
           chapter: String(sample.chapter || "").slice(0, 60),
@@ -2209,14 +2425,23 @@ handlers.tests = async (context, req) => {
     }
 
     if (action === "create") {
+      // Decided before the row is built, because it decides the partition.
+      const isPlatform = !!t.platform && who.role === "admin";
       let id = String(t.id || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 60);
-      if (!id) id = `${slugify(title)}-${crypto.randomInt(100, 1000)}`;
-      try {
-        await tests.getEntity("test", id);
-        return json(context, 409, { error: `Test id already exists: ${id}` });
-      } catch {}
+      if (!id) id = `${slugify(title)}-${crypto.randomBytes(3).toString("hex")}`;
+      // A test id is now unique PER OWNER rather than across the platform:
+      // uniqueness in Table Storage is (partition, row), and the partition is
+      // the owner. That is the right scope, because it is also the scope a link
+      // resolves in — a student following `?test=<id>` is only ever shown their
+      // own teacher's test, and readByPartitions tries the caller's own
+      // partition before the library, so a teacher's id always beats a master's
+      // for that teacher. The generated suffix went from 900 values to 16.7
+      // million in the same change, since a collision is no longer refused by a
+      // platform-wide check that no longer exists.
+      const clash = await readByPartitions(tests, isPlatform ? [PLATFORM_PK] : [who.id], id, LEGACY_TEST_PK);
+      if (clash) return json(context, 409, { error: `Test id already exists: ${id}` });
       const entity = {
-        partitionKey: "test",
+        partitionKey: isPlatform ? PLATFORM_PK : who.id,
         rowKey: id,
         title,
         chapter: String(t.chapter || "").slice(0, 60),
@@ -2224,7 +2449,7 @@ handlers.tests = async (context, req) => {
         order: Number.isFinite(Number(t.order)) ? Number(t.order) : 99,
         access: t.access === "open" ? "open" : "login",
         status: "draft",
-        platform: !!t.platform && who.role === "admin",
+        platform: isPlatform,
         ownerSub: who.id,
         ownerEmail: who.email || "",
         subjectId: String(t.subjectId || "").slice(0, 80),
@@ -2237,12 +2462,21 @@ handlers.tests = async (context, req) => {
       };
       // Stamp the taxonomy from the subject so a test always knows its context.
       if (entity.subjectId) {
-        try {
-          const sub = await tableClient("subjects").getEntity("subject", entity.subjectId);
+        const subjects = tableClient("subjects");
+        await ensureTable(subjects);
+        // Their own subject, or a library shelf when an admin is authoring a
+        // master into one.
+        const sub = await readByPartitions(
+          subjects,
+          [who.id, PLATFORM_PK],
+          entity.subjectId,
+          LEGACY_SUBJECT_PK
+        );
+        if (sub) {
           entity.board = sub.board || entity.board;
           entity.klass = sub.klass || entity.klass;
           entity.subject = sub.subject || entity.subject;
-        } catch {}
+        }
       }
       chunkQuestions(entity, checked.questions);
       await tests.createEntity(entity);
@@ -2251,12 +2485,8 @@ handlers.tests = async (context, req) => {
 
     // update
     const id = String(t.id || "").trim();
-    let entity;
-    try {
-      entity = await tests.getEntity("test", id);
-    } catch {
-      return json(context, 404, { error: "Test not found" });
-    }
+    const entity = await readByPartitions(tests, staffPartitions, id, LEGACY_TEST_PK);
+    if (!entity) return json(context, 404, { error: "Test not found" });
     if (!canManageTest(who, entity)) return json(context, 403, { error: "Not your test" });
     // Clear old chunks before writing new ones (Replace drops absent props).
     for (let i = 0; i < (entity.chunkCount || 0); i++) delete entity[`qc${i}`];
@@ -2267,7 +2497,7 @@ handlers.tests = async (context, req) => {
     if (t.access) entity.access = t.access === "open" ? "open" : "login";
     entity.updatedAt = new Date().toISOString();
     chunkQuestions(entity, checked.questions);
-    await tests.updateEntity(entity, "Replace");
+    await saveRow(tests, LEGACY_TEST_PK, entity);
     return json(context, 200, { test: testMeta(entity) });
   }
 
@@ -2302,13 +2532,16 @@ handlers.tests = async (context, req) => {
     return assignedTo(e, asUsername);
   }
 
+  // The partitions this caller could possibly hold a VISIBLE test in — the
+  // mirror image of visible() above, clause for clause. Staff: their own work
+  // and the library. A student, or a parent reading as their child: that
+  // child's teacher and nobody else, because a master reaches no student
+  // directly and another teacher's class is not theirs.
+  const readPartitions = isStaff && !asChild ? staffPartitions : [teacherSub];
+
   if (wantedId) {
-    let entity;
-    try {
-      entity = await tests.getEntity("test", wantedId);
-    } catch {
-      return json(context, 404, { error: "Test not found" });
-    }
+    const entity = await readByPartitions(tests, readPartitions, wantedId, LEGACY_TEST_PK);
+    if (!entity) return json(context, 404, { error: "Test not found" });
     if (!visible(entity)) return json(context, 403, { error: "Not available" });
     const full = testFull(entity);
     // The class list is the teacher's business — a student never receives it.
@@ -2322,16 +2555,26 @@ handlers.tests = async (context, req) => {
     const masters = [];
     const mine = new Set();
     const budget = { left: COUNT_BACKFILL_BUDGET };
-    const it = tests.listEntities({
-      queryOptions: { filter: `PartitionKey eq 'test'`, select: TEST_META_SELECT },
-    });
-    for await (const e of it) {
-      if (e.platform && e.status === "published") {
-        if (!onlySubject || (e.subjectId || "") === onlySubject) {
-          masters.push(testMeta(await backfillCounts(tests, e, budget)));
-        }
-      } else if (e.ownerSub === who.id && e.copiedFrom) mine.add(e.copiedFrom);
-    }
+    const drain = { left: LEGACY_DRAIN_BUDGET };
+    // Two partitions, not the platform: the library, and the caller's own work
+    // so "have I already taken a copy of this" can be answered without a
+    // second pass. The body below is unchanged — only what it walks is.
+    await walkPartitions(
+      tests,
+      {
+        partitions: [PLATFORM_PK, who.id],
+        select: TEST_META_SELECT,
+        legacyPk: LEGACY_TEST_PK,
+        budget: drain,
+      },
+      async (e) => {
+        if (e.platform && e.status === "published") {
+          if (!onlySubject || (e.subjectId || "") === onlySubject) {
+            masters.push(testMeta(await backfillCounts(tests, e, budget)));
+          }
+        } else if (e.ownerSub === who.id && e.copiedFrom) mine.add(e.copiedFrom);
+      }
+    );
     for (const m of masters) m.adopted = mine.has(m.id);
     masters.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
     return json(context, 200, { tests: masters });
@@ -2341,17 +2584,24 @@ handlers.tests = async (context, req) => {
   const list = [];
   let ownedCount = 0;
   const budget = { left: COUNT_BACKFILL_BUDGET };
-  const iter = tests.listEntities({
-    queryOptions: { filter: `PartitionKey eq 'test'`, select: TEST_META_SELECT },
-  });
-  for await (const row of iter) {
-    if (isStaff && row.ownerSub === who.id) ownedCount++;
-    if (wantedSubject && (row.subjectId || "") !== wantedSubject) continue;
-    if (!visible(row)) continue;
-    const e = await backfillCounts(tests, row, budget);
-    list.push(isStaff && !asChild ? testMetaForStaff(e) : testMeta(e));
-    if (list.length >= 200) break;
-  }
+  const drain = { left: LEGACY_DRAIN_BUDGET };
+  await walkPartitions(
+    tests,
+    {
+      partitions: readPartitions,
+      select: TEST_META_SELECT,
+      legacyPk: LEGACY_TEST_PK,
+      budget: drain,
+    },
+    async (row) => {
+      if (isStaff && row.ownerSub === who.id) ownedCount++;
+      if (wantedSubject && (row.subjectId || "") !== wantedSubject) return;
+      if (!visible(row)) return;
+      const e = await backfillCounts(tests, row, budget);
+      list.push(isStaff && !asChild ? testMetaForStaff(e) : testMeta(e));
+      if (list.length >= 200) return false;
+    }
+  );
   list.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
 
   // A teacher with nothing of their own gets the bundled tests copied in as
@@ -2371,8 +2621,9 @@ handlers.tests = async (context, req) => {
 // ---------- Subjects (a board + class + subject that owns tests) ----------
 //
 // Teacher-owned, with a collaborators list carried from day one so a subject
-// can be shared later without a migration. Table "subjects": PK "subject",
-// RK = subject id.
+// can be shared later without a migration. Table "subjects": PK = the owner
+// (the library's shelves live in PLATFORM_PK), RK = subject id — see the note
+// on the tests table above for why the constant partition key had to go.
 
 function subjectTitle(board, klass, subject) {
   return [board, klass ? `Class ${klass}` : "", subject].filter(Boolean).join(" ");
@@ -2411,15 +2662,28 @@ async function listOwnedSubjects(who) {
   const subjects = tableClient("subjects");
   await ensureTable(subjects);
   const out = [];
-  const iter = subjects.listEntities({
-    queryOptions: { filter: `PartitionKey eq 'subject'`, select: SUBJECT_SELECT },
-  });
-  for await (const e of iter) {
-    // A platform subject is the library shelf: every teacher sees it, nobody
-    // but an admin owns it. Students never reach here.
-    if (e.platform || canUseSubject(who, e)) out.push(e);
-    if (out.length >= 200) break;
-  }
+  // Their own partition and the library's. A COLLABORATOR's subject is the one
+  // thing this no longer finds, and it never actually could: nothing writes to
+  // `collaborators` yet, so the field has only ever held "[]". When sharing
+  // arrives it needs an index of subject-ids per collaborator email — which is
+  // the same shape as any other "find me rows I do not own", and the reason to
+  // build it deliberately rather than to keep a platform-wide scan alive for a
+  // feature that does not exist.
+  await walkPartitions(
+    subjects,
+    {
+      partitions: [who.id, PLATFORM_PK],
+      select: SUBJECT_SELECT,
+      legacyPk: LEGACY_SUBJECT_PK,
+      budget: { left: LEGACY_DRAIN_BUDGET },
+    },
+    (e) => {
+      // A platform subject is the library shelf: every teacher sees it, nobody
+      // but an admin owns it. Students never reach here.
+      if (e.platform || canUseSubject(who, e)) out.push(e);
+      if (out.length >= 200) return false;
+    }
+  );
   return out;
 }
 
@@ -2448,14 +2712,16 @@ handlers.subjects = async (context, req) => {
       }
       const slug = slugify(`${board}${klass}${subject}`);
       const id = `${slug}-${crypto.randomBytes(3).toString("hex")}`;
+      const isPlatform = !!body.platform && who.role === "admin";
       const entity = {
-        partitionKey: "subject",
+        // A shelf belongs to the library, everything else to whoever made it.
+        partitionKey: isPlatform ? PLATFORM_PK : who.id,
         rowKey: id,
         board,
         klass,
         subject,
         title: subjectTitle(board, klass, subject),
-        platform: !!body.platform && who.role === "admin",
+        platform: isPlatform,
         ownerSub: who.id,
         ownerEmail: who.email || "",
         collaborators: "[]",
@@ -2467,12 +2733,15 @@ handlers.subjects = async (context, req) => {
     }
 
     const id = String(body.id || "").trim();
-    let entity;
-    try {
-      entity = await subjects.getEntity("subject", id);
-    } catch {
-      return json(context, 404, { error: "Subject not found" });
-    }
+    // Their own, or a library shelf — which is exactly what mayManage below
+    // allows, so no subject the old code refused becomes reachable here.
+    const entity = await readByPartitions(
+      subjects,
+      [who.id, PLATFORM_PK],
+      id,
+      LEGACY_SUBJECT_PK
+    );
+    if (!entity) return json(context, 404, { error: "Subject not found" });
     // Same rule as canManageTest: the library shelf is the admins' to curate.
     const mayManage = entity.platform ? who.role === "admin" : entity.ownerSub === who.id;
     if (!mayManage) return json(context, 403, { error: "Not your subject" });
@@ -2483,27 +2752,34 @@ handlers.subjects = async (context, req) => {
       if (subject) entity.subject = subject;
       entity.title = subjectTitle(entity.board, entity.klass, entity.subject);
       entity.updatedAt = new Date().toISOString();
-      await subjects.updateEntity(entity, "Replace");
+      await saveRow(subjects, LEGACY_SUBJECT_PK, entity);
       return json(context, 200, { subject: subjectOut(entity) });
     }
 
     if (action === "delete") {
       // Refuse while tests still point at it — deleting would orphan them.
       let used = 0;
-      const iter = tests.listEntities({
-        queryOptions: {
-          filter: `PartitionKey eq 'test' and subjectId eq '${id.replace(/'/g, "''")}'`,
-          select: ["PartitionKey", "RowKey"],
+      // A subject's tests live where the subject does: a teacher's under the
+      // teacher, a shelf's masters under the library. ownerPartition() of the
+      // subject row therefore names exactly the partition worth asking.
+      await walkPartitions(
+        tests,
+        {
+          partitions: [ownerPartition(entity)],
+          select: ["PartitionKey", "RowKey", "subjectId"],
+          legacyPk: LEGACY_TEST_PK,
+          budget: { left: LEGACY_DRAIN_BUDGET },
         },
-      });
-      for await (const _ of iter) {
-        used++;
-        break;
-      }
+        (t) => {
+          if ((t.subjectId || "") !== id) return;
+          used++;
+          return false;
+        }
+      );
       if (used) {
         return json(context, 400, { error: "Move or delete this subject's tests before removing it" });
       }
-      await subjects.deleteEntity("subject", id);
+      await subjects.deleteEntity(entity.partitionKey, id);
       return json(context, 200, { ok: true });
     }
 
@@ -2519,19 +2795,22 @@ handlers.subjects = async (context, req) => {
     // their work sits unreachable.
     if (!owned.length) {
       const orphans = [];
-      const iter = tests.listEntities({
-        queryOptions: {
-          filter: `PartitionKey eq 'test' and ownerSub eq '${who.id.replace(/'/g, "''")}'`,
-          select: ["PartitionKey", "RowKey", "subjectId"],
+      await walkPartitions(
+        tests,
+        {
+          partitions: [who.id],
+          select: ["PartitionKey", "RowKey", "subjectId", "ownerSub"],
+          legacyPk: LEGACY_TEST_PK,
+          budget: { left: LEGACY_DRAIN_BUDGET },
         },
-      });
-      for await (const t of iter) {
-        if (!t.subjectId) orphans.push(t);
-      }
+        (t) => {
+          if (t.ownerSub === who.id && !t.subjectId) orphans.push(t);
+        }
+      );
       if (orphans.length) {
         const id = `cbse12maths-${crypto.randomBytes(3).toString("hex")}`;
         const entity = {
-          partitionKey: "subject",
+          partitionKey: who.id,
           rowKey: id,
           board: "CBSE",
           klass: "12",
@@ -2548,7 +2827,7 @@ handlers.subjects = async (context, req) => {
           // A projected row carries no etag, so name the keys explicitly and
           // merge only the one property this is actually setting.
           await tests.updateEntity(
-            { partitionKey: "test", rowKey: t.rowKey, subjectId: id },
+            { partitionKey: t.partitionKey, rowKey: t.rowKey, subjectId: id },
             "Merge"
           );
         }
@@ -2559,15 +2838,21 @@ handlers.subjects = async (context, req) => {
     const list = owned.map(subjectOut);
     // How many tests sit in each, for the card.
     const counts = {};
-    const iter2 = tests.listEntities({
-      queryOptions: {
-        filter: `PartitionKey eq 'test'`,
+    // Only the subjects in `list` are ever looked up in `counts`, and those are
+    // the caller's own plus the library's shelves — so those two partitions
+    // answer the whole question.
+    await walkPartitions(
+      tests,
+      {
+        partitions: [who.id, PLATFORM_PK],
         select: ["PartitionKey", "RowKey", "subjectId"],
+        legacyPk: LEGACY_TEST_PK,
+        budget: { left: LEGACY_DRAIN_BUDGET },
       },
-    });
-    for await (const t of iter2) {
-      if (t.subjectId) counts[t.subjectId] = (counts[t.subjectId] || 0) + 1;
-    }
+      (t) => {
+        if (t.subjectId) counts[t.subjectId] = (counts[t.subjectId] || 0) + 1;
+      }
+    );
     for (const s of list) s.testCount = counts[s.id] || 0;
     list.sort((a, b) => a.title.localeCompare(b.title));
     return json(context, 200, { subjects: list });
@@ -2579,29 +2864,33 @@ handlers.subjects = async (context, req) => {
   // Only a student reaches here with a teacher, and the loop below admits
   // nothing without one, so asking at all would be pure waste.
   if (!teacherSub) return json(context, 200, { subjects: [] });
-  const iter = tests.listEntities({
-    queryOptions: {
-      // A student only ever sees their own teacher's published tests, so ask
-      // the table for those rather than filtering the whole platform in memory.
-      filter: `PartitionKey eq 'test' and ownerSub eq '${teacherSub.replace(/'/g, "''")}' and status eq 'published'`,
+  // A student only ever sees their own teacher's published tests, and that is
+  // now the partition rather than a property filtered out of the whole table.
+  await walkPartitions(
+    tests,
+    {
+      partitions: [teacherSub],
       select: ["PartitionKey", "RowKey", "status", "subjectId", "platform", "ownerSub", "audience", "assignedTo"],
+      legacyPk: LEGACY_TEST_PK,
+      budget: { left: LEGACY_DRAIN_BUDGET },
     },
-  });
-  for await (const t of iter) {
-    if (t.status !== "published" || !t.subjectId) continue;
-    // A subject the student has no test in is not their subject — assignment
-    // included, or a narrowed test would still light up its subject card.
-    if (t.platform) continue; // masters belong to the library, not to a class
-    if (teacherSub && t.ownerSub === teacherSub && assignedTo(t, who.username)) {
-      wanted.add(t.subjectId);
+    (t) => {
+      if (t.status !== "published" || !t.subjectId) return;
+      // A subject the student has no test in is not their subject — assignment
+      // included, or a narrowed test would still light up its subject card.
+      if (t.platform) return; // masters belong to the library, not to a class
+      if (t.ownerSub === teacherSub && assignedTo(t, who.username)) {
+        wanted.add(t.subjectId);
+      }
     }
-  }
+  );
   const list = [];
-  for (const id of wanted) {
-    try {
-      list.push(subjectOut(await subjects.getEntity("subject", id)));
-    } catch {}
-  }
+  // The subject of a test owned by this teacher is owned by them too, so it is
+  // a point read in their partition — never a search.
+  await inBatches([...wanted], 20, async (id) => {
+    const row = await readByPartitions(subjects, [teacherSub], id, LEGACY_SUBJECT_PK);
+    if (row) list.push(subjectOut(row));
+  });
   list.sort((a, b) => a.title.localeCompare(b.title));
   json(context, 200, { subjects: list });
 };

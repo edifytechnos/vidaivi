@@ -137,13 +137,33 @@ Prices are from memory; check the Azure calculator before committing to any.
 **Ask before adding any paid resource** — it is a change to the product's
 economics, not a technical detail.
 
-## The one architectural change still outstanding
+## A row lives in its owner's partition
 
-`tests` and `subjects` use a **constant PartitionKey** (`"test"`, `"subject"`).
-Every read still scans the whole platform and every write lands in one
-partition — fine at one teacher, fatal at five hundred. Re-partitioning by
-`ownerSub` is the next real step, and it gets cheaper the sooner it is done. If
-a task lands near it, say so rather than building more on the constant key.
+`tests` and `subjects` used to use a **constant PartitionKey** (`"test"`,
+`"subject"`), so every listing walked the whole platform. They no longer do:
+`ownerPartition(row)` in `api/shared/core.js` puts a row in its owner's
+partition, and a master or a shelf (`platform: true`) in `PLATFORM_PK`.
+
+Working near it:
+
+- **Read the partition from the ROW, never from the caller.** A row's home is
+  decided by whose it is.
+- **A point read needs a partition**, so use `readByPartitions(table,
+  partitions, rowKey, legacyPk)` and list the caller's own partition first.
+  The set you pass must be the mirror of whatever `visible()`/`canManageTest()`
+  would allow — never wider.
+- **A listing uses `walkPartitions`**, which also drains the legacy partition.
+  Never add a query that names no PartitionKey; `partitionChecks()` in
+  `e2e/helpers.cjs` throws on one.
+- **Every write goes through `saveRow`**, which moves a row still sitting in
+  the legacy partition. Skipping it is how a drain racing an edit loses the
+  edit.
+- `ownerSub` is still on the row and is still the authorization field. **A
+  partition key says where a row lives, never what it permits.**
+
+Still outstanding, in order: bake published tests to immutable blobs on publish;
+then delete `LEGACY_TEST_PK` / `LEGACY_SUBJECT_PK` and the paths that read them,
+once both tables have drained.
 
 ## Before you touch anything security-shaped
 
