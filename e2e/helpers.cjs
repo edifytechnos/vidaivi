@@ -489,8 +489,8 @@ async function totpHandlerChecks() {
 // The key is money: at about fifteen paise an assessment, a loaded key is a few
 // thousand calls. This proves the brake — that the cap is counted per teacher
 // per day, that the refusal is a 429, and (the part that matters) that a
-// refused call never reaches Google, because the gate runs before the row read
-// and the blob downloads, not after.
+// refused call never reaches the model, because the gate runs before the row
+// read and the blob downloads, not after.
 async function assessCapChecks() {
   const rows = new Map();
   const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
@@ -514,12 +514,14 @@ async function assessCapChecks() {
     listEntities: () => ({ [Symbol.asyncIterator]: async function* () {} }),
   });
 
-  process.env.GEMINI_API_KEY = "not-a-real-key";
+  // Both halves are needed to switch the feature on, so both are set here.
+  process.env.AZURE_AI_ENDPOINT = "https://not-a-real-resource.openai.azure.com";
+  process.env.AZURE_AI_KEY = "not-a-real-key";
   process.env.ASSESS_DAILY_CAP = "2";
   process.env.ADMIN_USERNAME = "e2e-admin";
   process.env.ADMIN_PASSWORD = "e2e-password";
 
-  // Count what actually leaves the box. Nothing here may reach Google.
+  // Count what actually leaves the box. Nothing here may reach the model.
   let calls = 0;
   const realFetch = global.fetch;
   global.fetch = async () => {
@@ -579,7 +581,8 @@ async function assessCapChecks() {
   check(calls === 0, "a refused assessment never reaches the model");
 
   global.fetch = realFetch;
-  delete process.env.GEMINI_API_KEY;
+  delete process.env.AZURE_AI_ENDPOINT;
+  delete process.env.AZURE_AI_KEY;
   delete process.env.ASSESS_DAILY_CAP;
 }
 

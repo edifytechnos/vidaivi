@@ -400,7 +400,14 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
           ...workTests,
         ];
       }
+      // A student opening a shared ?test= link may well have tapped Questions
+      // while this list was still in flight. `render()` replaces the whole
+      // screen, so without this the drawer slams shut in their hand the moment
+      // the subject arrives — a repaint they did not ask for taking away the
+      // thing they did. Carry the open state across it.
+      const wasOpen = !!document.querySelector(".editor.tree-open");
       render();
+      if (wasOpen) document.querySelector(".editor")?.classList.add("tree-open");
     });
   }
 }
