@@ -1537,11 +1537,23 @@ The role choice is deliberately once-only (`choose` 409s on the second call),
 which is right for a real account and makes the sign-up flow impossible to test
 twice — there is no second Gmail that has never seen Vidai.
 
-`POST /api/accounts {action:"reset", sub}` clears `chose` and the trial, and
-drops the role cache. It is a **reset, not a delete**: their tests, subjects,
-students and attempts are untouched and still theirs — only the answer goes, so
-the next sign-in is asked again. It is on the **Change** dialog in Plans &
-pricing, last in the submit order so a save in the same dialog cannot undo it.
+`POST /api/accounts {action:"reset", sub}` clears `chose`, the trial **and the
+saved phone number**, and drops the role cache. It is a **reset, not a delete**:
+their tests, subjects, students and attempts are untouched and still theirs —
+only the sign-up answers go, so the whole of it is asked again. It is on the
+**Change** dialog in Plans & pricing, last in the submit order so a save in the
+same dialog cannot undo it.
+
+**The phone is on the `profiles` row, not the account row**, and clearing the
+choice alone left it behind. `showPhoneForm` only ever asks `if
+(!profile.phone)`, so the step was correctly — and invisibly — skipped on every
+retry, which reads exactly like phone capture having been dropped from the flow.
+A lever that says "start their sign-up over" has to mean the whole of it.
+
+**`TEACHER_EMAILS` and `ADMIN_EMAILS` are read at module load.** In
+`e2e/helpers.cjs` a block that sets them *after* building its module instance
+gets a 403 on every call and the env var does nothing. Set them before the
+`new Function(...)` that evaluates `core.js`.
 
 ### The sign-in steps are a card, not the whole window
 

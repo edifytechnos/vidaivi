@@ -1579,6 +1579,12 @@ async function reportStatusChecks() {
     },
   });
 
+  // ADMIN_EMAILS and TEACHER_EMAILS are read at MODULE LOAD, so they have to be
+  // set before the module is built — set afterwards they do nothing and every
+  // call comes back 403.
+  process.env.TEACHER_EMAILS = "t@example.com";
+  process.env.ADMIN_EMAILS = "a@example.com";
+
   const mod = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
@@ -1591,7 +1597,6 @@ async function reportStatusChecks() {
   const t = mod.exports.__t;
 
   const TEACHER = "teacher-sub-3003";
-  process.env.TEACHER_EMAILS = "t@example.com";
   const cookie = t.signSession("vgo", TEACHER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "t@example.com", n: "T" });
 
   rows.set(key("students", "student", "priya"), {
@@ -1632,6 +1637,37 @@ async function reportStatusChecks() {
     "the running subtotal is still sent — the client decides not to show it as a mark"
   );
   check(live && live.updatedAt === "2026-09-15T09:00:00.000Z", "with when they last worked on it");
+
+  // --- the admin's reset puts an account back to its FIRST screen ----------
+  // The phone number lives on the profile, not the account row, so clearing
+  // the choice alone left it behind — and phone capture only ever asks when
+  // there is no number stored, so the step was silently skipped on every
+  // retry of the sign-up flow.
+  {
+    const ADMIN = "admin-sub-4004";
+    const acookie = t.signSession("vgo", ADMIN, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "a@example.com", n: "A" });
+    const SUB = "google-sub-5005";
+    rows.set(key("accounts", "account", SUB), {
+      partitionKey: "account", rowKey: SUB, chose: "teacher", email: "who@example.com",
+      trialEndsAt: "2099-01-01T00:00:00.000Z", exempt: false,
+    });
+    rows.set(key("profiles", "profile", SUB), {
+      partitionKey: "profile", rowKey: SUB, name: "Who", email: "who@example.com", phone: "9884948041",
+    });
+    const c3 = { res: null };
+    await t.handlers.accounts(c3, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${acookie}` },
+      query: {},
+      body: { action: "reset", sub: SUB },
+    });
+    const acct = rows.get(key("accounts", "account", SUB)) || {};
+    const prof = rows.get(key("profiles", "profile", SUB)) || {};
+    check(c3.res.status === 200, `an admin can reset an account (${c3.res.status})`);
+    check(!acct.chose && !acct.trialEndsAt, "the choice and the trial are cleared");
+    check(!prof.phone, `and the saved phone number with them (got ${JSON.stringify(prof.phone)})`);
+    check(prof.name === "Who", "while the rest of the profile is left alone");
+  }
 
   // --- an unusable completion time never reaches the row -------------------
   // `typeof "" === "string"`, so an empty one used to be stored as the moment

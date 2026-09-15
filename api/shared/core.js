@@ -5127,11 +5127,23 @@ handlers.accounts = async (context, req) => {
       },
       "Merge"
     );
+    // The phone number is part of signing up, and it lives on the PROFILE
+    // rather than on the account row — so clearing the choice alone left it
+    // behind and the next sign-up silently skipped the step, which only asks
+    // when there is no number stored. A lever that says "start their sign-up
+    // over" has to mean the whole of it.
+    let phoneCleared = false;
+    try {
+      const profiles = tableClient("profiles");
+      await ensureTable(profiles);
+      await profiles.upsertEntity({ partitionKey: "profile", rowKey: sub, phone: "" }, "Merge");
+      phoneCleared = true;
+    } catch {}
     // The role is derived from `chose`, so a warm instance would otherwise go
     // on calling them a teacher for the rest of the TTL (rule 4).
     roleCache.drop(`sub~${sub}`);
     roleCache.drop(String(row.email || "").toLowerCase());
-    return json(context, 200, { ok: true, sub, reset: true });
+    return json(context, 200, { ok: true, sub, reset: true, phoneCleared });
   }
 
   if (action === "grant") {

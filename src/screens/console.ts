@@ -463,7 +463,7 @@ export function showPlans() {
               name: "reset",
               label: "Ask them to choose again",
               kind: "radio",
-              hint: "Clears teacher-or-parent and the trial so the sign-up choice is asked again. Their tests, subjects and students are untouched.",
+              hint: "Clears teacher-or-parent, the trial and the saved phone number, so the whole sign-up is asked again. Their tests, subjects and students are untouched.",
               choices: [
                 { value: "no", label: "No", checked: true },
                 { value: "yes", label: "Yes, start their sign-up over" },
