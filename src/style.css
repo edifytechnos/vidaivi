@@ -640,6 +640,18 @@ body {
   min-height: 44px;
 }
 
+/* The low-credit warning. Amber rather than red: running low is a thing to act
+   on, not a failure — and it has to read as different from the plain balance
+   beside it without being read at all. */
+.credit-low {
+  color: var(--amber);
+  background: var(--amber-bg);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .login-error {
   color: var(--red);
   font-size: 13px;

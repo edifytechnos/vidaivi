@@ -462,6 +462,9 @@ export interface AiUsageRow {
   used: number;
   granted: number;
   left: number;
+  /** Close enough to the limit to warn about. Decided by the server so the
+   *  teacher's warning and this list can never disagree. */
+  low: boolean;
   promptTokens: number;
   completionTokens: number;
   /** null when the model reply carried no token counts — unknown, not free. */
@@ -487,7 +490,12 @@ export async function fetchAiUsage(month?: string): Promise<AiUsageReport | null
   }
 }
 
-export async function fetchMyCredits(): Promise<{ used: number; granted: number; left: number } | null> {
+export async function fetchMyCredits(): Promise<{
+  used: number;
+  granted: number;
+  left: number;
+  low: boolean;
+} | null> {
   try {
     const res = await apiFetch("/api/aiusage?me=1", { headers: authHeader() });
     if (!res.ok) return null;
@@ -735,7 +743,7 @@ export interface AiAssessment {
   reasoning: string;
   model: string;
   /** What this teacher has left this month, so the screen can say so. */
-  credits?: { used: number; granted: number; left: number };
+  credits?: { used: number; granted: number; left: number; low: boolean };
 }
 
 /**

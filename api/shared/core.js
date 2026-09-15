@@ -65,6 +65,14 @@ function costMicroUsd(promptTokens, completionTokens) {
 // teacher thinks about a term, and because it keeps the ledger to one row per
 // teacher per month.
 const ASSESS_MONTHLY_CREDITS = Number(process.env.ASSESS_MONTHLY_CREDITS || 100);
+// "Close to the limit" is decided here and nowhere else: the teacher's warning
+// and the admin's list must agree about who is in trouble, and they would drift
+// the first time the grant changed if each worked it out for itself.
+//
+// A fraction rather than a fixed number for the same reason — "10 left" is
+// ample notice out of 100 and far too late out of 500.
+const LOW_CREDIT_FRACTION = 0.2;
+const creditsAreLow = (used, granted) => granted > 0 && granted - used <= granted * LOW_CREDIT_FRACTION;
 // A loaded key is a spending limit with no brakes: at roughly fifteen paise an
 // assessment, ₹500 is about 3,300 of them. A stuck retry, a loop, or a stolen
 // teacher session could spend the lot in an afternoon, and the first anyone
@@ -3778,6 +3786,7 @@ handlers.assess = async (context, req) => {
       used: credit.used + 1,
       granted: credit.granted,
       left: Math.max(0, credit.granted - credit.used - 1),
+      low: creditsAreLow(credit.used + 1, credit.granted),
     },
   });
 };
@@ -3814,6 +3823,7 @@ handlers.aiusage = async (context, req) => {
         used: mine.used,
         granted: mine.granted,
         left: Math.max(0, mine.granted - mine.used),
+        low: creditsAreLow(mine.used, mine.granted),
       });
     }
 
@@ -3836,6 +3846,7 @@ handlers.aiusage = async (context, req) => {
         used,
         granted,
         left: Math.max(0, granted - used),
+        low: creditsAreLow(used, granted),
         promptTokens,
         completionTokens,
         // null, not 0. A model reply that carried no token counts is unknown
@@ -3845,7 +3856,10 @@ handlers.aiusage = async (context, req) => {
       });
       if (rows.length >= 500) break;
     }
-    rows.sort((a, b) => b.used - a.used);
+    // Low first: the question this screen answers is "who needs topping up",
+    // and that is read off the top rather than by scanning every row. Busiest
+    // first is the tiebreak within each group, as before.
+    rows.sort((a, b) => Number(b.low) - Number(a.low) || b.used - a.used);
     const totals = rows.reduce(
       (acc, r) => ({
         used: acc.used + r.used,

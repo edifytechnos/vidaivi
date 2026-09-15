@@ -10,12 +10,13 @@
 // knows.
 
 import { track } from "../analytics";
-import { fetchMarkingQueue, fetchMyAttempt, type GradedAnswer } from "../auth";
+import { fetchMarkingQueue, fetchMyAttempt, fetchMyCredits, type GradedAnswer } from "../auth";
 import { fetchServerTest } from "../api";
 import { TESTS } from "../data";
 import { escapeHtml, ICONS, setUrl } from "../dom";
 import { mount, skeleton } from "../shell";
 import { showReviewFor } from "./test";
+import { seedCreditNote } from "./review";
 import type { Attempt, Test } from "../types";
 
 const testCache = new Map<string, Test | null>();
@@ -43,10 +44,15 @@ export async function openStudentPaper(opts: {
   back: () => void;
 }): Promise<void> {
   mount(skeleton.editor(), { title: "Marking", active: "mark", full: true, scroll: "page" });
-  const [test, remote] = await Promise.all([
+  // The balance rides along with the two fetches this screen already makes, so
+  // a teacher sees how many credits are left *before* pressing Assess rather
+  // than after spending one — which is the whole point of a warning.
+  const [test, remote, credits] = await Promise.all([
     loadTest(opts.testId),
     fetchMyAttempt(opts.testId, opts.username),
+    fetchMyCredits(),
   ]);
+  seedCreditNote(credits);
   if (!test) {
     mount(
       `<main class="card">

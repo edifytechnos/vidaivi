@@ -256,9 +256,7 @@ function bindMarking(q: Question, rerender: () => void): void {
       row.aiModel = result.assessment.model;
       // Kept for after the rerender: a teacher who can see the balance falling
       // does not have to go looking for it when the button one day refuses.
-      creditNote = result.assessment.credits
-        ? `${result.assessment.credits.left} AI credits left this month`
-        : "";
+      setCreditNote(result.assessment.credits);
       rerender();
       return;
     }
@@ -279,6 +277,35 @@ let aiOff = false;
 /** The balance after the last assessment, shown once so it is not a surprise
  *  the day the button starts refusing. Not state — it survives one rerender. */
 let creditNote = "";
+/** Whether that note is a warning rather than a running total. */
+let creditLow = false;
+
+/**
+ * What the balance says, and whether it is a warning.
+ *
+ * A bare number is a fact a teacher scrolls past; the thing worth saying when
+ * they are nearly out is what to do about it. Below the threshold it also turns
+ * amber, so it reads as a warning without being read at all.
+ */
+function setCreditNote(c?: { left: number; low: boolean }): void {
+  if (!c) {
+    // A failed balance fetch says nothing. The server's gate is the real limit,
+    // and a network blip must never tell a teacher they are out of credits —
+    // nor reassure them that they are not.
+    creditNote = "";
+    creditLow = false;
+    return;
+  }
+  creditLow = c.low;
+  creditNote = c.low
+    ? `${c.left} AI credits left this month — mark by hand, or ask your admin to top you up`
+    : `${c.left} AI credits left this month`;
+}
+
+/** Seeded when a paper opens, so a teacher sees the warning before spending. */
+export function seedCreditNote(c?: { left: number; low: boolean } | null): void {
+  setCreditNote(c || undefined);
+}
 
 /**
  * The marking block under a long answer. Three things in one place, in the
@@ -338,7 +365,11 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
           }</button>
           <span class="ed-hint" id="mk-state">${
             marked ? `Marked ${row.awarded}/${row.maxMarks}` : "Not marked yet"
-          }${creditNote ? ` · ${escapeHtml(creditNote)}` : ""}</span>
+          }</span>${
+            creditNote
+              ? `<span class="${creditLow ? "credit-low" : "ed-hint"}">${escapeHtml(creditNote)}</span>`
+              : ""
+          }
         </div>
       </div>
     </div>`;
