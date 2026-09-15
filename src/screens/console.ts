@@ -8,6 +8,8 @@ import {
   fetchReports,
   isAdmin,
   listStudents,
+  fetchAiUsage,
+  grantCredits,
   listTeachers,
   modifyTeacher,
   removeStudent,
@@ -32,10 +34,11 @@ import { audienceLabel, openAssign } from "./assign";
 import { showSubjects } from "./subjects";
 import { openStudentPaper } from "./marking";
 
-type ConsolePage = "admin" | "students" | "report" | "tests";
+type ConsolePage = "admin" | "aiusage" | "students" | "report" | "tests";
 
 const CONSOLE_TITLES: Record<ConsolePage, string> = {
   admin: "Teacher access",
+  aiusage: "AI usage",
   students: "My students",
   report: "Student report",
   tests: "My tests",
@@ -237,6 +240,98 @@ export function showMyTests() {
 }
 
 // ---------- Admin: teacher allowlist ----------
+
+/**
+ * What the AI marking has actually been used for, and what it cost.
+ *
+ * Credits are the entitlement a teacher holds; the rupees beside them are the
+ * real bill, computed from the token counts the model reports on every call.
+ * A row with no token counts shows "—" rather than ₹0 — unknown cost read as
+ * free is the one wrong answer this screen could give.
+ */
+export function showAiUsage(month?: string) {
+  setUrl();
+  track("aiusage_open");
+  const shown = month || new Date().toISOString().slice(0, 7);
+  consoleShell(
+    "aiusage",
+    `
+      <div class="card">
+        <h2 class="landing-title">AI usage</h2>
+        <p class="hint">Each teacher gets credits a month, and one AI assessment
+        spends one credit. The cost is the real amount billed by the model, from
+        the tokens it reported — not an estimate.</p>
+        <div class="actions">
+          <label class="hint" for="ai-month">Month</label>
+          <input id="ai-month" class="modal-input" type="month" value="${escapeHtml(shown)}" />
+        </div>
+      </div>
+      <div class="card roster-card">
+        <div class="solution-title">By teacher</div>
+        <div id="ai-total" class="hint">Loading…</div>
+        <div id="ai-list">${skeleton.table(4, 3)}</div>
+      </div>`
+  );
+  bindConsoleNav();
+
+  const listEl = document.getElementById("ai-list")!;
+  const totalEl = document.getElementById("ai-total")!;
+  const monthEl = document.getElementById("ai-month") as HTMLInputElement;
+  monthEl.addEventListener("change", () => showAiUsage(monthEl.value));
+
+  const rupees = (n: number | null) => (n === null ? "—" : `₹${n.toFixed(2)}`);
+
+  async function refresh() {
+    const report = await fetchAiUsage(shown);
+    if (!report) {
+      totalEl.textContent = "";
+      listEl.innerHTML = `<p class="login-error">Could not load — refresh to retry.</p>`;
+      return;
+    }
+    totalEl.textContent = report.rows.length
+      ? `${report.totals.used} assessment${report.totals.used === 1 ? "" : "s"} · ₹${report.totals.costInr.toFixed(2)} this month`
+      : "";
+    if (!report.rows.length) {
+      listEl.innerHTML = `<p class="hint">No AI marking used in ${escapeHtml(shown)}.</p>`;
+      return;
+    }
+    listEl.innerHTML = report.rows
+      .map(
+        (r) => `
+      <div class="roster-row">
+        <div class="roster-main">
+          <div class="roster-name">${escapeHtml(r.name || r.email || r.teacherId)}</div>
+          <div class="hint">${r.used} of ${r.granted} credits used · ${r.left} left ·
+            ${rupees(r.costInr)} · ${r.promptTokens + r.completionTokens} tokens</div>
+        </div>
+        <button class="btn-link ai-grant" data-id="${escapeHtml(r.teacherId)}"
+          data-granted="${r.granted}">Change credits</button>
+      </div>`
+      )
+      .join("");
+    listEl.querySelectorAll<HTMLButtonElement>(".ai-grant").forEach((btn) =>
+      btn.addEventListener("click", () =>
+        openModal({
+          title: "Change credits",
+          description: `How many AI assessments this teacher may run in ${shown}.`,
+          fields: [
+            { name: "credits", label: "Credits", required: true, value: btn.dataset.granted || "" },
+          ],
+          submitLabel: "Save",
+          onSubmit: async (values) => {
+            const n = Number(values.credits);
+            if (!Number.isFinite(n) || n < 0) return "Credits must be a number.";
+            const res = await grantCredits(btn.dataset.id!, n, shown);
+            if (!res.ok) return res.message || "Could not save.";
+            void refresh();
+          },
+        })
+      )
+    );
+  }
+
+  void refresh();
+}
 
 export function showAdmin() {
   setUrl();
