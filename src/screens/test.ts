@@ -20,7 +20,7 @@ import {
   saveAttempt,
   setGuest,
 } from "../attempts";
-import { totalMarks } from "../data";
+import { gradeShort, totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl } from "../dom";
 import { mount } from "../shell";
 import { showReview } from "./review";
@@ -136,7 +136,7 @@ export function showLanding(test: Test) {
       ${test.teacher ? `<p class="landing-teacher">Curated by ${escapeHtml(test.teacher)}</p>` : ""}
       <ul class="landing-facts">
         <li><strong>${test.questions.length}</strong> questions · <strong>${total}</strong> marks</li>
-        <li>${counts.mcq} MCQ · ${counts.numeric} numeric · ${counts.long} long answer</li>
+        <li>${counts.mcq} MCQ · ${counts.numeric} short answer · ${counts.long} long answer</li>
         <li>${
           canHandIn()
             ? "Answers and worked solutions open when your teacher releases them"
@@ -245,9 +245,13 @@ export function showQuestion(test: Test, attempt: Attempt) {
       finishQuestion(test, attempt, q, correct, selected);
     });
   } else if (q.type === "numeric") {
+    // A text box: a short answer is often a symbol, and a number box cannot
+    // hold one. The guest keeps an instant verdict, so there is nobody to send
+    // an unsettled answer to — here alone, "review" reads as not-right.
     answerArea.innerHTML = `
-      <input id="numeric-input" class="numeric-input" type="number" step="any"
-             inputmode="decimal" placeholder="Enter your answer" />`;
+      <input id="numeric-input" class="numeric-input" type="text" maxlength="200"
+             autocomplete="off" autocapitalize="off" spellcheck="false"
+             placeholder="Enter your answer" />`;
     actions.innerHTML = `<button id="submit-btn" class="btn btn-primary" disabled>Submit</button>`;
     const input = document.getElementById("numeric-input") as HTMLInputElement;
     const submit = document.getElementById("submit-btn") as HTMLButtonElement;
@@ -259,8 +263,7 @@ export function showQuestion(test: Test, attempt: Attempt) {
     });
     submit.addEventListener("click", () => {
       const val = parseFloat(input.value);
-      const tol = q.tolerance ?? 0;
-      const correct = Number.isFinite(val) && Math.abs(val - q.answer!) <= tol;
+      const correct = gradeShort(q, input.value) === "right";
       input.disabled = true;
       input.classList.add(correct ? "correct" : "incorrect");
       finishQuestion(test, attempt, q, correct, val);

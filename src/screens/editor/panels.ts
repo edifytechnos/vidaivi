@@ -2,6 +2,7 @@
 // panel, and the explanation. Each renders into a host element and reports
 // edits through the state module's `edit`, which drives autosave.
 
+import { optionIndex } from "../../data";
 import { newQuestionId } from "../../api";
 import { escapeHtml, formatText, renderMath } from "../../dom";
 import type { Question, QType } from "../../types";
@@ -36,7 +37,7 @@ export function answerPanel(q: Question): string {
         <span class="ed-panel-label">Answer expected</span>
         <select class="ed-select" id="ed-type">
           ${typeOpt("mcq", "Multiple choice")}
-          ${typeOpt("numeric", "Numeric")}
+          ${typeOpt("numeric", "Short answer")}
           ${typeOpt("long", "Long answer")}
         </select>
         <div class="ed-spacer"></div>
@@ -84,17 +85,31 @@ function answerFields(q: Question): string {
       ${options.length < 6 ? `<button class="btn-link" id="ed-option-add">Add option</button>` : ""}`;
   }
   if (q.type === "numeric") {
+    // A text box, not a number box. A CBSE short answer is very often a symbol
+    // — √3/2, π/4, x=2 — and a box that only takes digits cannot hold one.
+    // A number typed here still grades as a number, tolerance and all.
+    const answer = q.answer === undefined || q.answer === null ? "" : String(q.answer);
     return `
       <div class="ed-numeric">
-        <label class="ed-field">
+        <label class="ed-field ed-field-wide">
           <span class="ed-panel-label">Correct answer</span>
-          <input class="ed-input" id="ed-answer" type="number" step="any"
-                 value="${Number.isFinite(q.answer) ? q.answer : ""}" placeholder="e.g. 4.5" />
+          <input class="ed-input" id="ed-answer" type="text" maxlength="120"
+                 value="${escapeHtml(answer)}" placeholder="e.g. 4.5, or √3/2" />
         </label>
         <label class="ed-field">
           <span class="ed-panel-label">Tolerance (± accepted)</span>
           <input class="ed-input" id="ed-tolerance" type="number" step="any" min="0" value="${q.tolerance ?? 0}" />
         </label>
+        <label class="ed-field ed-field-wide">
+          <span class="ed-panel-label">Also accept</span>
+          <input class="ed-input" id="ed-accept" type="text" maxlength="240"
+                 value="${escapeHtml((q.accept ?? []).join(", "))}"
+                 placeholder="root 3 / 2, 0.866" />
+          <span class="ed-hint">Other ways of writing the same answer, separated by commas.
+            Spaces, capitals and $\\sqrt$ vs √ are already ignored.</span>
+        </label>
+        <p class="ed-hint ed-field-wide">Anything the grader cannot settle is
+          <strong>never marked wrong</strong> — it comes to you in <strong>To mark</strong>.</p>
       </div>`;
   }
   return `<p class="ed-empty">Nothing to fill in. The student works it out on paper,
@@ -186,10 +201,14 @@ export function bindQuestionEditor(
         delete q.tolerance;
       } else if (q.type === "numeric") {
         delete q.options;
+        // Switching from mcq leaves an option INDEX sitting where an answer
+        // belongs, and 0 would read as the answer "0".
+        if (typeof q.answer === "number") delete q.answer;
         q.tolerance = q.tolerance ?? 0;
       } else {
         delete q.options;
         delete q.answer;
+        delete q.accept;
         delete q.tolerance;
       }
     });
@@ -223,7 +242,7 @@ export function bindQuestionEditor(
       const i = Number(el.dataset.i);
       edit(() => {
         q.options!.splice(i, 1);
-        const answer = q.answer ?? 0;
+        const answer = optionIndex(q);
         if (answer >= q.options!.length) q.answer = q.options!.length - 1;
         else if (answer > i) q.answer = answer - 1;
       });
@@ -235,9 +254,21 @@ export function bindQuestionEditor(
   const ansEl = root.querySelector<HTMLInputElement>("#ed-answer");
   ansEl?.addEventListener("input", () => {
     edit(() => {
-      const value = Number(ansEl.value);
-      if (ansEl.value.trim() === "" || !Number.isFinite(value)) delete q.answer;
-      else q.answer = value;
+      // A number stays a number in the JSON, so the 573 library questions
+      // written before this round-trip unchanged and still grade numerically.
+      const text = ansEl.value.trim();
+      const value = Number(text);
+      if (text === "") delete q.answer;
+      else q.answer = Number.isFinite(value) ? value : text;
+    });
+    onStructureChange();
+  });
+  const acceptEl = root.querySelector<HTMLInputElement>("#ed-accept");
+  acceptEl?.addEventListener("input", () => {
+    edit(() => {
+      const list = acceptEl.value.split(",").map((v) => v.trim()).filter(Boolean).slice(0, 8);
+      if (list.length) q.accept = list;
+      else delete q.accept;
     });
     onStructureChange();
   });

@@ -250,7 +250,9 @@ export async function showChildResults(child: Child): Promise<void> {
 /** The child's own answers and the worked solutions, read-only. */
 async function openChildReview(child: Child, testId: string): Promise<void> {
   const [test, remote] = await Promise.all([
-    fetchServerTest(testId),
+    // As the child: the paper lives in their teacher's partition, not this
+    // parent's, so a read that does not name them cannot find it.
+    fetchServerTest(testId, child.username),
     fetchMyAttempt(testId, child.username),
   ]);
   // Only a finished attempt is reviewable; a parent never sees a part-answered

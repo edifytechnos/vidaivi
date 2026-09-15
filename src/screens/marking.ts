@@ -144,8 +144,8 @@ export async function showMarking(): Promise<void> {
       `<main class="card empty-state">
          ${ICONS.mark}
          <h2 class="landing-title">Nothing to mark</h2>
-         <p class="hint">When your students hand in a long answer with a photo of their
-         working, it turns up here for you to mark.</p>
+         <p class="hint">A long answer with a photo of the working, or a short answer
+         written in a way the grader has no rule for, turns up here for you to mark.</p>
        </main>`,
       { title: "To mark", active: "mark", sub: "All caught up", width: "narrow" }
     );

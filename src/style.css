@@ -1681,6 +1681,8 @@ body {
 
 .ed-numeric,
 .ed-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+/* Spans every column, whatever the grid becomes at a wider breakpoint. */
+.ed-field-wide { grid-column: 1 / -1; }
 
 .ed-overview { display: flex; flex-direction: column; gap: 12px; }
 
@@ -4067,6 +4069,24 @@ body.modal-open {
 }
 .mk-none { margin: 14px 0 0; }
 .mk-assess { align-self: flex-start; }
+
+/* What the student typed, when a short answer came here instead of being
+   graded. Neutral on purpose: it is evidence, not a verdict. */
+.mk-typed {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2, #f7f7f9);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mk-typed-text {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  word-break: break-word;
+}
 
 /* The AI's proposal. Amber, not green: it is a suggestion awaiting a teacher,
    and it must never read like a mark that has been given. */

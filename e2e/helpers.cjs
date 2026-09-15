@@ -33,7 +33,8 @@ new Function(
     " signSession, verifySession, readCookie, sessionCookie, clearedCookie," +
     " renewIfStale, csrfRefused, SESSION_COOKIE, STUDENT_TOKEN_TTL_MS," +
     " totpCode, totpMatchStep, base32Encode, base32Decode, newTotpSecret," +
-    " newRecoveryCodes, currentStep, TOTP_STEP_S, handlers, hashPassword };"
+    " newRecoveryCodes, currentStep, TOTP_STEP_S, handlers, hashPassword," +
+    " validateQuestions };"
 )(mod, mod.exports, (id) =>
   id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)
 );
@@ -57,6 +58,77 @@ check(
   "storedCounts reads the stamped counts back"
 );
 check(h.storedCounts({ title: "row written before this" }) === null, "storedCounts is null for a legacy row");
+
+// --- A short answer may be a symbol, and must survive the round trip ---
+// The type is still `numeric`, so the 573 library questions written before
+// this have to come back byte for byte — and a symbol has to be stored at all.
+{
+  const base = { id: "s1", chapter: "C", topic: "T", type: "numeric", q: "Value?", solution: "x", marks: 2 };
+  const numeric = h.validateQuestions([{ ...base, answer: 4.5, tolerance: 0.1 }], { strict: true });
+  check(
+    !numeric.error && numeric.questions[0].answer === 4.5 && numeric.questions[0].tolerance === 0.1,
+    "a numeric answer is still stored as a number"
+  );
+  const symbol = h.validateQuestions(
+    [{ ...base, answer: "\u221a3/2", accept: ["root 3 / 2", "0.866", ""] }],
+    { strict: true }
+  );
+  check(!symbol.error, `a symbol is a publishable answer (${symbol.error || "ok"})`);
+  check(symbol.questions && symbol.questions[0].answer === "\u221a3/2", "and is stored as the text it is");
+  check(
+    symbol.questions && JSON.stringify(symbol.questions[0].accept) === '["root 3 / 2","0.866"]',
+    "with the accepted variants carried, blanks dropped"
+  );
+  const numericText = h.validateQuestions([{ ...base, answer: "12" }], { strict: true });
+  check(
+    numericText.questions && numericText.questions[0].answer === 12,
+    "a number typed as text is stored as a number, so it still grades with a tolerance"
+  );
+  const blank = h.validateQuestions([{ ...base, answer: "  " }], { strict: true });
+  check(!!blank.error, "an empty answer still blocks publishing");
+}
+
+// --- The short-answer grading rules ---
+// `src/shortanswer.ts` is its own module precisely so this can drive it:
+// `data.ts` reaches for import.meta.glob and will not load outside a bundle.
+{
+  const built = require("esbuild").buildSync({
+    entryPoints: [path.join(__dirname, "..", "src", "shortanswer.ts")],
+    bundle: true, format: "cjs", write: false, platform: "node",
+  });
+  const sa = { exports: {} };
+  new Function("module", "exports", built.outputFiles[0].text)(sa, sa.exports);
+  const { gradeShort, normaliseAnswer } = sa.exports;
+
+  const numeric = { type: "numeric", answer: 4.5, tolerance: 0.1, marks: 2 };
+  check(gradeShort(numeric, "4.5") === "right", "a number inside the tolerance is right");
+  check(gradeShort(numeric, "4.55") === "right", "and so is one at the edge of it");
+  check(gradeShort(numeric, "9") === "wrong", "a number outside it is wrong");
+  // The one thing that must NOT change: a decidable comparison is decided here
+  // and never sent to a teacher, including when the answer is decidedly wrong.
+  check(gradeShort(numeric, "0") === "wrong", "zero is a number, not a blank");
+  check(gradeShort(numeric, "") === "wrong", "nothing typed is not an answer");
+
+  const symbol = { type: "numeric", answer: "\u221a3/2", accept: ["root 3 / 2"], marks: 2 };
+  check(gradeShort(symbol, "\u221a3/2") === "right", "a symbol answer matches itself");
+  check(gradeShort(symbol, " \u221A3 / 2 ") === "right", "spaces and capitals do not decide a mark");
+  check(gradeShort(symbol, "sqrt3/2") === "right", "nor does sqrt against \u221a");
+  check(gradeShort(symbol, "\\sqrt3/2") === "right", "nor a student who types the LaTeX");
+  check(gradeShort(symbol, "root 3 / 2") === "right", "an accepted variant is right");
+  // The whole point of the change.
+  check(
+    gradeShort(symbol, "half of root three") === "review",
+    "and something the grader has no rule for is NEVER wrong — it goes to the teacher"
+  );
+  check(
+    gradeShort(numeric, "nine halves") === "review",
+    "a numeric question answered in words goes to the teacher too"
+  );
+  check(
+    normaliseAnswer("1/2") !== normaliseAnswer("0.5"),
+    "it is not a maths engine, and must not pretend to be: 1/2 is not 0.5 here"
+  );
+}
 
 // A paper too big for one 30KB property must still chunk, and still count.
 const big = Array.from({ length: 40 }, (_, i) => ({ id: `q${i}`, marks: 2, q: "x".repeat(2000) }));
@@ -1415,13 +1487,18 @@ async function roleChoiceChecks() {
       // whole partition makes "somebody else's child is not in this list" pass
       // while proving nothing — the same vacuity the `testId eq` clause had.
       const wantTeacher = /teacherSub eq '((?:[^']|'')*)'/.exec(filter);
+      // The grading read asks for marked rows only. Without this the "an
+      // unmarked answer adds nothing" assertion would pass by accident.
+      const wantStatus = /status eq '((?:[^']|'')*)'/.exec(filter);
       const hits = [];
       for (const [k, row] of rows) {
         if (!k.startsWith(`${name}/`)) continue;
         if (row.partitionKey !== want) continue;
         if (wantTeacher && String(row.teacherSub || "") !== wantTeacher[1].replace(/''/g, "'")) continue;
+        if (wantStatus && String(row.status || "") !== wantStatus[1].replace(/''/g, "'")) continue;
         hits.push({ ...row });
       }
+      hits.sort((a, b) => String(a.rowKey).localeCompare(String(b.rowKey)));
       return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
     },
   });
@@ -1825,6 +1902,148 @@ async function reportStatusChecks() {
       !!saved && Number.isFinite(Date.parse(saved.completedAt)) && Date.parse(saved.completedAt) > 0,
       `${label} completion time is replaced with a real one (got ${JSON.stringify(saved && saved.completedAt)})`
     );
+  }
+
+  // --- the listed score is the score, marked long answers included ---------
+  // The attempt row holds only the auto-graded subtotal by design, and opening
+  // a paper merged the teacher's marks in on the client. So a student saw one
+  // number inside the test and a smaller one in every list that named it.
+  {
+    rows.set(key("attempts", "stu~priya", "89998~t5"), {
+      partitionKey: "stu~priya", rowKey: "89998~t5", testId: "t5",
+      score: 11, total: 26, completedAt: "2026-09-15T10:00:00.000Z",
+    });
+    // An older retake of the same paper. Marks belong to a question, not to an
+    // attempt, so only the newest one may take them.
+    rows.set(key("attempts", "stu~priya", "89999~t5"), {
+      partitionKey: "stu~priya", rowKey: "89999~t5", testId: "t5",
+      score: 3, total: 26, completedAt: "2026-09-10T10:00:00.000Z",
+    });
+    rows.set(key("grading", "stu~priya", "t5~q9"), {
+      partitionKey: "stu~priya", rowKey: "t5~q9", testId: "t5",
+      status: "marked", awarded: 5, maxMarks: 5,
+    });
+    rows.set(key("grading", "stu~priya", "t5~q10"), {
+      partitionKey: "stu~priya", rowKey: "t5~q10", testId: "t5",
+      status: "submitted", awarded: 0, maxMarks: 5,
+    });
+
+    const c4 = { res: null };
+    await t.handlers.attempts(c4, {
+      method: "GET",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${scookie}` },
+      query: {},
+    });
+    const listed = (c4.res.body.attempts || []).filter((a) => a.testId === "t5");
+    check(c4.res.status === 200, `a student lists their attempts (${c4.res.status})`);
+    check(
+      listed[0] && listed[0].score === 16,
+      `the newest paper carries the teacher's marks (got ${listed[0] && listed[0].score}, expected 16)`
+    );
+    check(
+      listed[1] && listed[1].score === 3,
+      `an older retake keeps its own score (got ${listed[1] && listed[1].score})`
+    );
+    check(
+      listed[0] && listed[0].score <= listed[0].total,
+      "and an unmarked answer adds nothing"
+    );
+  }
+
+  // --- a short answer the grader cannot settle reaches the teacher --------
+  // Never marked wrong: the student writes it, it lands in the same queue a
+  // photograph does, and only the teacher's own `mark` action awards anything.
+  {
+    const c7 = { res: null };
+    await t.handlers.grading(c7, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${scookie}` },
+      query: {},
+      body: {
+        action: "answer", testId: "t1", questionId: "q3", questionIndex: 2,
+        maxMarks: 3, testTitle: "Trigonometry", text: "half of root three",
+      },
+    });
+    const row = rows.get(key("grading", "stu~priya", "t1~q3")) || {};
+    check(c7.res.status === 201, `a student hands a short answer to their teacher (${c7.res.status})`);
+    check(row.answerText === "half of root three", "the row holds what they wrote");
+    check(row.status === "submitted" && row.awarded === undefined, "and nothing is marked by handing it in");
+
+    // A teacher must not be able to write a student's answer for them.
+    const c8 = { res: null };
+    await t.handlers.grading(c8, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      query: {},
+      body: { action: "answer", testId: "t1", questionId: "q4", text: "x" },
+    });
+    check(c8.res.status === 403, `only the student writes their own answer (${c8.res.status})`);
+
+    // Clear answer has to clear the queue too.
+    const c10 = { res: null };
+    await t.handlers.grading(c10, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${scookie}` },
+      query: {},
+      body: { action: "answer", testId: "t1", questionId: "q3", text: "" },
+    });
+    check(c10.res.status === 200, `taking the answer back off the paper is accepted (${c10.res.status})`);
+    check(
+      !rows.get(key("grading", "stu~priya", "t1~q3")),
+      "and it leaves the teacher's queue, rather than being marked after it was withdrawn"
+    );
+    // Put it back for the checks below.
+    rows.set(key("grading", "stu~priya", "t1~q3"), { ...row });
+
+    // Once marked, a re-typed answer must not silently unmark it.
+    rows.set(key("grading", "stu~priya", "t1~q3"), { ...row, status: "marked", awarded: 2 });
+    const c9 = { res: null };
+    await t.handlers.grading(c9, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${scookie}` },
+      query: {},
+      body: { action: "answer", testId: "t1", questionId: "q3", text: "changed my mind" },
+    });
+    check(c9.res.status === 409, `a marked answer cannot be rewritten (${c9.res.status})`);
+    check(
+      (rows.get(key("grading", "stu~priya", "t1~q3")) || {}).awarded === 2,
+      "and the mark the teacher gave is untouched"
+    );
+  }
+
+  // --- a parent reads the child THEY created ------------------------------
+  // `childLink` walked `parentlinks` only — the invite-code route — so a child
+  // this account issued itself had no link row and was refused "Not your
+  // child" on the very screen that had just created them.
+  {
+    const PARENT = "parent-sub-7007";
+    const pcookie = t.signSession("vgo", PARENT, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "p@example.com", n: "P" });
+    rows.set(key("students", "student", "arun"), {
+      partitionKey: "student", rowKey: "arun", name: "Arun", school: "", grade: "10",
+      parentPhone: "", teacherSub: PARENT, tokenEpoch: 0,
+    });
+    rows.set(key("attempts", "stu~arun", "89999~t7"), {
+      partitionKey: "stu~arun", rowKey: "89999~t7", testId: "t7",
+      score: 9, total: 20, completedAt: "2026-09-15T10:00:00.000Z", answers: "{}",
+    });
+    const c5 = { res: null };
+    await t.handlers.attempts(c5, {
+      method: "GET",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${pcookie}` },
+      query: { student: "arun", testId: "t7" },
+    });
+    check(c5.res.status === 200, `a parent opens their own child's paper (${c5.res.status})`);
+    check(
+      c5.res.body.attempt && c5.res.body.attempt.testId === "t7",
+      "and gets the attempt, not a refusal"
+    );
+    const c6 = { res: null };
+    await t.handlers.attempts(c6, {
+      method: "GET",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${pcookie}` },
+      query: { student: "priya", testId: "t1" },
+    });
+    check(c6.res.status === 403, `somebody else's student is still refused (${c6.res.status})`);
   }
 }
 

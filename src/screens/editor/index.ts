@@ -390,7 +390,7 @@ function audienceNote(test: Test): string {
 }
 
 function typeLabel(type: string): string {
-  return type === "mcq" ? "Multiple choice" : type === "numeric" ? "Numeric" : "Long answer";
+  return type === "mcq" ? "Multiple choice" : type === "numeric" ? "Short answer" : "Long answer";
 }
 
 function countLabel(n: number, noun: string): string {

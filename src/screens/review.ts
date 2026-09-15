@@ -8,6 +8,7 @@
 // reused is the layout: the .ed-* classes, under an .ed-readonly modifier so
 // the editor's own geometry assertions keep their meaning.
 
+import { optionIndex } from "../data";
 import { track } from "../analytics";
 import { hydrateThumbs, photoStrip } from "../answerphotos";
 import {
@@ -62,7 +63,14 @@ function describeGiven(q: Question, a: StoredAnswer | undefined): string {
     const letter = i >= 0 ? String.fromCharCode(65 + i) : "?";
     return `${owner} answer: <strong>${letter}.</strong> ${escapeHtml(q.options?.[i] ?? "")}`;
   }
-  if (q.type === "numeric") return `${owner} answer: <strong>${a.given}</strong>`;
+  if (q.type === "numeric") {
+    const written = a.text ?? (a.given === null || a.given === undefined ? "" : String(a.given));
+    const line = `${owner} answer: <strong>${escapeHtml(written)}</strong>`;
+    // A short answer the grader had no rule for is with the teacher, exactly
+    // as a photograph is. It is not wrong; it is not yet marked.
+    if (a.review === "pending") return `${line} — waiting for your teacher`;
+    return line;
+  }
   if (a.review === "pending") {
     const n = a.images?.length ?? 0;
     return `Handed in${n ? ` · ${n} photo${n > 1 ? "s" : ""}` : ""} — waiting for your teacher`;
@@ -75,12 +83,12 @@ function describeGiven(q: Question, a: StoredAnswer | undefined): string {
 function correctLine(q: Question, a: StoredAnswer | undefined): string {
   if (a?.correct || q.type === "long") return "";
   if (q.type === "mcq") {
-    const i = q.answer ?? -1;
+    const i = optionIndex(q);
     if (i < 0) return "";
     return `<p class="review-correct">Correct answer: <strong>${String.fromCharCode(65 + i)}.</strong> ${escapeHtml(q.options?.[i] ?? "")}</p>`;
   }
   if (q.type === "numeric" && q.answer !== undefined) {
-    return `<p class="review-correct">Correct answer: <strong>${q.answer}</strong></p>`;
+    return `<p class="review-correct">Correct answer: <strong>${escapeHtml(String(q.answer))}</strong></p>`;
   }
   return "";
 }
@@ -319,7 +327,11 @@ export function seedCreditNote(c?: { left: number; low: boolean } | null): void 
  * in the box is rubber-stamped.
  */
 function markingPanel(q: Question, row: GradedAnswer | undefined): string {
-  if (q.type !== "long") return "";
+  // A long answer always has a marks row. A SHORT one has one only when the
+  // grader ran out of rules — a settled short answer is already marked and
+  // needs nothing from the teacher, so there is no panel for it.
+  if (q.type === "numeric" && !row) return "";
+  if (q.type !== "long" && q.type !== "numeric") return "";
   if (!row) {
     return `<p class="hint mk-none">Nothing was handed in for this question, so there is
       nothing to mark.</p>`;
@@ -328,6 +340,23 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
   const ai = typeof row.aiAwarded === "number" ? row.aiAwarded : null;
   return `
     <div class="mk">
+      ${
+        row.answerText
+          ? `<div class="mk-typed">
+               <div class="section-label">What they wrote</div>
+               <p class="mk-typed-text">${escapeHtml(row.answerText)}</p>
+               ${
+                 q.answer === undefined || q.answer === null
+                   ? ""
+                   : `<p class="ed-hint">You wrote: <strong>${escapeHtml(String(q.answer))}</strong>${
+                       (q.accept ?? []).length ? ` · also accepting ${escapeHtml((q.accept ?? []).join(", "))}` : ""
+                     }</p>`
+               }
+               <p class="ed-hint">The grader had no rule for this, so it came to
+                 you rather than being marked wrong.</p>
+             </div>`
+          : ""
+      }
       ${
         ai !== null
           ? `<div class="mk-ai">
@@ -342,7 +371,7 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
                <p class="mk-ai-foot">A suggestion, not a mark. Nothing reaches
                  ${escapeHtml(row.studentName || row.username)} until you save one.</p>
              </div>`
-          : aiOff
+          : aiOff || !row.images.length
             ? ""
             : `<button class="btn btn-ghost mk-assess" id="mk-assess">Assess with AI</button>`
       }
