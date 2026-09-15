@@ -16,7 +16,7 @@
 
 import { track } from "../analytics";
 import { mountUploader } from "../answerphotos";
-import { fetchMyAttempts, getProfile, isLoggedIn, saveProgress, submitAttempt } from "../auth";
+import { attemptCounts, fetchMyAttempts, getProfile, isLoggedIn, saveProgress, submitAttempt } from "../auth";
 import { fetchServerTest, fetchTestList } from "../api";
 import { loadAttempt, newAttempt, saveAttempt } from "../attempts";
 import { gradeAnswer, TESTS, totalMarks } from "../data";
@@ -82,6 +82,26 @@ function stateOf(id: string): TestState {
     return "progress";
   }
   return "new";
+}
+
+/**
+ * How many more times this student may hand this test in, or `null` when there
+ * is no cap and `0` when they are out.
+ *
+ * The server is the real gate — this only decides what to *say*, so a count
+ * that has not arrived must let them through rather than block them. That is
+ * the opposite of `fetchReleased`, where silence has to mean shut: here a
+ * wrongly-shut door stops a student who has attempts left.
+ */
+function attemptsLeftFor(test: { id: string; capped?: boolean }): number | null {
+  // `capped` comes from the server, because only the row knows whether it came
+  // from the library. Without it a teacher's own test handed in twice would
+  // read as exhausted — the counts alone cannot tell the two apart.
+  if (!test.capped) return null;
+  const { counts, rule } = attemptCounts();
+  if (!rule) return null;
+  const row = counts[test.id] || { used: 0, extra: 0 };
+  return Math.max(0, rule + (row.extra || 0) - (row.used || 0));
 }
 
 /** The one test already under way, if any — nothing else may be started. */
@@ -222,12 +242,24 @@ function renderOverview(): void {
                   ? `<div class="test-list">${workTests
                       .map((t) => {
                         const state = stateOf(t.id);
-                        const locked = state === "new" && !!busy && busy !== t.id;
+                        const left = attemptsLeftFor(t);
+                        // Out of attempts closes the card the same way the
+                        // one-at-a-time lock does — told before the tap, not
+                        // after a paper has been written.
+                        const spent = left === 0 && state !== "progress";
+                        const locked = (state === "new" && !!busy && busy !== t.id) || spent;
+                        const note = spent
+                          ? " · no attempts left"
+                          : locked
+                            ? " · finish your open test first"
+                            : left !== null && state === "done"
+                              ? ` · ${left} attempt${left === 1 ? "" : "s"} left`
+                              : "";
                         return `
                         <button class="test-card" data-test="${escapeHtml(t.id)}"${locked ? " disabled" : ""}>
                           <div class="test-card-main">
                             <div class="test-card-title">${locked ? ICONS.lock : ""}${testLabelMarkup(t.title, t.chapter)}</div>
-                            <div class="test-card-sub">${t.questionCount} questions${locked ? " · finish your open test first" : ""}</div>
+                            <div class="test-card-sub">${t.questionCount} questions${note}</div>
                           </div>
                           <span class="status-chip status-${state === "progress" ? "progress" : state === "done" ? "done" : "new"}">${
                             state === "done" ? "Done" : state === "progress" ? "In progress" : "Not started"

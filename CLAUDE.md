@@ -1447,6 +1447,47 @@ teacher can be run end to end today, with money arriving later.
 charging a card are the next slice; seats are counted, priced and shown, never
 billed. CLAUDE.md's "payments: later, only when v1 loop is proven" still holds.
 
+### Two attempts at a ready-made test
+
+`subjectAttempts` was declared, shown on the admin screen and **never read**
+for a release. A student could retake a library test forever. It is enforced
+now, at the hand-in.
+
+- **`copiedFrom` is the whole test.** A row carrying it came from the library;
+  a teacher's own paper never does. So the cap needs no lineage walk and no
+  `purchases` read — it belongs to ready-made content **however it was
+  obtained**, which means the free sample behaves like the thing it samples.
+  `attemptLimitFor(testRow, rules)` returns `0` for uncapped, and a test that
+  cannot be read is **not** capped by accident.
+- **Handing in spends an attempt; starting does not.** A `progress~` row is a
+  student mid-question and must never cost them anything.
+- **The attempt rows are the ledger, and this deliberately does not follow
+  rule 5.** A stamped counter can drift from the rows it counts, and here the
+  rows are exactly what a teacher reads on the report — a disagreement would be
+  a bug with two plausible answers. `attemptTally` counts them, projected to
+  `RowKey` alone, in the student's own partition.
+- **The teacher's grant lives in that same partition** (`grant~<testId>`,
+  holding `extra`), so one walk answers used *and* allowed. It carries `testId`
+  because the tally filters on it — a grant without one would be invisible to
+  the walk that reads it. And it is **skipped in the listing**: left in, it
+  would read as a paper the student handed in and never sat.
+- The listing tallies in the walk it already makes (`counts`, `attemptRule`),
+  so nothing asks the same partition the same question twice.
+- **`capped` is on `testMeta`, not `copiedFrom`.** The client needs the rule,
+  not the master's id. Without it a teacher's own test handed in twice would
+  read as exhausted — counts alone cannot tell the two apart.
+- **The client is not the gate**, so a count that has not arrived lets the
+  student through: the opposite of `fetchReleased`, because here a wrongly-shut
+  door stops somebody who has attempts left. The server refuses with **402**
+  regardless.
+- Out of attempts, a student keeps **their marks, their answers and the worked
+  solutions** — that is what the subject was bought for. Only the retake goes.
+- **Teachers, admins and guests are never capped**: `who.kind === "student"` is
+  the gate, the same line `canHandIn()` draws on the client.
+- `e2e/helpers.cjs` covers the boundary — and the fake table now honours a
+  `testId eq` clause, **without which the "another test's attempts stay out of
+  this count" assertion passed while proving nothing.**
+
 ## Releasing the answers (`/api/release`, table `releases`)
 
 Taking a test is **silent**: a signed-in student submits and nothing comes back —

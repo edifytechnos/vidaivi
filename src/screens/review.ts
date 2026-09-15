@@ -12,6 +12,7 @@ import { track } from "../analytics";
 import { hydrateThumbs, photoStrip } from "../answerphotos";
 import {
   assessAnswer,
+  attemptCounts,
   fetchGrading,
   fetchReleased,
   fetchReleaseState,
@@ -379,6 +380,16 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
  * The review. `showReviewFor` in test.ts forwards a parent here with `back`
  * and the child's username; a student's own review passes neither.
  */
+/** How many retakes are left, or `null` when the test is not capped. The
+ *  server refuses regardless; this only decides whether to offer the button. */
+function retakesLeft(test: { id: string; capped?: boolean }): number | null {
+  if (!test.capped) return null;
+  const { counts, rule } = attemptCounts();
+  if (!rule) return null;
+  const row = counts[test.id] || { used: 0, extra: 0 };
+  return Math.max(0, rule + (row.extra || 0) - (row.used || 0));
+}
+
 export async function showReview(
   test: Test,
   attempt: Attempt,
@@ -441,7 +452,12 @@ export async function showReview(
               }
               ${
                 open && !opts.marking && !opts.student
-                  ? `<button id="retake-btn" class="btn btn-primary st-handin">Retake<span class="st-long"> test</span></button>`
+                  ? retakesLeft(test) === 0
+                    // The result, the answers and the worked solutions all stay
+                    // open — those are what the subject was bought for. Only
+                    // the retake goes.
+                    ? `<span class="ed-hint st-handin">No attempts left</span>`
+                    : `<button id="retake-btn" class="btn btn-primary st-handin">Retake<span class="st-long"> test</span></button>`
                   : ""
               }
             </div>
