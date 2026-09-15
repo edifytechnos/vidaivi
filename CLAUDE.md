@@ -132,6 +132,15 @@ unlike the `vidai.seyali.app` entry above which is done.
   QA could point at a separate storage account instead of the live one.
 - **QA shares production's API and database.** Students and tests created while
   testing are the live ones, exactly as in local dev.
+- **So a storage-shape change must never be exercised on QA before it is
+  merged.** Compatibility between a schema change and the code around it is
+  one-directional: new code is written to read old rows, old code knows nothing
+  of new ones. QA runs the new code against **production's tables**, so opening
+  QA on such a PR migrates production's data into a shape production's own live
+  code cannot see — the re-partition would have emptied the library out of the
+  live site by way of a browser tab nobody thought was a deployment. Merge
+  first, and let production and QA reach the new shape together. QA is a test
+  bed for behaviour, and a schema change is the one thing it cannot hold.
 - Analytics: Azure Application Insights (optional). Activates only when the
   `APPINSIGHTS_CONNECTION_STRING` repo secret is set (passed to the build as
   `VITE_APPINSIGHTS_CONNECTION_STRING`); without it `src/analytics.ts` no-ops.
@@ -190,7 +199,8 @@ Storage instead of the repo; bundled `src/tests/*.json` stay as the platform see
   same JSON shape as the bundled files), `publish`, `unpublish`, `archive`,
   `delete` (drafts only). Teachers only; a teacher can only touch their own tests.
 - Lifecycle: `draft → published → archived`; only published tests reach students.
-- Storage shape: PK `test`, RK = test id; questions are JSON split across
+- Storage shape: **PK = whoever the row belongs to** (see *A row lives in its
+  owner's partition* below), RK = test id; questions are JSON split across
   `qc0..qcN` string properties (Table Storage caps one property at 64KB) with
   `chunkCount`. Taxonomy (`board`/`klass`/`subject`) is stored from day one,
   fixed to CBSE/12/Maths until the UI exposes it.
@@ -595,6 +605,102 @@ Front Door, no Cosmos — and none of them are wanted until the numbers say so.
    drift. Rows written before this are healed once, bounded, by
    `backfillCounts`.
 
+### A row lives in its owner's partition
+
+`tests` and `subjects` used the constant PartitionKey `"test"` and `"subject"`,
+so **every listing was a walk of the whole platform**: "show me my twelve
+papers" read every row every teacher had ever written, and the walk grew with
+the platform forever. Seeding the library is what made it visible rather than
+theoretical — a teacher's home screen went to **126 rows walked for the twelve
+it wanted, 65 KB, 1.3–2.0s warm**.
+
+**The partition key is now who the row belongs to.** `ownerPartition(row)`
+decides it, and reads it **from the row, never from the caller** — a row's home
+is decided by whose it is, so a caller asking about someone else's row cannot
+move it by asking.
+
+- A teacher's test or subject → their `ownerSub`.
+- A **master or a shelf** (`platform: true`) → `PLATFORM_PK` (`"~platform"`).
+  The library belongs to the platform rather than to whichever admin typed it
+  in, so `?library=1` is one partition query and an admin's own drafts stay out
+  of the library's way. `~` can begin neither a Google sub (digits) nor an
+  admin id (`adm~…`), so neither name can collide with a real owner.
+- A row with no `ownerSub` → `ORPHAN_PK`. A row nobody can name is worse than
+  one parked somewhere visible.
+
+**`ownerSub` is still stored on the row.** It is the field `canManageTest()` and
+`visible()` read, and **nothing about who may do what is decided by a partition
+key** — the partition is where a row lives, not what it permits.
+
+**A point read has to name a partition, so `readByPartitions` names the ones a
+caller could legitimately hold the row in** — their own and the library's for
+staff, their teacher's for a student or a parent reading as their child. That
+set is the mirror image of `visible()`, clause for clause, so nothing the old
+code refused becomes reachable. It is awaited **in sequence**: the caller's own
+partition is listed first and is the common case, so it is usually one round
+trip, and the list is never longer than three.
+
+One consequence worth knowing: **another teacher's test now reads as missing
+rather than as refused** (404, not 403) — one fewer way to learn that an id
+exists. `fetchServerTest` already treats both the same.
+
+**A test id is unique per owner, not across the platform.** Uniqueness in Table
+Storage is (partition, row). That is the right scope because it is also the
+scope a link resolves in: a student following `?test=<id>` is only ever shown
+their own teacher's test, and `readByPartitions` tries the caller's own
+partition before the library, so a teacher's id always beats a master's for that
+teacher. The generated suffix went from `randomInt(100,1000)` — **900 values** —
+to `randomBytes(3)` in the same change, since a collision is no longer refused
+by a platform-wide check that no longer exists.
+
+**A collaborator's subject is the one thing `listOwnedSubjects` no longer
+finds**, and it never actually could: nothing writes to `collaborators`, so the
+field has only ever held `"[]"`. When sharing arrives it needs an index of
+subject ids per collaborator email — which is the same shape as any other "find
+me rows I do not own", and the reason to build it deliberately rather than keep
+a platform-wide scan alive for a feature that does not exist.
+
+### The tables migrate themselves, and an edit always beats the drain
+
+Table Storage cannot move a row: a new partition key means create-then-delete.
+So the change ships **dual-read** and the tables drain under ordinary traffic.
+
+- `walkPartitions` walks the real partitions first and the **legacy** partition
+  last, moving the rows it meets there — bounded by `LEGACY_DRAIN_BUDGET` (25),
+  exactly as `backfillCounts` is bounded, so one listing can never turn into a
+  table-wide rewrite. At 126 rows that is about six page loads.
+- **`drainLegacy` reads the row in full before moving it.** The listing that met
+  it projected the question chunks away, so building the new row from that
+  projection would drop every question in it. `e2e/helpers.cjs` asserts the
+  questions survive, and that assertion goes red if the full read is removed.
+- **The new row is written before the old one is deleted.** A crash between the
+  two leaves a duplicate, which `walkPartitions` tolerates by preferring the copy
+  in the real partition; a crash the other way round would lose the test.
+- **Every write goes through `saveRow`, and that is what makes the drain safe.**
+  A `saveRow` that meets a row still in the legacy partition writes the real
+  partition and deletes the legacy twin. So a drain racing an edit can only ever
+  lose to it. Without this, a drain could copy a row a heartbeat before an edit
+  landed in the legacy partition, and the edit would go down with it — the one
+  way this migration could have silently lost a teacher's work.
+- A drain is a content-preserving move, which is why any caller may trigger one
+  and not only the row's owner.
+
+**The clean-up**: delete `LEGACY_TEST_PK`, `LEGACY_SUBJECT_PK` and every path
+that mentions them once both tables are empty of them. Until then the cost is
+one query against a partition that is usually empty.
+
+### The test that would otherwise pass vacuously
+
+A listing returns the right rows whether it names a partition or scans the whole
+table — which is exactly how the old code passed. So `partitionChecks()` in
+`e2e/helpers.cjs` **records every filter the handlers issue and asserts which
+partitions were asked for**, and its fake table **throws on a query that names
+no PartitionKey at all**. Rule 2 has teeth there rather than being a habit.
+
+It drives the real handlers, and it was verified to fail three ways: building
+the moved row from the projection, replacing the partition list with a scan, and
+removing the PartitionKey from `pkFilter`.
+
 ### What the caches cost in correctness
 
 - **Google tokens** (`GOOGLE_TOKEN_TTL_MS`, 5 min): capped well under the
@@ -627,11 +733,10 @@ Front Door, no Cosmos — and none of them are wanted until the numbers say so.
 
 Ranked, with the next architectural step first:
 
-- **Re-partition `tests` and `subjects` by `ownerSub`** — they use a constant
-  PartitionKey (`"test"`, `"subject"`), so every read still scans the whole
-  platform and every write lands in one partition. Fine at one teacher, fatal
-  at five hundred. **This is the one true architectural change outstanding**,
-  and it gets cheaper the sooner it is done.
+- ~~Re-partition `tests` and `subjects` by `ownerSub`~~ — **done**; see *A row
+  lives in its owner's partition* below. What is left of it is one line of
+  clean-up: `LEGACY_TEST_PK` / `LEGACY_SUBJECT_PK` and every path that reads
+  them, once both tables have drained.
 - **Bake published tests to immutable blobs on publish.** Editing is already
   draft-only, so a published paper never changes — which makes it CDN-cacheable
   forever at `tests/<id>/<version>.json`. Forty students opening the same test

@@ -819,6 +819,291 @@ async function studentRemoveCascadeChecks() {
   delete process.env.ADMIN_PASSWORD;
 }
 
+/**
+ * The re-partition: tests and subjects live in their owner's partition.
+ *
+ * The thing worth asserting is not that a listing returns the right rows —
+ * a table scan returns those too, which is exactly how the old code passed —
+ * but WHICH PARTITIONS IT ASKED FOR. So this harness records every filter the
+ * handlers issue and checks the set, and the fake table refuses to answer a
+ * query that names no PartitionKey at all, the way a well-keyed table should.
+ */
+async function partitionChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  // Every partition each table was asked about, in order.
+  let asked = { tests: [], subjects: [] };
+  const resetAsked = () => { asked = { tests: [], subjects: [] }; };
+
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e });
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, { ...(rows.get(k) || {}), ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = opts && opts.queryOptions && opts.queryOptions.filter;
+      const want = pkOf(filter);
+      // Rule 2 has teeth here: a query with no PartitionKey is the bug this
+      // whole change removes, so the harness treats it as one.
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      if (asked[name]) asked[name].push(want);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  process.env.ADMIN_USERNAME = "e2e-admin";
+  process.env.ADMIN_PASSWORD = "e2e-password";
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, ADMIN_TOKEN_TTL_MS, STUDENT_TOKEN_TTL_MS, adminEpoch, PLATFORM_PK, chunkQuestions };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  const ME = "adm~e2e-admin";
+  const OTHER = "another-teacher-sub-99";
+  const session = t.signSession("vad", "e2e-admin", t.ADMIN_TOKEN_TTL_MS, {
+    ep: await t.adminEpoch(),
+  });
+  const call = async (method, opts = {}) => {
+    const c = { res: null };
+    await t.handlers[opts.handler || "tests"](c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${opts.cookie || session}` },
+      query: opts.query || {},
+      body: opts.body,
+    });
+    return { status: c.res.status, body: c.res.body || {} };
+  };
+  const seed = (table, row) => rows.set(key(table, row.partitionKey, row.rowKey), row);
+  const testRow = (over) => {
+    const row = {
+      title: "T", chapter: "C", teacher: "", order: 1, access: "login",
+      status: "published", platform: false, audience: "class", assignedTo: "[]",
+      board: "CBSE", klass: "12", subject: "Maths", subjectId: "",
+      createdAt: "2026-01-01", updatedAt: "2026-01-01", ...over,
+    };
+    t.chunkQuestions(row, over.questions || [
+      { id: "q1", chapter: "C", topic: "T", type: "numeric", q: "2+2?", answer: 4, tolerance: 0, solution: "four", marks: 2 },
+    ]);
+    delete row.questions;
+    return row;
+  };
+
+  // --- a new test lands in its owner's partition ---------------------------
+  const made = await call("POST", {
+    body: { action: "create", test: { title: "Mine", questions: [
+      { id: "q1", chapter: "C", topic: "T", type: "numeric", q: "1+1?", answer: 2, tolerance: 0, solution: "two", marks: 1 },
+    ] } },
+  });
+  check(made.status === 201, `creating a test succeeds (${made.status})`);
+  const mineId = made.body.test && made.body.test.id;
+  check(!!rows.get(key("tests", ME, mineId)), "a new test lands in its owner's partition");
+  check(!rows.get(key("tests", "test", mineId)), "and nothing is written to the old constant partition");
+
+  // --- a master lands in the library's own partition -----------------------
+  const master = await call("POST", {
+    body: { action: "create", test: { title: "Master", platform: true, questions: [
+      { id: "q1", chapter: "C", topic: "T", type: "numeric", q: "3+3?", answer: 6, tolerance: 0, solution: "six", marks: 1 },
+    ] } },
+  });
+  const masterId = master.body.test && master.body.test.id;
+  check(!!rows.get(key("tests", t.PLATFORM_PK, masterId)), "a master lands in the library's partition");
+  check(!rows.get(key("tests", ME, masterId)), "and not in the admin's own");
+  // Only a published master reaches the library listing, so publish it through
+  // the handler — which also proves a status change finds a row by partition.
+  const pub = await call("POST", { body: { action: "publish", id: masterId } });
+  check(pub.status === 200, `a master can be published (${pub.status})`);
+  check(
+    (rows.get(key("tests", t.PLATFORM_PK, masterId)) || {}).status === "published",
+    "and the status change lands on the row in the library's partition"
+  );
+
+  // --- another teacher's work, and a legacy row that predates the change ---
+  seed("tests", testRow({ partitionKey: OTHER, rowKey: "theirs-1", ownerSub: OTHER, title: "Theirs" }));
+  seed("tests", testRow({
+    partitionKey: "test", rowKey: "legacy-1", ownerSub: ME, title: "Legacy",
+    questions: [
+      { id: "lq1", chapter: "C", topic: "T", type: "numeric", q: "9+9?", answer: 18, tolerance: 0, solution: "eighteen", marks: 3 },
+    ],
+  }));
+
+  // --- the teacher's own listing ------------------------------------------
+  resetAsked();
+  const list = await call("GET");
+  const ids = (list.body.tests || []).map((x) => x.id);
+  check(ids.includes(mineId), "a teacher's listing carries their own test");
+  check(ids.includes("legacy-1"), "and a row the re-partition has not reached yet");
+  check(!ids.includes("theirs-1"), "and never another teacher's");
+  check(
+    !asked.tests.includes(OTHER),
+    `the listing never asks for another teacher's partition (asked: ${asked.tests.join(", ")})`
+  );
+  check(
+    asked.tests.every((pk) => [ME, t.PLATFORM_PK, "test"].includes(pk)),
+    `it asks only for its own, the library's and the legacy partition (asked: ${asked.tests.join(", ")})`
+  );
+
+  // --- and that listing moved the legacy row, questions intact -------------
+  const moved = rows.get(key("tests", ME, "legacy-1"));
+  check(!!moved, "reading a legacy row moves it into its owner's partition");
+  check(!rows.get(key("tests", "test", "legacy-1")), "and the legacy copy is gone");
+  let carried = "";
+  for (let i = 0; i < ((moved || {}).chunkCount || 0); i++) carried += moved[`qc${i}`] || "";
+  check(
+    JSON.parse(carried || "[]")[0] &&
+      JSON.parse(carried)[0].q === "9+9?",
+    "and every question came with it — the move is not built from the projection"
+  );
+
+  // --- another teacher's test is not reachable by id ----------------------
+  const theirs = await call("GET", { query: { id: "theirs-1" } });
+  check(theirs.status === 404, `another teacher's test reads as missing (${theirs.status})`);
+
+  // --- the library listing asks the library, not the platform -------------
+  resetAsked();
+  const lib = await call("GET", { query: { library: "1" } });
+  check(
+    (lib.body.tests || []).some((x) => x.id === masterId),
+    "the library listing finds the master"
+  );
+  check(
+    asked.tests.every((pk) => [t.PLATFORM_PK, ME, "test"].includes(pk)),
+    `and asks only the library, the caller and legacy (asked: ${asked.tests.join(", ")})`
+  );
+
+  // --- an edit to a legacy row moves it and keeps the new content ----------
+  seed("tests", testRow({
+    partitionKey: "test", rowKey: "legacy-2", ownerSub: ME, status: "draft", title: "Old name",
+  }));
+  const edited = await call("POST", {
+    body: { action: "update", test: { id: "legacy-2", title: "New name", questions: [
+      { id: "q1", chapter: "C", topic: "T", type: "numeric", q: "5+5?", answer: 10, tolerance: 0, solution: "ten", marks: 1 },
+    ] } },
+  });
+  check(edited.status === 200, `a legacy row can still be edited (${edited.status})`);
+  const after = rows.get(key("tests", ME, "legacy-2"));
+  check(!!after && after.title === "New name", "the edit lands in the real partition");
+  check(!rows.get(key("tests", "test", "legacy-2")), "and leaves no legacy twin to lose it to a drain");
+
+  // --- a stale legacy twin never overwrites the newer row ------------------
+  //
+  // saveRow writes the real partition first and deletes the legacy twin
+  // second, so an interrupted move leaves both — with the REAL one newer by
+  // construction. A drain that copied the legacy copy across would undo the
+  // edit that wrote it, which is the one way this migration could silently
+  // lose a teacher's work.
+  seed("tests", testRow({
+    partitionKey: ME, rowKey: "twin-1", ownerSub: ME, status: "draft", title: "Edited since",
+  }));
+  seed("tests", testRow({
+    partitionKey: "test", rowKey: "twin-1", ownerSub: ME, status: "draft", title: "Stale copy",
+  }));
+  await call("GET");
+  const survivor = rows.get(key("tests", ME, "twin-1"));
+  check(
+    !!survivor && survivor.title === "Edited since",
+    `the newer row survives a drain that meets its stale twin (${(survivor || {}).title})`
+  );
+  check(!rows.get(key("tests", "test", "twin-1")), "and the stale twin is dropped, not copied");
+
+  // --- a student sees their own teacher's partition and nothing else -------
+  const STUDENT = "partkid5";
+  seed("students", {
+    partitionKey: "student", rowKey: STUDENT, teacherSub: ME, name: "Part Kid", tokenEpoch: 0,
+  });
+  const stuCookie = t.signSession("vst", STUDENT, t.STUDENT_TOKEN_TTL_MS, { ep: 0 });
+  seed("tests", testRow({
+    partitionKey: ME, rowKey: "forclass-1", ownerSub: ME, status: "published", subjectId: "sub-a",
+  }));
+  seed("subjects", {
+    partitionKey: ME, rowKey: "sub-a", board: "CBSE", klass: "12", subject: "Maths",
+    title: "CBSE Class 12 Maths", ownerSub: ME, collaborators: "[]", createdAt: "2026-01-01",
+  });
+  resetAsked();
+  const stuList = await call("GET", { cookie: stuCookie });
+  const stuIds = (stuList.body.tests || []).map((x) => x.id);
+  check(stuIds.includes("forclass-1"), "a student sees their teacher's published test");
+  check(!stuIds.includes(masterId), "and never a library master directly");
+  check(
+    asked.tests.every((pk) => [ME, "test"].includes(pk)),
+    `a student's listing asks only their teacher's partition (asked: ${asked.tests.join(", ")})`
+  );
+  check(
+    !asked.tests.includes(t.PLATFORM_PK),
+    "and never walks the library it cannot see"
+  );
+
+  resetAsked();
+  const stuSubjects = await call("GET", { cookie: stuCookie, handler: "subjects" });
+  check(
+    (stuSubjects.body.subjects || []).some((x) => x.id === "sub-a"),
+    "their subject list is derived from those tests"
+  );
+  check(
+    asked.tests.every((pk) => [ME, "test"].includes(pk)),
+    `and reads one teacher's test partition only (tests: ${asked.tests.join(", ")})`
+  );
+  // The subjects themselves are not listed at all: a test's subject is owned by
+  // the same teacher, so each one is a point read in that partition.
+  check(
+    asked.subjects.length === 0,
+    `the subjects behind them are point reads, never a listing (asked: ${asked.subjects.join(", ")})`
+  );
+
+  // --- a teacher's subject list ------------------------------------------
+  seed("subjects", {
+    partitionKey: OTHER, rowKey: "sub-theirs", board: "CBSE", klass: "10", subject: "Maths",
+    title: "Theirs", ownerSub: OTHER, collaborators: "[]", createdAt: "2026-01-01",
+  });
+  seed("subjects", {
+    partitionKey: t.PLATFORM_PK, rowKey: "shelf-1", board: "CBSE", klass: "10", subject: "Maths",
+    title: "CBSE Class 10 Maths", ownerSub: ME, platform: true, collaborators: "[]", createdAt: "2026-01-01",
+  });
+  resetAsked();
+  const subs = await call("GET", { handler: "subjects" });
+  const subIds = (subs.body.subjects || []).map((x) => x.id);
+  check(subIds.includes("sub-a"), "a teacher's subject list carries their own subject");
+  check(subIds.includes("shelf-1"), "and every library shelf");
+  check(!subIds.includes("sub-theirs"), "and never another teacher's");
+  check(
+    !asked.subjects.includes(OTHER) && !asked.tests.includes(OTHER),
+    `without ever asking for their partition (subjects: ${asked.subjects.join(", ")})`
+  );
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
@@ -827,6 +1112,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   })
   .then(() => assessCapChecks())
   .then(() => studentRemoveCascadeChecks())
+  .then(() => partitionChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
     process.exit(failures ? 1 : 0);
