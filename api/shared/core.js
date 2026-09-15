@@ -3582,12 +3582,36 @@ async function linkedChildren(who) {
 }
 
 /** The link row, or null. The gate on every parent read. */
+/**
+ * The link between this account and a child, from EITHER route.
+ *
+ * This read only knew about `parentlinks` — the invite-code route — exactly as
+ * `linkedChildren` did. So a parent who created their child's login themselves
+ * was refused "Not your child" on their own child: the row exists in
+ * `students` with `teacherSub` set to them, and no link row is ever written.
+ *
+ * `teacherSub` is what the caller uses to find the child's tests, and for a
+ * child you issued yourself that is **you** — the tests they sit are the ones
+ * in your own partition.
+ */
 async function childLink(who, username) {
   if (who.kind !== "google") return null;
+  const user = String(username || "").trim().toLowerCase();
+  if (!user) return null;
+
+  // A child this account issued the login to. One point read on the student
+  // row, which is the same row `canSeeStudent` already reads.
+  try {
+    const rec = await tableClient("students").getEntity("student", user);
+    if (rec && rec.teacherSub === who.id) {
+      return { username: user, name: rec.name || user, teacherSub: who.id };
+    }
+  } catch {}
+
   const links = tableClient("parentlinks");
   await ensureTable(links);
   try {
-    const e = await links.getEntity(`parent~${who.id}`, String(username || "").trim().toLowerCase());
+    const e = await links.getEntity(`parent~${who.id}`, user);
     return { username: e.rowKey, name: e.studentName || e.rowKey, teacherSub: e.teacherSub || "" };
   } catch {
     return null;
@@ -4178,8 +4202,58 @@ handlers.attempts = async (context, req) => {
     );
     if (list.length >= 100) break;
   }
+  await mergeAwarded(readAs, list);
   json(context, 200, { attempts: list, counts, attemptRule: (await platformRules()).subjectAttempts });
 };
+
+/**
+ * Add the teacher's marks to the scores this listing returns.
+ *
+ * The attempt row deliberately never holds them — its `score` is the
+ * auto-graded subtotal, and a teacher marking a paper must not write to the
+ * student's row (see the note above `ANSWER_CONTAINER`). Opening a paper has
+ * always merged them in on the client (`hydrateMarks`), so a student saw the
+ * true total *inside* the test and the subtotal in every list that named it:
+ * "11/26 here and something else there" was exactly right, and exactly wrong.
+ *
+ * It is done here rather than on the client because a list is many tests, and
+ * one grading fetch per row is an N+1 from a phone (rule 3). One partition
+ * query answers the whole list — the grading rows live in the student's own
+ * partition, which is the same `stu~<username>` the attempts were read from.
+ *
+ * Only the newest finished attempt per test is adjusted: a grading row belongs
+ * to a question, not to an attempt, so an older retake keeps the score it was
+ * stored with rather than borrowing marks earned on a later paper.
+ */
+async function mergeAwarded(readAs, list) {
+  if (!String(readAs || "").startsWith("stu~")) return;
+  const newest = {};
+  for (const row of list) {
+    if (row.status !== "done" || !row.testId) continue;
+    if (!newest[row.testId]) newest[row.testId] = row; // the walk is newest first
+  }
+  const ids = Object.keys(newest);
+  if (!ids.length) return;
+  try {
+    const iter = tableClient("grading").listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq '${readAs.replace(/'/g, "''")}' and status eq 'marked'`,
+        // Three properties, not a marking queue: the mark, which paper it is
+        // on, and nothing about the child or their photographs.
+        select: ["PartitionKey", "RowKey", "testId", "awarded"],
+      },
+    });
+    for await (const e of iter) {
+      const row = newest[e.testId];
+      if (!row) continue;
+      const awarded = typeof e.awarded === "number" ? e.awarded : 0;
+      row.score = (typeof row.score === "number" ? row.score : 0) + awarded;
+    }
+  } catch {
+    // A marks read that fails leaves the auto-graded subtotal in place. It is
+    // low rather than wrong-and-confident, and the paper itself still merges.
+  }
+}
 
 // ---------- Answer photos for long questions ----------
 //

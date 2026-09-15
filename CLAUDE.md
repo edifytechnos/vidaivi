@@ -1158,6 +1158,16 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   (`hydrateMarks` in `src/screens/test.ts`). That keeps marking off the
   student's row entirely: no etag races, and no risk of tripping the
   `Q_CHUNK` guard that silently drops an oversized `answers` blob.
+- **A listed score carries the teacher's marks too.** The attempt row still
+  holds only the subtotal, but `mergeAwarded` in the attempts GET listing adds
+  the marked `grading` rows before answering — one partition query for the whole
+  list, in the student's own partition, projected to three properties. Without
+  it a student saw the true total *inside* the paper (`hydrateMarks`) and the
+  subtotal in every list that named it: "11/26 here, something else there" was
+  exactly right and exactly wrong. Only the **newest** finished attempt per test
+  is adjusted — a grading row belongs to a question, not to an attempt, so an
+  older retake keeps the score it was stored with. Doing it on the client would
+  be one grading fetch per test row, an N+1 from a phone (rule 3).
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
 - **Removing a student removes the photographs.** `POST /api/students
@@ -1530,6 +1540,16 @@ is not a failure, and both were being shown as "something went wrong".
 
 A linked child is still read-only — a parent never marks somebody else's
 student. What changed is that their **own** child is theirs.
+
+**`childLink` had the same blind spot `linkedChildren` did.** It walked
+`parentlinks` only, so a child this account *issued* — a `students` row with
+`teacherSub` set to the parent's own sub and no link row — was refused "Not your
+child" on the very screen that had just created them. It reads the `students`
+row first now (a point read in that table's own partition) and falls through to
+`parentlinks`. And `fetchServerTest(id, student?)` gained the student argument:
+without it the test read named the parent's own partition and the child's paper,
+which lives in their teacher's, simply was not there — "That attempt could not
+be opened" for a paper that exists.
 
 **`linkedChildren` reads both routes, and for a release it read one.** It walked
 `parentlinks` only — the invite-code route — so a child the parent *created*

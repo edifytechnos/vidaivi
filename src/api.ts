@@ -203,10 +203,21 @@ export async function mutateSubject(
   }
 }
 
-export async function fetchServerTest(id: string): Promise<Test | null> {
+/**
+ * One full test.
+ *
+ * `student` asks for it **as that child**, which is the only way a parent can
+ * read a paper their child sat: the server resolves the child's teacher from
+ * the link and looks in that partition. Without it the read only ever names the
+ * caller's own partition and the library, so a parent opening their child's
+ * result got a 404 and the screen said "That attempt could not be opened".
+ */
+export async function fetchServerTest(id: string, student?: string): Promise<Test | null> {
   if (!isLoggedIn()) return null;
   try {
-    const res = await apiFetch(`/api/tests?id=${encodeURIComponent(id)}`, {
+    const params = new URLSearchParams({ id });
+    if (student) params.set("student", student);
+    const res = await apiFetch(`/api/tests?${params}`, {
       headers: authHeader(),
     });
     if (!res.ok) return null;

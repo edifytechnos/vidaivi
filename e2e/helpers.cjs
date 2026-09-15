@@ -1415,13 +1415,18 @@ async function roleChoiceChecks() {
       // whole partition makes "somebody else's child is not in this list" pass
       // while proving nothing — the same vacuity the `testId eq` clause had.
       const wantTeacher = /teacherSub eq '((?:[^']|'')*)'/.exec(filter);
+      // The grading read asks for marked rows only. Without this the "an
+      // unmarked answer adds nothing" assertion would pass by accident.
+      const wantStatus = /status eq '((?:[^']|'')*)'/.exec(filter);
       const hits = [];
       for (const [k, row] of rows) {
         if (!k.startsWith(`${name}/`)) continue;
         if (row.partitionKey !== want) continue;
         if (wantTeacher && String(row.teacherSub || "") !== wantTeacher[1].replace(/''/g, "'")) continue;
+        if (wantStatus && String(row.status || "") !== wantStatus[1].replace(/''/g, "'")) continue;
         hits.push({ ...row });
       }
+      hits.sort((a, b) => String(a.rowKey).localeCompare(String(b.rowKey)));
       return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
     },
   });
@@ -1825,6 +1830,87 @@ async function reportStatusChecks() {
       !!saved && Number.isFinite(Date.parse(saved.completedAt)) && Date.parse(saved.completedAt) > 0,
       `${label} completion time is replaced with a real one (got ${JSON.stringify(saved && saved.completedAt)})`
     );
+  }
+
+  // --- the listed score is the score, marked long answers included ---------
+  // The attempt row holds only the auto-graded subtotal by design, and opening
+  // a paper merged the teacher's marks in on the client. So a student saw one
+  // number inside the test and a smaller one in every list that named it.
+  {
+    rows.set(key("attempts", "stu~priya", "89998~t5"), {
+      partitionKey: "stu~priya", rowKey: "89998~t5", testId: "t5",
+      score: 11, total: 26, completedAt: "2026-09-15T10:00:00.000Z",
+    });
+    // An older retake of the same paper. Marks belong to a question, not to an
+    // attempt, so only the newest one may take them.
+    rows.set(key("attempts", "stu~priya", "89999~t5"), {
+      partitionKey: "stu~priya", rowKey: "89999~t5", testId: "t5",
+      score: 3, total: 26, completedAt: "2026-09-10T10:00:00.000Z",
+    });
+    rows.set(key("grading", "stu~priya", "t5~q9"), {
+      partitionKey: "stu~priya", rowKey: "t5~q9", testId: "t5",
+      status: "marked", awarded: 5, maxMarks: 5,
+    });
+    rows.set(key("grading", "stu~priya", "t5~q10"), {
+      partitionKey: "stu~priya", rowKey: "t5~q10", testId: "t5",
+      status: "submitted", awarded: 0, maxMarks: 5,
+    });
+
+    const c4 = { res: null };
+    await t.handlers.attempts(c4, {
+      method: "GET",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${scookie}` },
+      query: {},
+    });
+    const listed = (c4.res.body.attempts || []).filter((a) => a.testId === "t5");
+    check(c4.res.status === 200, `a student lists their attempts (${c4.res.status})`);
+    check(
+      listed[0] && listed[0].score === 16,
+      `the newest paper carries the teacher's marks (got ${listed[0] && listed[0].score}, expected 16)`
+    );
+    check(
+      listed[1] && listed[1].score === 3,
+      `an older retake keeps its own score (got ${listed[1] && listed[1].score})`
+    );
+    check(
+      listed[0] && listed[0].score <= listed[0].total,
+      "and an unmarked answer adds nothing"
+    );
+  }
+
+  // --- a parent reads the child THEY created ------------------------------
+  // `childLink` walked `parentlinks` only — the invite-code route — so a child
+  // this account issued itself had no link row and was refused "Not your
+  // child" on the very screen that had just created them.
+  {
+    const PARENT = "parent-sub-7007";
+    const pcookie = t.signSession("vgo", PARENT, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "p@example.com", n: "P" });
+    rows.set(key("students", "student", "arun"), {
+      partitionKey: "student", rowKey: "arun", name: "Arun", school: "", grade: "10",
+      parentPhone: "", teacherSub: PARENT, tokenEpoch: 0,
+    });
+    rows.set(key("attempts", "stu~arun", "89999~t7"), {
+      partitionKey: "stu~arun", rowKey: "89999~t7", testId: "t7",
+      score: 9, total: 20, completedAt: "2026-09-15T10:00:00.000Z", answers: "{}",
+    });
+    const c5 = { res: null };
+    await t.handlers.attempts(c5, {
+      method: "GET",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${pcookie}` },
+      query: { student: "arun", testId: "t7" },
+    });
+    check(c5.res.status === 200, `a parent opens their own child's paper (${c5.res.status})`);
+    check(
+      c5.res.body.attempt && c5.res.body.attempt.testId === "t7",
+      "and gets the attempt, not a refusal"
+    );
+    const c6 = { res: null };
+    await t.handlers.attempts(c6, {
+      method: "GET",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${pcookie}` },
+      query: { student: "priya", testId: "t1" },
+    });
+    check(c6.res.status === 403, `somebody else's student is still refused (${c6.res.status})`);
   }
 }
 
