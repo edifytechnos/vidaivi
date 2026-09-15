@@ -50,6 +50,8 @@ export interface ServerAttempt {
   status?: "progress" | "done";
   /** Progress rows only: the next unanswered question. */
   index?: number;
+  /** Progress rows only: when they last worked on it. */
+  updatedAt?: string;
 }
 
 export interface ServerProgress {
@@ -95,6 +97,15 @@ export function getProfile(): Profile | null {
 export function isTeacher(): boolean {
   const role = getProfile()?.role;
   return role === "teacher" || role === "admin";
+}
+
+/**
+ * An account that owns content of its own — a teacher, an admin, or a parent
+ * buying practice for their own children. The client mirror of the server's
+ * `isAuthor`: "may I have subjects and tests at all", never "how many".
+ */
+export function canAuthor(): boolean {
+  return isTeacher() || isParent();
 }
 
 export function isParent(): boolean {
@@ -473,7 +484,9 @@ export async function fetchEntitlements(): Promise<Entitlements | null> {
   }
 }
 
-async function accountsPost(body: unknown): Promise<{ ok: boolean; message?: string }> {
+async function accountsPost(
+  body: unknown
+): Promise<{ ok: boolean; message?: string; data?: Record<string, unknown> }> {
   try {
     const res = await apiFetch("/api/accounts", {
       method: "POST",
@@ -484,19 +497,45 @@ async function accountsPost(body: unknown): Promise<{ ok: boolean; message?: str
       const data = await res.json().catch(() => ({}));
       return { ok: false, message: data.error || "Request failed" };
     }
-    return { ok: true };
+    return { ok: true, data: await res.json().catch(() => ({})) };
   } catch {
     return { ok: false, message: "Network error" };
   }
 }
 
-export const chooseRole = (chose: "teacher" | "parent") => accountsPost({ action: "choose", chose });
+/**
+ * Pick teacher or parent, once.
+ *
+ * The stored profile's role is what every screen reads, and it was written at
+ * sign-in — before this choice existed. So the answer has to be carried back
+ * onto it here, or somebody who picked "I teach a class" lands in the parent's
+ * app until their next sign-in. The server is the authority: this writes back
+ * the role it returns, never the button that was pressed.
+ */
+export async function chooseRole(chose: "teacher" | "parent"): Promise<{ ok: boolean; message?: string }> {
+  const res = await accountsPost({ action: "choose", chose });
+  if (res.ok) applyRole(res.data?.role);
+  return res;
+}
+
+function applyRole(role: unknown): void {
+  if (role !== "teacher" && role !== "parent") return;
+  const state = getAuth();
+  if (!state?.profile) return;
+  saveAuth({ ...state, profile: { ...state.profile, role } });
+}
 export const savePlanRules = (rules: Record<string, number>) =>
   accountsPost({ action: "rules", ...rules });
 export const setAccountExempt = (sub: string, exempt: boolean) =>
   accountsPost({ action: "exempt", sub, exempt });
 export const setAccountSeats = (sub: string, seats: number) =>
   accountsPost({ action: "seats", sub, seats });
+/**
+ * Put an account back to before it chose teacher or parent. A reset, not a
+ * delete: their content and their students stay theirs — only the answer and
+ * the trial that started with it go, so the next sign-in is asked again.
+ */
+export const resetAccountChoice = (sub: string) => accountsPost({ action: "reset", sub });
 export const extendTrial = (sub: string, days: number) =>
   accountsPost({ action: "extend", sub, days });
 export const grantShelf = (sub: string, shelfId: string) =>
@@ -615,16 +654,37 @@ export async function createStudent(input: {
   grade: string;
   parentPhone: string;
 }): Promise<StudentRecord | null> {
+  return (await createStudentOrReason(input)).student;
+}
+
+/**
+ * The same call, keeping the server's refusal.
+ *
+ * `createStudent` returns null on any failure, which is fine where the only
+ * plausible failure is the network. It is not fine now: the server refuses a
+ * seat limit with a 402 that **names the price**, and a teacher waiting for
+ * approval with a sentence saying so. Swallowing those turns a decision into
+ * "something went wrong".
+ */
+export async function createStudentOrReason(input: {
+  name: string;
+  school: string;
+  grade: string;
+  parentPhone: string;
+}): Promise<{ student: StudentRecord | null; message?: string }> {
   try {
     const res = await apiFetch("/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "create", ...input }),
     });
-    if (!res.ok) return null;
-    return (await res.json()) as StudentRecord;
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { student: null, message: data.error || "Could not add that child." };
+    }
+    return { student: (await res.json()) as StudentRecord };
   } catch {
-    return null;
+    return { student: null, message: "Network error — check your connection." };
   }
 }
 

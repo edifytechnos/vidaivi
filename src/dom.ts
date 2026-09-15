@@ -116,6 +116,38 @@ export function brand(): string {
 
 
 /** The brand bar for screens shown before sign-in. Signed-in screens use the shell. */
+/**
+ * Paint a screen that is NOT inside the app shell — the sign-in steps and the
+ * guest player.
+ *
+ * `mount()` stamps `has-shell` on `#app`, and that class drops the 720px cap
+ * and the page padding so the shell can run edge to edge. **Nothing ever took
+ * it off**, so any of these screens rendered after a shelled one inherited a
+ * full-bleed container: the phone-number step was one input stretched across
+ * the whole window. Clearing the class is what makes the cap apply again, so
+ * every direct write to `app` goes through here rather than setting
+ * `innerHTML` and hoping.
+ */
+/**
+ * A date a person reads, or "—" when there isn't one.
+ *
+ * `new Date("")` is Invalid Date and `new Date(0)` is the Unix epoch, which in
+ * IST prints as **"1 Jan, 5:30 am"** — a real-looking timestamp for a row that
+ * simply has no date. That is what a teacher's report showed against a paper
+ * still being written. An absent date must read as absent.
+ */
+export function whenLabel(iso: string | undefined | null): string {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (!Number.isFinite(d.getTime()) || d.getTime() <= 0) return "—";
+  return d.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+}
+
+export function paintPlain(html: string): void {
+  app.className = "";
+  app.innerHTML = html;
+}
+
 export function topbar(showHome: boolean): string {
   return `
     <header class="topbar">

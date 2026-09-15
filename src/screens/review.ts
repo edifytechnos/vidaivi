@@ -18,6 +18,7 @@ import {
   fetchReleaseState,
   getProfile,
   isLoggedIn,
+  isParent,
   isTeacher,
   saveMark,
   setReleased,
@@ -401,7 +402,12 @@ export async function showReview(
   // Release is the teacher's own switch, so it can never hide a paper from
   // them: a teacher marking the class needs to see what was answered *before*
   // deciding to open it. Only the student and their parent wait.
-  const gated = !isTeacher() && (viewerIsStudent || !!opts.student);
+  // A parent who issued their own child's login is that child's teacher for
+  // this purpose, and reaches the paper the same way — through marking. A
+  // parent merely *linked* to somebody else's student is not, and waits with
+  // the student, which is why this is `opts.marking` rather than the role.
+  const marker = isTeacher() || (isParent() && !!opts.marking);
+  const gated = !marker && (viewerIsStudent || !!opts.student);
   // `open` is the whole difference between the two things this screen is:
   //   false — a handed-in paper, read-only. What they put down, and nothing
   //           else: no verdict, no marks, no correct answer, no explanation,

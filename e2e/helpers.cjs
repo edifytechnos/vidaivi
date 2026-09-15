@@ -1357,6 +1357,339 @@ async function partitionChecks() {
   );
 }
 
+/**
+ * The role a Google account runs as, and what a parent may reach.
+ *
+ * Two bugs met here. Picking "I teach a class" wrote `chose` to the accounts
+ * row and nothing ever read it back, so the role stayed the allowlist's
+ * default and the teacher landed in the parent's app. And a parent — sold a
+ * subject, three tests and three children — was refused at every gate that
+ * asked "teacher or admin", so the plan they were sold could not be used.
+ *
+ * Driven through the real handlers against a fake table, because the thing to
+ * prove is what a *request* is answered, not what a predicate returns.
+ */
+async function roleChoiceChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e });
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, { ...(rows.get(k) || {}), ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = opts && opts.queryOptions && opts.queryOptions.filter;
+      const want = pkOf(filter);
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, PLATFORM_PK, chunkQuestions, resolveRole, roleCache };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  const SUB = "google-sub-1001";
+  const EMAIL = "someone@example.com";
+  const cookie = t.signSession("vgo", SUB, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: EMAIL, n: "Someone" });
+  const call = async (handler, method, opts = {}) => {
+    const c = { res: null };
+    await t.handlers[handler](c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      query: opts.query || {},
+      body: opts.body,
+    });
+    return { status: c.res.status, body: c.res.body || {} };
+  };
+
+  // --- an account with no choice yet is not a teacher ----------------------
+  check((await t.resolveRole(EMAIL, SUB)) === "parent", "an account that has chosen nothing is not a teacher");
+
+  // --- choosing teacher makes the app the teacher's ------------------------
+  const chose = await call("accounts", "POST", { body: { action: "choose", chose: "teacher" } });
+  check(chose.status === 200, `choosing a role succeeds (${chose.status})`);
+  check(chose.body.role === "teacher", "and the answer names the role, so the client can store it");
+  check(
+    (await t.resolveRole(EMAIL, SUB)) === "teacher",
+    "and the very next request is served as a teacher — the cache was dropped, not left to expire"
+  );
+
+  // --- choosing once, and only once ----------------------------------------
+  const again = await call("accounts", "POST", { body: { action: "choose", chose: "parent" } });
+  check(again.status === 409, `the choice cannot be re-picked (${again.status})`);
+  check((await t.resolveRole(EMAIL, SUB)) === "teacher", "and the refused pick changed nothing");
+
+  // --- but the allowlist still guards issuing a login to a child -----------
+  const issue = await call("students", "POST", { body: { action: "create", name: "A Child" } });
+  check(issue.status === 403, `a self-declared teacher cannot issue a student login (${issue.status})`);
+  check(
+    /approv/i.test(issue.body.error || ""),
+    `and is told it is waiting for approval, not simply refused ("${issue.body.error}")`
+  );
+
+  // --- a parent reaches the library and holds a subject --------------------
+  const PSUB = "google-sub-2002";
+  const PEMAIL = "parent@example.com";
+  const pcookie = t.signSession("vgo", PSUB, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: PEMAIL, n: "A Parent" });
+  const pcall = async (handler, method, opts = {}) => {
+    const c = { res: null };
+    await t.handlers[handler](c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${pcookie}` },
+      query: opts.query || {},
+      body: opts.body,
+    });
+    return { status: c.res.status, body: c.res.body || {} };
+  };
+  const pchose = await pcall("accounts", "POST", { body: { action: "choose", chose: "parent" } });
+  check(pchose.body.role === "parent", `picking parent answers parent (${pchose.status})`);
+
+  // A shelf and one published master to read off it.
+  rows.set(key("subjects", t.PLATFORM_PK, "shelf-x"), {
+    partitionKey: t.PLATFORM_PK, rowKey: "shelf-x", board: "CBSE", klass: "10", subject: "Maths",
+    title: "CBSE Class 10 Maths", platform: true, ownerSub: "", collaborators: "[]",
+  });
+  const masterRow = {
+    partitionKey: t.PLATFORM_PK, rowKey: "lib-x-1", title: "Real Numbers", chapter: "1",
+    status: "published", platform: true, ownerSub: "", audience: "class", assignedTo: "[]",
+    board: "CBSE", klass: "10", subject: "Maths", subjectId: "shelf-x", order: 1,
+  };
+  t.chunkQuestions(masterRow, [
+    { id: "q1", chapter: "1", topic: "HCF", type: "numeric", q: "HCF of 6 and 8?", answer: 2, tolerance: 0, solution: "two", marks: 1 },
+  ]);
+  rows.set(key("tests", t.PLATFORM_PK, "lib-x-1"), masterRow);
+
+  const lib = await pcall("tests", "GET", { query: { library: "1" } });
+  check(lib.status === 200, `a parent can read the built-in library (${lib.status})`);
+  check(
+    (lib.body.tests || []).some((x) => x.id === "lib-x-1"),
+    "and the masters are actually in it — the thing a parent is meant to buy"
+  );
+  const shelves = await pcall("subjects", "GET");
+  check(
+    (shelves.body.subjects || []).some((x) => x.id === "shelf-x"),
+    "a parent sees the library's shelves"
+  );
+  const took = await pcall("tests", "POST", { body: { action: "adopt", ids: ["lib-x-1"] } });
+  check(took.status === 200 || took.status === 201, `a parent can take a copy of a built-in test (${took.status})`);
+  const copy = [...rows.values()].find((r) => r.copiedFrom === "lib-x-1");
+  check(!!copy && copy.ownerSub === PSUB, "and the copy is theirs, in their own partition");
+  check(copy && copy.platform === false, "and is no longer a master");
+
+  // --- a parent adds their own children, and the allowlist is not the gate --
+  const child = await pcall("students", "POST", { body: { action: "create", name: "My Child" } });
+  check(child.status === 201, `a parent can add their own child (${child.status})`);
+  check(!!JSON.stringify(child.body).match(/"password"/), `and is shown the password once (${JSON.stringify(child.body).slice(0, 120)})`);
+
+  // --- a student still reaches none of it ---------------------------------
+  const scookie = t.signSession("vst", "a-student", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+  rows.set(key("students", "student", "a-student"), {
+    partitionKey: "student", rowKey: "a-student", name: "A Student",
+    teacherSub: PSUB, tokenEpoch: 0, passwordHash: "x", salt: "y",
+  });
+  const sres = { res: null };
+  await t.handlers.tests(sres, {
+    method: "GET",
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${scookie}` },
+    query: { library: "1" },
+  });
+  check(sres.res.status === 403, `a student is still refused the library (${sres.res.status})`);
+}
+
+/**
+ * The teacher's report says what a paper actually is.
+ *
+ * `handlers.reports` pushed every row in the student's partition with no
+ * status, so a paper still being written — which carries a running auto-graded
+ * subtotal and an EMPTY completedAt — was shown as a finished attempt scoring
+ * 4/26 at "1 Jan, 5:30 am". A teacher's granted extra attempt was in there too,
+ * reading as a test the student handed in and never sat.
+ */
+async function reportStatusChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => { rows.set(key(name, e.partitionKey, e.rowKey), { ...e }); },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, { ...(rows.get(k) || {}), ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = opts && opts.queryOptions && opts.queryOptions.filter;
+      const want = pkOf(filter);
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  // ADMIN_EMAILS and TEACHER_EMAILS are read at MODULE LOAD, so they have to be
+  // set before the module is built — set afterwards they do nothing and every
+  // call comes back 403.
+  process.env.TEACHER_EMAILS = "t@example.com";
+  process.env.ADMIN_EMAILS = "a@example.com";
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  const TEACHER = "teacher-sub-3003";
+  const cookie = t.signSession("vgo", TEACHER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "t@example.com", n: "T" });
+
+  rows.set(key("students", "student", "priya"), {
+    partitionKey: "student", rowKey: "priya", name: "Priya", school: "", grade: "10",
+    parentPhone: "", teacherSub: TEACHER, tokenEpoch: 0,
+  });
+  // A finished paper.
+  rows.set(key("attempts", "stu~priya", "89999~t1"), {
+    partitionKey: "stu~priya", rowKey: "89999~t1", testId: "t1",
+    score: 20, total: 26, completedAt: "2026-09-14T10:00:00.000Z",
+  });
+  // One still being written: a running subtotal and no completedAt.
+  rows.set(key("attempts", "stu~priya", "progress~t2"), {
+    partitionKey: "stu~priya", rowKey: "progress~t2", testId: "t2",
+    score: 4, total: 26, completedAt: "", updatedAt: "2026-09-15T09:00:00.000Z", index: 3,
+  });
+  // And a teacher's granted extra attempt, which is a marker and not a paper.
+  rows.set(key("attempts", "stu~priya", "grant~t1"), {
+    partitionKey: "stu~priya", rowKey: "grant~t1", testId: "t1", extra: 1,
+  });
+
+  const c = { res: null };
+  await t.handlers.reports(c, {
+    method: "GET",
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+    query: { username: "priya" },
+  });
+  const got = (c.res.body.students || [])[0] || {};
+  const list = got.attempts || [];
+  check(c.res.status === 200, `a teacher reads their student's report (${c.res.status})`);
+  check(list.length === 2, `the grant row is not a paper (${list.length} rows, expected 2)`);
+  const done = list.find((a) => a.testId === "t1");
+  const live = list.find((a) => a.testId === "t2");
+  check(done && done.status === "done", "a handed-in paper says so");
+  check(live && live.status === "progress", "and one still being written says THAT, rather than nothing");
+  check(
+    live && live.score === 4 && !live.completedAt,
+    "the running subtotal is still sent — the client decides not to show it as a mark"
+  );
+  check(live && live.updatedAt === "2026-09-15T09:00:00.000Z", "with when they last worked on it");
+
+  // --- the admin's reset puts an account back to its FIRST screen ----------
+  // The phone number lives on the profile, not the account row, so clearing
+  // the choice alone left it behind — and phone capture only ever asks when
+  // there is no number stored, so the step was silently skipped on every
+  // retry of the sign-up flow.
+  {
+    const ADMIN = "admin-sub-4004";
+    const acookie = t.signSession("vgo", ADMIN, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "a@example.com", n: "A" });
+    const SUB = "google-sub-5005";
+    rows.set(key("accounts", "account", SUB), {
+      partitionKey: "account", rowKey: SUB, chose: "teacher", email: "who@example.com",
+      trialEndsAt: "2099-01-01T00:00:00.000Z", exempt: false,
+    });
+    rows.set(key("profiles", "profile", SUB), {
+      partitionKey: "profile", rowKey: SUB, name: "Who", email: "who@example.com", phone: "9884948041",
+    });
+    const c3 = { res: null };
+    await t.handlers.accounts(c3, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${acookie}` },
+      query: {},
+      body: { action: "reset", sub: SUB },
+    });
+    const acct = rows.get(key("accounts", "account", SUB)) || {};
+    const prof = rows.get(key("profiles", "profile", SUB)) || {};
+    check(c3.res.status === 200, `an admin can reset an account (${c3.res.status})`);
+    check(!acct.chose && !acct.trialEndsAt, "the choice and the trial are cleared");
+    check(!prof.phone, `and the saved phone number with them (got ${JSON.stringify(prof.phone)})`);
+    check(prof.name === "Who", "while the rest of the profile is left alone");
+  }
+
+  // --- an unusable completion time never reaches the row -------------------
+  // `typeof "" === "string"`, so an empty one used to be stored as the moment
+  // the paper was handed in — and an empty date renders as the Unix epoch,
+  // which in IST reads "1 Jan, 5:30 am".
+  const scookie = t.signSession("vst", "priya", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+  for (const [given, label] of [["", "an empty"], ["   ", "a blank"], ["not a date", "an unparseable"]]) {
+    const c2 = { res: null };
+    await t.handlers.attempts(c2, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${scookie}` },
+      query: {},
+      body: { testId: `t-${label.split(" ")[1]}`, score: 5, total: 10, completedAt: given },
+    });
+    const saved = [...rows.values()].find((r) => r.testId === `t-${label.split(" ")[1]}`);
+    check(
+      !!saved && Number.isFinite(Date.parse(saved.completedAt)) && Date.parse(saved.completedAt) > 0,
+      `${label} completion time is replaced with a real one (got ${JSON.stringify(saved && saved.completedAt)})`
+    );
+  }
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
@@ -1366,6 +1699,8 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => assessCapChecks())
   .then(() => studentRemoveCascadeChecks())
   .then(() => partitionChecks())
+  .then(() => roleChoiceChecks())
+  .then(() => reportStatusChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
     process.exit(failures ? 1 : 0);

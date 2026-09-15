@@ -30,12 +30,20 @@ interface RailItem {
   show: () => boolean;
 }
 
+// A parent buys a subject and gives it to their own children, so they need the
+// same two doors a teacher does: the library to pick from, and the subject the
+// copies land in. Browse was shown to teachers only, which left the parent plan
+// with nothing to buy and nowhere to put it.
+const owns = () => isTeacher() || isParent();
+
 const RAIL_ITEMS: RailItem[] = [
   { key: "children", label: "My children", icon: ICONS.users, show: isParent },
-  { key: "subjects", label: "Subjects", icon: ICONS.folder, show: () => isLoggedIn() && !isParent() },
+  // A parent gets this too: it is where the tests they take from the library
+  // land, and without it their copies exist with no door into them.
+  { key: "subjects", label: "Subjects", icon: ICONS.folder, show: () => owns() },
   { key: "results", label: "My results", icon: ICONS.check, show: () => getProfile()?.kind === "student" },
-  { key: "browse", label: "Browse tests", icon: ICONS.book, show: isTeacher },
-  { key: "mark", label: "To mark", icon: ICONS.mark, show: isTeacher },
+  { key: "browse", label: "Browse tests", icon: ICONS.book, show: owns },
+  { key: "mark", label: "To mark", icon: ICONS.mark, show: owns },
   { key: "students", label: "My students", icon: ICONS.users, show: isTeacher },
   { key: "mytests", label: "My tests", icon: ICONS.home, show: isAdmin },
   { key: "admin", label: "Teacher access", icon: ICONS.shield, show: isAdmin },

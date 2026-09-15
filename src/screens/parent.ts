@@ -1,6 +1,14 @@
-// Parent view: the children linked to this account, and one child's results.
-// Strictly read-only — a parent watches, never writes. The server enforces
-// that too; this screen simply never offers the controls.
+// Parent view: this account's children, and one child's results.
+//
+// A parent reaches a child two ways, and they are genuinely different. They can
+// **add their own** — a login this account issues, capped at `parentMaxChildren`
+// — or **link one their teacher already registered**, with a one-time code. For
+// a release only the second existed, so the plan a parent was sold (up to three
+// children of their own) had no button anywhere and the screen was a dead end
+// for anyone without a teacher.
+//
+// A parent still never marks or edits somebody else's student: a linked child is
+// read-only exactly as before. What changed is that their OWN child is theirs.
 
 import { track } from "../analytics";
 import {
@@ -10,8 +18,9 @@ import {
   redeemParentInvite,
   type Child,
 } from "../api";
-import { fetchMyAttempt, fetchMyAttempts } from "../auth";
-import { escapeHtml, setUrl } from "../dom";
+import { createStudentOrReason, fetchMyAttempt, fetchMyAttempts, getProfile } from "../auth";
+import { copyText, escapeHtml, setUrl } from "../dom";
+import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { showHome } from "./home";
 import { showReviewFor } from "./test";
@@ -25,7 +34,6 @@ export async function showChildren(force = false): Promise<void> {
     `
     <main class="subjects">
       <div class="subjects-head"><h2 class="subjects-title">Your children</h2></div>
-      <div id="pa-form" class="card subject-form" hidden></div>
       <div id="pa-grid">${skeleton.cards(2)}</div>
     </main>`,
     {
@@ -35,7 +43,7 @@ export async function showChildren(force = false): Promise<void> {
       actions: `<button id="pa-add" class="btn btn-primary">+ Add a child</button>`,
     }
   );
-  document.getElementById("pa-add")!.addEventListener("click", () => openCodeForm());
+  document.getElementById("pa-add")!.addEventListener("click", () => openAddChild());
 
   const grid = document.getElementById("pa-grid")!;
   const children = (await fetchChildren()) ?? [];
@@ -45,8 +53,9 @@ export async function showChildren(force = false): Promise<void> {
     // this is also where a brand-new signin lands. It must not be a dead end.
     grid.innerHTML = `
       <div class="card">
-        <p class="hint">No children linked yet. Ask your child's teacher for a code,
-        then use <strong>Add a child</strong> above.</p>
+        <p class="hint">No children yet. Use <strong>Add a child</strong> above to
+        create a login for your own child, or to link one with a code from their
+        teacher.</p>
         <div class="actions">
           <button id="pa-browse" class="btn btn-ghost">Browse the practice tests</button>
         </div>
@@ -77,46 +86,101 @@ export async function showChildren(force = false): Promise<void> {
   );
 }
 
-function openCodeForm(): void {
-  const host = document.getElementById("pa-form");
-  if (!host) return;
-  host.hidden = false;
-  host.innerHTML = `
-    <h3 class="subject-form-title">Add a child</h3>
-    <p class="hint">Enter the one-time code your child's teacher gave you.</p>
-    <label class="ed-field">
-      <span class="ed-panel-label">Invite code</span>
-      <input class="ed-input" id="pa-code" placeholder="ABCD2345" autocapitalize="characters"
-             autocomplete="off" spellcheck="false" maxlength="12" />
-    </label>
-    <p id="pa-error" class="login-error" hidden></p>
-    <div class="actions">
-      <button id="pa-redeem" class="btn btn-primary">Link my child</button>
-      <button id="pa-cancel" class="btn btn-ghost">Cancel</button>
-    </div>`;
-  const err = document.getElementById("pa-error") as HTMLElement;
-  const input = document.getElementById("pa-code") as HTMLInputElement;
-  document.getElementById("pa-cancel")!.addEventListener("click", () => {
-    host.hidden = true;
+/**
+ * One dialog, two ways in.
+ *
+ * The choice is about *which child this is* — mine, or one a teacher already
+ * has on their roster — so it is a `cards` field rather than a setting, and the
+ * fields under each branch appear only on that branch (`showWhen`).
+ */
+function openAddChild(): void {
+  openModal({
+    title: "Add a child",
+    description: "Either create a login for your child, or link one their teacher already set up.",
+    fields: [
+      {
+        name: "how",
+        label: "",
+        kind: "cards",
+        required: true,
+        choices: [
+          {
+            value: "own",
+            label: "Create a login for my child",
+            hint: "You get a username and password to give them. They sign in and sit the tests you pick.",
+          },
+          {
+            value: "code",
+            label: "Link a child my teacher registered",
+            hint: "Use the one-time code their teacher gave you. You watch their results; the teacher marks.",
+          },
+        ],
+      },
+      {
+        name: "name",
+        label: "Child's name",
+        required: true,
+        showWhen: { field: "how", value: "own" },
+        placeholder: "Priya",
+      },
+      {
+        name: "grade",
+        label: "Class",
+        showWhen: { field: "how", value: "own" },
+        placeholder: "12",
+      },
+      {
+        name: "code",
+        label: "Invite code",
+        required: true,
+        showWhen: { field: "how", value: "code" },
+        placeholder: "ABCD2345",
+        hint: "From your child's teacher.",
+      },
+    ],
+    submitLabel: (values) => (values.how === "code" ? "Link my child" : "Create the login"),
+    onSubmit: async (values) => {
+      if (values.how === "code") {
+        const result = await redeemParentInvite(values.code || "");
+        if (!result.ok) return result.message;
+        track("parent_link_redeemed");
+        void showChildren(true);
+        return;
+      }
+      const { student, message } = await createStudentOrReason({
+        name: (values.name || "").trim(),
+        school: "",
+        grade: (values.grade || "").trim(),
+        // Their own number: this is the parent, and score reports go to them.
+        parentPhone: getProfile()?.phone || "",
+      });
+      // The server's own words — a seat limit names the price, and "waiting to
+      // be approved" is not the same thing as a failure.
+      if (!student) return message || "Could not add that child.";
+      track("parent_child_created");
+      showNewLogin(student.name, student.username, student.password || "");
+    },
   });
-  const submit = document.getElementById("pa-redeem") as HTMLButtonElement;
-  submit.addEventListener("click", async () => {
-    submit.disabled = true;
-    submit.textContent = "Linking…";
-    const result = await redeemParentInvite(input.value);
-    if (!result.ok) {
-      err.textContent = result.message;
-      err.hidden = false;
-      submit.disabled = false;
-      submit.textContent = "Link my child";
-      return;
-    }
-    track("parent_link_redeemed");
-    host.hidden = true;
-    void showChildren(true);
-  });
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") submit.click();
+}
+
+/**
+ * The password is shown **once** — it is stored as a scrypt hash and cannot be
+ * read back — so this says so plainly and puts Copy next to it rather than
+ * leaving a parent to select it off the screen on a phone.
+ */
+function showNewLogin(name: string, username: string, password: string): void {
+  openModal({
+    title: `${name} can sign in now`,
+    description: "Write this down or copy it — the password is not shown again. You can reset it later from this screen.",
+    fields: [
+      { name: "username", label: "Username", value: username, readonly: true },
+      { name: "password", label: "Password", value: password, readonly: true },
+    ],
+    submitLabel: "Copy and finish",
+    onSubmit: async () => {
+      await copyText(`Vidai login for ${name}\nUsername: ${username}\nPassword: ${password}`);
+      void showChildren(true);
+    },
   });
 }
 

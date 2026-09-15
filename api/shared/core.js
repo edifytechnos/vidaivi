@@ -298,18 +298,78 @@ async function askGoogleAboutToken(credential) {
 const ROLE_TTL_MS = 60 * 1000;
 const roleCache = makeCache(500);
 
-async function resolveRole(email) {
+/** Is this email on the teacher allowlist — the approval an admin grants? */
+async function allowlisted(email) {
+  const normalized = String(email).toLowerCase();
+  if (ADMIN_EMAILS.includes(normalized) || TEACHER_EMAILS.includes(normalized)) return true;
+  try {
+    await tableClient("teachers").getEntity("teacher", normalized);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * The role the app runs as.
+ *
+ * The allowlist decides *approval*; the account's own choice decides *shape*.
+ * Those are two different questions and conflating them is what made picking
+ * "I teach a class" land somebody in a parent's app: the choice was written to
+ * the accounts row and nothing ever read it back, so the role stayed the
+ * allowlist's default of "parent".
+ *
+ * So a teacher-by-choice gets the teacher's app — subjects, tests, the editor,
+ * the library — and the allowlist keeps the one power it was really guarding:
+ * issuing a login to a real child (see `mayIssueLogins`).
+ */
+async function resolveRole(email, sub) {
   const normalized = String(email).toLowerCase();
   if (ADMIN_EMAILS.includes(normalized)) return "admin";
   if (TEACHER_EMAILS.includes(normalized)) return "teacher";
-  const cached = roleCache.get(normalized);
+  // Keyed by sub where there is one: the choice lives on the account, and two
+  // accounts could in principle share neither email nor sub with each other.
+  const key = sub ? `sub~${sub}` : normalized;
+  const cached = roleCache.get(key);
   if (cached) return cached;
   let role = "parent";
   try {
     await tableClient("teachers").getEntity("teacher", normalized);
     role = "teacher";
   } catch {}
-  return roleCache.set(normalized, role, ROLE_TTL_MS);
+  if (role !== "teacher" && sub) {
+    try {
+      const row = await accountRow(await accountsTable(), sub);
+      if (row && String(row.chose || "") === "teacher") role = "teacher";
+    } catch {}
+  }
+  return roleCache.set(key, role, ROLE_TTL_MS);
+}
+
+/**
+ * An account that owns content of its own: a teacher, an admin, or a parent
+ * buying practice for their own children. **What** each may hold is
+ * `entitlements()`'s business — this answers only "does this account have a
+ * library and a roster at all", and a student is the one kind that does not.
+ *
+ * A parent was refused at every one of these gates while `entitlements()`
+ * already gave them a subject, three tests and three children, so the plan
+ * they were sold could not be used.
+ */
+function isAuthor(who) {
+  return who.role === "teacher" || who.role === "admin" || who.role === "parent";
+}
+
+/**
+ * May this account issue a login to a child? A parent may, for their own
+ * children, capped by `parentMaxChildren`. A teacher needs the allowlist: that
+ * is the approval gate, and it stays deliberate — anyone may call themselves a
+ * teacher, and a roster of real children is not something a self-declaration
+ * should open.
+ */
+async function mayIssueLogins(who) {
+  if (who.role === "admin" || who.role === "parent") return true;
+  return await allowlisted(who.email || "");
 }
 
 // ---------- What a plan allows, and what it costs ----------
@@ -1268,7 +1328,7 @@ async function identify(req, context) {
       email: session.email,
       // Still resolved per request (memoised 60s), so adding a teacher to the
       // allowlist takes effect without them signing in again.
-      role: await resolveRole(session.email),
+      role: await resolveRole(session.email, session.username),
     };
   }
   // Legacy: a raw Google ID token, from a tab opened before this deploy. It
@@ -1288,7 +1348,7 @@ async function identify(req, context) {
     id: token.sub,
     name: token.name || "",
     email: token.email,
-    role: await resolveRole(token.email),
+    role: await resolveRole(token.email, token.sub),
   };
 }
 
@@ -1424,7 +1484,7 @@ handlers.login = async (context, req) => {
       email: merged.email,
       picture: merged.picture,
       phone: merged.phone,
-      role: await resolveRole(merged.email),
+      role: await resolveRole(merged.email, merged.rowKey),
     },
     // Only a fresh Google sign-in mints a session; a phone update rides the
     // one already in the cookie.
@@ -1796,8 +1856,10 @@ handlers.students = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
-  if (who.role !== "teacher" && who.role !== "admin") {
-    return json(context, 403, { error: "Teachers only" });
+  // A parent has a roster too — their own children — capped at
+  // `parentMaxChildren` rather than by the allowlist.
+  if (!isAuthor(who)) {
+    return json(context, 403, { error: "Not available for this account" });
   }
   const students = tableClient("students");
   await ensureTable(students);
@@ -1805,6 +1867,16 @@ handlers.students = async (context, req) => {
   if (req.method === "POST") {
     const body = getBody(req);
     const action = body.action || "create";
+
+    // Issuing a login to a real child is the one power the allowlist really
+    // guards, and it stays deliberate: anyone may call themselves a teacher,
+    // and a self-declaration must not open a roster of other people's
+    // children. A parent adds their own and is capped by their plan instead.
+    if (action === "create" && !(await mayIssueLogins(who))) {
+      return json(context, 403, {
+        error: "Your teacher account is waiting to be approved. Ask Vidai to approve it, and you can add students straight after.",
+      });
+    }
 
     if (action === "remove") {
       const username = String(body.username || "").trim().toLowerCase();
@@ -2015,8 +2087,8 @@ handlers.reports = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
-  if (who.role !== "teacher" && who.role !== "admin") {
-    return json(context, 403, { error: "Teachers only" });
+  if (!isAuthor(who)) {
+    return json(context, 403, { error: "Not available for this account" });
   }
   const students = tableClient("students");
   const attempts = tableClient("attempts");
@@ -2060,11 +2132,26 @@ handlers.reports = async (context, req) => {
       },
     });
     for await (const a of aIter) {
+      const rk = String(a.rowKey || "");
+      // A teacher's granted extra attempt is a marker, not a paper. Left in, it
+      // reads as a test the student handed in and never sat — the same thing
+      // the student's own listing already skips it for.
+      if (rk.startsWith(GRANT_PREFIX)) continue;
+      // A paper still being written is NOT a result, and saying so is the whole
+      // point of this field. The row carries a running auto-graded subtotal and
+      // an empty `completedAt`, so without a status the report showed a student
+      // mid-paper as having scored 4/26 at "1 Jan, 5:30 am" — a mark they had
+      // not been given for a test they had not handed in.
+      const inProgress = rk.startsWith(PROGRESS_PREFIX);
       s.attempts.push({
         testId: a.testId,
         score: a.score,
         total: a.total,
         completedAt: a.completedAt,
+        status: inProgress ? "progress" : "done",
+        // How far in they are, for a report that can then say so.
+        index: typeof a.index === "number" ? a.index : 0,
+        updatedAt: a.updatedAt || "",
       });
       if (s.attempts.length >= 100) break;
     }
@@ -2517,7 +2604,10 @@ function testMetaForStaff(e) {
 
 function canManageTest(who, entity) {
   if (who.role === "admin") return entity.platform || entity.ownerSub === who.id;
-  return who.role === "teacher" && entity.ownerSub === who.id;
+  // A master is never a teacher's or a parent's to manage; their own rows are.
+  // A student manages nothing, which `isAuthor` is the one place that says.
+  if (entity.platform) return false;
+  return isAuthor(who) && entity.ownerSub === who.id;
 }
 
 /**
@@ -2577,7 +2667,9 @@ handlers.tests = async (context, req) => {
 
   const tests = tableClient("tests");
   await ensureTable(tests);
-  const isStaff = who.role === "teacher" || who.role === "admin";
+  // "Staff" here means an account that owns content of its own — which now
+  // includes a parent, who buys a subject and gives it to their own children.
+  const isStaff = isAuthor(who);
 
   // The partitions a member of staff may hold a test in: their own work, and
   // the library. It is exactly the set canManageTest() admits — an admin may
@@ -2588,7 +2680,7 @@ handlers.tests = async (context, req) => {
   const staffPartitions = isStaff ? [who.id, PLATFORM_PK] : [];
 
   if (req.method === "POST") {
-    if (!isStaff) return json(context, 403, { error: "Teachers only" });
+    if (!isStaff) return json(context, 403, { error: "Not available for this account" });
     const body = getBody(req);
     const action = body.action || "create";
 
@@ -2690,11 +2782,13 @@ handlers.tests = async (context, req) => {
         // for. A mixed request is judged by its first master's shelf, which is
         // the only case the UI can produce — the + and New subject both copy
         // from one shelf at a time.
+        // A master lives in the library's partition. This read still named the
+        // old constant one, so it threw on every call, the shelf came back
+        // empty, and a shelf somebody had *paid for* spent their free
+        // allowance anyway — a silent leftover of the re-partition.
         let shelfId = "";
-        try {
-          const first = await tests.getEntity("test", ids[0]);
-          shelfId = String(first.subjectId || "");
-        } catch {}
+        const first = await readByPartitions(tests, [PLATFORM_PK], ids[0], LEGACY_TEST_PK);
+        if (first) shelfId = String(first.subjectId || "");
         if (!(await ownsShelf(who.id, shelfId))) {
           const taken = await adoptedCount(tests, who.id, ent.shelfTests);
           if (taken + ids.length > ent.shelfTests) {
@@ -2968,7 +3062,7 @@ handlers.tests = async (context, req) => {
 
   // The library: every published master, for a teacher to take a copy of.
   if (String((req.query && req.query.library) || "") === "1") {
-    if (!isStaff) return json(context, 403, { error: "Teachers only" });
+    if (!isStaff) return json(context, 403, { error: "Not available for this account" });
     const onlySubject = String((req.query && req.query.subjectId) || "").trim();
     const masters = [];
     const mine = new Set();
@@ -3157,7 +3251,9 @@ handlers.subjects = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
-  const isStaff = who.role === "teacher" || who.role === "admin";
+  // "Staff" here means an account that owns content of its own — which now
+  // includes a parent, who buys a subject and gives it to their own children.
+  const isStaff = isAuthor(who);
 
   const subjects = tableClient("subjects");
   await ensureTable(subjects);
@@ -3165,7 +3261,7 @@ handlers.subjects = async (context, req) => {
   await ensureTable(tests);
 
   if (req.method === "POST") {
-    if (!isStaff) return json(context, 403, { error: "Teachers only" });
+    if (!isStaff) return json(context, 403, { error: "Not available for this account" });
     const body = getBody(req);
     const action = body.action || "create";
     const board = String(body.board || "").trim().slice(0, 40);
@@ -3453,8 +3549,8 @@ handlers.parentlink = async (context, req) => {
 
     // A teacher mints a code for one of their own students.
     if (action === "invite") {
-      if (who.role !== "teacher" && who.role !== "admin") {
-        return json(context, 403, { error: "Teachers only" });
+      if (!isAuthor(who)) {
+        return json(context, 403, { error: "Not available for this account" });
       }
       const username = String(body.username || "").trim().toLowerCase();
       const students = tableClient("students");
@@ -3714,8 +3810,8 @@ handlers.attempts = async (context, req) => {
     // connection died mid-paper; without this every one of those becomes a
     // message to the person who runs the platform.
     if (body.action === "grant") {
-      if (who.role !== "teacher" && who.role !== "admin") {
-        return json(context, 403, { error: "Teachers only" });
+      if (!isAuthor(who)) {
+        return json(context, 403, { error: "Not available for this account" });
       }
       const username = String(body.username || "").trim().toLowerCase();
       const refusal = await canSeeStudent(who, username);
@@ -3772,10 +3868,13 @@ handlers.attempts = async (context, req) => {
     if (typeof body.score !== "number" || typeof body.total !== "number") {
       return json(context, 400, { error: "Bad attempt payload" });
     }
+    // `typeof "" === "string"`, so an empty string used to be stored as the
+    // completion time — and an empty date renders as the Unix epoch, which in
+    // IST reads "1 Jan, 5:30 am". A row that was genuinely handed in must carry
+    // a real timestamp, so anything unusable falls back to now.
+    const givenAt = typeof body.completedAt === "string" ? body.completedAt.trim() : "";
     const completedAt =
-      typeof body.completedAt === "string"
-        ? body.completedAt
-        : new Date().toISOString();
+      givenAt && Number.isFinite(Date.parse(givenAt)) ? givenAt : new Date().toISOString();
     // The per-question answers, so review works on a device that never held
     // this attempt in localStorage. Oversized blobs are dropped rather than
     // failing the save — the score is what must never be lost.
@@ -4056,7 +4155,7 @@ async function canSeeStudent(who, username) {
   if (who.kind === "student") {
     return who.username === user ? "" : "Not your work";
   }
-  if (who.role === "admin" || who.role === "teacher") {
+  if (isAuthor(who)) {
     // Admins reach every student, but the student still has to exist —
     // otherwise a typo silently writes rows keyed to nobody.
     let rec;
@@ -4065,7 +4164,11 @@ async function canSeeStudent(who, username) {
     } catch {
       return "Student not found";
     }
-    return who.role === "admin" || rec.teacherSub === who.id ? "" : "Not your student";
+    // Whoever issued the login owns the relationship, parent or teacher alike;
+    // a parent falls through to the invite link below for a child somebody
+    // else registered.
+    if (who.role === "admin" || rec.teacherSub === who.id) return "";
+    if (who.role !== "parent") return "Not your student";
   }
   // Parents see only a child they have redeemed an invite code for.
   const link = await childLink(who, user);
@@ -4236,8 +4339,8 @@ handlers.grading = async (context, req) => {
 
     // The teacher's marking queue: everything handed in by their students.
     if (q.queue) {
-      if (who.role !== "teacher" && who.role !== "admin") {
-        return json(context, 403, { error: "Teachers only" });
+      if (!isAuthor(who)) {
+        return json(context, 403, { error: "Not available for this account" });
       }
       const clauses = ["status eq 'submitted'"];
       if (who.role !== "admin") {
@@ -4289,8 +4392,8 @@ handlers.grading = async (context, req) => {
   if (action !== "mark") {
     return json(context, 400, { error: `Unknown action: ${action}` });
   }
-  if (who.role !== "teacher" && who.role !== "admin") {
-    return json(context, 403, { error: "Teachers only" });
+  if (!isAuthor(who)) {
+    return json(context, 403, { error: "Not available for this account" });
   }
 
   const username = String(body.username || "").trim().toLowerCase();
@@ -4657,8 +4760,8 @@ handlers.assess = async (context, req) => {
   if (!who.kind) {
     return json(context, 401, { error: "Invalid token", reason: who.reason });
   }
-  if (who.role !== "teacher" && who.role !== "admin") {
-    return json(context, 403, { error: "Teachers only" });
+  if (!isAuthor(who)) {
+    return json(context, 403, { error: "Not available for this account" });
   }
   if (!aiConfigured()) {
     return json(context, 501, { error: "AI marking is not switched on for this site" });
@@ -4774,8 +4877,8 @@ handlers.aiusage = async (context, req) => {
   if (misconfigured(context)) return;
   const who = await identify(req, context);
   if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
-  if (who.role !== "teacher" && who.role !== "admin") {
-    return json(context, 403, { error: "Teachers only" });
+  if (!isAuthor(who)) {
+    return json(context, 403, { error: "Not available for this account" });
   }
   const table = await aiusageTable();
 
@@ -4964,7 +5067,14 @@ handlers.accounts = async (context, req) => {
       },
       "Merge"
     );
-    return json(context, 200, { ok: true, chose, trialEndsAt: ends.toISOString() });
+    // The role is derived from this row, so the instance that wrote it must
+    // not keep serving the old answer for a minute (rule 4: every write that
+    // invalidates a cache entry drops it). Without this the chooser's own
+    // next request still reads "parent".
+    roleCache.drop(`sub~${who.id}`);
+    roleCache.drop(String(who.email || "").toLowerCase());
+    const role = chose === "teacher" ? "teacher" : "parent";
+    return json(context, 200, { ok: true, chose, role, trialEndsAt: ends.toISOString() });
   }
 
   if (who.role !== "admin") return json(context, 403, { error: "Admins only" });
@@ -4988,6 +5098,52 @@ handlers.accounts = async (context, req) => {
   const sub = String(body.sub || "").trim();
   if (!sub || sub.length > 200 || /[/\\#?]/.test(sub)) {
     return json(context, 400, { error: "An account is needed" });
+  }
+
+  /**
+   * Put an account back to the moment before it chose.
+   *
+   * The choice is deliberately once-only (a 409 on the second `choose`), which
+   * is right for a real account and makes the sign-up flow impossible to try
+   * twice. This is the admin's way out, and it is a *reset*, not a delete:
+   * their tests, subjects, students and attempts are untouched and still
+   * theirs. It only clears the answer to "teacher or parent" and the trial
+   * that started with it, so the next sign-in is asked again.
+   */
+  if (action === "reset") {
+    let row = null;
+    try {
+      row = await table.getEntity(ACCOUNT_PK, sub);
+    } catch {}
+    if (!row) return json(context, 404, { error: "No account to reset" });
+    await table.upsertEntity(
+      {
+        partitionKey: ACCOUNT_PK,
+        rowKey: sub,
+        chose: "",
+        trialStartedAt: "",
+        trialEndsAt: "",
+        updatedAt: new Date().toISOString(),
+      },
+      "Merge"
+    );
+    // The phone number is part of signing up, and it lives on the PROFILE
+    // rather than on the account row — so clearing the choice alone left it
+    // behind and the next sign-up silently skipped the step, which only asks
+    // when there is no number stored. A lever that says "start their sign-up
+    // over" has to mean the whole of it.
+    let phoneCleared = false;
+    try {
+      const profiles = tableClient("profiles");
+      await ensureTable(profiles);
+      await profiles.upsertEntity({ partitionKey: "profile", rowKey: sub, phone: "" }, "Merge");
+      phoneCleared = true;
+    } catch {}
+    // The role is derived from `chose`, so a warm instance would otherwise go
+    // on calling them a teacher for the rest of the TTL (rule 4).
+    roleCache.drop(`sub~${sub}`);
+    roleCache.drop(String(row.email || "").toLowerCase());
+    return json(context, 200, { ok: true, sub, reset: true, phoneCleared });
   }
 
   if (action === "grant") {
@@ -5108,8 +5264,8 @@ handlers.release = async (context, req) => {
     }
 
     // A teacher wants the state of the whole test.
-    if (who.role !== "teacher" && who.role !== "admin") {
-      return json(context, 403, { error: "Teachers only" });
+    if (!isAuthor(who)) {
+      return json(context, 403, { error: "Not available for this account" });
     }
     const students = [];
     let classWide = null;
@@ -5132,8 +5288,8 @@ handlers.release = async (context, req) => {
   if (req.method !== "POST") {
     return json(context, 405, { error: "Method not allowed" });
   }
-  if (who.role !== "teacher" && who.role !== "admin") {
-    return json(context, 403, { error: "Teachers only" });
+  if (!isAuthor(who)) {
+    return json(context, 403, { error: "Not available for this account" });
   }
 
   const body = getBody(req) || {};

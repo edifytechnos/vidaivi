@@ -1436,6 +1436,144 @@ roster of real children between two kinds of account. A failed entitlements
 call **carries on rather than stranding** somebody on a chooser they cannot
 complete.
 
+**The choice decides the app; the allowlist decides approval.** These are two
+questions and conflating them is what made picking "I teach a class" land
+somebody in the parent's app. `chose` was written to the accounts row and
+**nothing ever read it back**: `resolveRole` knew only `ADMIN_EMAILS`,
+`TEACHER_EMAILS` and the `teachers` table, so the session's role stayed the
+default of `parent` and every screen believed it.
+
+- `resolveRole(email, sub)` now falls through to the account's own `chose`, and
+  is keyed by **sub** where there is one, because the answer lives on the
+  account rather than on the address. Still one point read, still memoised for
+  60s — and `choose` **drops the entry** (rule 4), or the chooser's own next
+  request is still served "parent".
+- The response carries `role`, and `chooseRole` in `src/auth.ts` writes it onto
+  the stored profile. The profile was stamped at sign-in, before the choice
+  existed; without this the app is right only after the next sign-in. **The
+  server's answer is what is stored, never the button that was pressed.**
+- **`mayIssueLogins` keeps the allowlist's one real power**: issuing a login to
+  a real child. Anyone may call themselves a teacher; a self-declaration must
+  not open a roster of other people's children, so an unapproved teacher is
+  refused `students {action:"create"}` and told it is **waiting for approval**
+  rather than simply refused. A parent's own children are capped by
+  `parentMaxChildren` instead.
+- **The dialog cannot be dismissed** (`mandatory` in `src/modal.ts`: no ✕, no
+  Cancel, no Escape, no scrim click). Closing it left the account with no role
+  at all and the app fell back to the parent's shape — the same symptom by a
+  second route.
+
+### A parent was sold a plan they could not use
+
+`entitlements()` has given a parent a subject, three tests, three children and
+the free shelf allowance since the plans slice. **Every gate around it still
+asked "teacher or admin"**, so a parent could reach none of it: no Browse rail
+item, `?library=1` answered *Teachers only*, and `POST /api/subjects` and
+`/api/tests` refused them outright. The plan existed only in the pricing screen.
+
+- **`isAuthor(who)`** — teacher, admin or parent — replaces `role === "teacher"
+  || role === "admin"` at every one of those gates. It answers only "does this
+  account own content at all"; **how much** is still `entitlements()`'s, and
+  a student is the one kind that is neither.
+- `canManageTest` and `canSeeStudent` follow the same line: **whoever issued
+  the login owns the relationship**, parent or teacher alike. A parent linked
+  to somebody else's student by invite code still falls through to `childLink`,
+  unchanged.
+- Client: `canAuthor()` in `src/auth.ts` is the mirror, used by
+  `src/screens/subjects.ts` and the rail. A parent now gets **Browse tests**,
+  **Subjects** (where the copies they take actually land — without it their
+  purchases have no door) and **To mark**.
+- In `src/screens/review.ts` a parent sees an unreleased paper only when
+  `opts.marking` is set — reached through their own marking queue. A parent
+  *reading* a child's paper still waits for release, exactly as before.
+
+**Not done, and it is the next slice**: payments. A parent past the free
+allowance gets the 402 naming ₹499 and no way to pay it.
+
+**One leftover of the re-partition fixed in passing**: the adopt gate read the
+master with `tests.getEntity("test", ids[0])` — the old constant partition — so
+it threw on every call, the shelf id came back empty, and **a shelf somebody had
+paid for spent their free allowance anyway**. It reads `PLATFORM_PK` now.
+
+### A dialog's buttons end at the right, and nothing is pre-picked
+
+The modal's actions were left-aligned with the primary first, which is neither
+the platform convention nor what an eye scanning a form expects.
+
+- `.modal-actions` is a footer: a hairline above it, **Back at the far left**
+  (pushed there by `.modal-actions-gap`, the only thing in the row that grows),
+  then **Cancel, then the primary, hard right**. Below 520px the dialog is a
+  sheet and they stack full width with the **primary on top** — furthest from
+  the thumb that is aiming for it.
+- **A `cards` field no longer pre-selects its first tile.** It used to, so a
+  one-time irreversible choice arrived already answered — the same mistake as
+  the MCQ editor's radio arriving on A, which this file already records. New
+  subject's step 1 is `required: true` now that nothing is ticked for it.
+
+### A parent adds their own children, not only a teacher's
+
+`src/screens/parent.ts` offered exactly one way to reach a child: **redeem a
+one-time code from a teacher**. So the plan a parent was sold — up to
+`parentMaxChildren` children of their own — had no button anywhere, and a parent
+with no teacher met a dead end on the screen they land on.
+
+**Add a child** is now one dialog with two branches (`cards` + `showWhen`):
+create a login this account issues, or link one a teacher registered. The first
+shows the username and password **once**, with Copy, because the password is a
+scrypt hash and cannot be read back. The old inline `openCodeForm` is deleted —
+its job is the second branch.
+
+`createStudentOrReason` keeps the server's refusal where `createStudent`
+returned `null` for everything. That mattered the moment parents and unapproved
+teachers could reach it: a 402 **names the price** and "waiting to be approved"
+is not a failure, and both were being shown as "something went wrong".
+
+A linked child is still read-only — a parent never marks somebody else's
+student. What changed is that their **own** child is theirs.
+
+### An admin can send an account back to its first screen
+
+The role choice is deliberately once-only (`choose` 409s on the second call),
+which is right for a real account and makes the sign-up flow impossible to test
+twice — there is no second Gmail that has never seen Vidai.
+
+`POST /api/accounts {action:"reset", sub}` clears `chose`, the trial **and the
+saved phone number**, and drops the role cache. It is a **reset, not a delete**:
+their tests, subjects, students and attempts are untouched and still theirs —
+only the sign-up answers go, so the whole of it is asked again. It is on the
+**Change** dialog in Plans & pricing, last in the submit order so a save in the
+same dialog cannot undo it.
+
+**The phone is on the `profiles` row, not the account row**, and clearing the
+choice alone left it behind. `showPhoneForm` only ever asks `if
+(!profile.phone)`, so the step was correctly — and invisibly — skipped on every
+retry, which reads exactly like phone capture having been dropped from the flow.
+A lever that says "start their sign-up over" has to mean the whole of it.
+
+**`TEACHER_EMAILS` and `ADMIN_EMAILS` are read at module load.** In
+`e2e/helpers.cjs` a block that sets them *after* building its module instance
+gets a 403 on every call and the env var does nothing. Set them before the
+`new Function(...)` that evaluates `core.js`.
+
+### The sign-in steps are a card, not the whole window
+
+`mount()` stamps `has-shell` on `#app`, which drops the 720px cap and the page
+padding so the shell can run edge to edge. **Nothing ever took it off**, so the
+screens that write to `app` directly — welcome, student login, admin login,
+phone capture — inherited a full-bleed container whenever a shelled screen had
+rendered first. The phone-number step was one input stretched across a 2000px
+window.
+
+- **`paintPlain(html)` in `src/dom.ts` is the one way to paint a non-shell
+  screen**, and clearing the class is the first thing it does. Use it rather
+  than assigning `app.innerHTML`.
+- `.auth-step` gives those cards a dialog-width column (460px, centred, prose
+  capped at 54ch), and `#app:has(.auth-step) .topbar` lines the brand up with
+  the card instead of leaving it at the old container's edge.
+- Their action row matches the modal's: primary on the **right** via
+  `row-reverse` — where `justify-content: flex-start` is the right edge, not
+  `flex-end` — and stacked full-width with the primary on top below 520px.
+
 ### Admin: Plans & pricing
 
 An admin-only rail item beside **AI usage**: every number in a form, and the
@@ -1487,6 +1625,40 @@ now, at the hand-in.
 - `e2e/helpers.cjs` covers the boundary — and the fake table now honours a
   `testId eq` clause, **without which the "another test's attempts stay out of
   this count" assertion passed while proving nothing.**
+
+## The report says what a paper is, not just a number
+
+`handlers.reports` pushed **every row in the student's partition** with no
+status. So a paper still being written — which carries a running auto-graded
+subtotal and an empty `completedAt` — was shown to the teacher as a finished
+attempt: *4/26, 15%, 1 Jan 5:30 am*. A mark the student had not been given, for
+a test they had not handed in. The teacher's **granted extra attempt** was in
+there too, reading as a paper they sat and never took.
+
+- The walk skips `GRANT_PREFIX` rows and marks `PROGRESS_PREFIX` ones
+  `status: "progress"`, carrying `index` and `updatedAt` so the report can say
+  how far in they are. The student's own listing has always skipped both; the
+  teacher's report never did.
+- **The subtotal is still sent.** The client decides not to show it as a mark,
+  which is the same division of labour as everywhere else: the server reports
+  what is stored, the screen decides what that means.
+- An in-progress row renders with no score, no result chip, no Release and no
+  Give another attempt — there is nothing to release or re-grant — and one
+  action, *See what they have so far*. The stat tiles count **handed in**, and
+  the average is over finished papers only, or one unfinished paper dragged the
+  class average down with a mark nobody had finished earning.
+
+**"1 Jan, 5:30 am" is the Unix epoch in IST**, and it had two causes, both
+fixed:
+
+- `new Date("")` and `new Date(0)` both render as a real-looking timestamp.
+  **`whenLabel()` in `src/dom.ts` is the one date formatter** — it answers "—"
+  for an absent or unparseable date, and for the epoch itself. Never call
+  `toLocaleString` on a stored date directly.
+- On the server, `typeof body.completedAt === "string"` **accepted the empty
+  string**, so `completedAt: ""` was stored as the moment of hand-in. It now
+  falls back to now unless the value actually parses. `e2e/helpers.cjs` drives
+  the real handler with an empty, a blank and an unparseable value.
 
 ## Releasing the answers (`/api/release`, table `releases`)
 

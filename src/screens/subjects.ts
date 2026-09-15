@@ -12,7 +12,7 @@ import {
   seedSampleTests,
   type Subject,
 } from "../api";
-import { isTeacher } from "../auth";
+import { canAuthor } from "../auth";
 import { TESTS } from "../data";
 import { escapeHtml, ICONS, setUrl } from "../dom";
 import { openModal, type ModalField } from "../modal";
@@ -40,7 +40,7 @@ export async function showSubjects() {
       title: "Subjects",
       active: "subjects",
       width: "wide",
-      actions: isTeacher() ? `<button id="sub-new" class="btn btn-primary">+ Subject</button>` : "",
+      actions: canAuthor() ? `<button id="sub-new" class="btn btn-primary">+ Subject</button>` : "",
     }
   );
   document.getElementById("sub-new")?.addEventListener("click", () => void openForm());
@@ -62,7 +62,7 @@ async function refresh(): Promise<void> {
   const cards = subjects.map(cardFor);
   // A teacher who owns nothing yet needs to be told what a subject is FOR, not
   // shown an empty grid with a button in the corner.
-  const ownsNone = isTeacher() && !subjects.length;
+  const ownsNone = canAuthor() && !subjects.length;
   grid.innerHTML = ownsNone
     ? firstRunMarkup()
     : cards.length
@@ -81,7 +81,7 @@ async function refresh(): Promise<void> {
       // A teacher goes where they build tests — the editor, scoped to this
       // subject. A student goes to their tests tree: the same shape, read-only,
       // one question at a time.
-      if (isTeacher()) void showEditorForSubject(id, () => void showSubjects());
+      if (canAuthor()) void showEditorForSubject(id, () => void showSubjects());
       else if (isStudentViewer()) void showStudentSubject(id, el.dataset.title || undefined);
       else showHome(id);
     })
@@ -108,7 +108,7 @@ async function refresh(): Promise<void> {
  * hand the seed their first subject instead.
  */
 async function seedSamplesOnce(grid: HTMLElement): Promise<void> {
-  if (!isTeacher()) return;
+  if (!canAuthor()) return;
   const list = await fetchTestList();
   if (!list?.needsSamples) return;
   grid.innerHTML = skeleton.cards(3);
@@ -126,7 +126,7 @@ function cardFor(s: Subject): string {
       <span class="subject-name">${escapeHtml(s.title)}</span>
       <span class="subject-meta">
         <span class="subject-count">${built ? "Built in" : `${count} test${count === 1 ? "" : "s"}`}</span>
-        ${isTeacher() && !built ? `<span class="btn-link subject-del" data-subject="${escapeHtml(s.id)}" role="button">Remove</span>` : ""}
+        ${canAuthor() && !built ? `<span class="btn-link subject-del" data-subject="${escapeHtml(s.id)}" role="button">Remove</span>` : ""}
       </span>
     </button>`;
 }
@@ -221,6 +221,10 @@ async function openForm(): Promise<void> {
             name: "from",
             label: "What do you teach?",
             kind: "cards",
+            // Required now that no tile arrives pre-selected: step 2 is built
+            // from this answer, so an unanswered step 1 must stop here rather
+            // than open an empty list of chapters.
+            required: true,
             choices: [
               ...shelves.map((sh) => ({
                 value: sh.id,

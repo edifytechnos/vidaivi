@@ -92,6 +92,14 @@ export interface ModalOpts {
     values: Record<string, string>,
     picks: Record<string, string[]>
   ) => Promise<string | null | void>;
+  /**
+   * A question that has to be answered before anything else can happen: no ✕,
+   * no Cancel, no Escape, no click on the scrim. Use it only where dismissing
+   * leaves the app in a state nobody asked for — the sign-up role choice, where
+   * closing the dialog left the account with no role at all and the parent's
+   * app by default.
+   */
+  mandatory?: boolean;
 }
 
 /** Select all / Clear, and a live count of what is ticked. */
@@ -107,18 +115,20 @@ function bulkRow(f: ModalField): string {
 
 /** A tile per choice: what you get, not just what it is called. */
 function cardRows(f: ModalField): string {
+  // NOTHING is pre-selected. A tile that arrives already chosen is answered by
+  // not being touched — the same mistake as the MCQ editor's radio arriving on
+  // A, and it lands hardest on a choice like "teacher or parent" that is made
+  // exactly once and decides the shape of the whole account.
   const choices = f.choices ?? [];
   if (!choices.length) {
     return `<p class="modal-hint">${escapeHtml(f.empty ?? "Nothing to choose from yet.")}</p>`;
   }
   return `<div class="modal-cards">${choices
     .map(
-      (c, i) => `
+      (c) => `
       <label class="modal-card${c.wide ? " modal-card-wide" : ""}">
         <input type="radio" name="${escapeHtml(f.name)}" value="${escapeHtml(c.value)}"
-               class="modal-choice-input modal-card-input"${
-                 c.checked || (i === 0 && !choices.some((x) => x.checked)) ? " checked" : ""
-               } />
+               class="modal-choice-input modal-card-input"${c.checked ? " checked" : ""} />
         <span class="modal-card-body">
           <span class="modal-card-label">${escapeHtml(c.label)}</span>
           ${c.hint ? `<span class="modal-card-hint">${escapeHtml(c.hint)}</span>` : ""}
@@ -221,7 +231,7 @@ export function openModal(opts: ModalOpts): void {
       <div class="modal-head">
         <h2 class="modal-title" id="modal-title">${escapeHtml(opts.title)}</h2>
         ${multi ? `<span class="modal-count" id="modal-count"></span>` : ""}
-        <button class="modal-x" data-close aria-label="Close">✕</button>
+        ${opts.mandatory ? "" : `<button class="modal-x" data-close aria-label="Close">✕</button>`}
       </div>
       <p class="hint modal-desc" id="modal-desc"${opts.description ? "" : " hidden"}>${escapeHtml(opts.description ?? "")}</p>
       <form class="modal-body" novalidate>
@@ -233,10 +243,16 @@ export function openModal(opts: ModalOpts): void {
           )
           .join("")}
         <p class="login-error modal-error" hidden></p>
+        <!-- Reading order is the button order: Back sits at the far left where
+             it walks the dialog backwards, and the pair that ends it sits at
+             the right with the primary last — the convention every desktop
+             application and every enterprise design system follows, and the
+             one place the eye lands after reading the form. -->
         <div class="modal-actions">
-          <button type="submit" class="btn btn-primary modal-submit"></button>
           <button type="button" class="btn btn-ghost modal-back" hidden>Back</button>
-          <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+          <span class="modal-actions-gap"></span>
+          ${opts.mandatory ? "" : `<button type="button" class="btn btn-ghost" data-close>Cancel</button>`}
+          <button type="submit" class="btn btn-primary modal-submit"></button>
         </div>
       </form>
     </div>`;
@@ -315,7 +331,7 @@ export function openModal(opts: ModalOpts): void {
   function onKey(e: KeyboardEvent): void {
     if (e.key === "Escape") {
       e.preventDefault();
-      close();
+      if (!opts.mandatory) close();
       return;
     }
     if (e.key !== "Tab") return;
@@ -349,6 +365,7 @@ export function openModal(opts: ModalOpts): void {
   host.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
     // The scrim itself closes; a click inside the dialog does not.
+    if (opts.mandatory) return;
     if (target === host || target.closest("[data-close]")) close();
   });
   document.addEventListener("keydown", onKey);
@@ -421,8 +438,17 @@ export function openModal(opts: ModalOpts): void {
       return !values[f.name];
     });
     if (missing) {
+      // A choice with no label of its own — the tiles under a dialog whose
+      // title already asks the question — would otherwise read " is needed."
+      const oneOf = missing.kind === "radio" || missing.kind === "cards";
       fail(
-        missing.kind === "checklist" ? `Pick at least one ${missing.label.toLowerCase()}.` : `${missing.label} is needed.`,
+        missing.kind === "checklist"
+          ? `Pick at least one ${missing.label.toLowerCase()}.`
+          : !missing.label
+            ? "Pick one to continue."
+            : oneOf
+              ? `Pick ${missing.label.toLowerCase()}.`
+              : `${missing.label} is needed.`,
         missing
       );
       return;
