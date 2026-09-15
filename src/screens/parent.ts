@@ -158,7 +158,11 @@ function openAddChild(): void {
       // be approved" is not the same thing as a failure.
       if (!student) return message || "Could not add that child.";
       track("parent_child_created");
-      showNewLogin(student.name, student.username, student.password || "");
+      // AFTER this one closes, not during. `onSubmit` returning nothing makes
+      // the caller close this dialog — which removes `modal-open` from the body
+      // and restores focus to whatever opened it. Opening the next dialog from
+      // inside the handler means that teardown lands on top of it.
+      setTimeout(() => showNewLogin(student.name, student.username, student.password || ""), 0);
     },
   });
 }

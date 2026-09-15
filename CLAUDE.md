@@ -1531,6 +1531,22 @@ is not a failure, and both were being shown as "something went wrong".
 A linked child is still read-only — a parent never marks somebody else's
 student. What changed is that their **own** child is theirs.
 
+**`linkedChildren` reads both routes, and for a release it read one.** It walked
+`parentlinks` only — the invite-code route — so a child the parent *created*
+landed in `students` with `teacherSub` set to their own sub, no link row, and
+appeared nowhere. It was written, it counted against their seats, and the screen
+stayed empty: "I added a child and nothing happened" was exactly true. The read
+is now the union of the two, deduplicated by username, and each child carries
+**`own`** so the screen can tell "yours to mark" from "linked, you only watch".
+The own-children half is the same query the teacher's roster makes, because it
+is the same question.
+
+**Opening a dialog from inside another's `onSubmit` loses to its teardown.**
+Returning nothing makes the caller `close()` the first dialog, which strips
+`modal-open` off the body and restores focus to whatever opened it — landing on
+top of the dialog just opened. `showNewLogin` is deferred a tick for that
+reason.
+
 ### An admin can send an account back to its first screen
 
 The role choice is deliberately once-only (`choose` 409s on the second call),
