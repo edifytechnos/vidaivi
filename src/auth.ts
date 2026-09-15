@@ -453,6 +453,71 @@ export async function modifyTeacher(
   }
 }
 
+// ---------- AI credits and usage ----------
+
+export interface AiUsageRow {
+  teacherId: string;
+  name: string;
+  email: string;
+  used: number;
+  granted: number;
+  left: number;
+  promptTokens: number;
+  completionTokens: number;
+  /** null when the model reply carried no token counts — unknown, not free. */
+  costInr: number | null;
+  updatedAt: string;
+}
+
+export interface AiUsageReport {
+  month: string;
+  credits: number;
+  rows: AiUsageRow[];
+  totals: { used: number; promptTokens: number; completionTokens: number; costInr: number };
+}
+
+export async function fetchAiUsage(month?: string): Promise<AiUsageReport | null> {
+  try {
+    const q = month ? `?month=${encodeURIComponent(month)}` : "";
+    const res = await apiFetch(`/api/aiusage${q}`, { headers: authHeader() });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchMyCredits(): Promise<{ used: number; granted: number; left: number } | null> {
+  try {
+    const res = await apiFetch("/api/aiusage?me=1", { headers: authHeader() });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function grantCredits(
+  teacherId: string,
+  credits: number,
+  month?: string
+): Promise<{ ok: boolean; message?: string }> {
+  try {
+    const res = await apiFetch("/api/aiusage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "grant", teacherId, credits, month }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { ok: false, message: data.error || "Request failed" };
+    }
+    return { ok: true };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
 // ---------- Teacher: student roster ----------
 
 export async function listStudents(): Promise<StudentRecord[] | null> {
@@ -669,6 +734,8 @@ export interface AiAssessment {
   comment: string;
   reasoning: string;
   model: string;
+  /** What this teacher has left this month, so the screen can say so. */
+  credits?: { used: number; granted: number; left: number };
 }
 
 /**

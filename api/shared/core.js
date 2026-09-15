@@ -45,6 +45,26 @@ const AZURE_AI_KEY = process.env.AZURE_AI_KEY;
 // the model id. It defaults to the name this was built against.
 const AZURE_AI_DEPLOYMENT = process.env.AZURE_AI_DEPLOYMENT || "gpt-4.1-mini";
 const aiConfigured = () => !!(AZURE_AI_ENDPOINT && AZURE_AI_KEY);
+// What a call costs, so the admin report can show real money rather than a
+// count. Prices are per *million* tokens and are settings, not constants in
+// spirit: changing the deployment or the exchange rate must not need a deploy.
+// Defaults are gpt-4.1-mini's published rates.
+const AI_USD_PER_M_IN = Number(process.env.AI_USD_PER_M_IN || 0.4);
+const AI_USD_PER_M_OUT = Number(process.env.AI_USD_PER_M_OUT || 1.6);
+const USD_INR = Number(process.env.USD_INR || 88);
+// Accumulated in integer micro-dollars. A float accumulator drifts once it has
+// been added to a few thousand times, and this one is read as money.
+//
+// The division looks missing and is not: dollars are `tokens * rate / 1e6`,
+// and micro-dollars are that times 1e6, so the two cancel exactly. Written
+// out, it would be `* 1e6 / 1e6`.
+function costMicroUsd(promptTokens, completionTokens) {
+  return Math.round(promptTokens * AI_USD_PER_M_IN + completionTokens * AI_USD_PER_M_OUT);
+}
+// Each assessment costs one credit. A month is the unit because that is how a
+// teacher thinks about a term, and because it keeps the ledger to one row per
+// teacher per month.
+const ASSESS_MONTHLY_CREDITS = Number(process.env.ASSESS_MONTHLY_CREDITS || 100);
 // A loaded key is a spending limit with no brakes: at roughly fifteen paise an
 // assessment, ₹500 is about 3,300 of them. A stuck retry, a loop, or a stolen
 // teacher session could spend the lot in an afternoon, and the first anyone
@@ -3505,10 +3525,18 @@ async function askAssessor(question, solution, maxMarks, images) {
   }
   const awarded = Math.max(0, Math.min(maxMarks, Math.round(Number(out.awarded))));
   if (!Number.isFinite(awarded)) throw new Error("The model did not return a mark");
+  // The token counts are the only record of what this actually cost, and they
+  // exist for exactly one moment — this response. They used to be dropped on
+  // the floor here, which is why no usage report was possible. A reply that
+  // carries no `usage` yields zeros, and a zero is rendered as "not recorded"
+  // rather than as free: see `costInr` below.
+  const usage = payload.usage || {};
   return {
     awarded,
     comment: String(out.comment || "").slice(0, 600),
     reasoning: String(out.reasoning || "").slice(0, 600),
+    promptTokens: Math.max(0, Math.round(Number(usage.prompt_tokens) || 0)),
+    completionTokens: Math.max(0, Math.round(Number(usage.completion_tokens) || 0)),
   };
 }
 
@@ -3547,6 +3575,105 @@ async function noteAssess(table, teacherId, used) {
   );
 }
 
+// ---------- AI credits, and what they actually cost ----------
+//
+// The daily cap above and this ledger guard different things, which is why
+// both exist. The cap is a runaway brake — a loop, a stolen session — and is
+// keyed by a *digest* of the caller, so it can never be reported on. Credits
+// are an entitlement someone is accountable for, so this row names the teacher
+// and carries the money.
+//
+// PK is the month, RK the teacher id. A credit check is therefore one point
+// read, and the admin's whole-platform report for a month is one partition
+// query — never a scan. A new month is simply a new partition, so nothing has
+// to be swept.
+const AIUSAGE_SELECT = [
+  "PartitionKey",
+  "RowKey",
+  "used",
+  "granted",
+  "promptTokens",
+  "completionTokens",
+  "costMicroUsd",
+  "email",
+  "name",
+  "updatedAt",
+];
+
+function usageMonth(when) {
+  return (when instanceof Date ? when : new Date()).toISOString().slice(0, 7);
+}
+
+async function aiusageTable() {
+  const t = tableClient("aiusage");
+  await ensureTable(t);
+  return t;
+}
+
+async function creditsFor(table, teacherId, month) {
+  try {
+    const row = await table.getEntity(month, teacherId);
+    return {
+      used: typeof row.used === "number" ? row.used : 0,
+      granted: typeof row.granted === "number" ? row.granted : ASSESS_MONTHLY_CREDITS,
+      etag: row.etag,
+    };
+  } catch {
+    // No row yet is a teacher who has not spent anything this month, not an
+    // error — and not zero credits.
+    return { used: 0, granted: ASSESS_MONTHLY_CREDITS, etag: null };
+  }
+}
+
+/**
+ * Spend one credit and record what it cost.
+ *
+ * `noteAssess` is a read-modify-write with no ETag, which can lose one of two
+ * concurrent writes. That is tolerable for a throttle and not for a ledger
+ * somebody is held to, so this retries on a concurrency failure — bounded,
+ * never a spin.
+ */
+async function noteCredit(table, who, month, spend) {
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    let row = null;
+    try {
+      row = await table.getEntity(month, who.id);
+    } catch {
+      row = null;
+    }
+    const next = {
+      partitionKey: month,
+      rowKey: who.id,
+      used: (typeof row?.used === "number" ? row.used : 0) + 1,
+      granted: typeof row?.granted === "number" ? row.granted : ASSESS_MONTHLY_CREDITS,
+      promptTokens: (typeof row?.promptTokens === "number" ? row.promptTokens : 0) + spend.promptTokens,
+      completionTokens:
+        (typeof row?.completionTokens === "number" ? row.completionTokens : 0) + spend.completionTokens,
+      costMicroUsd: (typeof row?.costMicroUsd === "number" ? row.costMicroUsd : 0) + spend.costMicroUsd,
+      // Stamped so the report can name a person: the row key is a Google sub,
+      // which tells an admin nothing.
+      email: who.email || row?.email || "",
+      name: who.name || row?.name || "",
+      updatedAt: new Date().toISOString(),
+    };
+    try {
+      if (row) {
+        await table.updateEntity(next, "Merge", { etag: row.etag });
+      } else {
+        await table.createEntity(next);
+      }
+      return;
+    } catch (e) {
+      // 412 is someone else's write landing first; 409 is the row appearing
+      // between our read and our create. Both mean re-read and try again.
+      const code = e && (e.statusCode || e.status);
+      if (code !== 412 && code !== 409) throw e;
+    }
+  }
+  // Four collisions on one teacher's row is not a case worth failing the
+  // assessment over — the mark is already made and the teacher has it.
+}
+
 handlers.assess = async (context, req) => {
   if (misconfigured(context)) return;
   if (req.method !== "POST") return json(context, 405, { error: "Method not allowed" });
@@ -3569,6 +3696,19 @@ handlers.assess = async (context, req) => {
   if (used >= ASSESS_DAILY_CAP) {
     return json(context, 429, {
       error: `That is ${ASSESS_DAILY_CAP} AI assessments today, which is the daily limit. Mark the rest yourself, or try again tomorrow.`,
+    });
+  }
+
+  // Credits sit beside the cap and in front of the same expensive work. An
+  // exhausted teacher is refused in words they can act on — and only the AI
+  // draft is refused: marking the answer by hand is never blocked.
+  const month = usageMonth();
+  const ledger = await aiusageTable();
+  const credit = await creditsFor(ledger, who.id, month);
+  if (credit.used >= credit.granted) {
+    return json(context, 429, {
+      error: `You have used all ${credit.granted} AI credits this month. You can still mark this answer yourself.`,
+      credits: { used: credit.used, granted: credit.granted, left: 0 },
     });
   }
 
@@ -3606,8 +3746,13 @@ handlers.assess = async (context, req) => {
   }
 
   // Counted only once the model has actually answered: a failed call costs
-  // nothing at Google, so it should not cost the teacher a slot either.
+  // nothing at Azure, so it should not cost the teacher a slot or a credit.
   await noteAssess(gate, who.id, used);
+  await noteCredit(ledger, who, month, {
+    promptTokens: verdict.promptTokens,
+    completionTokens: verdict.completionTokens,
+    costMicroUsd: costMicroUsd(verdict.promptTokens, verdict.completionTokens),
+  });
 
   // The proposal is stored beside the answer, never on top of it: `awarded`
   // and `status` are the teacher's to move.
@@ -3629,7 +3774,118 @@ handlers.assess = async (context, req) => {
     comment: verdict.comment,
     reasoning: verdict.reasoning,
     model: AZURE_AI_DEPLOYMENT,
+    credits: {
+      used: credit.used + 1,
+      granted: credit.granted,
+      left: Math.max(0, credit.granted - credit.used - 1),
+    },
   });
+};
+
+/**
+ * The AI usage report, and a teacher's own balance.
+ *
+ * `GET ?me=1`    — what the caller has left, for the marking screen.
+ * `GET ?month=`  — admin only: every teacher's row for that month.
+ * `POST grant`   — admin only: top up one teacher, so somebody who runs out
+ *                  mid-term is not waiting on a deploy.
+ *
+ * The route is deliberately not named `admin…`: Azure Functions reserves that
+ * namespace and SWA serves such a route as a 404 with no warning anywhere.
+ */
+handlers.aiusage = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req, context);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+  if (who.role !== "teacher" && who.role !== "admin") {
+    return json(context, 403, { error: "Teachers only" });
+  }
+  const table = await aiusageTable();
+
+  if (req.method === "GET") {
+    const asked = String((req.query && req.query.month) || "").trim();
+    const month = /^\d{4}-\d{2}$/.test(asked) ? asked : usageMonth();
+
+    // A teacher asks only about themselves, and is never shown the platform.
+    if (who.role !== "admin" || String((req.query && req.query.me) || "")) {
+      const mine = await creditsFor(table, who.id, month);
+      return json(context, 200, {
+        month,
+        used: mine.used,
+        granted: mine.granted,
+        left: Math.max(0, mine.granted - mine.used),
+      });
+    }
+
+    // One partition query, explicitly projected (rule 1 and rule 2): the whole
+    // platform's month without walking a single other row.
+    const rows = [];
+    const iter = table.listEntities({
+      queryOptions: { filter: `PartitionKey eq '${month.replace(/'/g, "''")}'`, select: AIUSAGE_SELECT },
+    });
+    for await (const e of iter) {
+      const used = typeof e.used === "number" ? e.used : 0;
+      const granted = typeof e.granted === "number" ? e.granted : ASSESS_MONTHLY_CREDITS;
+      const micros = typeof e.costMicroUsd === "number" ? e.costMicroUsd : 0;
+      const promptTokens = typeof e.promptTokens === "number" ? e.promptTokens : 0;
+      const completionTokens = typeof e.completionTokens === "number" ? e.completionTokens : 0;
+      rows.push({
+        teacherId: e.rowKey,
+        name: e.name || "",
+        email: e.email || "",
+        used,
+        granted,
+        left: Math.max(0, granted - used),
+        promptTokens,
+        completionTokens,
+        // null, not 0. A model reply that carried no token counts is unknown
+        // cost, and showing an unknown as free is the one wrong answer here.
+        costInr: promptTokens + completionTokens > 0 ? (micros / 1e6) * USD_INR : null,
+        updatedAt: e.updatedAt || "",
+      });
+      if (rows.length >= 500) break;
+    }
+    rows.sort((a, b) => b.used - a.used);
+    const totals = rows.reduce(
+      (acc, r) => ({
+        used: acc.used + r.used,
+        promptTokens: acc.promptTokens + r.promptTokens,
+        completionTokens: acc.completionTokens + r.completionTokens,
+        costInr: acc.costInr + (r.costInr || 0),
+      }),
+      { used: 0, promptTokens: 0, completionTokens: 0, costInr: 0 }
+    );
+    return json(context, 200, { month, credits: ASSESS_MONTHLY_CREDITS, rows, totals });
+  }
+
+  if (who.role !== "admin") return json(context, 403, { error: "Admins only" });
+  const body = getBody(req) || {};
+  const action = String(body.action || "");
+  if (action !== "grant") return json(context, 400, { error: `Unknown action: ${action}` });
+
+  const teacherId = String(body.teacherId || "").trim();
+  if (!teacherId || teacherId.length > 200 || /[/\\#?]/.test(teacherId)) {
+    return json(context, 400, { error: "A teacher is needed" });
+  }
+  const granted = Math.round(Number(body.credits));
+  if (!Number.isFinite(granted) || granted < 0 || granted > 100000) {
+    return json(context, 400, { error: "Credits must be a number between 0 and 100000" });
+  }
+  const month = /^\d{4}-\d{2}$/.test(String(body.month || "")) ? String(body.month) : usageMonth();
+
+  let row = null;
+  try {
+    row = await table.getEntity(month, teacherId);
+  } catch {
+    row = null;
+  }
+  const next = { partitionKey: month, rowKey: teacherId, granted, updatedAt: new Date().toISOString() };
+  if (row) {
+    await table.updateEntity(next, "Merge", { etag: row.etag });
+  } else {
+    await table.createEntity({ ...next, used: 0, promptTokens: 0, completionTokens: 0, costMicroUsd: 0 });
+  }
+  return json(context, 200, { ok: true, month, teacherId, granted });
 };
 
 // ---------- Releasing the answers ----------

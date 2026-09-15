@@ -150,8 +150,9 @@ unlike the `vidai.seyali.app` entry above which is done.
   Table Storage; `POST/GET /api/attempts` saves/lists the student's attempts.
 - SWA application settings (Azure portal, not repo): `AZURE_AI_ENDPOINT` +
   `AZURE_AI_KEY` (optional — together they switch on AI marking;
-  `AZURE_AI_DEPLOYMENT` names the deployment and `ASSESS_DAILY_CAP` bounds the
-  spend; see below), `GOOGLE_CLIENT_ID`,
+  `AZURE_AI_DEPLOYMENT` names the deployment, `ASSESS_DAILY_CAP` and
+  `ASSESS_MONTHLY_CREDITS` bound the spend, and `AI_USD_PER_M_IN` /
+  `AI_USD_PER_M_OUT` / `USD_INR` price the usage report; see below), `GOOGLE_CLIENT_ID`,
   `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`,
   `students` are auto-created), `SESSION_SECRET` (any long random string —
   signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
@@ -964,6 +965,52 @@ and there is no free-tier-trains-on-your-data question to keep an eye on.
   request, and the request contains the handwriting. Only `error.message` is
   passed through, because without it a wrong deployment name and a spent quota
   look identical from the outside.
+
+### Credits are the entitlement; the cap is the brake (`/api/aiusage`, table `aiusage`)
+
+Two gates sit in front of the model and they are **not** redundant.
+`ASSESS_DAILY_CAP` is a runaway brake — a loop, a stolen session — and is keyed
+by a **digest** of the caller, which is right for a throttle and means it can
+never be reported on. **Credits are an entitlement someone is accountable for**,
+so the ledger row names the teacher and carries the money. Both run before the
+grading row, the blob downloads and the model call, for the same reason
+`loginGate` runs before scrypt.
+
+- Table `aiusage`: **PK = `YYYY-MM`, RK = the teacher id** (`who.id` — a Google
+  sub or `adm~<user>`; deliberately not a digest). A credit check is one point
+  read; the admin's whole-platform report for a month is **one partition
+  query** with `AIUSAGE_SELECT`, never a scan. A new month is a new partition,
+  so nothing needs sweeping — the same property that makes the daily key cheap.
+- `ASSESS_MONTHLY_CREDITS` (100) is the default grant; one assessment spends
+  one credit. Exhausted returns **429** saying so **and that marking by hand
+  still works** — only the AI draft is ever refused.
+- **The increment is ETag'd with a bounded retry**, where `noteAssess` is a
+  plain read-modify-write. Losing one of two concurrent writes is tolerable for
+  a throttle and not for a ledger somebody is held to. `e2e/helpers.cjs` proves
+  it with a fake table that actually enforces ETags — without that the test
+  would pass vacuously.
+- **Cost is stamped on write** (rule 5), from the token counts in
+  `payload.usage`, which `askAssessor` used to discard — the reason no usage
+  report was possible before. Accumulated as **integer micro-dollars**: a float
+  accumulator drifts once added to a few thousand times, and this one is read as
+  money. In `costMicroUsd` the division looks missing and is not — dollars are
+  `tokens * rate / 1e6` and micro-dollars are that times 1e6, so the two cancel.
+- **A reply with no `usage` is unknown cost, never zero.** The credit is still
+  spent; `costInr` comes back `null` and the screen shows `—`. Showing an
+  unknown as free is the one wrong answer this report could give.
+- Prices are settings, not constants: `AI_USD_PER_M_IN` / `AI_USD_PER_M_OUT`
+  (gpt-4.1-mini's $0.40 / $1.60) and `USD_INR`, so a model or rate change is an
+  app setting rather than a deploy.
+- `GET ?me=1` is a teacher's own balance; `GET ?month=` is the admin report;
+  `POST {action:"grant"}` tops one teacher up, so somebody who runs out
+  mid-term is not waiting on a deploy. The route is **not** named `admin…` —
+  see the rule above about that namespace 404ing silently.
+- Client: `fetchAiUsage` / `fetchMyCredits` / `grantCredits` in `src/auth.ts`;
+  **AI usage** is an admin-only rail item rendering `showAiUsage()` in
+  `src/screens/console.ts`, built on the same `consoleShell` + `.roster-row`
+  shape as `showAdmin()`. The balance also appears beside the marks row after
+  an assessment, so the day it refuses is not the day a teacher first hears
+  about credits.
 
 ## Releasing the answers (`/api/release`, table `releases`)
 

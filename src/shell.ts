@@ -18,6 +18,7 @@ export type RailKey =
   | "students"
   | "mytests"
   | "admin"
+  | "aiusage"
   | "results"
   | "children";
 
@@ -37,6 +38,7 @@ const RAIL_ITEMS: RailItem[] = [
   { key: "students", label: "My students", icon: ICONS.users, show: isTeacher },
   { key: "mytests", label: "My tests", icon: ICONS.home, show: isAdmin },
   { key: "admin", label: "Teacher access", icon: ICONS.shield, show: isAdmin },
+  { key: "aiusage", label: "AI usage", icon: ICONS.chart, show: isAdmin },
 ];
 
 const RAIL_KEY = "vidai:rail";
