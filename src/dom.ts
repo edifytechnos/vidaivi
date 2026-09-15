@@ -116,6 +116,23 @@ export function brand(): string {
 
 
 /** The brand bar for screens shown before sign-in. Signed-in screens use the shell. */
+/**
+ * Paint a screen that is NOT inside the app shell — the sign-in steps and the
+ * guest player.
+ *
+ * `mount()` stamps `has-shell` on `#app`, and that class drops the 720px cap
+ * and the page padding so the shell can run edge to edge. **Nothing ever took
+ * it off**, so any of these screens rendered after a shelled one inherited a
+ * full-bleed container: the phone-number step was one input stretched across
+ * the whole window. Clearing the class is what makes the cap apply again, so
+ * every direct write to `app` goes through here rather than setting
+ * `innerHTML` and hoping.
+ */
+export function paintPlain(html: string): void {
+  app.className = "";
+  app.innerHTML = html;
+}
+
 export function topbar(showHome: boolean): string {
   return `
     <header class="topbar">

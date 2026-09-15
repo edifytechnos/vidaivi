@@ -711,6 +711,59 @@ body {
   margin: 24px auto 0;
 }
 
+/* A step in signing in — student login, admin login, the phone number.
+   These write straight to #app rather than through mount(), so they were
+   inheriting whatever width the container happened to have; the phone step was
+   one input stretched across the whole window. They are a single short form and
+   belong in a column the width of a dialog, centred, like .welcome beside them.
+   Capped in ch as well as px so the prose above the field never runs past a
+   comfortable measure on a wide screen. */
+.auth-step {
+  max-width: min(460px, 100%);
+  margin: 24px auto 0;
+  padding: 28px;
+}
+
+.auth-step .hint {
+  max-width: 54ch;
+}
+
+/* Line the brand bar up with the card below it. Without this the header keeps
+   the 720px container's edge while the card is centred in a 460px column, and
+   the logo floats off to the left of the thing it belongs to. A browser with no
+   :has() simply keeps the old alignment — nothing breaks. */
+#app:has(.auth-step) .topbar {
+  max-width: 460px;
+  margin-inline: auto;
+}
+
+/* The one control on these steps is the primary, and it reads as a button
+   rather than a full-width bar. Back / Cancel sits beside it, as in the modal
+   footer — the same order, so the two never disagree. */
+.auth-step .actions {
+  display: flex;
+  /* Reversed, so the primary (which comes first in the markup, and must, for
+     Enter) ends up on the RIGHT. In row-reverse the main axis runs right to
+     left, so flex-start is the right edge — not flex-end. */
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 520px) {
+  .auth-step {
+    margin-top: 12px;
+    padding: 22px 18px;
+  }
+  .auth-step .actions {
+    flex-direction: column-reverse;
+  }
+  .auth-step .actions .btn {
+    width: 100%;
+  }
+}
+
 .welcome-logo {
   width: 52px;
   height: 52px;

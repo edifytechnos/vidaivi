@@ -9,6 +9,7 @@ import {
   isAdmin,
   listStudents,
   extendTrial,
+  resetAccountChoice,
   fetchAiUsage,
   grantAttempt,
   listAccounts,
@@ -458,6 +459,16 @@ export function showPlans() {
             },
             { name: "seats", label: "Paid student seats", value: btn.dataset.seats || "0" },
             { name: "days", label: "Extend trial by (days)", value: "0" },
+            {
+              name: "reset",
+              label: "Ask them to choose again",
+              kind: "radio",
+              hint: "Clears teacher-or-parent and the trial so the sign-up choice is asked again. Their tests, subjects and students are untouched.",
+              choices: [
+                { value: "no", label: "No", checked: true },
+                { value: "yes", label: "Yes, start their sign-up over" },
+              ],
+            },
           ],
           submitLabel: "Save",
           onSubmit: async (values) => {
@@ -476,6 +487,11 @@ export function showPlans() {
             if (Number.isFinite(days) && days > 0) {
               const r = await extendTrial(sub, days);
               if (!r.ok) return r.message || "Could not save.";
+            }
+            // Last, so a reset is never undone by a save that follows it.
+            if (values.reset === "yes") {
+              const r = await resetAccountChoice(sub);
+              if (!r.ok) return r.message || "Could not reset that account.";
             }
             void refresh();
           },

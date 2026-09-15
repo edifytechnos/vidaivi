@@ -528,6 +528,12 @@ export const setAccountExempt = (sub: string, exempt: boolean) =>
   accountsPost({ action: "exempt", sub, exempt });
 export const setAccountSeats = (sub: string, seats: number) =>
   accountsPost({ action: "seats", sub, seats });
+/**
+ * Put an account back to before it chose teacher or parent. A reset, not a
+ * delete: their content and their students stay theirs — only the answer and
+ * the trial that started with it go, so the next sign-in is asked again.
+ */
+export const resetAccountChoice = (sub: string) => accountsPost({ action: "reset", sub });
 export const extendTrial = (sub: string, days: number) =>
   accountsPost({ action: "extend", sub, days });
 export const grantShelf = (sub: string, shelfId: string) =>
@@ -646,16 +652,37 @@ export async function createStudent(input: {
   grade: string;
   parentPhone: string;
 }): Promise<StudentRecord | null> {
+  return (await createStudentOrReason(input)).student;
+}
+
+/**
+ * The same call, keeping the server's refusal.
+ *
+ * `createStudent` returns null on any failure, which is fine where the only
+ * plausible failure is the network. It is not fine now: the server refuses a
+ * seat limit with a 402 that **names the price**, and a teacher waiting for
+ * approval with a sentence saying so. Swallowing those turns a decision into
+ * "something went wrong".
+ */
+export async function createStudentOrReason(input: {
+  name: string;
+  school: string;
+  grade: string;
+  parentPhone: string;
+}): Promise<{ student: StudentRecord | null; message?: string }> {
   try {
     const res = await apiFetch("/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "create", ...input }),
     });
-    if (!res.ok) return null;
-    return (await res.json()) as StudentRecord;
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { student: null, message: data.error || "Could not add that child." };
+    }
+    return { student: (await res.json()) as StudentRecord };
   } catch {
-    return null;
+    return { student: null, message: "Network error — check your connection." };
   }
 }
 

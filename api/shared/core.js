@@ -5082,6 +5082,40 @@ handlers.accounts = async (context, req) => {
     return json(context, 400, { error: "An account is needed" });
   }
 
+  /**
+   * Put an account back to the moment before it chose.
+   *
+   * The choice is deliberately once-only (a 409 on the second `choose`), which
+   * is right for a real account and makes the sign-up flow impossible to try
+   * twice. This is the admin's way out, and it is a *reset*, not a delete:
+   * their tests, subjects, students and attempts are untouched and still
+   * theirs. It only clears the answer to "teacher or parent" and the trial
+   * that started with it, so the next sign-in is asked again.
+   */
+  if (action === "reset") {
+    let row = null;
+    try {
+      row = await table.getEntity(ACCOUNT_PK, sub);
+    } catch {}
+    if (!row) return json(context, 404, { error: "No account to reset" });
+    await table.upsertEntity(
+      {
+        partitionKey: ACCOUNT_PK,
+        rowKey: sub,
+        chose: "",
+        trialStartedAt: "",
+        trialEndsAt: "",
+        updatedAt: new Date().toISOString(),
+      },
+      "Merge"
+    );
+    // The role is derived from `chose`, so a warm instance would otherwise go
+    // on calling them a teacher for the rest of the TTL (rule 4).
+    roleCache.drop(`sub~${sub}`);
+    roleCache.drop(String(row.email || "").toLowerCase());
+    return json(context, 200, { ok: true, sub, reset: true });
+  }
+
   if (action === "grant") {
     const shelfId = safeId(body.shelfId, 80);
     if (!shelfId) return json(context, 400, { error: "A subject is needed" });

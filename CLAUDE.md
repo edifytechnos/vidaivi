@@ -1510,6 +1510,58 @@ the platform convention nor what an eye scanning a form expects.
   the MCQ editor's radio arriving on A, which this file already records. New
   subject's step 1 is `required: true` now that nothing is ticked for it.
 
+### A parent adds their own children, not only a teacher's
+
+`src/screens/parent.ts` offered exactly one way to reach a child: **redeem a
+one-time code from a teacher**. So the plan a parent was sold — up to
+`parentMaxChildren` children of their own — had no button anywhere, and a parent
+with no teacher met a dead end on the screen they land on.
+
+**Add a child** is now one dialog with two branches (`cards` + `showWhen`):
+create a login this account issues, or link one a teacher registered. The first
+shows the username and password **once**, with Copy, because the password is a
+scrypt hash and cannot be read back. The old inline `openCodeForm` is deleted —
+its job is the second branch.
+
+`createStudentOrReason` keeps the server's refusal where `createStudent`
+returned `null` for everything. That mattered the moment parents and unapproved
+teachers could reach it: a 402 **names the price** and "waiting to be approved"
+is not a failure, and both were being shown as "something went wrong".
+
+A linked child is still read-only — a parent never marks somebody else's
+student. What changed is that their **own** child is theirs.
+
+### An admin can send an account back to its first screen
+
+The role choice is deliberately once-only (`choose` 409s on the second call),
+which is right for a real account and makes the sign-up flow impossible to test
+twice — there is no second Gmail that has never seen Vidai.
+
+`POST /api/accounts {action:"reset", sub}` clears `chose` and the trial, and
+drops the role cache. It is a **reset, not a delete**: their tests, subjects,
+students and attempts are untouched and still theirs — only the answer goes, so
+the next sign-in is asked again. It is on the **Change** dialog in Plans &
+pricing, last in the submit order so a save in the same dialog cannot undo it.
+
+### The sign-in steps are a card, not the whole window
+
+`mount()` stamps `has-shell` on `#app`, which drops the 720px cap and the page
+padding so the shell can run edge to edge. **Nothing ever took it off**, so the
+screens that write to `app` directly — welcome, student login, admin login,
+phone capture — inherited a full-bleed container whenever a shelled screen had
+rendered first. The phone-number step was one input stretched across a 2000px
+window.
+
+- **`paintPlain(html)` in `src/dom.ts` is the one way to paint a non-shell
+  screen**, and clearing the class is the first thing it does. Use it rather
+  than assigning `app.innerHTML`.
+- `.auth-step` gives those cards a dialog-width column (460px, centred, prose
+  capped at 54ch), and `#app:has(.auth-step) .topbar` lines the brand up with
+  the card instead of leaving it at the old container's edge.
+- Their action row matches the modal's: primary on the **right** via
+  `row-reverse` — where `justify-content: flex-start` is the right edge, not
+  `flex-end` — and stacked full-width with the primary on top below 520px.
+
 ### Admin: Plans & pricing
 
 An admin-only rail item beside **AI usage**: every number in a form, and the

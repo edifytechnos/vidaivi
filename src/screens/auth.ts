@@ -15,7 +15,7 @@ import {
 } from "../auth";
 import { setGuest } from "../attempts";
 import { openModal } from "../modal";
-import { app, escapeHtml, setUrl, topbar } from "../dom";
+import { paintPlain, app, escapeHtml, setUrl, topbar } from "../dom";
 import { showHome } from "./home";
 import { showSubjects } from "./subjects";
 import { showChildren } from "./parent";
@@ -36,7 +36,7 @@ export function showWelcome(next?: () => void) {
   track("welcome_open");
   // A sign-in that timed out, not a failure — and nothing of theirs is lost.
   const expired = sessionJustExpired();
-  app.innerHTML = `
+  paintPlain(`
     ${topbar(false)}
     <main class="card welcome">
       <div class="welcome-logo">V</div>
@@ -61,7 +61,7 @@ export function showWelcome(next?: () => void) {
       <p class="hint welcome-note">Guests can take the free demo test. Scores
       stay on this device only.</p>
       <p class="admin-link-row"><button id="admin-link" class="btn-link">Admin</button></p>
-    </main>`;
+    </main>`);
   document.getElementById("admin-link")!.addEventListener("click", () => {
     showAdminLogin(done);
   });
@@ -99,9 +99,9 @@ export function showWelcome(next?: () => void) {
 export function showStudentLogin(next: () => void) {
   setUrl();
   track("student_login_open");
-  app.innerHTML = `
+  paintPlain(`
     ${topbar(true)}
-    <main class="card landing">
+    <main class="card landing auth-step">
       <h2 class="landing-title">Student login</h2>
       <p class="hint">Enter the username and password your teacher shared with you.</p>
       <input id="su-user" class="numeric-input" type="text" autocomplete="username"
@@ -114,7 +114,7 @@ export function showStudentLogin(next: () => void) {
         <button id="su-back" class="btn btn-ghost">Back</button>
       </div>
       <p class="hint">Forgot your password? Ask your teacher to reset it.</p>
-    </main>`;
+    </main>`);
   const user = document.getElementById("su-user") as HTMLInputElement;
   const pass = document.getElementById("su-pass") as HTMLInputElement;
   const submit = document.getElementById("su-submit") as HTMLButtonElement;
@@ -148,9 +148,9 @@ export function showStudentLogin(next: () => void) {
 export function showAdminLogin(next: () => void) {
   setUrl();
   track("admin_login_open");
-  app.innerHTML = `
+  paintPlain(`
     ${topbar(true)}
-    <main class="card landing">
+    <main class="card landing auth-step">
       <h2 class="landing-title">Admin login</h2>
       <input id="ad-user" class="numeric-input" type="text" autocomplete="username"
              autocapitalize="none" spellcheck="false" placeholder="Username" />
@@ -164,7 +164,7 @@ export function showAdminLogin(next: () => void) {
         <button id="ad-submit" class="btn btn-primary" disabled>Login</button>
         <button id="ad-back" class="btn btn-ghost">Back</button>
       </div>
-    </main>`;
+    </main>`);
   const user = document.getElementById("ad-user") as HTMLInputElement;
   const pass = document.getElementById("ad-pass") as HTMLInputElement;
   const submit = document.getElementById("ad-submit") as HTMLButtonElement;
@@ -270,9 +270,9 @@ export async function showRoleChoiceIfNeeded(next: () => void): Promise<void> {
 export function showPhoneForm(next: () => void) {
   setUrl();
   const profile = getProfile();
-  app.innerHTML = `
+  paintPlain(`
     ${topbar(true)}
-    <main class="card landing">
+    <main class="card landing auth-step">
       <h2 class="landing-title">Almost there${profile?.name ? `, ${escapeHtml(profile.name.split(" ")[0])}` : ""}!</h2>
       <p class="hint">One last thing — a WhatsApp number where score reports
       can be shared (yours or a parent's).</p>
@@ -282,7 +282,7 @@ export function showPhoneForm(next: () => void) {
       <div class="actions">
         <button id="phone-save" class="btn btn-primary" disabled>Save and continue</button>
       </div>
-    </main>`;
+    </main>`);
   const input = document.getElementById("phone-input") as HTMLInputElement;
   const save = document.getElementById("phone-save") as HTMLButtonElement;
   const errEl = document.getElementById("phone-error") as HTMLElement;
