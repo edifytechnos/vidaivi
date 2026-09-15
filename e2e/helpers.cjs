@@ -489,8 +489,8 @@ async function totpHandlerChecks() {
 // The key is money: at about fifteen paise an assessment, a loaded key is a few
 // thousand calls. This proves the brake — that the cap is counted per teacher
 // per day, that the refusal is a 429, and (the part that matters) that a
-// refused call never reaches Google, because the gate runs before the row read
-// and the blob downloads, not after.
+// refused call never reaches the model, because the gate runs before the row
+// read and the blob downloads, not after.
 async function assessCapChecks() {
   const rows = new Map();
   const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
@@ -506,20 +506,43 @@ async function assessCapChecks() {
       const k = key(name, e.partitionKey, e.rowKey);
       rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
     },
-    updateEntity: async (e) => {
+    createEntity: async (e) => {
       const k = key(name, e.partitionKey, e.rowKey);
-      rows.set(k, { ...(rows.get(k) || {}), ...e });
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e, etag: "W/\"1\"" });
+    },
+    // The real thing refuses a write whose etag has moved on. Without that
+    // here, a test of the ledger's concurrency retry would pass vacuously.
+    updateEntity: async (e, _mode, opts) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      const cur = rows.get(k);
+      if (opts && opts.etag && cur && cur.etag !== opts.etag) {
+        const err = new Error("stale"); err.statusCode = 412; throw err;
+      }
+      const version = Number(String((cur && cur.etag) || "W/\"0\"").replace(/\D/g, "")) + 1;
+      rows.set(k, { ...(cur || {}), ...e, etag: `W/"${version}"` });
     },
     deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
-    listEntities: () => ({ [Symbol.asyncIterator]: async function* () {} }),
+    listEntities: ({ queryOptions } = {}) => ({
+      [Symbol.asyncIterator]: async function* () {
+        const want = /PartitionKey eq '([^']*)'/.exec((queryOptions && queryOptions.filter) || "");
+        for (const [k, row] of rows) {
+          if (!k.startsWith(`${name}/`)) continue;
+          if (want && row.partitionKey !== want[1]) continue;
+          yield { ...row };
+        }
+      },
+    }),
   });
 
-  process.env.GEMINI_API_KEY = "not-a-real-key";
+  // Both halves are needed to switch the feature on, so both are set here.
+  process.env.AZURE_AI_ENDPOINT = "https://not-a-real-resource.openai.azure.com";
+  process.env.AZURE_AI_KEY = "not-a-real-key";
   process.env.ASSESS_DAILY_CAP = "2";
   process.env.ADMIN_USERNAME = "e2e-admin";
   process.env.ADMIN_PASSWORD = "e2e-password";
 
-  // Count what actually leaves the box. Nothing here may reach Google.
+  // Count what actually leaves the box. Nothing here may reach the model.
   let calls = 0;
   const realFetch = global.fetch;
   global.fetch = async () => {
@@ -530,7 +553,7 @@ async function assessCapChecks() {
   const mod3 = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch };";
+    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, usageMonth };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod3, mod3.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -578,8 +601,69 @@ async function assessCapChecks() {
   );
   check(calls === 0, "a refused assessment never reaches the model");
 
+  // --- The credit ledger ---
+  //
+  // Credits and the daily cap guard different things, so this clears the cap
+  // first: what follows must be the credits refusing, not the cap again.
+  await table.upsertEntity(
+    { partitionKey: "assess", rowKey: `${digest}~${day}`, count: 0 },
+    "Merge"
+  );
+  const ledger = await t.aiusageTable();
+  const month = t.usageMonth();
+  const who = { id: "adm~e2e-admin", email: "e2e@example.com", name: "E2E" };
+
+  // Cost is computed from the token counts, in integer micro-dollars. The
+  // formula's missing division is the 1e6s cancelling, so pin a known value.
+  check(
+    t.costMicroUsd(1_000_000, 0) === 400_000,
+    `a million input tokens costs $0.40 (${t.costMicroUsd(1_000_000, 0) / 1e6})`
+  );
+
+  // Two writes landing at once must both be counted. The daily cap's
+  // read-modify-write would lose one here; the ledger retries on the 412.
+  await Promise.all([
+    t.noteCredit(ledger, who, month, { promptTokens: 10, completionTokens: 2, costMicroUsd: 7 }),
+    t.noteCredit(ledger, who, month, { promptTokens: 10, completionTokens: 2, costMicroUsd: 7 }),
+  ]);
+  let bal = await t.creditsFor(ledger, who.id, month);
+  check(bal.used === 2, `two concurrent assessments both count (used ${bal.used})`);
+
+  // A reply carrying no `usage` still spends the credit — and must not be
+  // recorded as having cost nothing.
+  await t.noteCredit(ledger, who, month, { promptTokens: 0, completionTokens: 0, costMicroUsd: 0 });
+  bal = await t.creditsFor(ledger, who.id, month);
+  check(bal.used === 3, `an assessment with no token counts still spends a credit (${bal.used})`);
+  const report = { res: null };
+  await t.handlers.aiusage(report, {
+    method: "GET",
+    query: {},
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+  });
+  const mine = (report.res.body.rows || []).find((r) => r.teacherId === who.id) || {};
+  check(mine.costInr !== null && mine.costInr > 0, "the report prices what it knows");
+  check(
+    mine.promptTokens === 20 && mine.used === 3,
+    `and totals tokens across calls (${mine.promptTokens} tokens, ${mine.used} used)`
+  );
+
+  // Spend the rest of the month's credits and prove the gate refuses in words
+  // — before the network, exactly as the daily cap does.
+  await ledger.upsertEntity(
+    { partitionKey: month, rowKey: who.id, used: 100, granted: 100 },
+    "Merge"
+  );
+  r = await call({ username: "nobody-at-all", testId: "t", questionId: "q" });
+  check(r.status === 429, `out of credits the assessor refuses (${r.status})`);
+  check(
+    /credit/i.test(r.data.error || "") && /yourself/i.test(r.data.error || ""),
+    `and says marking by hand still works ("${(r.data.error || "").slice(0, 70)}…")`
+  );
+  check(calls === 0, "no credit is spent reaching the model");
+
   global.fetch = realFetch;
-  delete process.env.GEMINI_API_KEY;
+  delete process.env.AZURE_AI_ENDPOINT;
+  delete process.env.AZURE_AI_KEY;
   delete process.env.ASSESS_DAILY_CAP;
 }
 

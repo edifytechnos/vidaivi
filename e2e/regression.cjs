@@ -832,18 +832,31 @@ function check(ok, label) {
           a.student === 403,
           `a student cannot ask the AI to mark their own work (${a.student})`
         );
-        // No GEMINI_API_KEY on this environment. That is the shipped-dormant
-        // state, and saying so is the correct answer — not a 404, not a 500.
-        check(true, "with no key configured the assessor says it is switched off (501)");
+        // No AZURE_AI_ENDPOINT / AZURE_AI_KEY on this environment. That is the
+        // shipped-dormant state, and saying so is the correct answer — not a
+        // 404, not a 500.
+        check(true, "with no model configured the assessor says it is switched off (501)");
       } else {
         check(
           a.student === 403,
           `a student cannot ask the AI to mark their own work (${a.student})`
         );
-        if (a.teacher === 502 && /location|region/i.test((a.data && a.data.error) || "")) {
-          // The key is set but this app is hosted where the provider does not
-          // serve. That is the documented state, not a regression.
-          check(true, "the assessor reports the region it cannot be reached from");
+        const why = (a.data && a.data.error) || "";
+        if (a.teacher === 502 && /gemini|google|generativelanguage/i.test(why)) {
+          // The environment under test is running an API from before the model
+          // moved into Azure. That is a stale deployment, not a broken rule —
+          // and the browser suite proxies /api/* to production by default, so
+          // it is the expected answer until this change ships. Point
+          // E2E_API_BASE at QA to exercise the new handler.
+          console.log(`SKIP  AI assessment (this API predates the Azure model: ${why.slice(0, 60)}…)`);
+        } else if (a.teacher === 502) {
+          // Configured but the call failed. The message is the provider's own
+          // complaint, never its body — print it, because a wrong deployment
+          // name and a spent quota look identical from the outside.
+          check(
+            false,
+            `the assessor is configured but failing: ${why || "(no message)"}`
+          );
         } else {
           check(
             a.teacher === 200 && typeof a.data.awarded === "number",
@@ -2004,6 +2017,7 @@ function check(ok, label) {
         // It slides, so wait for the transform to land rather than racing it.
         await page.waitForFunction(
           () => document.querySelector(".ed-tree").getBoundingClientRect().x >= 0,
+          null,
           { timeout: 10000 }
         );
         const opened = await page.evaluate(() => ({
@@ -2035,6 +2049,7 @@ function check(ok, label) {
         await page.mouse.click(370, 500);
         await page.waitForFunction(
           () => getComputedStyle(document.querySelector(".ed-tree")).visibility === "hidden",
+          null,
           { timeout: 10000 }
         );
         check(true, "and a tap outside closes it again");
@@ -2066,11 +2081,30 @@ function check(ok, label) {
           scrolled.crumbPos === "sticky" && scrolled.crumbTop <= 1 && scrolled.crumbTop >= -1,
           `and the Questions / Hand in row sticks to the top (${scrolled.crumbTop})`
         );
+        // Wait on the class the code actually sets before the geometry the CSS
+        // animates. If the press does not land, that says so directly instead
+        // of timing out on a rectangle and leaving the cause open.
         await page.click("[data-drawer-toggle]");
         await page.waitForFunction(
-          () => document.querySelector(".ed-tree").getBoundingClientRect().x >= 0,
+          () => document.querySelector(".editor").classList.contains("tree-open"),
+          null,
           { timeout: 10000 }
         );
+        await page.waitForFunction(
+          () => document.querySelector(".ed-tree").getBoundingClientRect().x >= 0,
+          null,
+          { timeout: 10000 }
+        ).catch(async () => {
+          // Say what the drawer was actually doing. A bare rectangle timeout
+          // gives no way back to the cause — this is how the repaint that was
+          // closing it behind the student was found.
+          const d = await page.evaluate(() => ({
+            editor: (document.querySelector(".editor") || {}).className,
+            x: Math.round(document.querySelector(".ed-tree").getBoundingClientRect().x),
+            visibility: getComputedStyle(document.querySelector(".ed-tree")).visibility,
+          }));
+          throw new Error(`the drawer never arrived: ${JSON.stringify(d)}`);
+        });
         const afterScroll = await page.evaluate(() => ({
           top: Math.round(document.querySelector(".ed-tree").getBoundingClientRect().top),
           crumbBottom: Math.round(document.querySelector(".ed-crumbrow").getBoundingClientRect().bottom),
@@ -2279,5 +2313,8 @@ function check(ok, label) {
   process.exit(failures ? 1 : 0);
 })().catch((e) => {
   console.error("FAIL:", e.message);
+  // The stack is what says *which* wait timed out. Without it a flaky run
+  // reads as one line with no way back to the line that produced it.
+  if (e && e.stack) console.error(e.stack.split("\n").slice(1, 6).join("\n"));
   process.exit(1);
 });

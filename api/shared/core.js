@@ -18,31 +18,58 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || "")
 // The AI marking assistant. Unset means the feature simply does not exist:
 // /api/assess answers 501 and the client hides the button, the same way
 // analytics no-ops without its connection string. Nothing else changes.
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+//
+// The model lives in **Azure AI Foundry, South India** rather than at Google.
+// That is not a preference, it is the only thing that works from here: this app
+// runs in Azure East Asia (Hong Kong), and Hong Kong is on neither Google's
+// Gemini available-regions list nor Anthropic's, so a key that works from a
+// laptop in Chennai 400s from the Function. A call to an Azure endpoint is
+// Azure-to-Azure and has no country gate, so the app did not have to move —
+// and a child's handwriting now stays inside Azure instead of going to Google.
+// Only the origin is wanted — the portal offers the *full* Responses URL to
+// copy ("https://<name>.services.ai.azure.com/openai/v1/responses"), and
+// pasting that is the obvious thing to do. Left alone it produced
+// ".../openai/v1/responses/openai/v1/chat/completions" and a bare 404 that
+// blamed the deployment. Taking the origin makes either paste work.
+const AZURE_AI_ENDPOINT = (() => {
+  const raw = (process.env.AZURE_AI_ENDPOINT || "").trim().replace(/\/+$/, "");
+  if (!raw) return "";
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return raw;
+  }
+})();
+const AZURE_AI_KEY = process.env.AZURE_AI_KEY;
+// The *deployment* name, which is whatever it was called in the portal — not
+// the model id. It defaults to the name this was built against.
+const AZURE_AI_DEPLOYMENT = process.env.AZURE_AI_DEPLOYMENT || "gpt-4.1-mini";
+const aiConfigured = () => !!(AZURE_AI_ENDPOINT && AZURE_AI_KEY);
+// What a call costs, so the admin report can show real money rather than a
+// count. Prices are per *million* tokens and are settings, not constants in
+// spirit: changing the deployment or the exchange rate must not need a deploy.
+// Defaults are gpt-4.1-mini's published rates.
+const AI_USD_PER_M_IN = Number(process.env.AI_USD_PER_M_IN || 0.4);
+const AI_USD_PER_M_OUT = Number(process.env.AI_USD_PER_M_OUT || 1.6);
+const USD_INR = Number(process.env.USD_INR || 88);
+// Accumulated in integer micro-dollars. A float accumulator drifts once it has
+// been added to a few thousand times, and this one is read as money.
+//
+// The division looks missing and is not: dollars are `tokens * rate / 1e6`,
+// and micro-dollars are that times 1e6, so the two cancel exactly. Written
+// out, it would be `* 1e6 / 1e6`.
+function costMicroUsd(promptTokens, completionTokens) {
+  return Math.round(promptTokens * AI_USD_PER_M_IN + completionTokens * AI_USD_PER_M_OUT);
+}
+// Each assessment costs one credit. A month is the unit because that is how a
+// teacher thinks about a term, and because it keeps the ledger to one row per
+// teacher per month.
+const ASSESS_MONTHLY_CREDITS = Number(process.env.ASSESS_MONTHLY_CREDITS || 100);
 // A loaded key is a spending limit with no brakes: at roughly fifteen paise an
 // assessment, ₹500 is about 3,300 of them. A stuck retry, a loop, or a stolen
 // teacher session could spend the lot in an afternoon, and the first anyone
 // would know is the bill. One cap per teacher per day is the brake.
 const ASSESS_DAILY_CAP = Number(process.env.ASSESS_DAILY_CAP || 200);
-
-/**
- * When the provider says it does not serve this location, the feature is off
- * whatever the app settings say — so stop offering it rather than handing
- * teachers a button that fails on every press.
- *
- * This is not hypothetical: the Static Web App runs in Azure **East Asia
- * (Hong Kong)**, and Hong Kong is on neither Google's Gemini available-regions
- * list nor Anthropic's supported-countries list. A key set in the portal is
- * therefore not enough to make AI marking work from here; the app has to be
- * hosted somewhere served, or the model has to live inside Azure.
- *
- * Time-boxed rather than permanent: a warm instance must not keep a stale
- * verdict after the situation is fixed, and a cold one re-learns it in one
- * request that costs nothing.
- */
-const AI_REGION_BLOCK_MS = 6 * 60 * 60 * 1000;
-let aiUnavailableUntil = 0;
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -3337,14 +3364,22 @@ handlers.grading = async (context, req) => {
 // would matter if the request leaked.
 //
 // Cost: one call per press of "Assess with AI", never automatic. At
-// gemini-3.5-flash-lite rates (paid tier, which is excluded from training on
-// your data) a typical answer is about two-tenths of a US cent.
+// gpt-4.1-mini rates a typical two-photo answer is about a tenth of a rupee.
+// Not gpt-4o-mini: it bills images at roughly 33x the tokens, which on a
+// photograph-only workload like this one makes it the dearest of the three.
 
-const AI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/interactions";
 const AI_TIMEOUT_MS = 45000;
 const AI_MAX_SOLUTION = 4000;
 
-/** The shape the model must answer in, so the reply is never free prose. */
+/**
+ * The shape the model must answer in, so the reply is never free prose.
+ *
+ * Azure's strict structured outputs are stricter than JSON Schema at large:
+ * **every** property must be listed in `required` and `additionalProperties`
+ * must be `false`, or the request is rejected outright. `minimum`/`maximum` are
+ * not supported either — the mark is clamped in code after it comes back,
+ * which is where it has to be clamped anyway.
+ */
 const AI_SCHEMA = {
   type: "object",
   properties: {
@@ -3352,7 +3387,8 @@ const AI_SCHEMA = {
     comment: { type: "string" },
     reasoning: { type: "string" },
   },
-  required: ["awarded", "comment"],
+  required: ["awarded", "comment", "reasoning"],
+  additionalProperties: false,
 };
 
 function aiPrompt(question, solution, maxMarks) {
@@ -3386,7 +3422,15 @@ async function answerImages(blobNames) {
       const buf = await container.getBlobClient(name).downloadToBuffer();
       const mime = sniffImage(buf);
       if (mime && buf.length <= MAX_IMAGE_BYTES) {
-        out.push({ type: "image", data: buf.toString("base64"), mime_type: mime });
+        // A data URI rather than a URL: the container is private, and handing
+        // the model a SAS would put a link to a child's handwriting in someone
+        // else's logs. `detail: "high"` is the point of the exercise — on the
+        // low setting the model reads a 512px thumbnail, which is not enough
+        // to tell a 6 from a b in pencil.
+        out.push({
+          type: "image_url",
+          image_url: { url: `data:${mime};base64,${buf.toString("base64")}`, detail: "high" },
+        });
       }
     } catch {
       // A missing blob is not worth failing the whole assessment over.
@@ -3401,21 +3445,33 @@ async function askAssessor(question, solution, maxMarks, images) {
   const timer = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
   let res;
   try {
-    res = await fetch(AI_ENDPOINT, {
+    // The v1 GA surface: no api-version to keep in step with, and the same
+    // request shape as OpenAI's own, so the deployment can be swapped for a
+    // stronger model from the portal without touching this file.
+    res = await fetch(`${AZURE_AI_ENDPOINT}/openai/v1/chat/completions`, {
       method: "POST",
       signal: controller.signal,
-      headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
+      headers: { "Content-Type": "application/json", "api-key": AZURE_AI_KEY },
       body: JSON.stringify({
-        model: GEMINI_MODEL,
-        input: [
-          { type: "text", text: aiPrompt(question, solution, maxMarks) },
-          ...images,
+        // The *deployment* name, not the model id.
+        model: AZURE_AI_DEPLOYMENT,
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: aiPrompt(question, solution, maxMarks) },
+              ...images,
+            ],
+          },
         ],
         response_format: {
-          type: "text",
-          mime_type: "application/json",
-          schema: AI_SCHEMA,
+          type: "json_schema",
+          json_schema: { name: "vidai_mark", strict: true, schema: AI_SCHEMA },
         },
+        // No token cap on purpose: the newer models want
+        // `max_completion_tokens` where the older ones want `max_tokens`, and
+        // guessing wrong is a 400 on every call. The schema is what bounds the
+        // reply, and the two strings are truncated below in any case.
       }),
     });
   } catch (e) {
@@ -3430,21 +3486,25 @@ async function askAssessor(question, solution, maxMarks, images) {
   if (!res.ok) {
     // Never echo the provider's *body* back: it can carry the request, and the
     // request carries a child's handwriting. The `error.message` alone is the
-    // provider describing its own complaint ("model not found", "invalid
-    // argument") and carries none of that — and without it an operator has no
-    // way to tell a bad model name from a spent quota. Staff-only endpoint.
+    // provider describing its own complaint ("deployment not found", "quota
+    // exceeded") and carries none of that — and without it an operator has no
+    // way to tell a wrong deployment name from a spent quota. Staff-only.
     let why = "";
     try {
       const body = JSON.parse(text);
       why = String((body.error && body.error.message) || "").slice(0, 200);
     } catch {}
-    // "not available in your current location" is not a bad request to retry —
-    // it is the feature being unavailable from where this app is hosted.
-    if (/location|region|country|territor/i.test(why)) {
-      aiUnavailableUntil = Date.now() + AI_REGION_BLOCK_MS;
-    }
+    // A 404 says nothing on its own — the host, the path and the deployment
+    // name are all candidates, and Azure answers a bad one of any of the three
+    // with a bare "Resource not found". Naming what was tried turns an
+    // afternoon of guessing into a glance. Neither is a secret: the key is not
+    // here and neither is the handwriting.
+    const tried =
+      res.status === 404
+        ? ` (tried deployment "${AZURE_AI_DEPLOYMENT}" at ${AZURE_AI_ENDPOINT}/openai/v1/chat/completions)`
+        : "";
     throw new Error(
-      `The model refused the request (${res.status})${why ? `: ${why}` : ""}`
+      `The model refused the request (${res.status})${why ? `: ${why}` : ""}${tried}`
     );
   }
   let payload;
@@ -3453,20 +3513,30 @@ async function askAssessor(question, solution, maxMarks, images) {
   } catch {
     throw new Error("The model sent something that was not JSON");
   }
-  const raw =
-    (payload.interaction && payload.interaction.output_text) || payload.output_text || "";
+  const message = (payload.choices && payload.choices[0] && payload.choices[0].message) || {};
+  // A refusal is the model declining the whole request. It is not a mark of
+  // zero, and must never be written as one.
+  if (message.refusal) throw new Error("The model declined to mark this answer");
   let out;
   try {
-    out = JSON.parse(raw);
+    out = JSON.parse(message.content || "");
   } catch {
     throw new Error("The model did not answer in the shape asked for");
   }
   const awarded = Math.max(0, Math.min(maxMarks, Math.round(Number(out.awarded))));
   if (!Number.isFinite(awarded)) throw new Error("The model did not return a mark");
+  // The token counts are the only record of what this actually cost, and they
+  // exist for exactly one moment — this response. They used to be dropped on
+  // the floor here, which is why no usage report was possible. A reply that
+  // carries no `usage` yields zeros, and a zero is rendered as "not recorded"
+  // rather than as free: see `costInr` below.
+  const usage = payload.usage || {};
   return {
     awarded,
     comment: String(out.comment || "").slice(0, 600),
     reasoning: String(out.reasoning || "").slice(0, 600),
+    promptTokens: Math.max(0, Math.round(Number(usage.prompt_tokens) || 0)),
+    completionTokens: Math.max(0, Math.round(Number(usage.completion_tokens) || 0)),
   };
 }
 
@@ -3505,6 +3575,105 @@ async function noteAssess(table, teacherId, used) {
   );
 }
 
+// ---------- AI credits, and what they actually cost ----------
+//
+// The daily cap above and this ledger guard different things, which is why
+// both exist. The cap is a runaway brake — a loop, a stolen session — and is
+// keyed by a *digest* of the caller, so it can never be reported on. Credits
+// are an entitlement someone is accountable for, so this row names the teacher
+// and carries the money.
+//
+// PK is the month, RK the teacher id. A credit check is therefore one point
+// read, and the admin's whole-platform report for a month is one partition
+// query — never a scan. A new month is simply a new partition, so nothing has
+// to be swept.
+const AIUSAGE_SELECT = [
+  "PartitionKey",
+  "RowKey",
+  "used",
+  "granted",
+  "promptTokens",
+  "completionTokens",
+  "costMicroUsd",
+  "email",
+  "name",
+  "updatedAt",
+];
+
+function usageMonth(when) {
+  return (when instanceof Date ? when : new Date()).toISOString().slice(0, 7);
+}
+
+async function aiusageTable() {
+  const t = tableClient("aiusage");
+  await ensureTable(t);
+  return t;
+}
+
+async function creditsFor(table, teacherId, month) {
+  try {
+    const row = await table.getEntity(month, teacherId);
+    return {
+      used: typeof row.used === "number" ? row.used : 0,
+      granted: typeof row.granted === "number" ? row.granted : ASSESS_MONTHLY_CREDITS,
+      etag: row.etag,
+    };
+  } catch {
+    // No row yet is a teacher who has not spent anything this month, not an
+    // error — and not zero credits.
+    return { used: 0, granted: ASSESS_MONTHLY_CREDITS, etag: null };
+  }
+}
+
+/**
+ * Spend one credit and record what it cost.
+ *
+ * `noteAssess` is a read-modify-write with no ETag, which can lose one of two
+ * concurrent writes. That is tolerable for a throttle and not for a ledger
+ * somebody is held to, so this retries on a concurrency failure — bounded,
+ * never a spin.
+ */
+async function noteCredit(table, who, month, spend) {
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    let row = null;
+    try {
+      row = await table.getEntity(month, who.id);
+    } catch {
+      row = null;
+    }
+    const next = {
+      partitionKey: month,
+      rowKey: who.id,
+      used: (typeof row?.used === "number" ? row.used : 0) + 1,
+      granted: typeof row?.granted === "number" ? row.granted : ASSESS_MONTHLY_CREDITS,
+      promptTokens: (typeof row?.promptTokens === "number" ? row.promptTokens : 0) + spend.promptTokens,
+      completionTokens:
+        (typeof row?.completionTokens === "number" ? row.completionTokens : 0) + spend.completionTokens,
+      costMicroUsd: (typeof row?.costMicroUsd === "number" ? row.costMicroUsd : 0) + spend.costMicroUsd,
+      // Stamped so the report can name a person: the row key is a Google sub,
+      // which tells an admin nothing.
+      email: who.email || row?.email || "",
+      name: who.name || row?.name || "",
+      updatedAt: new Date().toISOString(),
+    };
+    try {
+      if (row) {
+        await table.updateEntity(next, "Merge", { etag: row.etag });
+      } else {
+        await table.createEntity(next);
+      }
+      return;
+    } catch (e) {
+      // 412 is someone else's write landing first; 409 is the row appearing
+      // between our read and our create. Both mean re-read and try again.
+      const code = e && (e.statusCode || e.status);
+      if (code !== 412 && code !== 409) throw e;
+    }
+  }
+  // Four collisions on one teacher's row is not a case worth failing the
+  // assessment over — the mark is already made and the teacher has it.
+}
+
 handlers.assess = async (context, req) => {
   if (misconfigured(context)) return;
   if (req.method !== "POST") return json(context, 405, { error: "Method not allowed" });
@@ -3515,7 +3684,7 @@ handlers.assess = async (context, req) => {
   if (who.role !== "teacher" && who.role !== "admin") {
     return json(context, 403, { error: "Teachers only" });
   }
-  if (!GEMINI_API_KEY || Date.now() < aiUnavailableUntil) {
+  if (!aiConfigured()) {
     return json(context, 501, { error: "AI marking is not switched on for this site" });
   }
 
@@ -3527,6 +3696,19 @@ handlers.assess = async (context, req) => {
   if (used >= ASSESS_DAILY_CAP) {
     return json(context, 429, {
       error: `That is ${ASSESS_DAILY_CAP} AI assessments today, which is the daily limit. Mark the rest yourself, or try again tomorrow.`,
+    });
+  }
+
+  // Credits sit beside the cap and in front of the same expensive work. An
+  // exhausted teacher is refused in words they can act on — and only the AI
+  // draft is refused: marking the answer by hand is never blocked.
+  const month = usageMonth();
+  const ledger = await aiusageTable();
+  const credit = await creditsFor(ledger, who.id, month);
+  if (credit.used >= credit.granted) {
+    return json(context, 429, {
+      error: `You have used all ${credit.granted} AI credits this month. You can still mark this answer yourself.`,
+      credits: { used: credit.used, granted: credit.granted, left: 0 },
     });
   }
 
@@ -3564,8 +3746,13 @@ handlers.assess = async (context, req) => {
   }
 
   // Counted only once the model has actually answered: a failed call costs
-  // nothing at Google, so it should not cost the teacher a slot either.
+  // nothing at Azure, so it should not cost the teacher a slot or a credit.
   await noteAssess(gate, who.id, used);
+  await noteCredit(ledger, who, month, {
+    promptTokens: verdict.promptTokens,
+    completionTokens: verdict.completionTokens,
+    costMicroUsd: costMicroUsd(verdict.promptTokens, verdict.completionTokens),
+  });
 
   // The proposal is stored beside the answer, never on top of it: `awarded`
   // and `status` are the teacher's to move.
@@ -3577,7 +3764,7 @@ handlers.assess = async (context, req) => {
       aiComment: verdict.comment,
       aiReasoning: verdict.reasoning,
       aiAt: new Date().toISOString(),
-      aiModel: GEMINI_MODEL,
+      aiModel: AZURE_AI_DEPLOYMENT,
     },
     "Merge"
   );
@@ -3586,8 +3773,119 @@ handlers.assess = async (context, req) => {
     awarded: verdict.awarded,
     comment: verdict.comment,
     reasoning: verdict.reasoning,
-    model: GEMINI_MODEL,
+    model: AZURE_AI_DEPLOYMENT,
+    credits: {
+      used: credit.used + 1,
+      granted: credit.granted,
+      left: Math.max(0, credit.granted - credit.used - 1),
+    },
   });
+};
+
+/**
+ * The AI usage report, and a teacher's own balance.
+ *
+ * `GET ?me=1`    — what the caller has left, for the marking screen.
+ * `GET ?month=`  — admin only: every teacher's row for that month.
+ * `POST grant`   — admin only: top up one teacher, so somebody who runs out
+ *                  mid-term is not waiting on a deploy.
+ *
+ * The route is deliberately not named `admin…`: Azure Functions reserves that
+ * namespace and SWA serves such a route as a 404 with no warning anywhere.
+ */
+handlers.aiusage = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req, context);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+  if (who.role !== "teacher" && who.role !== "admin") {
+    return json(context, 403, { error: "Teachers only" });
+  }
+  const table = await aiusageTable();
+
+  if (req.method === "GET") {
+    const asked = String((req.query && req.query.month) || "").trim();
+    const month = /^\d{4}-\d{2}$/.test(asked) ? asked : usageMonth();
+
+    // A teacher asks only about themselves, and is never shown the platform.
+    if (who.role !== "admin" || String((req.query && req.query.me) || "")) {
+      const mine = await creditsFor(table, who.id, month);
+      return json(context, 200, {
+        month,
+        used: mine.used,
+        granted: mine.granted,
+        left: Math.max(0, mine.granted - mine.used),
+      });
+    }
+
+    // One partition query, explicitly projected (rule 1 and rule 2): the whole
+    // platform's month without walking a single other row.
+    const rows = [];
+    const iter = table.listEntities({
+      queryOptions: { filter: `PartitionKey eq '${month.replace(/'/g, "''")}'`, select: AIUSAGE_SELECT },
+    });
+    for await (const e of iter) {
+      const used = typeof e.used === "number" ? e.used : 0;
+      const granted = typeof e.granted === "number" ? e.granted : ASSESS_MONTHLY_CREDITS;
+      const micros = typeof e.costMicroUsd === "number" ? e.costMicroUsd : 0;
+      const promptTokens = typeof e.promptTokens === "number" ? e.promptTokens : 0;
+      const completionTokens = typeof e.completionTokens === "number" ? e.completionTokens : 0;
+      rows.push({
+        teacherId: e.rowKey,
+        name: e.name || "",
+        email: e.email || "",
+        used,
+        granted,
+        left: Math.max(0, granted - used),
+        promptTokens,
+        completionTokens,
+        // null, not 0. A model reply that carried no token counts is unknown
+        // cost, and showing an unknown as free is the one wrong answer here.
+        costInr: promptTokens + completionTokens > 0 ? (micros / 1e6) * USD_INR : null,
+        updatedAt: e.updatedAt || "",
+      });
+      if (rows.length >= 500) break;
+    }
+    rows.sort((a, b) => b.used - a.used);
+    const totals = rows.reduce(
+      (acc, r) => ({
+        used: acc.used + r.used,
+        promptTokens: acc.promptTokens + r.promptTokens,
+        completionTokens: acc.completionTokens + r.completionTokens,
+        costInr: acc.costInr + (r.costInr || 0),
+      }),
+      { used: 0, promptTokens: 0, completionTokens: 0, costInr: 0 }
+    );
+    return json(context, 200, { month, credits: ASSESS_MONTHLY_CREDITS, rows, totals });
+  }
+
+  if (who.role !== "admin") return json(context, 403, { error: "Admins only" });
+  const body = getBody(req) || {};
+  const action = String(body.action || "");
+  if (action !== "grant") return json(context, 400, { error: `Unknown action: ${action}` });
+
+  const teacherId = String(body.teacherId || "").trim();
+  if (!teacherId || teacherId.length > 200 || /[/\\#?]/.test(teacherId)) {
+    return json(context, 400, { error: "A teacher is needed" });
+  }
+  const granted = Math.round(Number(body.credits));
+  if (!Number.isFinite(granted) || granted < 0 || granted > 100000) {
+    return json(context, 400, { error: "Credits must be a number between 0 and 100000" });
+  }
+  const month = /^\d{4}-\d{2}$/.test(String(body.month || "")) ? String(body.month) : usageMonth();
+
+  let row = null;
+  try {
+    row = await table.getEntity(month, teacherId);
+  } catch {
+    row = null;
+  }
+  const next = { partitionKey: month, rowKey: teacherId, granted, updatedAt: new Date().toISOString() };
+  if (row) {
+    await table.updateEntity(next, "Merge", { etag: row.etag });
+  } else {
+    await table.createEntity({ ...next, used: 0, promptTokens: 0, completionTokens: 0, costMicroUsd: 0 });
+  }
+  return json(context, 200, { ok: true, month, teacherId, granted });
 };
 
 // ---------- Releasing the answers ----------

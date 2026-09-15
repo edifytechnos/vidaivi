@@ -254,6 +254,11 @@ function bindMarking(q: Question, rerender: () => void): void {
       row.aiComment = result.assessment.comment;
       row.aiReasoning = result.assessment.reasoning;
       row.aiModel = result.assessment.model;
+      // Kept for after the rerender: a teacher who can see the balance falling
+      // does not have to go looking for it when the button one day refuses.
+      creditNote = result.assessment.credits
+        ? `${result.assessment.credits.left} AI credits left this month`
+        : "";
       rerender();
       return;
     }
@@ -271,6 +276,9 @@ function bindMarking(q: Question, rerender: () => void): void {
 let rows = new Map<string, GradedAnswer>();
 /** Whether this site has AI marking switched on. Unknown until first asked. */
 let aiOff = false;
+/** The balance after the last assessment, shown once so it is not a surprise
+ *  the day the button starts refusing. Not state — it survives one rerender. */
+let creditNote = "";
 
 /**
  * The marking block under a long answer. Three things in one place, in the
@@ -330,7 +338,7 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
           }</button>
           <span class="ed-hint" id="mk-state">${
             marked ? `Marked ${row.awarded}/${row.maxMarks}` : "Not marked yet"
-          }</span>
+          }${creditNote ? ` · ${escapeHtml(creditNote)}` : ""}</span>
         </div>
       </div>
     </div>`;

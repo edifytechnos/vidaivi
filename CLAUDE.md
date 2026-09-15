@@ -148,9 +148,11 @@ unlike the `vidai.seyali.app` entry above which is done.
   `POST /api/login` verifies the Google ID token (aud + expiry via Google's
   tokeninfo endpoint) and upserts the profile (name/email/picture/phone) in
   Table Storage; `POST/GET /api/attempts` saves/lists the student's attempts.
-- SWA application settings (Azure portal, not repo): `GEMINI_API_KEY` (optional
-  — switches on AI marking; `ASSESS_DAILY_CAP` bounds its spend; see below),
-  `GOOGLE_CLIENT_ID`,
+- SWA application settings (Azure portal, not repo): `AZURE_AI_ENDPOINT` +
+  `AZURE_AI_KEY` (optional — together they switch on AI marking;
+  `AZURE_AI_DEPLOYMENT` names the deployment, `ASSESS_DAILY_CAP` and
+  `ASSESS_MONTHLY_CREDITS` bound the spend, and `AI_USD_PER_M_IN` /
+  `AI_USD_PER_M_OUT` / `USD_INR` price the usage report; see below), `GOOGLE_CLIENT_ID`,
   `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`,
   `students` are auto-created), `SESSION_SECRET` (any long random string —
   signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
@@ -1013,71 +1015,146 @@ mark a student receives — and the proposal is **not** pre-filled into the mark
 row, because a number a teacher has to *choose* gets reviewed and one already in
 the box gets rubber-stamped.
 
-- **Gemini `gemini-3.5-flash-lite`**, called from the Function with plain
-  `fetch` (no new dependency): `POST /v1beta/interactions`, key in the
-  `x-goog-api-key` header, `input[]` of one text part plus the photographs, and
-  `response_format` with a JSON schema so the reply is never free prose. The
-  answer comes back at `interaction.output_text` as a JSON string.
-- **The paid tier is not optional.** Google's free tier says content *is* used
-  to improve their products; the paid tier says it is not. What is being sent is
-  a child's handwriting. Keep billing on.
+#### The model lives in Azure, in South India — and that is why the app did not move
+
+The first build called Google's Gemini and **could never have worked from here**.
+This app runs in Azure **East Asia, which is Hong Kong**, and Hong Kong is on
+neither Google's Gemini available-regions list nor Anthropic's supported-
+countries list. The same key that works from a laptop in Chennai answers
+*"This API is not available in your current location"* from the Function. Setting
+the key did nothing; the feature shipped dormant for a release.
+
+The way out was **not** to move the app. A call to an Azure endpoint is
+Azure-to-Azure and has no country gate, so a model deployed in **Azure AI
+Foundry, South India** is reachable from a Hong Kong Function exactly as it is
+from anywhere else. Nothing about the app moved: same URL, same custom domain,
+same OAuth origins, same deploy token, same QA. Moving the Static Web App to an
+India region is still worth doing **for student latency**, but it is now a
+separate decision and not a blocker on marking.
+
+It is also the better home for the data. What is being sent is a photograph of
+a child's handwriting; it now stays inside Azure rather than going to Google,
+and there is no free-tier-trains-on-your-data question to keep an eye on.
+
+- **`gpt-4.1-mini` on the v1 GA surface**, called with plain `fetch` (no new
+  dependency): `POST {endpoint}/openai/v1/chat/completions`, the key in an
+  **`api-key`** header, one user message whose `content` is a text part plus the
+  photographs. v1 is GA, so there is **no `api-version` to keep in step with**.
+- **Not `gpt-4o-mini`, and this is counter-intuitive enough to write down.**
+  It bills images at roughly **33x** the tokens of the other models. Marking is
+  a photograph and two sentences, so image tokens are essentially the whole
+  bill: a two-photo answer is about **Rs 0.68** on gpt-4o-mini, **Rs 0.47** on
+  gpt-4o and **Rs 0.11** on gpt-4.1-mini — the "mini" is the dearest of the
+  three here. Avoid `gpt-4.1-nano` and `gpt-5-mini`: Microsoft lists both as
+  scheduled for shutdown.
+- **Three app settings switch it on**, and both of the first two are required:
+  `AZURE_AI_ENDPOINT` (`https://<resource>.openai.azure.com`), `AZURE_AI_KEY`,
+  and optionally `AZURE_AI_DEPLOYMENT` (default `gpt-4.1-mini`). That last one is
+  the **deployment** name from the portal, not the model id — they are only the
+  same if you left the box alone. With either of the first two missing,
+  `/api/assess` answers **501** and the client hides the button, exactly as
+  analytics no-ops without its connection string. `e2e/regression.cjs` asserts
+  the 501.
+- **`AZURE_AI_ENDPOINT` is the host, and the code takes only the origin.** The
+  portal offers the *full* Responses URL to copy
+  (`https://<name>.services.ai.azure.com/openai/v1/responses`), which is the
+  obvious thing to paste — and the code appends its own path, so the first real
+  call asked for `.../openai/v1/responses/openai/v1/chat/completions`. Azure
+  answers a wrong host, path **or** deployment with the same bare
+  *"Resource not found"*, so the 404 read like a missing deployment. Two
+  defences, both now in place: the setting is normalised with `new URL().origin`
+  so either paste works, and a 404 names the deployment and URL it tried —
+  which is what turned the second attempt into a one-round diagnosis.
+- **Images go as base64 `data:` URIs at `detail: "high"`.** Not a SAS URL: the
+  container is private and a link to a child's working does not belong in
+  someone else's logs. And not `detail: "low"`, which reads a 512px thumbnail —
+  not enough to tell a 6 from a b in pencil.
+- **Azure's strict structured outputs are stricter than JSON Schema at large**:
+  every property must appear in `required` and `additionalProperties` must be
+  `false`, or the request is rejected outright. `minimum`/`maximum` are not
+  supported, so the mark is clamped in code — which is where it has to be
+  clamped anyway. The reply comes back as a JSON string at
+  `choices[0].message.content`; a `message.refusal` is the model declining, and
+  is **never** written as a mark of zero.
+- **No token cap is sent.** The newer models want `max_completion_tokens` where
+  the older ones want `max_tokens`, and guessing wrong is a 400 on every call.
+  The schema bounds the reply and both strings are truncated on the way out.
 - **The model is never told who the student is** — it gets the question, the
   teacher's model solution, the marks available and the images. Nothing else is
   its business, and nothing else is in the request if it leaks.
-- **A daily cap, not a vault.** A loaded key is money with no brakes: at ~₹0.15
-  an assessment, ₹500 is about 3,300 calls, and a stuck retry or a stolen
-  teacher session could spend it in an afternoon. `ASSESS_DAILY_CAP` (200)
-  bounds it per teacher per day — PK `assess`, RK `<digest(teacherId)>~<date>`,
-  a point read and a point write, never a scan; tomorrow is simply a different
-  key, so nothing needs sweeping. **The gate runs before the row read, the blob
-  downloads and the model call**, for the same reason `loginGate` runs before
-  scrypt: the expensive work is exactly what an abuser wants. A failed model
-  call does not consume a slot. `e2e/helpers.cjs` drives this through the real
-  handler against a fake table and asserts that a refused assessment never
-  reaches the network.
-- **Key Vault is not available here, and this is not a tier problem.** Microsoft's
-  own page says Key Vault integration is unavailable for *"static web apps using
-  managed functions"*, that *"Azure Serverless Functions do not support direct
-  Key Vault integration"*, and that managed identity is Standard-plan only. Our
-  API **is** managed functions, so `@Microsoft.KeyVault(SecretUri=…)` in an app
-  setting does nothing at any tier. Reading a vault from code needs a credential
-  to reach the vault — without managed identity that is a client secret in an
-  app setting, which moves the secret rather than protecting it, and adds a
-  round trip per cold start. Real Key Vault means **bring-your-own Functions +
-  Standard**. If that is ever done, do it for `STORAGE_CONNECTION_STRING`,
-  `SESSION_SECRET` and `ADMIN_PASSWORD` first: they are the account, the
-  sessions and the platform, while the Gemini key is capped pocket money.
-- **Harden the key at Google instead**: restrict it to the Generative Language
-  API, and set a budget alert on the project. IP restriction is not usable —
-  SWA managed Functions have no stable outbound address.
-- **It does not work from this app's region, and that is why it ships off.**
-  The Static Web App runs in Azure **East Asia, which is Hong Kong**, so its
-  Functions call out from there — and Hong Kong is on **neither** Google's
-  Gemini available-regions list **nor** Anthropic's supported-countries list.
-  Both were checked; India, where the key was created, is on both, which is why
-  the same key works from a laptop and 400s from the app. The error is
-  *"This API is not available in your current location"*, and it was only
-  visible after the provider's `error.message` was allowed through — worth
-  remembering the next time a provider call fails opaquely.
-  **Setting the key does not fix it.** The three ways out, none of them small:
-  a model deployed inside Azure (AI Foundry — the call never crosses a border),
-  moving the app to a served region such as Central India (a new Static Web App:
-  region is fixed at creation, so new deploy token, custom domain, OAuth
-  origins and QA URL — and it would also cut latency for students who are all
-  in India), or Vertex AI with a service account instead of an API key.
-  Until one of those happens the feature is **dormant on purpose**: a 400 whose
-  message names a location marks it unavailable in-process for six hours
-  (`aiUnavailableUntil`) and `/api/assess` answers **501** from then on, so the
-  button disappears instead of failing on every press. Leaving a key set in the
-  portal is therefore harmless.
-- **Set `GEMINI_API_KEY`** as an SWA application setting to switch it on
-  (`GEMINI_MODEL` overrides the model). Without it `/api/assess` answers **501**
-  and the client hides the button — dormant, exactly like analytics without its
-  connection string. `e2e/regression.cjs` asserts the 501.
+- **A daily cap, not a vault.** A loaded key is money with no brakes.
+  `ASSESS_DAILY_CAP` (200) bounds it per teacher per day — PK `assess`, RK
+  `<digest(teacherId)>~<date>`, a point read and a point write, never a scan;
+  tomorrow is simply a different key, so nothing needs sweeping. **The gate runs
+  before the row read, the blob downloads and the model call**, for the same
+  reason `loginGate` runs before scrypt: the expensive work is exactly what an
+  abuser wants. A failed model call does not consume a slot. `e2e/helpers.cjs`
+  drives this through the real handler against a fake table and asserts that a
+  refused assessment never reaches the network.
+- **Key Vault is still not available here, and this is not a tier problem.**
+  Microsoft's own page says Key Vault integration is unavailable for *"static web
+  apps using managed functions"* and that managed identity is Standard-plan only.
+  Our API **is** managed functions, so `@Microsoft.KeyVault(SecretUri=…)` does
+  nothing at any tier. Real Key Vault means **bring-your-own Functions +
+  Standard** — and note that bring-your-own backends are **not supported on
+  preview environments**, so that road costs QA its API. If it is ever taken, do
+  it for `STORAGE_CONNECTION_STRING`, `SESSION_SECRET` and `ADMIN_PASSWORD`
+  first: they are the account, the sessions and the platform.
+- **Remember app settings are per-environment.** Production's settings do not
+  reach QA — verified the hard way with the old key. Set all three on **both**
+  if you want to try marking on QA.
 - **It runs only when the teacher presses "Assess with AI"**, one answer at a
-  time. Nothing is spent on papers nobody opens. About ₹0.15 an answer.
+  time. Nothing is spent on papers nobody opens.
 - The provider's error body is never echoed to the client: it can contain the
-  request, and the request contains the handwriting.
+  request, and the request contains the handwriting. Only `error.message` is
+  passed through, because without it a wrong deployment name and a spent quota
+  look identical from the outside.
+
+### Credits are the entitlement; the cap is the brake (`/api/aiusage`, table `aiusage`)
+
+Two gates sit in front of the model and they are **not** redundant.
+`ASSESS_DAILY_CAP` is a runaway brake — a loop, a stolen session — and is keyed
+by a **digest** of the caller, which is right for a throttle and means it can
+never be reported on. **Credits are an entitlement someone is accountable for**,
+so the ledger row names the teacher and carries the money. Both run before the
+grading row, the blob downloads and the model call, for the same reason
+`loginGate` runs before scrypt.
+
+- Table `aiusage`: **PK = `YYYY-MM`, RK = the teacher id** (`who.id` — a Google
+  sub or `adm~<user>`; deliberately not a digest). A credit check is one point
+  read; the admin's whole-platform report for a month is **one partition
+  query** with `AIUSAGE_SELECT`, never a scan. A new month is a new partition,
+  so nothing needs sweeping — the same property that makes the daily key cheap.
+- `ASSESS_MONTHLY_CREDITS` (100) is the default grant; one assessment spends
+  one credit. Exhausted returns **429** saying so **and that marking by hand
+  still works** — only the AI draft is ever refused.
+- **The increment is ETag'd with a bounded retry**, where `noteAssess` is a
+  plain read-modify-write. Losing one of two concurrent writes is tolerable for
+  a throttle and not for a ledger somebody is held to. `e2e/helpers.cjs` proves
+  it with a fake table that actually enforces ETags — without that the test
+  would pass vacuously.
+- **Cost is stamped on write** (rule 5), from the token counts in
+  `payload.usage`, which `askAssessor` used to discard — the reason no usage
+  report was possible before. Accumulated as **integer micro-dollars**: a float
+  accumulator drifts once added to a few thousand times, and this one is read as
+  money. In `costMicroUsd` the division looks missing and is not — dollars are
+  `tokens * rate / 1e6` and micro-dollars are that times 1e6, so the two cancel.
+- **A reply with no `usage` is unknown cost, never zero.** The credit is still
+  spent; `costInr` comes back `null` and the screen shows `—`. Showing an
+  unknown as free is the one wrong answer this report could give.
+- Prices are settings, not constants: `AI_USD_PER_M_IN` / `AI_USD_PER_M_OUT`
+  (gpt-4.1-mini's $0.40 / $1.60) and `USD_INR`, so a model or rate change is an
+  app setting rather than a deploy.
+- `GET ?me=1` is a teacher's own balance; `GET ?month=` is the admin report;
+  `POST {action:"grant"}` tops one teacher up, so somebody who runs out
+  mid-term is not waiting on a deploy. The route is **not** named `admin…` —
+  see the rule above about that namespace 404ing silently.
+- Client: `fetchAiUsage` / `fetchMyCredits` / `grantCredits` in `src/auth.ts`;
+  **AI usage** is an admin-only rail item rendering `showAiUsage()` in
+  `src/screens/console.ts`, built on the same `consoleShell` + `.roster-row`
+  shape as `showAdmin()`. The balance also appears beside the marks row after
+  an assessment, so the day it refuses is not the day a teacher first hears
+  about credits.
 
 ## Releasing the answers (`/api/release`, table `releases`)
 
@@ -1378,7 +1455,12 @@ question scrolling to the end — that rule holds everywhere a test is shown.
   student is working in, so "back" still works after a reload.
 - A shared `?test=` link opens with no subject loaded, so `showAttempt` seeds the
   tree with the test being sat and fills the rest of the subject in when it
-  arrives — the tree is never empty under the question.
+  arrives — the tree is never empty under the question. **That late arrival
+  repaints the screen, so it carries the drawer's open state across.** Without
+  it a student who opened the question list while the subject was still in
+  flight had it slam shut in their hand — a repaint they did not ask for taking
+  away the thing they did. It showed up first as a flaky test, which is what a
+  race usually is.
 - **Guests keep the old linear player** (`showQuestion` in `src/screens/test.ts`)
   with its instant verdict and solution: the demo's whole value is that
   feedback, and a guest has no teacher to release anything. `startTest` is the
