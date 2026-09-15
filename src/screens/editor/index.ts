@@ -5,6 +5,7 @@
 import { track } from "../../analytics";
 import {
   adoptTests,
+  discardAttempt,
   fetchLibrary,
   fetchServerTest,
   fetchSubjects,
@@ -12,6 +13,7 @@ import {
   mutateTest,
   newQuestionId,
   setTestStatus,
+  type InProgressHolder,
   type TestProblem,
 } from "../../api";
 import { isAdmin } from "../../auth";
@@ -55,6 +57,11 @@ let treeSubject: string | null = null;
 let unsubscribe: (() => void) | null = null;
 let problems: TestProblem[] = [];
 let publishError = "";
+// Who is part-way through, when that is what refused the publish. Held in
+// state beside the message for the same reason: renderBody() rebuilds the
+// overview, so anything written straight into the DOM is wiped by the next
+// render.
+let publishBlockers: InProgressHolder[] = [];
 
 /** Open the authoring screen on a test, optionally focused on one question. */
 export async function showEditor(testId: string, questionId: string | null, back: () => void) {
@@ -106,6 +113,7 @@ export async function showEditor(testId: string, questionId: string | null, back
   loadTest(loaded);
   problems = [];
   publishError = "";
+  publishBlockers = [];
   selectedIndex = questionId ? loaded.questions.findIndex((q) => q.id === questionId) : -1;
   pane = "question";
 
@@ -596,6 +604,15 @@ function overviewMarkup(test: Test): string {
           ${toolbarMarkup(test)}
         </div>
         <p id="ov-publish-error" class="login-error"${publishError ? "" : " hidden"}>${escapeHtml(publishError)}</p>
+        ${
+          publishBlockers.length
+            ? `<div class="actions"><button id="ov-discard" class="btn btn-ghost">${
+                publishBlockers.every((h) => h.self)
+                  ? "Discard my unfinished preview"
+                  : "Discard the unfinished attempt"
+              }</button></div>`
+            : ""
+        }
         <div class="ed-grid">
           <label class="ed-field">
             <span class="ed-panel-label">Title</span>
@@ -692,6 +709,7 @@ function bindOverview(): void {
     void save().then(() => showBuilder(id, () => void showEditor(id, null, onExit)));
   });
   document.getElementById("ov-publish")?.addEventListener("click", publish);
+  document.getElementById("ov-discard")?.addEventListener("click", () => void discardBlockers());
   document.getElementById("ed-unpublish")?.addEventListener("click", unpublish);
 }
 
@@ -709,14 +727,50 @@ async function publish(): Promise<void> {
     // straight into the DOM would be wiped by the very next render.
     problems = result.problems ?? [];
     publishError = result.message || "Could not publish.";
+    publishBlockers = result.inProgress ?? [];
     renderBody();
     return;
   }
   problems = [];
   publishError = "";
+  publishBlockers = [];
   track("test_published", { test: test.id });
   test.status = "published";
   render();
+}
+
+/**
+ * Throw away whatever unfinished attempt is holding this test, then publish.
+ *
+ * Destructive — the answers in that row go with it — so it names whose paper
+ * it is and asks. Their own preview is the ordinary case and says so plainly;
+ * a student's is the one worth pausing over.
+ */
+async function discardBlockers(): Promise<void> {
+  const test = currentTest();
+  if (!test || !publishBlockers.length) return;
+  const mine = publishBlockers.every((h) => h.self);
+  const who = publishBlockers
+    .map((h) => (h.self ? "your own preview" : h.username))
+    .join(", ");
+  openModal({
+    title: mine ? "Discard your unfinished preview?" : "Discard an unfinished attempt?",
+    description: mine
+      ? "You are part-way through this test yourself. Discarding throws away what you answered in the preview — the test itself is untouched — and lets you publish."
+      : `This throws away what ${who} has answered so far, and cannot be undone. Do it only if the paper has been abandoned; otherwise wait for them to hand it in.`,
+    fields: [],
+    submitLabel: mine ? "Discard and publish" : "Discard it and publish",
+    onSubmit: async () => {
+      for (const holder of publishBlockers) {
+        const res = await discardAttempt(test.id, holder.self ? undefined : holder.username);
+        if (!res.ok) return res.message || "Could not discard that attempt.";
+      }
+      publishBlockers = [];
+      publishError = "";
+      renderBody();
+      await publish();
+    },
+  });
 }
 
 async function unpublish(): Promise<void> {

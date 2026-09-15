@@ -2705,9 +2705,18 @@ handlers.tests = async (context, req) => {
         }
         // Publishing replaces the row a student is reading. Someone part-way
         // through would have the paper changed under them mid-test.
-        if (await hasAttemptInProgress(entity)) {
+        const held = await attemptsInProgress(entity);
+        if (held.length) {
+          // Name them. "A student" with no name and no way to look is what
+          // turned this into a wall rather than a wait.
+          const names = await namesFor(held);
+          const mine = held.some((h) => h.self);
           return json(context, 409, {
-            error: "A student is part-way through this test — publishing would change it under them. Try again once they have finished.",
+            error: mine && held.length === 1
+              ? "You are part-way through this test yourself — publishing would change it under you. Discard your unfinished preview, or hand it in, and publish again."
+              : `${names} part-way through this test — publishing would change the paper under them. Wait until they hand it in, or discard the unfinished attempt.`,
+            // So the client can offer the way out rather than only the wait.
+            inProgress: held.map((h) => ({ username: h.username, self: h.self })),
           });
         }
       }
@@ -3761,27 +3770,70 @@ async function attemptPartitionsFor(entity) {
  * row has a known key — so this is a handful of point reads instead, run a few
  * at a time and abandoned the moment one answers yes.
  */
-async function hasAttemptInProgress(entity) {
+/** "Priya is" / "Priya and Arun are" / "2 students are" — for one sentence. */
+async function namesFor(held) {
+  const users = held.filter((h) => h.username).map((h) => h.username);
+  if (!users.length) return "Somebody is";
+  if (users.length > 3) return `${users.length} students are`;
+  const students = tableClient("students");
+  const names = await inBatches(users, 10, async (username) => {
+    try {
+      const row = await students.getEntity("student", username);
+      return String(row.name || username);
+    } catch {
+      return username;
+    }
+  });
+  if (names.length === 1) return `${names[0]} is`;
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]} are`;
+}
+
+/**
+ * WHO is part-way through this test, not merely whether anyone is.
+ *
+ * Returning a boolean made the refusal a dead end: a teacher was told to wait
+ * for a student to finish without being told which student, and if nobody ever
+ * finished — an abandoned paper, or the teacher's own preview left open while
+ * testing — the test could never be published again. Naming the holder is what
+ * makes the next step obvious, and it costs nothing: the point reads were
+ * already being made.
+ *
+ * Returns `[{ partitionKey, username, self }]`, empty when nothing holds it.
+ */
+async function attemptsInProgress(entity) {
   const attempts = tableClient("attempts");
   await ensureTable(attempts);
   const rowKey = `${PROGRESS_PREFIX}${String(entity.rowKey).slice(0, 80)}`;
+  const owner = String(entity.ownerSub || "");
+  const held = [];
   try {
     const partitions = await attemptPartitionsFor(entity);
     for (let i = 0; i < partitions.length; i += 20) {
+      const slice = partitions.slice(i, i + 20);
       const found = await Promise.all(
-        partitions.slice(i, i + 20).map((partitionKey) =>
+        slice.map((partitionKey) =>
           attempts
             .getEntity(partitionKey, rowKey)
             .then(() => true)
             .catch(() => false)
         )
       );
-      if (found.some(Boolean)) return true;
+      found.forEach((hit, n) => {
+        if (!hit) return;
+        const pk = slice[n];
+        held.push({
+          partitionKey: pk,
+          username: pk.startsWith("stu~") ? pk.slice(4) : "",
+          // The author's own half-finished preview, which is a different thing
+          // from a child mid-paper and is always theirs to throw away.
+          self: pk === owner,
+        });
+      });
     }
   } catch {
     // A failed check must not block publishing.
   }
-  return false;
+  return held;
 }
 
 /**
@@ -3859,6 +3911,56 @@ handlers.attempts = async (context, req) => {
     // A teacher hands back an attempt. The real case is a child whose
     // connection died mid-paper; without this every one of those becomes a
     // message to the person who runs the platform.
+    /**
+     * Throw away an unfinished attempt so the test can be published again.
+     *
+     * Publishing is refused while somebody is part-way through, which is right
+     * — the paper would change under them mid-question. But the only thing that
+     * cleared the row was **that same account handing the paper in**, so an
+     * abandoned paper, or a teacher's own preview left open, locked the test
+     * for good. The refusal said "try again once they have finished" about a
+     * paper nobody was ever going to finish.
+     *
+     * It is a point delete naming its partition, and it is destructive — the
+     * answers in that row go with it — so the client names who it belongs to
+     * and asks first.
+     */
+    if (body.action === "discard") {
+      if (!isAuthor(who)) {
+        return json(context, 403, { error: "Not available for this account" });
+      }
+      const testId = String(body.testId || "").slice(0, 80);
+      if (!testId) return json(context, 400, { error: "A test is needed" });
+      const username = String(body.username || "").trim().toLowerCase();
+
+      // No username means the caller's OWN unfinished preview. A teacher
+      // sitting their own test is the common case here and needs no further
+      // permission than owning the account.
+      let partitionKey = who.id;
+      if (username) {
+        const refusal = await canSeeStudent(who, username);
+        if (refusal) return refuse(context, refusal);
+        partitionKey = `stu~${username}`;
+      }
+
+      // The test has to be one they may manage, or a teacher could wipe a
+      // paper in progress on somebody else's test.
+      const testsTbl = tableClient("tests");
+      await ensureTable(testsTbl);
+      const entity = await readByPartitions(testsTbl, [who.id, PLATFORM_PK], testId, LEGACY_TEST_PK);
+      if (!entity) return json(context, 404, { error: "Test not found" });
+      if (!canManageTest(who, entity)) return json(context, 403, { error: "Not your test" });
+
+      let discarded = false;
+      try {
+        await attempts.deleteEntity(partitionKey, `${PROGRESS_PREFIX}${testId}`);
+        discarded = true;
+      } catch {
+        // Already gone is the outcome the caller wanted.
+      }
+      return json(context, 200, { ok: true, discarded });
+    }
+
     if (body.action === "grant") {
       if (!isAuthor(who)) {
         return json(context, 403, { error: "Not available for this account" });
