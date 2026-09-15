@@ -1486,9 +1486,69 @@ handlers.students = async (context, req) => {
       } catch {
         // Best effort: the student record still goes, below.
       }
+      // The graded answers go too, and so do the photographs they point at.
+      //
+      // Removing a student used to delete the login and the attempts and stop
+      // there, which left every `grading` row and every uploaded photo behind
+      // for good. Nothing could reach them afterwards either: `answerimage`'s
+      // own remove keys on `grading.getEntity(who.id, ...)` — the *caller's*
+      // partition — so not even an admin could delete another student's photo,
+      // and the only route left was the Azure portal.
+      //
+      // Vidai holds photographs of minors' handwriting. Removing the account
+      // has to remove the handwriting, or "remove this student" quietly means
+      // "hide this student".
+      const grading = tableClient("grading");
+      await ensureTable(grading);
+      let removedAnswers = 0;
+      let removedPhotos = 0;
+      try {
+        const rows = [];
+        const iter = grading.listEntities({
+          queryOptions: {
+            // One partition — the student is the PartitionKey — so this is a
+            // bounded read, never a scan. `images` is the only extra property
+            // needed; the rest of GRADING_SELECT is for people, not for this.
+            filter: `PartitionKey eq 'stu~${username.replace(/'/g, "''")}'`,
+            select: ["PartitionKey", "RowKey", "images"],
+          },
+        });
+        for await (const g of iter) rows.push(g);
+
+        // Blobs first: a row deleted before its photo would lose the only
+        // record of where that photo lives.
+        const container = await answerContainer();
+        const photos = rows.flatMap((g) => parseImages(g.images));
+        await inBatches(photos, 20, async (name) => {
+          try {
+            const done = await container.getBlockBlobClient(name).deleteIfExists();
+            if (done && done.succeeded) removedPhotos++;
+          } catch {
+            // One stubborn blob must not strand the other rows.
+          }
+          return null;
+        });
+        await inBatches(rows, 20, async (g) => {
+          try {
+            await grading.deleteEntity(g.partitionKey, g.rowKey);
+            removedAnswers++;
+          } catch {}
+          return null;
+        });
+      } catch {
+        // Best effort, exactly as above: the login must still go. A student
+        // who asked to be removed and is still able to sign in is the worse
+        // failure of the two.
+      }
       await students.deleteEntity("student", username);
       studentCache.drop(username); // revoke this instance's copy at once
-      return json(context, 200, { ok: true, username, removedAttempts });
+      return json(context, 200, {
+        ok: true,
+        username,
+        removedAttempts,
+        removedAnswers,
+        removedPhotos,
+      });
     }
 
     if (action === "reset") {

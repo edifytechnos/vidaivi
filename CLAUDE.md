@@ -981,6 +981,24 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   `Q_CHUNK` guard that silently drops an oversized `answers` blob.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
+- **Removing a student removes the photographs.** `POST /api/students
+  {action:"remove"}` deletes the login, the attempts, **the `grading` rows and
+  the blobs they point at**, and answers with all four counts. It used to stop
+  after the attempts, which left a removed student's handwriting in the
+  container for good — and nothing could reach it afterwards, because
+  `answerimage`'s own remove keys on `grading.getEntity(who.id, …)`, the
+  **caller's** partition, so not even an admin could delete someone else's
+  photo. The only route left was the Azure portal.
+  The walk is one partition (`stu~<username>` is the PartitionKey), projects to
+  `RowKey` + `images`, and goes through `inBatches`. **Blobs are deleted before
+  their rows**: the row is the only record of where the photo lives, so losing
+  it first strands the photo permanently. The whole cascade is best-effort and
+  the login is deleted either way — a student who asked to be removed and can
+  still sign in is the worse of the two failures.
+  `e2e/helpers.cjs` drives this through the real handler against a fake table
+  **and a fake blob container**, and asserts the thing that would be a silent
+  disaster: that a second student's rows and photos are untouched, so the
+  cascade never becomes a table scan.
 
 ## The teacher marks on the student's own screen, with an AI first draft
 
