@@ -2132,11 +2132,26 @@ handlers.reports = async (context, req) => {
       },
     });
     for await (const a of aIter) {
+      const rk = String(a.rowKey || "");
+      // A teacher's granted extra attempt is a marker, not a paper. Left in, it
+      // reads as a test the student handed in and never sat — the same thing
+      // the student's own listing already skips it for.
+      if (rk.startsWith(GRANT_PREFIX)) continue;
+      // A paper still being written is NOT a result, and saying so is the whole
+      // point of this field. The row carries a running auto-graded subtotal and
+      // an empty `completedAt`, so without a status the report showed a student
+      // mid-paper as having scored 4/26 at "1 Jan, 5:30 am" — a mark they had
+      // not been given for a test they had not handed in.
+      const inProgress = rk.startsWith(PROGRESS_PREFIX);
       s.attempts.push({
         testId: a.testId,
         score: a.score,
         total: a.total,
         completedAt: a.completedAt,
+        status: inProgress ? "progress" : "done",
+        // How far in they are, for a report that can then say so.
+        index: typeof a.index === "number" ? a.index : 0,
+        updatedAt: a.updatedAt || "",
       });
       if (s.attempts.length >= 100) break;
     }
@@ -3853,10 +3868,13 @@ handlers.attempts = async (context, req) => {
     if (typeof body.score !== "number" || typeof body.total !== "number") {
       return json(context, 400, { error: "Bad attempt payload" });
     }
+    // `typeof "" === "string"`, so an empty string used to be stored as the
+    // completion time — and an empty date renders as the Unix epoch, which in
+    // IST reads "1 Jan, 5:30 am". A row that was genuinely handed in must carry
+    // a real timestamp, so anything unusable falls back to now.
+    const givenAt = typeof body.completedAt === "string" ? body.completedAt.trim() : "";
     const completedAt =
-      typeof body.completedAt === "string"
-        ? body.completedAt
-        : new Date().toISOString();
+      givenAt && Number.isFinite(Date.parse(givenAt)) ? givenAt : new Date().toISOString();
     // The per-question answers, so review works on a device that never held
     // this attempt in localStorage. Oversized blobs are dropped rather than
     // failing the save — the score is what must never be lost.

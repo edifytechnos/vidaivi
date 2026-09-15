@@ -1614,6 +1614,40 @@ now, at the hand-in.
   `testId eq` clause, **without which the "another test's attempts stay out of
   this count" assertion passed while proving nothing.**
 
+## The report says what a paper is, not just a number
+
+`handlers.reports` pushed **every row in the student's partition** with no
+status. So a paper still being written — which carries a running auto-graded
+subtotal and an empty `completedAt` — was shown to the teacher as a finished
+attempt: *4/26, 15%, 1 Jan 5:30 am*. A mark the student had not been given, for
+a test they had not handed in. The teacher's **granted extra attempt** was in
+there too, reading as a paper they sat and never took.
+
+- The walk skips `GRANT_PREFIX` rows and marks `PROGRESS_PREFIX` ones
+  `status: "progress"`, carrying `index` and `updatedAt` so the report can say
+  how far in they are. The student's own listing has always skipped both; the
+  teacher's report never did.
+- **The subtotal is still sent.** The client decides not to show it as a mark,
+  which is the same division of labour as everywhere else: the server reports
+  what is stored, the screen decides what that means.
+- An in-progress row renders with no score, no result chip, no Release and no
+  Give another attempt — there is nothing to release or re-grant — and one
+  action, *See what they have so far*. The stat tiles count **handed in**, and
+  the average is over finished papers only, or one unfinished paper dragged the
+  class average down with a mark nobody had finished earning.
+
+**"1 Jan, 5:30 am" is the Unix epoch in IST**, and it had two causes, both
+fixed:
+
+- `new Date("")` and `new Date(0)` both render as a real-looking timestamp.
+  **`whenLabel()` in `src/dom.ts` is the one date formatter** — it answers "—"
+  for an absent or unparseable date, and for the epoch itself. Never call
+  `toLocaleString` on a stored date directly.
+- On the server, `typeof body.completedAt === "string"` **accepted the empty
+  string**, so `completedAt: ""` was stored as the moment of hand-in. It now
+  falls back to now unless the value actually parses. `e2e/helpers.cjs` drives
+  the real handler with an empty, a blank and an unparseable value.
+
 ## Releasing the answers (`/api/release`, table `releases`)
 
 Taking a test is **silent**: a signed-in student submits and nothing comes back —

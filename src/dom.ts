@@ -128,6 +128,21 @@ export function brand(): string {
  * every direct write to `app` goes through here rather than setting
  * `innerHTML` and hoping.
  */
+/**
+ * A date a person reads, or "—" when there isn't one.
+ *
+ * `new Date("")` is Invalid Date and `new Date(0)` is the Unix epoch, which in
+ * IST prints as **"1 Jan, 5:30 am"** — a real-looking timestamp for a row that
+ * simply has no date. That is what a teacher's report showed against a paper
+ * still being written. An absent date must read as absent.
+ */
+export function whenLabel(iso: string | undefined | null): string {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (!Number.isFinite(d.getTime()) || d.getTime() <= 0) return "—";
+  return d.toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+}
+
 export function paintPlain(html: string): void {
   app.className = "";
   app.innerHTML = html;

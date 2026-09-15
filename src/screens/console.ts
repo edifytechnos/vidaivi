@@ -30,7 +30,7 @@ import {
 } from "../auth";
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
-import { copyText, escapeHtml, pct, setUrl } from "../dom";
+import { copyText, escapeHtml, pct, setUrl, whenLabel } from "../dom";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
@@ -724,14 +724,20 @@ export function showStudentReport(username: string) {
     }
 
     const attempts = s.attempts ?? [];
-    const attempted = new Set(attempts.map((a) => a.testId));
+    // A paper still being written is not a result. It carries a running
+    // auto-graded subtotal and no completedAt, so counting it gave a teacher a
+    // score for a test nobody had handed in — and dragged the average down with
+    // a mark the student had not finished earning.
+    const done = attempts.filter((a) => a.status !== "progress");
+    const attempted = new Set(done.map((a) => a.testId));
     const best = new Map<string, number>();
-    for (const a of attempts) {
+    for (const a of done) {
       best.set(a.testId, Math.max(best.get(a.testId) ?? 0, pct(a.score, a.total)));
     }
     const avgBest = best.size
       ? Math.round([...best.values()].reduce((x, y) => x + y, 0) / best.size)
       : 0;
+    const inFlight = attempts.length - done.length;
 
     document.querySelector(".shell-main .page")!.innerHTML = `
       <div class="card">
@@ -739,22 +745,39 @@ export function showStudentReport(username: string) {
         <p class="hint">${escapeHtml([s.username, s.grade, s.school].filter(Boolean).join(" · "))}${s.parentPhone ? ` · Parent: ${escapeHtml(s.parentPhone)}` : ""}</p>
         <div class="report-stats">
           <div class="report-stat"><div class="report-stat-num">${attempted.size}/${TESTS.filter((t) => t.access === "login").length || TESTS.length}</div><div class="report-stat-label">tests attempted</div></div>
-          <div class="report-stat"><div class="report-stat-num">${attempts.length}</div><div class="report-stat-label">total attempts</div></div>
+          <div class="report-stat"><div class="report-stat-num">${done.length}</div><div class="report-stat-label">handed in</div></div>
           <div class="report-stat"><div class="report-stat-num">${avgBest}%</div><div class="report-stat-label">avg best score</div></div>
         </div>
       </div>
       <div class="card roster-card">
         <div class="solution-title">Attempts (newest first)</div>
+        ${inFlight ? `<p class="hint">${inFlight} paper${inFlight === 1 ? " is" : "s are"} still being written — no marks until ${inFlight === 1 ? "it is" : "they are"} handed in.</p>` : ""}
         ${
           attempts.length
             ? `<div class="table-wrap"><table class="data-table">
-                <thead><tr><th>Test</th><th>Completed</th><th>Score</th><th>Result</th><th>Answers</th><th></th></tr></thead>
+                <thead><tr><th>Test</th><th>When</th><th>Score</th><th>Status</th><th>Answers</th><th></th></tr></thead>
                 <tbody>${attempts
                   .map((a) => {
                     const p = pct(a.score, a.total);
+                    // Two different rows. A paper in progress has no mark, no
+                    // result and nothing to release — it has a place in it.
+                    if (a.status === "progress") {
+                      const seen = whenLabel(a.updatedAt);
+                      return `<tr class="row-inflight">
+                        <td class="cell-strong">${escapeHtml(testTitle(a.testId))}</td>
+                        <td>${escapeHtml(seen)}<div class="hint">last worked on</div></td>
+                        <td class="cell-mono">—</td>
+                        <td><span class="status-chip status-new">In progress</span></td>
+                        <td><span class="hint">Not handed in</span></td>
+                        <td class="cell-actions">
+                          <button class="btn-link rep-paper" data-test="${escapeHtml(a.testId)}"
+                                  data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">See what they have so far</button>
+                        </td>
+                      </tr>`;
+                    }
                     return `<tr>
                       <td class="cell-strong">${escapeHtml(testTitle(a.testId))}</td>
-                      <td>${new Date(a.completedAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</td>
+                      <td>${escapeHtml(whenLabel(a.completedAt))}</td>
                       <td class="cell-mono">${a.score}/${a.total}</td>
                       <td><span class="status-chip ${p >= 50 ? "status-done" : "status-wrong"}">${p}%</span></td>
                       <td class="rel-cell" data-test="${escapeHtml(a.testId)}"><span class="status-chip status-new">…</span></td>

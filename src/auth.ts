@@ -50,6 +50,8 @@ export interface ServerAttempt {
   status?: "progress" | "done";
   /** Progress rows only: the next unanswered question. */
   index?: number;
+  /** Progress rows only: when they last worked on it. */
+  updatedAt?: string;
 }
 
 export interface ServerProgress {
