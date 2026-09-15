@@ -131,7 +131,10 @@ export function showMyTests() {
   async function refresh() {
     // Seeding the sample drafts lives on the subjects screen now — that is the
     // one screen every signed-in teacher passes through.
-    const list = await fetchTestList(currentSubject() ?? undefined);
+    // An admin is shown the library's masters in this table (see the filter
+    // below), so they are the one caller that has to ask for them. A teacher
+    // filters them out, which is why they are no longer sent by default.
+    const list = await fetchTestList(currentSubject() ?? undefined, undefined, isAdmin());
     const tests = list?.tests ?? null;
     if (!tests) {
       listEl.innerHTML = `<p class="login-error">Could not load tests — refresh to retry.</p>`;

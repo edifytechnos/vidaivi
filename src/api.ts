@@ -50,15 +50,23 @@ export async function fetchServerTests(): Promise<ServerTestMeta[] | null> {
 
 /** The list plus whether this teacher still needs their starter samples. */
 /** `student` asks for a linked child's view — the server checks the link. */
+/**
+ * `withPlatform` asks for the library's masters as well. They are left out by
+ * default: every caller of this list bar one discards them (`!t.platform`), and
+ * that was 125 rows and 65 KB on every render. A shelf-scoped `subjectId` gets
+ * them without asking, since a shelf holds nothing else.
+ */
 export async function fetchTestList(
   subjectId?: string,
-  student?: string
+  student?: string,
+  withPlatform?: boolean
 ): Promise<{ tests: ServerTestMeta[]; needsSamples: boolean } | null> {
   if (!isLoggedIn()) return null;
   try {
     const params = new URLSearchParams();
     if (subjectId) params.set("subjectId", subjectId);
     if (student) params.set("student", student);
+    if (withPlatform) params.set("platform", "1");
     const q = params.toString() ? `?${params}` : "";
     const res = await apiFetch(`/api/tests${q}`, { headers: authHeader() });
     if (!res.ok) return null;
