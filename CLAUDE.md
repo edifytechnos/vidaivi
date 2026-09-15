@@ -727,6 +727,40 @@ any row that named that `subjectId`, so it swept in three rows that reach nobody
 through the shelf; the new walk counts the caller's own partitions and the
 library, which is the question the card is asking. Stable at 14 across repeats.
 
+### The listing walks the library only when the caller is looking at it
+
+The measurement above exposed it: `GET /api/tests` handed every teacher all 125
+published masters — 125 rows and 65 KB — and **every client asking for that list
+unscoped already threw them away** (`!t.platform` in the editor,
+`!t.platform || isAdmin()` in My tests). The bytes were sent in order to be
+discarded.
+
+**This is deliberately not a change to `visible()`.** That predicate also gates
+`?id=`, which is how Browse lets a teacher read a master *before* taking a copy
+of it — narrowing it would 403 the one screen the library exists for. The fix is
+in **which partitions the listing walks**, not in what the caller is permitted:
+not reading a row is strictly better than reading it and filtering it away.
+
+The library partition is walked in exactly three cases:
+
+- `?library=1` — its own code path, untouched.
+- **A shelf-scoped `?subjectId=`.** One point read on the subject decides it: a
+  shelf's tests live in `PLATFORM_PK`, an ordinary subject's in its owner's.
+  That read is the whole reason a teacher opening **their own** subject — which
+  is what the editor does on every open — no longer walks every master.
+- **`?platform=1`**, the explicit ask. My tests sends it when the caller is an
+  admin, because that table does show an admin the masters. A teacher's My tests
+  filters them out, so a teacher never asks and never pays.
+
+**The caller's own partition is walked either way**, so `ownedCount` — and the
+`needsSamples` that hangs off it — still counts what it always counted.
+
+**One belt to that braces:** a master still sitting in the **legacy** partition
+is skipped explicitly in the listing body. The partition list cannot keep it
+out, because the legacy walk reads whatever is there, so without it the response
+would carry masters or not depending on how far the migration had got. A
+"sometimes" is worse than either answer.
+
 ### The test that would otherwise pass vacuously
 
 A listing returns the right rows whether it names a partition or scans the whole
@@ -775,11 +809,8 @@ Ranked, with the next architectural step first:
   lives in its owner's partition* below. What is left of it is one line of
   clean-up: `LEGACY_TEST_PK` / `LEGACY_SUBJECT_PK` and every path that reads
   them, once both tables have drained.
-- **Stop sending every teacher the whole library on every render.** The plain
-  `GET /api/tests` hands a teacher all 125 published masters — 65 KB — which the
-  client then filters out (`!t.platform`). It is the largest single thing left on
-  the hot path, and the measurement above is what exposed it. `?library=1`,
-  Browse and a shelf-scoped `?subjectId=` are the only callers that want them.
+- ~~Stop sending every teacher the whole library on every render~~ — **done**;
+  see *The listing walks the library only when the caller is looking at it*.
 - **Bake published tests to immutable blobs on publish.** Editing is already
   draft-only, so a published paper never changes — which makes it CDN-cacheable
   forever at `tests/<id>/<version>.json`. Forty students opening the same test

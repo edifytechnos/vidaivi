@@ -1083,6 +1083,93 @@ async function partitionChecks() {
     `the subjects behind them are point reads, never a listing (asked: ${asked.subjects.join(", ")})`
   );
 
+  // --- the unscoped listing does not walk the library at all --------------
+  //
+  // Every client that asks for this list unscoped filters the masters out, so
+  // sending them was 125 rows and 65 KB per render to discard. Asserting the
+  // PARTITION is the point: filtering them out of the response would look
+  // identical from the outside while still reading every one of them.
+  resetAsked();
+  const plain = await call("GET");
+  check(
+    !asked.tests.includes(t.PLATFORM_PK),
+    `an unscoped staff listing never walks the library (asked: ${asked.tests.join(", ")})`
+  );
+  check(
+    !(plain.body.tests || []).some((x) => x.platform),
+    "and no master reaches the response"
+  );
+  check(
+    (plain.body.tests || []).some((x) => x.id === mineId),
+    "while the caller's own tests are all still there"
+  );
+  check(
+    plain.body.needsSamples === false,
+    `ownedCount still sees the caller's own work, so needsSamples is unchanged (${plain.body.needsSamples})`
+  );
+
+  // A master still sitting in the legacy partition must not slip through
+  // either: the partition list cannot keep it out, because the legacy walk
+  // reads whatever is there. Otherwise the answer would depend on how far the
+  // migration had got.
+  seed("tests", testRow({
+    partitionKey: "test", rowKey: "legacy-master-1", ownerSub: ME,
+    platform: true, status: "published",
+  }));
+  resetAsked();
+  const plain2 = await call("GET");
+  check(
+    !(plain2.body.tests || []).some((x) => x.id === "legacy-master-1"),
+    "nor does a master the drain has not reached yet"
+  );
+
+  // --- but an explicit ask still gets them --------------------------------
+  resetAsked();
+  const withPlat = await call("GET", { query: { platform: "1" } });
+  check(
+    asked.tests.includes(t.PLATFORM_PK),
+    `platform=1 walks the library (asked: ${asked.tests.join(", ")})`
+  );
+  check(
+    (withPlat.body.tests || []).some((x) => x.id === masterId),
+    "and the masters come back"
+  );
+
+  // --- a shelf-scoped listing gets them without asking --------------------
+  seed("subjects", {
+    partitionKey: t.PLATFORM_PK, rowKey: "shelf-2", board: "CBSE", klass: "12", subject: "Maths",
+    title: "A shelf", ownerSub: ME, platform: true, collaborators: "[]", createdAt: "2026-01-01",
+  });
+  seed("tests", testRow({
+    partitionKey: t.PLATFORM_PK, rowKey: "shelf-master-1", ownerSub: ME,
+    platform: true, status: "published", subjectId: "shelf-2",
+  }));
+  resetAsked();
+  const shelfList = await call("GET", { query: { subjectId: "shelf-2" } });
+  check(
+    asked.tests.includes(t.PLATFORM_PK),
+    `a shelf-scoped listing walks the library (asked: ${asked.tests.join(", ")})`
+  );
+  check(
+    (shelfList.body.tests || []).some((x) => x.id === "shelf-master-1"),
+    "so an admin opening a shelf still sees its masters"
+  );
+
+  // --- a teacher's own subject does not ------------------------------------
+  seed("tests", testRow({
+    partitionKey: ME, rowKey: "insub-1", ownerSub: ME, status: "draft", subjectId: "sub-a",
+  }));
+  resetAsked();
+  const ownList = await call("GET", { query: { subjectId: "sub-a" } });
+  check(
+    !asked.tests.includes(t.PLATFORM_PK),
+    `their own subject does not — the editor's every open (asked: ${asked.tests.join(", ")})`
+  );
+  check(
+    (ownList.body.tests || []).some((x) => x.id === "insub-1"),
+    "and still carries that subject's tests"
+  );
+
   // --- a teacher's subject list ------------------------------------------
   seed("subjects", {
     partitionKey: OTHER, rowKey: "sub-theirs", board: "CBSE", klass: "10", subject: "Maths",

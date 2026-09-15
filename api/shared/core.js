@@ -2581,6 +2581,48 @@ handlers.tests = async (context, req) => {
   }
 
   const wantedSubject = String((req.query && req.query.subjectId) || "").trim();
+
+  // Whether this listing walks the library at all.
+  //
+  // A master is the library's, not the caller's work, and every client asking
+  // for this listing unscoped already throws them away: the editor filters
+  // `!t.platform`, My tests filters `!t.platform || isAdmin()`. Sending them
+  // cost every teacher 125 rows and 65 KB on every render, in order to discard
+  // them — measured on production after the re-partition, which is what
+  // exposed it.
+  //
+  // This is deliberately **not** a change to visible(). That predicate also
+  // gates `?id=`, which is how Browse lets a teacher read a master before
+  // taking a copy of it, so narrowing it would 403 the one screen the library
+  // exists for. Not reading a row is strictly better than reading it and
+  // filtering it away, so the fix belongs here and visible() is untouched.
+  //
+  // The library is still walked when the caller is actually looking at it.
+  let wantsMasters = String((req.query && req.query.platform) || "") === "1";
+  if (!wantsMasters && wantedSubject && isStaff && !asChild) {
+    // One point read decides it: a shelf's tests live in the library's
+    // partition, an ordinary subject's in its owner's. Without this a teacher
+    // opening their OWN subject — which is what the editor always does — still
+    // walked every master to throw it away.
+    const subjects = tableClient("subjects");
+    await ensureTable(subjects);
+    const sub = await readByPartitions(
+      subjects,
+      [who.id, PLATFORM_PK],
+      wantedSubject,
+      LEGACY_SUBJECT_PK
+    );
+    wantsMasters = !!(sub && sub.platform);
+  }
+  // The caller's own partition is walked either way, so `ownedCount` — and the
+  // `needsSamples` that hangs off it — still counts what it always counted.
+  const listPartitions =
+    isStaff && !asChild
+      ? wantsMasters
+        ? [who.id, PLATFORM_PK]
+        : [who.id]
+      : readPartitions;
+
   const list = [];
   let ownedCount = 0;
   const budget = { left: COUNT_BACKFILL_BUDGET };
@@ -2588,13 +2630,19 @@ handlers.tests = async (context, req) => {
   await walkPartitions(
     tests,
     {
-      partitions: readPartitions,
+      partitions: listPartitions,
       select: TEST_META_SELECT,
       legacyPk: LEGACY_TEST_PK,
       budget: drain,
     },
     async (row) => {
       if (isStaff && row.ownerSub === who.id) ownedCount++;
+      // The partition list above already keeps the library out, but the legacy
+      // partition is walked whatever it holds, so an undrained master could
+      // still arrive here and visible() would admit it. Without this the
+      // response would carry masters or not depending on how far the migration
+      // had got — a "sometimes" is worse than either answer.
+      if (row.platform && !wantsMasters) return;
       if (wantedSubject && (row.subjectId || "") !== wantedSubject) return;
       if (!visible(row)) return;
       const e = await backfillCounts(tests, row, budget);

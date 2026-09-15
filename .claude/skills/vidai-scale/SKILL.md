@@ -172,6 +172,12 @@ because of other teachers' rows: `visible()` gives every teacher all 125
 published masters, which is 65 KB of the 65 KB. A partition key fixes what
 *grows*; it does nothing about what is already big. Measure which one you have.
 
+**Not reading a row beats reading it and filtering it away.** The plain listing
+used to hand every teacher all 125 masters for the client to discard. The fix
+was the partition list, NOT `visible()` — that predicate also gates `?id=`, and
+narrowing it would 403 Browse. When a listing is sending something nobody wants,
+look at what it walks before you look at what it permits.
+
 Still outstanding, in order: bake published tests to immutable blobs on publish;
 then delete `LEGACY_TEST_PK` / `LEGACY_SUBJECT_PK` and the paths that read them,
 once both tables have drained.
