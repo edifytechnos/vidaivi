@@ -4392,6 +4392,13 @@ handlers.accounts = async (context, req) => {
 
   if (req.method === "GET") {
     if (who.role === "admin" && String((req.query && req.query.all) || "")) {
+      // Run the grandfathering here too, and not only from a gate.
+      //
+      // `entitlements` returns early for an admin, so without this the one
+      // person who needs to CHECK that existing accounts were protected is the
+      // one person who cannot trigger it. Opening this screen is how J
+      // confirms the pilot class is safe before any limit starts biting.
+      await exemptLegacyAccounts(table);
       const rows = [];
       const iter = table.listEntities({
         queryOptions: { filter: `PartitionKey eq '${ACCOUNT_PK}'`, select: ACCOUNT_SELECT },
