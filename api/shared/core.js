@@ -421,12 +421,21 @@ async function accountRow(table, sub) {
  *
  * Guarded by a marker row, so it is once for the platform rather than once per
  * cold start, and bounded so a large profiles table cannot stall a request.
+ *
+ * The in-process flag matters as much as the marker row: without it every
+ * gated request would pay a point read forever, for work that happens once
+ * (rule 4 — anything derived from a stable input is memoised). A fresh
+ * instance pays exactly one read and then never again.
  */
+let legacyExemptDone = false;
+
 async function exemptLegacyAccounts(table) {
+  if (legacyExemptDone) return;
   const state = tableClient("authstate");
   await ensureTable(state);
   try {
     await state.getEntity("migration", "exempt-legacy");
+    legacyExemptDone = true;
     return; // already done
   } catch {}
   try {
@@ -463,6 +472,7 @@ async function exemptLegacyAccounts(table) {
       { partitionKey: "migration", rowKey: "exempt-legacy", at: new Date().toISOString(), count: subs.length },
       "Merge"
     );
+    legacyExemptDone = true;
   } catch {
     // Best effort. A failed migration must not take the API down with it —
     // it simply runs again on the next request.
