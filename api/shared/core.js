@@ -3497,11 +3497,57 @@ function normaliseCode(input) {
 
 /** The children this account may see. Every parent read joins through these,
  *  never through a student id the client supplied. */
+/**
+ * Every child this account can see, from BOTH ways of having one.
+ *
+ * This read only ever walked `parentlinks`, which is the invite-code route. A
+ * child the parent **created themselves** lands in `students` with `teacherSub`
+ * set to their own sub and no link row at all — so it was written, it was
+ * charged against their seats, and it appeared nowhere. "I added a child and
+ * nothing happened" was exactly true.
+ *
+ * `own` is the same query the teacher's roster makes, because it is the same
+ * question: who did I issue a login to. `linked` is the invite route, unchanged.
+ * A child could in principle be both; `seen` keeps one row per username.
+ */
 async function linkedChildren(who) {
-  const links = tableClient("parentlinks");
-  await ensureTable(links);
   const out = [];
+  const seen = new Set();
+
+  // Children this account issued a login to. The `students` table still has a
+  // constant PartitionKey, so this walks every student on the platform — it is
+  // the existing roster query, not a new scan, and it moves when that table is
+  // re-partitioned along with `tests` and `subjects`.
   try {
+    const students = tableClient("students");
+    await ensureTable(students);
+    const mine = students.listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq 'student' and teacherSub eq '${who.id.replace(/'/g, "''")}'`,
+        // createdAt is what dates the row (rule 1: add it when a listing
+        // starts needing it, rather than dropping the projection).
+        select: ROSTER_SELECT.concat("createdAt"),
+      },
+    });
+    for await (const e of mine) {
+      if (seen.has(e.rowKey)) continue;
+      seen.add(e.rowKey);
+      out.push({
+        username: e.rowKey,
+        name: e.name || e.rowKey,
+        teacherSub: who.id,
+        linkedAt: e.createdAt || "",
+        // Which of the two they are. A child you issued is yours to mark and
+        // to reset; one you were linked to belongs to their teacher.
+        own: true,
+      });
+      if (out.length >= 20) break;
+    }
+  } catch {}
+
+  try {
+    const links = tableClient("parentlinks");
+    await ensureTable(links);
     const iter = links.listEntities({
       queryOptions: {
         filter: `PartitionKey eq 'parent~${who.id.replace(/'/g, "''")}'`,
@@ -3509,15 +3555,19 @@ async function linkedChildren(who) {
       },
     });
     for await (const e of iter) {
+      if (seen.has(e.rowKey)) continue;
+      seen.add(e.rowKey);
       out.push({
         username: e.rowKey,
         name: e.studentName || e.rowKey,
         teacherSub: e.teacherSub || "",
         linkedAt: e.linkedAt || "",
+        own: false,
       });
       if (out.length >= 20) break;
     }
   } catch {}
+
   out.sort((a, b) => a.name.localeCompare(b.name));
   return out;
 }

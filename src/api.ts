@@ -103,6 +103,13 @@ export interface Child {
   name: string;
   teacherSub: string;
   linkedAt: string;
+  /**
+   * True when this account issued the login itself, false when it was linked
+   * with a teacher's invite code. The two are genuinely different: your own
+   * child is yours to mark and to reset a password for, a linked one belongs
+   * to their teacher and you only watch.
+   */
+  own?: boolean;
 }
 
 /** The children linked to the signed-in parent. */

@@ -1402,10 +1402,15 @@ async function roleChoiceChecks() {
       const filter = opts && opts.queryOptions && opts.queryOptions.filter;
       const want = pkOf(filter);
       if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      // Property clauses are honoured, not ignored. A fake that hands back the
+      // whole partition makes "somebody else's child is not in this list" pass
+      // while proving nothing — the same vacuity the `testId eq` clause had.
+      const wantTeacher = /teacherSub eq '((?:[^']|'')*)'/.exec(filter);
       const hits = [];
       for (const [k, row] of rows) {
         if (!k.startsWith(`${name}/`)) continue;
         if (row.partitionKey !== want) continue;
+        if (wantTeacher && String(row.teacherSub || "") !== wantTeacher[1].replace(/''/g, "'")) continue;
         hits.push({ ...row });
       }
       return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
@@ -1516,6 +1521,42 @@ async function roleChoiceChecks() {
   check(child.status === 201, `a parent can add their own child (${child.status})`);
   check(!!JSON.stringify(child.body).match(/"password"/), `and is shown the password once (${JSON.stringify(child.body).slice(0, 120)})`);
 
+  // --- a child the parent CREATED appears in their own children list ------
+  // This read only ever walked `parentlinks`, the invite-code route. A child
+  // the parent issued themselves lands in `students` with teacherSub set to
+  // their sub and no link row at all — so it was written, it counted against
+  // their seats, and it appeared nowhere. "I added a child and nothing
+  // happened" was exactly true.
+  {
+    const c = { res: null };
+    await t.handlers.parentlink(c, {
+      method: "GET",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${pcookie}` },
+      query: {},
+    });
+    const kids = (c.res.body.children || []);
+    check(c.res.status === 200, `a parent reads their children (${c.res.status})`);
+    check(kids.length === 1, `the child they just created is in the list (${kids.length})`);
+    check(kids[0] && kids[0].name === "My Child", `and is named (${kids[0] && kids[0].name})`);
+    check(kids[0] && kids[0].own === true, "and is marked as their own, not a linked one");
+  }
+
+  // --- somebody else's child is not in it ---------------------------------
+  rows.set(key("students", "student", "someone-elses"), {
+    partitionKey: "student", rowKey: "someone-elses", name: "Not Mine",
+    teacherSub: "a-different-account", tokenEpoch: 0,
+  });
+  {
+    const c = { res: null };
+    await t.handlers.parentlink(c, {
+      method: "GET",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${pcookie}` },
+      query: {},
+    });
+    const names = (c.res.body.children || []).map((k) => k.username);
+    check(!names.includes("someone-elses"), `and another account's child is not (${names.join(", ")})`);
+  }
+
   // --- a student still reaches none of it ---------------------------------
   const scookie = t.signSession("vst", "a-student", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
   rows.set(key("students", "student", "a-student"), {
@@ -1569,10 +1610,15 @@ async function reportStatusChecks() {
       const filter = opts && opts.queryOptions && opts.queryOptions.filter;
       const want = pkOf(filter);
       if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      // Property clauses are honoured, not ignored. A fake that hands back the
+      // whole partition makes "somebody else's child is not in this list" pass
+      // while proving nothing — the same vacuity the `testId eq` clause had.
+      const wantTeacher = /teacherSub eq '((?:[^']|'')*)'/.exec(filter);
       const hits = [];
       for (const [k, row] of rows) {
         if (!k.startsWith(`${name}/`)) continue;
         if (row.partitionKey !== want) continue;
+        if (wantTeacher && String(row.teacherSub || "") !== wantTeacher[1].replace(/''/g, "'")) continue;
         hits.push({ ...row });
       }
       return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
