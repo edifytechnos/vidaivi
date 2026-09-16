@@ -1039,6 +1039,7 @@ the function did not exist.
 - `screens/review.ts` — read-only review, one question per page.
 - `screens/marking.ts` — the marking queue (a list) and `openStudentPaper`, the one way into marking a paper.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
+- `photoviewer.ts` — the full-screen zoomable viewer a photo strip opens into.
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
 its listeners; cross-screen imports are function-only (safe with ES-module cycles).
@@ -1055,7 +1056,9 @@ header used to let one tab hold three identities at once, so the suite has
 `asStudent` to run a second identity from Node. `node e2e/regression.cjs` runs
 the Playwright suite (guest flows always;
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
-hardcode credentials). `node e2e/helpers.cjs` needs no browser and no network: it
+hardcode credentials). `node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
+the full-screen photo viewer in a real browser against two fake pages — no
+network, no session, no row written. `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
 in-process cache, `inBatches`) **and drives the second factor through the real
 handlers against a fake Table Storage** — enabling, replay refusal, recovery
@@ -1230,6 +1233,45 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   **and a fake blob container**, and asserts the thing that would be a silent
   disaster: that a second student's rows and photos are untouched, so the
   cascade never becomes a table scan.
+
+### A photograph has to be readable, so it opens full screen
+
+The strip renders a 132–160px thumbnail. That is enough to see a page **was**
+handed in and nowhere near enough to **read** it — a teacher awarding marks has
+to make out a minus sign in pencil. Tapping one now opens
+`openPhotoViewer` (`src/photoviewer.ts`): full-bleed, black, with zoom, pan,
+rotate and the pages of that one answer.
+
+- **One viewer, three roles, no role logic in it.** A photo is readable by
+  whoever could already see the strip, so the viewer asks nothing about who is
+  looking. `bindPhotoViewer(root)` is a delegated click handler bound in
+  `review.ts` (the teacher marking, the parent watching, the student reading
+  their released paper) and in `mountUploader` (the student checking their own
+  photo before handing it in). Adding a fourth screen is one call.
+- **No new bytes, and no new endpoint.** Photos are already capped at 1600px on
+  upload, so the thumbnail and the full-size image are the **same file**: the
+  viewer reuses the URL the strip already resolved and the browser serves it
+  from cache. The one exception is a **stale SAS** — 15 minutes outlives most
+  sittings and not all of them — which is re-signed on the image's own `error`
+  event, once per blob. A viewer that re-signed on open would spend a request
+  every time on a URL that was almost always still good.
+- **It is not the shared modal.** `src/modal.ts` is a centred card of form
+  fields; this is a black surface whose whole job is that the image is as large
+  as the screen allows. What it borrows is the modal's manners: Escape closes,
+  focus is trapped and restored to the thumbnail, and the body is locked behind
+  `modal-open`.
+- **The thumbnail is a `<button>`** (`.shot-open`), not a bare image, so it is
+  reachable by keyboard and announced as an action — and it carries a corner
+  badge, because on a phone there is no cursor to turn into a magnifier and
+  "the photo is there and nobody can tell it opens" was the original complaint.
+- Gestures: pinch, wheel, double-tap/double-click, drag to pan when zoomed.
+  Keyboard: `+` `-` `0`, `←` `→`, `r` to rotate, Escape. **Rotate earns its
+  place** — a page photographed sideways is the common case, not an edge one.
+- **A page change resets the zoom.** Carrying it over opens the next page
+  magnified somewhere in the middle of it, at a spot nobody chose.
+- `node e2e/photoviewer.cjs` drives all of it in a real browser at 390px and at
+  1280px. It needs no network and no session — which is only possible *because*
+  the viewer has no role logic, and is the test that says so.
 
 ## The teacher marks on the student's own screen, with an AI first draft
 
