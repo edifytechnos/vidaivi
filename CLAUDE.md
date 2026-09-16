@@ -1056,7 +1056,10 @@ header used to let one tab hold three identities at once, so the suite has
 `asStudent` to run a second identity from Node. `node e2e/regression.cjs` runs
 the Playwright suite (guest flows always;
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
-hardcode credentials). `node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
+hardcode credentials). `node e2e/paperlayout.cjs` builds the paper's own shell markup against the real
+stylesheet and drives it at 390px: what the fixed bottom bar covers, and whether
+the page holds still behind the open question list.
+`node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
 the full-screen photo viewer in a real browser against two fake pages — no
 network, no session, no row written. `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
@@ -1400,6 +1403,26 @@ and there is no free-tier-trains-on-your-data question to keep an eye on.
   request, and the request contains the handwriting. Only `error.message` is
   passed through, because without it a wrong deployment name and a spent quota
   look identical from the outside.
+
+#### A typed short answer is assessed too, and is the cheaper call
+
+The AI draft was offered only where there were **photographs** — so the very
+answers the short-answer grader sends to a teacher, the ones it had no rule
+for, were the ones it could not help with. It now assesses those as well:
+
+- `aiPrompt(question, solution, maxMarks, typed)` tells the two apart in its
+  first two lines and shares every marking instruction below them. A CBSE
+  examiner reading "root 3 over 2" is doing what they do with a page.
+- **The blobs are skipped entirely** when there is text, rather than downloaded
+  and found empty. It is by far the cheaper of the two calls: image tokens are
+  almost the whole bill, and there are none.
+- `bindMarking` returned early on anything but `long`, so the marks row
+  rendered under a short answer and **none of its buttons did anything**. It
+  takes `numeric` now too.
+- `e2e/helpers.cjs` drives it through the real handler with a stubbed model and
+  asserts the request carries **one text part and no image parts**, that the
+  prompt holds what the student typed, and that the proposal is still only a
+  proposal.
 
 ### Credits are the entitlement; the cap is the brake (`/api/aiusage`, table `aiusage`)
 
@@ -2146,6 +2169,47 @@ chapter test is for.
 - The review's labels say **"Priya's answer"** rather than "Your answer" when
   someone else's paper is open (`owner` in `review.ts`, set from
   `opts.studentName`).
+
+### A saved mark reaches the question list
+
+The tree is drawn from the **attempt**; the marks live in the **grading**
+rows. Those are two stores on purpose — a teacher never writes to a student's
+row — so saving a mark changed nothing the teacher could see until the paper
+was reopened: the row stayed `…` at `—/2` and the total did not move. On a
+phone, where the list is a drawer you have to open to look at, that is the
+whole feedback.
+
+`applyMark` in `bindMarking` folds the saved mark into the attempt — the same
+merge `hydrateMarks` makes on load — and **recomputes** `attempt.score` from
+the answers rather than adding the difference, so re-marking the same answer
+cannot double it.
+
+### On a phone the bar covers nothing, and the drawer holds the page
+
+Two things the shell got wrong on a real phone, both on the result/marking
+paper and both proven by `node e2e/paperlayout.cjs` (which builds the shell's
+own markup against the real stylesheet — no session, no network, no row
+written, and it fails six ways against the code before the fix):
+
+- **The clearance belongs to whatever ENDS the page.** It was on `.ed-center`,
+  but the two columns stack below 900px and the **explanation** is last: so
+  108px of padding opened a hole in the middle of the scroll *and* left the
+  last lines of the worked solution under the fixed Previous/Next bar. It is
+  `.shell-scroll .ed-explain` now, with `:not(:has(.ed-explain))` keeping it on
+  `.ed-center` for the screens that have no explanation column.
+- **An open drawer holds the page still.** A question list *shorter* than the
+  sheet is not a scroller, so the drag went straight to the document and the
+  whole screen moved under it. `overscroll-behavior: contain` stops the chain
+  once the list *is* scrollable; the page itself is held by
+  `body.drawer-open`, which takes the body out of flow at its current offset
+  (`holdPage` / `releasePage` in `src/shell.ts`). **`overflow: hidden` alone is
+  not enough on iOS Safari**, and the negative `top` is what stops the screen
+  jumping to the top as the drawer opens.
+  `mount()` calls `dropHold()` on every paint, because Back sits in the crumb
+  row and stays tappable beside the open drawer — leaving on it would strand
+  the *next* screen with a fixed body. `bindTreeDrawer` re-takes the hold if a
+  repaint carried `tree-open` across, which the student workspace does when the
+  subject arrives late.
 
 ## The score is marks, and says so (the guest's screen)
 

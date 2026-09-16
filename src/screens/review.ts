@@ -193,9 +193,32 @@ async function bindRelease(testId: string, username: string): Promise<void> {
  * by which the model's number reaches a student without a teacher pressing
  * Save.
  */
-function bindMarking(q: Question, rerender: () => void): void {
+function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => void): void {
   const row = rows.get(q.id);
-  if (!row || q.type !== "long") return;
+  // A SHORT answer the grader could not settle is marked here too, and for a
+  // release it was not: this returned early on anything but `long`, so the
+  // panel rendered and none of its buttons did anything.
+  if (!row || (q.type !== "long" && q.type !== "numeric")) return;
+
+  /**
+   * Fold a saved mark into the attempt the tree is drawn from.
+   *
+   * The grading rows and the attempt are two stores on purpose — a teacher
+   * never writes to a student's row — so saving a mark changed nothing the
+   * teacher could see until the paper was reopened. This is the same merge
+   * `hydrateMarks` makes on load, applied to the one answer just marked.
+   */
+  const applyMark = (awarded: number): void => {
+    const a = attempt.answers[q.id];
+    if (!a) return;
+    a.earned = awarded;
+    a.correct = awarded > 0;
+    a.review = "marked";
+    a.comment = row.comment;
+    // Recomputed, never accumulated: re-marking the same answer must not
+    // add the difference to the total twice.
+    attempt.score = test.questions.reduce((n, qq) => n + (attempt.answers[qq.id]?.earned ?? 0), 0);
+  };
 
   const buttons = document.getElementById("mk-buttons");
   const save = document.getElementById("mk-save") as HTMLButtonElement | null;
@@ -245,13 +268,19 @@ function bindMarking(q: Question, rerender: () => void): void {
     row.status = "marked";
     row.awarded = chosen;
     row.comment = comment?.value.trim() || "";
+    // The tree reads the ATTEMPT, not the grading rows, so a mark saved to the
+    // server changed nothing a teacher could see until the next open: the row
+    // stayed "…" at —/2 and the total did not move. On a phone, where the list
+    // is a drawer you have to open to check, that is the whole feedback. Fold
+    // it in here — the same merge `hydrateMarks` makes on load.
+    applyMark(chosen);
     rerender();
   });
 
   const assess = document.getElementById("mk-assess") as HTMLButtonElement | null;
   assess?.addEventListener("click", async () => {
     assess.disabled = true;
-    assess.textContent = "Reading the working…";
+    assess.textContent = row.images.length ? "Reading the working…" : "Reading the answer…";
     const result = await assessAnswer({
       username: row.username,
       testId: row.testId,
@@ -372,7 +401,7 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
                <p class="mk-ai-foot">A suggestion, not a mark. Nothing reaches
                  ${escapeHtml(row.studentName || row.username)} until you save one.</p>
              </div>`
-          : aiOff || !row.images.length
+          : aiOff || !(row.images.length || row.answerText)
             ? ""
             : `<button class="btn btn-ghost mk-assess" id="mk-assess">Assess with AI</button>`
       }
@@ -579,7 +608,7 @@ export async function showReview(
     });
 
     if (opts.marking) {
-      bindMarking(test.questions[index], render);
+      bindMarking(test, attempt, test.questions[index], render);
       void bindRelease(test.id, opts.student || "");
     }
 

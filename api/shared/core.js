@@ -4771,11 +4771,19 @@ const AI_SCHEMA = {
   additionalProperties: false,
 };
 
-function aiPrompt(question, solution, maxMarks) {
+function aiPrompt(question, solution, maxMarks, typed) {
+  // Two kinds of answer reach this, and they are told apart in the first two
+  // lines rather than in two prompts: a photograph of working, or the short
+  // answer a student TYPED that the grader had no rule for. The marking
+  // instructions below are the same either way — a CBSE examiner reading a
+  // surd written as "root 3 over 2" is doing what they do with a page.
   return [
-    "You are helping a CBSE mathematics teacher mark one handwritten answer.",
-    "The photographs show a student's working. Read them and mark the answer.",
+    "You are helping a CBSE mathematics teacher mark one student answer.",
+    typed
+      ? "The student typed a short answer. Decide whether it is the same answer as the model solution, written differently."
+      : "The photographs show a student's working. Read them and mark the answer.",
     "",
+    ...(typed ? ["WHAT THE STUDENT TYPED:", typed, ""] : []),
     `QUESTION (worth ${maxMarks} mark${maxMarks === 1 ? "" : "s"}):`,
     question || "(the question text is unavailable — mark from the working alone)",
     "",
@@ -4786,7 +4794,9 @@ function aiPrompt(question, solution, maxMarks) {
     `- Award a whole number from 0 to ${maxMarks}.`,
     "- Give method marks for correct working even when the final answer is wrong.",
     "- Do not deduct for untidy handwriting, spelling, or a different but valid method.",
-    "- If the photograph is unreadable or shows no attempt, award 0 and say so in the comment.",
+    typed
+      ? `- Award full marks when it means the same as the model solution, however it is written: "root 3 / 2", "0.866" and "\u221a3/2" are one answer. Award 0 when it is a different answer.`
+      : "- If the photograph is unreadable or shows no attempt, award 0 and say so in the comment.",
     "",
     "`comment` is written TO THE STUDENT: one or two sentences, plain, kind, and",
     "specific about what to fix. `reasoning` is for the teacher: why this mark.",
@@ -4820,7 +4830,7 @@ async function answerImages(blobNames) {
 }
 
 /** Ask the model. Returns {awarded, comment, reasoning} or throws a message. */
-async function askAssessor(question, solution, maxMarks, images) {
+async function askAssessor(question, solution, maxMarks, images, typed) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
   let res;
@@ -4839,7 +4849,7 @@ async function askAssessor(question, solution, maxMarks, images) {
           {
             role: "user",
             content: [
-              { type: "text", text: aiPrompt(question, solution, maxMarks) },
+              { type: "text", text: aiPrompt(question, solution, maxMarks, typed) },
               ...images,
             ],
           },
@@ -5107,9 +5117,13 @@ handlers.assess = async (context, req) => {
     return json(context, 404, { error: "Nothing handed in for that question" });
   }
 
-  const images = await answerImages(parseImages(entity.images));
-  if (!images.length) {
-    return json(context, 400, { error: "There is no readable photo to assess" });
+  // A typed short answer has no photographs, and needs none: the blobs are
+  // skipped entirely rather than downloaded and found empty. It is also the
+  // cheaper of the two calls by far — image tokens are almost the whole bill.
+  const typed = String(entity.answerText || "").trim().slice(0, 500);
+  const images = typed ? [] : await answerImages(parseImages(entity.images));
+  if (!images.length && !typed) {
+    return json(context, 400, { error: "There is nothing to assess for that question" });
   }
 
   const maxMarks = typeof entity.maxMarks === "number" ? entity.maxMarks : 0;
@@ -5119,7 +5133,8 @@ handlers.assess = async (context, req) => {
       String(body.question || "").slice(0, AI_MAX_SOLUTION),
       String(body.solution || "").slice(0, AI_MAX_SOLUTION),
       maxMarks,
-      images
+      images,
+      typed
     );
   } catch (e) {
     return json(context, 502, { error: (e && e.message) || "The assessment failed" });

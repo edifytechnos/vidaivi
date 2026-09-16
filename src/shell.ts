@@ -162,6 +162,10 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
   // resolves it must not paint over the "your sign-in timed out" message.
   if (sessionIsExpired()) return document.createElement("div");
 
+  // Whatever is painted next, the page is not still being held for a drawer
+  // that no longer exists.
+  dropHold();
+
   if (!isLoggedIn()) {
     // Guests: no rail. A plain brand bar and the page, as before.
     app.className = "";
@@ -344,8 +348,53 @@ let escBound = false;
  * Wire the drawer for one screen: the toggle opens it, and the scrim, a pick
  * inside the tree, or Escape closes it.
  */
+/** Where the page was when the drawer took it out of flow. */
+let heldAt = 0;
+
+/** Only below 900px is the tree a drawer; above it, it is a column. */
+const isDrawer = (): boolean => window.matchMedia("(max-width: 899px)").matches;
+
+/**
+ * Hold the page still behind the open drawer, and put it back afterwards.
+ *
+ * A question list shorter than the drawer is not a scroller, so a drag inside
+ * it went straight to the document and the whole screen moved under the sheet.
+ * `overflow: hidden` on the body does not stop that on iOS Safari; taking the
+ * body out of flow at its current offset does, and the negative `top` is what
+ * stops the screen jumping to the top as it happens.
+ */
+function holdPage(): void {
+  if (!isDrawer() || document.body.classList.contains("drawer-open")) return;
+  heldAt = window.scrollY;
+  document.body.style.top = `-${heldAt}px`;
+  document.body.classList.add("drawer-open");
+}
+
+function releasePage(): void {
+  if (!dropHold()) return;
+  window.scrollTo(0, heldAt);
+}
+
+/**
+ * Let the page go without putting it back where it was.
+ *
+ * `mount` calls this because Back sits in the crumb row, which stays tappable
+ * beside the open drawer: leaving on it would strand the NEXT screen with a
+ * fixed body and nothing able to scroll. A new screen starts at the top, so
+ * there is no offset worth restoring.
+ */
+function dropHold(): boolean {
+  if (!document.body.classList.contains("drawer-open")) return false;
+  document.body.classList.remove("drawer-open");
+  document.body.style.top = "";
+  return true;
+}
+
 export function bindTreeDrawer(editor: HTMLElement): void {
-  const close = (): void => editor.classList.remove("tree-open");
+  const close = (): void => {
+    editor.classList.remove("tree-open");
+    releasePage();
+  };
 
   // The trigger stays in the crumb row, beside Hand in — the two things a
   // student reaches for while sitting a test, in one row. The drawer then
@@ -364,8 +413,11 @@ export function bindTreeDrawer(editor: HTMLElement): void {
   };
   placeDrawer();
   editor.querySelector("[data-drawer-toggle]")?.addEventListener("click", () => {
+    // Measured BEFORE the page is held: the crumb row is where it is now, and
+    // holding the body must not move it.
     placeDrawer();
-    editor.classList.toggle("tree-open");
+    if (editor.classList.toggle("tree-open")) holdPage();
+    else releasePage();
   });
   editor.querySelector(".ed-scrim")?.addEventListener("click", close);
   // Picking a question is the end of what the drawer is for.
@@ -373,12 +425,19 @@ export function bindTreeDrawer(editor: HTMLElement): void {
     if ((e.target as HTMLElement).closest("button")) close();
   });
 
+  // A repaint can carry `tree-open` across (the student workspace does exactly
+  // that when the subject arrives late), and `mount` will have dropped the
+  // hold on the way through. Re-take it, so an open drawer is never left with
+  // a scrolling page behind it.
+  if (editor.classList.contains("tree-open")) holdPage();
+
   // One listener for the life of the page, not one per render.
   if (escBound) return;
   escBound = true;
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     document.querySelectorAll(".editor.tree-open").forEach((el) => el.classList.remove("tree-open"));
+    releasePage();
   });
 }
 

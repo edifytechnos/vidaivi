@@ -1816,6 +1816,14 @@ body {
     opacity: 1;
     pointer-events: auto;
   }
+  /* A drag inside the question list scrolls the list. `overscroll-behavior`
+     stops the scroll chaining to the page once the list reaches its end; the
+     page itself is held by `body.drawer-open` in `bindTreeDrawer`, because a
+     list SHORTER than the drawer is not a scroller at all and hands the
+     gesture straight to the document — which is what a phone actually did. */
+  .ed-tree { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  /* Dragging the dimmed area is not a way to scroll the page behind it. */
+  .ed-scrim { touch-action: none; }
   .ed-panel-head { flex-wrap: wrap; }
   .ed-topic-input { width: 100%; }
   .ed-tabs { margin: 0 12px 12px; }
@@ -2959,6 +2967,19 @@ body.modal-open {
   overflow: hidden;
 }
 
+/* The page is held still while the question list is open.
+   `overflow: hidden` alone is not enough on iOS Safari, which happily scrolls
+   the document anyway, so the body is taken out of flow at its current offset
+   and put back on close (`bindTreeDrawer`). The negative `top` is what keeps
+   the screen from jumping to the top the moment the drawer opens. */
+body.drawer-open {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
 .modal {
   width: 100%;
   max-width: 460px;
@@ -3614,7 +3635,12 @@ body.modal-open {
    reset to 20px on the narrowest phones — the exact screens that can least
    afford to lose the last line of an answer. */
 @media (max-width: 899px) {
-  .shell-scroll .ed-center { padding-bottom: 108px; }
+  /* The clearance belongs to whatever ENDS the page, and on the result screen
+     that is the explanation, not the answer: the two columns stack on a phone,
+     so 108px under `.ed-center` opened a hole in the middle of the scroll and
+     still left the last lines of the worked solution under the bar. */
+  .shell-scroll .ed-cols:not(:has(.ed-explain)) .ed-center { padding-bottom: 108px; }
+  .shell-scroll .ed-explain { padding-bottom: 108px; }
   /* The subject page has no steps row, so it has nothing to clear. */
   .shell-scroll .st-subject .ed-center { padding-bottom: 24px; }
 }

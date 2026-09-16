@@ -920,6 +920,70 @@ async function assessCapChecks() {
   ent = await t.entitlements(teacher);
   check(ent.exempt && ent.subjects === 0 && ent.students === 0, "an exempt account is gated by nothing");
 
+  // --- A typed short answer can be assessed, and costs no blob read --------
+  //
+  // The AI draft was offered only where there were photographs, so the very
+  // answers the new grader sends to a teacher — the ones it had no rule for —
+  // were the ones it could not help with. A typed answer is the CHEAPER call:
+  // image tokens are almost the whole bill, and there are none.
+  {
+    await table.upsertEntity(
+      { partitionKey: "assess", rowKey: `${digest}~${day}`, count: 0 },
+      "Merge"
+    );
+    // The ledger block above spent this caller's credits on purpose. Clear
+    // them, or what follows proves the credit gate again rather than the
+    // typed-answer path.
+    await ledger.upsertEntity({ partitionKey: month, rowKey: who.id, used: 0 }, "Merge");
+    rows.set(key("students", "student", "typed1"), {
+      partitionKey: "student", rowKey: "typed1", name: "Typed", teacherSub: "some-teacher", tokenEpoch: 0,
+    });
+    rows.set(key("grading", "stu~typed1", "t9~q1"), {
+      partitionKey: "stu~typed1", rowKey: "t9~q1", testId: "t9", questionId: "q1",
+      maxMarks: 2, status: "submitted", answerText: "half of root three over two",
+      images: "[]", studentName: "typed1",
+    });
+
+    let sent = null;
+    global.fetch = async (_url, opts) => {
+      calls += 1;
+      sent = JSON.parse(opts.body);
+      return {
+        ok: true,
+        status: 200,
+        text: async () =>
+          JSON.stringify({
+            choices: [{ message: { content: JSON.stringify({ awarded: 2, comment: "Right answer, written differently.", reasoning: "Same value as the model solution." }) } }],
+            usage: { prompt_tokens: 120, completion_tokens: 20 },
+          }),
+      };
+    };
+
+    const before = calls;
+    const r2 = await call({
+      username: "typed1", testId: "t9", questionId: "q1",
+      question: "Find sin 60.", solution: "\u221a3/2",
+    });
+    check(r2.status === 200, `a typed short answer can be assessed (${r2.status}: ${(r2.data.error || "ok")})`);
+    check(calls === before + 1, "and it did reach the model");
+    const parts = ((sent && sent.messages[0].content) || []);
+    check(
+      parts.length === 1 && parts[0].type === "text",
+      `with no image parts at all — a typed answer has none to send (${parts.length} part(s))`
+    );
+    check(
+      /half of root three over two/.test((parts[0] && parts[0].text) || ""),
+      "and the prompt carries what the student actually typed"
+    );
+    // The model still only ever proposes.
+    const graded = rows.get(key("grading", "stu~typed1", "t9~q1")) || {};
+    check(graded.aiAwarded === 2, `the proposal is stored (aiAwarded ${graded.aiAwarded})`);
+    check(
+      graded.awarded === undefined && graded.status === "submitted",
+      "and nothing is marked by it — the teacher still awards"
+    );
+  }
+
   global.fetch = realFetch;
   delete process.env.AZURE_AI_ENDPOINT;
   delete process.env.AZURE_AI_KEY;
