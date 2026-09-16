@@ -21,11 +21,26 @@ import type { Attempt, Test } from "../types";
 
 const testCache = new Map<string, Test | null>();
 
-async function loadTest(id: string): Promise<Test | null> {
-  if (testCache.has(id)) return testCache.get(id)!;
+/**
+ * The paper being marked, named with the student whose paper it is.
+ *
+ * A point read has to name a partition, and a marker's own partitions are
+ * their own work and the library — never the partition a teacher's test lives
+ * in when somebody else owns it. So an **admin** could see every row in the
+ * queue and open none of them: every read came back 404 and the screen said
+ * the test had been deleted, about tests that were alive. `forStudent` sends
+ * the read to that student's own teacher, gated on the server by the same
+ * `canSeeStudent` that already hands this caller the student's answers.
+ *
+ * Cached per student as well as per test, because what a caller may read
+ * depends on both.
+ */
+async function loadTest(id: string, student: string): Promise<Test | null> {
+  const key = `${student}/${id}`;
+  if (testCache.has(key)) return testCache.get(key)!;
   const bundled = TESTS.find((t) => t.id === id) ?? null;
-  const test = bundled ?? (await fetchServerTest(id));
-  testCache.set(id, test);
+  const test = bundled ?? (await fetchServerTest(id, undefined, student));
+  testCache.set(key, test);
   return test;
 }
 
@@ -48,7 +63,7 @@ export async function openStudentPaper(opts: {
   // a teacher sees how many credits are left *before* pressing Assess rather
   // than after spending one — which is the whole point of a warning.
   const [test, remote, credits] = await Promise.all([
-    loadTest(opts.testId),
+    loadTest(opts.testId, opts.username),
     fetchMyAttempt(opts.testId, opts.username),
     fetchMyCredits(),
   ]);

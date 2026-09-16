@@ -2109,6 +2109,71 @@ async function reportStatusChecks() {
     });
     check(c6.res.status === 403, `somebody else's student is still refused (${c6.res.status})`);
   }
+
+  // --- an admin can open the papers in their own marking queue --------------
+  //
+  // A point read names a partition, and an admin's are their own work and the
+  // library — never the teacher's. So every row in the queue answered 404 and
+  // the screen said the test had been deleted, about tests that were alive.
+  // `canManageTest` refused it in any case: an admin manages masters and their
+  // own rows, not a teacher's.
+  {
+    const ADMIN = "admin-sub-4004";
+    const acookie = t.signSession("vgo", ADMIN, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "a@example.com", n: "A" });
+    const read = async (cookie, query) => {
+      const c = { res: null };
+      await t.handlers.tests(c, {
+        method: "GET",
+        headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+        query,
+      });
+      return c.res;
+    };
+
+    // The state before: the admin sees priya in the queue and cannot open it.
+    const blind = await read(acookie, { id: "poly-1" });
+    check(blind.status === 404, `an admin still cannot read a teacher's test by id alone (${blind.status})`);
+
+    const marking = await read(acookie, { id: "poly-1", forStudent: "priya" });
+    check(marking.status === 200, `but can open the paper they are marking (${marking.status})`);
+    check(
+      marking.status === 200 && (marking.body.test || {}).id === "poly-1",
+      "and it is the real test, questions and all"
+    );
+    check(
+      marking.status === 200 && ((marking.body.test || {}).questions || []).length === 1,
+      `with the question to mark against (${((marking.body.test || {}).questions || []).length})`
+    );
+
+    // --- and it is not a skeleton key ---
+    // Another teacher's test, reached through a student who is not theirs.
+    const OTHER = "other-teacher-9009";
+    const otherRow = {
+      partitionKey: OTHER, rowKey: "theirs-1", title: "Theirs", chapter: "X",
+      status: "published", platform: false, ownerSub: OTHER, audience: "class", assignedTo: "[]",
+    };
+    t.chunkQuestions(otherRow, [
+      { id: "q1", chapter: "C", topic: "T", type: "numeric", q: "1+1?", answer: 2, tolerance: 0, solution: "two", marks: 1 },
+    ]);
+    rows.set(key("tests", OTHER, "theirs-1"), otherRow);
+    const wrongTeacher = await read(acookie, { id: "theirs-1", forStudent: "priya" });
+    check(
+      wrongTeacher.status === 404,
+      `naming a student does not open a test their teacher does not own (${wrongTeacher.status})`
+    );
+
+    // A teacher naming somebody else's student is refused by canSeeStudent,
+    // before any partition is named.
+    rows.set(key("students", "student", "notmine"), {
+      partitionKey: "student", rowKey: "notmine", name: "Not Mine", teacherSub: OTHER, tokenEpoch: 0,
+    });
+    const nosy = await read(cookie, { id: "theirs-1", forStudent: "notmine" });
+    check(nosy.status === 403, `a teacher cannot name somebody else's student (${nosy.status})`);
+
+    // The teacher's own path is unchanged: their student, their own test.
+    const mine = await read(cookie, { id: "poly-1", forStudent: "priya" });
+    check(mine.status === 200, `a teacher opens their own student's paper as before (${mine.status})`);
+  }
 }
 
 // --- Bounded parallelism keeps input order ---
