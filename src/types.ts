@@ -15,7 +15,17 @@ export interface Question {
   type: QType;
   q: string;
   options?: string[];
-  answer?: number;
+  /**
+   * mcq: the 0-based index of the correct option, always a number.
+   * numeric (short answer): the expected answer — a number, or the text a
+   * student is expected to write when the answer is a symbol ("√3/2").
+   */
+  answer?: number | string;
+  /**
+   * Short answers only: other ways of writing the same answer that count as
+   * right ("root 3 / 2", "0.866"). Optional; comparison is on normalised text.
+   */
+  accept?: string[];
   tolerance?: number;
   solution: string;
   marks: number;
@@ -43,12 +53,20 @@ export interface Test {
 
 export interface StoredAnswer {
   given: number | null; // mcq: option index; numeric: value; long: 1 right / 0 wrong
+  /**
+   * Short answers: exactly what the student typed. `given` holds the parsed
+   * number when there is one and null otherwise, so this is the only record of
+   * an answer written as a symbol — and the thing the teacher reads when one
+   * lands in the marking queue.
+   */
+  text?: string;
   correct: boolean;
   earned: number;
   /** Long answers: blob names of the photos handed in. */
   images?: string[];
   /**
-   * Long answers only. "pending" until the teacher awards marks — `earned`
+   * A long answer, or a short one the grader could not settle. "pending"
+   * until the teacher awards marks — `earned`
    * stays 0 while it is, so the score screen can be honest about what is
    * still out for review.
    */

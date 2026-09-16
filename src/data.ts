@@ -1,3 +1,4 @@
+import { gradeShort } from "./shortanswer";
 import type { Question, Test } from "./types";
 
 // Test registry: every JSON file in src/tests/ is a test — adding a file
@@ -25,9 +26,20 @@ export function testTitle(testId: string): string {
  * tolerance change can never apply to one screen and not the other.
  * A `long` answer is never auto-graded: the teacher awards those marks.
  */
+/**
+ * The correct option's index. `answer` is widened to `number | string` for
+ * short answers; on an mcq it is always an index, and this is the one place
+ * that says so rather than each caller casting.
+ */
+export function optionIndex(q: { answer?: number | string }): number {
+  return typeof q.answer === "number" && Number.isInteger(q.answer) ? q.answer : -1;
+}
+
 export function gradeAnswer(q: Question, given: number | null): boolean {
   if (given === null || !Number.isFinite(given)) return false;
   if (q.type === "mcq") return given === q.answer;
-  if (q.type === "numeric") return Math.abs(given - (q.answer ?? NaN)) <= (q.tolerance ?? 0);
+  if (q.type === "numeric") return gradeShort(q, String(given)) === "right";
   return false;
 }
+
+export { gradeShort, normaliseAnswer, type Verdict } from "./shortanswer";

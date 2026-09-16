@@ -750,6 +750,12 @@ export interface GradedAnswer {
   questionIndex: number;
   maxMarks: number;
   images: string[];
+  /**
+   * A short answer the grader could not settle — what the student typed. The
+   * same row and the same queue a photograph lands in; only the evidence is
+   * different.
+   */
+  answerText: string;
   status: "submitted" | "marked";
   submittedAt: string;
   awarded: number | null;
@@ -786,6 +792,34 @@ export async function uploadAnswerImage(payload: {
   const body = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(body.error || "Could not upload that photo");
   return body as UploadedAnswerImage;
+}
+
+/**
+ * Hand a short answer to the teacher.
+ *
+ * Reached when `gradeShort` returns "review": the student wrote something the
+ * grader has no rule for, which is not the same as writing something wrong.
+ * It creates the same grading row a photograph does, so it appears in the same
+ * queue and is marked with the same action.
+ */
+export async function submitShortAnswer(payload: {
+  testId: string;
+  testTitle: string;
+  questionId: string;
+  questionIndex: number;
+  maxMarks: number;
+  text: string;
+}): Promise<boolean> {
+  try {
+    const res = await apiFetch("/api/grading", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "answer", ...payload }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }
 
 export async function removeAnswerImage(

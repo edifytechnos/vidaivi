@@ -2516,9 +2516,26 @@ function validateQuestions(input, { strict = false } = {}) {
         problems.push({ ...at, reason: "No correct option marked" });
       }
     } else if (type === "numeric") {
-      const answer = Number(q.answer);
-      if (Number.isFinite(answer)) clean.answer = answer;
-      else problems.push({ ...at, reason: "No numeric answer" });
+      // Still called `numeric`, and a number still stays a number — the 573
+      // library questions written before this round-trip unchanged. But a CBSE
+      // short answer is very often a symbol (√3/2, π/4), so text is accepted
+      // too. What a student may TYPE was always going to widen before the
+      // stored shape did; this is the stored shape catching up.
+      const raw = typeof q.answer === "number" ? q.answer : String(q.answer ?? "").trim();
+      const asNumber = typeof raw === "number" ? raw : Number(raw);
+      if (typeof raw === "number" ? Number.isFinite(raw) : raw !== "") {
+        clean.answer = raw !== "" && Number.isFinite(asNumber) ? asNumber : String(raw).slice(0, 120);
+      } else {
+        problems.push({ ...at, reason: "No answer" });
+      }
+      // Other ways of writing the same answer. Optional, never validated, and
+      // — like `source` — carried explicitly because `clean` is rebuilt from
+      // scratch and anything not named here is dropped on the first save.
+      const accept = (Array.isArray(q.accept) ? q.accept : [])
+        .map((v) => String(v).trim().slice(0, 120))
+        .filter(Boolean)
+        .slice(0, 8);
+      if (accept.length) clean.accept = accept;
       const tol = Number(q.tolerance);
       clean.tolerance = Number.isFinite(tol) && tol >= 0 ? tol : 0;
     }
@@ -3582,12 +3599,36 @@ async function linkedChildren(who) {
 }
 
 /** The link row, or null. The gate on every parent read. */
+/**
+ * The link between this account and a child, from EITHER route.
+ *
+ * This read only knew about `parentlinks` — the invite-code route — exactly as
+ * `linkedChildren` did. So a parent who created their child's login themselves
+ * was refused "Not your child" on their own child: the row exists in
+ * `students` with `teacherSub` set to them, and no link row is ever written.
+ *
+ * `teacherSub` is what the caller uses to find the child's tests, and for a
+ * child you issued yourself that is **you** — the tests they sit are the ones
+ * in your own partition.
+ */
 async function childLink(who, username) {
   if (who.kind !== "google") return null;
+  const user = String(username || "").trim().toLowerCase();
+  if (!user) return null;
+
+  // A child this account issued the login to. One point read on the student
+  // row, which is the same row `canSeeStudent` already reads.
+  try {
+    const rec = await tableClient("students").getEntity("student", user);
+    if (rec && rec.teacherSub === who.id) {
+      return { username: user, name: rec.name || user, teacherSub: who.id };
+    }
+  } catch {}
+
   const links = tableClient("parentlinks");
   await ensureTable(links);
   try {
-    const e = await links.getEntity(`parent~${who.id}`, String(username || "").trim().toLowerCase());
+    const e = await links.getEntity(`parent~${who.id}`, user);
     return { username: e.rowKey, name: e.studentName || e.rowKey, teacherSub: e.teacherSub || "" };
   } catch {
     return null;
@@ -4178,8 +4219,58 @@ handlers.attempts = async (context, req) => {
     );
     if (list.length >= 100) break;
   }
+  await mergeAwarded(readAs, list);
   json(context, 200, { attempts: list, counts, attemptRule: (await platformRules()).subjectAttempts });
 };
+
+/**
+ * Add the teacher's marks to the scores this listing returns.
+ *
+ * The attempt row deliberately never holds them — its `score` is the
+ * auto-graded subtotal, and a teacher marking a paper must not write to the
+ * student's row (see the note above `ANSWER_CONTAINER`). Opening a paper has
+ * always merged them in on the client (`hydrateMarks`), so a student saw the
+ * true total *inside* the test and the subtotal in every list that named it:
+ * "11/26 here and something else there" was exactly right, and exactly wrong.
+ *
+ * It is done here rather than on the client because a list is many tests, and
+ * one grading fetch per row is an N+1 from a phone (rule 3). One partition
+ * query answers the whole list — the grading rows live in the student's own
+ * partition, which is the same `stu~<username>` the attempts were read from.
+ *
+ * Only the newest finished attempt per test is adjusted: a grading row belongs
+ * to a question, not to an attempt, so an older retake keeps the score it was
+ * stored with rather than borrowing marks earned on a later paper.
+ */
+async function mergeAwarded(readAs, list) {
+  if (!String(readAs || "").startsWith("stu~")) return;
+  const newest = {};
+  for (const row of list) {
+    if (row.status !== "done" || !row.testId) continue;
+    if (!newest[row.testId]) newest[row.testId] = row; // the walk is newest first
+  }
+  const ids = Object.keys(newest);
+  if (!ids.length) return;
+  try {
+    const iter = tableClient("grading").listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq '${readAs.replace(/'/g, "''")}' and status eq 'marked'`,
+        // Three properties, not a marking queue: the mark, which paper it is
+        // on, and nothing about the child or their photographs.
+        select: ["PartitionKey", "RowKey", "testId", "awarded"],
+      },
+    });
+    for await (const e of iter) {
+      const row = newest[e.testId];
+      if (!row) continue;
+      const awarded = typeof e.awarded === "number" ? e.awarded : 0;
+      row.score = (typeof row.score === "number" ? row.score : 0) + awarded;
+    }
+  } catch {
+    // A marks read that fails leaves the auto-graded subtotal in place. It is
+    // low rather than wrong-and-confident, and the paper itself still merges.
+  }
+}
 
 // ---------- Answer photos for long questions ----------
 //
@@ -4262,6 +4353,9 @@ function parseImages(raw) {
 const GRADING_SELECT = [
   "PartitionKey", "RowKey", "studentName", "testId", "testTitle", "questionId",
   "questionIndex", "maxMarks", "images", "status", "submittedAt", "awarded",
+  // A short answer the grader could not settle arrives as text rather than as
+  // photographs. Same row, same queue, same marking action.
+  "answerText",
   "comment", "markedAt", "markedBy",
   // The AI's proposal. Deliberately separate from `awarded`: a suggestion is
   // not a mark, and only the teacher's own mark action writes that one.
@@ -4280,6 +4374,7 @@ function gradingOut(e) {
     questionIndex: typeof e.questionIndex === "number" ? e.questionIndex : 0,
     maxMarks: typeof e.maxMarks === "number" ? e.maxMarks : 0,
     images,
+    answerText: e.answerText || "",
     status: e.status || "submitted",
     submittedAt: e.submittedAt || "",
     awarded: typeof e.awarded === "number" ? e.awarded : null,
@@ -4541,6 +4636,60 @@ handlers.grading = async (context, req) => {
 
   const body = getBody(req) || {};
   const action = body.action || "mark";
+
+  // A short answer the grader could not settle. It is the student's own hand,
+  // so it is the student who writes it — the same shape `answerimage` writes
+  // for a photograph, with text in place of the blobs. Nothing is marked here:
+  // the row lands in the teacher's queue at `status: "submitted"` and only
+  // their own `mark` action awards anything.
+  if (action === "answer") {
+    if (who.kind !== "student") {
+      return json(context, 403, { error: "Students only" });
+    }
+    const testId = safeId(body.testId, 60);
+    const questionId = safeId(body.questionId, 40);
+    if (!testId || !questionId) return json(context, 400, { error: "Bad test or question id" });
+    const rowKey = gradingKey(testId, questionId);
+    let existing = null;
+    try {
+      existing = await grading.getEntity(who.id, rowKey);
+    } catch {}
+    // Changing an answer a teacher has already marked would silently unmark it.
+    if (existing && existing.status === "marked") {
+      return json(context, 409, { error: "Your teacher has already marked this answer." });
+    }
+    const text = String(body.text ?? "").trim().slice(0, 500);
+    // Taking the answer back off the paper takes it out of the queue too.
+    // Without this, Clear answer would leave a teacher marking something the
+    // student had already withdrawn. A point delete, naming its partition.
+    if (!text) {
+      if (existing) {
+        try {
+          await grading.deleteEntity(who.id, rowKey);
+        } catch {}
+      }
+      return json(context, 200, { ok: true, cleared: true });
+    }
+    await grading.upsertEntity(
+      {
+        partitionKey: who.id,
+        rowKey,
+        testId,
+        questionId,
+        testTitle: String(body.testTitle || "").slice(0, 120),
+        questionIndex: Math.max(0, Math.min(200, Number(body.questionIndex) || 0)),
+        maxMarks: Math.max(0, Math.min(100, Number(body.maxMarks) || 0)),
+        answerText: text,
+        status: "submitted",
+        submittedAt: new Date().toISOString(),
+        teacherId: who.teacherSub || "",
+        studentName: who.username,
+      },
+      "Merge"
+    );
+    return json(context, 201, { ok: true });
+  }
+
   if (action !== "mark") {
     return json(context, 400, { error: `Unknown action: ${action}` });
   }

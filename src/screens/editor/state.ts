@@ -5,6 +5,7 @@
 // edit is held until it returns, so two writes can never race each other.
 
 import { mutateTest } from "../../api";
+import { optionIndex } from "../../data";
 import type { Question, Test } from "../../types";
 
 export type SaveState = "clean" | "dirty" | "saving" | "saved" | "error";
@@ -118,11 +119,19 @@ export function isComplete(q: Question): boolean {
   if (q.type === "mcq") {
     const filled = (q.options ?? []).filter((o) => o.trim());
     if (filled.length < 2) return false;
-    const answer = q.answer ?? -1;
+    const answer = optionIndex(q);
     return answer >= 0 && answer < (q.options ?? []).length && !!(q.options ?? [])[answer]?.trim();
   }
-  if (q.type === "numeric") return Number.isFinite(q.answer);
+  // A short answer may be a number OR the text of a symbol, so "is it set"
+  // is no longer "is it a finite number".
+  if (q.type === "numeric") return hasShortAnswer(q);
   return true;
+}
+
+/** A short answer is filled in when it is a number or any non-empty text. */
+export function hasShortAnswer(q: { answer?: number | string }): boolean {
+  if (typeof q.answer === "number") return Number.isFinite(q.answer);
+  return String(q.answer ?? "").trim() !== "";
 }
 
 export function totalMarks(t: Test): number {

@@ -1113,14 +1113,15 @@ repurpose fields):
 | `type` | `"mcq"` \| `"numeric"` \| `"long"` | yes | Controls the UI and grading (see below). |
 | `q` | string | yes | Question text. Inline maths in `$...$`, display maths in `$$...$$` (KaTeX). JSON-escape backslashes: `\\times`, `\\begin{pmatrix}`. |
 | `options` | string[] | mcq only | Answer choices, rendered A/B/C/D in order. |
-| `answer` | number | mcq + numeric | For `mcq`: 0-based index into `options`. For `numeric`: the expected numeric value. |
+| `answer` | number \| string | mcq + numeric | For `mcq`: 0-based index into `options` (always a number — read it through `optionIndex`). For `numeric`: the expected answer, a number or the text of a symbol (`"√3/2"`). |
+| `accept` | string[] | no | Short answers only. Other ways of writing the same answer that count as right. |
 | `tolerance` | number | numeric only | Accept answers within ±tolerance of `answer`. Use `0` for exact. |
 | `solution` | string | yes | Worked solution shown after submission. Supports `$...$` maths, `**bold**`, and blank lines (`\n\n`) as paragraph breaks — nothing else (no full markdown, no HTML). |
 | `marks` | number | yes | Marks awarded when correct. Score screen totals these. |
 
 Grading by type:
 - **mcq** — student picks an option; correct iff selected index equals `answer`.
-- **numeric** — student types a number; correct iff `|value − answer| ≤ tolerance` (defaults to 0 if omitted).
+- **numeric (short answer)** — the student types anything. Both sides numbers → `|value − answer| ≤ tolerance`. Otherwise normalised text against `answer` and `accept`. No match → **the teacher's marking queue, never wrong**. See *A short answer may be a symbol* above.
 - **long** — no auto-grading. A signed-in student photographs their working and hands it in; the teacher awards the marks (see below). A guest keeps the old self-assessment. Do not add `options`/`answer`/`tolerance` to long questions.
 
 Notes:
@@ -1128,6 +1129,47 @@ Notes:
 - Question style: CBSE board pattern (1-mark MCQ, 2–3 mark numeric, 5-mark long).
 - Total marks = sum of `marks` across the file; no separate config.
 - Content is plain-text escaped before rendering, so raw HTML in strings will display literally, not render.
+
+## A short answer may be a symbol, and is never marked wrong by accident
+
+The `numeric` type accepted a number and nothing else, in a `type="number"`
+box. A CBSE short answer is very often a symbol — $\sqrt3/2$, $\pi/4$, $x=2$ —
+and that box cannot hold one, so the question either had to be rewritten or
+became a long answer a teacher marks by hand.
+
+**The type is still called `numeric`** in the JSON and in Table Storage: 573
+library questions carry it, the schema is stable, and a number still stores as
+a number and still grades with its tolerance. What widened is what a student
+may **type**, and what happens when the grader cannot read it. It is labelled
+**Short answer** everywhere a teacher sees it.
+
+- `answer` is now `number | string`; `accept?: string[]` (≤ 8) holds other ways
+  of writing the same answer. Both are carried **explicitly** in `clean` inside
+  `validateQuestions` — that object is rebuilt from scratch, so a property not
+  named there is dropped on the first round trip, exactly as `source` was.
+- **`src/shortanswer.ts` is the one implementation**, and it is its own module
+  so the suite can drive it: `data.ts` reaches for `import.meta.glob` and will
+  not load outside a bundle.
+- **Three outcomes, not two** (`Verdict`): both sides numbers → tolerance
+  compare, `right` or `wrong`, because a number is decidable and must never
+  cost a teacher a minute. Otherwise normalised text against the answer and
+  every `accept`. **No match → `review`**, never `wrong`.
+- **`normaliseAnswer` is deliberately shallow** — case, spaces, √/sqrt/root,
+  π/pi, ×/·, ÷, the dashes, `\frac{a}{b}`, a trailing full stop. It is **not**
+  a maths engine and must not become one: it will never know 1/2 is 0.5, and a
+  wrong "equivalent" is a mark wrongly taken away. The suite asserts that
+  1/2 and 0.5 stay different.
+- **`review` goes to the marking queue**, through
+  `POST /api/grading {action:"answer", …}` — students only, writing the same
+  row a photograph writes with `answerText` in place of `images`, at
+  `status: "submitted"`. Only the teacher's own `mark` action awards anything.
+  A row already `marked` refuses a rewrite (409), and **an empty `text` deletes
+  the row**, because Clear answer must take the answer out of the queue too.
+- **Assess with AI is hidden when there are no photographs** — it reads
+  handwriting, and a typed answer has none to read.
+- **The guest player has no third outcome**: a guest has no teacher, so there
+  `review` reads as not-right, the same trade the instant-feedback demo makes
+  everywhere else.
 
 ## Long answers: photos in, teacher marks out
 
@@ -1158,6 +1200,16 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   (`hydrateMarks` in `src/screens/test.ts`). That keeps marking off the
   student's row entirely: no etag races, and no risk of tripping the
   `Q_CHUNK` guard that silently drops an oversized `answers` blob.
+- **A listed score carries the teacher's marks too.** The attempt row still
+  holds only the subtotal, but `mergeAwarded` in the attempts GET listing adds
+  the marked `grading` rows before answering — one partition query for the whole
+  list, in the student's own partition, projected to three properties. Without
+  it a student saw the true total *inside* the paper (`hydrateMarks`) and the
+  subtotal in every list that named it: "11/26 here, something else there" was
+  exactly right and exactly wrong. Only the **newest** finished attempt per test
+  is adjusted — a grading row belongs to a question, not to an attempt, so an
+  older retake keeps the score it was stored with. Doing it on the client would
+  be one grading fetch per test row, an N+1 from a phone (rule 3).
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
 - **Removing a student removes the photographs.** `POST /api/students
@@ -1530,6 +1582,16 @@ is not a failure, and both were being shown as "something went wrong".
 
 A linked child is still read-only — a parent never marks somebody else's
 student. What changed is that their **own** child is theirs.
+
+**`childLink` had the same blind spot `linkedChildren` did.** It walked
+`parentlinks` only, so a child this account *issued* — a `students` row with
+`teacherSub` set to the parent's own sub and no link row — was refused "Not your
+child" on the very screen that had just created them. It reads the `students`
+row first now (a point read in that table's own partition) and falls through to
+`parentlinks`. And `fetchServerTest(id, student?)` gained the student argument:
+without it the test read named the parent's own partition and the child's paper,
+which lives in their teacher's, simply was not there — "That attempt could not
+be opened" for a paper that exists.
 
 **`linkedChildren` reads both routes, and for a release it read one.** It walked
 `parentlinks` only — the invite-code route — so a child the parent *created*

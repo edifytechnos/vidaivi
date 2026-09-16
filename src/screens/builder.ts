@@ -3,6 +3,7 @@
 // a teacher writes here renders identically in the student player. The rich
 // editor drops into these same text fields next.
 
+import { optionIndex } from "../data";
 import { track } from "../analytics";
 import { mutateTest, fetchServerTest, newQuestionId } from "../api";
 import { app, escapeHtml, formatText, renderMath, setUrl } from "../dom";
@@ -203,7 +204,7 @@ function questionCard(q: DraftQuestion, i: number, total: number): string {
         <label class="field-label">Type</label>
         <select class="numeric-input bq-type">
           ${typeOpt("mcq", "Multiple choice")}
-          ${typeOpt("numeric", "Numeric answer")}
+          ${typeOpt("numeric", "Short answer")}
           ${typeOpt("long", "Long answer (self-assessed)")}
         </select>
       </div>
@@ -267,15 +268,22 @@ function typedFields(q: DraftQuestion): string {
       <div class="builder-row">
         <div>
           <label class="field-label">Correct answer</label>
-          <input class="numeric-input bq-answer" type="number" step="any"
-                 value="${q.answer ?? ""}" placeholder="e.g. 4.5" />
+          <input class="numeric-input bq-answer" type="text" maxlength="120"
+                 value="${escapeHtml(q.answer === undefined || q.answer === null ? "" : String(q.answer))}"
+                 placeholder="e.g. 4.5, or √3/2" />
         </div>
         <div>
           <label class="field-label">Tolerance (± accepted)</label>
           <input class="numeric-input bq-tolerance" type="number" step="any" min="0"
                  value="${q.tolerance ?? 0}" />
         </div>
-      </div>`;
+      </div>
+      <label class="field-label">Also accept</label>
+      <input class="numeric-input bq-accept" type="text" maxlength="240"
+             value="${escapeHtml((q.accept ?? []).join(", "))}"
+             placeholder="root 3 / 2, 0.866" />
+      <p class="hint">Other ways of writing the same answer, separated by commas.
+        Anything the grader cannot settle is never marked wrong — it comes to you in To mark.</p>`;
   }
   return `<p class="hint">Long answers are not auto-graded: the student works it out,
     reveals your solution and marks themselves.</p>`;
@@ -334,16 +342,20 @@ function bindQuestion(q: DraftQuestion) {
       // Switching from numeric could leave 4.5 sitting where an option index
       // belongs. Anything that is not a real index means "not marked yet".
       const opts = q.options ?? [];
-      if (!Number.isInteger(q.answer) || (q.answer ?? -1) < 0 || (q.answer ?? -1) >= opts.length) {
+      const picked = optionIndex(q);
+      if (picked < 0 || picked >= opts.length) {
         q.answer = -1;
       }
     } else if (q.type === "numeric") {
       delete q.options;
-      q.answer = Number.isFinite(q.answer) ? q.answer : 0;
+      // An option INDEX left over from mcq is not an answer, and 0 would read
+      // as the answer "0" — the same mistake the pre-ticked radio made.
+      if (typeof q.answer === "number") delete q.answer;
       q.tolerance = q.tolerance ?? 0;
     } else {
       delete q.options;
       delete q.answer;
+      delete q.accept;
       delete q.tolerance;
     }
     bindQuestion(q);
@@ -372,14 +384,26 @@ function bindTypedFields(q: DraftQuestion, card: HTMLElement, preview: () => voi
     el.addEventListener("click", () => {
       const i = Number(el.dataset.i);
       q.options!.splice(i, 1);
-      if ((q.answer ?? 0) >= q.options!.length) q.answer = q.options!.length - 1;
-      else if ((q.answer ?? 0) > i) q.answer = (q.answer ?? 0) - 1;
+      const picked = optionIndex(q);
+      if (picked >= q.options!.length) q.answer = q.options!.length - 1;
+      else if (picked > i) q.answer = picked - 1;
       bindQuestion(q);
     })
   );
   const ansEl = card.querySelector<HTMLInputElement>(".bq-answer");
   ansEl?.addEventListener("input", () => {
-    q.answer = Number(ansEl.value);
+    // A number stays a number in the JSON, so the questions written before
+    // this round-trip unchanged and still grade with a tolerance.
+    const text = ansEl.value.trim();
+    const value = Number(text);
+    if (text === "") delete q.answer;
+    else q.answer = Number.isFinite(value) ? value : text;
+  });
+  const accEl = card.querySelector<HTMLInputElement>(".bq-accept");
+  accEl?.addEventListener("input", () => {
+    const list = accEl.value.split(",").map((v) => v.trim()).filter(Boolean).slice(0, 8);
+    if (list.length) q.accept = list;
+    else delete q.accept;
   });
   const tolEl = card.querySelector<HTMLInputElement>(".bq-tolerance");
   tolEl?.addEventListener("input", () => {
@@ -406,8 +430,8 @@ function validate(): string | null {
         return `${at}: mark which option is correct.`;
       }
     }
-    if (q.type === "numeric" && !Number.isFinite(q.answer)) {
-      return `${at}: enter the correct numeric answer.`;
+    if (q.type === "numeric" && String(q.answer ?? "").trim() === "") {
+      return `${at}: enter the correct answer.`;
     }
   }
   return null;

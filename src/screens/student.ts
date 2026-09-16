@@ -16,13 +16,14 @@
 
 import { track } from "../analytics";
 import { mountUploader } from "../answerphotos";
-import { attemptCounts, fetchMyAttempts, getProfile, isLoggedIn, saveProgress, submitAttempt } from "../auth";
+import { attemptCounts, fetchMyAttempts, getProfile, isLoggedIn, saveProgress, submitAttempt, submitShortAnswer } from "../auth";
 import { fetchServerTest, fetchTestList } from "../api";
 import { loadAttempt, newAttempt, saveAttempt } from "../attempts";
-import { gradeAnswer, TESTS, totalMarks } from "../data";
+import { gradeAnswer, gradeShort, TESTS, totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
 import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
 import type { Attempt, Question, Test } from "../types";
+import { canHandIn } from "./test";
 import { showReview } from "./review";
 import { showSubjects } from "./subjects";
 
@@ -497,11 +498,55 @@ function renderAnswer(
     track("question_answered", { test: test.id, question: q.id, correct });
   };
 
+  /**
+   * A short answer. Three outcomes, not two — see `gradeShort`. "review" is a
+   * student who wrote something the grader has no rule for, which is not the
+   * same as writing something wrong: it earns 0 *for now* and goes to the
+   * teacher's queue, exactly as a long answer's photograph does.
+   */
+  const recordShort = (text: string, parsed: number | null) => {
+    const verdict = gradeShort(q, text);
+    const correct = verdict === "right";
+    attempt.answers[q.id] = {
+      given: parsed,
+      text,
+      correct,
+      earned: correct ? q.marks : 0,
+      ...(verdict === "review" ? { review: "pending" as const } : {}),
+    };
+    persist();
+    track("question_answered", { test: test.id, question: q.id, correct });
+    if (verdict === "review" && canHandIn()) {
+      void submitShortAnswer({
+        testId: test.id,
+        testTitle: test.title,
+        questionId: q.id,
+        questionIndex: index,
+        maxMarks: q.marks,
+        text,
+      });
+    }
+  };
+
   /** Take the answer back off the paper, so the question can be left for later. */
   const clear = () => {
+    const was = attempt.answers[q.id];
     delete attempt.answers[q.id];
     persist();
     track("question_cleared", { test: test.id, question: q.id });
+    // A short answer that went to the teacher has a row in their queue. Taking
+    // it off the paper has to take it out of the queue too, or they would be
+    // marking something the student had already withdrawn.
+    if (q.type === "numeric" && was?.review === "pending" && canHandIn()) {
+      void submitShortAnswer({
+        testId: test.id,
+        testTitle: test.title,
+        questionId: q.id,
+        questionIndex: index,
+        maxMarks: q.marks,
+        text: "",
+      });
+    }
   };
 
   function persist(): void {
@@ -566,12 +611,19 @@ function renderAnswer(
   }
 
   if (q.type === "numeric") {
+    // A TEXT box. A CBSE short answer is often a symbol — √3/2, π/4, x=2 — and
+    // a number box cannot hold one. A number typed here still grades as a
+    // number, tolerance and all; anything else the grader cannot settle goes
+    // to the teacher rather than being marked wrong.
     area.innerHTML = `
-      <input id="st-num" class="numeric-input" type="number" step="any" inputmode="decimal"
-             placeholder="Enter your answer" value="${existing?.given ?? ""}" />`;
+      <input id="st-num" class="numeric-input" type="text" maxlength="200"
+             autocomplete="off" autocapitalize="off" spellcheck="false"
+             placeholder="Enter your answer" value="${escapeHtml(existing?.text ?? (existing?.given ?? "").toString())}" />
+      <p class="ed-hint">Write it however you would on paper — a number, or
+        something like <strong>√3/2</strong>.</p>`;
     actions.innerHTML = actionsMarkup(!!existing);
     const input = document.getElementById("st-num") as HTMLInputElement;
-    // A number is typed a digit at a time, and "1" on the way to "12" is a
+    // An answer is typed a character at a time, and "1" on the way to "12" is a
     // wrong answer. So it settles before it is saved — and blur and Enter save
     // at once, because leaving the box means the student is done with it.
     let timer = 0;
@@ -583,7 +635,7 @@ function renderAnswer(
         return;
       }
       const val = parseFloat(text);
-      record(Number.isFinite(val) ? val : null);
+      recordShort(text, Number.isFinite(val) ? val : null);
     };
     input.addEventListener("input", () => {
       window.clearTimeout(timer);
