@@ -5691,6 +5691,564 @@ handlers.release = async (context, req) => {
   return json(context, 200, { ok: true, testId, username: username || null, released: true });
 };
 
+// =====================================================================
+// Buying a ready-made subject
+// =====================================================================
+//
+// A parent or teacher past the free shelf allowance got a 402 naming the price
+// and no way to pay it. There is no registered business behind Vidai yet, so
+// the first route is the one that needs none: the buyer pays by UPI into the
+// platform's own VPA and an admin confirms the sale.
+//
+// The whole of it is deliberately shaped around ONE function,
+// `settlePurchase`, which is the only place that says "this account now owns
+// this shelf". The admin's Confirm calls it; a Razorpay webhook will call the
+// same function with a different `method`. Nothing the buyer sees, and no row
+// recording what they own, changes on the day it does.
+//
+// Tables:
+//   coupons  PK "coupon",  RK the code          - one point read per quote
+//   orders   PK the buyer's sub, RK the ref     - "my orders", one partition
+//            PK "~pending", RK "<sub>~<ref>"    - the admin's queue, one
+//                                                 partition, DELETED on resolve
+//
+// That second `orders` row is an index, and it exists for rule 2: without it
+// "show me every unconfirmed payment" is a scan of the whole table that grows
+// with the sales history forever. It is written when the buyer says they have
+// paid - before that there is nothing for an admin to look at - and deleted
+// the moment the order is settled or refused, so it stays the length of the
+// QUEUE rather than the length of the history.
+
+// The payee. Without it there is nothing to pay into, so `/api/purchase`
+// answers 501 and the client hides the Buy button - exactly as `/api/assess`
+// does without its model key, and for the same reason: a button that cannot
+// work is worse than no button.
+const UPI_VPA = String(process.env.UPI_VPA || "").trim();
+const UPI_PAYEE_NAME = String(process.env.UPI_PAYEE_NAME || "Vidai").trim();
+const upiConfigured = () => !!UPI_VPA;
+
+const COUPON_PK = "coupon";
+const PENDING_PK = "~pending";
+const ORDER_SELECT = [
+  "PartitionKey",
+  "RowKey",
+  "shelfId",
+  "shelfTitle",
+  "listPaise",
+  "discountPaise",
+  "payablePaise",
+  "coupon",
+  "status",
+  "createdAt",
+  "claimedAt",
+  "payerRef",
+  "settledAt",
+  "method",
+];
+const PENDING_SELECT = [...ORDER_SELECT, "buyerName", "buyerEmail"];
+// One buyer cannot fill the table with unfinished orders. Twenty is far more
+// than anybody needs and small enough that the walk stays a page.
+const MAX_OPEN_ORDERS = 20;
+
+async function couponsTable() {
+  const t = tableClient("coupons");
+  await ensureTable(t);
+  return t;
+}
+
+async function ordersTable() {
+  const t = tableClient("orders");
+  await ensureTable(t);
+  return t;
+}
+
+/** Codes are read off WhatsApp and typed on a phone, so case and stray spaces
+ *  must not decide whether one works. */
+function couponCode(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9-]/g, "")
+    .slice(0, 24);
+}
+
+/** A reference a buyer can quote back, and a RowKey. */
+function newOrderRef() {
+  return `ord-${Date.now().toString(36)}-${crypto.randomBytes(3).toString("hex")}`;
+}
+
+/**
+ * What a code is worth against a price.
+ *
+ * A code that does not exist, has expired, was switched off or is used up
+ * answers the SAME shape as no code at all - the list price, with a sentence
+ * saying why. So a wrong code is never more informative than a missing one.
+ * The real bound on guessing is `maxRedemptions`: the worst case is a sale at
+ * a price the admin had already decided to give somebody, which is why this
+ * does not need the login throttle. Putting it on `loginGate` would have been
+ * worse than nothing - the IP bucket is shared with signing in, and a school
+ * behind one NAT address could have been locked out of the app by somebody
+ * mistyping a discount code.
+ */
+async function couponQuote(code, listPaise) {
+  const none = { code: "", discountPaise: 0, payablePaise: listPaise, message: "" };
+  if (!code) return none;
+  let row = null;
+  try {
+    row = await (await couponsTable()).getEntity(COUPON_PK, code);
+  } catch {
+    row = null;
+  }
+  if (!row || row.active === false) return { ...none, message: "That code is not valid." };
+  if (row.expiresAt && Date.parse(row.expiresAt) < Date.now()) {
+    return { ...none, message: "That code has expired." };
+  }
+  const max = typeof row.maxRedemptions === "number" ? row.maxRedemptions : 0;
+  const used = typeof row.redeemed === "number" ? row.redeemed : 0;
+  if (max > 0 && used >= max) return { ...none, message: "That code has been used up." };
+
+  const pct = Math.min(100, Math.max(0, Number(row.percentOff) || 0));
+  const flat = Math.max(0, Math.round(Number(row.amountOffPaise) || 0));
+  // Clamped at the price: a discount can make something free, never owed.
+  const off = Math.min(listPaise, Math.round((listPaise * pct) / 100) + flat);
+  return {
+    code,
+    discountPaise: off,
+    payablePaise: listPaise - off,
+    message: "",
+    label: String(row.note || ""),
+  };
+}
+
+/** The intent link an Android phone opens straight into GPay or PhonePe.
+ *  Deliberately not a QR image: a QR needs an encoder dependency, and the
+ *  audience is on Android phones where the link is the better affordance. */
+function upiLink(ref, paise) {
+  const q = new URLSearchParams({
+    pa: UPI_VPA,
+    pn: UPI_PAYEE_NAME,
+    am: (paise / 100).toFixed(2),
+    cu: "INR",
+    tn: `Vidai ${ref}`,
+  });
+  return `upi://pay?${q.toString()}`;
+}
+
+/** One redemption, counted atomically. A coupon is a number somebody is held
+ *  to, so this is ETag'd with a bounded retry rather than a read-modify-write
+ *  - the same line `aiusage` draws between a throttle and a ledger. */
+async function noteRedemption(code) {
+  if (!code) return;
+  const table = await couponsTable();
+  for (let attempt = 0; attempt < 4; attempt++) {
+    let row = null;
+    try {
+      row = await table.getEntity(COUPON_PK, code);
+    } catch {
+      return; // Deleted since the quote. Nothing to count.
+    }
+    try {
+      await table.updateEntity(
+        {
+          partitionKey: COUPON_PK,
+          rowKey: code,
+          redeemed: (typeof row.redeemed === "number" ? row.redeemed : 0) + 1,
+          lastRedeemedAt: new Date().toISOString(),
+        },
+        "Merge",
+        { etag: row.etag }
+      );
+      return;
+    } catch (e) {
+      const status = e && (e.statusCode || e.status);
+      if (status !== 412 && status !== 409) return;
+    }
+  }
+}
+
+/**
+ * The seam. Everything that says "this account owns this shelf" happens here,
+ * so the day a gateway webhook replaces the admin's Confirm it replaces one
+ * caller rather than a flow.
+ *
+ * The purchase row is written FIRST and the order is marked afterwards: a
+ * crash between the two leaves an order that still looks unconfirmed, which an
+ * admin can press again harmlessly (the upsert is idempotent). The other order
+ * would have taken the money and granted nothing.
+ */
+async function settlePurchase(order, by, method, payerRef) {
+  const sub = order.partitionKey;
+  const ref = order.rowKey;
+  await (await purchasesTable()).upsertEntity(
+    {
+      partitionKey: sub,
+      rowKey: order.shelfId,
+      grantedBy: by,
+      grantedAt: new Date().toISOString(),
+      // What was actually paid, and what it would have been. A discount that
+      // is not recorded is a price nobody can explain six months later.
+      pricePaise: typeof order.payablePaise === "number" ? order.payablePaise : 0,
+      listPaise: typeof order.listPaise === "number" ? order.listPaise : 0,
+      coupon: order.coupon || "",
+      orderRef: ref,
+      method,
+    },
+    "Merge"
+  );
+  const orders = await ordersTable();
+  await orders.updateEntity(
+    {
+      partitionKey: sub,
+      rowKey: ref,
+      status: "paid",
+      settledAt: new Date().toISOString(),
+      settledBy: by,
+      method,
+      payerRef: payerRef || order.payerRef || "",
+    },
+    "Merge"
+  );
+  await dropPending(orders, sub, ref);
+  await noteRedemption(order.coupon || "");
+}
+
+/** The index row exists only while the order is waiting on somebody. */
+async function dropPending(orders, sub, ref) {
+  try {
+    await orders.deleteEntity(PENDING_PK, `${sub}~${ref}`);
+  } catch {
+    // Not queued, or already resolved. Either way it is not queued now.
+  }
+}
+
+/** One order, read from its buyer's own partition - never by RowKey alone. */
+async function readOrder(orders, sub, ref) {
+  try {
+    return await orders.getEntity(sub, ref);
+  } catch {
+    return null;
+  }
+}
+
+handlers.purchase = async (context, req) => {
+  if (misconfigured(context)) return;
+  const who = await identify(req, context);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+  // A student never buys anything, and never sees a price.
+  if (!isAuthor(who)) return json(context, 403, { error: "Not available for this account" });
+  if (!upiConfigured()) {
+    return json(context, 501, {
+      error: "Payments are not switched on yet",
+      reason: "no_payee",
+    });
+  }
+  const orders = await ordersTable();
+  const isAdmin = who.role === "admin";
+
+  if (req.method === "GET") {
+    const q = req.query || {};
+
+    // The admin's queue: one partition, projected, and only as long as the
+    // number of payments actually waiting.
+    if (String(q.pending || "")) {
+      if (!isAdmin) return json(context, 403, { error: "Admins only" });
+      const rows = [];
+      const iter = orders.listEntities({
+        queryOptions: { filter: `PartitionKey eq '${PENDING_PK}'`, select: PENDING_SELECT },
+      });
+      for await (const e of iter) {
+        const [sub, ref] = String(e.rowKey).split("~");
+        rows.push({
+          sub,
+          ref,
+          shelfId: e.shelfId || "",
+          shelfTitle: e.shelfTitle || "",
+          listPaise: e.listPaise || 0,
+          discountPaise: e.discountPaise || 0,
+          payablePaise: e.payablePaise || 0,
+          coupon: e.coupon || "",
+          buyerName: e.buyerName || "",
+          buyerEmail: e.buyerEmail || "",
+          payerRef: e.payerRef || "",
+          claimedAt: e.claimedAt || "",
+        });
+        if (rows.length >= 200) break;
+      }
+      rows.sort((a, b) => String(a.claimedAt).localeCompare(String(b.claimedAt)));
+      return json(context, 200, { rows });
+    }
+
+    if (String(q.coupons || "")) {
+      if (!isAdmin) return json(context, 403, { error: "Admins only" });
+      const rows = [];
+      const iter = (await couponsTable()).listEntities({
+        queryOptions: {
+          filter: `PartitionKey eq '${COUPON_PK}'`,
+          select: [
+            "RowKey",
+            "percentOff",
+            "amountOffPaise",
+            "active",
+            "maxRedemptions",
+            "redeemed",
+            "expiresAt",
+            "note",
+          ],
+        },
+      });
+      for await (const e of iter) {
+        rows.push({
+          code: e.rowKey,
+          percentOff: e.percentOff || 0,
+          amountOffPaise: e.amountOffPaise || 0,
+          active: e.active !== false,
+          maxRedemptions: e.maxRedemptions || 0,
+          redeemed: e.redeemed || 0,
+          expiresAt: e.expiresAt || "",
+          note: e.note || "",
+        });
+        if (rows.length >= 200) break;
+      }
+      rows.sort((a, b) => a.code.localeCompare(b.code));
+      return json(context, 200, { rows });
+    }
+
+    // The caller's own orders: their own partition.
+    const mine = [];
+    const iter = orders.listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq '${String(who.id).replace(/'/g, "''")}'`,
+        select: ORDER_SELECT,
+      },
+    });
+    for await (const e of iter) {
+      mine.push({
+        ref: e.rowKey,
+        shelfId: e.shelfId || "",
+        shelfTitle: e.shelfTitle || "",
+        listPaise: e.listPaise || 0,
+        discountPaise: e.discountPaise || 0,
+        payablePaise: e.payablePaise || 0,
+        coupon: e.coupon || "",
+        status: e.status || "open",
+        createdAt: e.createdAt || "",
+        settledAt: e.settledAt || "",
+      });
+      if (mine.length >= 100) break;
+    }
+    mine.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+    return json(context, 200, { orders: mine });
+  }
+
+  if (req.method !== "POST") return json(context, 405, { error: "Method not allowed" });
+  const body = getBody(req);
+  const action = String(body.action || "");
+
+  // ---- Admin: confirm, refuse, and the codes themselves ----
+
+  if (action === "confirm" || action === "reject") {
+    if (!isAdmin) return json(context, 403, { error: "Admins only" });
+    const sub = String(body.sub || "").trim();
+    const ref = safeId(body.ref, 60);
+    if (!sub || !ref) return json(context, 400, { error: "Which payment?" });
+    const order = await readOrder(orders, sub, ref);
+    if (!order) return json(context, 404, { error: "No such payment" });
+    if (order.status === "paid") {
+      return json(context, 409, { error: "That payment is already confirmed" });
+    }
+    if (action === "reject") {
+      await orders.updateEntity(
+        {
+          partitionKey: sub,
+          rowKey: ref,
+          status: "rejected",
+          settledAt: new Date().toISOString(),
+          settledBy: who.id,
+          note: String(body.note || "").slice(0, 200),
+        },
+        "Merge"
+      );
+      await dropPending(orders, sub, ref);
+      return json(context, 200, { ok: true, ref, status: "rejected" });
+    }
+    await settlePurchase(order, who.id, "upi", String(body.payerRef || "").slice(0, 60));
+    return json(context, 200, { ok: true, ref, status: "paid", shelfId: order.shelfId });
+  }
+
+  if (action === "coupon") {
+    if (!isAdmin) return json(context, 403, { error: "Admins only" });
+    const code = couponCode(body.code);
+    // Short codes are the ones worth guessing, and a code is typed once.
+    if (code.length < 4) return json(context, 400, { error: "A code needs at least 4 characters" });
+    const pct = Math.min(100, Math.max(0, Math.round(Number(body.percentOff) || 0)));
+    const flat = Math.max(0, Math.round(Number(body.amountOffPaise) || 0));
+    if (!pct && !flat) return json(context, 400, { error: "A code has to take something off" });
+    await (await couponsTable()).upsertEntity(
+      {
+        partitionKey: COUPON_PK,
+        rowKey: code,
+        percentOff: pct,
+        amountOffPaise: flat,
+        active: body.active !== false,
+        maxRedemptions: Math.max(0, Math.round(Number(body.maxRedemptions) || 0)),
+        expiresAt: String(body.expiresAt || "").slice(0, 40),
+        note: String(body.note || "").slice(0, 120),
+        updatedBy: who.id,
+        updatedAt: new Date().toISOString(),
+      },
+      "Merge"
+    );
+    return json(context, 200, { ok: true, code });
+  }
+
+  if (action === "couponDelete") {
+    if (!isAdmin) return json(context, 403, { error: "Admins only" });
+    const code = couponCode(body.code);
+    try {
+      await (await couponsTable()).deleteEntity(COUPON_PK, code);
+    } catch {
+      // Gone is the outcome that was asked for.
+    }
+    return json(context, 200, { ok: true, code });
+  }
+
+  // ---- The buyer ----
+
+  const shelfId = safeId(body.shelfId, 80);
+
+  if (action === "quote" || action === "start") {
+    if (!shelfId) return json(context, 400, { error: "Which subject?" });
+    // A shelf is a platform row, so this is one point read in the library's
+    // own partition - never a search by name.
+    const subjects = tableClient("subjects");
+    await ensureTable(subjects);
+    let shelf = null;
+    try {
+      shelf = await subjects.getEntity(PLATFORM_PK, shelfId);
+    } catch {
+      shelf = null;
+    }
+    if (!shelf || !shelf.platform) return json(context, 404, { error: "No such subject" });
+    if (await ownsShelf(who.id, shelfId)) {
+      return json(context, 409, { error: "You already have this subject", owned: true });
+    }
+
+    // The live price, from the row an admin edits in Plans & pricing. Nothing
+    // here duplicates it, so changing it changes what the next buyer pays.
+    const rules = await platformRules();
+    const listPaise = rules.subjectPaise;
+    const quote = await couponQuote(couponCode(body.code), listPaise);
+
+    if (action === "quote") {
+      return json(context, 200, {
+        shelfId,
+        shelfTitle: shelf.title || shelfId,
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        couponLabel: quote.label || "",
+        couponMessage: quote.message,
+      });
+    }
+
+    // An order is a row, so a caller cannot make an unbounded number of them.
+    let open = 0;
+    const iter = orders.listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq '${String(who.id).replace(/'/g, "''")}' and status eq 'open'`,
+        select: ["RowKey"],
+      },
+    });
+    for await (const _ of iter) {
+      open += 1;
+      if (open >= MAX_OPEN_ORDERS) break;
+    }
+    if (open >= MAX_OPEN_ORDERS) {
+      return json(context, 429, { error: "Too many unfinished payments. Finish or cancel one first." });
+    }
+
+    const ref = newOrderRef();
+    await orders.createEntity({
+      partitionKey: who.id,
+      rowKey: ref,
+      shelfId,
+      shelfTitle: String(shelf.title || shelfId).slice(0, 120),
+      listPaise,
+      discountPaise: quote.discountPaise,
+      payablePaise: quote.payablePaise,
+      coupon: quote.code,
+      status: "open",
+      createdAt: new Date().toISOString(),
+      buyerName: who.name || "",
+      buyerEmail: who.email || "",
+    });
+    return json(context, 200, {
+      ref,
+      shelfId,
+      shelfTitle: shelf.title || shelfId,
+      listPaise,
+      discountPaise: quote.discountPaise,
+      payablePaise: quote.payablePaise,
+      coupon: quote.code,
+      couponMessage: quote.message,
+      upi: {
+        vpa: UPI_VPA,
+        payee: UPI_PAYEE_NAME,
+        link: upiLink(ref, quote.payablePaise),
+        note: `Vidai ${ref}`,
+      },
+    });
+  }
+
+  if (action === "claim" || action === "cancel") {
+    const ref = safeId(body.ref, 60);
+    if (!ref) return json(context, 400, { error: "Which payment?" });
+    const order = await readOrder(orders, who.id, ref);
+    if (!order) return json(context, 404, { error: "No such payment" });
+    if (order.status === "paid") return json(context, 409, { error: "That is already confirmed" });
+
+    if (action === "cancel") {
+      await orders.updateEntity(
+        { partitionKey: who.id, rowKey: ref, status: "cancelled", settledAt: new Date().toISOString() },
+        "Merge"
+      );
+      await dropPending(orders, who.id, ref);
+      return json(context, 200, { ok: true, ref, status: "cancelled" });
+    }
+
+    const payerRef = String(body.payerRef || "").replace(/[^A-Za-z0-9-]/g, "").slice(0, 40);
+    const claimedAt = new Date().toISOString();
+    await orders.updateEntity(
+      { partitionKey: who.id, rowKey: ref, status: "claimed", claimedAt, payerRef },
+      "Merge"
+    );
+    // Only now does it join the admin's queue: before this there was nothing
+    // for anybody to look at.
+    await orders.upsertEntity(
+      {
+        partitionKey: PENDING_PK,
+        rowKey: `${who.id}~${ref}`,
+        shelfId: order.shelfId,
+        shelfTitle: order.shelfTitle,
+        listPaise: order.listPaise,
+        discountPaise: order.discountPaise,
+        payablePaise: order.payablePaise,
+        coupon: order.coupon || "",
+        status: "claimed",
+        claimedAt,
+        payerRef,
+        buyerName: who.name || order.buyerName || "",
+        buyerEmail: who.email || order.buyerEmail || "",
+      },
+      "Merge"
+    );
+    return json(context, 200, { ok: true, ref, status: "claimed" });
+  }
+
+  return json(context, 400, { error: `Unknown action: ${action}` });
+};
+
 // Every handler goes through the CSRF guard, rather than each one remembering
 // to. Wrapping here means a handler added later is covered by default, which is
 // the only way a rule like this survives.

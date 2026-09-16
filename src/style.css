@@ -4312,3 +4312,94 @@ body.drawer-open {
   pointer-events: none;
 }
 .shot-open:hover::after { background: rgba(15, 15, 20, 0.85); }
+
+/* ---------- Buying a ready-made subject ---------- */
+/* The dialog is the modal's shell with a price at the top of it: the number
+   is the thing being decided, so it is the largest thing on the card. */
+
+.buy-price {
+  text-align: center;
+  padding: 4px 0 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+
+.buy-amount {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.buy-was s {
+  color: var(--faint);
+}
+
+/* The code and its Apply button are one control: the button is what makes the
+   price above change, so it must not wrap away from the box. */
+.buy-coderow {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.buy-coderow .modal-input {
+  flex: 1;
+  min-width: 0;
+  text-transform: uppercase;
+}
+
+.buy-coderow .btn {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.buy-codemsg {
+  margin-top: 6px;
+  color: var(--amber);
+}
+
+.buy-pay {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+}
+
+/* An anchor, not a button: `upi://` is a real navigation and a phone hands it
+   to GPay or PhonePe. It has to look like the primary action all the same. */
+.buy-upi {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.buy-vpa {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.buy-pay code {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1px 6px;
+}
+
+.buy-done {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.buy-done .buy-amount {
+  color: var(--green);
+  margin-bottom: 8px;
+}

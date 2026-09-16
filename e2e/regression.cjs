@@ -2264,7 +2264,16 @@ function check(ok, label) {
             !lib.studentSubjects.includes(lib.libSubjectId),
             "a student never sees the shelf among their subjects"
           );
-          check(lib.studentStatus === 403, `a student cannot open the master directly (${lib.studentStatus})`);
+          // 404, not 403. The re-partition made a row the caller cannot see
+          // read as MISSING rather than as refused — one fewer way to learn
+          // that an id exists — and a student's partition list never includes
+          // the library. This assertion was left at 403 and has been failing
+          // against production ever since; the behaviour is the documented
+          // one, so it is the test that was stale.
+          check(
+            lib.studentStatus === 404 || lib.studentStatus === 403,
+            `a student cannot open the master directly (${lib.studentStatus})`
+          );
         } finally {
           await putSession(wsAdmin);
           await page.evaluate(async ({ masterId, copyId, subjectId }) => {

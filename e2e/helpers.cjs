@@ -2176,6 +2176,283 @@ async function reportStatusChecks() {
   }
 }
 
+/**
+ * Buying a ready-made subject, driven through the real `/api/purchase`
+ * handler against a fake Table Storage.
+ *
+ * The three things worth proving by machine rather than by hand: that a
+ * discount code cannot be made to pay a teacher (the arithmetic and the
+ * clamps), that nobody but an admin can turn their own unpaid order into an
+ * owned shelf, and that confirming is what writes the `purchases` row — which
+ * is the one row the whole entitlement gate reads.
+ *
+ * The fake enforces ETags, without which the "a coupon is counted exactly
+ * once" assertion would pass while proving nothing.
+ */
+async function purchaseChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  let etagSeq = 0;
+  const stamp = (e) => ({ ...e, etag: `W/"${++etagSeq}"` });
+
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, stamp(e));
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, stamp(mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e }));
+    },
+    updateEntity: async (e, mode, opts) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      const had = rows.get(k);
+      if (!had) { const err = new Error("not found"); err.statusCode = 404; throw err; }
+      // A real table refuses a stale write, and this test exists because of it.
+      if (opts && opts.etag && opts.etag !== had.etag) {
+        const err = new Error("etag"); err.statusCode = 412; throw err;
+      }
+      rows.set(k, stamp(mode === "Replace" ? { ...e } : { ...had, ...e }));
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = (opts && opts.queryOptions && opts.queryOptions.filter) || "";
+      const want = pkOf(filter);
+      // Rule 2 with teeth: an unpartitioned listing is a bug, not a slow path.
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      const wantStatus = /status eq '((?:[^']|'')*)'/.exec(filter);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        if (wantStatus && String(row.status || "") !== wantStatus[1]) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  const build = () => {
+    const mod = { exports: {} };
+    const src = fs.readFileSync(CORE, "utf8")
+      .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+      + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS };";
+    new Function("module", "exports", "require", "__fakeTable", src)(
+      mod, mod.exports,
+      (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+      fakeTable
+    );
+    return mod.exports.__t;
+  };
+
+  // --- With no payee, the endpoint is not there ------------------------
+  //
+  // Read at module load, exactly like the model key: the feature is off, not
+  // broken, and the client hides the button on this answer.
+  process.env.TEACHER_EMAILS = "t@example.com";
+  process.env.ADMIN_EMAILS = "a@example.com";
+  delete process.env.UPI_VPA;
+  {
+    const off = build();
+    const cookie = off.signSession("vgo", "teach-1", off.GOOGLE_SESSION_TTL_MS, {
+      ep: 0, e: "t@example.com", n: "T",
+    });
+    const c = { res: null };
+    await off.handlers.purchase(c, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      body: { action: "quote", shelfId: "shelf-1" },
+    });
+    check(c.res.status === 501, `with no payee configured, buying answers 501 (${c.res.status})`);
+  }
+
+  // --- Switched on ------------------------------------------------------
+  process.env.UPI_VPA = "someone@upi";
+  process.env.UPI_PAYEE_NAME = "Vidai";
+  const t = build();
+
+  const TEACHER = "teach-1";
+  const tCookie = t.signSession("vgo", TEACHER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "t@example.com", n: "Teacher" });
+  const aCookie = t.signSession("vgo", "admin-1", t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "a@example.com", n: "Admin" });
+  const sCookie = t.signSession("vst", "priya", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+
+  const call = async (cookie, body, method = "POST", query = {}) => {
+    const c = { res: null };
+    await t.handlers.purchase(c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      body,
+      query,
+    });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+
+  // The shelf, in the library's own partition, and the live price.
+  rows.set(key("subjects", "~platform", "shelf-1"), {
+    partitionKey: "~platform", rowKey: "shelf-1", title: "CBSE Class 10 Maths", platform: true,
+  });
+  // Deliberately NOT the PLAN_DEFAULTS figure: if this handler read the
+  // constant instead of the admin's row, every assertion below would still
+  // pass at 49900.
+  rows.set(key("platform", "plan", "current"), {
+    partitionKey: "plan", rowKey: "current", subjectPaise: 55000,
+  });
+  rows.set(key("students", "student", "priya"), {
+    partitionKey: "student", rowKey: "priya", name: "Priya", teacherSub: TEACHER, tokenEpoch: 0,
+  });
+
+  // A student never sees a price.
+  const asStudent = await call(sCookie, { action: "quote", shelfId: "shelf-1" });
+  check(asStudent.status === 403, `a student cannot buy anything (${asStudent.status})`);
+
+  // --- The price, and codes against it ---------------------------------
+  const plain = await call(tCookie, { action: "quote", shelfId: "shelf-1" });
+  check(
+    plain.status === 200 && plain.data.payablePaise === 55000,
+    `the quote is the price an admin set in Plans & pricing, not the default (${plain.data.payablePaise})`
+  );
+  check(
+    plain.data.shelfTitle === "CBSE Class 10 Maths",
+    "and names the shelf being bought"
+  );
+
+  rows.set(key("coupons", "coupon", "PILOT20"), {
+    partitionKey: "coupon", rowKey: "PILOT20", percentOff: 20, active: true, maxRedemptions: 2, redeemed: 0,
+  });
+  const off20 = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "pilot20" });
+  check(
+    off20.data.discountPaise === 11000 && off20.data.payablePaise === 44000,
+    `20% off ₹550 is ₹440 (${off20.data.payablePaise})`
+  );
+  check(off20.data.coupon === "PILOT20", "and a lower-case code still matches — it is typed on a phone");
+
+  const nonsense = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "NOPE-NOPE" });
+  check(
+    nonsense.status === 200 && nonsense.data.payablePaise === 55000 && !!nonsense.data.couponMessage,
+    "a code that does not exist is the list price with a sentence, not an error"
+  );
+
+  // A discount can make something free. It must never make it owed.
+  rows.set(key("coupons", "coupon", "HUGE"), {
+    partitionKey: "coupon", rowKey: "HUGE", percentOff: 90, amountOffPaise: 900000, active: true, redeemed: 0,
+  });
+  const huge = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "HUGE" });
+  check(
+    huge.data.payablePaise === 0 && huge.data.discountPaise === 55000,
+    `a discount is clamped at the price, never below zero (${huge.data.payablePaise})`
+  );
+
+  rows.set(key("coupons", "coupon", "SPENT"), {
+    partitionKey: "coupon", rowKey: "SPENT", percentOff: 50, active: true, maxRedemptions: 3, redeemed: 3,
+  });
+  const spent = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "SPENT" });
+  check(spent.data.payablePaise === 55000, "a used-up code takes nothing off");
+  rows.set(key("coupons", "coupon", "OLD"), {
+    partitionKey: "coupon", rowKey: "OLD", percentOff: 50, active: true,
+    expiresAt: "2020-01-01T00:00:00.000Z", redeemed: 0,
+  });
+  const old = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "OLD" });
+  check(old.data.payablePaise === 55000, "and so does an expired one");
+
+  // --- Starting, and paying ---------------------------------------------
+  const started = await call(tCookie, { action: "start", shelfId: "shelf-1", code: "PILOT20" });
+  const ref = started.data.ref;
+  check(started.status === 200 && !!ref, `starting an order gives a reference (${ref})`);
+  check(
+    String(started.data.upi.link).includes("am=440.00") &&
+      String(started.data.upi.link).includes("someone%40upi"),
+    `the UPI link carries the amount and the payee (${started.data.upi.link})`
+  );
+  check(
+    String(started.data.upi.link).includes(ref),
+    "and the reference, which is how the payment is matched back"
+  );
+
+  // Nothing is in the admin's queue yet: an order nobody has paid is not a
+  // payment waiting.
+  const emptyQueue = await call(aCookie, {}, "GET", { pending: "1" });
+  check(
+    emptyQueue.status === 200 && emptyQueue.data.rows.length === 0,
+    `an unpaid order is not in the queue (${emptyQueue.data.rows.length})`
+  );
+
+  const claimed = await call(tCookie, { action: "claim", ref, payerRef: "402512345678" });
+  check(claimed.status === 200, `the buyer can say they have paid (${claimed.status})`);
+  const queue = await call(aCookie, {}, "GET", { pending: "1" });
+  check(queue.data.rows.length === 1, `and then it is in the admin's queue (${queue.data.rows.length})`);
+  check(
+    queue.data.rows[0].payablePaise === 44000 && queue.data.rows[0].coupon === "PILOT20",
+    "with the discounted amount and the code that did it"
+  );
+  check(queue.data.rows[0].buyerName === "Teacher", "and who is waiting on it");
+
+  // --- The gate ----------------------------------------------------------
+  const selfPaid = await call(tCookie, { action: "confirm", sub: TEACHER, ref });
+  check(selfPaid.status === 403, `a buyer cannot confirm their own payment (${selfPaid.status})`);
+  check(
+    !rows.has(key("purchases", TEACHER, "shelf-1")),
+    "and nothing was written when they tried"
+  );
+  const teacherQueue = await call(tCookie, {}, "GET", { pending: "1" });
+  check(teacherQueue.status === 403, `a teacher cannot read the whole platform's queue (${teacherQueue.status})`);
+
+  // --- Confirming is what grants the shelf -------------------------------
+  const done = await call(aCookie, { action: "confirm", sub: TEACHER, ref });
+  check(done.status === 200, `an admin confirms it (${done.status})`);
+  const purchase = rows.get(key("purchases", TEACHER, "shelf-1"));
+  check(!!purchase, "the purchase row is written — that is what `ownsShelf` reads");
+  check(
+    purchase && purchase.pricePaise === 44000 && purchase.listPaise === 55000 && purchase.coupon === "PILOT20",
+    "and records what was actually paid, not just the list price"
+  );
+  check(purchase && purchase.method === "upi", "stamped with how it was paid, for the day a gateway does it");
+  check(
+    rows.get(key("orders", TEACHER, ref)).status === "paid",
+    "the order is marked paid"
+  );
+  check(
+    !rows.has(key("orders", "~pending", `${TEACHER}~${ref}`)),
+    "and leaves the queue, so it stays the length of the queue and not of the history"
+  );
+  check(
+    rows.get(key("coupons", "coupon", "PILOT20")).redeemed === 1,
+    `the code counts one redemption (${rows.get(key("coupons", "coupon", "PILOT20")).redeemed})`
+  );
+
+  const again = await call(aCookie, { action: "confirm", sub: TEACHER, ref });
+  check(again.status === 409, `confirming twice is refused, so a code cannot be double-counted (${again.status})`);
+  check(rows.get(key("coupons", "coupon", "PILOT20")).redeemed === 1, "and the count did not move");
+
+  // Owning it means the buy flow says so rather than selling it twice.
+  const owned = await call(tCookie, { action: "quote", shelfId: "shelf-1" });
+  check(owned.status === 409 && owned.data.owned === true, `a shelf already owned is not sold again (${owned.status})`);
+
+  // --- Their own orders are their own -----------------------------------
+  const mine = await call(tCookie, {}, "GET", {});
+  check(
+    mine.status === 200 && mine.data.orders.length === 1 && mine.data.orders[0].status === "paid",
+    `a buyer sees their own order and its state (${JSON.stringify(mine.data.orders.map((o) => o.status))})`
+  );
+  const otherBuyer = t.signSession("vgo", "teach-2", t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "t2@example.com", n: "T2" });
+  const theirs = await call(otherBuyer, {}, "GET", {});
+  check(
+    theirs.data.orders.length === 0,
+    `and nobody else's — the listing is their own partition (${theirs.data.orders.length})`
+  );
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
@@ -2187,6 +2464,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => partitionChecks())
   .then(() => roleChoiceChecks())
   .then(() => reportStatusChecks())
+  .then(() => purchaseChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
     process.exit(failures ? 1 : 0);

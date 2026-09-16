@@ -163,7 +163,9 @@ unlike the `vidai.seyali.app` entry above which is done.
   `ASSESS_MONTHLY_CREDITS` bound the spend, and `AI_USD_PER_M_IN` /
   `AI_USD_PER_M_OUT` / `USD_INR` price the usage report; see below), `GOOGLE_CLIENT_ID`,
   `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`,
-  `students` are auto-created), `SESSION_SECRET` (any long random string —
+  `students` are auto-created), `UPI_VPA` + `UPI_PAYEE_NAME` (optional — together
+  they switch on buying a ready-made subject; without `UPI_VPA` the endpoint
+  answers 501 and the client hides Buy), `SESSION_SECRET` (any long random string —
   signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
   addresses that get the teacher role).
 - Admin: `ADMIN_USERNAME` + `ADMIN_PASSWORD` app settings enable
@@ -1604,8 +1606,7 @@ item, `?library=1` answered *Teachers only*, and `POST /api/subjects` and
   `opts.marking` is set — reached through their own marking queue. A parent
   *reading* a child's paper still waits for release, exactly as before.
 
-**Not done, and it is the next slice**: payments. A parent past the free
-allowance gets the 402 naming ₹499 and no way to pay it.
+That 402 now has a door on it — see *Paying for a ready-made subject* below.
 
 **One leftover of the re-partition fixed in passing**: the adopt gate read the
 master with `tests.getEntity("test", ids[0])` — the old constant partition — so
@@ -1724,9 +1725,118 @@ accounts list with **Free forever**, **paid seats** and **extend trial** as
 manual levers. Those levers are what make the payment stub honest — a real
 teacher can be run end to end today, with money arriving later.
 
-**Payments are deliberately not built.** Razorpay, invoices, renewal and
-charging a card are the next slice; seats are counted, priced and shown, never
-billed. CLAUDE.md's "payments: later, only when v1 loop is proven" still holds.
+**The one-off ₹499 subject can now be bought** (below). The teacher's monthly
+fee and the per-seat price are still counted, priced and shown but never
+billed: a subscription is renewal, expiry and what happens to a roster when it
+lapses, which is materially more than a one-off unlock and does not belong in
+the same slice.
+
+## Paying for a ready-made subject (`/api/purchase`, UPI)
+
+A parent or teacher past the free shelf allowance got a 402 naming ₹499 and no
+way to pay it — a price with no door is read as a broken product. There is no
+registered business behind Vidai yet, so the first route is the one that needs
+none: **the buyer pays by UPI into the platform's own VPA and an admin
+confirms the sale.**
+
+### One seam, so the gateway is a caller and not a rewrite
+
+`settlePurchase(order, by, method, payerRef)` is the only place that says "this
+account owns this shelf". The admin's **Confirm** calls it; a Razorpay webhook
+will call the same function with a different `method`. Nothing the buyer sees,
+and no row recording what they own, changes on the day it does. The purchase
+row is written **before** the order is marked: a crash between the two leaves an
+order that still looks unconfirmed, which an admin can press again harmlessly
+(the upsert is idempotent) — the other order would have taken the money and
+granted nothing.
+
+### The tables
+
+| Table | PK | RK | Why |
+|---|---|---|---|
+| `coupons` | `"coupon"` | the code | one point read per quote |
+| `orders` | the buyer's sub | the ref | "my orders" is one partition |
+| `orders` | `"~pending"` | `<sub>~<ref>` | the admin's queue, one partition |
+
+**That second `orders` row is an index, and it exists for rule 2.** Without it
+"show me every unconfirmed payment" is a scan of the whole table that grows with
+the sales history forever. It is written when the buyer says they have paid —
+before that there is nothing for an admin to look at — and **deleted the moment
+the order is settled or refused**, so it stays the length of the *queue* rather
+than the length of the history.
+
+### Two app settings, and without them the feature is off
+
+`UPI_VPA` (required) and `UPI_PAYEE_NAME` (default `Vidai`), set per
+environment in the Azure portal — **production's settings do not reach QA**.
+Without a VPA `/api/purchase` answers **501** and `paymentsAvailable()` in
+`src/payments.ts` hides Buy everywhere, exactly as `/api/assess` does without
+its model key and for the same reason: a button that cannot work is worse than
+no button.
+
+### There is no QR code, deliberately
+
+Drawing one needs an encoder dependency. The buyers are on cheap Android
+phones, where `upi://pay?pa=…&am=…&tn=Vidai <ref>` opens GPay or PhonePe with
+the amount and the reference already filled in — the better affordance anyway.
+On a laptop the VPA is shown with a Copy button.
+
+### The price is the admin's row, and a code comes off it
+
+The quote reads `subjectPaise` through `platformRules()`, which is the number
+in **Plans & pricing** — nothing here duplicates it, so changing it changes what
+the next buyer pays (within `PLAN_TTL_MS`, 60s). A coupon carries `percentOff`
+and/or `amountOffPaise`; the two **add**, and the total is clamped at the price,
+so a discount can make something free and never make it owed.
+
+**A wrong code is answered exactly like no code**: the list price with a
+sentence saying why, never an error. So a guess learns nothing beyond "not that
+one", and the real bound is `maxRedemptions`— the worst case is a sale at a
+price the admin had already decided to give somebody. **This deliberately does
+not go through `loginGate`**, which would have been worse than nothing: the IP
+bucket is shared with signing in, so a school behind one NAT address could have
+been locked out of the app by somebody mistyping a discount code.
+
+**A redemption is counted ETag'd with a bounded retry**, not read-modify-write —
+the same line `aiusage` draws between a throttle and a ledger. Confirming an
+order twice is a 409, so a code cannot be double-counted, and `e2e/helpers.cjs`
+proves both against a fake table **that actually enforces ETags**, without which
+the assertion would pass while proving nothing.
+
+### What is recorded is what was paid
+
+The `purchases` row carries `pricePaise` (what was actually paid), `listPaise`,
+the `coupon`, the `orderRef` and the `method`. A discount that is not recorded
+is a price nobody can explain six months later.
+
+### The screens
+
+- **`src/screens/buy.ts`** — the payment dialog. It is **not** `openModal`:
+  that dialog is a form you fill in and submit once, while this one talks to
+  the server *while it is open* (a code is applied and the price above it
+  changes) and ends in a payment link rather than a save. What it borrows is
+  the modal's manners — the scrim, Escape, the focus trap, `body.modal-open`,
+  and the action row that ends at the right — the same trade `photoviewer.ts`
+  makes.
+- **It is opened from the refusal, not from a menu.** `adoptTests` carries the
+  402 **structurally** (`payment: {shelfId, subjectPaise, limit, used}`) rather
+  than leaving it in the message, so Browse, New subject and the editor's **+**
+  can each offer the thing the sentence describes. In the two that open it from
+  inside another dialog's `onSubmit`, it is **deferred a tick** — a dialog
+  opened there loses to that dialog's own teardown, the same reason
+  `showNewLogin` is deferred.
+- **Closing without paying cancels the order.** Otherwise an abandoned order
+  eats one of the buyer's twenty open slots for nothing.
+- **Admin → Payments** (`showPayments`, rail item beside Plans & pricing):
+  the waiting queue with Confirm / Not received, and the discount codes.
+
+### Not done
+
+Razorpay itself — the order-create endpoint, Checkout on the client and the
+signature-verified webhook — plus the subscription side (the teacher's monthly
+fee and per-seat price). Checkout also needs its script added to a
+`script-src 'self'` that currently has no external script at all, which is a
+CSP change to make deliberately and test, not to discover in front of a class.
 
 ### Two attempts at a ready-made test
 

@@ -309,10 +309,26 @@ export async function fetchLibrary(subjectId?: string): Promise<ServerTestMeta[]
  * Many ids go in ONE request — a teacher building a subject from the library
  * picks several chapters, and that must not be a POST per chapter.
  */
+export interface AdoptRefusal {
+  /** The shelf the copies would have come from — what there is to buy. */
+  shelfId: string;
+  subjectPaise: number;
+  limit: number;
+  used: number;
+}
+
 export async function adoptTests(
   ids: string[],
   into?: string | null
-): Promise<{ ok: boolean; message?: string; tests?: ServerTestMeta[] }> {
+): Promise<{
+  ok: boolean;
+  message?: string;
+  tests?: ServerTestMeta[];
+  /** Set only on a 402: the free allowance is spent and the shelf is for sale.
+   *  Carried structurally rather than left in the message, so a caller can
+   *  offer the thing the sentence describes instead of only saying it. */
+  payment?: AdoptRefusal;
+}> {
   try {
     const res = await apiFetch("/api/tests", {
       method: "POST",
@@ -320,7 +336,18 @@ export async function adoptTests(
       body: JSON.stringify({ action: "adopt", ids, ...(into ? { subjectId: into } : {}) }),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { ok: false, message: data.error || "Request failed" };
+    if (!res.ok) {
+      const payment =
+        res.status === 402 && data.shelfId
+          ? {
+              shelfId: String(data.shelfId),
+              subjectPaise: Number(data.subjectPaise) || 0,
+              limit: Number(data.limit) || 0,
+              used: Number(data.used) || 0,
+            }
+          : undefined;
+      return { ok: false, message: data.error || "Request failed", payment };
+    }
     return { ok: true, tests: (data.tests ?? []) as ServerTestMeta[] };
   } catch {
     return { ok: false, message: "Network error" };
@@ -330,9 +357,14 @@ export async function adoptTests(
 export async function adoptTest(
   id: string,
   into?: string | null
-): Promise<{ ok: boolean; message?: string; test?: ServerTestMeta }> {
+): Promise<{ ok: boolean; message?: string; test?: ServerTestMeta; payment?: AdoptRefusal }> {
   const result = await adoptTests([id], into);
-  return { ok: result.ok, message: result.message, test: result.tests?.[0] };
+  return {
+    ok: result.ok,
+    message: result.message,
+    test: result.tests?.[0],
+    payment: result.payment,
+  };
 }
 
 /** Who is part-way through a test, when publishing is refused because of it. */
