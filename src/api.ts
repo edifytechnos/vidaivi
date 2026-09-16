@@ -212,11 +212,25 @@ export async function mutateSubject(
  * caller's own partition and the library, so a parent opening their child's
  * result got a 404 and the screen said "That attempt could not be opened".
  */
-export async function fetchServerTest(id: string, student?: string): Promise<Test | null> {
+/**
+ * One full test.
+ *
+ * `student` reads **as** that child — a parent's route, judged by the student's
+ * own visibility rules. `markFor` is the other thing: a teacher or an admin
+ * opening that student's paper to mark it, judged by their own staff rules, so
+ * an unpublished or narrowly-assigned paper still opens. They are separate
+ * because conflating them 404s a marker on exactly the papers they mark.
+ */
+export async function fetchServerTest(
+  id: string,
+  student?: string,
+  markFor?: string
+): Promise<Test | null> {
   if (!isLoggedIn()) return null;
   try {
     const params = new URLSearchParams({ id });
     if (student) params.set("student", student);
+    if (markFor) params.set("forStudent", markFor);
     const res = await apiFetch(`/api/tests?${params}`, {
       headers: authHeader(),
     });

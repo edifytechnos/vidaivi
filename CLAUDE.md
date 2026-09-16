@@ -2170,6 +2170,39 @@ chapter test is for.
   someone else's paper is open (`owner` in `review.ts`, set from
   `opts.studentName`).
 
+### An admin can open the papers in their own marking queue
+
+**Every row in the queue answered "the test has been deleted"** — 7 of 7 on
+production — about tests that were perfectly alive. Two causes, and both had to
+go:
+
+- A point read names a partition, and a marker's own partitions are their own
+  work and the library. A **teacher's** own student is no problem, because the
+  paper is in the teacher's own partition; an **admin** reads someone else's.
+- `canManageTest` would have refused it anyway: an admin manages masters and
+  their own rows, not a teacher's.
+
+**`GET /api/tests?id=&forStudent=<username>`** says *"I am marking this
+student's paper"*. The gate is **`canSeeStudent`** — the same one
+`/api/attempts` and `/api/answerimage` already use to hand this caller that
+student's answers and the photographs of their handwriting. Refusing them the
+*question* those answers belong to was the incoherent half; the endpoint gained
+a role rather than a new rule, exactly as `/api/attempts` did.
+
+- **It is deliberately not `student=`.** That reads *as* the child and judges
+  visibility by the student's rules, which would 404 a marker on an unpublished
+  or narrowly-assigned paper — and the paper being marked is very often exactly
+  that. The two are separate arguments on `fetchServerTest(id, student?,
+  markFor?)` for that reason.
+- **Teachers and admins only.** A parent marks nobody else's student, and their
+  own child's test is already in their own partition.
+- The one extra row it reaches is **the test that student's own teacher owns**.
+  `e2e/helpers.cjs` proves it is not a skeleton key: an admin naming a student
+  cannot open a test their teacher does not own, a teacher cannot name somebody
+  else's student, and the plain `?id=` read still 404s.
+- The partition list is **deduplicated** — a teacher's own id is already first,
+  so the common case stays one round trip.
+
 ### A saved mark reaches the question list
 
 The tree is drawn from the **attempt**; the marks live in the **grading**

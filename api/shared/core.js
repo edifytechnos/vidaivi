@@ -3059,8 +3059,46 @@ handlers.tests = async (context, req) => {
   // username, not the parent's.
   const asUsername = asChild ? wantedChild : who.username || "";
 
+  // --- Marking somebody else's student's paper ---------------------------
+  //
+  // A point read has to name a partition, and a marker's own partitions are
+  // their own work and the library. A teacher's own student is no problem —
+  // the paper is in the teacher's own partition — but an **admin** could see
+  // every row in the marking queue and open none of them: every `?id=` came
+  // back 404 and the screen said the test had been deleted, about tests that
+  // were alive. `canManageTest` would have refused it in any case: an admin
+  // manages masters and their own rows, not a teacher's.
+  //
+  // `forStudent` says "I am marking this student's paper". The gate is
+  // `canSeeStudent` — the same one `/api/attempts` and `/api/answerimage`
+  // already use to hand this caller that student's answers and the
+  // photographs of their handwriting. Refusing them the *question* those
+  // answers belong to was the incoherent half.
+  //
+  // It is deliberately NOT `student=`: that reads as the child, which flips
+  // visibility to the student's rules and would 404 a marker on an
+  // unpublished or narrowly-assigned test — the paper being marked is often
+  // exactly that.
+  const markFor = String((req.query && req.query.forStudent) || "").trim().toLowerCase();
+  // Teachers and admins only. A parent marks nobody else's student, and their
+  // own child's test is already in their own partition.
+  let markTeacher = "";
+  if (markFor && (who.role === "teacher" || who.role === "admin")) {
+    const refusal = await canSeeStudent(who, markFor);
+    if (refusal) return refuse(context, refusal);
+    // Already read and memoised by the gate above, so this costs nothing.
+    const rec = await studentRecord(markFor);
+    markTeacher = String((rec && rec.teacherSub) || "");
+  }
+
   function visible(e) {
-    if (isStaff && !asChild) return canManageTest(who, e) || (e.platform && e.status === "published");
+    if (isStaff && !asChild) {
+      // The one extra row a marker reaches: the test their student's own
+      // teacher owns — nothing else, and only for a student the gate above
+      // already let them see.
+      if (markTeacher && e.ownerSub === markTeacher) return true;
+      return canManageTest(who, e) || (e.platform && e.status === "published");
+    }
     if (e.status !== "published") return false;
     // A master (platform) test reaches no student directly: a student only ever
     // sees their own teacher's copy of it, made with the "adopt" action.
@@ -3075,7 +3113,15 @@ handlers.tests = async (context, req) => {
   // and the library. A student, or a parent reading as their child: that
   // child's teacher and nobody else, because a master reaches no student
   // directly and another teacher's class is not theirs.
-  const readPartitions = isStaff && !asChild ? staffPartitions : [teacherSub];
+  // A marker adds the partition their student's paper actually lives in. It is
+  // deduplicated because `readByPartitions` awaits in sequence and a teacher's
+  // own id is already the first entry — the common case stays one round trip.
+  const readPartitions =
+    isStaff && !asChild
+      ? markTeacher
+        ? [...new Set([...staffPartitions, markTeacher])]
+        : staffPartitions
+      : [teacherSub];
 
   if (wantedId) {
     const entity = await readByPartitions(tests, readPartitions, wantedId, LEGACY_TEST_PK);
