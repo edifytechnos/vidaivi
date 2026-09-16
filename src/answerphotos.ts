@@ -8,6 +8,7 @@
 
 import { answerImageUrl, removeAnswerImage, uploadAnswerImage } from "./auth";
 import { escapeHtml, ICONS } from "./dom";
+import { bindPhotoViewer } from "./photoviewer";
 
 const MAX_EDGE = 1600;
 const JPEG_QUALITY = 0.72;
@@ -80,7 +81,8 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
       .map(
         (blob, i) => `
         <figure class="shot" data-blob="${escapeHtml(blob)}">
-          <div class="shot-img"><img alt="Your working, photo ${i + 1}" /></div>
+          <button type="button" class="shot-img shot-open"
+                  aria-label="Open photo ${i + 1} full screen"><img alt="Your working, photo ${i + 1}" /></button>
           <figcaption class="shot-foot">
             <span>Page ${i + 1}</span>
             <button type="button" class="shot-x" data-remove="${escapeHtml(blob)}"
@@ -140,6 +142,10 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
     busy = false;
   });
 
+  // A student checks their own photo is readable before handing it in — the
+  // same viewer their teacher will mark from.
+  bindPhotoViewer(shots);
+
   paint();
   return () => images.slice();
 }
@@ -158,14 +164,23 @@ export async function hydrateThumbs(root: HTMLElement): Promise<void> {
   );
 }
 
-/** Read-only strip of handed-in photos, for review and marking screens. */
+/**
+ * Read-only strip of handed-in photos, for review and marking screens.
+ *
+ * Each thumbnail is a BUTTON, not a bare image: 132px of a page of working says
+ * a page was handed in and cannot be read, so opening it full screen has to be
+ * reachable by keyboard and announced as an action. `bindPhotoViewer` on any
+ * ancestor does the rest.
+ */
 export function photoStrip(images: string[], label: string): string {
   if (!images.length) return "";
   return `<div class="shots shots-read">
     ${images
       .map(
         (blob, i) => `<figure class="shot" data-blob="${escapeHtml(blob)}">
-        <div class="shot-img"><img alt="${escapeHtml(label)}, photo ${i + 1}" /></div>
+        <button type="button" class="shot-img shot-open"
+                aria-label="Open ${escapeHtml(label)}, photo ${i + 1}, full screen"><img
+          alt="${escapeHtml(label)}, photo ${i + 1}" /></button>
       </figure>`
       )
       .join("")}

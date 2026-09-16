@@ -11,6 +11,7 @@
 import { optionIndex } from "../data";
 import { track } from "../analytics";
 import { hydrateThumbs, photoStrip } from "../answerphotos";
+import { bindPhotoViewer } from "../photoviewer";
 import {
   assessAnswer,
   attemptCounts,
@@ -587,6 +588,10 @@ export async function showReview(
   };
 
   render();
+  // One binding for every role that reads a paper here — the teacher marking
+  // it, the parent watching, the student checking their own. It is delegated
+  // from `app`, so it survives each render() without being re-attached.
+  bindPhotoViewer(app);
 
   // Marks the teacher has awarded since this device last looked. Only worth
   // asking once the paper is open — while it is shut nothing on screen would
