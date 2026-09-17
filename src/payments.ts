@@ -10,6 +10,10 @@
 import { apiFetch, authHeader } from "./auth";
 
 export interface Quote {
+  /** "shelf" or "credits" — what this order is for. */
+  kind?: string;
+  /** Credits in the pack, when kind is "credits". */
+  credits?: number;
   shelfId: string;
   shelfTitle: string;
   listPaise: number;
@@ -106,6 +110,14 @@ async function get<T>(query: string): Promise<T | null> {
 /** What it costs, with a code applied. Writes nothing. */
 export const quoteShelf = (shelfId: string, code?: string) =>
   post<Quote>({ action: "quote", shelfId, code: code || "" });
+
+/** The same two calls for a pack of AI credits. The dialog that opens on them
+ *  is the same dialog: what is bought differs, paying for it does not. */
+export const quoteCredits = (code?: string) =>
+  post<Quote & { credits: number }>({ action: "quote", kind: "credits", code: code || "" });
+
+export const startCreditOrder = (code?: string) =>
+  post<StartedOrder & { credits: number }>({ action: "start", kind: "credits", code: code || "" });
 
 /** Opens an order and hands back the UPI link to pay it with. */
 export const startOrder = (shelfId: string, code?: string) =>

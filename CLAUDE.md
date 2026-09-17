@@ -1838,6 +1838,128 @@ fee and per-seat price). Checkout also needs its script added to a
 `script-src 'self'` that currently has no external script at all, which is a
 CSP change to make deliberately and test, not to discover in front of a class.
 
+## A parent marks their child's paper in one click, and pays in credits
+
+A parent's child hands a paper to **nobody**. There is no teacher behind them,
+so the alternative to the AI marking it is not a person marking it — it is the
+paper sitting unmarked forever. That one fact is what shapes everything below.
+
+### The one click awards the marks, and this is a deliberate exception
+
+`POST /api/assess {action:"test", username, testId}` assesses **every**
+outstanding answer on one paper and **opens it to the child**, in one call.
+Unlike every other path, the model's number is written as `awarded` and the row
+moves to `marked`.
+
+CLAUDE.md's rule — *the AI proposes, the teacher awards* — still holds
+everywhere else and is not weakened. Here **the parent is the marker** and the
+button acts on their behalf: `aiAwarded` is kept beside `awarded` so they can
+see where the number came from, and every mark is theirs to change on the paper
+afterwards. It is scoped hard:
+
+- **Their own child only.** The student's `teacherSub` must be the caller
+  (admins may stand in). A **linked** child — one redeemed from a teacher's
+  invite code — is refused 403: that paper belongs to whoever issued the login.
+- **The whole paper is reserved before anything is spent.** Four of seven
+  answers marked is worse to read than none, so a balance that cannot cover the
+  lot is a 402 that names both numbers and the model is never called.
+- **Pressing it twice costs nothing**: the walk filters `status eq 'submitted'`,
+  so answers already marked are not re-read.
+- **Release runs even when an answer failed.** What was marked is worth
+  reading, and a paper kept shut by one timeout is the dead end this removes.
+- The daily counter is written **once after the batch**, not per answer: it is a
+  plain upsert and three in flight would race. The credit ledger is ETag'd and
+  is safe in parallel — the same line this file already draws between a throttle
+  and a ledger.
+
+### Two wallets, one ledger (`walletFor`)
+
+| Account | Partition | Shape |
+|---|---|---|
+| Teacher, admin | `YYYY-MM` | an allowance that refills, exactly as before |
+| **Parent** | **`~wallet`** | a **balance**: one trial grant, then packs |
+
+A parent's credits cannot live in a partition that resets on the 1st, or *"once
+it is used up you buy more"* would be untrue by the end of the month. Both are
+the same row shape in the same table, so the admin report, the low-balance
+warning and the ETag'd increment stay one implementation.
+
+`walletFor(who)` is the only thing that knows which is which, and `walletOf`
+is the same with the admin's own `parentTrialCredits` applied — the same
+discipline `creditsAreLow` keeps, and for the same reason.
+
+### What a paper costs: `assessCost`, stamped on write
+
+`chunkQuestions` stamps it beside `questionCount` and `totalMarks` (rule 5): one
+credit per **long** or **short** answer, nothing for an MCQ. A 15-question paper
+with 7 of those costs 7.
+
+It is the **worst case on purpose**, because it is what a *gate* reserves — a
+short answer that is just a number auto-grades and spends nothing, so a parent
+is never charged for one. Reserving less is how somebody runs dry halfway
+through their own child's paper.
+
+**`storedCounts` returns null unless all three are stamped.** A row written
+before `assessCost` existed carries the first two, and answering "stamped" for
+it would mean `backfillCounts` never healed it and the cost read as absent
+forever. Returning null sends those rows through the same bounded heal.
+
+### The gate: a child cannot start a paper nobody can mark
+
+Enforced in `POST /api/attempts {action:"progress"}`, and three properties
+matter more than the rule itself:
+
+- **It fails OPEN.** `issuerIsParent` blocks only when the issuing account has
+  **positively** declared itself a parent (`accounts.chose === "parent"`). A
+  teacher in `TEACHER_EMAILS` may have no accounts row at all, and reading "no
+  row" as "parent" would have credit-gated the pilot teacher's whole class on
+  the day this shipped. `e2e/helpers.cjs` asserts it with an **emptied** wallet
+  behind both non-parents — without that the assertion passes on an untouched
+  trial grant and proves nothing.
+- **A paper already begun is never taken away.** The check runs on the CREATE of
+  the in-progress row only, decided by one point query projected to the row key.
+  A student stopped at question nine because a balance moved is worse than
+  anything this prevents.
+- **An unknown cost is not free.** A row not yet healed blocks rather than
+  waving through.
+
+**The child is never told it is about money.** The 402 says the test is not
+available yet and to ask whoever set it up; the tile says *not available yet*
+with no reason, and the listing `delete`s `assessCost` from a student's copy.
+The numbers ride on the response for the *parent's* screen. `saveProgress` now
+reports a 402 back — it is fire-and-forget by design, but a refusal is not a
+dropped write the next answer heals, and swallowing it let a child fill in a
+whole paper that was never going to be stored.
+
+### Buying credits rides the same seam as the ₹499 shelf
+
+A pack is `kind: "credits"` on the same order, quoted from the same plan row,
+paid with the same UPI link and confirmed from the same admin queue.
+`settlePurchase` branches once: a shelf writes a `purchases` row, a pack calls
+`grantCreditsTo`, which raises `granted` and leaves `used` alone — a top-up
+never forgives what was already spent, and a wallet with no row yet already
+holds the trial grant, so topping one up must not cancel it.
+
+Three numbers on the Plans screen, none of them constants:
+`parentTrialCredits` (100), `creditPackCredits`, `creditPackPaise`.
+
+### The admin sees both wallets
+
+`GET /api/aiusage?month=` walks **two** partitions — the month and `~wallet` —
+with the same projection. Each row carries `lifetime`, so the screen says
+"balance" or "this month" rather than implying a parent's credits reset, and
+`POST {action:"grant", lifetime:true}` tops up a parent. `lifetime` names the
+partition explicitly rather than letting a caller pass one.
+
+### The parent's screen
+
+`showChildResults` fetches tests, attempts, grading rows and the balance in one
+`Promise.all`. The grading rows come back for the **whole child**, not per test:
+one request per paper is an N+1 from a phone (rule 3). Each paper with answers
+waiting gets **Mark N & release**; the balance sits above the list and turns
+amber when low, with **Top up** beside it. A balance that fails to load says
+**nothing** — the server's gate is the real limit.
+
 ### Two attempts at a ready-made test
 
 `subjectAttempts` was declared, shown on the admin screen and **never read**

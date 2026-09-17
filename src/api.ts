@@ -36,6 +36,15 @@ export interface ServerTestMeta {
   updatedAt?: string;
   /** Library listing only: this teacher already has a copy of this master. */
   adopted?: boolean;
+  /**
+   * Student listing only: this paper cannot be started yet. It carries NO
+   * reason — the child is a minor and whoever set them up not having the
+   * credits to mark it is not their business. The server refuses the start
+   * regardless; this only stops the tile inviting a tap that gets refused.
+   */
+  locked?: boolean;
+  /** What the whole paper costs to mark with AI. Never sent to a student. */
+  assessCost?: number | null;
 }
 
 export interface TestProblem {

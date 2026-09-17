@@ -329,9 +329,11 @@ export function showAiUsage(month?: string) {
             r.low ? ` <span class="credit-low">Low</span>` : ""
           }</div>
           <div class="hint">${r.used} of ${r.granted} credits used · ${r.left} left ·
-            ${rupees(r.costInr)} · ${r.promptTokens + r.completionTokens} tokens</div>
+            ${rupees(r.costInr)} · ${r.promptTokens + r.completionTokens} tokens ·
+            ${r.lifetime ? "balance" : "this month"}</div>
         </div>
         <button class="btn-link ai-grant" data-id="${escapeHtml(r.teacherId)}"
+          data-lifetime="${r.lifetime ? "1" : ""}"
           data-granted="${r.granted}">Change credits</button>
       </div>`
       )
@@ -340,7 +342,11 @@ export function showAiUsage(month?: string) {
       btn.addEventListener("click", () =>
         openModal({
           title: "Change credits",
-          description: `How many AI assessments this teacher may run in ${shown}.`,
+          description: btn.dataset.lifetime
+            ? // A parent's credits are a balance, not an allowance. Saying
+              // "in September" about one would be a lie the screen repeats.
+              "This parent's total AI credits. It does not reset — raise it to top them up."
+            : `How many AI assessments this teacher may run in ${shown}.`,
           fields: [
             { name: "credits", label: "Credits", required: true, value: btn.dataset.granted || "" },
           ],
@@ -348,7 +354,7 @@ export function showAiUsage(month?: string) {
           onSubmit: async (values) => {
             const n = Number(values.credits);
             if (!Number.isFinite(n) || n < 0) return "Credits must be a number.";
-            const res = await grantCredits(btn.dataset.id!, n, shown);
+            const res = await grantCredits(btn.dataset.id!, n, shown, !!btn.dataset.lifetime);
             if (!res.ok) return res.message || "Could not save.";
             void refresh();
           },
@@ -377,6 +383,13 @@ export function showPlans() {
     { key: "subjectAttempts", label: "Attempts per test in a bought subject" },
     { key: "freeShelfTests", label: "Free ready-made tests", hint: "Before a subject must be bought" },
     { key: "parentMaxChildren", label: "Parent: children" },
+    {
+      key: "parentTrialCredits",
+      label: "Parent: free AI credits",
+      hint: "The one-off trial balance. Not monthly — once it is spent they buy a pack.",
+    },
+    { key: "creditPackCredits", label: "Credits in a pack" },
+    { key: "creditPackPaise", label: "A pack of credits", money: true },
   ];
   consoleShell(
     "plans",

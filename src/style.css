@@ -4403,3 +4403,60 @@ body.drawer-open {
   color: var(--green);
   margin-bottom: 8px;
 }
+
+/* ---------- The parent's paper row and their credit balance ---------- */
+/* A test card is a button that fills its row, so the Mark button beside it
+   needs a row of its own to sit in rather than being squeezed inside one. */
+
+.pa-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.pa-row .test-card {
+  flex: 1;
+  min-width: 0;
+}
+
+.pa-row .pa-mark {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  align-self: center;
+}
+
+/* Below 560px the button goes under the card at full width: side by side it
+   leaves the test title about a third of a phone. */
+@media (max-width: 560px) {
+  .pa-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pa-row .pa-mark {
+    width: 100%;
+  }
+}
+
+.pa-credits {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Running low is amber and says so; it is not a different number in the same
+   grey, which is the way a warning gets missed. */
+.pa-credits.credit-low {
+  background: var(--amber-bg);
+  border-color: var(--amber);
+  color: var(--amber);
+}

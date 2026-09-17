@@ -17,7 +17,9 @@ import {
   cancelOrder,
   claimOrder,
   money,
+  quoteCredits,
   quoteShelf,
+  startCreditOrder,
   startOrder,
   type Quote,
   type StartedOrder,
@@ -27,11 +29,21 @@ import { track } from "../analytics";
 let open = false;
 
 interface BuyOpts {
+  /** Empty when buying credits rather than a subject. */
   shelfId: string;
   /** Shown while the server's own title is still in flight. */
   title?: string;
   /** Run after the payment is claimed, so the caller can refresh. */
   onClaimed?: () => void;
+}
+
+/**
+ * Buy a pack of AI credits. The same dialog, the same UPI link, the same
+ * admin confirmation — only what is quoted differs, which is the point of
+ * putting both behind one `settlePurchase`.
+ */
+export function openBuyCredits(onClaimed?: () => void): void {
+  openBuyShelf({ shelfId: "", title: "AI credits", onClaimed });
 }
 
 /** The ₹499 subject, bought. Resolves when the dialog closes. */
@@ -116,7 +128,11 @@ export function openBuyShelf(opts: BuyOpts): void {
                ${escapeHtml(money(q.discountPaise))} off${
                  q.coupon ? ` with ${escapeHtml(q.coupon)}` : ""
                }</div>`
-            : `<div class="hint">Every test in the subject, yours to edit.</div>`
+            : `<div class="hint">${
+                q.credits
+                  ? `${q.credits} AI credits, added to your balance.`
+                  : "Every test in the subject, yours to edit."
+              }</div>`
         }
       </div>`;
   }
@@ -148,7 +164,7 @@ export function openBuyShelf(opts: BuyOpts): void {
     const codeEl = body.querySelector<HTMLInputElement>("#buy-code")!;
     const apply = async (): Promise<void> => {
       code = codeEl.value.trim().toUpperCase();
-      const next = await quoteShelf(opts.shelfId, code);
+      const next = opts.shelfId ? await quoteShelf(opts.shelfId, code) : await quoteCredits(code);
       if (!next.ok) return fail(next.message);
       showQuote(next.data);
     };
@@ -172,10 +188,10 @@ export function openBuyShelf(opts: BuyOpts): void {
   // ---- Paying -----------------------------------------------------------
 
   async function begin(): Promise<void> {
-    const started = await startOrder(opts.shelfId, code);
+    const started = opts.shelfId ? await startOrder(opts.shelfId, code) : await startCreditOrder(code);
     if (!started.ok) return fail(started.message);
     order = started.data;
-    track("purchase_started", { shelf: opts.shelfId });
+    track("purchase_started", { shelf: opts.shelfId || "credits" });
     showPay(order);
   }
 
@@ -214,7 +230,7 @@ export function openBuyShelf(opts: BuyOpts): void {
       const res = await claimOrder(o.ref, utr);
       if (!res.ok) return fail(res.message);
       claimed = true;
-      track("purchase_claimed", { shelf: opts.shelfId });
+      track("purchase_claimed", { shelf: opts.shelfId || "credits" });
       showWaiting();
       opts.onClaimed?.();
     });
@@ -224,10 +240,10 @@ export function openBuyShelf(opts: BuyOpts): void {
     body.innerHTML = `
       <div class="buy-done">
         <div class="buy-amount">Thank you</div>
-        <p>We will check the payment and open the subject for you. It is usually
-        the same day.</p>
-        <p class="hint">Nothing is lost if you close this — the subject appears
-        under Browse tests as soon as the payment is confirmed.</p>
+        <p>We will check the payment and add it to your account for you. It is
+        usually the same day.</p>
+        <p class="hint">Nothing is lost if you close this — it appears as soon
+        as the payment is confirmed.</p>
       </div>
       <div class="modal-actions">
         <span class="modal-actions-gap"></span>
@@ -237,7 +253,7 @@ export function openBuyShelf(opts: BuyOpts): void {
   }
 
   void (async () => {
-    const first = await quoteShelf(opts.shelfId);
+    const first = opts.shelfId ? await quoteShelf(opts.shelfId) : await quoteCredits();
     if (!open) return;
     if (!first.ok) {
       body.innerHTML = `<p class="login-error">${escapeHtml(

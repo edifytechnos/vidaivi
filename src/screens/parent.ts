@@ -18,7 +18,17 @@ import {
   redeemParentInvite,
   type Child,
 } from "../api";
-import { createStudentOrReason, fetchMyAttempt, fetchMyAttempts, getProfile } from "../auth";
+import {
+  assessWholePaper,
+  createStudentOrReason,
+  fetchGrading,
+  fetchMyAttempt,
+  fetchMyAttempts,
+  fetchMyCredits,
+  getProfile,
+} from "../auth";
+import { openBuyCredits } from "./buy";
+import { paymentsAvailable } from "../payments";
 import { copyText, escapeHtml, setUrl } from "../dom";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
@@ -200,16 +210,31 @@ export async function showChildResults(child: Child): Promise<void> {
         <div class="profile-sub">Test results</div>
       </div>
     </div>
+    <div id="pa-credits"></div>
     <div id="pa-tests">${skeleton.list(3)}</div>`,
     { title: child.name, sub: "Test results", active: "children", width: "narrow" }
   );
 
-  const [list, attempts] = await Promise.all([
+  // One render, four calls, in parallel. The grading rows come back for the
+  // whole child rather than per test: one request per row would be an N+1 from
+  // a phone, which is the same rule the results list already follows.
+  const [list, attempts, graded, credits] = await Promise.all([
     fetchTestList(undefined, child.username),
     fetchMyAttempts(child.username),
+    child.own ? fetchGrading({ student: child.username }) : Promise.resolve([]),
+    child.own ? fetchMyCredits() : Promise.resolve(null),
   ]);
   const host = document.getElementById("pa-tests")!;
   const tests = list?.tests ?? [];
+
+  // How many answers on each paper are still waiting to be marked. That number
+  // IS the cost of the button, so it is what the button says.
+  const waiting = new Map<string, number>();
+  for (const g of graded) {
+    if (g.status === "submitted") waiting.set(g.testId, (waiting.get(g.testId) ?? 0) + 1);
+  }
+  renderCredits(credits, child);
+
   if (!tests.length) {
     host.innerHTML = `<p class="hint">No tests shared with ${escapeHtml(child.name)} yet.</p>`;
     return;
@@ -231,20 +256,109 @@ export async function showChildResults(child: Child): Promise<void> {
         : at > 0
           ? `<span class="status-chip status-progress">In progress · Q${at + 1} of ${t.questionCount}</span>`
           : `<span class="status-chip status-new">Not started</span>`;
+      // The one click. It appears only on a paper with answers still waiting
+      // and only for this parent's OWN child — a linked child's paper belongs
+      // to the teacher who issued their login, and this parent marks nothing
+      // on it.
+      const todo = waiting.get(t.id) ?? 0;
+      const mark =
+        child.own && todo > 0
+          ? `<button class="btn btn-primary pa-mark" data-test="${escapeHtml(t.id)}"
+               data-todo="${todo}">Mark ${todo} &amp; release</button>`
+          : "";
       return `
-      <button class="test-card" data-test="${escapeHtml(t.id)}" ${done ? "" : "disabled"}>
-        <div class="test-card-main">
-          <div class="test-card-title">${escapeHtml(t.title)}</div>
-          <div class="test-card-sub">${t.questionCount} questions · ${t.totalMarks} marks</div>
-        </div>
-        ${status}
-      </button>`;
+      <div class="pa-row">
+        <button class="test-card" data-test="${escapeHtml(t.id)}" ${done ? "" : "disabled"}>
+          <div class="test-card-main">
+            <div class="test-card-title">${escapeHtml(t.title)}</div>
+            <div class="test-card-sub">${t.questionCount} questions · ${t.totalMarks} marks</div>
+          </div>
+          ${status}
+        </button>
+        ${mark}
+      </div>`;
     })
     .join("")}</div>`;
 
   host.querySelectorAll<HTMLButtonElement>(".test-card[data-test]:not([disabled])").forEach((card) =>
     card.addEventListener("click", () => void openChildReview(child, card.dataset.test!))
   );
+  host.querySelectorAll<HTMLButtonElement>(".pa-mark").forEach((btn) =>
+    btn.addEventListener("click", () => void markWholePaper(child, btn))
+  );
+}
+
+/** The parent's balance, with the way to top it up beside it. */
+function renderCredits(
+  credits: { left: number; granted: number; low: boolean } | null,
+  child: Child
+): void {
+  const host = document.getElementById("pa-credits");
+  if (!host) return;
+  // A balance that could not be read says NOTHING. The server's gate is the
+  // real limit, and a network blip must neither claim a parent is out nor
+  // reassure them that they are not — the same rule the teacher's note keeps.
+  if (!credits || !child.own) {
+    host.innerHTML = "";
+    return;
+  }
+  const buy =
+    paymentsAvailable()
+      ? `<button id="pa-topup" class="btn-link">Top up</button>`
+      : "";
+  host.innerHTML = `
+    <div class="pa-credits${credits.low ? " credit-low" : ""}">
+      <span><strong>${credits.left}</strong> of ${credits.granted} AI credits left${
+        credits.low ? " — running low" : ""
+      }</span>
+      ${buy}
+    </div>`;
+  document.getElementById("pa-topup")?.addEventListener("click", () =>
+    openBuyCredits(() => void showChildResults(child))
+  );
+}
+
+/**
+ * Mark every outstanding answer on one paper and open it to the child.
+ *
+ * The AI's marks become the child's marks here — see the note on
+ * `POST /api/assess {action:"test"}`. The parent is the marker, and every mark
+ * this writes is still theirs to change on the paper afterwards.
+ */
+async function markWholePaper(child: Child, btn: HTMLButtonElement): Promise<void> {
+  const todo = Number(btn.dataset.todo) || 0;
+  if (
+    !confirm(
+      `Mark ${todo} answer${todo === 1 ? "" : "s"} with AI and show ${child.name} the result?\n\n` +
+        `This uses ${todo} credit${todo === 1 ? "" : "s"}. You can change any mark afterwards.`
+    )
+  ) {
+    return;
+  }
+  const was = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Marking…";
+  const res = await assessWholePaper(child.username, btn.dataset.test!);
+  if (!res.ok) {
+    btn.disabled = false;
+    btn.textContent = was;
+    // Out of credits is a decision, not a failure: it names the shortfall and
+    // opens the way to fix it.
+    if (res.short && paymentsAvailable()) {
+      if (confirm(`${res.message}\n\nTop up now?`)) openBuyCredits(() => void showChildResults(child));
+      return;
+    }
+    alert(res.message || "Could not mark this paper");
+    return;
+  }
+  track("parent_marked_paper", { assessed: String(res.assessed ?? 0) });
+  if (res.failed) {
+    alert(
+      `${res.assessed} marked and shown to ${child.name}. ${res.failed} could not be read — ` +
+        `open the paper to mark those yourself.`
+    );
+  }
+  void showChildResults(child);
 }
 
 /** The child's own answers and the worked solutions, read-only. */

@@ -408,6 +408,11 @@ const PLAN_DEFAULTS = {
   freeShelfSubjects: 1,
   freeShelfTests: 3,
   parentMaxChildren: 3,
+  // A parent's AI credits: one trial grant, then packs. `parentTrialCredits`
+  // is the grant a wallet starts with; a pack is what buying one adds.
+  parentTrialCredits: 100,
+  creditPackCredits: 100,
+  creditPackPaise: 19900,
 };
 
 async function planTable() {
@@ -2363,7 +2368,7 @@ async function walkPartitions(table, opts, onRow) {
 const TEST_META_SELECT = [
   "PartitionKey", "RowKey", "title", "chapter", "teacher", "order", "access",
   "status", "platform", "sample", "subjectId", "ownerSub", "updatedAt",
-  "audience", "assignedTo", "copiedFrom", "questionCount", "totalMarks",
+  "audience", "assignedTo", "copiedFrom", "questionCount", "totalMarks", "assessCost",
   "board", "klass", "subject",
 ];
 
@@ -2395,19 +2400,46 @@ function chunkQuestions(entity, questions) {
   // counts cannot drift from the stored questions.
   entity.questionCount = questions.length;
   entity.totalMarks = questions.reduce((sum, q) => sum + (Number(q.marks) || 0), 0);
+  entity.assessCost = assessCostOf(questions);
+}
+
+/**
+ * What a whole paper costs to assess with AI, in credits.
+ *
+ * An MCQ is graded by a comparison and never reaches the model. A long answer
+ * always does. A short answer *may* — a number auto-grades, anything else goes
+ * to the marker — and this counts it, deliberately: it is the number a GATE
+ * reserves, so it has to be the worst case. Actual spend is only what the model
+ * really reads, so a parent is never charged for a short answer that graded
+ * itself. Reserving less than the worst case is how somebody runs dry halfway
+ * through their own child's paper.
+ */
+function assessCostOf(questions) {
+  return questions.reduce(
+    (n, q) => n + (q && (q.type === "long" || q.type === "numeric") ? 1 : 0),
+    0
+  );
 }
 
 function countsFromQuestions(questions) {
   return {
     questionCount: questions.length,
     totalMarks: questions.reduce((sum, q) => sum + (Number(q.marks) || 0), 0),
+    assessCost: assessCostOf(questions),
   };
 }
 
 /** The stamped counts, or null for a row written before they existed. */
 function storedCounts(e) {
-  return typeof e.questionCount === "number" && typeof e.totalMarks === "number"
-    ? { questionCount: e.questionCount, totalMarks: e.totalMarks }
+  // All THREE, or nothing. A row stamped before `assessCost` existed carries
+  // the first two and not the third, and answering "stamped" for it would mean
+  // `backfillCounts` never healed it — the cost would read as absent forever.
+  // Returning null instead sends those rows through the same bounded heal the
+  // counts themselves went through.
+  return typeof e.questionCount === "number" &&
+    typeof e.totalMarks === "number" &&
+    typeof e.assessCost === "number"
+    ? { questionCount: e.questionCount, totalMarks: e.totalMarks, assessCost: e.assessCost }
     : null;
 }
 
@@ -2606,6 +2638,10 @@ function testMeta(e) {
     capped: !!e.copiedFrom,
     questionCount: counts.questionCount,
     totalMarks: counts.totalMarks,
+    // What the whole paper costs to mark with AI. Sent to everyone because
+    // it is a property of the paper, not of anybody's wallet — the listing
+    // adds `locked` separately when it knows whose wallet is paying.
+    assessCost: typeof counts.assessCost === "number" ? counts.assessCost : null,
     updatedAt: e.updatedAt,
   };
 }
@@ -3235,6 +3271,35 @@ handlers.tests = async (context, req) => {
     }
   );
   list.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
+
+  // A student whose login was issued by a PARENT can only sit a paper their
+  // parent can afford to have marked. The balance is read ONCE for the whole
+  // listing and compared against each paper's stamped cost — not one wallet
+  // read per test, which is the N+1 rule 3 exists to stop.
+  //
+  // The client is not the gate: `POST /api/attempts {action:"progress"}`
+  // refuses with 402 whatever the tile says. This is so the tile does not
+  // invite a tap that is going to be refused — and it carries NO reason, not
+  // even to the client, because the child is a minor and somebody else's
+  // balance is not their business.
+  if (who.kind === "student") {
+    try {
+      const afford = await assessAffordable(who.teacherSub || "", null);
+      if (afford.parent) {
+        for (const t of list) {
+          const cost = typeof t.assessCost === "number" ? t.assessCost : null;
+          if (cost === null || (cost > 0 && afford.left < cost)) t.locked = true;
+          // The cost is the paper's, but what it implies about a wallet is
+          // not the child's to read.
+          delete t.assessCost;
+        }
+      }
+    } catch {
+      // A balance that cannot be read locks nothing: the server-side refusal
+      // is the real limit, and a wrongly-shut door stops a child who has
+      // credits behind them — the same way round as the attempt cap.
+    }
+  }
 
   // A teacher with nothing of their own gets the bundled tests copied in as
   // starting samples — but only the first time, so deleting them sticks.
@@ -4085,10 +4150,57 @@ handlers.attempts = async (context, req) => {
       }
       const blob =
         typeof body.answers === "string" && body.answers.length <= Q_CHUNK ? body.answers : "";
+      const progressKey = `${PROGRESS_PREFIX}${body.testId.slice(0, 80)}`;
+
+      // The credit gate, and it runs on the CREATE of this row only. Deciding
+      // "is this the start" costs one point query projected to the row key —
+      // a few dozen bytes, never the answers blob — so the saves after it pay
+      // nothing, and a paper already open is never taken away mid-question.
+      if (who.kind === "student") {
+        let started = false;
+        const pk = String(who.id).replace(/'/g, "''");
+        const iter = attempts.listEntities({
+          queryOptions: {
+            filter: `PartitionKey eq '${pk}' and RowKey eq '${progressKey.replace(/'/g, "''")}'`,
+            select: ["RowKey"],
+          },
+        });
+        for await (const _ of iter) {
+          started = true;
+          break;
+        }
+        if (!started) {
+          let testRow = null;
+          try {
+            const testsTbl = tableClient("tests");
+            await ensureTable(testsTbl);
+            testRow = await readByPartitions(
+              testsTbl,
+              [who.teacherSub || ""].filter(Boolean),
+              body.testId.slice(0, 80),
+              LEGACY_TEST_PK
+            );
+          } catch {
+            testRow = null;
+          }
+          const afford = await assessAffordable(who.teacherSub || "", testRow);
+          if (afford.blocked) {
+            // The CHILD is never told there is money involved. They are a
+            // minor and it is not their problem; the sentence their parent
+            // gets names the number, on their own screen.
+            return json(context, 402, {
+              error: "This test is not available yet. Ask whoever set it up to open it for you.",
+              reason: "credits",
+              cost: afford.cost,
+              left: afford.left,
+            });
+          }
+        }
+      }
       await attempts.upsertEntity(
         {
           partitionKey: who.id,
-          rowKey: `${PROGRESS_PREFIX}${body.testId.slice(0, 80)}`,
+          rowKey: progressKey,
           testId: body.testId.slice(0, 80),
           answers: blob,
           index: Math.max(0, Math.min(1000, Math.round(body.index))),
@@ -5040,26 +5152,84 @@ function usageMonth(when) {
   return (when instanceof Date ? when : new Date()).toISOString().slice(0, 7);
 }
 
+// ---------- Two wallets, one ledger ----------
+//
+// A TEACHER's credits are an allowance that refills: the partition is the
+// month, so a new month is a new partition and nothing has to be swept. That
+// is right for somebody marking a class every week, and it is what the pilot
+// teacher already has.
+//
+// A PARENT's credits are a BALANCE. They get one trial grant, spend it, and
+// buy more — so it cannot live in a partition that resets on the 1st, or
+// "once it is used up you buy more" would be untrue by the end of the month.
+// Their row lives in `WALLET_PK` and is never rolled over.
+//
+// Both shapes are the same row in the same table, so the admin's report, the
+// low-balance warning and the ETag'd increment are one implementation rather
+// than two that drift.
+const WALLET_PK = "~wallet";
+// The floor, used when the plan row has not been written yet — the same
+// discipline `PLAN_DEFAULTS` keeps everywhere else: a table nobody has filled
+// in must never leave the platform broken.
+const ASSESS_TRIAL_CREDITS = Number(process.env.ASSESS_TRIAL_CREDITS || 100);
+
+/**
+ * Which wallet an account spends from, and what it is granted by default.
+ * One function decides it and everything reads it — the same discipline
+ * `creditsAreLow` keeps, and for the same reason: two places deciding one rule
+ * is how they come to disagree.
+ */
+function walletFor(who, trialCredits) {
+  const lifetime = who && who.role === "parent";
+  return {
+    pk: lifetime ? WALLET_PK : usageMonth(),
+    rk: who ? who.id : "",
+    lifetime,
+    fallbackGrant: lifetime
+      ? Number(trialCredits) > 0
+        ? Number(trialCredits)
+        : ASSESS_TRIAL_CREDITS
+      : ASSESS_MONTHLY_CREDITS,
+  };
+}
+
+/** The same thing with the admin's own number applied. Use this wherever a
+ *  table read is already being awaited; `walletFor` is for the rare spot that
+ *  cannot wait. */
+async function walletOf(who) {
+  const rules = await platformRules();
+  return walletFor(who, rules.parentTrialCredits);
+}
+
 async function aiusageTable() {
   const t = tableClient("aiusage");
   await ensureTable(t);
   return t;
 }
 
-async function creditsFor(table, teacherId, month) {
+/**
+ * A wallet's balance. `wallet` comes from `walletFor(who)`, which is the only
+ * thing that knows whether this account spends monthly or for life.
+ */
+async function creditsFor(table, wallet) {
   try {
-    const row = await table.getEntity(month, teacherId);
+    const row = await table.getEntity(wallet.pk, wallet.rk);
     return {
       used: typeof row.used === "number" ? row.used : 0,
-      granted: typeof row.granted === "number" ? row.granted : ASSESS_MONTHLY_CREDITS,
+      granted: typeof row.granted === "number" ? row.granted : wallet.fallbackGrant,
       etag: row.etag,
+      lifetime: wallet.lifetime,
     };
   } catch {
-    // No row yet is a teacher who has not spent anything this month, not an
-    // error — and not zero credits.
-    return { used: 0, granted: ASSESS_MONTHLY_CREDITS, etag: null };
+    // No row yet is somebody who has not spent anything, not an error — and
+    // not zero credits. For a parent that row appears on their first
+    // assessment carrying the trial grant.
+    return { used: 0, granted: wallet.fallbackGrant, etag: null, lifetime: wallet.lifetime };
   }
 }
+
+/** What is left to spend, never below zero. */
+const creditsLeft = (c) => Math.max(0, (c.granted || 0) - (c.used || 0));
 
 /**
  * Spend one credit and record what it cost.
@@ -5069,19 +5239,19 @@ async function creditsFor(table, teacherId, month) {
  * somebody is held to, so this retries on a concurrency failure — bounded,
  * never a spin.
  */
-async function noteCredit(table, who, month, spend) {
+async function noteCredit(table, who, wallet, spend) {
   for (let attempt = 0; attempt < 4; attempt += 1) {
     let row = null;
     try {
-      row = await table.getEntity(month, who.id);
+      row = await table.getEntity(wallet.pk, wallet.rk);
     } catch {
       row = null;
     }
     const next = {
-      partitionKey: month,
-      rowKey: who.id,
+      partitionKey: wallet.pk,
+      rowKey: wallet.rk,
       used: (typeof row?.used === "number" ? row.used : 0) + 1,
-      granted: typeof row?.granted === "number" ? row.granted : ASSESS_MONTHLY_CREDITS,
+      granted: typeof row?.granted === "number" ? row.granted : wallet.fallbackGrant,
       promptTokens: (typeof row?.promptTokens === "number" ? row.promptTokens : 0) + spend.promptTokens,
       completionTokens:
         (typeof row?.completionTokens === "number" ? row.completionTokens : 0) + spend.completionTokens,
@@ -5108,6 +5278,96 @@ async function noteCredit(table, who, month, spend) {
   }
   // Four collisions on one teacher's row is not a case worth failing the
   // assessment over — the mark is already made and the teacher has it.
+}
+
+// ---------- Can this child's paper be assessed at all? ----------
+//
+// A parent's child hands a paper to nobody but the AI: there is no teacher
+// behind them to mark it by hand. So a paper their parent cannot afford to
+// assess is a paper that would be answered and then sit unmarked forever, and
+// the honest thing is to not let it start.
+//
+// Three properties this gate has to keep, and each of them is a way it could
+// have gone wrong:
+//
+//  - **It FAILS OPEN.** It blocks only when the issuing account has POSITIVELY
+//    declared itself a parent. A teacher in `TEACHER_EMAILS` may have no
+//    `accounts` row at all, and reading "no row" as "parent" would have
+//    credit-gated the pilot teacher's entire class on the day this shipped.
+//  - **It never blocks a paper already begun.** The check runs when the
+//    in-progress row is CREATED, never on the saves after it. A student
+//    stopped at question nine because a balance moved is worse than anything
+//    this prevents.
+//  - **An unknown cost is not free.** A test row stamped before `assessCost`
+//    existed answers `null`, and `null` blocks rather than waving through —
+//    `backfillCounts` heals those rows on the next listing that meets them.
+
+const ISSUER_TTL_MS = 60 * 1000;
+const issuerCache = makeCache(500);
+
+/**
+ * Is this account a parent, as far as a gate is concerned? One point read in
+ * the accounts partition, memoised for a minute (rule 4). `choose` drops the
+ * entry, the same way it drops the role cache — without that a parent's very
+ * first child would be judged on an answer taken before they picked.
+ */
+async function issuerIsParent(sub) {
+  if (!sub) return false;
+  const hit = issuerCache.get(sub);
+  if (hit !== undefined) return hit;
+  let parent = false;
+  try {
+    const row = await accountRow(await accountsTable(), sub);
+    parent = !!row && String(row.chose || "") === "parent";
+  } catch {
+    parent = false; // fail open: unreadable is not "parent"
+  }
+  return issuerCache.set(sub, parent, ISSUER_TTL_MS);
+}
+
+/** The stamped cost of a paper, or null when the row has not been healed yet. */
+function costOfTestRow(row) {
+  if (!row) return null;
+  const counts = storedCounts(row);
+  return counts ? counts.assessCost : null;
+}
+
+/**
+ * What a child is allowed to start, and why not.
+ *
+ * Returns `{ blocked, cost, left }`. `blocked` is true only for a parent-issued
+ * student whose parent cannot cover the whole paper. Everything else — a
+ * teacher's class, a guest, a staff preview, an account we cannot read — comes
+ * back unblocked.
+ */
+async function assessAffordable(issuerSub, testRow) {
+  const out = { blocked: false, cost: 0, left: 0, parent: false };
+  if (!(await issuerIsParent(issuerSub))) return out;
+  out.parent = true;
+
+  const cost = costOfTestRow(testRow);
+  const ledger = await aiusageTable();
+  // The issuer's own wallet, which for a parent is the lifetime one.
+  const rules = await platformRules();
+  const credit = await creditsFor(ledger, {
+    pk: WALLET_PK,
+    rk: issuerSub,
+    lifetime: true,
+    fallbackGrant: Number(rules.parentTrialCredits) || ASSESS_TRIAL_CREDITS,
+  });
+  out.left = creditsLeft(credit);
+  // An unreadable cost is not a free paper. A test whose row has not been
+  // healed yet is held until it has, which one listing does.
+  if (cost === null) {
+    out.cost = 0;
+    out.blocked = true;
+    return out;
+  }
+  out.cost = cost;
+  // A paper with nothing for the AI to read — all MCQs — costs nothing and is
+  // never blocked, however empty the wallet is.
+  out.blocked = cost > 0 && out.left < cost;
+  return out;
 }
 
 handlers.assess = async (context, req) => {
@@ -5138,13 +5398,197 @@ handlers.assess = async (context, req) => {
   // Credits sit beside the cap and in front of the same expensive work. An
   // exhausted teacher is refused in words they can act on — and only the AI
   // draft is refused: marking the answer by hand is never blocked.
-  const month = usageMonth();
+  const wallet = await walletOf(who);
   const ledger = await aiusageTable();
-  const credit = await creditsFor(ledger, who.id, month);
-  if (credit.used >= credit.granted) {
+  const credit = await creditsFor(ledger, wallet);
+  if (creditsLeft(credit) <= 0) {
     return json(context, 429, {
-      error: `You have used all ${credit.granted} AI credits this month. You can still mark this answer yourself.`,
-      credits: { used: credit.used, granted: credit.granted, left: 0 },
+      error: wallet.lifetime
+        ? `You have used all ${credit.granted} of your AI credits. Top up to assess more — you can still mark this answer yourself.`
+        : `You have used all ${credit.granted} AI credits this month. You can still mark this answer yourself.`,
+      credits: { used: credit.used, granted: credit.granted, left: 0, lifetime: wallet.lifetime },
+    });
+  }
+
+  // ---------- The parent's one click: assess the whole paper, then open it ----------
+  //
+  // **This is the one place the AI's mark becomes the student's mark**, and it
+  // is deliberately scoped to a parent's OWN child. Everywhere else CLAUDE.md's
+  // rule holds and holds hard: the model proposes, a person awards. A parent's
+  // child has no teacher behind them — nobody else is ever going to open that
+  // paper — so the choice is not "AI marks or a person marks", it is "AI marks
+  // or the paper is never marked at all". The parent is the marker here, and
+  // this button acts on their behalf; every mark it writes is still theirs to
+  // change afterwards, on the same screen, with the same marks row.
+  //
+  // A LINKED child is not this. A parent who redeemed a teacher's invite code
+  // watches that child and marks nothing, so the button is refused for them:
+  // that paper belongs to the teacher who issued the login.
+  if (String((getBody(req) || {}).action || "") === "test") {
+    const body = getBody(req) || {};
+    const username = String(body.username || "").trim().toLowerCase();
+    const testId = safeId(body.testId, 60);
+    if (!username || !testId) return json(context, 400, { error: "Which paper?" });
+
+    const refusal = await canSeeStudent(who, username);
+    if (refusal) return refuse(context, refusal);
+
+    // Own child only — or an admin, who may stand in for anyone.
+    if (who.role !== "admin") {
+      const rec = await studentRecord(username);
+      if (!rec || String(rec.teacherSub || "") !== who.id) {
+        return json(context, 403, {
+          error: "That child's paper belongs to whoever issued their login.",
+        });
+      }
+    }
+
+    // Everything still waiting on a marker, in the student's own partition and
+    // projected (rules 1 and 2). `status eq 'submitted'` keeps the ones already
+    // marked out, so pressing the button twice never re-spends on them.
+    const grading = await gradingTable();
+    const pending = [];
+    const iter = grading.listEntities({
+      queryOptions: {
+        filter:
+          `PartitionKey eq 'stu~${username.replace(/'/g, "''")}' and ` +
+          `testId eq '${testId.replace(/'/g, "''")}' and status eq 'submitted'`,
+        select: GRADING_SELECT,
+      },
+    });
+    for await (const e of iter) {
+      pending.push(e);
+      if (pending.length >= 60) break;
+    }
+
+    if (!pending.length) {
+      // Nothing to assess is not a failure: the paper may be all MCQs, or
+      // already marked. Opening it is still the thing they asked for.
+      await openPaperFor(testId, username, who);
+      return json(context, 200, { ok: true, assessed: 0, released: true, credits: creditsLeft(credit) });
+    }
+
+    // The whole paper is reserved up front. Assessing four of seven answers and
+    // stopping is the outcome this feature exists to prevent — a half-marked
+    // paper is worse to read than an unmarked one.
+    if (creditsLeft(credit) < pending.length) {
+      return json(context, 402, {
+        error:
+          `This paper needs ${pending.length} credits to mark and you have ` +
+          `${creditsLeft(credit)}. Top up and it will run in one go.`,
+        reason: "credits",
+        cost: pending.length,
+        left: creditsLeft(credit),
+      });
+    }
+    if (used + pending.length > ASSESS_DAILY_CAP) {
+      return json(context, 429, {
+        error: `That would pass the ${ASSESS_DAILY_CAP} assessments allowed in a day. Try again tomorrow.`,
+      });
+    }
+
+    // The paper itself, read ONCE and indexed. The single-answer path takes
+    // the question and the model solution off the request body, because the
+    // client has the test open in front of it; this one has no such client, so
+    // it reads the row — and reads it once rather than once per answer, which
+    // is the same N+1 rule 3 is about.
+    const questionById = new Map();
+    try {
+      const testsTbl = tableClient("tests");
+      await ensureTable(testsTbl);
+      const rec = who.role === "admin" ? await studentRecord(username) : null;
+      const owner = who.role === "admin" ? String((rec && rec.teacherSub) || "") : who.id;
+      const full = await readByPartitions(
+        testsTbl,
+        [owner, PLATFORM_PK].filter(Boolean),
+        testId,
+        LEGACY_TEST_PK
+      );
+      for (const q of unchunkQuestions(full || {})) {
+        if (q && q.id) questionById.set(String(q.id), q);
+      }
+    } catch {
+      // A missing test is not fatal: the model still reads the handwriting,
+      // it just marks without the worked solution beside it.
+    }
+
+    // Bounded parallelism, and deliberately narrow: each of these is a model
+    // call carrying a photograph, so three at a time keeps one paper from
+    // becoming a burst against the endpoint (rule 3).
+    let assessed = 0;
+    const failures = [];
+    await inBatches(pending, 3, async (entity) => {
+      const typed = String(entity.answerText || "").trim().slice(0, 500);
+      let images = [];
+      try {
+        images = typed ? [] : await answerImages(parseImages(entity.images));
+      } catch {
+        images = [];
+      }
+      if (!images.length && !typed) return; // nothing to read
+      const maxMarks = typeof entity.maxMarks === "number" ? entity.maxMarks : 0;
+      const q = questionById.get(String(entity.questionId || "")) || {};
+      let verdict;
+      try {
+        verdict = await askAssessor(
+          String(q.q || "").slice(0, AI_MAX_SOLUTION),
+          String(q.solution || "").slice(0, AI_MAX_SOLUTION),
+          maxMarks,
+          images,
+          typed
+        );
+      } catch (e) {
+        failures.push((e && e.message) || "failed");
+        return;
+      }
+      const awarded = Math.max(0, Math.min(maxMarks, Math.round(Number(verdict.awarded) || 0)));
+      await grading.upsertEntity(
+        {
+          partitionKey: entity.partitionKey,
+          rowKey: entity.rowKey,
+          aiAwarded: verdict.awarded,
+          aiComment: verdict.comment,
+          aiReasoning: verdict.reasoning,
+          aiAt: new Date().toISOString(),
+          aiModel: AZURE_AI_DEPLOYMENT,
+          // The award. See the note above: for a parent's own child this IS
+          // the mark, and the parent can change it on the paper.
+          status: "marked",
+          awarded,
+          comment: verdict.comment,
+          markedAt: new Date().toISOString(),
+          markedBy: who.name || who.email || who.id,
+        },
+        "Merge"
+      );
+      assessed += 1;
+      // The daily counter is written ONCE after the batch, not here: it is a
+      // plain upsert with no ETag, so three of these in flight would race and
+      // undercount. The credit ledger below is ETag'd with a retry and is safe
+      // in parallel — which is exactly the line CLAUDE.md draws between a
+      // throttle and a ledger somebody is held to.
+      await noteCredit(ledger, who, wallet, {
+        promptTokens: verdict.promptTokens,
+        completionTokens: verdict.completionTokens,
+        costMicroUsd: costMicroUsd(verdict.promptTokens, verdict.completionTokens),
+      });
+    });
+
+    if (assessed > 0) await noteAssess(gate, who.id, used + assessed - 1);
+
+    // Opening the paper is the second half of the one click. It runs even when
+    // some answers failed: what was marked is worth reading, and a paper that
+    // stayed shut because one model call timed out is the same dead end this
+    // whole feature is here to remove.
+    await openPaperFor(testId, username, who);
+    const after = await creditsFor(ledger, wallet);
+    return json(context, 200, {
+      ok: true,
+      assessed,
+      failed: failures.length,
+      released: true,
+      credits: creditsLeft(after),
+      low: creditsAreLow(after.used, after.granted),
     });
   }
 
@@ -5189,7 +5633,7 @@ handlers.assess = async (context, req) => {
   // Counted only once the model has actually answered: a failed call costs
   // nothing at Azure, so it should not cost the teacher a slot or a credit.
   await noteAssess(gate, who.id, used);
-  await noteCredit(ledger, who, month, {
+  await noteCredit(ledger, who, wallet, {
     promptTokens: verdict.promptTokens,
     completionTokens: verdict.completionTokens,
     costMicroUsd: costMicroUsd(verdict.promptTokens, verdict.completionTokens),
@@ -5250,25 +5694,44 @@ handlers.aiusage = async (context, req) => {
 
     // A teacher asks only about themselves, and is never shown the platform.
     if (who.role !== "admin" || String((req.query && req.query.me) || "")) {
-      const mine = await creditsFor(table, who.id, month);
+      const wallet = await walletOf(who);
+      const mine = await creditsFor(table, wallet);
       return json(context, 200, {
-        month,
+        // A parent's balance does not belong to a month, so saying one would
+        // be a lie a screen could repeat back to them.
+        month: wallet.lifetime ? "" : month,
+        lifetime: wallet.lifetime,
         used: mine.used,
         granted: mine.granted,
-        left: Math.max(0, mine.granted - mine.used),
+        left: creditsLeft(mine),
         low: creditsAreLow(mine.used, mine.granted),
       });
     }
 
     // One partition query, explicitly projected (rule 1 and rule 2): the whole
     // platform's month without walking a single other row.
+    // TWO partitions, because there are two kinds of wallet: this month for
+    // the teachers, and `~wallet` for every parent's lifetime balance. Both
+    // are partition queries with the same projection — the parents are not a
+    // scan bolted on, they are a second named partition.
     const rows = [];
-    const iter = table.listEntities({
-      queryOptions: { filter: `PartitionKey eq '${month.replace(/'/g, "''")}'`, select: AIUSAGE_SELECT },
-    });
-    for await (const e of iter) {
+    const walk = async (pk, lifetime) => {
+      const iter = table.listEntities({
+        queryOptions: { filter: `PartitionKey eq '${pk.replace(/'/g, "''")}'`, select: AIUSAGE_SELECT },
+      });
+      for await (const e of iter) {
+        collect(e, lifetime);
+        if (rows.length >= 500) break;
+      }
+    };
+    const collect = (e, lifetime) => {
       const used = typeof e.used === "number" ? e.used : 0;
-      const granted = typeof e.granted === "number" ? e.granted : ASSESS_MONTHLY_CREDITS;
+      const granted =
+        typeof e.granted === "number"
+          ? e.granted
+          : lifetime
+            ? ASSESS_TRIAL_CREDITS
+            : ASSESS_MONTHLY_CREDITS;
       const micros = typeof e.costMicroUsd === "number" ? e.costMicroUsd : 0;
       const promptTokens = typeof e.promptTokens === "number" ? e.promptTokens : 0;
       const completionTokens = typeof e.completionTokens === "number" ? e.completionTokens : 0;
@@ -5276,6 +5739,9 @@ handlers.aiusage = async (context, req) => {
         teacherId: e.rowKey,
         name: e.name || "",
         email: e.email || "",
+        // Which wallet this row is, so the screen can say "this month" or
+        // "balance" rather than implying a parent's credits reset.
+        lifetime,
         used,
         granted,
         left: Math.max(0, granted - used),
@@ -5287,8 +5753,9 @@ handlers.aiusage = async (context, req) => {
         costInr: promptTokens + completionTokens > 0 ? (micros / 1e6) * USD_INR : null,
         updatedAt: e.updatedAt || "",
       });
-      if (rows.length >= 500) break;
-    }
+    };
+    await walk(month, false);
+    await walk(WALLET_PK, true);
     // Low first: the question this screen answers is "who needs topping up",
     // and that is read off the top rather than by scanning every row. Busiest
     // first is the tiebreak within each group, as before.
@@ -5318,21 +5785,26 @@ handlers.aiusage = async (context, req) => {
   if (!Number.isFinite(granted) || granted < 0 || granted > 100000) {
     return json(context, 400, { error: "Credits must be a number between 0 and 100000" });
   }
+  // A parent's wallet has no month. `lifetime: true` names the `~wallet`
+  // partition explicitly rather than letting the caller pass a partition key
+  // of their choosing.
+  const lifetime = body.lifetime === true;
   const month = /^\d{4}-\d{2}$/.test(String(body.month || "")) ? String(body.month) : usageMonth();
+  const pk = lifetime ? WALLET_PK : month;
 
   let row = null;
   try {
-    row = await table.getEntity(month, teacherId);
+    row = await table.getEntity(pk, teacherId);
   } catch {
     row = null;
   }
-  const next = { partitionKey: month, rowKey: teacherId, granted, updatedAt: new Date().toISOString() };
+  const next = { partitionKey: pk, rowKey: teacherId, granted, updatedAt: new Date().toISOString() };
   if (row) {
     await table.updateEntity(next, "Merge", { etag: row.etag });
   } else {
     await table.createEntity({ ...next, used: 0, promptTokens: 0, completionTokens: 0, costMicroUsd: 0 });
   }
-  return json(context, 200, { ok: true, month, teacherId, granted });
+  return json(context, 200, { ok: true, month: lifetime ? "" : month, lifetime, teacherId, granted });
 };
 
 /**
@@ -5435,6 +5907,9 @@ handlers.accounts = async (context, req) => {
     // next request still reads "parent".
     roleCache.drop(`sub~${who.id}`);
     roleCache.drop(String(who.email || "").toLowerCase());
+    // The gate that decides whether this account's children are credit-limited
+    // reads `chose` too, so it goes stale in exactly the same way (rule 4).
+    issuerCache.drop(who.id);
     const role = chose === "teacher" ? "teacher" : "parent";
     return json(context, 200, { ok: true, chose, role, trialEndsAt: ends.toISOString() });
   }
@@ -5505,6 +5980,7 @@ handlers.accounts = async (context, req) => {
     // on calling them a teacher for the rest of the TTL (rule 4).
     roleCache.drop(`sub~${sub}`);
     roleCache.drop(String(row.email || "").toLowerCase());
+    issuerCache.drop(sub);
     return json(context, 200, { ok: true, sub, reset: true, phoneCleared });
   }
 
@@ -5564,6 +6040,29 @@ async function releasesTable() {
 }
 
 /** Has `testId` been opened for `username`, individually or class-wide? */
+/**
+ * Open one student's paper. The same row `POST /api/release` writes — there is
+ * one shape for "this paper is open", and the parent's one-click button writes
+ * it rather than inventing a second way to be released.
+ */
+async function openPaperFor(testId, username, who) {
+  try {
+    const releases = await releasesTable();
+    await releases.upsertEntity(
+      {
+        partitionKey: testId,
+        rowKey: String(username || "").trim().toLowerCase(),
+        releasedAt: new Date().toISOString(),
+        releasedBy: (who && (who.name || who.email || who.id)) || "",
+      },
+      "Replace"
+    );
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function isReleased(testId, username) {
   const t = await releasesTable();
   const user = String(username || "").trim().toLowerCase();
@@ -5732,6 +6231,8 @@ const PENDING_PK = "~pending";
 const ORDER_SELECT = [
   "PartitionKey",
   "RowKey",
+  "kind",
+  "credits",
   "shelfId",
   "shelfTitle",
   "listPaise",
@@ -5879,6 +6380,34 @@ async function noteRedemption(code) {
 async function settlePurchase(order, by, method, payerRef) {
   const sub = order.partitionKey;
   const ref = order.rowKey;
+  const orders = await ordersTable();
+
+  // A pack of AI credits is GRANTED rather than owned: there is no shelf to
+  // record, so it lands on the buyer's wallet and stops there. Everything
+  // after it — the order row, the queue, the coupon — is identical, which is
+  // the whole reason this lives inside the one seam rather than beside it. A
+  // Razorpay webhook granting credits is the same call with a different
+  // `method`.
+  if (order.kind === "credits") {
+    const credits = Math.max(0, Math.round(Number(order.credits) || 0));
+    if (credits > 0) await grantCreditsTo(sub, credits, by);
+    await orders.updateEntity(
+      {
+        partitionKey: sub,
+        rowKey: ref,
+        status: "paid",
+        settledAt: new Date().toISOString(),
+        settledBy: by,
+        method,
+        payerRef: payerRef || order.payerRef || "",
+      },
+      "Merge"
+    );
+    await dropPending(orders, sub, ref);
+    await noteRedemption(order.coupon || "");
+    return;
+  }
+
   await (await purchasesTable()).upsertEntity(
     {
       partitionKey: sub,
@@ -5895,7 +6424,6 @@ async function settlePurchase(order, by, method, payerRef) {
     },
     "Merge"
   );
-  const orders = await ordersTable();
   await orders.updateEntity(
     {
       partitionKey: sub,
@@ -5910,6 +6438,46 @@ async function settlePurchase(order, by, method, payerRef) {
   );
   await dropPending(orders, sub, ref);
   await noteRedemption(order.coupon || "");
+}
+
+/**
+ * Add credits to an account's wallet. ETag'd with a bounded retry for the same
+ * reason `noteRedemption` is: this is money somebody paid, and losing one of
+ * two concurrent writes is a top-up that vanished.
+ *
+ * `granted` goes up and `used` is left alone, so a balance is always
+ * granted − used and a top-up never forgives what was already spent.
+ */
+async function grantCreditsTo(sub, credits, by) {
+  const table = await aiusageTable();
+  const rules = await platformRules();
+  const floor = Number(rules.parentTrialCredits) || ASSESS_TRIAL_CREDITS;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    let row = null;
+    try {
+      row = await table.getEntity(WALLET_PK, sub);
+    } catch {
+      row = null;
+    }
+    const next = {
+      partitionKey: WALLET_PK,
+      rowKey: sub,
+      // A wallet with no row yet already holds the trial grant — it is simply
+      // unwritten. Topping one up must not silently cancel it.
+      granted: (typeof row?.granted === "number" ? row.granted : floor) + credits,
+      used: typeof row?.used === "number" ? row.used : 0,
+      updatedAt: new Date().toISOString(),
+    };
+    try {
+      if (row) await table.updateEntity(next, "Merge", { etag: row.etag });
+      else await table.createEntity(next);
+      return true;
+    } catch (e) {
+      const code = e && (e.statusCode || e.status);
+      if (code !== 412 && code !== 409) return false;
+    }
+  }
+  return false;
 }
 
 /** The index row exists only while the order is waiting on somebody. */
@@ -5962,6 +6530,8 @@ handlers.purchase = async (context, req) => {
           sub,
           ref,
           shelfId: e.shelfId || "",
+          kind: e.kind || "shelf",
+          credits: e.credits || 0,
           shelfTitle: e.shelfTitle || "",
           listPaise: e.listPaise || 0,
           discountPaise: e.discountPaise || 0,
@@ -6025,6 +6595,8 @@ handlers.purchase = async (context, req) => {
       mine.push({
         ref: e.rowKey,
         shelfId: e.shelfId || "",
+        kind: e.kind || "shelf",
+        credits: e.credits || 0,
         shelfTitle: e.shelfTitle || "",
         listPaise: e.listPaise || 0,
         discountPaise: e.discountPaise || 0,
@@ -6115,6 +6687,61 @@ handlers.purchase = async (context, req) => {
   // ---- The buyer ----
 
   const shelfId = safeId(body.shelfId, 80);
+  // Two things are for sale and they settle differently, so the kind travels
+  // on the order rather than being guessed from what else is on it.
+  const kind = String(body.kind || "") === "credits" ? "credits" : "shelf";
+
+  // ---- A pack of AI credits ----
+  if (kind === "credits" && (action === "quote" || action === "start")) {
+    const rules = await platformRules();
+    const credits = Math.max(0, Math.round(Number(rules.creditPackCredits) || 0));
+    const listPaise = Math.max(0, Math.round(Number(rules.creditPackPaise) || 0));
+    if (credits <= 0 || listPaise <= 0) {
+      return json(context, 501, { error: "Credit packs are not on sale yet", reason: "no_pack" });
+    }
+    const quote = await couponQuote(couponCode(body.code), listPaise);
+    const shape = {
+      kind: "credits",
+      credits,
+      shelfId: "",
+      shelfTitle: `${credits} AI credits`,
+      listPaise,
+      discountPaise: quote.discountPaise,
+      payablePaise: quote.payablePaise,
+      coupon: quote.code,
+      couponLabel: quote.label || "",
+      couponMessage: quote.message,
+    };
+    if (action === "quote") return json(context, 200, shape);
+
+    const ref = newOrderRef();
+    await orders.createEntity({
+      partitionKey: who.id,
+      rowKey: ref,
+      kind: "credits",
+      credits,
+      shelfId: "",
+      shelfTitle: shape.shelfTitle,
+      listPaise,
+      discountPaise: quote.discountPaise,
+      payablePaise: quote.payablePaise,
+      coupon: quote.code,
+      status: "open",
+      createdAt: new Date().toISOString(),
+      buyerName: who.name || "",
+      buyerEmail: who.email || "",
+    });
+    return json(context, 200, {
+      ...shape,
+      ref,
+      upi: {
+        vpa: UPI_VPA,
+        payee: UPI_PAYEE_NAME,
+        link: upiLink(ref, quote.payablePaise),
+        note: `Vidai ${ref}`,
+      },
+    });
+  }
 
   if (action === "quote" || action === "start") {
     if (!shelfId) return json(context, 400, { error: "Which subject?" });
@@ -6229,6 +6856,8 @@ handlers.purchase = async (context, req) => {
       {
         partitionKey: PENDING_PK,
         rowKey: `${who.id}~${ref}`,
+        kind: order.kind || "shelf",
+        credits: order.credits || 0,
         shelfId: order.shelfId,
         shelfTitle: order.shelfTitle,
         listPaise: order.listPaise,

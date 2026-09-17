@@ -33,6 +33,8 @@ export interface WorkTest {
   title: string;
   chapter: string;
   questionCount: number;
+  /** The server says this paper cannot be started yet, and does not say why. */
+  locked?: boolean;
 }
 
 /**
@@ -41,6 +43,13 @@ export interface WorkTest {
  * and the crumb and the tree still have to know where "back" goes.
  */
 const SUBJECT_KEY = "vidai:subject";
+
+/**
+ * A paper the server refused to open, by id. Keyed rather than a bare flag so
+ * it cannot leak across papers, and never reset: a refusal holds until the
+ * page is reloaded, by which time the listing will have marked the tile.
+ */
+let refusedTestId = "";
 
 let subjectId: string | null = null;
 let subjectTitle = "Tests";
@@ -197,7 +206,7 @@ async function loadWorkTests(): Promise<void> {
         (subjectId ? t.subjectId === subjectId : !t.subjectId) &&
         !bundled.some((b) => b.id === t.id)
     )
-    .map((t) => ({ id: t.id, title: t.title, chapter: t.chapter || "", questionCount: t.questionCount }));
+    .map((t) => ({ id: t.id, title: t.title, chapter: t.chapter || "", questionCount: t.questionCount, locked: !!t.locked }));
   workTests = [...bundled, ...server];
 }
 
@@ -248,14 +257,22 @@ function renderOverview(): void {
                         // one-at-a-time lock does — told before the tap, not
                         // after a paper has been written.
                         const spent = left === 0 && state !== "progress";
-                        const locked = (state === "new" && !!busy && busy !== t.id) || spent;
-                        const note = spent
-                          ? " · no attempts left"
-                          : locked
-                            ? " · finish your open test first"
-                            : left !== null && state === "done"
-                              ? ` · ${left} attempt${left === 1 ? "" : "s"} left`
-                              : "";
+                        // The server says a paper is not available yet and
+                        // does not say why. Neither does this: the sentence
+                        // names nobody's balance, and points at the person who
+                        // can actually fix it.
+                        const notReady = !!t.locked && state === "new";
+                        const locked =
+                          (state === "new" && !!busy && busy !== t.id) || spent || notReady;
+                        const note = notReady
+                          ? " · not available yet"
+                          : spent
+                            ? " · no attempts left"
+                            : locked
+                              ? " · finish your open test first"
+                              : left !== null && state === "done"
+                                ? ` · ${left} attempt${left === 1 ? "" : "s"} left`
+                                : "";
                         return `
                         <button class="test-card" data-test="${escapeHtml(t.id)}"${locked ? " disabled" : ""}>
                           <div class="test-card-main">
@@ -550,18 +567,30 @@ function renderAnswer(
   };
 
   function persist(): void {
+    if (refusedTestId === test.id) return;
     recomputeScore(test, attempt);
     // `index` stays the furthest question reached, so another device resumes
     // somewhere sensible; it is no longer a gate on what can be opened.
     attempt.index = Math.max(attempt.index, answeredCount(test, attempt));
     saveAttempt(test.id, attempt);
-    saveProgress({
-      testId: test.id,
-      answers: JSON.stringify(attempt.answers),
-      index: attempt.index,
-      score: attempt.score,
-      total: totalMarks(test),
-    });
+    saveProgress(
+      {
+        testId: test.id,
+        answers: JSON.stringify(attempt.answers),
+        index: attempt.index,
+        score: attempt.score,
+        total: totalMarks(test),
+      },
+      // Refused outright — the paper was never openable. Say so once and take
+      // them back, rather than letting them answer fifteen questions into a
+      // row that is never going to be written.
+      (message) => {
+        if (refusedTestId === test.id) return;
+        refusedTestId = test.id;
+        alert(message);
+        void showStudentSubject(subjectId);
+      }
+    );
     refreshProgress(test, attempt, q, index);
   }
 
