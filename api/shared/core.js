@@ -2430,18 +2430,29 @@ function countsFromQuestions(questions) {
 }
 
 /** The stamped counts, or null for a row written before they existed. */
+/**
+ * The stamped counts, or null for a row written before they existed.
+ *
+ * **`assessCost` is reported separately and does NOT make this null.** It was
+ * written that way for one release and the effect was immediate and ugly: every
+ * row stamped before `assessCost` existed read as unstamped, so a listing fell
+ * back to counting questions the projection had deliberately stripped and
+ * answered **0 questions, 0 marks** for a hundred real library papers until the
+ * bounded heal caught up. A missing third field must never cost a row the two
+ * it does have. `needsAssessCost` is what sends it through the heal instead.
+ */
 function storedCounts(e) {
-  // All THREE, or nothing. A row stamped before `assessCost` existed carries
-  // the first two and not the third, and answering "stamped" for it would mean
-  // `backfillCounts` never healed it — the cost would read as absent forever.
-  // Returning null instead sends those rows through the same bounded heal the
-  // counts themselves went through.
-  return typeof e.questionCount === "number" &&
-    typeof e.totalMarks === "number" &&
-    typeof e.assessCost === "number"
-    ? { questionCount: e.questionCount, totalMarks: e.totalMarks, assessCost: e.assessCost }
+  return typeof e.questionCount === "number" && typeof e.totalMarks === "number"
+    ? {
+        questionCount: e.questionCount,
+        totalMarks: e.totalMarks,
+        assessCost: typeof e.assessCost === "number" ? e.assessCost : null,
+      }
     : null;
 }
+
+/** A row that has its counts but not its AI cost still wants one heal. */
+const needsAssessCost = (e) => typeof e.assessCost !== "number";
 
 /**
  * Heal a row written before the counts were stamped: read it in full once,
@@ -2449,7 +2460,7 @@ function storedCounts(e) {
  * so one listing can never turn into a table-wide rewrite.
  */
 async function backfillCounts(tests, e, budget) {
-  if (storedCounts(e) || budget.left <= 0) return e;
+  if ((storedCounts(e) && !needsAssessCost(e)) || budget.left <= 0) return e;
   budget.left--;
   try {
     // The row's own partition, taken off the projected row — never a constant.
@@ -3287,8 +3298,13 @@ handlers.tests = async (context, req) => {
       const afford = await assessAffordable(who.teacherSub || "", null);
       if (afford.parent) {
         for (const t of list) {
+          // A cost the heal has not stamped yet does NOT lock the tile. The
+          // listing projects the question chunks away so it cannot work one
+          // out, and it is not the gate: `POST /api/attempts` reads the whole
+          // row and computes it there. Locking on an unknown here would have
+          // shown "not available yet" on every paper until a heal caught up.
           const cost = typeof t.assessCost === "number" ? t.assessCost : null;
-          if (cost === null || (cost > 0 && afford.left < cost)) t.locked = true;
+          if (cost !== null && cost > 0 && afford.left < cost) t.locked = true;
           // The cost is the paper's, but what it implies about a wallet is
           // not the child's to read.
           delete t.assessCost;
@@ -5325,11 +5341,22 @@ async function issuerIsParent(sub) {
   return issuerCache.set(sub, parent, ISSUER_TTL_MS);
 }
 
-/** The stamped cost of a paper, or null when the row has not been healed yet. */
+/**
+ * What this paper costs to assess.
+ *
+ * The gate reads the test with a POINT read, so it holds the whole row —
+ * question chunks and all — and an unstamped cost is therefore not an unknown
+ * one: it is computed from the questions that are already in memory. That
+ * matters because the alternative was refusing to let a child start any paper
+ * whose row the bounded heal had not reached yet, which is a wrong answer
+ * dressed as a cautious one.
+ */
 function costOfTestRow(row) {
   if (!row) return null;
   const counts = storedCounts(row);
-  return counts ? counts.assessCost : null;
+  if (counts && counts.assessCost !== null) return counts.assessCost;
+  const questions = unchunkQuestions(row);
+  return questions.length ? assessCostOf(questions) : null;
 }
 
 /**

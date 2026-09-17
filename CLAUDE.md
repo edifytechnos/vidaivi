@@ -1899,10 +1899,22 @@ short answer that is just a number auto-grades and spends nothing, so a parent
 is never charged for one. Reserving less is how somebody runs dry halfway
 through their own child's paper.
 
-**`storedCounts` returns null unless all three are stamped.** A row written
-before `assessCost` existed carries the first two, and answering "stamped" for
-it would mean `backfillCounts` never healed it and the cost read as absent
-forever. Returning null sends those rows through the same bounded heal.
+**A missing `assessCost` must never cost a row the two counts it has.** The
+first version made `storedCounts` return null unless all three were stamped —
+so every row written before this read as *unstamped*, a listing fell back to
+counting questions the projection had deliberately stripped, and **a hundred
+real library papers reported "0 questions, 0 marks"** until the bounded heal
+caught up. `storedCounts` reports `assessCost: null` instead, and
+**`needsAssessCost(e)` is what sends the row through the heal**. Caught by
+walking QA, not by the suite, which is why the suite now asserts it.
+
+**An unstamped cost is not an unknown one at the gate.** `POST /api/attempts`
+reads the test with a *point* read, so it holds the whole row — chunks and all
+— and `costOfTestRow` computes the cost from the questions already in memory.
+The listing cannot (it projects the chunks away) and is not the gate, so an
+unknown cost there leaves the tile **unlocked**. Locking on it showed "not
+available yet" on every paper until a heal caught up, which is a wrong answer
+dressed as a cautious one.
 
 ### The gate: a child cannot start a paper nobody can mark
 
@@ -1920,8 +1932,9 @@ matter more than the rule itself:
   the in-progress row only, decided by one point query projected to the row key.
   A student stopped at question nine because a balance moved is worse than
   anything this prevents.
-- **An unknown cost is not free.** A row not yet healed blocks rather than
-  waving through.
+- **An unknown cost is computed, not guessed.** The gate has the full row, so
+  a row the heal has not reached is still priced correctly from its own
+  questions — see above.
 
 **The child is never told it is about money.** The 402 says the test is not
 available yet and to ask whoever set it up; the tile says *not available yet*

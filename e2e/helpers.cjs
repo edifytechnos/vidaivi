@@ -28,7 +28,7 @@ new Function(
   "require",
   fs.readFileSync(CORE, "utf8") +
     "\nmodule.exports.__helpers = { makeCache, chunkQuestions, unchunkQuestions," +
-    " storedCounts, countsFromQuestions, inBatches, lockMsFor, ipKey, digestKey," +
+    " storedCounts, needsAssessCost, countsFromQuestions, inBatches, lockMsFor, ipKey, digestKey," +
     " generatePassword, PW_WORDS, LOCK_AFTER, timingDecoyHash, checkPassword," +
     " signSession, verifySession, readCookie, sessionCookie, clearedCookie," +
     " renewIfStale, csrfRefused, SESSION_COOKIE, STUDENT_TOKEN_TTL_MS," +
@@ -53,10 +53,21 @@ h.chunkQuestions(small, [{ id: "a", marks: 1 }, { id: "b", marks: 4 }]);
 check(small.questionCount === 2, "chunkQuestions stamps questionCount");
 check(small.totalMarks === 5, "chunkQuestions stamps totalMarks");
 check(h.unchunkQuestions(small).length === 2, "questions still round-trip through the chunks");
+// A row stamped before `assessCost` existed keeps the two counts it HAS. This
+// read null for one release, which made every listing fall back to counting
+// questions the projection had stripped and answer "0 questions" for a hundred
+// real papers. A missing third field must never cost a row the other two.
+const older = h.storedCounts({ questionCount: 2, totalMarks: 5 });
 check(
-  h.storedCounts({ questionCount: 2, totalMarks: 5 }) === null,
-  "a row stamped before assessCost existed reads as unstamped, so the heal still reaches it"
+  !!older && older.questionCount === 2 && older.totalMarks === 5,
+  `a row without the AI cost keeps its question count (${older && older.questionCount})`
 );
+check(older && older.assessCost === null, "and reports the cost as unknown rather than as zero");
+check(
+  h.needsAssessCost({ questionCount: 2, totalMarks: 5 }) === true,
+  "but it is still sent through the heal"
+);
+check(h.needsAssessCost(small) === false, "and a fully stamped row is not");
 check(
   JSON.stringify(h.storedCounts(small)) === '{"questionCount":2,"totalMarks":5,"assessCost":0}',
   "storedCounts reads the stamped counts back"
