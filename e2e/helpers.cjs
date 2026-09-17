@@ -2399,6 +2399,10 @@ async function purchaseChecks() {
   const queue = await call(aCookie, {}, "GET", { pending: "1" });
   check(queue.data.rows.length === 1, `and then it is in the admin's queue (${queue.data.rows.length})`);
   check(
+    queue.data.rows[0].sub === TEACHER && queue.data.rows[0].ref === ref,
+    `the queue row names the buyer and the ref it can be confirmed by (${queue.data.rows[0].sub} / ${queue.data.rows[0].ref})`
+  );
+  check(
     queue.data.rows[0].payablePaise === 44000 && queue.data.rows[0].coupon === "PILOT20",
     "with the discounted amount and the code that did it"
   );
@@ -2444,6 +2448,27 @@ async function purchaseChecks() {
   // Owning it means the buy flow says so rather than selling it twice.
   const owned = await call(tCookie, { action: "quote", shelfId: "shelf-1" });
   check(owned.status === 409 && owned.data.owned === true, `a shelf already owned is not sold again (${owned.status})`);
+
+  // --- A buyer whose id contains `~` ---------------------------------------
+  // An ADMIN's id is `adm~<user>`, and the pending index key is `<sub>~<ref>`.
+  // Splitting that on the FIRST `~` handed back sub "adm", so Confirm and Not
+  // received both answered "No such payment" on an admin's own purchase. Found
+  // by walking a real payment on QA; every other buyer is a Google sub, which
+  // is digits, so nothing had shown it.
+  // The password admin, whose id really is `adm~<user>` — the shape that broke.
+  const padCookie = t.signSession("vad", "e2e-admin", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+  const adminBuy = await call(padCookie, { action: "start", shelfId: "shelf-1" });
+  const adminRef = adminBuy.data.ref;
+  await call(padCookie, { action: "claim", ref: adminRef });
+  const q2 = await call(aCookie, {}, "GET", { pending: "1" });
+  const mineRow = q2.data.rows.find((r) => r.ref === adminRef);
+  check(!!mineRow, "an admin's own payment reaches the queue");
+  check(
+    mineRow && mineRow.sub === "adm~e2e-admin",
+    `and the row names the whole id, tilde and all (${mineRow && mineRow.sub})`
+  );
+  const settled = await call(aCookie, { action: "confirm", sub: mineRow.sub, ref: adminRef });
+  check(settled.status === 200, `so it can actually be confirmed (${settled.status})`);
 
   // --- Their own orders are their own -----------------------------------
   const mine = await call(tCookie, {}, "GET", {});

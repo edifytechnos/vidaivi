@@ -6525,7 +6525,17 @@ handlers.purchase = async (context, req) => {
         queryOptions: { filter: `PartitionKey eq '${PENDING_PK}'`, select: PENDING_SELECT },
       });
       for await (const e of iter) {
-        const [sub, ref] = String(e.rowKey).split("~");
+        // Split at the LAST `~`, not the first. The key is `<sub>~<ref>` and an
+        // ADMIN's id is `adm~<user>` — which already contains one — so a naive
+        // split handed back sub "adm" and ref "Jones", and every Confirm and
+        // Not received on an admin's own payment answered "No such payment".
+        // A ref is `ord-<base36>-<hex>` and never contains `~`, so the last one
+        // is always the separator. Found by walking a real purchase on QA;
+        // every buyer to date is a Google sub, which is digits, which is why
+        // nothing else had shown it.
+        const cut = String(e.rowKey).lastIndexOf("~");
+        const sub = cut < 0 ? String(e.rowKey) : String(e.rowKey).slice(0, cut);
+        const ref = cut < 0 ? "" : String(e.rowKey).slice(cut + 1);
         rows.push({
           sub,
           ref,
