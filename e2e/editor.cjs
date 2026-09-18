@@ -13,6 +13,16 @@ const check = (ok, label) => { console.log((ok ? "PASS  " : "FAIL  ") + label); 
   browser = await chromium.launch({ executablePath: EXE, args: ["--no-sandbox"] });
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 950 } });
   page = await ctx.newPage();
+  // Stamp the self-guided tour as already seen, on every document this context
+  // loads. It fires ~700ms after a signed-in boot, and a reload mid-suite is a
+  // signed-in boot — so without this its scrim swallows the next click and the
+  // failure reads as a missing button.
+  await page.addInitScript(() => {
+    for (const r of ["student", "parent", "teacher", "admin"]) {
+      try { localStorage.setItem(`vidai:tour:${r}`, "1"); } catch {}
+    }
+  });
+
   const shot = (n) => (SHOT ? page.screenshot({ path: `${SHOT}/${n}.png`, fullPage: true }) : Promise.resolve());
 
   await page.goto(BASE + "/", { waitUntil: "domcontentloaded" });

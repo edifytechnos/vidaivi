@@ -11,6 +11,7 @@ import { showHome } from "./home";
 import { showMarking } from "./marking";
 import { showChildren } from "./parent";
 import { showSubjects } from "./subjects";
+import { showTour } from "../tour";
 
 /** Bind the rail once, at boot. */
 export function installShell(): void {
@@ -55,7 +56,8 @@ export function installShell(): void {
     if (!item) return;
     const to = item.dataset.rail;
     track("rail_nav", { to: to ?? "" });
-    if (to === "subjects") void showSubjects();
+    if (to === "tour") showTour();
+    else if (to === "subjects") void showSubjects();
     else if (to === "browse") void import("./browse").then((x) => x.showBrowse());
     else if (to === "children") void showChildren();
     else if (to === "results") showHome();

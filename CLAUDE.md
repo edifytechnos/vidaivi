@@ -2653,6 +2653,79 @@ Two things it is easy to get wrong, and both were:
 the same right edge and width as the real button, and the subject page's ghost
 draws no tree and no crumb row.
 
+## The help centre (`/help`, `help/**/*.md`, `scripts/build-help.mjs`)
+
+Docs as code, published by the deploy that already exists: `npm run build` is
+now `tsc && check-help && vite build && build-help`, so every merge to `main`
+puts the pages on the live site through the same workflow, with no second
+Static Web App, no extra token, no DNS record and no new OAuth origin. QA gets
+them too.
+
+**The URL is `/help`, not `docs.vidai.seyali.app`.** A `docs.` host is the
+developer idiom and, on Azure, is not free: custom domains work only on a Static
+Web App's *production* environment and SWA has no host-based routing, so it
+would mean a **second app** with its own token, domain and settings. `/help` is
+the end-user idiom for an audience of parents and students, and being the same
+origin is what makes "Learn more" a link rather than a sign-in boundary.
+`/docs` redirects to it.
+
+- **`navigationFallback` now has an `exclude`.** It did not, so the SPA rewrite
+  would have swallowed every help page. If a help URL renders the app, that
+  entry is what is missing.
+- **The pages carry no `<script>` at all.** The CSP is global and
+  `script-src 'self'` with no inline script; a generator that emitted one would
+  have needed a route-scoped override on the most-linked path in the product.
+  Client-side search would be that change, made deliberately.
+- **A generator and not a framework.** The repo has one dependency; the pages
+  are prose. ~250 lines does it, and CLAUDE.md says ask before adding a
+  dependency.
+- Pages live under `help/<persona>/` — student, parent, teacher, admin — with
+  front matter (`title`, `summary`, `order`) and a small markdown subset:
+  headings, lists, tables, quotes, code, links, `**bold**`, `*italic*`. Like
+  `formatText`, everything is escaped first.
+
+### "Auto-updated every release" means the facts, not the prose
+
+The pipeline is automatic; prose is not self-writing, and pretending otherwise
+is how docs come to state a price confidently and wrongly. So **a number that
+exists in the code may not be typed by hand**: `{{rules.subjectPaise.rupees}}`
+is read out of `PLAN_DEFAULTS`, `{{library.table}}` is walked out of `content/`
+and the seeder's shelf map. An unknown `{{fact}}` fails the build rather than
+rendering blank.
+
+**`node scripts/check-help.cjs` is the staleness gate**, in the spirit of
+`check-content.cjs`, and the build runs it — which is the only reason it is a
+gate at all, since nothing else in this repo runs in CI. It rejects a
+hand-typed rupee amount, an unknown fact, a link to a page or an anchor that is
+not there, and missing front matter. Verified to fail all three ways.
+
+`npm run dev` does **not** serve `/help` — the pages are written after Vite
+builds. `npm run help` then `npm run preview`, or just read `dist/help`.
+
+## The self-guided tour (`src/tour.ts`)
+
+Five cards on first sign-in, per role, ending on **Read the help centre** which
+opens that role's first page in a new tab. Also in the profile menu as **Take
+the tour**, beside **Help**.
+
+- **It is `openModal`'s multi-step dialog and nothing else** — no Shepherd.js,
+  no driver.js, no new dependency. A coach mark anchored to a real element
+  breaks the moment a button moves or the screen is still a skeleton, which on
+  a cold start on a cheap Android phone is most of the first second. Cards
+  cannot be wrong about where something is, because they never point at it.
+- `ModalOpts.cancelLabel` was added for it: "Cancel" is wrong on a dialog
+  nobody is filling in. The tour's says **Skip**.
+- **It stands down rather than stacking.** It checks `body.modal-open` both
+  when scheduled and again when it fires — the sign-up role choice and the
+  phone-number step land on exactly the same load, and a tour on top of a
+  question somebody must answer is the one way this could do harm.
+- **No storage means "already seen".** A tour that reopens on every load in a
+  private window is worse than one somebody has to ask for.
+- **The browser suites stamp `vidai:tour:<role>` via `addInitScript`.** The tour
+  fires ~700ms after a *signed-in* boot, and a reload mid-suite is a signed-in
+  boot — without the stamp its scrim swallows the next click and the failure
+  reads as a missing button. That is exactly how it was found.
+
 ## Working style
 
 - Concise, structured output. No padding.

@@ -1,0 +1,213 @@
+/* The help centre's own stylesheet. Deliberately separate from the app's:
+   these pages are prose read once, not an application shell, and nothing here
+   should be able to break a screen a student is sitting a test on.
+
+   Mobile first, because the reader is on a cheap Android phone. */
+
+:root {
+  --ink: #1b1f2a;
+  --quiet: #5c6478;
+  --line: #e3e6ee;
+  --bg: #ffffff;
+  --panel: #f7f8fb;
+  --accent: #5b43d6;
+  --accent-soft: #efecfd;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+a { color: var(--accent); }
+
+/* ---------------------------------------------------------------- the bar */
+
+.hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 5;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.brand span { color: var(--quiet); font-weight: 500; }
+
+.back {
+  font-size: 14px;
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------- the layout */
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+main { max-width: 68ch; }
+
+.side { display: none; }
+
+@media (min-width: 900px) {
+  .wrap {
+    display: grid;
+    grid-template-columns: 232px minmax(0, 1fr);
+    gap: 48px;
+    padding-top: 8px;
+  }
+  .side {
+    display: block;
+    position: sticky;
+    top: 68px;
+    align-self: start;
+    max-height: calc(100dvh - 88px);
+    overflow: auto;
+    font-size: 14px;
+    padding-bottom: 24px;
+  }
+}
+
+.side-group { margin: 20px 0; }
+.side-group b { display: block; color: var(--quiet); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.side-group ul { list-style: none; margin: 8px 0 0; padding: 0; }
+.side-group li { margin: 2px 0; }
+.side-group a { display: block; padding: 5px 10px; border-radius: 7px; text-decoration: none; color: var(--ink); }
+.side-group a:hover { background: var(--panel); }
+.side-group .here > a { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+/* --------------------------------------------------------------- the prose */
+
+.kicker {
+  margin: 28px 0 0;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+h1 { font-size: 30px; line-height: 1.2; margin: 8px 0 12px; letter-spacing: -.01em; }
+h2 { font-size: 21px; margin: 38px 0 10px; letter-spacing: -.01em; }
+h3 { font-size: 17px; margin: 26px 0 6px; }
+
+.lede { font-size: 18px; color: var(--quiet); margin: 0 0 8px; }
+
+p, ul, ol { margin: 12px 0; }
+li { margin: 5px 0; }
+
+code {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  font-size: .9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+pre {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  overflow: auto;
+}
+
+pre code { background: none; border: 0; padding: 0; }
+
+blockquote {
+  margin: 18px 0;
+  padding: 2px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 8px 8px 0;
+}
+
+blockquote p { margin: 10px 0; }
+
+hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+
+/* A table has to survive a 320px screen, so it scrolls inside its own box
+   rather than pushing the page sideways. */
+.tw { overflow-x: auto; margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--quiet); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+
+/* ----------------------------------------------------------- on this page */
+
+.toc {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 20px 0 28px;
+  font-size: 14px;
+}
+.toc b { color: var(--quiet); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.toc ul { margin: 8px 0 0; padding-left: 18px; }
+
+/* ------------------------------------------------------------- front door */
+
+.cards { display: grid; gap: 12px; margin: 24px 0 8px; }
+
+@media (min-width: 620px) { .cards { grid-template-columns: 1fr 1fr; } }
+
+.card {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--bg);
+}
+.card:hover { border-color: var(--accent); background: var(--accent-soft); }
+.card b { display: block; font-size: 17px; }
+.card span { display: block; color: var(--quiet); font-size: 14px; margin-top: 4px; }
+
+/* ------------------------------------------------------------------ foot */
+
+.ft {
+  border-top: 1px solid var(--line);
+  padding: 20px 16px 40px;
+  color: var(--quiet);
+  font-size: 14px;
+}
+.ft p { max-width: 1080px; margin: 0 auto; }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8eaf2;
+    --quiet: #9aa3b8;
+    --line: #2a2f3d;
+    --bg: #14171f;
+    --panel: #1b1f2a;
+    --accent: #a394ff;
+    --accent-soft: #232039;
+  }
+}

@@ -23,6 +23,7 @@ import { isStudentViewer, showStudentSubject } from "./screens/student";
 import { showChildren } from "./screens/parent";
 import { installShell } from "./screens/menu";
 import { mount, skeleton } from "./shell";
+import { showTourOnFirstRun } from "./tour";
 
 // Before anything reads storage: carry this device across the Vidaivi → Vidai
 // rename, or every signed-in student is silently signed out.
@@ -101,3 +102,8 @@ if (editId) {
 } else {
   showEntry();
 }
+
+// Somebody's first sign-in gets the five-card tour. It waits for the screen to
+// paint and stands down if a dialog is already open, because the role choice
+// and the phone-number step land on exactly this load.
+showTourOnFirstRun();

@@ -34,6 +34,15 @@ function check(ok, label) {
       window.__cspViolations.push(`${e.violatedDirective} blocked ${e.blockedURI}`);
     });
   });
+  // Stamp the self-guided tour as already seen, on every document this context
+  // loads. It fires ~700ms after a signed-in boot, and a reload mid-suite is a
+  // signed-in boot — so without this its scrim swallows the next click and the
+  // failure reads as a missing button.
+  await page.addInitScript(() => {
+    for (const r of ["student", "parent", "teacher", "admin"]) {
+      try { localStorage.setItem(`vidai:tour:${r}`, "1"); } catch {}
+    }
+  });
   const shot = (name) => (SHOT ? page.screenshot({ path: `${SHOT}/${name}.png`, fullPage: true }) : Promise.resolve());
 
   // The session is an httpOnly cookie now, so the page can no longer hold two

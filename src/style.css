@@ -2287,6 +2287,18 @@ body {
 .pm-item:hover {
   background: var(--bg);
 }
+/* Help is a real link (it opens the help centre in its own tab) and everything
+   else in the menu is a button. It has to read as one row, not as a link
+   pretending to be one. */
+a.pm-item {
+  text-decoration: none;
+}
+/* Sign out is the heavy end of the menu; Help and the tour are not. */
+.pm-rule {
+  height: 1px;
+  margin: 6px 0;
+  background: var(--border);
+}
 .pm-item .icon {
   width: 15px;
   height: 15px;
