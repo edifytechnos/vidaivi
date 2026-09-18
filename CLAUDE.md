@@ -163,7 +163,9 @@ unlike the `vidai.seyali.app` entry above which is done.
   `ASSESS_MONTHLY_CREDITS` bound the spend, and `AI_USD_PER_M_IN` /
   `AI_USD_PER_M_OUT` / `USD_INR` price the usage report; see below), `GOOGLE_CLIENT_ID`,
   `STORAGE_CONNECTION_STRING` (Storage account; tables `profiles`, `attempts`,
-  `students` are auto-created), `SESSION_SECRET` (any long random string —
+  `students` are auto-created), `UPI_VPA` + `UPI_PAYEE_NAME` (optional — together
+  they switch on buying a ready-made subject; without `UPI_VPA` the endpoint
+  answers 501 and the client hides Buy), `SESSION_SECRET` (any long random string —
   signs student session tokens), `TEACHER_EMAILS` (comma-separated Gmail
   addresses that get the teacher role).
 - Admin: `ADMIN_USERNAME` + `ADMIN_PASSWORD` app settings enable
@@ -1061,7 +1063,9 @@ stylesheet and drives it at 390px: what the fixed bottom bar covers, and whether
 the page holds still behind the open question list.
 `node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
 the full-screen photo viewer in a real browser against two fake pages — no
-network, no session, no row written. `node e2e/helpers.cjs` needs no browser and no network: it
+network, no session, no row written. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+390px (admin creds from the environment; it skips without them).
+`node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
 in-process cache, `inBatches`) **and drives the second factor through the real
 handlers against a fake Table Storage** — enabling, replay refusal, recovery
@@ -1604,8 +1608,7 @@ item, `?library=1` answered *Teachers only*, and `POST /api/subjects` and
   `opts.marking` is set — reached through their own marking queue. A parent
   *reading* a child's paper still waits for release, exactly as before.
 
-**Not done, and it is the next slice**: payments. A parent past the free
-allowance gets the 402 naming ₹499 and no way to pay it.
+That 402 now has a door on it — see *Paying for a ready-made subject* below.
 
 **One leftover of the re-partition fixed in passing**: the adopt gate read the
 master with `tests.getEntity("test", ids[0])` — the old constant partition — so
@@ -1724,9 +1727,253 @@ accounts list with **Free forever**, **paid seats** and **extend trial** as
 manual levers. Those levers are what make the payment stub honest — a real
 teacher can be run end to end today, with money arriving later.
 
-**Payments are deliberately not built.** Razorpay, invoices, renewal and
-charging a card are the next slice; seats are counted, priced and shown, never
-billed. CLAUDE.md's "payments: later, only when v1 loop is proven" still holds.
+**The one-off ₹499 subject can now be bought** (below). The teacher's monthly
+fee and the per-seat price are still counted, priced and shown but never
+billed: a subscription is renewal, expiry and what happens to a roster when it
+lapses, which is materially more than a one-off unlock and does not belong in
+the same slice.
+
+## Paying for a ready-made subject (`/api/purchase`, UPI)
+
+A parent or teacher past the free shelf allowance got a 402 naming ₹499 and no
+way to pay it — a price with no door is read as a broken product. There is no
+registered business behind Vidai yet, so the first route is the one that needs
+none: **the buyer pays by UPI into the platform's own VPA and an admin
+confirms the sale.**
+
+### One seam, so the gateway is a caller and not a rewrite
+
+`settlePurchase(order, by, method, payerRef)` is the only place that says "this
+account owns this shelf". The admin's **Confirm** calls it; a Razorpay webhook
+will call the same function with a different `method`. Nothing the buyer sees,
+and no row recording what they own, changes on the day it does. The purchase
+row is written **before** the order is marked: a crash between the two leaves an
+order that still looks unconfirmed, which an admin can press again harmlessly
+(the upsert is idempotent) — the other order would have taken the money and
+granted nothing.
+
+### The tables
+
+| Table | PK | RK | Why |
+|---|---|---|---|
+| `coupons` | `"coupon"` | the code | one point read per quote |
+| `orders` | the buyer's sub | the ref | "my orders" is one partition |
+| `orders` | `"~pending"` | `<sub>~<ref>` | the admin's queue, one partition |
+
+**That second `orders` row is an index, and it exists for rule 2.** Without it
+"show me every unconfirmed payment" is a scan of the whole table that grows with
+the sales history forever. It is written when the buyer says they have paid —
+before that there is nothing for an admin to look at — and **deleted the moment
+the order is settled or refused**, so it stays the length of the *queue* rather
+than the length of the history.
+
+### Two app settings, and without them the feature is off
+
+`UPI_VPA` (required) and `UPI_PAYEE_NAME` (default `Vidai`), set per
+environment in the Azure portal — **production's settings do not reach QA**.
+Without a VPA `/api/purchase` answers **501** and `paymentsAvailable()` in
+`src/payments.ts` hides Buy everywhere, exactly as `/api/assess` does without
+its model key and for the same reason: a button that cannot work is worse than
+no button.
+
+### There is no QR code, deliberately
+
+Drawing one needs an encoder dependency. The buyers are on cheap Android
+phones, where `upi://pay?pa=…&am=…&tn=Vidai <ref>` opens GPay or PhonePe with
+the amount and the reference already filled in — the better affordance anyway.
+On a laptop the VPA is shown with a Copy button.
+
+### The price is the admin's row, and a code comes off it
+
+The quote reads `subjectPaise` through `platformRules()`, which is the number
+in **Plans & pricing** — nothing here duplicates it, so changing it changes what
+the next buyer pays (within `PLAN_TTL_MS`, 60s). A coupon carries `percentOff`
+and/or `amountOffPaise`; the two **add**, and the total is clamped at the price,
+so a discount can make something free and never make it owed.
+
+**A wrong code is answered exactly like no code**: the list price with a
+sentence saying why, never an error. So a guess learns nothing beyond "not that
+one", and the real bound is `maxRedemptions`— the worst case is a sale at a
+price the admin had already decided to give somebody. **This deliberately does
+not go through `loginGate`**, which would have been worse than nothing: the IP
+bucket is shared with signing in, so a school behind one NAT address could have
+been locked out of the app by somebody mistyping a discount code.
+
+**A redemption is counted ETag'd with a bounded retry**, not read-modify-write —
+the same line `aiusage` draws between a throttle and a ledger. Confirming an
+order twice is a 409, so a code cannot be double-counted, and `e2e/helpers.cjs`
+proves both against a fake table **that actually enforces ETags**, without which
+the assertion would pass while proving nothing.
+
+### What is recorded is what was paid
+
+The `purchases` row carries `pricePaise` (what was actually paid), `listPaise`,
+the `coupon`, the `orderRef` and the `method`. A discount that is not recorded
+is a price nobody can explain six months later.
+
+### The screens
+
+- **`src/screens/buy.ts`** — the payment dialog. It is **not** `openModal`:
+  that dialog is a form you fill in and submit once, while this one talks to
+  the server *while it is open* (a code is applied and the price above it
+  changes) and ends in a payment link rather than a save. What it borrows is
+  the modal's manners — the scrim, Escape, the focus trap, `body.modal-open`,
+  and the action row that ends at the right — the same trade `photoviewer.ts`
+  makes.
+- **It is opened from the refusal, not from a menu.** `adoptTests` carries the
+  402 **structurally** (`payment: {shelfId, subjectPaise, limit, used}`) rather
+  than leaving it in the message, so Browse, New subject and the editor's **+**
+  can each offer the thing the sentence describes. In the two that open it from
+  inside another dialog's `onSubmit`, it is **deferred a tick** — a dialog
+  opened there loses to that dialog's own teardown, the same reason
+  `showNewLogin` is deferred.
+- **Closing without paying cancels the order.** Otherwise an abandoned order
+  eats one of the buyer's twenty open slots for nothing.
+- **Admin → Payments** (`showPayments`, rail item beside Plans & pricing):
+  the waiting queue with Confirm / Not received, and the discount codes.
+
+### Not done
+
+Razorpay itself — the order-create endpoint, Checkout on the client and the
+signature-verified webhook — plus the subscription side (the teacher's monthly
+fee and per-seat price). Checkout also needs its script added to a
+`script-src 'self'` that currently has no external script at all, which is a
+CSP change to make deliberately and test, not to discover in front of a class.
+
+## A parent marks their child's paper in one click, and pays in credits
+
+A parent's child hands a paper to **nobody**. There is no teacher behind them,
+so the alternative to the AI marking it is not a person marking it — it is the
+paper sitting unmarked forever. That one fact is what shapes everything below.
+
+### The one click awards the marks, and this is a deliberate exception
+
+`POST /api/assess {action:"test", username, testId}` assesses **every**
+outstanding answer on one paper and **opens it to the child**, in one call.
+Unlike every other path, the model's number is written as `awarded` and the row
+moves to `marked`.
+
+CLAUDE.md's rule — *the AI proposes, the teacher awards* — still holds
+everywhere else and is not weakened. Here **the parent is the marker** and the
+button acts on their behalf: `aiAwarded` is kept beside `awarded` so they can
+see where the number came from, and every mark is theirs to change on the paper
+afterwards. It is scoped hard:
+
+- **Their own child only.** The student's `teacherSub` must be the caller
+  (admins may stand in). A **linked** child — one redeemed from a teacher's
+  invite code — is refused 403: that paper belongs to whoever issued the login.
+- **The whole paper is reserved before anything is spent.** Four of seven
+  answers marked is worse to read than none, so a balance that cannot cover the
+  lot is a 402 that names both numbers and the model is never called.
+- **Pressing it twice costs nothing**: the walk filters `status eq 'submitted'`,
+  so answers already marked are not re-read.
+- **Release runs even when an answer failed.** What was marked is worth
+  reading, and a paper kept shut by one timeout is the dead end this removes.
+- The daily counter is written **once after the batch**, not per answer: it is a
+  plain upsert and three in flight would race. The credit ledger is ETag'd and
+  is safe in parallel — the same line this file already draws between a throttle
+  and a ledger.
+
+### Two wallets, one ledger (`walletFor`)
+
+| Account | Partition | Shape |
+|---|---|---|
+| Teacher, admin | `YYYY-MM` | an allowance that refills, exactly as before |
+| **Parent** | **`~wallet`** | a **balance**: one trial grant, then packs |
+
+A parent's credits cannot live in a partition that resets on the 1st, or *"once
+it is used up you buy more"* would be untrue by the end of the month. Both are
+the same row shape in the same table, so the admin report, the low-balance
+warning and the ETag'd increment stay one implementation.
+
+`walletFor(who)` is the only thing that knows which is which, and `walletOf`
+is the same with the admin's own `parentTrialCredits` applied — the same
+discipline `creditsAreLow` keeps, and for the same reason.
+
+### What a paper costs: `assessCost`, stamped on write
+
+`chunkQuestions` stamps it beside `questionCount` and `totalMarks` (rule 5): one
+credit per **long** or **short** answer, nothing for an MCQ. A 15-question paper
+with 7 of those costs 7.
+
+It is the **worst case on purpose**, because it is what a *gate* reserves — a
+short answer that is just a number auto-grades and spends nothing, so a parent
+is never charged for one. Reserving less is how somebody runs dry halfway
+through their own child's paper.
+
+**A missing `assessCost` must never cost a row the two counts it has.** The
+first version made `storedCounts` return null unless all three were stamped —
+so every row written before this read as *unstamped*, a listing fell back to
+counting questions the projection had deliberately stripped, and **a hundred
+real library papers reported "0 questions, 0 marks"** until the bounded heal
+caught up. `storedCounts` reports `assessCost: null` instead, and
+**`needsAssessCost(e)` is what sends the row through the heal**. Caught by
+walking QA, not by the suite, which is why the suite now asserts it.
+
+**An unstamped cost is not an unknown one at the gate.** `POST /api/attempts`
+reads the test with a *point* read, so it holds the whole row — chunks and all
+— and `costOfTestRow` computes the cost from the questions already in memory.
+The listing cannot (it projects the chunks away) and is not the gate, so an
+unknown cost there leaves the tile **unlocked**. Locking on it showed "not
+available yet" on every paper until a heal caught up, which is a wrong answer
+dressed as a cautious one.
+
+### The gate: a child cannot start a paper nobody can mark
+
+Enforced in `POST /api/attempts {action:"progress"}`, and three properties
+matter more than the rule itself:
+
+- **It fails OPEN.** `issuerIsParent` blocks only when the issuing account has
+  **positively** declared itself a parent (`accounts.chose === "parent"`). A
+  teacher in `TEACHER_EMAILS` may have no accounts row at all, and reading "no
+  row" as "parent" would have credit-gated the pilot teacher's whole class on
+  the day this shipped. `e2e/helpers.cjs` asserts it with an **emptied** wallet
+  behind both non-parents — without that the assertion passes on an untouched
+  trial grant and proves nothing.
+- **A paper already begun is never taken away.** The check runs on the CREATE of
+  the in-progress row only, decided by one point query projected to the row key.
+  A student stopped at question nine because a balance moved is worse than
+  anything this prevents.
+- **An unknown cost is computed, not guessed.** The gate has the full row, so
+  a row the heal has not reached is still priced correctly from its own
+  questions — see above.
+
+**The child is never told it is about money.** The 402 says the test is not
+available yet and to ask whoever set it up; the tile says *not available yet*
+with no reason, and the listing `delete`s `assessCost` from a student's copy.
+The numbers ride on the response for the *parent's* screen. `saveProgress` now
+reports a 402 back — it is fire-and-forget by design, but a refusal is not a
+dropped write the next answer heals, and swallowing it let a child fill in a
+whole paper that was never going to be stored.
+
+### Buying credits rides the same seam as the ₹499 shelf
+
+A pack is `kind: "credits"` on the same order, quoted from the same plan row,
+paid with the same UPI link and confirmed from the same admin queue.
+`settlePurchase` branches once: a shelf writes a `purchases` row, a pack calls
+`grantCreditsTo`, which raises `granted` and leaves `used` alone — a top-up
+never forgives what was already spent, and a wallet with no row yet already
+holds the trial grant, so topping one up must not cancel it.
+
+Three numbers on the Plans screen, none of them constants:
+`parentTrialCredits` (100), `creditPackCredits`, `creditPackPaise`.
+
+### The admin sees both wallets
+
+`GET /api/aiusage?month=` walks **two** partitions — the month and `~wallet` —
+with the same projection. Each row carries `lifetime`, so the screen says
+"balance" or "this month" rather than implying a parent's credits reset, and
+`POST {action:"grant", lifetime:true}` tops up a parent. `lifetime` names the
+partition explicitly rather than letting a caller pass one.
+
+### The parent's screen
+
+`showChildResults` fetches tests, attempts, grading rows and the balance in one
+`Promise.all`. The grading rows come back for the **whole child**, not per test:
+one request per paper is an N+1 from a phone (rule 3). Each paper with answers
+waiting gets **Mark N & release**; the balance sits above the list and turns
+amber when low, with **Top up** beside it. A balance that fails to load says
+**nothing** — the server's gate is the real limit.
 
 ### Two attempts at a ready-made test
 
@@ -2407,6 +2654,86 @@ Two things it is easy to get wrong, and both were:
 `e2e/regression.cjs` holds the API back and asserts both: the ghost `+` lands at
 the same right edge and width as the real button, and the subject page's ghost
 draws no tree and no crumb row.
+
+## The help centre (`/help`, `help/**/*.md`, `scripts/build-help.mjs`)
+
+Docs as code, published by the deploy that already exists: `npm run build` is
+now `tsc && check-help && vite build && build-help`, so every merge to `main`
+puts the pages on the live site through the same workflow, with no second
+Static Web App, no extra token, no DNS record and no new OAuth origin. QA gets
+them too.
+
+**The URL is `/help`, not `docs.vidai.seyali.app`.** A `docs.` host is the
+developer idiom and, on Azure, is not free: custom domains work only on a Static
+Web App's *production* environment and SWA has no host-based routing, so it
+would mean a **second app** with its own token, domain and settings. `/help` is
+the end-user idiom for an audience of parents and students, and being the same
+origin is what makes "Learn more" a link rather than a sign-in boundary.
+`/docs` redirects to it.
+
+- **`navigationFallback` now has an `exclude`.** It did not, so the SPA rewrite
+  would have swallowed every help page. If a help URL renders the app, that
+  entry is what is missing.
+- **The pages carry no `<script>` at all.** The CSP is global and
+  `script-src 'self'` with no inline script; a generator that emitted one would
+  have needed a route-scoped override on the most-linked path in the product.
+  Client-side search would be that change, made deliberately.
+- **A generator and not a framework.** The repo has one dependency; the pages
+  are prose. ~250 lines does it, and CLAUDE.md says ask before adding a
+  dependency.
+- Pages live under `help/<persona>/` — student, parent, teacher, admin — with
+  front matter (`title`, `summary`, `order`) and a small markdown subset:
+  headings, lists, tables, quotes, code, links, `**bold**`, `*italic*`. Like
+  `formatText`, everything is escaped first.
+
+### "Auto-updated every release" means the facts, not the prose
+
+The pipeline is automatic; prose is not self-writing, and pretending otherwise
+is how docs come to state a price confidently and wrongly. So **a number that
+exists in the code may not be typed by hand**: `{{rules.subjectPaise.rupees}}`
+is read out of `PLAN_DEFAULTS`, `{{library.table}}` is walked out of `content/`
+and the seeder's shelf map. An unknown `{{fact}}` fails the build rather than
+rendering blank.
+
+**`node scripts/check-help.cjs` is the staleness gate**, in the spirit of
+`check-content.cjs`, and the build runs it — which is the only reason it is a
+gate at all, since nothing else in this repo runs in CI. It rejects a
+hand-typed rupee amount, an unknown fact, a link to a page or an anchor that is
+not there, and missing front matter. Verified to fail all three ways.
+
+`npm run dev` does **not** serve `/help` — the pages are written after Vite
+builds. `npm run help` then `npm run preview`, or just read `dist/help`.
+
+## The self-guided tour (`src/tour.ts`)
+
+Five cards on first sign-in, per role, ending on **Read the help centre** which
+opens that role's first page in a new tab. Also in the profile menu as **Take
+the tour**, beside **Help**.
+
+- **It is `openModal`'s multi-step dialog and nothing else** — no Shepherd.js,
+  no driver.js, no new dependency. A coach mark anchored to a real element
+  breaks the moment a button moves or the screen is still a skeleton, which on
+  a cold start on a cheap Android phone is most of the first second. Cards
+  cannot be wrong about where something is, because they never point at it.
+- `ModalOpts.cancelLabel` was added for it: "Cancel" is wrong on a dialog
+  nobody is filling in. The tour's says **Skip**.
+- **It stands down rather than stacking.** It checks `body.modal-open` both
+  when scheduled and again when it fires — the sign-up role choice and the
+  phone-number step land on exactly the same load, and a tour on top of a
+  question somebody must answer is the one way this could do harm.
+- **No storage means "already seen".** A tour that reopens on every load in a
+  private window is worse than one somebody has to ask for.
+- **`node e2e/tour.cjs`** drives it at 390px against a real browser: that it
+  opens by itself on a first signed-in boot, that it does **not** come back on
+  the next one, that Skip says Skip, and that the last button really reaches a
+  help page that really renders and loads no script. Both halves of the
+  first-run assertion matter — a dialog that never fires teaches nobody, and
+  one that fires every time is the thing people hate most about them. Verified
+  to fail with `showTourOnFirstRun()` removed.
+- **The other browser suites stamp `vidai:tour:<role>` via `addInitScript`.** The tour
+  fires ~700ms after a *signed-in* boot, and a reload mid-suite is a signed-in
+  boot — without the stamp its scrim swallows the next click and the failure
+  reads as a missing button. That is exactly how it was found.
 
 ## Working style
 

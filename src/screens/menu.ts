@@ -6,11 +6,12 @@ import { endSession } from "../auth";
 import { setGuest } from "../attempts";
 import { railExpanded, setRailExpanded } from "../shell";
 import { showWelcome } from "./auth";
-import { showAdmin, showAiUsage, showMyTests, showPlans, showTeacher } from "./console";
+import { showAdmin, showAiUsage, showMyTests, showPayments, showPlans, showTeacher } from "./console";
 import { showHome } from "./home";
 import { showMarking } from "./marking";
 import { showChildren } from "./parent";
 import { showSubjects } from "./subjects";
+import { showTour } from "../tour";
 
 /** Bind the rail once, at boot. */
 export function installShell(): void {
@@ -55,7 +56,8 @@ export function installShell(): void {
     if (!item) return;
     const to = item.dataset.rail;
     track("rail_nav", { to: to ?? "" });
-    if (to === "subjects") void showSubjects();
+    if (to === "tour") showTour();
+    else if (to === "subjects") void showSubjects();
     else if (to === "browse") void import("./browse").then((x) => x.showBrowse());
     else if (to === "children") void showChildren();
     else if (to === "results") showHome();
@@ -65,6 +67,7 @@ export function installShell(): void {
     else if (to === "admin") showAdmin();
     else if (to === "aiusage") showAiUsage();
     else if (to === "plans") showPlans();
+    else if (to === "payments") showPayments();
     else if (to === "signout" || to === "signout-all") {
       const everywhere = to === "signout-all";
       // "Everywhere" ends the session on every device by moving the account's

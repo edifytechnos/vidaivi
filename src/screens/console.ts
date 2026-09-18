@@ -40,13 +40,24 @@ import { newTestHere, showEditor } from "./editor";
 import { audienceLabel, openAssign } from "./assign";
 import { showSubjects } from "./subjects";
 import { openStudentPaper } from "./marking";
+import {
+  confirmPayment,
+  deleteCoupon,
+  listCoupons,
+  money,
+  pendingPayments,
+  rejectPayment,
+  saveCoupon,
+  type Coupon,
+} from "../payments";
 
-type ConsolePage = "admin" | "aiusage" | "plans" | "students" | "report" | "tests";
+type ConsolePage = "admin" | "aiusage" | "plans" | "payments" | "students" | "report" | "tests";
 
 const CONSOLE_TITLES: Record<ConsolePage, string> = {
   admin: "Teacher access",
   aiusage: "AI usage",
   plans: "Plans & pricing",
+  payments: "Payments",
   students: "My students",
   report: "Student report",
   tests: "My tests",
@@ -318,9 +329,11 @@ export function showAiUsage(month?: string) {
             r.low ? ` <span class="credit-low">Low</span>` : ""
           }</div>
           <div class="hint">${r.used} of ${r.granted} credits used · ${r.left} left ·
-            ${rupees(r.costInr)} · ${r.promptTokens + r.completionTokens} tokens</div>
+            ${rupees(r.costInr)} · ${r.promptTokens + r.completionTokens} tokens ·
+            ${r.lifetime ? "balance" : "this month"}</div>
         </div>
         <button class="btn-link ai-grant" data-id="${escapeHtml(r.teacherId)}"
+          data-lifetime="${r.lifetime ? "1" : ""}"
           data-granted="${r.granted}">Change credits</button>
       </div>`
       )
@@ -329,7 +342,11 @@ export function showAiUsage(month?: string) {
       btn.addEventListener("click", () =>
         openModal({
           title: "Change credits",
-          description: `How many AI assessments this teacher may run in ${shown}.`,
+          description: btn.dataset.lifetime
+            ? // A parent's credits are a balance, not an allowance. Saying
+              // "in September" about one would be a lie the screen repeats.
+              "This parent's total AI credits. It does not reset — raise it to top them up."
+            : `How many AI assessments this teacher may run in ${shown}.`,
           fields: [
             { name: "credits", label: "Credits", required: true, value: btn.dataset.granted || "" },
           ],
@@ -337,7 +354,7 @@ export function showAiUsage(month?: string) {
           onSubmit: async (values) => {
             const n = Number(values.credits);
             if (!Number.isFinite(n) || n < 0) return "Credits must be a number.";
-            const res = await grantCredits(btn.dataset.id!, n, shown);
+            const res = await grantCredits(btn.dataset.id!, n, shown, !!btn.dataset.lifetime);
             if (!res.ok) return res.message || "Could not save.";
             void refresh();
           },
@@ -366,6 +383,13 @@ export function showPlans() {
     { key: "subjectAttempts", label: "Attempts per test in a bought subject" },
     { key: "freeShelfTests", label: "Free ready-made tests", hint: "Before a subject must be bought" },
     { key: "parentMaxChildren", label: "Parent: children" },
+    {
+      key: "parentTrialCredits",
+      label: "Parent: free AI credits",
+      hint: "The one-off trial balance. Not monthly — once it is spent they buy a pack.",
+    },
+    { key: "creditPackCredits", label: "Credits in a pack" },
+    { key: "creditPackPaise", label: "A pack of credits", money: true },
   ];
   consoleShell(
     "plans",
@@ -1130,4 +1154,207 @@ export function showTeacher() {
   );
 
   void refreshList();
+}
+
+// ---------- Admin: payments waiting, and the codes that discount them ----------
+//
+// The queue is the `~pending` partition and nothing else, so this screen costs
+// one partition query however long the sales history grows. A row leaves it
+// the moment it is confirmed or refused.
+
+export function showPayments(): void {
+  setUrl();
+  track("payments_open");
+  consoleShell(
+    "payments",
+    `
+      <div class="card roster-card">
+        <h2 class="landing-title">Payments waiting</h2>
+        <p class="hint">Somebody has paid by UPI and said so. Check it arrived,
+        then confirm — that is what opens the subject for them.</p>
+        <div id="pay-list">${skeleton.table(3, 3)}</div>
+      </div>
+      <div class="card roster-card">
+        <div class="solution-title">Discount codes</div>
+        <p class="hint">A code takes a percentage or a flat amount off the
+        ready-made subject price, which is set in Plans &amp; pricing.</p>
+        <div id="cpn-list">${skeleton.table(3, 3)}</div>
+        <div class="actions"><button id="cpn-new" class="btn btn-primary">New code</button></div>
+      </div>`
+  );
+  bindConsoleNav();
+
+  const payEl = document.getElementById("pay-list")!;
+  const cpnEl = document.getElementById("cpn-list")!;
+
+  async function refresh(): Promise<void> {
+    // One render, both lists, in parallel — never the same screen fetching twice.
+    const [pending, coupons] = await Promise.all([pendingPayments(), listCoupons()]);
+
+    if (!pending) {
+      payEl.innerHTML = `<p class="login-error">Could not load — refresh to retry.</p>`;
+    } else if (!pending.rows.length) {
+      payEl.innerHTML = `<p class="hint">Nothing waiting.</p>`;
+    } else {
+      payEl.innerHTML = pending.rows
+        .map(
+          (r) => `
+        <div class="roster-row">
+          <div class="roster-main">
+            <div class="roster-name">${escapeHtml(r.buyerName || r.buyerEmail || r.sub)}</div>
+            <div class="hint">${escapeHtml(r.shelfTitle || r.shelfId)} ·
+              ${escapeHtml(money(r.payablePaise))}${
+                r.discountPaise > 0
+                  ? ` (${escapeHtml(money(r.listPaise))} − ${escapeHtml(money(r.discountPaise))}${
+                      r.coupon ? ` ${escapeHtml(r.coupon)}` : ""
+                    })`
+                  : ""
+              } · ${escapeHtml(whenLabel(r.claimedAt))}${
+                r.payerRef ? ` · ref ${escapeHtml(r.payerRef)}` : ""
+              }</div>
+          </div>
+          <button class="btn-link pay-no" data-sub="${escapeHtml(r.sub)}" data-ref="${escapeHtml(
+            r.ref
+          )}">Not received</button>
+          <button class="btn btn-primary pay-yes" data-sub="${escapeHtml(
+            r.sub
+          )}" data-ref="${escapeHtml(r.ref)}">Confirm</button>
+        </div>`
+        )
+        .join("");
+      payEl.querySelectorAll<HTMLButtonElement>(".pay-yes").forEach((btn) =>
+        btn.addEventListener("click", async () => {
+          btn.disabled = true;
+          const res = await confirmPayment(btn.dataset.sub!, btn.dataset.ref!);
+          if (!res.ok) {
+            btn.disabled = false;
+            alert(res.message || "Could not confirm");
+            return;
+          }
+          void refresh();
+        })
+      );
+      payEl.querySelectorAll<HTMLButtonElement>(".pay-no").forEach((btn) =>
+        btn.addEventListener("click", async () => {
+          // Destructive in the way that matters: it tells somebody their money
+          // was not seen. So it asks.
+          if (!confirm("Mark this payment as not received?")) return;
+          btn.disabled = true;
+          await rejectPayment(btn.dataset.sub!, btn.dataset.ref!);
+          void refresh();
+        })
+      );
+    }
+
+    if (!coupons) {
+      cpnEl.innerHTML = `<p class="login-error">Could not load — refresh to retry.</p>`;
+      return;
+    }
+    cpnEl.innerHTML = coupons.rows.length
+      ? coupons.rows
+          .map((c) => {
+            const off = c.percentOff
+              ? `${c.percentOff}% off`
+              : `${money(c.amountOffPaise)} off`;
+            const used = c.maxRedemptions
+              ? `${c.redeemed} of ${c.maxRedemptions} used`
+              : `${c.redeemed} used`;
+            return `
+        <div class="roster-row">
+          <div class="roster-main">
+            <div class="roster-name">${escapeHtml(c.code)}${
+              c.active ? "" : ` <span class="hint">(off)</span>`
+            }</div>
+            <div class="hint">${escapeHtml(off)} · ${escapeHtml(used)}${
+              c.expiresAt ? ` · until ${escapeHtml(c.expiresAt)}` : ""
+            }${c.note ? ` · ${escapeHtml(c.note)}` : ""}</div>
+          </div>
+          <button class="btn-link cpn-edit" data-code="${escapeHtml(c.code)}">Change</button>
+        </div>`;
+          })
+          .join("")
+      : `<p class="hint">No codes yet.</p>`;
+
+    const byCode = new Map(coupons.rows.map((c) => [c.code, c]));
+    cpnEl.querySelectorAll<HTMLButtonElement>(".cpn-edit").forEach((btn) =>
+      btn.addEventListener("click", () => openCoupon(byCode.get(btn.dataset.code!), refresh))
+    );
+  }
+
+  document.getElementById("cpn-new")!.addEventListener("click", () => openCoupon(undefined, refresh));
+  void refresh();
+}
+
+/** One code, created or changed. Percentage and flat amount are both offered
+ *  because Indian pricing uses both, and they add rather than compete. */
+function openCoupon(existing: Coupon | undefined, done: () => void): void {
+  openModal({
+    title: existing ? `Code ${existing.code}` : "New discount code",
+    description: "A code is typed on a phone, so it is not case-sensitive.",
+    fields: [
+      {
+        name: "code",
+        label: "Code",
+        required: true,
+        value: existing?.code ?? "",
+        hint: existing ? "Changing this makes a second code, it does not rename this one." : "",
+      },
+      { name: "percentOff", label: "Per cent off", value: String(existing?.percentOff ?? 0) },
+      {
+        name: "amountOff",
+        label: "Or a flat amount off (₹)",
+        value: String((existing?.amountOffPaise ?? 0) / 100),
+      },
+      {
+        name: "maxRedemptions",
+        label: "Limit uses to",
+        value: String(existing?.maxRedemptions ?? 0),
+        hint: "0 means no limit.",
+      },
+      { name: "expiresAt", label: "Expires on", value: existing?.expiresAt ?? "", hint: "YYYY-MM-DD, or leave empty." },
+      { name: "note", label: "What it is for", value: existing?.note ?? "" },
+      {
+        name: "active",
+        label: "Working",
+        kind: "radio",
+        choices: [
+          { value: "yes", label: "Yes, the code works", checked: existing ? existing.active : true },
+          { value: "no", label: "No, switch it off", checked: existing ? !existing.active : false },
+        ],
+      },
+      ...(existing
+        ? [
+            {
+              name: "remove",
+              label: "Delete this code",
+              kind: "radio" as const,
+              choices: [
+                { value: "no", label: "No", checked: true },
+                { value: "yes", label: "Yes, delete it" },
+              ],
+            },
+          ]
+        : []),
+    ],
+    submitLabel: existing ? "Save" : "Create code",
+    onSubmit: async (v) => {
+      if (existing && v.remove === "yes") {
+        const gone = await deleteCoupon(existing.code);
+        if (!gone.ok) return gone.message;
+        done();
+        return;
+      }
+      const res = await saveCoupon({
+        code: v.code,
+        percentOff: Number(v.percentOff) || 0,
+        amountOffPaise: Math.round((Number(v.amountOff) || 0) * 100),
+        maxRedemptions: Number(v.maxRedemptions) || 0,
+        expiresAt: v.expiresAt,
+        note: v.note,
+        active: v.active !== "no",
+      });
+      if (!res.ok) return res.message;
+      done();
+    },
+  });
 }

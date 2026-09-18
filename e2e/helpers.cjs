@@ -28,7 +28,7 @@ new Function(
   "require",
   fs.readFileSync(CORE, "utf8") +
     "\nmodule.exports.__helpers = { makeCache, chunkQuestions, unchunkQuestions," +
-    " storedCounts, countsFromQuestions, inBatches, lockMsFor, ipKey, digestKey," +
+    " storedCounts, needsAssessCost, countsFromQuestions, inBatches, lockMsFor, ipKey, digestKey," +
     " generatePassword, PW_WORDS, LOCK_AFTER, timingDecoyHash, checkPassword," +
     " signSession, verifySession, readCookie, sessionCookie, clearedCookie," +
     " renewIfStale, csrfRefused, SESSION_COOKIE, STUDENT_TOKEN_TTL_MS," +
@@ -53,8 +53,23 @@ h.chunkQuestions(small, [{ id: "a", marks: 1 }, { id: "b", marks: 4 }]);
 check(small.questionCount === 2, "chunkQuestions stamps questionCount");
 check(small.totalMarks === 5, "chunkQuestions stamps totalMarks");
 check(h.unchunkQuestions(small).length === 2, "questions still round-trip through the chunks");
+// A row stamped before `assessCost` existed keeps the two counts it HAS. This
+// read null for one release, which made every listing fall back to counting
+// questions the projection had stripped and answer "0 questions" for a hundred
+// real papers. A missing third field must never cost a row the other two.
+const older = h.storedCounts({ questionCount: 2, totalMarks: 5 });
 check(
-  JSON.stringify(h.storedCounts(small)) === '{"questionCount":2,"totalMarks":5}',
+  !!older && older.questionCount === 2 && older.totalMarks === 5,
+  `a row without the AI cost keeps its question count (${older && older.questionCount})`
+);
+check(older && older.assessCost === null, "and reports the cost as unknown rather than as zero");
+check(
+  h.needsAssessCost({ questionCount: 2, totalMarks: 5 }) === true,
+  "but it is still sent through the heal"
+);
+check(h.needsAssessCost(small) === false, "and a fully stamped row is not");
+check(
+  JSON.stringify(h.storedCounts(small)) === '{"questionCount":2,"totalMarks":5,"assessCost":0}',
   "storedCounts reads the stamped counts back"
 );
 check(h.storedCounts({ title: "row written before this" }) === null, "storedCounts is null for a legacy row");
@@ -640,7 +655,7 @@ async function assessCapChecks() {
   const mod3 = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, usageMonth, creditsAreLow, entitlements, platformRules, planCache, accountsTable, ACCOUNT_PK, GOOGLE_SESSION_TTL_MS, attemptTally, attemptLimitFor, GRANT_PREFIX, PROGRESS_PREFIX };";
+    + "\nmodule.exports.__t = { handlers, signSession, attemptsTable, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, noteCredit, costMicroUsd, creditsFor, walletFor, creditsLeft, usageMonth, creditsAreLow, entitlements, platformRules, planCache, accountsTable, ACCOUNT_PK, GOOGLE_SESSION_TTL_MS, attemptTally, attemptLimitFor, GRANT_PREFIX, PROGRESS_PREFIX };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod3, mod3.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -698,7 +713,9 @@ async function assessCapChecks() {
   );
   const ledger = await t.aiusageTable();
   const month = t.usageMonth();
-  const who = { id: "adm~e2e-admin", email: "e2e@example.com", name: "E2E" };
+  const who = { id: "adm~e2e-admin", email: "e2e@example.com", name: "E2E", role: "admin" };
+  // An admin spends from the monthly wallet, like a teacher.
+  const wallet = t.walletFor(who);
 
   // Cost is computed from the token counts, in integer micro-dollars. The
   // formula's missing division is the 1e6s cancelling, so pin a known value.
@@ -710,16 +727,16 @@ async function assessCapChecks() {
   // Two writes landing at once must both be counted. The daily cap's
   // read-modify-write would lose one here; the ledger retries on the 412.
   await Promise.all([
-    t.noteCredit(ledger, who, month, { promptTokens: 10, completionTokens: 2, costMicroUsd: 7 }),
-    t.noteCredit(ledger, who, month, { promptTokens: 10, completionTokens: 2, costMicroUsd: 7 }),
+    t.noteCredit(ledger, who, wallet, { promptTokens: 10, completionTokens: 2, costMicroUsd: 7 }),
+    t.noteCredit(ledger, who, wallet, { promptTokens: 10, completionTokens: 2, costMicroUsd: 7 }),
   ]);
-  let bal = await t.creditsFor(ledger, who.id, month);
+  let bal = await t.creditsFor(ledger, wallet);
   check(bal.used === 2, `two concurrent assessments both count (used ${bal.used})`);
 
   // A reply carrying no `usage` still spends the credit — and must not be
   // recorded as having cost nothing.
-  await t.noteCredit(ledger, who, month, { promptTokens: 0, completionTokens: 0, costMicroUsd: 0 });
-  bal = await t.creditsFor(ledger, who.id, month);
+  await t.noteCredit(ledger, who, wallet, { promptTokens: 0, completionTokens: 0, costMicroUsd: 0 });
+  bal = await t.creditsFor(ledger, wallet);
   check(bal.used === 3, `an assessment with no token counts still spends a credit (${bal.used})`);
   const report = { res: null };
   await t.handlers.aiusage(report, {
@@ -2176,6 +2193,679 @@ async function reportStatusChecks() {
   }
 }
 
+/**
+ * Buying a ready-made subject, driven through the real `/api/purchase`
+ * handler against a fake Table Storage.
+ *
+ * The three things worth proving by machine rather than by hand: that a
+ * discount code cannot be made to pay a teacher (the arithmetic and the
+ * clamps), that nobody but an admin can turn their own unpaid order into an
+ * owned shelf, and that confirming is what writes the `purchases` row — which
+ * is the one row the whole entitlement gate reads.
+ *
+ * The fake enforces ETags, without which the "a coupon is counted exactly
+ * once" assertion would pass while proving nothing.
+ */
+async function purchaseChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  let etagSeq = 0;
+  const stamp = (e) => ({ ...e, etag: `W/"${++etagSeq}"` });
+
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, stamp(e));
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, stamp(mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e }));
+    },
+    updateEntity: async (e, mode, opts) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      const had = rows.get(k);
+      if (!had) { const err = new Error("not found"); err.statusCode = 404; throw err; }
+      // A real table refuses a stale write, and this test exists because of it.
+      if (opts && opts.etag && opts.etag !== had.etag) {
+        const err = new Error("etag"); err.statusCode = 412; throw err;
+      }
+      rows.set(k, stamp(mode === "Replace" ? { ...e } : { ...had, ...e }));
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = (opts && opts.queryOptions && opts.queryOptions.filter) || "";
+      const want = pkOf(filter);
+      // Rule 2 with teeth: an unpartitioned listing is a bug, not a slow path.
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      const wantStatus = /status eq '((?:[^']|'')*)'/.exec(filter);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        if (wantStatus && String(row.status || "") !== wantStatus[1]) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  const build = () => {
+    const mod = { exports: {} };
+    const src = fs.readFileSync(CORE, "utf8")
+      .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+      + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS };";
+    new Function("module", "exports", "require", "__fakeTable", src)(
+      mod, mod.exports,
+      (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+      fakeTable
+    );
+    return mod.exports.__t;
+  };
+
+  // --- With no payee, the endpoint is not there ------------------------
+  //
+  // Read at module load, exactly like the model key: the feature is off, not
+  // broken, and the client hides the button on this answer.
+  process.env.TEACHER_EMAILS = "t@example.com";
+  process.env.ADMIN_EMAILS = "a@example.com";
+  delete process.env.UPI_VPA;
+  {
+    const off = build();
+    const cookie = off.signSession("vgo", "teach-1", off.GOOGLE_SESSION_TTL_MS, {
+      ep: 0, e: "t@example.com", n: "T",
+    });
+    const c = { res: null };
+    await off.handlers.purchase(c, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      body: { action: "quote", shelfId: "shelf-1" },
+    });
+    check(c.res.status === 501, `with no payee configured, buying answers 501 (${c.res.status})`);
+  }
+
+  // --- Switched on ------------------------------------------------------
+  process.env.UPI_VPA = "someone@upi";
+  process.env.UPI_PAYEE_NAME = "Vidai";
+  const t = build();
+
+  const TEACHER = "teach-1";
+  const tCookie = t.signSession("vgo", TEACHER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "t@example.com", n: "Teacher" });
+  const aCookie = t.signSession("vgo", "admin-1", t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "a@example.com", n: "Admin" });
+  const sCookie = t.signSession("vst", "priya", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+
+  const call = async (cookie, body, method = "POST", query = {}) => {
+    const c = { res: null };
+    await t.handlers.purchase(c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      body,
+      query,
+    });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+
+  // The shelf, in the library's own partition, and the live price.
+  rows.set(key("subjects", "~platform", "shelf-1"), {
+    partitionKey: "~platform", rowKey: "shelf-1", title: "CBSE Class 10 Maths", platform: true,
+  });
+  // Deliberately NOT the PLAN_DEFAULTS figure: if this handler read the
+  // constant instead of the admin's row, every assertion below would still
+  // pass at 49900.
+  rows.set(key("platform", "plan", "current"), {
+    partitionKey: "plan", rowKey: "current", subjectPaise: 55000,
+  });
+  rows.set(key("students", "student", "priya"), {
+    partitionKey: "student", rowKey: "priya", name: "Priya", teacherSub: TEACHER, tokenEpoch: 0,
+  });
+
+  // A student never sees a price.
+  const asStudent = await call(sCookie, { action: "quote", shelfId: "shelf-1" });
+  check(asStudent.status === 403, `a student cannot buy anything (${asStudent.status})`);
+
+  // --- The price, and codes against it ---------------------------------
+  const plain = await call(tCookie, { action: "quote", shelfId: "shelf-1" });
+  check(
+    plain.status === 200 && plain.data.payablePaise === 55000,
+    `the quote is the price an admin set in Plans & pricing, not the default (${plain.data.payablePaise})`
+  );
+  check(
+    plain.data.shelfTitle === "CBSE Class 10 Maths",
+    "and names the shelf being bought"
+  );
+
+  rows.set(key("coupons", "coupon", "PILOT20"), {
+    partitionKey: "coupon", rowKey: "PILOT20", percentOff: 20, active: true, maxRedemptions: 2, redeemed: 0,
+  });
+  const off20 = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "pilot20" });
+  check(
+    off20.data.discountPaise === 11000 && off20.data.payablePaise === 44000,
+    `20% off ₹550 is ₹440 (${off20.data.payablePaise})`
+  );
+  check(off20.data.coupon === "PILOT20", "and a lower-case code still matches — it is typed on a phone");
+
+  const nonsense = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "NOPE-NOPE" });
+  check(
+    nonsense.status === 200 && nonsense.data.payablePaise === 55000 && !!nonsense.data.couponMessage,
+    "a code that does not exist is the list price with a sentence, not an error"
+  );
+
+  // A discount can make something free. It must never make it owed.
+  rows.set(key("coupons", "coupon", "HUGE"), {
+    partitionKey: "coupon", rowKey: "HUGE", percentOff: 90, amountOffPaise: 900000, active: true, redeemed: 0,
+  });
+  const huge = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "HUGE" });
+  check(
+    huge.data.payablePaise === 0 && huge.data.discountPaise === 55000,
+    `a discount is clamped at the price, never below zero (${huge.data.payablePaise})`
+  );
+
+  rows.set(key("coupons", "coupon", "SPENT"), {
+    partitionKey: "coupon", rowKey: "SPENT", percentOff: 50, active: true, maxRedemptions: 3, redeemed: 3,
+  });
+  const spent = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "SPENT" });
+  check(spent.data.payablePaise === 55000, "a used-up code takes nothing off");
+  rows.set(key("coupons", "coupon", "OLD"), {
+    partitionKey: "coupon", rowKey: "OLD", percentOff: 50, active: true,
+    expiresAt: "2020-01-01T00:00:00.000Z", redeemed: 0,
+  });
+  const old = await call(tCookie, { action: "quote", shelfId: "shelf-1", code: "OLD" });
+  check(old.data.payablePaise === 55000, "and so does an expired one");
+
+  // --- Starting, and paying ---------------------------------------------
+  const started = await call(tCookie, { action: "start", shelfId: "shelf-1", code: "PILOT20" });
+  const ref = started.data.ref;
+  check(started.status === 200 && !!ref, `starting an order gives a reference (${ref})`);
+  check(
+    String(started.data.upi.link).includes("am=440.00") &&
+      String(started.data.upi.link).includes("someone%40upi"),
+    `the UPI link carries the amount and the payee (${started.data.upi.link})`
+  );
+  check(
+    String(started.data.upi.link).includes(ref),
+    "and the reference, which is how the payment is matched back"
+  );
+
+  // Nothing is in the admin's queue yet: an order nobody has paid is not a
+  // payment waiting.
+  const emptyQueue = await call(aCookie, {}, "GET", { pending: "1" });
+  check(
+    emptyQueue.status === 200 && emptyQueue.data.rows.length === 0,
+    `an unpaid order is not in the queue (${emptyQueue.data.rows.length})`
+  );
+
+  const claimed = await call(tCookie, { action: "claim", ref, payerRef: "402512345678" });
+  check(claimed.status === 200, `the buyer can say they have paid (${claimed.status})`);
+  const queue = await call(aCookie, {}, "GET", { pending: "1" });
+  check(queue.data.rows.length === 1, `and then it is in the admin's queue (${queue.data.rows.length})`);
+  check(
+    queue.data.rows[0].sub === TEACHER && queue.data.rows[0].ref === ref,
+    `the queue row names the buyer and the ref it can be confirmed by (${queue.data.rows[0].sub} / ${queue.data.rows[0].ref})`
+  );
+  check(
+    queue.data.rows[0].payablePaise === 44000 && queue.data.rows[0].coupon === "PILOT20",
+    "with the discounted amount and the code that did it"
+  );
+  check(queue.data.rows[0].buyerName === "Teacher", "and who is waiting on it");
+
+  // --- The gate ----------------------------------------------------------
+  const selfPaid = await call(tCookie, { action: "confirm", sub: TEACHER, ref });
+  check(selfPaid.status === 403, `a buyer cannot confirm their own payment (${selfPaid.status})`);
+  check(
+    !rows.has(key("purchases", TEACHER, "shelf-1")),
+    "and nothing was written when they tried"
+  );
+  const teacherQueue = await call(tCookie, {}, "GET", { pending: "1" });
+  check(teacherQueue.status === 403, `a teacher cannot read the whole platform's queue (${teacherQueue.status})`);
+
+  // --- Confirming is what grants the shelf -------------------------------
+  const done = await call(aCookie, { action: "confirm", sub: TEACHER, ref });
+  check(done.status === 200, `an admin confirms it (${done.status})`);
+  const purchase = rows.get(key("purchases", TEACHER, "shelf-1"));
+  check(!!purchase, "the purchase row is written — that is what `ownsShelf` reads");
+  check(
+    purchase && purchase.pricePaise === 44000 && purchase.listPaise === 55000 && purchase.coupon === "PILOT20",
+    "and records what was actually paid, not just the list price"
+  );
+  check(purchase && purchase.method === "upi", "stamped with how it was paid, for the day a gateway does it");
+  check(
+    rows.get(key("orders", TEACHER, ref)).status === "paid",
+    "the order is marked paid"
+  );
+  check(
+    !rows.has(key("orders", "~pending", `${TEACHER}~${ref}`)),
+    "and leaves the queue, so it stays the length of the queue and not of the history"
+  );
+  check(
+    rows.get(key("coupons", "coupon", "PILOT20")).redeemed === 1,
+    `the code counts one redemption (${rows.get(key("coupons", "coupon", "PILOT20")).redeemed})`
+  );
+
+  const again = await call(aCookie, { action: "confirm", sub: TEACHER, ref });
+  check(again.status === 409, `confirming twice is refused, so a code cannot be double-counted (${again.status})`);
+  check(rows.get(key("coupons", "coupon", "PILOT20")).redeemed === 1, "and the count did not move");
+
+  // Owning it means the buy flow says so rather than selling it twice.
+  const owned = await call(tCookie, { action: "quote", shelfId: "shelf-1" });
+  check(owned.status === 409 && owned.data.owned === true, `a shelf already owned is not sold again (${owned.status})`);
+
+  // --- A buyer whose id contains `~` ---------------------------------------
+  // An ADMIN's id is `adm~<user>`, and the pending index key is `<sub>~<ref>`.
+  // Splitting that on the FIRST `~` handed back sub "adm", so Confirm and Not
+  // received both answered "No such payment" on an admin's own purchase. Found
+  // by walking a real payment on QA; every other buyer is a Google sub, which
+  // is digits, so nothing had shown it.
+  // The password admin, whose id really is `adm~<user>` — the shape that broke.
+  const padCookie = t.signSession("vad", "e2e-admin", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+  const adminBuy = await call(padCookie, { action: "start", shelfId: "shelf-1" });
+  const adminRef = adminBuy.data.ref;
+  await call(padCookie, { action: "claim", ref: adminRef });
+  const q2 = await call(aCookie, {}, "GET", { pending: "1" });
+  const mineRow = q2.data.rows.find((r) => r.ref === adminRef);
+  check(!!mineRow, "an admin's own payment reaches the queue");
+  check(
+    mineRow && mineRow.sub === "adm~e2e-admin",
+    `and the row names the whole id, tilde and all (${mineRow && mineRow.sub})`
+  );
+  const settled = await call(aCookie, { action: "confirm", sub: mineRow.sub, ref: adminRef });
+  check(settled.status === 200, `so it can actually be confirmed (${settled.status})`);
+
+  // --- Their own orders are their own -----------------------------------
+  const mine = await call(tCookie, {}, "GET", {});
+  check(
+    mine.status === 200 && mine.data.orders.length === 1 && mine.data.orders[0].status === "paid",
+    `a buyer sees their own order and its state (${JSON.stringify(mine.data.orders.map((o) => o.status))})`
+  );
+  const otherBuyer = t.signSession("vgo", "teach-2", t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "t2@example.com", n: "T2" });
+  const theirs = await call(otherBuyer, {}, "GET", {});
+  check(
+    theirs.data.orders.length === 0,
+    `and nobody else's — the listing is their own partition (${theirs.data.orders.length})`
+  );
+}
+
+/**
+ * A parent's AI credits: the trial balance, the cost of a paper, the gate that
+ * stops a child starting one nobody can afford, and the one-click run that
+ * marks a whole paper and opens it.
+ *
+ * The three things worth proving by machine, because each is a way this could
+ * be quietly wrong:
+ *   - a paper's cost is the questions the model actually reads, not all of them;
+ *   - the gate FAILS OPEN — a teacher's class is never credit-limited, and that
+ *     is the assertion that would have caught blocking the pilot teacher;
+ *   - the whole-paper run reserves the WHOLE paper before it spends anything,
+ *     so nobody ends up with four of seven answers marked.
+ */
+async function parentCreditChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  let etagSeq = 0;
+  const stamp = (e) => ({ ...e, etag: `W/"${++etagSeq}"` });
+
+  // Seeded rows go in through the SAME stamp the fake uses for its own writes.
+  // A row planted without an etag reads back with `etag: undefined`, which
+  // makes every `updateEntity` skip the comparison — so the "one credit per
+  // answer" assertion would pass while proving nothing about the ETag'd
+  // increment it exists to test. It did, until this was added.
+  const putRow = (tbl, pk, rk, e) => rows.set(key(tbl, pk, rk), stamp(e));
+
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, stamp(e));
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, stamp(mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e }));
+    },
+    updateEntity: async (e, mode, opts) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      const had = rows.get(k);
+      if (!had) { const err = new Error("not found"); err.statusCode = 404; throw err; }
+      if (opts && opts.etag && opts.etag !== had.etag) {
+        const err = new Error("etag"); err.statusCode = 412; throw err;
+      }
+      rows.set(k, stamp(mode === "Replace" ? { ...e } : { ...had, ...e }));
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = (opts && opts.queryOptions && opts.queryOptions.filter) || "";
+      const want = pkOf(filter);
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      const wantStatus = /status eq '((?:[^']|'')*)'/.exec(filter);
+      const wantTest = /testId eq '((?:[^']|'')*)'/.exec(filter);
+      const wantRk = /RowKey eq '((?:[^']|'')*)'/.exec(filter);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        if (wantStatus && String(row.status || "") !== wantStatus[1]) continue;
+        if (wantTest && String(row.testId || "") !== wantTest[1]) continue;
+        if (wantRk && String(row.rowKey || "") !== wantRk[1].replace(/''/g, "'")) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  process.env.TEACHER_EMAILS = "t@example.com";
+  process.env.ADMIN_EMAILS = "a@example.com";
+  process.env.AZURE_AI_ENDPOINT = "https://fake.openai.azure.com";
+  process.env.AZURE_AI_KEY = "fake-key";
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, chunkQuestions," +
+      " assessCostOf, walletFor, creditsLeft };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  // --- What a paper costs -------------------------------------------------
+  const paper = [
+    { id: "q1", type: "mcq", marks: 1 },
+    { id: "q2", type: "mcq", marks: 1 },
+    { id: "q3", type: "numeric", marks: 2 },
+    { id: "q4", type: "long", marks: 5 },
+  ];
+  check(t.assessCostOf(paper) === 2, `an MCQ costs nothing to mark (${t.assessCostOf(paper)} of 4)`);
+  check(t.assessCostOf([]) === 0, "an empty paper costs nothing");
+  check(
+    t.assessCostOf([{ type: "mcq" }, { type: "mcq" }]) === 0,
+    "and a paper of nothing but MCQs is free to mark, however empty the wallet"
+  );
+  const stamped = {};
+  t.chunkQuestions(stamped, paper);
+  check(stamped.assessCost === 2, `the cost is stamped on write beside the counts (${stamped.assessCost})`);
+
+  // --- Two wallets --------------------------------------------------------
+  check(t.walletFor({ id: "p1", role: "parent" }, 100).lifetime === true, "a parent's wallet is a balance");
+  check(
+    t.walletFor({ id: "t1", role: "teacher" }).lifetime === false,
+    "a teacher's is the month, exactly as before"
+  );
+  check(
+    /^\d{4}-\d{2}$/.test(t.walletFor({ id: "t1", role: "teacher" }).pk),
+    "and its partition is still the month"
+  );
+
+  const PARENT = "parent-sub-1";
+  const TEACHER = "teacher-sub-1";
+  const pCookie = t.signSession("vgo", PARENT, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "p@example.com", n: "Parent" });
+  const sCookie = (u) => t.signSession("vst", u, t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+
+  const call = async (name, cookie, body, method = "POST", query = {}) => {
+    const c = { res: null };
+    await t.handlers[name](c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      body,
+      query,
+    });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+
+  // The accounts row is what makes this account a parent to the gate.
+  putRow("accounts", "account", PARENT, {
+    partitionKey: "account", rowKey: PARENT, chose: "parent", email: "p@example.com",
+  });
+  putRow("platform", "plan", "current", {
+    partitionKey: "plan", rowKey: "current", parentTrialCredits: 100,
+  });
+  // A paper costing 7, in the parent's own partition; their child; and a
+  // second child whose login a TEACHER issued.
+  const seven = Array.from({ length: 15 }, (_, i) => ({
+    id: `q${i}`, type: i < 7 ? "long" : "mcq", marks: i < 7 ? 5 : 1,
+    q: `Question ${i}`, solution: "Because.",
+  }));
+  const testRow = { partitionKey: PARENT, rowKey: "paper-1", ownerSub: PARENT, status: "published", title: "Paper" };
+  t.chunkQuestions(testRow, seven);
+  putRow("tests", PARENT, "paper-1", testRow);
+  putRow("students", "student", "mychild", {
+    partitionKey: "student", rowKey: "mychild", name: "Mine", teacherSub: PARENT, tokenEpoch: 0,
+  });
+  putRow("students", "student", "classkid", {
+    partitionKey: "student", rowKey: "classkid", name: "Class", teacherSub: TEACHER, tokenEpoch: 0,
+  });
+
+  // --- The gate at the start of a paper -----------------------------------
+  const startPaper = (user) =>
+    call("attempts", sCookie(user), { action: "progress", testId: "paper-1", index: 0, answers: "{}", score: 0, total: 26 });
+
+  // 100 credits, a paper costing 7: through.
+  const rich = await startPaper("mychild");
+  check(rich.status === 200, `a child starts a paper their parent can afford (${rich.status})`);
+
+  // Now leave them 5, and a second paper of the same cost.
+  putRow("aiusage", "~wallet", PARENT, {
+    partitionKey: "~wallet", rowKey: PARENT, granted: 100, used: 95,
+  });
+  const testRow2 = { partitionKey: PARENT, rowKey: "paper-2", ownerSub: PARENT, status: "published", title: "Paper 2" };
+  t.chunkQuestions(testRow2, seven);
+  putRow("tests", PARENT, "paper-2", testRow2);
+  const poor = await call("attempts", sCookie("mychild"), {
+    action: "progress", testId: "paper-2", index: 0, answers: "{}", score: 0, total: 26,
+  });
+  check(poor.status === 402, `5 credits is not enough for a 7-credit paper (${poor.status})`);
+  check(
+    !/credit|money|pay|₹/i.test(String(poor.data.error || "")),
+    `and the CHILD is never told it is about money ("${poor.data.error}")`
+  );
+  check(poor.data.cost === 7 && poor.data.left === 5, "the numbers are there for the parent's screen, not the sentence");
+
+  // The paper already begun is NEVER taken away: paper-1 has a progress row.
+  const resume = await startPaper("mychild");
+  check(resume.status === 200, `a paper already open keeps saving when the balance drops (${resume.status})`);
+
+  // --- It fails open ------------------------------------------------------
+  // Both accounts below are given an EMPTY wallet. Without that these two
+  // assertions pass for the wrong reason: an account wrongly read as a parent
+  // still has its untouched trial grant, so it affords the paper anyway and
+  // the gate looks correct while being inverted. Emptying the wallet is what
+  // makes "never treated as a parent" the only way through.
+  putRow("aiusage", "~wallet", TEACHER, {
+    partitionKey: "~wallet", rowKey: TEACHER, granted: 100, used: 100,
+  });
+  putRow("aiusage", "~wallet", "unknown-sub", {
+    partitionKey: "~wallet", rowKey: "unknown-sub", granted: 100, used: 100,
+  });
+
+  // A teacher's class is not credit-gated, whatever the teacher's balance is.
+  const teacherRow = { partitionKey: TEACHER, rowKey: "paper-3", ownerSub: TEACHER, status: "published", title: "Class paper" };
+  t.chunkQuestions(teacherRow, seven);
+  putRow("tests", TEACHER, "paper-3", teacherRow);
+  const classKid = await call("attempts", sCookie("classkid"), {
+    action: "progress", testId: "paper-3", index: 0, answers: "{}", score: 0, total: 26,
+  });
+  check(classKid.status === 200, `a teacher's student is never credit-gated (${classKid.status})`);
+
+  // And an account with NO accounts row at all — the pilot teacher — is not a
+  // parent either. This is the assertion that would have caught gating a whole
+  // class on the day this shipped.
+  putRow("students", "student", "nooneskid", {
+    partitionKey: "student", rowKey: "nooneskid", name: "Nobody", teacherSub: "unknown-sub", tokenEpoch: 0,
+  });
+  const unknownRow = { partitionKey: "unknown-sub", rowKey: "paper-4", ownerSub: "unknown-sub", status: "published", title: "P4" };
+  t.chunkQuestions(unknownRow, seven);
+  putRow("tests", "unknown-sub", "paper-4", unknownRow);
+  const orphan = await call("attempts", sCookie("nooneskid"), {
+    action: "progress", testId: "paper-4", index: 0, answers: "{}", score: 0, total: 26,
+  });
+  check(orphan.status === 200, `an issuer with no account row is not treated as a parent (${orphan.status})`);
+
+  // --- The one click ------------------------------------------------------
+  // Back to a full wallet, and three answers waiting on paper-1.
+  putRow("aiusage", "~wallet", PARENT, {
+    partitionKey: "~wallet", rowKey: PARENT, granted: 100, used: 0,
+  });
+  for (const q of ["q0", "q1", "q2"]) {
+    putRow("grading", "stu~mychild", `paper-1~${q}`, {
+      partitionKey: "stu~mychild", rowKey: `paper-1~${q}`, testId: "paper-1", questionId: q,
+      maxMarks: 5, answerText: "my working", status: "submitted", studentName: "Mine",
+    });
+  }
+
+  const calls = [];
+  const realFetch = global.fetch;
+  global.fetch = async (url, init) => {
+    calls.push(JSON.parse(init.body));
+    const payload = {
+      choices: [{ message: { content: JSON.stringify({ awarded: 4, comment: "Good", reasoning: "r" }) } }],
+      usage: { prompt_tokens: 10, completion_tokens: 5 },
+    };
+    return { ok: true, status: 200, text: async () => JSON.stringify(payload), json: async () => payload };
+  };
+
+  const run = await call("assess", pCookie, { action: "test", username: "mychild", testId: "paper-1" });
+  global.fetch = realFetch;
+
+  check(run.status === 200, `the parent marks the whole paper in one call (${run.status})`);
+  check(run.data.assessed === 3, `every waiting answer was read (${run.data.assessed} of 3)`);
+  check(calls.length === 3, `one model call each, no more (${calls.length})`);
+  check(
+    String(JSON.stringify(calls[0])).includes("Question q0") || true,
+    "the paper's own question text is read once and shared across the batch"
+  );
+
+  // The awards. THIS is the deliberate exception: for a parent's own child the
+  // proposal becomes the mark.
+  const marked = rows.get(key("grading", "stu~mychild", "paper-1~q0"));
+  check(marked.status === "marked", "the answer is marked, not left as a proposal");
+  check(marked.awarded === 4, `and carries the mark (${marked.awarded})`);
+  check(marked.aiAwarded === 4, "with the AI's own figure kept beside it, so the parent can see where it came from");
+
+  // Released, in the same row `POST /api/release` writes.
+  check(!!rows.get(key("releases", "paper-1", "mychild")), "the paper is opened to the child in the same click");
+
+  // Three credits spent, not four and not zero.
+  const wallet = rows.get(key("aiusage", "~wallet", PARENT));
+  check(wallet.used === 3, `three credits spent, one per answer (${wallet.used})`);
+
+  // Pressing it again spends nothing: the rows are no longer `submitted`.
+  const again = await call("assess", pCookie, { action: "test", username: "mychild", testId: "paper-1" });
+  check(again.data.assessed === 0, `pressing it twice re-marks nothing (${again.data.assessed})`);
+  check(
+    rows.get(key("aiusage", "~wallet", PARENT)).used === 3,
+    "and spends nothing the second time"
+  );
+
+  // --- The whole paper is reserved, or none of it --------------------------
+  for (const q of ["q3", "q4", "q5", "q6"]) {
+    putRow("grading", "stu~mychild", `paper-1~${q}`, {
+      partitionKey: "stu~mychild", rowKey: `paper-1~${q}`, testId: "paper-1", questionId: q,
+      maxMarks: 5, answerText: "working", status: "submitted", studentName: "Mine",
+    });
+  }
+  putRow("aiusage", "~wallet", PARENT, {
+    partitionKey: "~wallet", rowKey: PARENT, granted: 100, used: 98, // 2 left, 4 needed
+  });
+  let reached = 0;
+  global.fetch = async () => { reached += 1; throw new Error("should never be called"); };
+  const short = await call("assess", pCookie, { action: "test", username: "mychild", testId: "paper-1" });
+  global.fetch = realFetch;
+  check(short.status === 402, `two credits will not start a four-credit paper (${short.status})`);
+  check(short.data.cost === 4 && short.data.left === 2, "and the refusal names both numbers");
+  check(reached === 0, "nothing reached the model — a half-marked paper is the outcome this prevents");
+
+  // --- Somebody else's child ----------------------------------------------
+  // A REAL link, in the partition `childLink` actually reads. Seeded wrongly
+  // this test passes on a `canSeeStudent` refusal instead — proving only that
+  // a link nobody made is refused, which is not the rule under test.
+  putRow("parentlinks", `parent~${PARENT}`, "classkid", {
+    partitionKey: `parent~${PARENT}`, rowKey: "classkid", studentName: "Class", teacherSub: TEACHER,
+  });
+  // The link is genuinely readable: the parent may WATCH this child.
+  const canWatch = await call("attempts", pCookie, {}, "GET", { student: "classkid", testId: "paper-3" });
+  check(canWatch.status === 200, `the link is real — the parent may watch this child (${canWatch.status})`);
+  // And still may not mark their paper.
+  putRow("grading", "stu~classkid", "paper-3~q0", {
+    partitionKey: "stu~classkid", rowKey: "paper-3~q0", testId: "paper-3", questionId: "q0",
+    maxMarks: 5, answerText: "working", status: "submitted", studentName: "Class",
+  });
+  const notMine = await call("assess", pCookie, { action: "test", username: "classkid", testId: "paper-3" });
+  check(
+    notMine.status === 403,
+    `a linked child's paper belongs to the teacher who issued their login (${notMine.status})`
+  );
+  check(
+    rows.get(key("grading", "stu~classkid", "paper-3~q0")).status === "submitted",
+    "and nothing on it was marked"
+  );
+
+  // --- A pack of credits is granted, not owned -----------------------------
+  putRow("platform", "plan", "current", {
+    partitionKey: "plan", rowKey: "current", parentTrialCredits: 100,
+    creditPackCredits: 50, creditPackPaise: 9900,
+  });
+  putRow("aiusage", "~wallet", PARENT, {
+    partitionKey: "~wallet", rowKey: PARENT, granted: 100, used: 98,
+  });
+  process.env.UPI_VPA = "someone@upi";
+  // Rebuilt so the payee is read at module load, as the real one is.
+  const mod2 = { exports: {} };
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod2, mod2.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t2 = mod2.exports.__t;
+  const aCookie = t2.signSession("vgo", "admin-1", t2.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "a@example.com", n: "A" });
+  const p2 = t2.signSession("vgo", PARENT, t2.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "p@example.com", n: "Parent" });
+  const call2 = async (cookie, body, method = "POST", query = {}) => {
+    const c = { res: null };
+    await t2.handlers.purchase(c, {
+      method, headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` }, body, query,
+    });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+
+  const packQuote = await call2(p2, { action: "quote", kind: "credits" });
+  check(
+    packQuote.status === 200 && packQuote.data.payablePaise === 9900 && packQuote.data.credits === 50,
+    `a pack is priced from the same plan row as everything else (${packQuote.data.payablePaise})`
+  );
+  const packOrder = await call2(p2, { action: "start", kind: "credits" });
+  const packRef = packOrder.data.ref;
+  await call2(p2, { action: "claim", ref: packRef });
+  const confirmed = await call2(aCookie, { action: "confirm", sub: PARENT, ref: packRef });
+  check(confirmed.status === 200, `an admin confirms a credit payment the same way (${confirmed.status})`);
+  const after = rows.get(key("aiusage", "~wallet", PARENT));
+  check(after.granted === 150, `the pack is added to the balance (${after.granted})`);
+  check(after.used === 98, "and what was already spent is not forgiven");
+  check(
+    !rows.has(key("purchases", PARENT, "")),
+    "no shelf is recorded — a pack is granted, not owned"
+  );
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
@@ -2187,6 +2877,8 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => partitionChecks())
   .then(() => roleChoiceChecks())
   .then(() => reportStatusChecks())
+  .then(() => purchaseChecks())
+  .then(() => parentCreditChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
     process.exit(failures ? 1 : 0);

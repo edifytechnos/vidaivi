@@ -18,6 +18,8 @@
 // against a master no teacher is allowed to change.
 
 import { track } from "../analytics";
+import { openBuyShelf } from "./buy";
+import { paymentsAvailable } from "../payments";
 import {
   adoptTest,
   fetchLibrary,
@@ -135,9 +137,16 @@ async function useTest(id: string, btn: HTMLButtonElement): Promise<void> {
   // matching board/class/subject, creating one if they have none.
   const result = await adoptTest(id);
   if (!result.ok || !result.test) {
-    alert(result.message || "Could not copy this test");
     btn.disabled = false;
     btn.textContent = was;
+    // The free allowance is spent and the shelf is for sale. A price with no
+    // way to pay it reads as a broken product, so offer the payment here
+    // rather than repeating the sentence the server already wrote.
+    if (result.payment && paymentsAvailable()) {
+      openBuyShelf({ shelfId: result.payment.shelfId, title: shelfTitle });
+      return;
+    }
+    alert(result.message || "Could not copy this test");
     return;
   }
   track("test_adopted", { test: id });

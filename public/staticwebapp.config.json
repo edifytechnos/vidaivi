@@ -1,6 +1,11 @@
 {
   "navigationFallback": {
-    "rewrite": "/index.html"
+    "rewrite": "/index.html",
+    "exclude": [
+      "/help/*",
+      "/assets/*",
+      "/*.{png,jpg,svg,ico,webmanifest,txt,xml}"
+    ]
   },
   "platform": {
     "apiRuntime": "node:20"
@@ -13,6 +18,29 @@
     "cross-origin-opener-policy": "same-origin-allow-popups"
   },
   "routes": [
+    {
+      "route": "/docs",
+      "redirect": "/help",
+      "statusCode": 301
+    },
+    {
+      "route": "/docs/*",
+      "redirect": "/help",
+      "statusCode": 301
+    },
+    {
+      "route": "/help",
+      "rewrite": "/help/index.html",
+      "headers": {
+        "cache-control": "public, max-age=300"
+      }
+    },
+    {
+      "route": "/help/*",
+      "headers": {
+        "cache-control": "public, max-age=300"
+      }
+    },
     {
       "route": "/assets/*",
       "headers": {

@@ -34,6 +34,15 @@ function check(ok, label) {
       window.__cspViolations.push(`${e.violatedDirective} blocked ${e.blockedURI}`);
     });
   });
+  // Stamp the self-guided tour as already seen, on every document this context
+  // loads. It fires ~700ms after a signed-in boot, and a reload mid-suite is a
+  // signed-in boot — so without this its scrim swallows the next click and the
+  // failure reads as a missing button.
+  await page.addInitScript(() => {
+    for (const r of ["student", "parent", "teacher", "admin"]) {
+      try { localStorage.setItem(`vidai:tour:${r}`, "1"); } catch {}
+    }
+  });
   const shot = (name) => (SHOT ? page.screenshot({ path: `${SHOT}/${name}.png`, fullPage: true }) : Promise.resolve());
 
   // The session is an httpOnly cookie now, so the page can no longer hold two
@@ -2264,7 +2273,16 @@ function check(ok, label) {
             !lib.studentSubjects.includes(lib.libSubjectId),
             "a student never sees the shelf among their subjects"
           );
-          check(lib.studentStatus === 403, `a student cannot open the master directly (${lib.studentStatus})`);
+          // 404, not 403. The re-partition made a row the caller cannot see
+          // read as MISSING rather than as refused — one fewer way to learn
+          // that an id exists — and a student's partition list never includes
+          // the library. This assertion was left at 403 and has been failing
+          // against production ever since; the behaviour is the documented
+          // one, so it is the test that was stale.
+          check(
+            lib.studentStatus === 404 || lib.studentStatus === 403,
+            `a student cannot open the master directly (${lib.studentStatus})`
+          );
         } finally {
           await putSession(wsAdmin);
           await page.evaluate(async ({ masterId, copyId, subjectId }) => {

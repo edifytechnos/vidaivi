@@ -100,6 +100,9 @@ export interface ModalOpts {
    * app by default.
    */
   mandatory?: boolean;
+  /** What the dismiss button says. "Cancel" is wrong on a dialog nobody is
+   *  filling in — the tour's is "Skip". */
+  cancelLabel?: string;
 }
 
 /** Select all / Clear, and a live count of what is ticked. */
@@ -251,7 +254,7 @@ export function openModal(opts: ModalOpts): void {
         <div class="modal-actions">
           <button type="button" class="btn btn-ghost modal-back" hidden>Back</button>
           <span class="modal-actions-gap"></span>
-          ${opts.mandatory ? "" : `<button type="button" class="btn btn-ghost" data-close>Cancel</button>`}
+          ${opts.mandatory ? "" : `<button type="button" class="btn btn-ghost" data-close>${escapeHtml(opts.cancelLabel ?? "Cancel")}</button>`}
           <button type="submit" class="btn btn-primary modal-submit"></button>
         </div>
       </form>

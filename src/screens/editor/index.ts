@@ -3,6 +3,8 @@
 // bottom tabs and the tree opens as a drawer.
 
 import { track } from "../../analytics";
+import { openBuyShelf } from "../buy";
+import { paymentsAvailable } from "../../payments";
 import {
   adoptTests,
   discardAttempt,
@@ -1091,7 +1093,17 @@ export async function newTestHere(back: () => void): Promise<void> {
       const wanted = picks[`tests_${from}`] ?? [];
       if (!wanted.length) return "Tick at least one test to copy.";
       const copied = await adoptTests(wanted, into);
-      if (!copied.ok) return copied.message;
+      if (!copied.ok) {
+        if (copied.payment && paymentsAvailable()) {
+          // Returning nothing closes this dialog, and a dialog opened inside
+          // another's onSubmit loses to that teardown — so it is deferred a
+          // tick, the same reason `showNewLogin` is.
+          const pay = copied.payment;
+          setTimeout(() => openBuyShelf({ shelfId: pay.shelfId }), 0);
+          return;
+        }
+        return copied.message;
+      }
       track("test_adopted", { count: String(copied.tests?.length ?? 0) });
       // Land on the first copy — it is theirs now, and editable.
       const first = copied.tests?.[0];

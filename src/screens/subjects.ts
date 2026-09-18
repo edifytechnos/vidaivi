@@ -3,6 +3,8 @@
 // its tests.
 
 import { track } from "../analytics";
+import { openBuyShelf } from "./buy";
+import { paymentsAvailable } from "../payments";
 import {
   adoptTests,
   fetchLibrary,
@@ -297,6 +299,13 @@ async function openForm(): Promise<void> {
       if (!copied.ok) {
         // The subject exists; say so rather than implying nothing happened.
         void refresh();
+        if (copied.payment && paymentsAvailable()) {
+          // Deferred a tick: opening a dialog inside another's onSubmit loses
+          // to that dialog's own teardown.
+          const pay = copied.payment;
+          setTimeout(() => openBuyShelf({ shelfId: pay.shelfId, title: shelf.title }), 0);
+          return;
+        }
         return `Subject created, but the tests could not be copied: ${copied.message}`;
       }
       track("subject_created_from_library", {

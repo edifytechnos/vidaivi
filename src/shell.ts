@@ -10,6 +10,7 @@
 import { getProfile, isAdmin, isLoggedIn, isParent, isTeacher, sessionIsExpired } from "./auth";
 import type { Profile } from "./auth";
 import { app, escapeHtml, ICONS } from "./dom";
+import { helpUrl, tourRole } from "./tour";
 
 export type RailKey =
   | "subjects"
@@ -20,6 +21,7 @@ export type RailKey =
   | "admin"
   | "aiusage"
   | "plans"
+  | "payments"
   | "results"
   | "children";
 
@@ -49,6 +51,7 @@ const RAIL_ITEMS: RailItem[] = [
   { key: "admin", label: "Teacher access", icon: ICONS.shield, show: isAdmin },
   { key: "aiusage", label: "AI usage", icon: ICONS.chart, show: isAdmin },
   { key: "plans", label: "Plans & pricing", icon: ICONS.lock, show: isAdmin },
+  { key: "payments", label: "Payments", icon: ICONS.check, show: isAdmin },
 ];
 
 const RAIL_KEY = "vidai:rail";
@@ -122,6 +125,9 @@ function profileMarkup(): string {
           <b>${escapeHtml(name)}</b>
           <span>${escapeHtml(profile.email || profile.sub)}${role ? ` · ${role}` : ""}</span>
         </div>
+        <a class="pm-item" href="${helpUrl(tourRole() ?? undefined)}" target="_blank" rel="noopener" role="menuitem">${ICONS.book}Help</a>
+        <button class="pm-item" data-rail="tour" role="menuitem">${ICONS.eye}Take the tour</button>
+        <div class="pm-rule"></div>
         <button class="pm-item" data-rail="signout" role="menuitem">${ICONS.logout}Sign out</button>
         <button class="pm-item pm-quiet" data-rail="signout-all" role="menuitem">${ICONS.logout}Sign out everywhere</button>
       </div>

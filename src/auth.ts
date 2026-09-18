@@ -565,6 +565,8 @@ export async function listAccounts(): Promise<{ accounts: AccountRow[]; rules: R
 // ---------- AI credits and usage ----------
 
 export interface AiUsageRow {
+  /** True for a parent: a balance that is bought, not a monthly allowance. */
+  lifetime?: boolean;
   teacherId: string;
   name: string;
   email: string;
@@ -599,11 +601,55 @@ export async function fetchAiUsage(month?: string): Promise<AiUsageReport | null
   }
 }
 
+/**
+ * Mark a whole paper with AI and open it to the child, in one call.
+ *
+ * Only for a parent's own child: the server refuses a linked one, because that
+ * paper belongs to the teacher who issued the login.
+ */
+export async function assessWholePaper(
+  username: string,
+  testId: string
+): Promise<{
+  ok: boolean;
+  message?: string;
+  assessed?: number;
+  failed?: number;
+  credits?: number;
+  low?: boolean;
+  /** Set on a 402: what the paper costs and what is left. */
+  short?: { cost: number; left: number };
+}> {
+  try {
+    const res = await apiFetch("/api/assess", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "test", username, testId }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        ok: false,
+        message: data.error || "Could not mark this paper",
+        short:
+          res.status === 402
+            ? { cost: Number(data.cost) || 0, left: Number(data.left) || 0 }
+            : undefined,
+      };
+    }
+    return { ok: true, ...data };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
 export async function fetchMyCredits(): Promise<{
   used: number;
   granted: number;
   left: number;
   low: boolean;
+  /** True for a parent: a balance that is bought, not a monthly allowance. */
+  lifetime?: boolean;
 } | null> {
   try {
     const res = await apiFetch("/api/aiusage?me=1", { headers: authHeader() });
@@ -617,13 +663,15 @@ export async function fetchMyCredits(): Promise<{
 export async function grantCredits(
   teacherId: string,
   credits: number,
-  month?: string
+  month?: string,
+  /** A parent's wallet has no month — it is the lifetime balance. */
+  lifetime?: boolean
 ): Promise<{ ok: boolean; message?: string }> {
   try {
     const res = await apiFetch("/api/aiusage", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
-      body: JSON.stringify({ action: "grant", teacherId, credits, month }),
+      body: JSON.stringify({ action: "grant", teacherId, credits, month, lifetime: !!lifetime }),
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
@@ -1061,19 +1109,34 @@ async function postAttempt(a: PendingAttempt): Promise<boolean> {
  * retry: every write carries the whole answer map, so the next answer heals a
  * dropped one, and a queue would only replay state that is already stale.
  */
-export function saveProgress(a: {
-  testId: string;
-  answers: string;
-  index: number;
-  score: number;
-  total: number;
-}): void {
+export function saveProgress(
+  a: {
+    testId: string;
+    answers: string;
+    index: number;
+    score: number;
+    total: number;
+  },
+  /**
+   * Called when the server refuses to let this paper start at all. The save is
+   * fire-and-forget by design, but a REFUSAL is not a dropped write that the
+   * next answer heals — nothing will ever be stored — so it has to reach the
+   * student rather than being swallowed into a paper they fill in for nothing.
+   */
+  onRefused?: (message: string) => void
+): void {
   if (!authEnabled || !isLoggedIn()) return;
   void fetch("/api/attempts", {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
     body: JSON.stringify({ action: "progress", ...a }),
-  }).catch(() => {});
+  })
+    .then(async (res) => {
+      if (res.status !== 402 || !onRefused) return;
+      const data = await res.json().catch(() => ({}) as { error?: string });
+      onRefused(data.error || "This test is not available yet.");
+    })
+    .catch(() => {});
 }
 
 /** Save a completed attempt to the signed-in identity. Never blocks the UI;
