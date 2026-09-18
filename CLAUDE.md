@@ -1063,7 +1063,9 @@ stylesheet and drives it at 390px: what the fixed bottom bar covers, and whether
 the page holds still behind the open question list.
 `node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
 the full-screen photo viewer in a real browser against two fake pages — no
-network, no session, no row written. `node e2e/helpers.cjs` needs no browser and no network: it
+network, no session, no row written. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+390px (admin creds from the environment; it skips without them).
+`node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
 in-process cache, `inBatches`) **and drives the second factor through the real
 handlers against a fake Table Storage** — enabling, replay refusal, recovery
@@ -2721,7 +2723,14 @@ the tour**, beside **Help**.
   question somebody must answer is the one way this could do harm.
 - **No storage means "already seen".** A tour that reopens on every load in a
   private window is worse than one somebody has to ask for.
-- **The browser suites stamp `vidai:tour:<role>` via `addInitScript`.** The tour
+- **`node e2e/tour.cjs`** drives it at 390px against a real browser: that it
+  opens by itself on a first signed-in boot, that it does **not** come back on
+  the next one, that Skip says Skip, and that the last button really reaches a
+  help page that really renders and loads no script. Both halves of the
+  first-run assertion matter — a dialog that never fires teaches nobody, and
+  one that fires every time is the thing people hate most about them. Verified
+  to fail with `showTourOnFirstRun()` removed.
+- **The other browser suites stamp `vidai:tour:<role>` via `addInitScript`.** The tour
   fires ~700ms after a *signed-in* boot, and a reload mid-suite is a signed-in
   boot — without the stamp its scrim swallows the next click and the failure
   reads as a missing button. That is exactly how it was found.
