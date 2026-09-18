@@ -19,6 +19,9 @@ export type TourRole = "student" | "parent" | "teacher" | "admin";
 
 /** The help centre. One place, so a rename is one edit. */
 export const HELP_BASE = "/help/";
+// Note: Azure treats `/help` and `/help/` as one route — declaring both in
+// staticwebapp.config.json fails validation at deploy time with "a duplicate
+// route". The config has `/help` alone; this trailing slash resolves to it.
 
 const FIRST_PAGE: Record<TourRole, string> = {
   student: "student/01-signing-in.html",

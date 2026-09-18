@@ -20,21 +20,16 @@
   "routes": [
     {
       "route": "/docs",
-      "redirect": "/help/",
+      "redirect": "/help",
       "statusCode": 301
     },
     {
       "route": "/docs/*",
-      "redirect": "/help/",
+      "redirect": "/help",
       "statusCode": 301
     },
     {
       "route": "/help",
-      "redirect": "/help/",
-      "statusCode": 301
-    },
-    {
-      "route": "/help/",
       "rewrite": "/help/index.html",
       "headers": {
         "cache-control": "public, max-age=300"
