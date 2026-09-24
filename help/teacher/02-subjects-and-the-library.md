@@ -23,8 +23,11 @@ for.
 
 Two places offer it, both at a moment you are already asking for something:
 
-- **New subject** → step 1 offers the ready-made subjects, step 2 is a tick list
-  of that subject's chapters. Tick several — you take a term's worth in one go.
+- **New subject** asks four short questions — board, class, subjects, tests.
+  Subjects is a tick list, so one pass creates several: a JEE teacher ticks
+  Physics, Chemistry and Maths once. The last step lists that subject's
+  chapters with everything ticked, and **Peek** shows you a question before you
+  commit to the paper.
 - **The + in the tests tree**, inside a subject you already have, offers to copy
   one built-in test into it.
 
@@ -53,8 +56,19 @@ Once you own a subject, copy from it as freely as you like.
 
 ## Writing a subject of your own
 
-**New subject** → **Something else**, then board, class and subject. An empty
-subject is a perfectly good start; add tests with the **+** in the tree.
+**New subject** works the same way for a board nobody has written for yet. Pick
+it, pick the class — **Another class** takes whatever you type — and then name
+your subject in **Not listed? Add your own**. An empty subject is a perfectly
+good start; add tests with the **+** in the tree.
+
+### Entrance exams
+
+**Entrance exam** is its own group on the first step: **JEE Main**, **JEE
+Advanced**, **NEET** and **CUET**. It then asks for the **attempt year** rather
+than a class, because an exam is not a class of school — and because the year
+is what keeps your batches apart. A 2027 group and a 2028 group are two
+subjects, with their own tests, their own students and their own results, so
+last year's marks never turn up in this year's report.
 
 ## Where did my copies go?
 

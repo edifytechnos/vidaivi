@@ -45,8 +45,9 @@ questions; students sit the tests you publish.
 
 ## The first ten minutes
 
-1. **New subject** → pick a ready-made subject → tick the chapters you are
-   teaching this month. They land as your own editable drafts.
+1. **New subject** → your board → your class → tick the subjects you teach →
+   tick the chapters you are teaching this month. They land as your own
+   editable drafts.
 2. Open one, read it, publish it.
 3. Add your students (once you are approved) and send them their logins.
 4. They sit it. You mark it. You release it.

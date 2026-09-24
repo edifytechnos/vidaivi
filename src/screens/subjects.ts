@@ -3,11 +3,7 @@
 // its tests.
 
 import { track } from "../analytics";
-import { openBuyShelf } from "./buy";
-import { paymentsAvailable } from "../payments";
 import {
-  adoptTests,
-  fetchLibrary,
   fetchSubjects,
   fetchTestList,
   mutateSubject,
@@ -17,17 +13,12 @@ import {
 import { canAuthor } from "../auth";
 import { TESTS } from "../data";
 import { escapeHtml, ICONS, setUrl } from "../dom";
-import { openModal, type ModalField } from "../modal";
 import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
 import { showEditorForSubject } from "./editor";
 import { setSubject, showHome } from "./home";
 import { isStudentViewer, showStudentSubject } from "./student";
-// One place knows what a board can be. The list used to live here and had
-// neither the entrance exams nor Cambridge in it, so a teacher typing "JEE
-// Main" or "Cambridge A Level" was guessing at a spelling the library already
-// uses.
-import { ALL_BOARDS, CLASSES, SUBJECTS } from "../taxonomy";
+import { openNewSubject } from "./newsubject";
 
 export async function showSubjects() {
   setUrl();
@@ -46,7 +37,7 @@ export async function showSubjects() {
       actions: canAuthor() ? `<button id="sub-new" class="btn btn-primary">+ Subject</button>` : "",
     }
   );
-  document.getElementById("sub-new")?.addEventListener("click", () => void openForm());
+  document.getElementById("sub-new")?.addEventListener("click", () => openNewSubject(() => void refresh()));
 
   await refresh();
 }
@@ -71,7 +62,7 @@ async function refresh(): Promise<void> {
     : cards.length
       ? `<div class="subject-grid">${cards.join("")}</div>`
       : `<p class="hint">No subjects yet — your teacher will share tests with you here.</p>`;
-  document.getElementById("sub-first")?.addEventListener("click", () => void openForm());
+  document.getElementById("sub-first")?.addEventListener("click", () => openNewSubject(() => void refresh()));
   document
     .getElementById("sub-browse")
     ?.addEventListener("click", () => void import("./browse").then((x) => x.showBrowse()));
@@ -169,194 +160,13 @@ function initials(s: Subject): string {
 }
 
 /**
- * New subject, in two steps: **what do you teach**, then **which tests**.
- *
- * The move this turns on is that the taxonomy stops being a question — picking
- * "CBSE Class 10 Maths" IS the board, the class and the subject, so only
- * "Something else" has to ask for them. The dialog this replaced put a content
- * choice, a taxonomy chore and a second content choice in one scrolling box,
- * and asked for the taxonomy even when it already knew the answer.
- */
-async function openForm(): Promise<void> {
-  // One round of fetches when the dialog opens, in parallel: the shelves to
-  // offer, and every built-in test so each shelf can list its own.
-  //
-  // This is the piece that has to change first if the library ever grows: at a
-  // few shelves it is one small response, at a few hundred it is every test on
-  // the platform before the teacher sees anything. Search would move server
-  // side and the tests would load only for the shelf actually picked.
-  const [subjects, masters] = await Promise.all([fetchSubjects(), fetchLibrary()]);
-  const library = masters ?? [];
-  const shelves = (subjects ?? [])
-    .filter((x) => x.platform)
-    .filter((sh) => library.some((t) => t.subjectId === sh.id));
-
-  const testsOf = (shelfId: string) =>
-    library
-      .filter((t) => t.subjectId === shelfId)
-      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
-
-  // No library at all: there is nothing to choose between, so ask the three
-  // fields directly rather than showing a step with one option on it.
-  if (!shelves.length) {
-    openModal({
-      title: "New subject",
-      description: "A subject is what you teach — the tests you write live inside it.",
-      submitLabel: "Create subject",
-      fields: taxonomyFields(),
-      onSubmit: async (v) => createBlank(v),
-    });
-    return;
-  }
-
-  const CUSTOM = "__custom__";
-
-  openModal({
-    title: "New subject",
-    submitLabel: "Create subject",
-    steps: [
-      {
-        title: "New subject",
-        description:
-          "A subject is what you teach. Your tests live inside it. You can read any of the ready-made tests from Browse tests before you pick.",
-        fields: [
-          {
-            name: "from",
-            label: "What do you teach?",
-            kind: "cards",
-            // Required now that no tile arrives pre-selected: step 2 is built
-            // from this answer, so an unanswered step 1 must stop here rather
-            // than open an empty list of chapters.
-            required: true,
-            choices: [
-              ...shelves.map((sh) => ({
-                value: sh.id,
-                label: sh.title.replace(/^CBSE\s+/i, "") || sh.title,
-                hint: sh.board,
-                badge: `${testsOf(sh.id).length} ready-made tests`,
-              })),
-              {
-                value: CUSTOM,
-                label: "Something else",
-                hint: "Choose your own board, class and subject",
-                wide: true,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        // Which tests — one checklist per shelf, each shown only while that
-        // shelf is the one chosen on step one.
-        fields: [
-          ...shelves.map((sh) => ({
-            name: `tests_${sh.id}`,
-            label: `Which tests from ${sh.title}?`,
-            kind: "checklist" as const,
-            bulk: true,
-            showWhen: { field: "from", value: sh.id },
-            hint: "They arrive as your own drafts. Edit anything, delete what you don’t need, and add your own later.",
-            empty: "This built-in subject has no published tests yet.",
-            choices: testsOf(sh.id).map((t, i) => ({
-              value: t.id,
-              label: `${i + 1}. ${t.title}`,
-              hint: `${t.chapter ? `${t.chapter} · ` : ""}${t.questionCount} questions · ${t.totalMarks} marks`,
-            })),
-          })),
-          ...taxonomyFields({ showWhen: { field: "from", value: CUSTOM } }),
-        ],
-        // The button says what is about to happen. With nothing ticked it
-        // creates the subject empty, which is also the "I'll write my own" path.
-        submitLabel: (values, picks) => {
-          if (values.from === CUSTOM) return "Create subject";
-          const n = (picks[`tests_${values.from}`] ?? []).length;
-          return n ? `Create with ${n} test${n === 1 ? "" : "s"}` : "Create subject";
-        },
-      },
-    ],
-    onSubmit: async (v, picks) => {
-      const shelf = shelves.find((x) => x.id === v.from);
-      if (!shelf) return createBlank(v);
-
-      // From a shelf: the new subject inherits the shelf's taxonomy, so the
-      // teacher never retypes what they just picked.
-      const made = await mutateSubject("create", {
-        board: shelf.board,
-        klass: shelf.klass,
-        subject: shelf.subject,
-      });
-      if (!made.ok) return made.message;
-      const into = made.subject?.id;
-      if (!into) return "The subject was created but could not be opened.";
-
-      const wanted = picks[`tests_${shelf.id}`] ?? [];
-      if (!wanted.length) {
-        track("subject_created", { from: "library-empty" });
-        void refresh();
-        return;
-      }
-
-      const copied = await adoptTests(wanted, into);
-      if (!copied.ok) {
-        // The subject exists; say so rather than implying nothing happened.
-        void refresh();
-        if (copied.payment && paymentsAvailable()) {
-          // Deferred a tick: opening a dialog inside another's onSubmit loses
-          // to that dialog's own teardown.
-          const pay = copied.payment;
-          setTimeout(() => openBuyShelf({ shelfId: pay.shelfId, title: shelf.title }), 0);
-          return;
-        }
-        return `Subject created, but the tests could not be copied: ${copied.message}`;
-      }
-      track("subject_created_from_library", {
-        subject: shelf.id,
-        copied: String(copied.tests?.length ?? 0),
-      });
-      // Land where the work is, with the copies in the tree and a note saying
-      // they are drafts — "where did my test go" is the confusion this answers.
-      noteCopied(copied.tests?.length ?? 0);
-      setSubject(into);
-      void showEditorForSubject(into, () => void showSubjects());
-    },
-  });
-}
-
-/**
  * Tell the editor to greet the teacher with what just happened. Read and
  * cleared once by the editor, so it cannot reappear on a later visit.
  */
 const COPIED_KEY = "vidai:justCopied";
 
-function noteCopied(count: number): void {
+export function noteCopied(count: number): void {
   try {
     localStorage.setItem(COPIED_KEY, String(count));
   } catch {}
-}
-
-/** The three fields, used alone when nothing ready-made fits. */
-function taxonomyFields(extra: Partial<ModalField> = {}): ModalField[] {
-  return [
-    { name: "board", label: "Board", value: "CBSE", options: ALL_BOARDS, required: true, ...extra },
-    { name: "klass", label: "Class", value: "12", options: CLASSES, required: true, ...extra },
-    {
-      name: "subject",
-      label: "Subject",
-      placeholder: "e.g. Physics",
-      options: SUBJECTS,
-      required: true,
-      ...extra,
-    },
-  ];
-}
-
-async function createBlank(v: Record<string, string>): Promise<string | void> {
-  const result = await mutateSubject("create", {
-    board: v.board,
-    klass: v.klass,
-    subject: v.subject,
-  });
-  if (!result.ok) return result.message;
-  track("subject_created");
-  void refresh();
 }
