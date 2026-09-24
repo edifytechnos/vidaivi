@@ -23,10 +23,11 @@ import { showWelcome } from "./auth";
 import { showEditorForSubject } from "./editor";
 import { setSubject, showHome } from "./home";
 import { isStudentViewer, showStudentSubject } from "./student";
-
-const BOARDS = ["CBSE", "ICSE", "State Board", "IGCSE"];
-const CLASSES = ["8", "9", "10", "11", "12"];
-const SUBJECTS = ["Maths", "Physics", "Chemistry", "Biology", "English", "Computer Science"];
+// One place knows what a board can be. The list used to live here and had
+// neither the entrance exams nor Cambridge in it, so a teacher typing "JEE
+// Main" or "Cambridge A Level" was guessing at a spelling the library already
+// uses.
+import { ALL_BOARDS, CLASSES, SUBJECTS } from "../taxonomy";
 
 export async function showSubjects() {
   setUrl();
@@ -336,7 +337,7 @@ function noteCopied(count: number): void {
 /** The three fields, used alone when nothing ready-made fits. */
 function taxonomyFields(extra: Partial<ModalField> = {}): ModalField[] {
   return [
-    { name: "board", label: "Board", value: "CBSE", options: BOARDS, required: true, ...extra },
+    { name: "board", label: "Board", value: "CBSE", options: ALL_BOARDS, required: true, ...extra },
     { name: "klass", label: "Class", value: "12", options: CLASSES, required: true, ...extra },
     {
       name: "subject",
