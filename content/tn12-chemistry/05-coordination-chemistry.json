@@ -23,20 +23,21 @@
       "solution": "Werner's **primary valency** is ionisable, satisfied by anions, and corresponds to the modern **oxidation state**.\n\nHis **secondary valency** is non-ionisable, satisfied by ligands, directed in space, and corresponds to the **coordination number**.\n\nHis insight came from conductivity and precipitation experiments: $\\text{CoCl}_3\\cdot6\\text{NH}_3$ precipitates all three chlorides with silver nitrate, while $\\text{CoCl}_3\\cdot4\\text{NH}_3$ precipitates only one — so the chlorides cannot all be equivalent, and some must be bound differently."
     },
     {
-      "id": "tn12c-coo-02",
+      "id": "tn12c-coo-24q2",
       "chapter": "Coordination Chemistry",
       "topic": "Nomenclature",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "The IUPAC name of $[\\text{Co}(\\text{NH}_3)_6]\\text{Cl}_3$ is:",
+      "q": "IUPAC name of the complex $\\mathrm{K_3[Al(C_2O_4)_3]}$ is :",
       "options": [
-        "Hexaamminecobalt(III) chloride",
-        "Cobalt hexaammine trichloride",
-        "Hexaamminecobalt(II) chloride",
-        "Trichlorohexaamminecobaltate"
+        "Potassium trisoxalato aluminate (III)",
+        "Potassium trioxalato aluminium (III)",
+        "Potassium trioxalato aluminate (III)",
+        "Potassium trioxalato aluminate (II)"
       ],
-      "answer": 0,
-      "solution": "**Hexaamminecobalt(III) chloride**.\n\nThe rules at work: ligands are named **before** the metal and in **alphabetical** order; $\\text{NH}_3$ as a ligand is **ammine** (two m's — **amine** with one m is the organic group); the metal's oxidation state is given in Roman numerals in brackets; and the cation is named before the anion.\n\nThe oxidation state is $+3$ because ammonia is neutral and three chlorides sit outside the coordination sphere."
+      "answer": 2,
+      "solution": "Three oxalate ligands: **trioxalato**. The complex is an anion, so the metal takes the ending **-ate**: aluminate.\n\nOxidation state: $x + 3(-2) = -3$, so $x = +3$.\n\n**Potassium trioxalato aluminate (III).**"
     },
     {
       "id": "tn12c-coo-03",
@@ -71,20 +72,21 @@
       "solution": "In an **octahedral** field the ligands approach along the axes.\n\nThe **$e_g$** orbitals ($d_{z^{2}}$, $d_{x^{2}-y^{2}}$) point **directly at** the ligands, so are repelled more and rise. The **$t_{2g}$** orbitals ($d_{xy}$, $d_{yz}$, $d_{zx}$) point **between** them and fall.\n\nSo $t_{2g}$ is lower, separated from $e_g$ by $\\Delta_o$. Preserving the centre of gravity, each $t_{2g}$ falls by $0.4\\Delta_o$ and each $e_g$ rises by $0.6\\Delta_o$.\n\nA **tetrahedral** field reverses the order, with $\\Delta_t \\approx \\tfrac{4}{9}\\Delta_o$ — which is why tetrahedral complexes are essentially always high spin."
     },
     {
-      "id": "tn12c-coo-05",
+      "id": "tn12c-coo-23q4",
       "chapter": "Coordination Chemistry",
-      "topic": "Ligands",
+      "topic": "Magnetic properties",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "EDTA is a:",
+      "q": "A magnetic moment of 1.73 BM will be shown by one among the following :",
       "options": [
-        "Monodentate ligand",
-        "Bidentate ligand",
-        "Hexadentate ligand",
-        "Neutral ligand"
+        "$[\\mathrm{CoCl_6}]^{4-}$",
+        "$\\mathrm{TiCl_4}$",
+        "$[\\mathrm{Cu(NH_3)_4}]^{2+}$",
+        "$[\\mathrm{Ni(CN)_4}]^{2-}$"
       ],
       "answer": 2,
-      "solution": "EDTA is **hexadentate**: it binds through **two nitrogen** atoms and **four carboxylate oxygens**, wrapping right around the metal ion.\n\nOccupying all six coordination sites of an octahedral metal makes its complexes exceptionally stable — an entropy-driven effect called the **chelate effect**, since one ligand displaces six water molecules and increases the number of free particles.\n\nThis is why EDTA is used to treat lead poisoning, to soften water, and as the standard titrant for metal ions."
+      "solution": "$\\mu = \\sqrt{n(n+2)} = 1.73$ BM means $n = 1$ unpaired electron.\n\n- $[\\mathrm{CoCl_6}]^{4-}$: $\\mathrm{Co^{2+}}$, $d^7$, weak field, 3 unpaired.\n- $\\mathrm{TiCl_4}$: $\\mathrm{Ti^{4+}}$, $d^0$, none.\n- $[\\mathrm{Cu(NH_3)_4}]^{2+}$: $\\mathrm{Cu^{2+}}$, $d^9$, **1 unpaired**.\n- $[\\mathrm{Ni(CN)_4}]^{2-}$: $\\mathrm{Ni^{2+}}$, $d^8$, square planar, none."
     },
     {
       "id": "tn12c-coo-06",
@@ -151,19 +153,19 @@
       "solution": "The gap $\\Delta_o$ happens to correspond to the energy of **visible light**. An electron in $t_{2g}$ absorbs a photon of exactly that energy and is promoted to $e_g$ — a **d-d transition**.\n\nThe wavelength absorbed is removed from white light, and what we see is the **complementary colour**.\n\nTwo predictions follow, and both hold: a **stronger-field ligand** gives a larger $\\Delta_o$ and a different colour, and an ion with **no $d$ electrons ($d^{0}$) or a full subshell ($d^{10}$)** has no possible d-d transition and must be **colourless** — as $\\text{Sc}^{3+}$ and $\\text{Zn}^{2+}$ indeed are."
     },
     {
-      "id": "tn12c-coo-10",
+      "id": "tn12c-coo-25q11",
       "chapter": "Coordination Chemistry",
       "topic": "Oxidation state",
+      "source": "TN HSE Mar 2025",
       "type": "numeric",
       "marks": 2,
-      "q": "What is the oxidation state of iron in $\\text{K}_4[\\text{Fe}(\\text{CN})_6]$?",
+      "q": "What is the oxidation number of the central metal ion in the complex, $\\mathrm{[Pt(NO_2)(H_2O)(NH_3)_2]Br}$ ?",
       "answer": 2,
-      "tolerance": 0.1,
+      "solution": "The complex ion carries $+1$ to balance $\\mathrm{Br^-}$.\n\n$x + (-1) + 0 + 2(0) = +1$, with $\\mathrm{NO_2^-}$ at $-1$ and water and ammonia neutral.\n\n$x = \\mathbf{+2}$.",
+      "tolerance": 0,
       "accept": [
-        "2",
         "+2"
-      ],
-      "solution": "Potassium is $+1$ each and cyanide $-1$ each.\n\n$4(+1) + x + 6(-1) = 0$\n\n$4 + x - 6 = 0 \\Rightarrow x = \\mathbf{+2}$"
+      ]
     },
     {
       "id": "tn12c-coo-11",

@@ -55,20 +55,21 @@
       "solution": "$\\dfrac{x}{m} = kP^{1/n}$ with $n > 1$.\n\nIn log form, $\\log\\dfrac{x}{m} = \\log k + \\dfrac{1}{n}\\log P$, a straight line of slope $\\dfrac{1}{n}$. It fails at high pressure, where the surface becomes saturated."
     },
     {
-      "id": "tn12c-sur-04",
+      "id": "tn12c-sur-24q14",
       "chapter": "Surface Chemistry",
       "topic": "Catalysis",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "In the Haber process, $\\mathrm{N_2} + 3\\mathrm{H_2} \\rightarrow 2\\mathrm{NH_3}$, molybdenum acts as:",
+      "q": "Activity of iron catalyst is increased by the __________ compound.",
       "options": [
-        "a catalyst",
-        "a promoter",
-        "a catalytic poison",
-        "an inhibitor"
+        "$\\mathrm{CH_3COOH}$",
+        "$\\mathrm{H_2S}$",
+        "$\\mathrm{Al_2O_3}$",
+        "$\\mathrm{As_2O_3}$"
       ],
-      "answer": 1,
-      "solution": "Iron is the catalyst; **molybdenum is a promoter**, a substance that increases the catalyst's activity without being a catalyst itself.\n\nA poison does the reverse: $\\mathrm{As_2O_3}$ poisons the platinum catalyst in the contact process."
+      "answer": 2,
+      "solution": "In the Haber process a little $\\mathbf{Al_2O_3}$ (with $\\mathrm{K_2O}$) acts as a **promoter**, increasing the activity of the iron catalyst.\n\n$\\mathrm{H_2S}$ and $\\mathrm{As_2O_3}$ do the reverse: they are catalytic poisons."
     },
     {
       "id": "tn12c-sur-05",
@@ -103,36 +104,38 @@
       "solution": "Colloidal particles (1–1000 nm) are large enough to **scatter light**, making the beam's path visible.\n\nThe particles of a true solution are too small to scatter visibly, which is how the effect tells a sol from a solution."
     },
     {
-      "id": "tn12c-sur-07",
+      "id": "tn12c-sur-25q6",
       "chapter": "Surface Chemistry",
       "topic": "Colloids",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "Which ion is most effective in coagulating a negatively charged arsenious sulphide sol?",
+      "q": "In an electrical field, the particles of a Colloidal system move towards cathode. The coagulation of the same sol is studied using (i) $\\mathrm{K_2SO_4}$, (ii) $\\mathrm{Na_3PO_4}$, (iii) $\\mathrm{K_4[Fe(CN)_6]}$ and (iv) NaCl. Their coagulating power should be :",
       "options": [
-        "$\\mathrm{Na^+}$",
-        "$\\mathrm{Ba^{2+}}$",
-        "$\\mathrm{Al^{3+}}$",
-        "$\\mathrm{PO_4^{3-}}$"
+        "(iii) > (ii) > (i) > (iv)",
+        "(i) > (ii) > (iii) > (iv)",
+        "(ii) > (i) > (iv) > (iii)",
+        "None of these"
       ],
-      "answer": 2,
-      "solution": "**Hardy–Schulze rule**: the ion carrying the charge opposite to the sol coagulates it, and the higher its charge the more effective it is.\n\nThe sol is negative, so cations count, and $\\mathbf{Al^{3+}} > \\mathrm{Ba^{2+}} > \\mathrm{Na^+}$."
+      "answer": 0,
+      "solution": "Particles that move to the cathode are **positively** charged, so the anions do the coagulating.\n\nHardy–Schulze rule: the higher the charge on the anion, the greater the power. $[\\mathrm{Fe(CN)_6}]^{4-} > \\mathrm{PO_4^{3-}} > \\mathrm{SO_4^{2-}} > \\mathrm{Cl^-}$, which is **(iii) > (ii) > (i) > (iv)**."
     },
     {
-      "id": "tn12c-sur-08",
+      "id": "tn12c-sur-23q5",
       "chapter": "Surface Chemistry",
-      "topic": "Emulsions",
+      "topic": "Colloids",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "Milk is an example of:",
+      "q": "Which one is correctly matched ?",
       "options": [
-        "water in oil emulsion",
-        "oil in water emulsion",
-        "a gel",
-        "a foam"
+        "Foam - mist",
+        "Emulsion - smoke",
+        "Sol - whipped cream",
+        "Gel - butter"
       ],
-      "answer": 1,
-      "solution": "Milk is liquid fat dispersed in water, an **oil in water** emulsion, kept stable by casein acting as an emulsifier.\n\nButter is the reverse, water in oil."
+      "answer": 3,
+      "solution": "**Butter is a gel**: liquid dispersed in a solid.\n\nThe others are mismatched: mist is an aerosol of a liquid, smoke is an aerosol of a solid, and whipped cream is a foam (gas in liquid)."
     },
     {
       "id": "tn12c-sur-09",

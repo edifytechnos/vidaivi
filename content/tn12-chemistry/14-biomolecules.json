@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "tn12c-bio-01",
+      "id": "tn12c-bio-24q5",
       "chapter": "Biomolecules",
-      "topic": "Carbohydrates",
+      "topic": "Nucleic acids",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "Glucose is:",
+      "q": "The pyrimidine bases present in RNA are :",
       "options": [
-        "a ketohexose",
-        "an aldohexose",
-        "an aldopentose",
-        "a disaccharide"
+        "Cytosine and Thiamine",
+        "Cytosine and Adenine",
+        "Cytosine and Uracil",
+        "Cytosine and Guanine"
       ],
-      "answer": 1,
-      "solution": "Glucose, $\\mathrm{C_6H_{12}O_6}$, has **six carbons** and an **aldehyde** group, making it an aldohexose.\n\nFructose has the same formula but a ketone group: a ketohexose."
+      "answer": 2,
+      "solution": "Pyrimidines are the single-ring bases. RNA carries **cytosine and uracil**; DNA carries cytosine and thymine.\n\nAdenine and guanine are purines (double ring). Thiamine is vitamin $\\mathrm{B_1}$, not a base."
     },
     {
       "id": "tn12c-bio-02",
@@ -103,20 +104,21 @@
       "solution": "Heat, a change of pH or other agents break the **hydrogen bonds and other weak forces** that hold the 3-D shape, so the protein loses its secondary and tertiary structure and its biological activity.\n\nThe **primary structure survives**, because the covalent peptide bonds are not broken. Boiling an egg is the familiar case."
     },
     {
-      "id": "tn12c-bio-07",
+      "id": "tn12c-bio-23q14",
       "chapter": "Biomolecules",
       "topic": "Nucleic acids",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "Which base is present in RNA but not in DNA?",
+      "q": "Which of the following base is not present in DNA ?",
       "options": [
-        "adenine",
-        "guanine",
-        "thymine",
-        "uracil"
+        "Uracil",
+        "Adenine",
+        "Cytosine",
+        "Guanine"
       ],
-      "answer": 3,
-      "solution": "DNA has A, G, C and **thymine**. RNA has A, G, C and **uracil** in place of thymine.\n\nThe sugars differ too: deoxyribose in DNA, ribose in RNA."
+      "answer": 0,
+      "solution": "DNA contains A, G, C and thymine. **Uracil** takes thymine's place in RNA and is not found in DNA."
     },
     {
       "id": "tn12c-bio-08",

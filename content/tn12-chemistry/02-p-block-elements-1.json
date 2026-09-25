@@ -103,36 +103,38 @@
       "solution": "Down group 14 the $ns^{2}$ pair becomes increasingly reluctant to take part in bonding, because poor shielding by the intervening $d$ and $f$ electrons holds it tightly.\n\nSo the **lower** oxidation state grows more stable down the group, and for lead $\\mathbf{+2}$ dominates while $\\text{Pb}^{4+}$ is a strong oxidising agent.\n\nFor carbon and silicon the $+4$ state dominates instead. This is why $\\text{PbO}_2$ oxidises readily — it is trying to reach $\\text{Pb}^{2+}$ — and why $\\text{SnCl}_2$ is a reducing agent, tin still preferring $+4$."
     },
     {
-      "id": "tn12c-pb1-07",
+      "id": "tn12c-pb1-25q5",
       "chapter": "p-Block Elements – I",
       "topic": "Group 13",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "Boric acid $\\text{H}_3\\text{BO}_3$ acts as a weak acid because it:",
+      "q": "Boric acid is an acid because its molecule :",
       "options": [
-        "Donates a proton",
-        "Accepts a hydroxide ion from water, releasing $\\text{H}^{+}$",
-        "Is a strong electrolyte",
-        "Contains three hydrogens"
+        "combines with proton to form water molecule.",
+        "contains replaceable $\\mathrm{H^+}$ ion.",
+        "accepts $\\mathrm{OH^-}$ from water, releasing proton.",
+        "gives up a proton."
       ],
-      "answer": 1,
-      "solution": "Boric acid is **not** a protonic acid — it does not donate its own hydrogens.\n\nIt is a **Lewis acid**: the electron-deficient boron **accepts a hydroxide ion** from water, and it is the water that releases the proton:\n\n$\\text{B(OH)}_3 + 2\\text{H}_2\\text{O} \\rightleftharpoons [\\text{B(OH)}_4]^{-} + \\text{H}_3\\text{O}^{+}$\n\nSo it is **monobasic** despite having three hydrogens — a common trap. It is also a layered solid held together by hydrogen bonds, which is why it feels soapy and is used as a lubricant."
+      "answer": 2,
+      "solution": "Boric acid is a **Lewis acid**, not a proton donor. Boron has an empty orbital, so it accepts a hydroxide ion from water and frees a proton:\n\n$\\mathrm{B(OH)_3} + \\mathrm{H_2O} \\rightarrow [\\mathrm{B(OH)_4}]^- + \\mathrm{H^+}$"
     },
     {
-      "id": "tn12c-pb1-08",
+      "id": "tn12c-pb1-24q4",
       "chapter": "p-Block Elements – I",
       "topic": "Group 14",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "Which allotrope of carbon conducts electricity?",
+      "q": "Which of the following is not $sp^2$ hybridised ?",
       "options": [
-        "Diamond",
+        "Fullerene",
         "Graphite",
-        "Both equally",
-        "Neither"
+        "Dry ice",
+        "Graphene"
       ],
-      "answer": 1,
-      "solution": "**Graphite** conducts. Each carbon is $sp^{2}$ hybridised with **one delocalised $p$ electron**, free to move within the layer.\n\n**Diamond** is $sp^{3}$ with all four electrons in localised covalent bonds, so none is free and it is an insulator — though an excellent thermal conductor, since heat travels by lattice vibrations rather than electrons.\n\nThe same element in two arrangements gives a soft grey conductor and the hardest known insulator: allotropy at its most striking."
+      "answer": 2,
+      "solution": "Fullerene, graphite and graphene are all built from $sp^2$ carbon in hexagonal (and, in fullerene, pentagonal) rings.\n\n**Dry ice** is solid $\\mathrm{CO_2}$, a linear molecule $\\mathrm{O{=}C{=}O}$ in which carbon is $sp$ hybridised."
     },
     {
       "id": "tn12c-pb1-09",

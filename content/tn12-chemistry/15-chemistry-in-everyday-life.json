@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "tn12c-eve-01",
+      "id": "tn12c-eve-24q6",
       "chapter": "Chemistry in Everyday Life",
       "topic": "Drugs",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "Aspirin belongs to which class of drugs?",
+      "q": "Aspirin is :",
       "options": [
-        "antibiotic",
-        "analgesic and antipyretic",
-        "tranquilliser",
-        "antacid"
+        "chlorobenzoic acid",
+        "acetyl salicylic acid",
+        "anthranilic acid",
+        "benzoyl salicylic acid"
       ],
       "answer": 1,
-      "solution": "Aspirin, acetylsalicylic acid, relieves pain (**analgesic**) and lowers fever (**antipyretic**). It works by blocking the synthesis of prostaglandins.\n\nIt also prevents platelets clumping, which is why low doses are used against heart attacks."
+      "solution": "Aspirin is **acetyl salicylic acid**, made by acetylating the –OH group of salicylic acid. It is an analgesic and antipyretic."
     },
     {
       "id": "tn12c-eve-02",
@@ -71,20 +72,21 @@
       "solution": "Dettol is **chloroxylenol with terpineol**.\n\nTincture of iodine is iodine in alcohol and water. Bithionol is added to soaps for its antiseptic property."
     },
     {
-      "id": "tn12c-eve-05",
+      "id": "tn12c-eve-23q1",
       "chapter": "Chemistry in Everyday Life",
-      "topic": "Antiseptics",
+      "topic": "Antacids",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "Phenol acts as a disinfectant at a concentration of about:",
+      "q": "Milk of Magnesia is used as __________.",
       "options": [
-        "$0.2\\%$",
-        "$1\\%$",
-        "$10\\%$",
-        "$50\\%$"
+        "Tranquilizer",
+        "Analgesic",
+        "Antacid",
+        "Anaesthetic"
       ],
-      "answer": 1,
-      "solution": "The same substance can be an antiseptic or a disinfectant depending on concentration. **1%** phenol is a disinfectant, used on floors and drains; **0.2%** is an antiseptic, safe on skin."
+      "answer": 2,
+      "solution": "Milk of Magnesia is a suspension of $\\mathrm{Mg(OH)_2}$, a weak base that neutralises excess stomach acid: an **antacid**.\n\n$\\mathrm{Mg(OH)_2} + 2\\mathrm{HCl} \\rightarrow \\mathrm{MgCl_2} + 2\\mathrm{H_2O}$"
     },
     {
       "id": "tn12c-eve-06",

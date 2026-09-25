@@ -87,20 +87,21 @@
       "solution": "Two properties matter.\n\n**Variable oxidation states** let the metal accept and donate electrons, forming intermediates that offer a lower-energy path — iron in the Haber process, vanadium(V) oxide in the contact process.\n\n**Surface adsorption**: partially filled $d$ orbitals bind reactant molecules to the surface, raising their local concentration and **weakening their bonds**, so they react more readily. Nickel in hydrogenation works this way.\n\nThe adsorption must be **moderate** — strong enough to weaken the bond, weak enough to release the product. That balance is why only some metals catalyse a given reaction."
     },
     {
-      "id": "tn12c-tra-06",
+      "id": "tn12c-tra-24q7",
       "chapter": "Transition and Inner Transition Elements",
       "topic": "Oxidation states",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "The highest oxidation state shown by manganese is:",
+      "q": "In acid medium, potassium permanganate oxidizes oxalic acid to :",
       "options": [
-        "$+4$",
-        "$+6$",
-        "$+7$",
-        "$+8$"
+        "acetate",
+        "oxalate",
+        "acetic acid",
+        "carbon dioxide"
       ],
-      "answer": 2,
-      "solution": "Manganese is $[\\text{Ar}]3d^{5}4s^{2}$ — seven electrons available in total, so the maximum is $\\mathbf{+7}$, as in the permanganate ion $\\text{MnO}_4^{-}$.\n\nThat is the highest of the first transition series, and it occurs at manganese precisely because it sits mid-series with the most electrons available before pairing makes removal harder.\n\nHigh oxidation states are found in oxides and fluorides, because only the most electronegative elements can stabilise them."
+      "answer": 3,
+      "solution": "$2\\mathrm{MnO_4^-} + 5\\mathrm{C_2O_4^{2-}} + 16\\mathrm{H^+} \\rightarrow 2\\mathrm{Mn^{2+}} + 10\\mathrm{CO_2} + 8\\mathrm{H_2O}$\n\nEach carbon goes from $+3$ to $+4$: oxalic acid is oxidised to **carbon dioxide**."
     },
     {
       "id": "tn12c-tra-07",
@@ -135,20 +136,21 @@
       "solution": "The definition of a transition element requires a **partially filled $d$ subshell in the atom or in one of its common ions**.\n\nZinc, cadmium and mercury are $d^{10}$ in the atom and $d^{10}$ in their usual $+2$ ions, so they never satisfy it.\n\nThe consequences are exactly what you would expect from a full $d$ subshell: their compounds are **colourless and diamagnetic**, they show **no variable oxidation states** (the $\\text{Hg}_2^{2+}$ ion being the notable exception), and they are poor catalysts. They also have much **lower melting points**, since $d$ electrons do not contribute to the metallic bonding."
     },
     {
-      "id": "tn12c-tra-09",
+      "id": "tn12c-tra-23q8",
       "chapter": "Transition and Inner Transition Elements",
       "topic": "Actinoids",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "Actinoids show a greater range of oxidation states than lanthanoids because:",
+      "q": "The most common oxidation state of Actinoids is :",
       "options": [
-        "They are heavier",
-        "$5f$, $6d$ and $7s$ orbitals are close in energy",
-        "They are radioactive",
-        "They are larger"
+        "+4",
+        "+2",
+        "+6",
+        "+3"
       ],
-      "answer": 1,
-      "solution": "In the actinoids the **$5f$, $6d$ and $7s$** orbitals lie **close in energy**, so electrons from all three can take part in bonding.\n\nUranium therefore shows $+3$ to $+6$, and neptunium reaches $+7$.\n\nIn the lanthanoids the $4f$ orbitals are **buried deep** inside the atom and well shielded, so they contribute little to bonding and $+3$ dominates almost throughout — with $\\text{Ce}^{4+}$ and $\\text{Eu}^{2+}$ as the notable exceptions, both explained by proximity to an empty or half-filled $f$ subshell.\n\nActinoid $5f$ orbitals are more spatially extended than lanthanoid $4f$ ones, and that extension is what makes the difference."
+      "answer": 3,
+      "solution": "Like the lanthanoids, the actinoids most commonly show **+3**.\n\nBecause the 5f, 6d and 7s energies are close, they also show many others, from $+3$ up to $+7$ for neptunium and plutonium."
     },
     {
       "id": "tn12c-tra-10",
@@ -210,18 +212,16 @@
       "solution": "Chromium is $[\\text{Ar}]3d^{5}4s^{1}$. Forming $\\text{Cr}^{3+}$ removes the $4s$ electron and two $3d$ electrons, leaving $[\\text{Ar}]3d^{3}$.\n\nBy Hund's rule those three occupy separate orbitals with parallel spins, so there are $\\mathbf{3}$ unpaired electrons.\n\nThe magnetic moment is then $\\sqrt{3 \\times 5} = 3.87\\ \\text{BM}$."
     },
     {
-      "id": "tn12c-tra-14",
+      "id": "tn12c-tra-25q2",
       "chapter": "Transition and Inner Transition Elements",
-      "topic": "Lanthanoids",
+      "topic": "Oxidation states",
+      "source": "TN HSE Mar 2025",
       "type": "numeric",
       "marks": 2,
-      "q": "How many elements are there in the lanthanoid series?",
-      "answer": 14,
-      "tolerance": 0.1,
-      "accept": [
-        "14"
-      ],
-      "solution": "$\\mathbf{14}$ elements, cerium (58) to lutetium (71), corresponding to the filling of the seven $4f$ orbitals with 14 electrons.\n\nThe actinoids likewise number 14, thorium (90) to lawrencium (103)."
+      "q": "How many moles of $\\mathrm{I_2}$ are liberated when 1 mole of potassium dichromate react with potassium iodide ?",
+      "answer": 3,
+      "solution": "$\\mathrm{Cr_2O_7^{2-}} + 6\\mathrm{I^-} + 14\\mathrm{H^+} \\rightarrow 2\\mathrm{Cr^{3+}} + 3\\mathrm{I_2} + 7\\mathrm{H_2O}$\n\nEach Cr gains 3 electrons, so one dichromate takes 6 electrons, enough to oxidise 6 iodide ions to **3** moles of $\\mathrm{I_2}$.",
+      "tolerance": 0
     },
     {
       "id": "tn12c-tra-15",

@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "tn12c-car-01",
+      "id": "tn12c-car-24q12",
       "chapter": "Carbonyl Compounds and Carboxylic Acids",
       "topic": "Nucleophilic addition",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "Aldehydes are generally more reactive than ketones towards nucleophilic addition because:",
+      "q": "The formation of cyanohydrin from acetone is an example of :",
       "options": [
-        "aldehydes have a higher molar mass",
-        "ketones have two alkyl groups that reduce the positive charge on the carbonyl carbon and crowd it",
-        "aldehydes are gases",
-        "ketones cannot form hydrogen bonds"
+        "electrophilic addition",
+        "nucleophilic substitution",
+        "nucleophilic addition",
+        "electrophilic substitution"
       ],
-      "answer": 1,
-      "solution": "Two reasons, both favouring aldehydes.\n\n**Electronic**: alkyl groups push electrons onto the carbonyl carbon, so a ketone's carbon, with two of them, is less positive.\n\n**Steric**: two alkyl groups crowd the approach of the nucleophile more than one alkyl group and a small hydrogen."
+      "answer": 2,
+      "solution": "The cyanide ion, a nucleophile, attacks the electron-poor carbonyl carbon, and the oxygen then picks up a proton:\n\n$\\mathrm{(CH_3)_2C{=}O} + \\mathrm{HCN} \\rightarrow \\mathrm{(CH_3)_2C(OH)CN}$\n\nNothing is replaced; two groups are added across C=O: **nucleophilic addition**."
     },
     {
       "id": "tn12c-car-02",
@@ -87,20 +88,21 @@
       "solution": "**Clemmensen**: Zn–Hg with conc. HCl, suited to compounds stable in acid.\n\n**Wolff–Kishner**: hydrazine with KOH in ethylene glycol, suited to compounds stable in base. Both give the hydrocarbon; $\\mathrm{LiAlH_4}$ stops at the alcohol."
     },
     {
-      "id": "tn12c-car-06",
+      "id": "tn12c-car-23q15",
       "chapter": "Carbonyl Compounds and Carboxylic Acids",
-      "topic": "Acidity",
+      "topic": "Reactions with amines",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "Which is the strongest acid?",
+      "q": "The product formed by the reaction of an Aromatic aldehyde with primary amines is :",
       "options": [
-        "$\\mathrm{CH_3COOH}$",
-        "$\\mathrm{ClCH_2COOH}$",
-        "$\\mathrm{Cl_2CHCOOH}$",
-        "$\\mathrm{Cl_3CCOOH}$"
+        "Schiff’s base",
+        "Carboxylic acid",
+        "Ketone",
+        "Aromatic acid"
       ],
-      "answer": 3,
-      "solution": "Chlorine atoms pull electron density away through the chain (**–I effect**), spreading the negative charge on the carboxylate ion and stabilising it.\n\nMore chlorines means a stronger effect, so **trichloroacetic acid** is strongest, with $\\mathrm{p}K_a$ about 0.7, against 4.76 for acetic acid."
+      "answer": 0,
+      "solution": "$\\mathrm{C_6H_5CHO} + \\mathrm{RNH_2} \\rightarrow \\mathrm{C_6H_5CH{=}NR} + \\mathrm{H_2O}$\n\nThe product, containing C=N, is a **Schiff's base** (an imine)."
     },
     {
       "id": "tn12c-car-07",
@@ -135,20 +137,21 @@
       "solution": "$\\mathrm{RCOCl} + \\mathrm{H_2} \\xrightarrow{\\mathrm{Pd/BaSO_4}} \\mathrm{RCHO} + \\mathrm{HCl}$.\n\nThe $\\mathrm{BaSO_4}$ **poisons** the palladium so the reduction stops at the **aldehyde** instead of going on to the alcohol."
     },
     {
-      "id": "tn12c-car-09",
+      "id": "tn12c-car-25q14",
       "chapter": "Carbonyl Compounds and Carboxylic Acids",
-      "topic": "Reactions of acids",
+      "topic": "Preparation",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "Carboxylic acids do not give the typical reactions of the carbonyl group because:",
+      "q": "$\\mathrm{CH_3Br} \\xrightarrow{\\text{KCN}} (A) \\xrightarrow{\\mathrm{H_3O^+}} (B) \\xrightarrow{\\mathrm{PCl_5}} (C)$\n\nProduct (C) is :",
       "options": [
-        "they are too acidic",
-        "resonance with the –OH group reduces the electrophilic character of the carbonyl carbon",
-        "they have no carbonyl group",
-        "they are insoluble in water"
+        "chloro acetic acid",
+        "α-chlorocyano ethanoic acid",
+        "acetylchloride",
+        "none of these"
       ],
-      "answer": 1,
-      "solution": "The lone pair on the –OH oxygen is **delocalised onto the carbonyl**, so the carbonyl carbon is much less positive.\n\nSo carboxylic acids do not form oximes, hydrazones or cyanohydrins the way aldehydes and ketones do."
+      "answer": 2,
+      "solution": "(A) $\\mathrm{CH_3CN}$, methyl cyanide.\n\n(B) Acid hydrolysis of the nitrile: $\\mathrm{CH_3COOH}$.\n\n(C) $\\mathrm{PCl_5}$ replaces the –OH: $\\mathbf{CH_3COCl}$, **acetyl chloride**."
     },
     {
       "id": "tn12c-car-10",

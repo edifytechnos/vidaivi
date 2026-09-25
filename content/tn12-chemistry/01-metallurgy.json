@@ -39,20 +39,21 @@
       "solution": "An Ellingham diagram plots the standard free energy of formation $\\Delta G^\\circ$ of metal oxides **against temperature**.\n\nIts practical use is in choosing a **reducing agent**: a metal whose line lies **below** another's can reduce that other metal's oxide, because the overall $\\Delta G$ is then negative.\n\nMost lines slope **upward** because $\\Delta S$ is negative when a gas is consumed. The carbon line slopes **downward**, since $\\text{C} + \\text{O}_2 \\rightarrow 2\\text{CO}$ increases the number of gas molecules — which is exactly why carbon becomes a better reducing agent at high temperature and why it reduces almost any oxide if heated enough."
     },
     {
-      "id": "tn12c-met-03",
+      "id": "tn12c-met-23q3",
       "chapter": "Metallurgy",
       "topic": "Extraction of aluminium",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "In the Hall-Heroult process, cryolite is added to alumina in order to:",
+      "q": "The metal extracted by Hall-Heroult process is :",
       "options": [
-        "Increase the purity",
-        "Lower the melting point and increase conductivity",
-        "Act as a reducing agent",
-        "Remove silica"
+        "Cu",
+        "Al",
+        "Zn",
+        "Ni"
       ],
       "answer": 1,
-      "solution": "Pure alumina melts at about $2045^\\circ\\text{C}$, which is impractical to maintain electrolytically.\n\nAdding **cryolite** ($\\text{Na}_3\\text{AlF}_6$) and fluorspar **lowers the melting point** to around $950^\\circ\\text{C}$ and **increases the electrical conductivity** of the melt.\n\nCryolite is not consumed and is not a reducing agent — the reduction is done by the current at the cathode. The carbon anodes are consumed, since the oxygen liberated burns them to $\\text{CO}_2$, and they have to be replaced periodically."
+      "solution": "The Hall-Heroult process is the electrolysis of pure alumina dissolved in molten cryolite, $\\mathrm{Na_3AlF_6}$, which lowers the melting point and raises the conductivity.\n\nAluminium is liberated at the carbon cathode: **Al**."
     },
     {
       "id": "tn12c-met-04",
@@ -71,20 +72,21 @@
       "solution": "**Zone refining** works because impurities are **more soluble in the molten metal than in the solid**.\n\nA mobile heater melts a narrow band, which is moved slowly along the rod. The impurities travel with the molten zone and collect at one end, which is then cut off.\n\nIt produces metals of **very high purity** and is used for silicon and germanium in semiconductor manufacture, where the tolerance for impurity is a few parts per billion."
     },
     {
-      "id": "tn12c-met-05",
+      "id": "tn12c-met-25q15",
       "chapter": "Metallurgy",
       "topic": "Extraction",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "Cyanide process is used for the extraction of:",
+      "q": "Extraction of gold and silver involves leaching with cyanide ion. Silver is later recovered by :",
       "options": [
-        "Iron",
-        "Copper",
-        "Gold and silver",
-        "Aluminium"
+        "Displacement with Zinc",
+        "Distillation",
+        "Liquation",
+        "Zone refining"
       ],
-      "answer": 2,
-      "solution": "The **MacArthur-Forrest cyanide process** extracts **gold and silver**.\n\nThe ore is treated with dilute sodium cyanide in the presence of air, forming a soluble complex:\n\n$4\\text{Au} + 8\\text{NaCN} + 2\\text{H}_2\\text{O} + \\text{O}_2 \\rightarrow 4\\text{Na[Au(CN)}_2] + 4\\text{NaOH}$\n\nThe gold is then displaced by **zinc**, which is more electropositive:\n\n$2\\text{Na[Au(CN)}_2] + \\text{Zn} \\rightarrow \\text{Na}_2[\\text{Zn(CN)}_4] + 2\\text{Au}$\n\nIt is an oxidation followed by a displacement — the air is essential to the first step."
+      "answer": 0,
+      "solution": "Leaching dissolves silver as the complex $[\\mathrm{Ag(CN)_2}]^-$. Zinc is more electropositive and **displaces** the silver:\n\n$2[\\mathrm{Ag(CN)_2}]^- + \\mathrm{Zn} \\rightarrow [\\mathrm{Zn(CN)_4}]^{2-} + 2\\mathrm{Ag}$"
     },
     {
       "id": "tn12c-met-06",
@@ -195,19 +197,21 @@
       "solution": "$\\text{Al}^{3+} + 3e^{-} \\rightarrow \\text{Al}$\n\nThree moles of electrons are needed per mole of aluminium, so $\\mathbf{3}$ faradays, or $3 \\times 96500 = 289500\\ \\text{C}$.\n\nThis large charge requirement is precisely why aluminium extraction is so energy-intensive, and why recycling aluminium uses only about $5\\%$ of the energy of extracting it."
     },
     {
-      "id": "tn12c-met-13",
+      "id": "tn12c-met-24q13",
       "chapter": "Metallurgy",
       "topic": "Refining",
-      "type": "numeric",
-      "marks": 2,
-      "q": "In the electrolytic refining of copper, at which electrode is the pure metal deposited? Answer 1 for anode, 2 for cathode.",
-      "answer": 2,
-      "tolerance": 0.1,
-      "accept": [
-        "2",
-        "cathode"
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the electrolytic refining of copper, which one of the following is used as anode ?",
+      "options": [
+        "Carbon rod",
+        "Pure copper",
+        "Platinum electrode",
+        "Impure copper"
       ],
-      "solution": "$\\mathbf{2}$ — the **cathode**.\n\nThe **impure** metal is the anode and dissolves; pure copper is deposited at the cathode by reduction. The more noble impurities such as gold, silver and platinum do not dissolve and collect below the anode as **anode mud**, which is valuable enough that its recovery helps pay for the refining."
+      "answer": 3,
+      "solution": "The **impure copper** is the anode and dissolves as $\\mathrm{Cu^{2+}}$; pure copper is deposited on a thin pure-copper cathode.\n\nLess reactive impurities such as silver and gold fall below the anode as anode mud; more reactive ones stay in solution."
     },
     {
       "id": "tn12c-met-14",

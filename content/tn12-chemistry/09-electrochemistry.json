@@ -103,36 +103,38 @@
       "solution": "The metal with the **lower (more negative)** reduction potential is the stronger reducing agent, so it gives up its electrons.\n\nZinc reduces $\\mathrm{Cu^{2+}}$: $\\mathrm{Zn} + \\mathrm{Cu^{2+}} \\rightarrow \\mathrm{Zn^{2+}} + \\mathrm{Cu}$. This is the Daniell cell reaction."
     },
     {
-      "id": "tn12c-ele-07",
+      "id": "tn12c-ele-25q12",
       "chapter": "Electrochemistry",
       "topic": "Faraday's laws",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "The quantity of electricity needed to deposit one mole of aluminium from $\\mathrm{Al^{3+}}$ is:",
+      "q": "The number of electrons that have a total charge of 9650 coulombs is :",
       "options": [
-        "$1\\,F$",
-        "$2\\,F$",
-        "$3\\,F$",
-        "$6\\,F$"
+        "$6.022 \\times 10^{22}$",
+        "$6.22 \\times 10^{23}$",
+        "$6.022 \\times 10^{-34}$",
+        "$6.022 \\times 10^{24}$"
       ],
-      "answer": 2,
-      "solution": "$\\mathrm{Al^{3+}} + 3e^- \\rightarrow \\mathrm{Al}$. One mole of Al needs three moles of electrons, so the charge needed is $\\mathbf{3\\,F}$ $= 3 \\times 96500\\,\\mathrm{C}$."
+      "answer": 0,
+      "solution": "One faraday, $96500\\,\\mathrm{C}$, is the charge on one mole of electrons.\n\n$9650\\,\\mathrm{C} = 0.1$ mol of electrons $= 0.1 \\times 6.022 \\times 10^{23} = \\mathbf{6.022 \\times 10^{22}}$."
     },
     {
-      "id": "tn12c-ele-08",
+      "id": "tn12c-ele-24q11",
       "chapter": "Electrochemistry",
       "topic": "Batteries",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "The electrolyte used in a lead storage battery is:",
+      "q": "Among the following cells primary cells are :\n\n(i) Leclanche cell (ii) Nickel-Cadmium cell\n\n(iii) Lead Storage Battery (iv) Mercury cell",
       "options": [
-        "dilute HCl",
-        "about 38% sulphuric acid",
-        "KOH paste",
-        "ammonium chloride paste"
+        "(iii) and (iv)",
+        "(i) and (iv)",
+        "(ii) and (iii)",
+        "(i) and (iii)"
       ],
       "answer": 1,
-      "solution": "A lead storage battery uses **sulphuric acid** (about 38%, density about 1.3 g/mL) between a Pb anode and a $\\mathrm{PbO_2}$ cathode.\n\nOn discharge both electrodes turn to $\\mathrm{PbSO_4}$ and the acid is used up, which is why the acid's density shows how charged the battery is."
+      "solution": "A primary cell cannot be recharged; its reaction runs once. The **Leclanche** dry cell and the **mercury** cell are primary.\n\nThe nickel-cadmium cell and the lead storage battery are secondary cells: passing current backwards reverses the reaction."
     },
     {
       "id": "tn12c-ele-09",
@@ -151,15 +153,20 @@
       "solution": "Zinc has the more negative electrode potential ($-0.76\\,\\mathrm{V}$ against $-0.44\\,\\mathrm{V}$ for iron), so it is **oxidised in preference**.\n\nEven when the coating is scratched, zinc corrodes first and protects the iron as a sacrificial anode. Tin plating cannot do this: tin is below iron, so a scratch speeds up rusting."
     },
     {
-      "id": "tn12c-ele-10",
+      "id": "tn12c-ele-24q23",
       "chapter": "Electrochemistry",
-      "topic": "Cell emf",
+      "topic": "Electrode potential",
+      "source": "TN HSE Mar 2024",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the standard emf, in volts, of the Daniell cell, given $E^\\circ(\\mathrm{Zn^{2+}/Zn}) = -0.76\\,\\mathrm{V}$ and $E^\\circ(\\mathrm{Cu^{2+}/Cu}) = +0.34\\,\\mathrm{V}$.",
-      "answer": 1.1,
-      "tolerance": 0.01,
-      "solution": "$E^\\circ_{\\text{cell}} = E^\\circ_{\\text{cathode}} - E^\\circ_{\\text{anode}} = 0.34 - (-0.76) = \\mathbf{1.10\\,V}$."
+      "q": "Can $\\mathrm{Fe^{3+}}$ oxidise bromide to bromine under Standard Conditions ? Given : $E^\\circ_{\\mathrm{Fe^{3+}|Fe^{2+}}} = 0.771\\ \\mathrm{V}$, $E^\\circ_{\\mathrm{Br_2|Br^-}} = 1.09\\ \\mathrm{V}$. (Answer Yes or No.)",
+      "answer": "No",
+      "solution": "For $2\\mathrm{Fe^{3+}} + 2\\mathrm{Br^-} \\rightarrow 2\\mathrm{Fe^{2+}} + \\mathrm{Br_2}$:\n\n$E^\\circ_{\\text{cell}} = E^\\circ_{\\text{cathode}} - E^\\circ_{\\text{anode}} = 0.771 - 1.09 = -0.319\\ \\mathrm{V}$\n\nA negative emf makes $\\Delta G^\\circ = -nFE^\\circ$ positive, so the reaction is not spontaneous. **No**: $\\mathrm{Fe^{3+}}$ cannot oxidise bromide. It is bromine, with the higher reduction potential, that oxidises $\\mathrm{Fe^{2+}}$.",
+      "accept": [
+        "No, it cannot",
+        "cannot",
+        "no it cannot"
+      ]
     },
     {
       "id": "tn12c-ele-11",

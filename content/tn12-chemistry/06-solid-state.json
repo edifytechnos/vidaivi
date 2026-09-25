@@ -71,36 +71,38 @@
       "solution": "In BCC the atoms touch along the **body diagonal**, whose length is $\\sqrt{3}a$.\n\nThat diagonal spans one corner atom radius, the whole central atom, and another corner radius: $r + 2r + r = 4r$.\n\n$\\sqrt{3}a = 4r$, so $r = \\dfrac{\\sqrt{3}a}{4}$.\n\nCompare: simple cubic touches along the **edge** ($a = 2r$) and FCC along the **face diagonal** ($\\sqrt{2}a = 4r$). Identifying which direction the atoms touch along is the whole of these problems."
     },
     {
-      "id": "tn12c-sol-05",
+      "id": "tn12c-sol-25q8",
       "chapter": "Solid State",
       "topic": "Crystal types",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "Which is a molecular solid held together by hydrogen bonding?",
+      "q": "In calcium fluoride, having the flurite structure, the coordination number of $\\mathrm{Ca^{2+}}$ ion and $\\mathrm{F^-}$ ion are :",
       "options": [
-        "Diamond",
-        "Ice",
-        "Sodium chloride",
-        "Copper"
+        "8 and 4",
+        "4 and 2",
+        "4 and 8",
+        "6 and 6"
       ],
-      "answer": 1,
-      "solution": "**Ice** is a molecular solid whose $\\text{H}_2\\text{O}$ molecules are held by **hydrogen bonds**.\n\nThose bonds are directional and force an **open tetrahedral network** with hexagonal cavities — which is why ice is **less dense than liquid water** and floats, an unusual property with large consequences for aquatic life.\n\nDiamond is covalent network, sodium chloride ionic, copper metallic."
+      "answer": 0,
+      "solution": "In fluorite, $\\mathrm{Ca^{2+}}$ ions form an FCC lattice and $\\mathrm{F^-}$ ions fill **all** the tetrahedral voids.\n\nEach $\\mathrm{F^-}$ sits among 4 $\\mathrm{Ca^{2+}}$; each $\\mathrm{Ca^{2+}}$ is surrounded by 8 $\\mathrm{F^-}$. So **8 and 4**, in the ratio needed for $\\mathrm{CaF_2}$."
     },
     {
-      "id": "tn12c-sol-06",
+      "id": "tn12c-sol-23q13",
       "chapter": "Solid State",
       "topic": "Defects",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "The yellow colour of non-stoichiometric NaCl heated in sodium vapour is due to:",
+      "q": "The crystal with metal excess defect is :",
       "options": [
-        "Impurity atoms",
-        "F-centres, electrons trapped in anion vacancies",
-        "Oxidation",
-        "Frenkel defects"
+        "NaCl",
+        "AgBr",
+        "AgCl",
+        "FeO"
       ],
-      "answer": 1,
-      "solution": "Heating $\\text{NaCl}$ in sodium vapour makes sodium atoms deposit on the surface. Chloride ions diffuse outward to combine with them, leaving **anion vacancies** behind, and the electrons released by the sodium occupy those vacancies.\n\nAn electron trapped in an anion vacancy is an **F-centre** (from **Farbe**, German for colour). These absorb visible light, giving the crystal a **yellow** colour.\n\nThe same mechanism gives lithium chloride a pink tint and potassium chloride a violet one — the colour depends on the vacancy size, since that sets the electron's energy levels. It is essentially a particle in a box."
+      "answer": 0,
+      "solution": "Heating **NaCl** in sodium vapour gives a metal excess defect: $\\mathrm{Cl^-}$ vacancies are occupied by electrons (F-centres), which make the crystal yellow.\n\nFeO is the opposite, metal deficient, because some $\\mathrm{Fe^{2+}}$ become $\\mathrm{Fe^{3+}}$. AgBr and AgCl show Frenkel defects."
     },
     {
       "id": "tn12c-sol-07",
@@ -135,20 +137,21 @@
       "solution": "Boron has only **three** valence electrons, so one of the four bonds to neighbouring silicon atoms is short of an electron, leaving a **hole**.\n\nHoles are the majority carriers, so the material is **p-type** and boron is an **acceptor**.\n\nA **pentavalent** dopant such as phosphorus gives a spare electron and hence n-type material. In both cases the crystal stays **electrically neutral overall**."
     },
     {
-      "id": "tn12c-sol-09",
+      "id": "tn12c-sol-24q1",
       "chapter": "Solid State",
       "topic": "Crystal systems",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "How many crystal systems are there?",
+      "q": "Assertion : Monoclinic sulphur is an example of monoclinic crystal system.\n\nReason : For a monoclinic system, $a \\neq b \\neq c$ and $\\alpha = \\gamma = 90^\\circ$, $\\beta \\neq 90^\\circ$.",
       "options": [
-        "$4$",
-        "$7$",
-        "$14$",
-        "$32$"
+        "Assertion is true but Reason is false.",
+        "Both Assertion and Reason are true and Reason is the correct explanation of Assertion.",
+        "Both Assertion and Reason are false.",
+        "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion."
       ],
       "answer": 1,
-      "solution": "There are **7** crystal systems: cubic, tetragonal, orthorhombic, monoclinic, triclinic, hexagonal and rhombohedral.\n\nThese give rise to **14 Bravais lattices**, since some systems permit body-centred, face-centred or end-centred variants in addition to the primitive one.\n\nSo 7 systems, 14 lattices — the two numbers are often confused."
+      "solution": "Both statements are true. Monoclinic sulphur is classified as monoclinic **because** its unit cell has exactly those parameters: three unequal edges, two right angles and one angle that is not $90^\\circ$.\n\nSo the Reason is the correct explanation of the Assertion."
     },
     {
       "id": "tn12c-sol-10",
@@ -210,18 +213,21 @@
       "solution": "A close-packed arrangement of $N$ spheres contains $\\mathbf{2N}$ **tetrahedral** voids and $N$ **octahedral** voids.\n\nSo tetrahedral voids are twice as numerous, but each is **smaller** — radius ratio $0.225$ against $0.414$ for octahedral.\n\nWhich void a cation occupies is decided by its size relative to the anion, and that in turn determines the structure type: $\\text{ZnS}$ has cations in tetrahedral voids, $\\text{NaCl}$ in octahedral ones."
     },
     {
-      "id": "tn12c-sol-14",
+      "id": "tn12c-sol-24q22",
       "chapter": "Solid State",
-      "topic": "Crystal systems",
+      "topic": "Unit cells",
+      "source": "TN HSE Mar 2024",
       "type": "numeric",
-      "marks": 2,
-      "q": "How many Bravais lattices are there in total?",
-      "answer": 14,
-      "tolerance": 0.1,
+      "marks": 3,
+      "q": "Aluminium crystallizes in a cubic close packed structure. Its metallic radius is 125 pm. Calculate the edge length of unit cell, in pm.",
+      "answer": 353.6,
+      "solution": "Cubic close packing is FCC, where atoms touch along the face diagonal: $\\sqrt{2}\\,a = 4r$.\n\n$a = 2\\sqrt{2}\\,r = 2 \\times 1.414 \\times 125 = \\mathbf{353.6\\,pm}$ (about 354 pm).",
+      "tolerance": 1,
       "accept": [
-        "14"
-      ],
-      "solution": "$\\mathbf{14}$ Bravais lattices, arising from the **7** crystal systems once the possible centring types — primitive, body-centred, face-centred and end-centred — are taken into account.\n\nNot every centring is possible in every system: some would simply reproduce a smaller cell of another type, which is why the number is 14 rather than 28."
+        "354",
+        "353.5",
+        "353.55"
+      ]
     },
     {
       "id": "tn12c-sol-15",

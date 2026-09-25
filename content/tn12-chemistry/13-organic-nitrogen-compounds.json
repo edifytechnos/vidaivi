@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "tn12c-nit-01",
+      "id": "tn12c-nit-25q4",
       "chapter": "Organic Nitrogen Compounds",
-      "topic": "Basicity",
+      "topic": "Distinguishing tests",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "In aqueous solution, the order of basic strength of the methylamines is:",
+      "q": "The compound that reacts with nitrous acid to give yellow oily liquid is __________.",
       "options": [
-        "$\\mathrm{(CH_3)_3N} > \\mathrm{(CH_3)_2NH} > \\mathrm{CH_3NH_2}$",
-        "$\\mathrm{(CH_3)_2NH} > \\mathrm{CH_3NH_2} > \\mathrm{(CH_3)_3N}$",
-        "$\\mathrm{CH_3NH_2} > \\mathrm{(CH_3)_2NH} > \\mathrm{(CH_3)_3N}$",
-        "all are equal"
+        "N-methylaniline",
+        "Nitro benzene",
+        "N,N-dimethyl aniline",
+        "Aniline"
       ],
-      "answer": 1,
-      "solution": "Three effects compete. Alkyl groups push electrons onto nitrogen (+I), which favours more alkyl groups. **Hydration** of the ammonium ion by hydrogen bonding favours more N–H bonds. **Steric crowding** hinders the tertiary amine.\n\nThe balance in water puts the **secondary** amine first and the tertiary last: $2^\\circ > 1^\\circ > 3^\\circ$. In the gas phase, with no solvent, the order is simply $3^\\circ > 2^\\circ > 1^\\circ$."
+      "answer": 0,
+      "solution": "A **secondary** amine gives an N-nitrosoamine, a yellow oily liquid:\n\n$\\mathrm{C_6H_5NHCH_3} + \\mathrm{HNO_2} \\rightarrow \\mathrm{C_6H_5N(NO)CH_3} + \\mathrm{H_2O}$\n\nAniline, a primary amine, forms a diazonium salt; N,N-dimethylaniline is nitrosated on the ring; nitrobenzene does not react."
     },
     {
       "id": "tn12c-nit-02",
@@ -71,20 +72,21 @@
       "solution": "Benzenesulphonyl chloride converts a **primary** amine to $\\mathrm{C_6H_5SO_2NHR}$. The N–H left is acidic, so the sulphonamide **dissolves in alkali**.\n\nA secondary amine gives $\\mathrm{C_6H_5SO_2NR_2}$ with no acidic H, insoluble in alkali. A tertiary amine does not react."
     },
     {
-      "id": "tn12c-nit-05",
+      "id": "tn12c-nit-24q8",
       "chapter": "Organic Nitrogen Compounds",
-      "topic": "Preparation",
+      "topic": "Acylation",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "The Hoffmann bromamide degradation converts:",
+      "q": "When aniline reacts with acetic anhydride, the product formed is :",
       "options": [
-        "an amide to an amine with one carbon fewer",
-        "an amine to an amide",
-        "a nitrile to an amide",
-        "a nitro compound to an amine"
+        "p-aminoacetophenone",
+        "o-aminoacetophenone",
+        "acetanilide",
+        "m-aminoacetophenone"
       ],
-      "answer": 0,
-      "solution": "$\\mathrm{RCONH_2} + \\mathrm{Br_2} + 4\\mathrm{NaOH} \\rightarrow \\mathrm{RNH_2} + \\mathrm{Na_2CO_3} + 2\\mathrm{NaBr} + 2\\mathrm{H_2O}$\n\nThe carbonyl carbon leaves as carbonate, so the amine has **one carbon fewer** than the amide. It is the standard way to step down a carbon chain."
+      "answer": 2,
+      "solution": "The acetyl group goes onto the **nitrogen**, not the ring:\n\n$\\mathrm{C_6H_5NH_2} + \\mathrm{(CH_3CO)_2O} \\rightarrow \\mathrm{C_6H_5NHCOCH_3} + \\mathrm{CH_3COOH}$\n\nThe product is **acetanilide**. Acetylation is also how the $\\mathrm{{-}NH_2}$ group is protected before nitration."
     },
     {
       "id": "tn12c-nit-06",

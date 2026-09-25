@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "tn12c-hyd-01",
+      "id": "tn12c-hyd-23q11",
       "chapter": "Hydroxy Compounds and Ethers",
-      "topic": "Classification",
+      "topic": "Uses",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "Which of these is a tertiary alcohol?",
+      "q": "Which of the following compound is used as an anti-freeze in automobile radiator ?",
       "options": [
-        "propan-1-ol",
-        "propan-2-ol",
-        "2-methylpropan-2-ol",
-        "butan-1-ol"
+        "Methanol",
+        "Ethane-1, 2-diol",
+        "Ethanol",
+        "Glycerol"
       ],
-      "answer": 2,
-      "solution": "A tertiary alcohol has the –OH on a carbon joined to **three** other carbons.\n\nIn 2-methylpropan-2-ol, $\\mathrm{(CH_3)_3C{-}OH}$, the carbinol carbon carries three methyl groups. Propan-2-ol is secondary; the other two are primary."
+      "answer": 1,
+      "solution": "**Ethane-1,2-diol** (ethylene glycol) mixed with water lowers the freezing point of the coolant and does not evaporate easily, having a high boiling point."
     },
     {
       "id": "tn12c-hyd-02",
@@ -39,20 +40,21 @@
       "solution": "The Lucas test depends on how easily the alcohol forms a carbocation. A **tertiary** carbocation is the most stable, so tertiary alcohols give the insoluble alkyl chloride **at once**.\n\nSecondary alcohols take about five minutes, and primary alcohols show no turbidity at room temperature."
     },
     {
-      "id": "tn12c-hyd-03",
+      "id": "tn12c-hyd-25q13",
       "chapter": "Hydroxy Compounds and Ethers",
       "topic": "Acidity",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "Phenol is more acidic than ethanol because:",
+      "q": "Which one of the following is the Strongest acid ?",
       "options": [
-        "phenol has more hydrogen atoms",
-        "the phenoxide ion is stabilised by resonance",
-        "ethanol is a gas",
-        "phenol has a higher molar mass"
+        "4-nitrophenol",
+        "2-nitrophenol",
+        "3-nitrophenol",
+        "4-chlorophenol"
       ],
-      "answer": 1,
-      "solution": "Once phenol loses $\\mathrm{H^+}$, the negative charge on the phenoxide ion is **delocalised into the ring** by resonance, which stabilises it.\n\nThe ethoxide ion has no such spreading; the ethyl group even pushes electron density onto the oxygen. So phenol dissociates more readily."
+      "answer": 0,
+      "solution": "A nitro group at the ortho or para position withdraws electrons by resonance and stabilises the phenoxide ion.\n\n**4-nitrophenol** is the strongest: in 2-nitrophenol an intramolecular hydrogen bond holds the O–H proton back. The meta nitro group acts only inductively, and chlorine is far weaker."
     },
     {
       "id": "tn12c-hyd-04",

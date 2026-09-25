@@ -55,20 +55,21 @@
       "solution": "$\\mathbf{\\text{H}_2\\text{Te} > \\text{H}_2\\text{Se} > \\text{H}_2\\text{S} > \\text{H}_2\\text{O}}$.\n\nThis looks backwards from electronegativity, and the reason is that **bond strength**, not polarity, controls it. Down the group the H-M bond gets **longer and weaker**, so the proton is released more easily.\n\nWater is the **weakest** acid of the four despite oxygen being by far the most electronegative — the O-H bond is very strong and extensive hydrogen bonding holds the molecule together further.\n\nThe same reasoning explains $\\text{HI} > \\text{HBr} > \\text{HCl} > \\text{HF}$ in group 17."
     },
     {
-      "id": "tn12c-pb2-04",
+      "id": "tn12c-pb2-25q7",
       "chapter": "p-Block Elements – II",
       "topic": "Group 17",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "Fluorine has a lower electron gain enthalpy (less negative) than chlorine because:",
+      "q": "Assertion : Bond dissociation energy of Fluorine is greater than Chlorine gas.\n\nReason : Chlorine has more electronic repulsion than Fluorine.",
       "options": [
-        "Fluorine is less electronegative",
-        "Fluorine's small size causes strong electron-electron repulsion in the compact $2p$ subshell",
-        "Chlorine has more protons",
-        "Fluorine is a gas"
+        "Assertion is true but Reason is false.",
+        "Both Assertion and Reason are true and Reason is the correct explanation of Assertion.",
+        "Both Assertion and Reason are false.",
+        "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion."
       ],
-      "answer": 1,
-      "solution": "Fluorine's $2p$ subshell is very **compact**, so an incoming electron meets severe repulsion from the electrons already crowded there.\n\nChlorine's $3p$ subshell is larger and more diffuse, accommodating the added electron more comfortably and releasing more energy.\n\nSo **chlorine has the most negative electron gain enthalpy of any element**, not fluorine — a frequent trap, since fluorine is the most electronegative. **Electronegativity and electron gain enthalpy are different quantities**: one concerns attraction within a bond, the other adding an electron to an isolated gaseous atom."
+      "answer": 2,
+      "solution": "**Assertion is false.** The bond dissociation energy of $\\mathrm{F_2}$ (about $158\\,\\mathrm{kJ\\,mol^{-1}}$) is lower than that of $\\mathrm{Cl_2}$ (about $242\\,\\mathrm{kJ\\,mol^{-1}}$).\n\n**Reason is false too.** It is fluorine, with its very small atoms, whose lone pairs sit close together and repel strongly; that repulsion is what weakens the F–F bond.\n\nSo both are false."
     },
     {
       "id": "tn12c-pb2-05",
@@ -87,20 +88,21 @@
       "solution": "**Neil Bartlett** prepared $\\text{Xe}^{+}[\\text{PtF}_6]^{-}$ in 1962, ending the belief that the noble gases were inert.\n\nHis reasoning was elegant: he had observed $\\text{PtF}_6$ oxidising $\\text{O}_2$ to $\\text{O}_2^{+}$, and noticed that the **first ionisation energy of xenon ($1170\\ \\mathrm{kJ\\,mol^{-1}}$) is very close to that of $\\text{O}_2$ ($1175$)**. If $\\text{PtF}_6$ could take an electron from oxygen, it should take one from xenon.\n\nIt did. The prediction came from a numerical coincidence taken seriously, which is what makes it a good story as well as good chemistry."
     },
     {
-      "id": "tn12c-pb2-06",
+      "id": "tn12c-pb2-24q3",
       "chapter": "p-Block Elements – II",
       "topic": "Group 17",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "Bleaching by chlorine is:",
+      "q": "Which of the following is the strongest acid among all ?",
       "options": [
-        "Temporary and by reduction",
-        "Permanent and by oxidation",
-        "Temporary and by oxidation",
-        "Due to hydrogen only"
+        "HBr",
+        "HI",
+        "HCl",
+        "HF"
       ],
       "answer": 1,
-      "solution": "Chlorine bleaches in the presence of moisture by forming **nascent oxygen**:\n\n$\\text{Cl}_2 + \\text{H}_2\\text{O} \\rightarrow 2\\text{HCl} + [\\text{O}]$\n\nThe nascent oxygen **oxidises** the coloured substance to a colourless one, and the bleaching is **permanent** and irreversible.\n\nContrast **sulphur dioxide**, which bleaches by **reduction** and whose effect is **temporary** — the colour returns on exposure to air as atmospheric oxygen re-oxidises the material. This is why $\\text{SO}_2$-bleached straw and paper yellow with age."
+      "solution": "Down the group the H–X bond gets longer and weaker, so the proton is released more easily.\n\nAcid strength: $\\mathrm{HF} < \\mathrm{HCl} < \\mathrm{HBr} < \\mathbf{HI}$. HF is weakest because the H–F bond is very strong and HF is hydrogen bonded."
     },
     {
       "id": "tn12c-pb2-07",
