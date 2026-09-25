@@ -1,0 +1,233 @@
+{
+  "id": "lib-jeem-lim",
+  "title": "Limits, Continuity and Differentiability",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeem-lim-01",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Limits",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of $\\displaystyle\\lim_{x \\to 0}\\dfrac{\\sin x}{x}$ is:",
+      "options": [
+        "$0$",
+        "$1$",
+        "$\\infty$",
+        "Does not exist"
+      ],
+      "answer": 1,
+      "solution": "$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin x}{x} = \\mathbf{1}$, with $x$ in **radians**.\n\nIt is the standard limit from which the derivative of $\\sin x$ follows, and it is why calculus is done in radians and not degrees — in degrees the limit would be $\\dfrac{\\pi}{180}$ and every trigonometric derivative would carry that factor."
+    },
+    {
+      "id": "jeem-lim-02",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Continuity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A function $f$ is continuous at $x = a$ if:",
+      "options": [
+        "$f(a)$ exists",
+        "$\\lim_{x\\to a}f(x)$ exists",
+        "$\\lim_{x\\to a}f(x) = f(a)$",
+        "$f'(a)$ exists"
+      ],
+      "answer": 2,
+      "solution": "Continuity at $a$ requires three things together, which the single statement $\\mathbf{\\lim_{x\\to a}f(x) = f(a)}$ encodes:\n\n1. $f(a)$ is defined\n2. $\\lim_{x\\to a}f(x)$ exists, so the left and right limits agree\n3. the two are **equal**\n\nAny one of them failing breaks continuity. $f'(a)$ existing is a stronger condition, not a weaker one."
+    },
+    {
+      "id": "jeem-lim-03",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Differentiability",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The function $f(x) = |x|$ at $x = 0$ is:",
+      "options": [
+        "Continuous and differentiable",
+        "Continuous but not differentiable",
+        "Differentiable but not continuous",
+        "Neither"
+      ],
+      "answer": 1,
+      "solution": "$|x|$ is **continuous** at 0: both one-sided limits are 0 and $f(0) = 0$.\n\nBut it is **not differentiable** there. The left-hand derivative is $-1$ and the right-hand derivative is $+1$, so they disagree and no single tangent exists — the graph has a sharp corner.\n\nThis is the standard example showing **continuity does not imply differentiability**. The converse, however, does hold: differentiability always implies continuity."
+    },
+    {
+      "id": "jeem-lim-04",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Limits",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\displaystyle\\lim_{x\\to0}\\dfrac{e^{x}-1}{x}$ equals:",
+      "options": [
+        "$0$",
+        "$1$",
+        "$e$",
+        "$\\infty$"
+      ],
+      "answer": 1,
+      "solution": "$\\displaystyle\\lim_{x\\to0}\\dfrac{e^{x}-1}{x} = \\mathbf{1}$.\n\nFrom the series $e^{x} = 1 + x + \\dfrac{x^{2}}{2!} + \\cdots$:\n\n$\\dfrac{e^{x}-1}{x} = 1 + \\dfrac{x}{2!} + \\cdots \\to 1$ as $x \\to 0$.\n\nThis limit is exactly the statement that the derivative of $e^{x}$ at $0$ is $1$ — which is the property that **defines** $e$."
+    },
+    {
+      "id": "jeem-lim-05",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Derivatives",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The derivative of $x^{n}$ with respect to $x$ is:",
+      "options": [
+        "$nx^{n-1}$",
+        "$nx^{n+1}$",
+        "$x^{n-1}$",
+        "$n x^{n}$"
+      ],
+      "answer": 0,
+      "solution": "$\\dfrac{d}{dx}x^{n} = \\mathbf{nx^{n-1}}$, the power rule.\n\nIt holds for every real $n$, not just positive integers — so $\\dfrac{d}{dx}\\sqrt{x} = \\dfrac{1}{2}x^{-1/2}$ and $\\dfrac{d}{dx}\\dfrac{1}{x} = -x^{-2}$.\n\nThe one exception is $n = 0$, where $x^{0} = 1$ is constant and the derivative is 0, which the formula also gives."
+    },
+    {
+      "id": "jeem-lim-06",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Rolle and mean value",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Rolle's theorem requires that $f$ be continuous on $[a,b]$, differentiable on $(a,b)$ and:",
+      "options": [
+        "$f(a) = f(b)$",
+        "$f(a) = 0$",
+        "$f'(a) = 0$",
+        "$f$ increasing"
+      ],
+      "answer": 0,
+      "solution": "Rolle's theorem needs $\\mathbf{f(a) = f(b)}$, and concludes that there is some $c$ in $(a,b)$ with $f'(c) = 0$.\n\nGeometrically: if a smooth curve returns to the same height, it must have had a horizontal tangent somewhere in between.\n\nIt is the special case of the Mean Value Theorem, $f'(c) = \\dfrac{f(b)-f(a)}{b-a}$, when the right-hand side is zero."
+    },
+    {
+      "id": "jeem-lim-07",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Derivatives",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $y = \\sin(x^{2})$, then $\\dfrac{dy}{dx}$ is:",
+      "options": [
+        "$\\cos(x^{2})$",
+        "$2x\\cos(x^{2})$",
+        "$2x\\sin(x)$",
+        "$\\cos(2x)$"
+      ],
+      "answer": 1,
+      "solution": "By the chain rule, differentiate the outer function and multiply by the derivative of the inner one.\n\nOuter: $\\dfrac{d}{du}\\sin u = \\cos u$, with $u = x^{2}$.\n\nInner: $\\dfrac{du}{dx} = 2x$.\n\n$\\dfrac{dy}{dx} = \\mathbf{2x\\cos(x^{2})}$.\n\nNote this is quite different from $\\sin^{2}x$, whose derivative is $2\\sin x\\cos x = \\sin 2x$."
+    },
+    {
+      "id": "jeem-lim-08",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Limits",
+      "type": "mcq",
+      "marks": 1,
+      "q": "L'Hopital's rule may be applied to $\\displaystyle\\lim_{x\\to a}\\dfrac{f(x)}{g(x)}$ when the limit is of the form:",
+      "options": [
+        "$\\dfrac{1}{0}$",
+        "$\\dfrac{0}{0}$ or $\\dfrac{\\infty}{\\infty}$",
+        "$0 \\times 1$",
+        "Any form at all"
+      ],
+      "answer": 1,
+      "solution": "L'Hopital's rule applies only to the **indeterminate forms** $\\mathbf{\\dfrac{0}{0}}$ and $\\mathbf{\\dfrac{\\infty}{\\infty}}$, where it gives $\\lim\\dfrac{f'(x)}{g'(x)}$.\n\nApplying it to a determinate form gives wrong answers. $\\dfrac{1}{0}$ is not indeterminate — it diverges.\n\nOther indeterminate forms such as $0 \\times \\infty$, $\\infty - \\infty$ and $1^{\\infty}$ must first be **rearranged** into one of the two standard forms before the rule can be used."
+    },
+    {
+      "id": "jeem-lim-09",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Continuity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If a function is differentiable at a point, then at that point it is:",
+      "options": [
+        "Necessarily continuous",
+        "Not necessarily continuous",
+        "Discontinuous",
+        "Undefined"
+      ],
+      "answer": 0,
+      "solution": "Differentiability **implies** continuity.\n\nIf $f'(a)$ exists then $\\lim_{x\\to a}[f(x)-f(a)] = \\lim_{x\\to a}\\left[\\dfrac{f(x)-f(a)}{x-a}\\right](x-a) = f'(a) \\times 0 = 0$, so $f(x) \\to f(a)$.\n\nThe converse is false, as $|x|$ at the origin shows. So differentiability is the stronger condition of the two."
+    },
+    {
+      "id": "jeem-lim-10",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Limits",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find $\\displaystyle\\lim_{x\\to2}\\dfrac{x^{2}-4}{x-2}$.",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4"
+      ],
+      "solution": "Direct substitution gives $\\dfrac{0}{0}$, so factorise first:\n\n$\\dfrac{x^{2}-4}{x-2} = \\dfrac{(x-2)(x+2)}{x-2} = x+2$ for $x \\neq 2$\n\nThe limit as $x \\to 2$ is $2 + 2 = \\mathbf{4}$.\n\nThe function itself is undefined at $x = 2$, but the limit does not care about the value at the point — only about the approach."
+    },
+    {
+      "id": "jeem-lim-11",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Derivatives",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If $y = 3x^{4}$, find $\\dfrac{dy}{dx}$ at $x = 1$.",
+      "answer": 12,
+      "tolerance": 0.1,
+      "accept": [
+        "12"
+      ],
+      "solution": "$\\dfrac{dy}{dx} = 3 \\times 4x^{3} = 12x^{3}$\n\nAt $x = 1$: $12(1)^{3} = \\mathbf{12}$."
+    },
+    {
+      "id": "jeem-lim-12",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Limits",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find $\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin 5x}{x}$.",
+      "answer": 5,
+      "tolerance": 0.1,
+      "accept": [
+        "5"
+      ],
+      "solution": "Multiply and divide by 5 so the standard limit can be used:\n\n$\\dfrac{\\sin 5x}{x} = 5 \\cdot \\dfrac{\\sin 5x}{5x}$\n\nAs $x \\to 0$, $5x \\to 0$ too, so $\\dfrac{\\sin 5x}{5x} \\to 1$.\n\nThe limit is $5 \\times 1 = \\mathbf{5}$.\n\nIn general $\\lim_{x\\to0}\\dfrac{\\sin kx}{x} = k$."
+    },
+    {
+      "id": "jeem-lim-13",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Derivatives",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the slope of the tangent to $y = x^{3} - 3x$ at $x = 2$.",
+      "answer": 9,
+      "tolerance": 0.1,
+      "accept": [
+        "9"
+      ],
+      "solution": "$\\dfrac{dy}{dx} = 3x^{2} - 3$\n\nAt $x = 2$: $3(4) - 3 = 12 - 3 = \\mathbf{9}$."
+    },
+    {
+      "id": "jeem-lim-14",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Maxima and minima",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the value of $x$ at which $f(x) = x^{2} - 6x + 5$ has its minimum.",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3"
+      ],
+      "solution": "Set the first derivative to zero:\n\n$f'(x) = 2x - 6 = 0 \\Rightarrow x = 3$\n\nConfirm it is a minimum with the second derivative:\n\n$f''(x) = 2 > 0$ ✓\n\nSo the minimum is at $x = \\mathbf{3}$, where $f(3) = 9 - 18 + 5 = -4$."
+    },
+    {
+      "id": "jeem-lim-15",
+      "chapter": "Limits, Continuity and Differentiability",
+      "topic": "Differentiability",
+      "type": "long",
+      "marks": 5,
+      "q": "Define differentiability at a point using first principles. Prove that differentiability implies continuity, and show by an example that the converse is false. Explain the geometric meaning of each condition.",
+      "solution": "**Definition.** A function $f$ is **differentiable at $x = a$** if the limit\n\n$f'(a) = \\lim_{h \\to 0}\\dfrac{f(a+h) - f(a)}{h}$\n\nexists and is finite. Equivalently, the left-hand and right-hand derivatives must both exist and be **equal**:\n\n$\\lim_{h\\to0^{-}}\\dfrac{f(a+h)-f(a)}{h} = \\lim_{h\\to0^{+}}\\dfrac{f(a+h)-f(a)}{h}$\n\n**Proof that differentiability implies continuity.**\n\nSuppose $f'(a)$ exists. We must show $\\lim_{x\\to a}f(x) = f(a)$, or equivalently that $\\lim_{x\\to a}[f(x) - f(a)] = 0$.\n\nFor $x \\neq a$, write the difference in a way that brings in the derivative:\n\n$f(x) - f(a) = \\dfrac{f(x)-f(a)}{x-a}\\cdot(x-a)$\n\nThis is legitimate since $x - a \\neq 0$. Now take the limit as $x \\to a$. The limit of a product is the product of the limits, provided both exist:\n\n$\\lim_{x\\to a}[f(x)-f(a)] = \\left[\\lim_{x\\to a}\\dfrac{f(x)-f(a)}{x-a}\\right]\\cdot\\left[\\lim_{x\\to a}(x-a)\\right]$\n\nThe first bracket is $f'(a)$, which exists by assumption. The second is $0$.\n\n$= f'(a) \\times 0 = 0$\n\nTherefore $\\lim_{x\\to a}f(x) = f(a)$, so $f$ is **continuous at $a$**. $\\blacksquare$\n\nNotice where the hypothesis was used: the argument only works because $f'(a)$ is a **finite** number. A function with a vertical tangent, where the difference quotient tends to infinity, is not covered.\n\n**The converse is false.** Take $f(x) = |x|$ at $a = 0$.\n\n**Continuous?** Yes.\n\n$\\lim_{x\\to0^{-}}|x| = 0$, $\\lim_{x\\to0^{+}}|x| = 0$, and $f(0) = 0$. All three agree, so $f$ is continuous at 0.\n\n**Differentiable?** No.\n\nLeft-hand derivative: for $h < 0$, $|h| = -h$, so\n\n$\\lim_{h\\to0^{-}}\\dfrac{|0+h|-|0|}{h} = \\lim_{h\\to0^{-}}\\dfrac{-h}{h} = -1$\n\nRight-hand derivative: for $h > 0$, $|h| = h$, so\n\n$\\lim_{h\\to0^{+}}\\dfrac{h}{h} = +1$\n\nSince $-1 \\neq +1$, the two-sided limit does not exist and $f$ is **not differentiable** at 0.\n\nSo continuity does **not** imply differentiability. The implication runs one way only.\n\n**Geometric meaning.**\n\n**Continuity** means the graph has **no break** — it can be drawn without lifting the pen. There is no jump, no hole and no vertical asymptote at the point.\n\n**Differentiability** means the graph has **no corner** either — it is **smooth**, and there is a single well-defined tangent line at the point. Zooming in far enough on a differentiable point makes the curve look indistinguishable from a straight line; that is what having a derivative means.\n\nSo differentiability is strictly the stronger condition: **every smooth curve is unbroken, but an unbroken curve may still have corners.** $|x|$ is the simplest picture of this — a continuous V with a sharp vertex, where the tangent would have to be both $-1$ and $+1$ at once.\n\n**A caution about how far this goes.** One might expect a continuous function to have only a few such corners. That is false. **Weierstrass** constructed a function that is continuous everywhere and differentiable ***nowhere*** — continuous but made entirely of corners. So the gap between the two conditions is not a technicality about isolated points; it is enormous."
+    }
+  ]
+}

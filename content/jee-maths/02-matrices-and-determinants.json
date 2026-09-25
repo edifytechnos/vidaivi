@@ -1,0 +1,235 @@
+{
+  "id": "lib-jeem-mat",
+  "title": "Matrices and Determinants",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeem-mat-01",
+      "chapter": "Matrices and Determinants",
+      "topic": "Determinants",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $A$ is a $3\\times3$ matrix and $|A| = 5$, then $|2A|$ is:",
+      "options": [
+        "$10$",
+        "$20$",
+        "$40$",
+        "$5$"
+      ],
+      "answer": 2,
+      "solution": "For an $n \\times n$ matrix, $|kA| = k^{n}|A|$ — the scalar multiplies **every** one of the $n$ rows.\n\nHere $n = 3$ and $k = 2$:\n\n$|2A| = 2^{3} \\times 5 = 8 \\times 5 = \\mathbf{40}$.\n\nAnswering $10$ is the common error, from treating it like $|kA| = k|A|$."
+    },
+    {
+      "id": "jeem-mat-02",
+      "chapter": "Matrices and Determinants",
+      "topic": "Matrix algebra",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For matrices $A$ and $B$ of compatible order, $(AB)^{T}$ equals:",
+      "options": [
+        "$A^{T}B^{T}$",
+        "$B^{T}A^{T}$",
+        "$AB$",
+        "$BA$"
+      ],
+      "answer": 1,
+      "solution": "$(AB)^{T} = \\mathbf{B^{T}A^{T}}$ — the **order reverses**.\n\nIt has to: if $A$ is $m\\times n$ and $B$ is $n\\times p$, then $A^{T}B^{T}$ would be $n\\times m$ times $p\\times n$, which is not even defined unless $m = p$.\n\nThe same reversal applies to inverses: $(AB)^{-1} = B^{-1}A^{-1}$."
+    },
+    {
+      "id": "jeem-mat-03",
+      "chapter": "Matrices and Determinants",
+      "topic": "Inverse",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A square matrix $A$ has an inverse if and only if:",
+      "options": [
+        "$A$ is symmetric",
+        "$|A| \\neq 0$",
+        "$A$ is diagonal",
+        "$A = A^{T}$"
+      ],
+      "answer": 1,
+      "solution": "$A^{-1} = \\dfrac{1}{|A|}\\text{adj}(A)$, which requires division by $|A|$ — so the inverse exists exactly when $\\mathbf{|A| \\neq 0}$.\n\nSuch a matrix is called **non-singular** or invertible. A matrix with $|A| = 0$ is singular and has no inverse."
+    },
+    {
+      "id": "jeem-mat-04",
+      "chapter": "Matrices and Determinants",
+      "topic": "Determinants",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If two rows of a determinant are identical, its value is:",
+      "options": [
+        "$1$",
+        "$0$",
+        "$-1$",
+        "Undefined"
+      ],
+      "answer": 1,
+      "solution": "Swapping two rows changes the sign of a determinant. If the two rows are **identical**, swapping them leaves the matrix unchanged, so\n\n$|A| = -|A| \\Rightarrow 2|A| = 0 \\Rightarrow |A| = \\mathbf{0}$.\n\nThe same holds for two identical columns, or more generally whenever one row is a linear combination of the others — the rows are then linearly dependent."
+    },
+    {
+      "id": "jeem-mat-05",
+      "chapter": "Matrices and Determinants",
+      "topic": "Matrix algebra",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Matrix multiplication is:",
+      "options": [
+        "Always commutative",
+        "Associative but not generally commutative",
+        "Neither associative nor commutative",
+        "Commutative but not associative"
+      ],
+      "answer": 1,
+      "solution": "Matrix multiplication is **associative**, $(AB)C = A(BC)$, and distributive over addition — but **not commutative**: in general $AB \\neq BA$.\n\nOften $BA$ is not even defined when $AB$ is. Even for square matrices the two usually differ, which is a genuine departure from ordinary arithmetic and the source of many errors."
+    },
+    {
+      "id": "jeem-mat-06",
+      "chapter": "Matrices and Determinants",
+      "topic": "Systems of equations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A system $AX = B$ with $|A| \\neq 0$ has:",
+      "options": [
+        "No solution",
+        "Infinitely many solutions",
+        "A unique solution",
+        "Exactly two solutions"
+      ],
+      "answer": 2,
+      "solution": "If $|A| \\neq 0$ then $A^{-1}$ exists, and\n\n$X = A^{-1}B$\n\nis the one and only solution. So the system is **consistent with a unique solution**.\n\nWhen $|A| = 0$ the system is either inconsistent (no solution) or has infinitely many, depending on whether $(\\text{adj}A)B$ is zero — which is what Cramer's rule distinguishes."
+    },
+    {
+      "id": "jeem-mat-07",
+      "chapter": "Matrices and Determinants",
+      "topic": "Special matrices",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A matrix $A$ is skew-symmetric if:",
+      "options": [
+        "$A^{T} = A$",
+        "$A^{T} = -A$",
+        "$A^{2} = A$",
+        "$A^{-1} = A$"
+      ],
+      "answer": 1,
+      "solution": "Skew-symmetric means $\\mathbf{A^{T} = -A}$.\n\nA consequence worth knowing: every **diagonal element must be zero**, since $a_{ii} = -a_{ii}$ forces $a_{ii} = 0$.\n\nAlso, the determinant of any skew-symmetric matrix of **odd** order is zero, because $|A| = |A^{T}| = |-A| = (-1)^{n}|A|$, and for odd $n$ that gives $|A| = -|A|$."
+    },
+    {
+      "id": "jeem-mat-08",
+      "chapter": "Matrices and Determinants",
+      "topic": "Determinants",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For square matrices $A$ and $B$ of the same order, $|AB|$ equals:",
+      "options": [
+        "$|A| + |B|$",
+        "$|A||B|$",
+        "$|A| - |B|$",
+        "$|A|/|B|$"
+      ],
+      "answer": 1,
+      "solution": "$|AB| = \\mathbf{|A||B|}$ — the determinant is multiplicative.\n\nNotice that although $AB \\neq BA$ in general, their determinants are always equal, since $|A||B| = |B||A|$.\n\nIt follows at once that $|A^{-1}| = \\dfrac{1}{|A|}$, by taking $B = A^{-1}$."
+    },
+    {
+      "id": "jeem-mat-09",
+      "chapter": "Matrices and Determinants",
+      "topic": "Special matrices",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $A$ is a $3\\times3$ matrix, then $|\\text{adj}(A)|$ equals:",
+      "options": [
+        "$|A|$",
+        "$|A|^{2}$",
+        "$|A|^{3}$",
+        "$1$"
+      ],
+      "answer": 1,
+      "solution": "In general $|\\text{adj}(A)| = |A|^{n-1}$ for an $n \\times n$ matrix.\n\nFor $n = 3$: $|\\text{adj}(A)| = \\mathbf{|A|^{2}}$.\n\nIt follows from $A\\cdot\\text{adj}(A) = |A|I$: taking determinants gives $|A||\\text{adj}A| = |A|^{n}$."
+    },
+    {
+      "id": "jeem-mat-10",
+      "chapter": "Matrices and Determinants",
+      "topic": "Determinants",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the determinant of $\\begin{pmatrix} 3 & 2 \\\\ 1 & 4 \\end{pmatrix}$.",
+      "answer": 10,
+      "tolerance": 0.1,
+      "accept": [
+        "10"
+      ],
+      "solution": "For a $2\\times2$ matrix, $|A| = ad - bc$.\n\n$|A| = (3)(4) - (2)(1) = 12 - 2 = \\mathbf{10}$."
+    },
+    {
+      "id": "jeem-mat-11",
+      "chapter": "Matrices and Determinants",
+      "topic": "Determinants",
+      "type": "numeric",
+      "marks": 3,
+      "q": "If $A$ is a $2\\times2$ matrix with $|A| = 3$, find $|3A|$.",
+      "answer": 27,
+      "tolerance": 0.5,
+      "accept": [
+        "27"
+      ],
+      "solution": "$|kA| = k^{n}|A|$ with $n = 2$ here:\n\n$|3A| = 3^{2} \\times 3 = 9 \\times 3 = \\mathbf{27}$."
+    },
+    {
+      "id": "jeem-mat-12",
+      "chapter": "Matrices and Determinants",
+      "topic": "Inverse",
+      "type": "numeric",
+      "marks": 3,
+      "q": "If $|A| = 4$ for a $3\\times3$ matrix, find $|A^{-1}|$. Give your answer as a decimal.",
+      "answer": 0.25,
+      "tolerance": 0.01,
+      "accept": [
+        "0.25",
+        "1/4"
+      ],
+      "solution": "$AA^{-1} = I$, so taking determinants:\n\n$|A||A^{-1}| = |I| = 1$\n\n$|A^{-1}| = \\dfrac{1}{|A|} = \\dfrac{1}{4} = \\mathbf{0.25}$.\n\nThe order of the matrix does not enter into it."
+    },
+    {
+      "id": "jeem-mat-13",
+      "chapter": "Matrices and Determinants",
+      "topic": "Matrix algebra",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A matrix $A$ is of order $2\\times3$ and $B$ is of order $3\\times4$. How many columns does $AB$ have?",
+      "answer": 4,
+      "tolerance": 0.5,
+      "accept": [
+        "4"
+      ],
+      "solution": "For $AB$ to be defined, the inner dimensions must match — and $3 = 3$, so it is.\n\nThe product takes the **outer** dimensions: $AB$ is $2 \\times 4$.\n\nSo it has $\\mathbf{4}$ columns. (Note $BA$ is not defined here, since $4 \\neq 2$.)"
+    },
+    {
+      "id": "jeem-mat-14",
+      "chapter": "Matrices and Determinants",
+      "topic": "Special matrices",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the value of every diagonal element of a skew-symmetric matrix?",
+      "answer": 0,
+      "tolerance": 0.01,
+      "accept": [
+        "0",
+        "zero"
+      ],
+      "solution": "Skew-symmetry means $a_{ij} = -a_{ji}$ for all $i, j$.\n\nPut $i = j$:\n\n$a_{ii} = -a_{ii} \\Rightarrow 2a_{ii} = 0 \\Rightarrow a_{ii} = \\mathbf{0}$.\n\nEvery diagonal entry must be zero."
+    },
+    {
+      "id": "jeem-mat-15",
+      "chapter": "Matrices and Determinants",
+      "topic": "Systems of equations",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain how a system of three linear equations in three unknowns is solved by the matrix method $X = A^{-1}B$. State the condition for a unique solution, and describe what happens when $|A| = 0$, distinguishing the inconsistent case from the case of infinitely many solutions. Give the geometric meaning of each.",
+      "solution": "**Setting up.** Three linear equations in $x$, $y$, $z$:\n\n$a_1x + b_1y + c_1z = d_1$\n\n$a_2x + b_2y + c_2z = d_2$\n\n$a_3x + b_3y + c_3z = d_3$\n\nare written as the single matrix equation $AX = B$, where\n\n$A = \\begin{pmatrix} a_1 & b_1 & c_1 \\\\ a_2 & b_2 & c_2 \\\\ a_3 & b_3 & c_3 \\end{pmatrix}$, $X = \\begin{pmatrix} x \\\\ y \\\\ z \\end{pmatrix}$, $B = \\begin{pmatrix} d_1 \\\\ d_2 \\\\ d_3 \\end{pmatrix}$\n\n**The method.** If $A^{-1}$ exists, premultiply both sides by it:\n\n$A^{-1}(AX) = A^{-1}B$\n\n$(A^{-1}A)X = A^{-1}B$\n\n$IX = A^{-1}B$\n\n$\\boxed{X = A^{-1}B}$\n\nIn practice $A^{-1}$ is found as $\\dfrac{1}{|A|}\\text{adj}(A)$.\n\n**Case 1: $|A| \\neq 0$ — a unique solution.**\n\nThe system is **consistent** and $X = A^{-1}B$ gives the one and only answer.\n\n**Geometrically**, each equation is a **plane** in three-dimensional space. A non-zero determinant means the three normal vectors are linearly independent, so the planes are genuinely tilted with respect to one another and meet at exactly **one point** — whose coordinates are the solution.\n\n**Case 2: $|A| = 0$.** $A^{-1}$ does not exist, so the method above fails and the system is **singular**. There are two sub-cases, told apart by computing $(\\text{adj}A)B$.\n\n**2a: $(\\text{adj}A)B \\neq 0$ — inconsistent, no solution.**\n\n**Geometrically**, the planes have no point in common. This happens when two planes are parallel and distinct, or when the three planes form a **triangular prism**: each pair meets in a line, but the three lines are parallel and never share a point. The prism case is the one people forget, because no two planes are parallel and yet there is still no solution.\n\n**2b: $(\\text{adj}A)B = 0$ — consistent, with infinitely many solutions.**\n\n**Geometrically**, the planes share more than a single point. Either all three planes **meet in a common line**, giving a one-parameter family of solutions, or the three equations describe the **same plane**, giving a two-parameter family.\n\n**The homogeneous case.** When $B = 0$ the system $AX = 0$ always has the **trivial solution** $x = y = z = 0$, so it can never be inconsistent — every plane passes through the origin, so they always share at least that point.\n\n$|A| \\neq 0$: only the trivial solution — the three planes meet at the origin alone.\n\n$|A| = 0$: infinitely many **non-trivial** solutions — the planes share a common line or plane through the origin.\n\nThis is why $|A| = 0$ is exactly the condition for a homogeneous system to have a non-trivial solution, a fact used constantly in eigenvalue problems.\n\n**Summary.** The determinant answers the question of **how many** solutions there are; when it vanishes, $(\\text{adj}A)B$ answers whether that number is zero or infinite. No case gives two or three solutions, because the solution set of a linear system is always a point, a line, a plane, or empty."
+    }
+  ]
+}

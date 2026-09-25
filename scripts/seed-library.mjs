@@ -58,6 +58,7 @@ const SHELVES = {
   "neet-biology": { board: "NEET", klass: "12", subject: "Biology" },
   "jee-physics": { board: "JEE Main", klass: "12", subject: "Physics" },
   "jee-chemistry": { board: "JEE Main", klass: "12", subject: "Chemistry" },
+  "jee-maths": { board: "JEE Main", klass: "12", subject: "Maths" },
 };
 
 if (!USER || !PASS) {

@@ -1,0 +1,235 @@
+{
+  "id": "lib-jeem-pcb",
+  "title": "Permutations, Combinations, Binomial Theorem and Probability",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeem-pcb-01",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Permutations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of ways of arranging $n$ distinct objects in a row is:",
+      "options": [
+        "$n$",
+        "$n!$",
+        "$2^{n}$",
+        "$n^{2}$"
+      ],
+      "answer": 1,
+      "solution": "The first position can be filled in $n$ ways, the second in $n-1$, and so on down to 1.\n\n$n \\times (n-1) \\times \\cdots \\times 1 = \\mathbf{n!}$\n\nArranging them in a **circle** is different: fixing one object to remove the rotational symmetry leaves $(n-1)!$ arrangements."
+    },
+    {
+      "id": "jeem-pcb-02",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Combinations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The difference between $^{n}P_r$ and $^{n}C_r$ is that:",
+      "options": [
+        "Permutations ignore order",
+        "Combinations ignore order",
+        "They are the same",
+        "Combinations allow repetition"
+      ],
+      "answer": 1,
+      "solution": "**Combinations ignore order** — only which objects are chosen matters, not how they are arranged.\n\n$^{n}P_r = \\dfrac{n!}{(n-r)!}$ and $^{n}C_r = \\dfrac{n!}{r!(n-r)!}$\n\nSo $^{n}P_r = r!\\,{}^{n}C_r$: each combination gives rise to $r!$ permutations.\n\nChoosing a committee is a combination; choosing a president, secretary and treasurer is a permutation."
+    },
+    {
+      "id": "jeem-pcb-03",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Binomial theorem",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of terms in the expansion of $(x+y)^{n}$ is:",
+      "options": [
+        "$n$",
+        "$n+1$",
+        "$2n$",
+        "$n-1$"
+      ],
+      "answer": 1,
+      "solution": "The general term is $^{n}C_r\\,x^{n-r}y^{r}$ with $r$ running from 0 to $n$.\n\nThat is $\\mathbf{n+1}$ values of $r$, so $n+1$ terms.\n\nThe powers of $x$ decrease from $n$ to 0 while those of $y$ increase from 0 to $n$, and in every term the two add to $n$."
+    },
+    {
+      "id": "jeem-pcb-04",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Probability",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For two **mutually exclusive** events $A$ and $B$:",
+      "options": [
+        "$P(A \\cap B) = P(A)P(B)$",
+        "$P(A \\cap B) = 0$",
+        "$P(A \\cup B) = P(A)P(B)$",
+        "$P(A) = P(B)$"
+      ],
+      "answer": 1,
+      "solution": "Mutually exclusive means the two events cannot both occur, so $\\mathbf{P(A \\cap B) = 0}$ and the addition rule simplifies to $P(A\\cup B) = P(A)+P(B)$.\n\n**Do not confuse this with independence**, which is $P(A\\cap B) = P(A)P(B)$. They are different ideas and in fact two events with non-zero probability cannot be both — if they are mutually exclusive, knowing $A$ occurred tells you $B$ did not, which is the opposite of independence."
+    },
+    {
+      "id": "jeem-pcb-05",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Binomial theorem",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The sum $^{n}C_0 + {}^{n}C_1 + \\cdots + {}^{n}C_n$ equals:",
+      "options": [
+        "$n$",
+        "$n!$",
+        "$2^{n}$",
+        "$n^{2}$"
+      ],
+      "answer": 2,
+      "solution": "Put $x = y = 1$ in $(x+y)^{n} = \\sum_{r=0}^{n}{}^{n}C_r x^{n-r}y^{r}$:\n\n$(1+1)^{n} = \\sum_{r=0}^{n}{}^{n}C_r$\n\nSo the sum is $\\mathbf{2^{n}}$.\n\nIt also has a direct meaning: it counts all subsets of an $n$-element set, and each element is either in or out, giving $2^{n}$."
+    },
+    {
+      "id": "jeem-pcb-06",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Probability",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Bayes' theorem gives $P(A|B)$ as:",
+      "options": [
+        "$\\dfrac{P(B|A)P(A)}{P(B)}$",
+        "$P(A)P(B)$",
+        "$\\dfrac{P(A)}{P(B)}$",
+        "$P(A)+P(B)$"
+      ],
+      "answer": 0,
+      "solution": "$P(A|B) = \\mathbf{\\dfrac{P(B|A)P(A)}{P(B)}}$.\n\nIt lets a conditional probability be **reversed** — turning \"the probability of the evidence given the cause\" into \"the probability of the cause given the evidence\", which is usually the question actually being asked.\n\n$P(A)$ is the prior and $P(A|B)$ the posterior. Forgetting the prior, and so confusing $P(A|B)$ with $P(B|A)$, is the base-rate fallacy — the reason a highly accurate test for a rare disease still yields mostly false positives."
+    },
+    {
+      "id": "jeem-pcb-07",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Combinations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$^{n}C_r$ equals:",
+      "options": [
+        "$^{n}C_{n-r}$",
+        "$^{n}C_{n+r}$",
+        "$^{r}C_n$",
+        "$^{n}P_r$"
+      ],
+      "answer": 0,
+      "solution": "$^{n}C_r = \\mathbf{^{n}C_{n-r}}$.\n\nThe reason is immediate: choosing $r$ objects to take is the same act as choosing the $n-r$ objects to leave behind.\n\nIt is why Pascal's triangle is symmetric, and it halves the work — $^{20}C_{18}$ is better computed as $^{20}C_2 = 190$."
+    },
+    {
+      "id": "jeem-pcb-08",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Binomial theorem",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the expansion of $(x+y)^{n}$, the general term $T_{r+1}$ is:",
+      "options": [
+        "$^{n}C_r x^{r}y^{n-r}$",
+        "$^{n}C_r x^{n-r}y^{r}$",
+        "$^{n}C_r x^{n}y^{r}$",
+        "$x^{n-r}y^{r}$"
+      ],
+      "answer": 1,
+      "solution": "$T_{r+1} = \\mathbf{^{n}C_r\\,x^{n-r}y^{r}}$.\n\nNote the indexing: the term with coefficient $^{n}C_r$ is the $(r+1)$th term, not the $r$th, because $r$ starts at 0. Asking for the 5th term means setting $r = 4$, and that off-by-one is the usual trap."
+    },
+    {
+      "id": "jeem-pcb-09",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Probability",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two events $A$ and $B$ are independent if:",
+      "options": [
+        "$P(A\\cap B) = 0$",
+        "$P(A\\cap B) = P(A)P(B)$",
+        "$P(A) = P(B)$",
+        "$P(A\\cup B) = 1$"
+      ],
+      "answer": 1,
+      "solution": "Independence means $\\mathbf{P(A\\cap B) = P(A)P(B)}$, equivalently $P(A|B) = P(A)$ — knowing that $B$ occurred tells you nothing about $A$.\n\nIndependence is a statement about probabilities and must be **checked**, not assumed from the events looking unrelated."
+    },
+    {
+      "id": "jeem-pcb-10",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Combinations",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the value of $^{6}C_2$.",
+      "answer": 15,
+      "tolerance": 0.5,
+      "accept": [
+        "15"
+      ],
+      "solution": "$^{6}C_2 = \\dfrac{6!}{2!\\,4!} = \\dfrac{6 \\times 5}{2 \\times 1} = \\dfrac{30}{2} = \\mathbf{15}$."
+    },
+    {
+      "id": "jeem-pcb-11",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Permutations",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In how many ways can the letters of the word DELHI be arranged?",
+      "answer": 120,
+      "tolerance": 1,
+      "accept": [
+        "120"
+      ],
+      "solution": "DELHI has 5 letters, all **distinct**.\n\nArrangements $= 5! = 5\\times4\\times3\\times2\\times1 = \\mathbf{120}$.\n\nHad any letter repeated, the count would be divided by the factorial of each repeat count."
+    },
+    {
+      "id": "jeem-pcb-12",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Probability",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Two fair dice are thrown. Find the probability that the sum is 7, as a fraction rounded to three decimal places.",
+      "answer": 0.167,
+      "tolerance": 0.005,
+      "accept": [
+        "1/6",
+        "0.167",
+        "0.1667"
+      ],
+      "solution": "Total outcomes: $6 \\times 6 = 36$.\n\nFavourable outcomes summing to 7: $(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)$ — that is 6.\n\n$P = \\dfrac{6}{36} = \\dfrac{1}{6} \\approx \\mathbf{0.167}$.\n\nSeven is the most likely total, which is why it is the pivotal number in dice games."
+    },
+    {
+      "id": "jeem-pcb-13",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Binomial theorem",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the coefficient of $x^{2}$ in the expansion of $(1+x)^{5}$.",
+      "answer": 10,
+      "tolerance": 0.5,
+      "accept": [
+        "10"
+      ],
+      "solution": "The general term is $^{5}C_r\\,x^{r}$, so the coefficient of $x^{2}$ is $^{5}C_2$.\n\n$^{5}C_2 = \\dfrac{5 \\times 4}{2 \\times 1} = \\mathbf{10}$.\n\nThis is the row $1, 5, 10, 10, 5, 1$ of Pascal's triangle."
+    },
+    {
+      "id": "jeem-pcb-14",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Permutations",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In how many ways can 5 people be seated around a circular table?",
+      "answer": 24,
+      "tolerance": 0.5,
+      "accept": [
+        "24"
+      ],
+      "solution": "In a circular arrangement, rotations of the same seating are not distinct — only the **relative** order matters.\n\nFix one person to break the rotational symmetry, then arrange the remaining 4:\n\n$(5-1)! = 4! = \\mathbf{24}$ ways.\n\nIf reflections were also counted as identical, as for a necklace, it would be $\\dfrac{4!}{2} = 12$."
+    },
+    {
+      "id": "jeem-pcb-15",
+      "chapter": "Permutations, Combinations, Binomial Theorem and Probability",
+      "topic": "Probability",
+      "type": "long",
+      "marks": 5,
+      "q": "State Bayes' theorem. A disease affects $1\\%$ of a population. A test is $99\\%$ accurate on both the diseased and the healthy. A person tests positive. Find the probability that they actually have the disease, and explain why the answer is so much lower than most people expect.",
+      "solution": "**Bayes' theorem.**\n\n$P(A|B) = \\dfrac{P(B|A)\\,P(A)}{P(B)}$\n\nwhere $P(B)$ is expanded by the law of total probability:\n\n$P(B) = P(B|A)P(A) + P(B|A')P(A')$\n\n**Setting up.** Let $D$ be having the disease and $+$ be testing positive.\n\n$P(D) = 0.01$ and $P(D') = 0.99$\n\n$P(+|D) = 0.99$, the sensitivity\n\n$P(+|D') = 0.01$, the false positive rate, since the test is $99\\%$ accurate on the healthy\n\n**We want $P(D|+)$.**\n\n**Step 1: the probability of testing positive at all.**\n\n$P(+) = P(+|D)P(D) + P(+|D')P(D')$\n\n$= (0.99)(0.01) + (0.01)(0.99)$\n\n$= 0.0099 + 0.0099 = 0.0198$\n\n**Step 2: apply Bayes.**\n\n$P(D|+) = \\dfrac{P(+|D)P(D)}{P(+)} = \\dfrac{0.0099}{0.0198} = \\boxed{0.5}$\n\nSo there is only a **$50\\%$ chance** the person has the disease, despite a test that is $99\\%$ accurate.\n\n**Why the answer is so surprising: think in counts.**\n\nTake a population of $10{,}000$.\n\n**Diseased:** $1\\%$ of $10{,}000 = 100$ people. The test catches $99\\%$ of them, so **99 true positives**.\n\n**Healthy:** $9{,}900$ people. The test wrongly flags $1\\%$ of them, so **99 false positives**.\n\nTotal positives $= 99 + 99 = 198$, of whom only 99 are genuinely ill. That is exactly half.\n\n**The point.** The two groups are wildly different in size. The healthy group is 99 times larger, so even a small error rate applied to it produces just as many false positives as the diseased group produces true ones. The test's accuracy is doing its job perfectly well — it is the **base rate** that dominates.\n\n**The base-rate fallacy** is the mistake of ignoring $P(D)$ and reading the test's $99\\%$ accuracy as if it were the answer. Put another way, it is confusing\n\n$P(+|D) = 0.99$, the probability of testing positive **given** the disease\n\nwith\n\n$P(D|+) = 0.50$, the probability of the disease **given** a positive test\n\nThese are different questions with different answers, and Bayes' theorem is precisely the machinery for converting between them.\n\n**Why this matters in practice.** It is the reason rare conditions are not screened for across a whole population, and the reason a positive screening result is followed by a second, different test. That second test is applied to a group with a $50\\%$ base rate rather than $1\\%$ — and running the same numbers again on that group gives a posterior of about $99\\%$. The prior has been shifted by the first test, which is what makes the second one informative.\n\nThe same error appears in court, where the probability of a DNA match given innocence is confused with the probability of innocence given a match. There it is known as the prosecutor's fallacy, and it has sent people to prison."
+    }
+  ]
+}

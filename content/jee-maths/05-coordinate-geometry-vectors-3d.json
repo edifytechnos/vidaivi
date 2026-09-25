@@ -1,0 +1,233 @@
+{
+  "id": "lib-jeem-geo",
+  "title": "Coordinate Geometry, Vectors and 3D",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeem-geo-01",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Straight lines",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two lines with slopes $m_1$ and $m_2$ are perpendicular when:",
+      "options": [
+        "$m_1 = m_2$",
+        "$m_1m_2 = 1$",
+        "$m_1m_2 = -1$",
+        "$m_1 + m_2 = 0$"
+      ],
+      "answer": 2,
+      "solution": "Perpendicular lines satisfy $\\mathbf{m_1m_2 = -1}$, that is each slope is the negative reciprocal of the other.\n\nThe one exception is a vertical and a horizontal line, where one slope is undefined and the product cannot be formed.\n\nParallel lines have $m_1 = m_2$."
+    },
+    {
+      "id": "jeem-geo-02",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Circles",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The centre of the circle $x^{2} + y^{2} - 4x + 6y - 3 = 0$ is:",
+      "options": [
+        "$(2, -3)$",
+        "$(-2, 3)$",
+        "$(4, -6)$",
+        "$(-4, 6)$"
+      ],
+      "answer": 0,
+      "solution": "For $x^{2}+y^{2}+2gx+2fy+c = 0$, the centre is $(-g, -f)$.\n\nHere $2g = -4$ so $g = -2$, and $2f = 6$ so $f = 3$.\n\nCentre $= (-g, -f) = \\mathbf{(2, -3)}$.\n\nThe radius is $\\sqrt{g^{2}+f^{2}-c} = \\sqrt{4+9+3} = 4$."
+    },
+    {
+      "id": "jeem-geo-03",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Vectors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two non-zero vectors $\\vec{a}$ and $\\vec{b}$ are perpendicular when:",
+      "options": [
+        "$\\vec{a}\\times\\vec{b} = 0$",
+        "$\\vec{a}\\cdot\\vec{b} = 0$",
+        "$|\\vec{a}| = |\\vec{b}|$",
+        "$\\vec{a} = -\\vec{b}$"
+      ],
+      "answer": 1,
+      "solution": "$\\vec{a}\\cdot\\vec{b} = |\\vec{a}||\\vec{b}|\\cos\\theta$.\n\nFor non-zero vectors this vanishes exactly when $\\cos\\theta = 0$, that is $\\theta = 90^\\circ$. So $\\mathbf{\\vec{a}\\cdot\\vec{b} = 0}$.\n\nThe **cross** product vanishing means the opposite: $\\sin\\theta = 0$, so the vectors are **parallel**."
+    },
+    {
+      "id": "jeem-geo-04",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Conics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The eccentricity of a parabola is:",
+      "options": [
+        "$0$",
+        "Less than $1$",
+        "Exactly $1$",
+        "Greater than $1$"
+      ],
+      "answer": 2,
+      "solution": "Eccentricity classifies the conic sections:\n\ncircle $e = 0$, ellipse $0 < e < 1$, **parabola $e = 1$**, hyperbola $e > 1$.\n\n$e = 1$ means every point is **equidistant** from the focus and the directrix, which is the defining property of a parabola."
+    },
+    {
+      "id": "jeem-geo-05",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "3D geometry",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The distance between the points $(1,2,3)$ and $(4,6,3)$ is:",
+      "options": [
+        "$3$",
+        "$4$",
+        "$5$",
+        "$7$"
+      ],
+      "answer": 2,
+      "solution": "$d = \\sqrt{(4-1)^{2} + (6-2)^{2} + (3-3)^{2}}$\n\n$= \\sqrt{9 + 16 + 0} = \\sqrt{25} = \\mathbf{5}$.\n\nThe $z$-coordinates are equal, so this reduces to a 3-4-5 triangle in a plane parallel to the $xy$-plane."
+    },
+    {
+      "id": "jeem-geo-06",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Vectors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The magnitude of $\\vec{a}\\times\\vec{b}$ represents:",
+      "options": [
+        "The area of the triangle formed",
+        "The area of the parallelogram with sides $\\vec{a}$ and $\\vec{b}$",
+        "The volume of a cube",
+        "The projection of $\\vec{a}$ on $\\vec{b}$"
+      ],
+      "answer": 1,
+      "solution": "$|\\vec{a}\\times\\vec{b}| = |\\vec{a}||\\vec{b}|\\sin\\theta$, which is exactly base times perpendicular height — the **area of the parallelogram** spanned by the two vectors.\n\nThe **triangle** on the same two vectors is half of that, $\\tfrac12|\\vec{a}\\times\\vec{b}|$.\n\nThe scalar triple product $|\\vec{a}\\cdot(\\vec{b}\\times\\vec{c})|$ gives the volume of the parallelepiped."
+    },
+    {
+      "id": "jeem-geo-07",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Straight lines",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The distance of the point $(x_1,y_1)$ from the line $Ax+By+C=0$ is:",
+      "options": [
+        "$\\dfrac{|Ax_1+By_1+C|}{\\sqrt{A^{2}+B^{2}}}$",
+        "$\\dfrac{Ax_1+By_1+C}{A+B}$",
+        "$|Ax_1+By_1+C|$",
+        "$\\sqrt{A^{2}+B^{2}}$"
+      ],
+      "answer": 0,
+      "solution": "$d = \\mathbf{\\dfrac{|Ax_1+By_1+C|}{\\sqrt{A^{2}+B^{2}}}}$.\n\nThe modulus is needed because distance is non-negative; without it the sign tells you which **side** of the line the point lies on, which is itself useful.\n\nSetting $d = 0$ recovers the condition that the point lies on the line."
+    },
+    {
+      "id": "jeem-geo-08",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "3D geometry",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The direction cosines $l$, $m$, $n$ of a line satisfy:",
+      "options": [
+        "$l+m+n = 1$",
+        "$l^{2}+m^{2}+n^{2} = 1$",
+        "$lmn = 1$",
+        "$l = m = n$"
+      ],
+      "answer": 1,
+      "solution": "$\\mathbf{l^{2}+m^{2}+n^{2} = 1}$.\n\nThe direction cosines are the components of a **unit** vector along the line, so the sum of their squares is 1 by Pythagoras in three dimensions.\n\nDirection **ratios** $a$, $b$, $c$ are any proportional set and need not satisfy this; dividing them by $\\sqrt{a^{2}+b^{2}+c^{2}}$ turns them into direction cosines."
+    },
+    {
+      "id": "jeem-geo-09",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Conics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For the ellipse $\\dfrac{x^{2}}{25} + \\dfrac{y^{2}}{9} = 1$, the length of the major axis is:",
+      "options": [
+        "$5$",
+        "$10$",
+        "$3$",
+        "$6$"
+      ],
+      "answer": 1,
+      "solution": "Comparing with $\\dfrac{x^{2}}{a^{2}}+\\dfrac{y^{2}}{b^{2}}=1$: $a^{2}=25$ so $a=5$, and $b^{2}=9$ so $b=3$.\n\nSince $a > b$ the major axis is along $x$, and its **length** is $2a = \\mathbf{10}$.\n\nThe common error is answering 5, which is the semi-major axis. The minor axis has length $2b = 6$."
+    },
+    {
+      "id": "jeem-geo-10",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Straight lines",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the slope of the line joining $(1,2)$ and $(4,11)$.",
+      "answer": 3,
+      "tolerance": 0.05,
+      "accept": [
+        "3"
+      ],
+      "solution": "$m = \\dfrac{y_2-y_1}{x_2-x_1} = \\dfrac{11-2}{4-1} = \\dfrac{9}{3} = \\mathbf{3}$."
+    },
+    {
+      "id": "jeem-geo-11",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Vectors",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find $\\vec{a}\\cdot\\vec{b}$ for $\\vec{a} = 2\\hat{i}+3\\hat{j}+\\hat{k}$ and $\\vec{b} = \\hat{i}-\\hat{j}+4\\hat{k}$.",
+      "answer": 3,
+      "tolerance": 0.05,
+      "accept": [
+        "3"
+      ],
+      "solution": "The dot product is the sum of the products of corresponding components:\n\n$\\vec{a}\\cdot\\vec{b} = (2)(1) + (3)(-1) + (1)(4)$\n\n$= 2 - 3 + 4 = \\mathbf{3}$."
+    },
+    {
+      "id": "jeem-geo-12",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Circles",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the radius of the circle $x^{2}+y^{2}-6x-8y = 0$.",
+      "answer": 5,
+      "tolerance": 0.1,
+      "accept": [
+        "5"
+      ],
+      "solution": "Here $2g=-6$ so $g=-3$; $2f=-8$ so $f=-4$; and $c=0$.\n\n$r = \\sqrt{g^{2}+f^{2}-c} = \\sqrt{9+16-0} = \\sqrt{25} = \\mathbf{5}$.\n\nSince $c = 0$, the circle passes through the origin — as substituting $(0,0)$ confirms."
+    },
+    {
+      "id": "jeem-geo-13",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Vectors",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find $|\\vec{a}|$ for $\\vec{a} = 3\\hat{i}-4\\hat{j}+12\\hat{k}$.",
+      "answer": 13,
+      "tolerance": 0.1,
+      "accept": [
+        "13"
+      ],
+      "solution": "$|\\vec{a}| = \\sqrt{3^{2}+(-4)^{2}+12^{2}} = \\sqrt{9+16+144} = \\sqrt{169} = \\mathbf{13}$."
+    },
+    {
+      "id": "jeem-geo-14",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Straight lines",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the distance of the point $(3,4)$ from the line $3x+4y-10=0$.",
+      "answer": 3,
+      "tolerance": 0.05,
+      "accept": [
+        "3"
+      ],
+      "solution": "$d = \\dfrac{|3(3)+4(4)-10|}{\\sqrt{3^{2}+4^{2}}}$\n\n$= \\dfrac{|9+16-10|}{\\sqrt{25}} = \\dfrac{15}{5} = \\mathbf{3}$."
+    },
+    {
+      "id": "jeem-geo-15",
+      "chapter": "Coordinate Geometry, Vectors and 3D",
+      "topic": "Vectors",
+      "type": "long",
+      "marks": 5,
+      "q": "Define the scalar and vector products of two vectors. Compare them in terms of the nature of the result, their geometric meaning, and their behaviour under a change of order. Give one physical application of each, and explain what each becomes when the vectors are parallel and when they are perpendicular.",
+      "solution": "**The scalar (dot) product.**\n\n$\\vec{a}\\cdot\\vec{b} = |\\vec{a}||\\vec{b}|\\cos\\theta$\n\nIn components, $\\vec{a}\\cdot\\vec{b} = a_1b_1 + a_2b_2 + a_3b_3$.\n\n**The vector (cross) product.**\n\n$\\vec{a}\\times\\vec{b} = |\\vec{a}||\\vec{b}|\\sin\\theta\\;\\hat{n}$\n\nwhere $\\hat{n}$ is the unit vector perpendicular to both, in the sense given by the right-hand rule. In components it is the determinant\n\n$\\vec{a}\\times\\vec{b} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ a_1 & a_2 & a_3 \\\\ b_1 & b_2 & b_3 \\end{vmatrix}$\n\n**Comparison.**\n\n**Nature of the result.** The dot product is a **scalar**, a single number with no direction. The cross product is a **vector**, with both magnitude and direction. This is the most important difference and the source of most errors: writing $\\vec{a}\\cdot\\vec{b}$ as a vector, or $\\vec{a}\\times\\vec{b}$ as a number, is a category mistake.\n\nThe cross product is also only defined in three dimensions, whereas the dot product works in any number.\n\n**Geometric meaning.** The dot product measures how much the two vectors point **along** each other — it is the projection of one onto the other, times the other's length. The cross product measures how much they point **across** each other, its magnitude being the **area of the parallelogram** they span.\n\nSo they are complementary: one extracts $\\cos\\theta$ and the other $\\sin\\theta$, and $(\\vec{a}\\cdot\\vec{b})^{2} + |\\vec{a}\\times\\vec{b}|^{2} = |\\vec{a}|^{2}|\\vec{b}|^{2}$.\n\n**Order.** The dot product is **commutative**: $\\vec{a}\\cdot\\vec{b} = \\vec{b}\\cdot\\vec{a}$, since $\\cos\\theta$ does not care about order.\n\nThe cross product is **anticommutative**: $\\vec{a}\\times\\vec{b} = -\\vec{b}\\times\\vec{a}$. Reversing the order reverses the right-hand rule and so flips the direction. This is why the order in $\\vec{\\tau} = \\vec{r}\\times\\vec{F}$ must be remembered.\n\n**Physical applications.**\n\n**Dot product: work.** $W = \\vec{F}\\cdot\\vec{d}$. Only the component of force along the displacement does work, which is exactly what the dot product extracts. It also explains why a centripetal force does no work: it is perpendicular to the motion, so the dot product is zero.\n\n**Cross product: torque.** $\\vec{\\tau} = \\vec{r}\\times\\vec{F}$. Only the component of force perpendicular to the position vector turns the body, which is what the cross product extracts — and the result is itself a vector along the axis of rotation. The magnetic force $\\vec{F} = q\\vec{v}\\times\\vec{B}$ and angular momentum $\\vec{L} = \\vec{r}\\times\\vec{p}$ are the other two standard examples.\n\n**The two special cases.**\n\n**Parallel vectors** ($\\theta = 0$): $\\cos 0 = 1$ and $\\sin 0 = 0$.\n\n$\\vec{a}\\cdot\\vec{b} = |\\vec{a}||\\vec{b}|$ — the **maximum** possible.\n\n$\\vec{a}\\times\\vec{b} = \\vec{0}$ — the parallelogram is degenerate and has no area.\n\nIn particular $\\vec{a}\\times\\vec{a} = \\vec{0}$ for every vector, which is why a force applied along the line to the pivot produces no torque.\n\n**Perpendicular vectors** ($\\theta = 90^\\circ$): $\\cos 90^\\circ = 0$ and $\\sin 90^\\circ = 1$.\n\n$\\vec{a}\\cdot\\vec{b} = 0$ — the **minimum** in magnitude.\n\n$|\\vec{a}\\times\\vec{b}| = |\\vec{a}||\\vec{b}|$ — the **maximum**, since the parallelogram is now a rectangle.\n\nSo the two products are extremal in opposite situations, which is precisely why they are used as tests: a vanishing **dot** product means perpendicular, and a vanishing **cross** product means parallel."
+    }
+  ]
+}
