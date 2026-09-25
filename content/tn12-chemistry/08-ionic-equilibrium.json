@@ -1,0 +1,218 @@
+{
+  "id": "lib-tn12c-ion",
+  "title": "Ionic Equilibrium",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-ion-01",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Acid-base concepts",
+      "type": "mcq",
+      "marks": 1,
+      "q": "According to the Lewis concept, an acid is a species that:",
+      "options": [
+        "donates a proton",
+        "accepts a proton",
+        "accepts an electron pair",
+        "donates an electron pair"
+      ],
+      "answer": 2,
+      "solution": "A **Lewis acid accepts an electron pair**; a Lewis base donates one.\n\nThis is wider than the Brønsted idea: $\\mathrm{BF_3}$ and $\\mathrm{AlCl_3}$ have no proton to give, yet they are Lewis acids because each has an empty orbital to take a lone pair."
+    },
+    {
+      "id": "tn12c-ion-02",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Acid-base concepts",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The conjugate base of $\\mathrm{H_2PO_4^-}$ is:",
+      "options": [
+        "$\\mathrm{H_3PO_4}$",
+        "$\\mathrm{HPO_4^{2-}}$",
+        "$\\mathrm{PO_4^{3-}}$",
+        "$\\mathrm{H_2PO_4}$"
+      ],
+      "answer": 1,
+      "solution": "A conjugate base is what is left after the acid **loses one proton**.\n\n$\\mathrm{H_2PO_4^-} \\rightarrow \\mathrm{H^+} + \\mathrm{HPO_4^{2-}}$. So the conjugate base is $\\mathbf{HPO_4^{2-}}$; $\\mathrm{H_3PO_4}$ is its conjugate acid."
+    },
+    {
+      "id": "tn12c-ion-03",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Ionic product of water",
+      "type": "mcq",
+      "marks": 1,
+      "q": "At $25\\,^\\circ\\mathrm{C}$ the ionic product of water $K_w$ is:",
+      "options": [
+        "$1 \\times 10^{-7}$",
+        "$1 \\times 10^{-14}$",
+        "$1 \\times 10^{-12}$",
+        "$1 \\times 10^{7}$"
+      ],
+      "answer": 1,
+      "solution": "$K_w = [\\mathrm{H_3O^+}][\\mathrm{OH^-}] = (10^{-7})(10^{-7}) = \\mathbf{1 \\times 10^{-14}}$ at $25\\,^\\circ\\mathrm{C}$.\n\n$K_w$ rises with temperature because the ionisation of water is endothermic, so neutral water above $25\\,^\\circ\\mathrm{C}$ has a pH below 7."
+    },
+    {
+      "id": "tn12c-ion-04",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Buffer solutions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which mixture acts as an acidic buffer?",
+      "options": [
+        "$\\mathrm{HCl} + \\mathrm{NaCl}$",
+        "$\\mathrm{CH_3COOH} + \\mathrm{CH_3COONa}$",
+        "$\\mathrm{NH_4OH} + \\mathrm{NH_4Cl}$",
+        "$\\mathrm{NaOH} + \\mathrm{NaCl}$"
+      ],
+      "answer": 1,
+      "solution": "An acidic buffer is a **weak acid with a salt of its conjugate base**: acetic acid with sodium acetate.\n\n$\\mathrm{NH_4OH} + \\mathrm{NH_4Cl}$ is a buffer too, but a basic one. A strong acid with its salt is not a buffer at all."
+    },
+    {
+      "id": "tn12c-ion-05",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Common ion effect",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Adding $\\mathrm{NH_4Cl}$ to aqueous ammonia:",
+      "options": [
+        "increases the $\\mathrm{OH^-}$ concentration",
+        "suppresses the dissociation of $\\mathrm{NH_4OH}$",
+        "increases the pH",
+        "has no effect"
+      ],
+      "answer": 1,
+      "solution": "$\\mathrm{NH_4Cl}$ supplies $\\mathrm{NH_4^+}$, the **common ion**. By Le Chatelier's principle the equilibrium $\\mathrm{NH_4OH} \\rightleftharpoons \\mathrm{NH_4^+} + \\mathrm{OH^-}$ shifts left.\n\nSo dissociation is suppressed, $[\\mathrm{OH^-}]$ falls and the pH decreases. This is used in qualitative analysis to keep $\\mathrm{OH^-}$ low enough that only group III hydroxides precipitate."
+    },
+    {
+      "id": "tn12c-ion-06",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Salt hydrolysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An aqueous solution of sodium acetate is:",
+      "options": [
+        "acidic",
+        "basic",
+        "neutral",
+        "amphoteric"
+      ],
+      "answer": 1,
+      "solution": "Sodium acetate is the salt of a strong base and a weak acid. The acetate ion hydrolyses:\n\n$\\mathrm{CH_3COO^-} + \\mathrm{H_2O} \\rightleftharpoons \\mathrm{CH_3COOH} + \\mathrm{OH^-}$\n\nThe $\\mathrm{OH^-}$ released makes the solution **basic**."
+    },
+    {
+      "id": "tn12c-ion-07",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Solubility product",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The solubility product of $\\mathrm{Ag_2CrO_4}$ in terms of its solubility $s$ is:",
+      "options": [
+        "$s^2$",
+        "$2s^2$",
+        "$4s^3$",
+        "$27s^4$"
+      ],
+      "answer": 2,
+      "solution": "$\\mathrm{Ag_2CrO_4} \\rightleftharpoons 2\\mathrm{Ag^+} + \\mathrm{CrO_4^{2-}}$, giving $[\\mathrm{Ag^+}] = 2s$ and $[\\mathrm{CrO_4^{2-}}] = s$.\n\n$K_{sp} = (2s)^2(s) = \\mathbf{4s^3}$."
+    },
+    {
+      "id": "tn12c-ion-08",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Ostwald's dilution law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "According to Ostwald's dilution law, the degree of dissociation $\\alpha$ of a weak electrolyte is:",
+      "options": [
+        "$\\alpha = K_a C$",
+        "$\\alpha = \\sqrt{K_a C}$",
+        "$\\alpha = \\sqrt{\\dfrac{K_a}{C}}$",
+        "$\\alpha = \\dfrac{C}{K_a}$"
+      ],
+      "answer": 2,
+      "solution": "For a weak acid, $K_a = \\dfrac{\\alpha^2 C}{1 - \\alpha} \\approx \\alpha^2 C$ since $\\alpha \\ll 1$.\n\nSo $\\alpha = \\sqrt{\\dfrac{K_a}{C}}$: dilution (smaller $C$) increases the degree of dissociation."
+    },
+    {
+      "id": "tn12c-ion-09",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Precipitation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A precipitate forms when:",
+      "options": [
+        "ionic product $< K_{sp}$",
+        "ionic product $= K_{sp}$",
+        "ionic product $> K_{sp}$",
+        "$K_{sp}$ is zero"
+      ],
+      "answer": 2,
+      "solution": "If the **ionic product exceeds $K_{sp}$**, the solution is supersaturated and the excess comes out as a precipitate.\n\nEqual means saturated, and less means unsaturated, so more solid could still dissolve."
+    },
+    {
+      "id": "tn12c-ion-10",
+      "chapter": "Ionic Equilibrium",
+      "topic": "pH",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the pH of a $0.001\\,\\mathrm{M}$ solution of HCl.",
+      "answer": 3,
+      "tolerance": 0.05,
+      "solution": "HCl is a strong acid and ionises completely, so $[\\mathrm{H^+}] = 10^{-3}\\,\\mathrm{M}$.\n\npH $= -\\log(10^{-3}) = \\mathbf{3}$."
+    },
+    {
+      "id": "tn12c-ion-11",
+      "chapter": "Ionic Equilibrium",
+      "topic": "pH",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the pH of a $0.01\\,\\mathrm{M}$ solution of NaOH at $25\\,^\\circ\\mathrm{C}$.",
+      "answer": 12,
+      "tolerance": 0.05,
+      "solution": "$[\\mathrm{OH^-}] = 10^{-2}\\,\\mathrm{M}$, so pOH $= 2$.\n\npH $= 14 - 2 = \\mathbf{12}$."
+    },
+    {
+      "id": "tn12c-ion-12",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Weak acids",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Calculate the pH of $0.1\\,\\mathrm{M}$ acetic acid, given $K_a = 1.8 \\times 10^{-5}$. (Give your answer to two decimal places.)",
+      "answer": 2.87,
+      "tolerance": 0.03,
+      "solution": "$[\\mathrm{H^+}] = \\sqrt{K_a C} = \\sqrt{1.8 \\times 10^{-5} \\times 0.1} = \\sqrt{1.8 \\times 10^{-6}} = 1.34 \\times 10^{-3}\\,\\mathrm{M}$.\n\npH $= -\\log(1.34 \\times 10^{-3}) = 3 - 0.127 = \\mathbf{2.87}$."
+    },
+    {
+      "id": "tn12c-ion-13",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Buffer solutions",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A buffer contains $0.1\\,\\mathrm{M}$ acetic acid and $0.1\\,\\mathrm{M}$ sodium acetate. Given $\\mathrm{p}K_a = 4.76$, find its pH.",
+      "answer": 4.76,
+      "tolerance": 0.02,
+      "solution": "Henderson–Hasselbalch equation: pH $= \\mathrm{p}K_a + \\log\\dfrac{[\\text{salt}]}{[\\text{acid}]}$.\n\nWith equal concentrations the log term is $\\log 1 = 0$, so pH $= \\mathrm{p}K_a = \\mathbf{4.76}$.\n\nThis is where a buffer resists change best: it has equal reserves to neutralise added acid and added base."
+    },
+    {
+      "id": "tn12c-ion-14",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Solubility product",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The solubility of AgCl at $25\\,^\\circ\\mathrm{C}$ is $1 \\times 10^{-5}\\,\\mathrm{mol\\,L^{-1}}$. Its solubility product is $x \\times 10^{-10}$. Find $x$.",
+      "answer": 1,
+      "tolerance": 0.05,
+      "solution": "$\\mathrm{AgCl} \\rightleftharpoons \\mathrm{Ag^+} + \\mathrm{Cl^-}$, so $K_{sp} = s^2 = (1 \\times 10^{-5})^2 = 1 \\times 10^{-10}$.\n\nSo $x = \\mathbf{1}$."
+    },
+    {
+      "id": "tn12c-ion-15",
+      "chapter": "Ionic Equilibrium",
+      "topic": "Salt hydrolysis",
+      "type": "long",
+      "marks": 5,
+      "q": "Derive expressions for the hydrolysis constant, the degree of hydrolysis and the pH of an aqueous solution of a salt of a weak acid and a strong base, such as sodium acetate.",
+      "solution": "**Hydrolysis.** The acetate ion reacts with water:\n\n$\\mathrm{CH_3COO^-} + \\mathrm{H_2O} \\rightleftharpoons \\mathrm{CH_3COOH} + \\mathrm{OH^-}$\n\n**Hydrolysis constant.** $K_h = \\dfrac{[\\mathrm{CH_3COOH}][\\mathrm{OH^-}]}{[\\mathrm{CH_3COO^-}]}$. Multiplying top and bottom by $[\\mathrm{H^+}]$:\n\n$$K_h = \\frac{[\\mathrm{H^+}][\\mathrm{OH^-}]}{[\\mathrm{H^+}][\\mathrm{CH_3COO^-}]/[\\mathrm{CH_3COOH}]} = \\frac{K_w}{K_a}$$\n\n**Degree of hydrolysis.** If $C$ is the salt concentration and $h$ the fraction hydrolysed, then at equilibrium $[\\mathrm{CH_3COOH}] = [\\mathrm{OH^-}] = Ch$ and $[\\mathrm{CH_3COO^-}] = C(1-h) \\approx C$.\n\n$K_h = \\dfrac{(Ch)^2}{C} = Ch^2$, so $h = \\sqrt{\\dfrac{K_h}{C}} = \\sqrt{\\dfrac{K_w}{K_a C}}$.\n\n**pH.** $[\\mathrm{OH^-}] = Ch = \\sqrt{\\dfrac{K_w C}{K_a}}$, and $[\\mathrm{H^+}] = \\dfrac{K_w}{[\\mathrm{OH^-}]} = \\sqrt{\\dfrac{K_w K_a}{C}}$.\n\nTaking $-\\log$:\n\n$$\\mathrm{pH} = 7 + \\frac{1}{2}\\mathrm{p}K_a + \\frac{1}{2}\\log C$$\n\nThe pH is above 7, as expected for a basic salt, and rises as the acid gets weaker (larger $\\mathrm{p}K_a$) or the solution more concentrated."
+    }
+  ]
+}

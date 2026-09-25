@@ -1,0 +1,218 @@
+{
+  "id": "lib-tn12c-kin",
+  "title": "Chemical Kinetics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-kin-01",
+      "chapter": "Chemical Kinetics",
+      "topic": "Rate of reaction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For the reaction $2\\mathrm{N_2O_5} \\rightarrow 4\\mathrm{NO_2} + \\mathrm{O_2}$, the rate of formation of $\\mathrm{NO_2}$ is related to the rate of disappearance of $\\mathrm{N_2O_5}$ by:",
+      "options": [
+        "$\\dfrac{d[\\mathrm{NO_2}]}{dt} = -\\dfrac{d[\\mathrm{N_2O_5}]}{dt}$",
+        "$\\dfrac{d[\\mathrm{NO_2}]}{dt} = -2\\dfrac{d[\\mathrm{N_2O_5}]}{dt}$",
+        "$\\dfrac{d[\\mathrm{NO_2}]}{dt} = -\\dfrac{1}{2}\\dfrac{d[\\mathrm{N_2O_5}]}{dt}$",
+        "$\\dfrac{d[\\mathrm{NO_2}]}{dt} = -4\\dfrac{d[\\mathrm{N_2O_5}]}{dt}$"
+      ],
+      "answer": 1,
+      "solution": "Rate $= -\\dfrac{1}{2}\\dfrac{d[\\mathrm{N_2O_5}]}{dt} = \\dfrac{1}{4}\\dfrac{d[\\mathrm{NO_2}]}{dt}$.\n\nSo $\\dfrac{d[\\mathrm{NO_2}]}{dt} = -2\\dfrac{d[\\mathrm{N_2O_5}]}{dt}$: four moles of $\\mathrm{NO_2}$ appear for every two of $\\mathrm{N_2O_5}$ that go."
+    },
+    {
+      "id": "tn12c-kin-02",
+      "chapter": "Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The unit of the rate constant of a zero order reaction is:",
+      "options": [
+        "$\\mathrm{s^{-1}}$",
+        "$\\mathrm{mol\\,L^{-1}\\,s^{-1}}$",
+        "$\\mathrm{L\\,mol^{-1}\\,s^{-1}}$",
+        "$\\mathrm{L^2\\,mol^{-2}\\,s^{-1}}$"
+      ],
+      "answer": 1,
+      "solution": "In general the unit of $k$ is $(\\mathrm{mol\\,L^{-1}})^{1-n}\\,\\mathrm{s^{-1}}$.\n\nFor $n = 0$ this is $\\mathbf{mol\\,L^{-1}\\,s^{-1}}$, the same as the rate itself, because a zero order rate does not depend on concentration at all."
+    },
+    {
+      "id": "tn12c-kin-03",
+      "chapter": "Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The half-life of a first order reaction:",
+      "options": [
+        "is proportional to the initial concentration",
+        "is inversely proportional to the initial concentration",
+        "is independent of the initial concentration",
+        "is proportional to the square of the initial concentration"
+      ],
+      "answer": 2,
+      "solution": "$t_{1/2} = \\dfrac{0.693}{k}$, which contains no concentration term.\n\nSo a first order reaction takes the same time to go from 100 to 50 as from 50 to 25. This is why radioactive decay, which is first order, has a fixed half-life."
+    },
+    {
+      "id": "tn12c-kin-04",
+      "chapter": "Chemical Kinetics",
+      "topic": "Molecularity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which statement about molecularity is correct?",
+      "options": [
+        "It can be zero",
+        "It can be a fraction",
+        "It is determined experimentally",
+        "It applies only to an elementary step"
+      ],
+      "answer": 3,
+      "solution": "Molecularity is the number of species colliding in a **single elementary step**, so it is always a whole number of 1, 2 or rarely 3, never zero or a fraction.\n\nOrder, by contrast, is found experimentally and can be zero or fractional. For a complex reaction, molecularity has no meaning for the overall reaction."
+    },
+    {
+      "id": "tn12c-kin-05",
+      "chapter": "Chemical Kinetics",
+      "topic": "Arrhenius equation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Arrhenius equation $k = A e^{-E_a/RT}$, the factor $e^{-E_a/RT}$ represents:",
+      "options": [
+        "the collision frequency",
+        "the fraction of molecules with energy at least $E_a$",
+        "the steric factor",
+        "the rate of reaction"
+      ],
+      "answer": 1,
+      "solution": "$e^{-E_a/RT}$ is the **fraction of molecules** whose kinetic energy equals or exceeds the activation energy.\n\n$A$, the frequency factor, carries the collision frequency and orientation. Raising $T$ increases the exponential sharply, which is why a small rise in temperature speeds most reactions up a great deal."
+    },
+    {
+      "id": "tn12c-kin-06",
+      "chapter": "Chemical Kinetics",
+      "topic": "Catalysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A catalyst increases the rate of a reaction by:",
+      "options": [
+        "increasing the enthalpy change",
+        "decreasing the activation energy",
+        "increasing the equilibrium constant",
+        "increasing the number of collisions only"
+      ],
+      "answer": 1,
+      "solution": "A catalyst offers an alternative pathway with a **lower activation energy**.\n\nIt lowers $E_a$ of the forward and backward reactions equally, so it does not change $\\Delta H$ or $K$; equilibrium is reached faster, not shifted."
+    },
+    {
+      "id": "tn12c-kin-07",
+      "chapter": "Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For the reaction $A + B \\rightarrow$ products, rate $= k[A]^{1/2}[B]^2$. The overall order is:",
+      "options": [
+        "$2$",
+        "$\\dfrac{3}{2}$",
+        "$\\dfrac{5}{2}$",
+        "$3$"
+      ],
+      "answer": 2,
+      "solution": "Overall order is the sum of the exponents in the rate law: $\\dfrac{1}{2} + 2 = \\mathbf{\\dfrac{5}{2}}$.\n\nA fractional order is a clear sign the reaction is not a single elementary step."
+    },
+    {
+      "id": "tn12c-kin-08",
+      "chapter": "Chemical Kinetics",
+      "topic": "Pseudo first order",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The acid hydrolysis of ethyl acetate in a large excess of water is:",
+      "options": [
+        "zero order",
+        "pseudo first order",
+        "second order",
+        "third order"
+      ],
+      "answer": 1,
+      "solution": "Rate $= k[\\mathrm{CH_3COOC_2H_5}][\\mathrm{H_2O}]$ is second order in principle.\n\nBut water is in such excess that its concentration barely changes, so it folds into the constant: rate $= k'[\\mathrm{CH_3COOC_2H_5}]$. The reaction behaves as **pseudo first order**."
+    },
+    {
+      "id": "tn12c-kin-09",
+      "chapter": "Chemical Kinetics",
+      "topic": "Collision theory",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Not every collision between reactant molecules leads to a reaction because:",
+      "options": [
+        "molecules move too slowly",
+        "the colliding molecules may lack the threshold energy or the proper orientation",
+        "the pressure is too low",
+        "products are formed too fast"
+      ],
+      "answer": 1,
+      "solution": "An **effective collision** needs two things at once: energy equal to or greater than the threshold energy, and the correct orientation so that the bonds that must break and form are brought together.\n\nMost collisions fail on one or both counts, which is why the rate is far smaller than the collision frequency."
+    },
+    {
+      "id": "tn12c-kin-10",
+      "chapter": "Chemical Kinetics",
+      "topic": "First order kinetics",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A first order reaction has a rate constant of $0.0693\\,\\mathrm{min^{-1}}$. Find its half-life in minutes.",
+      "answer": 10,
+      "tolerance": 0.1,
+      "solution": "$t_{1/2} = \\dfrac{0.693}{k} = \\dfrac{0.693}{0.0693} = \\mathbf{10}$ **minutes**."
+    },
+    {
+      "id": "tn12c-kin-11",
+      "chapter": "Chemical Kinetics",
+      "topic": "First order kinetics",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A first order reaction is 75% complete in 60 minutes. Find its half-life in minutes.",
+      "answer": 30,
+      "tolerance": 0.5,
+      "solution": "75% complete means $\\dfrac{1}{4}$ of the reactant is left, which is two half-lives: $100 \\rightarrow 50 \\rightarrow 25$.\n\nSo $2\\,t_{1/2} = 60$ min and $t_{1/2} = \\mathbf{30}$ **minutes**.\n\nThe same result follows from $k = \\dfrac{2.303}{60}\\log 4 = 0.0231\\,\\mathrm{min^{-1}}$ and $t_{1/2} = 0.693/0.0231 = 30$ min."
+    },
+    {
+      "id": "tn12c-kin-12",
+      "chapter": "Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "numeric",
+      "marks": 2,
+      "q": "For a reaction rate $= k[A]^2$. By what factor does the rate increase when the concentration of $A$ is tripled?",
+      "answer": 9,
+      "tolerance": 0.1,
+      "solution": "New rate $= k(3[A])^2 = 9k[A]^2$.\n\nThe rate increases **9 times**."
+    },
+    {
+      "id": "tn12c-kin-13",
+      "chapter": "Chemical Kinetics",
+      "topic": "Zero order kinetics",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A zero order reaction has $k = 0.02\\,\\mathrm{mol\\,L^{-1}\\,min^{-1}}$ and an initial concentration of $0.5\\,\\mathrm{mol\\,L^{-1}}$. How many minutes does it take for the reactant to be used up completely?",
+      "answer": 25,
+      "tolerance": 0.1,
+      "solution": "For zero order, $[A] = [A]_0 - kt$.\n\nComplete when $[A] = 0$: $t = \\dfrac{[A]_0}{k} = \\dfrac{0.5}{0.02} = \\mathbf{25}$ **minutes**.\n\nNote that a zero order reaction does run to completion in finite time, unlike a first order one."
+    },
+    {
+      "id": "tn12c-kin-14",
+      "chapter": "Chemical Kinetics",
+      "topic": "Temperature dependence",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The rate of a reaction doubles for every $10\\,^\\circ\\mathrm{C}$ rise in temperature. By what factor does the rate increase when the temperature is raised from $30\\,^\\circ\\mathrm{C}$ to $70\\,^\\circ\\mathrm{C}$?",
+      "answer": 16,
+      "tolerance": 0.1,
+      "solution": "The rise is $40\\,^\\circ\\mathrm{C}$, which is four steps of $10\\,^\\circ\\mathrm{C}$.\n\nFactor $= 2^4 = \\mathbf{16}$."
+    },
+    {
+      "id": "tn12c-kin-15",
+      "chapter": "Chemical Kinetics",
+      "topic": "Integrated rate law",
+      "type": "long",
+      "marks": 5,
+      "q": "Derive the integrated rate equation for a first order reaction. Show that the time taken for 99.9% completion is about ten times its half-life.",
+      "solution": "**Derivation.** For $A \\rightarrow$ products, rate $= -\\dfrac{d[A]}{dt} = k[A]$.\n\nSeparate the variables: $\\dfrac{d[A]}{[A]} = -k\\,dt$.\n\nIntegrate from $[A]_0$ at $t = 0$ to $[A]$ at time $t$: $\\ln\\dfrac{[A]}{[A]_0} = -kt$, which gives\n\n$$k = \\frac{2.303}{t}\\log\\frac{[A]_0}{[A]}$$\n\n**Half-life.** At $t_{1/2}$, $[A] = \\dfrac{[A]_0}{2}$, so $t_{1/2} = \\dfrac{2.303}{k}\\log 2 = \\dfrac{0.693}{k}$.\n\n**99.9% completion.** Then $[A] = \\dfrac{[A]_0}{1000}$, so $t_{99.9} = \\dfrac{2.303}{k}\\log 1000 = \\dfrac{2.303 \\times 3}{k} = \\dfrac{6.909}{k}$.\n\n**Ratio.** $\\dfrac{t_{99.9}}{t_{1/2}} = \\dfrac{6.909}{0.693} \\approx 10$.\n\nSo 99.9% completion takes about **ten half-lives**, which agrees with $\\left(\\dfrac{1}{2}\\right)^{10} = \\dfrac{1}{1024} \\approx 0.1\\%$ remaining."
+    }
+  ]
+}
