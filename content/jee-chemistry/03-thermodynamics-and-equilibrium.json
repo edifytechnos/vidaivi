@@ -1,0 +1,238 @@
+{
+  "id": "lib-jeec-thq",
+  "title": "Thermodynamics and Equilibrium",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeec-thq-01",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Enthalpy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For an exothermic reaction:",
+      "options": [
+        "$\\Delta H > 0$",
+        "$\\Delta H < 0$",
+        "$\\Delta H = 0$",
+        "$\\Delta S < 0$ always"
+      ],
+      "answer": 1,
+      "solution": "An exothermic reaction **releases** heat to the surroundings, so the system's enthalpy falls: $\\mathbf{\\Delta H < 0}$.\n\nCombustion and neutralisation are exothermic; most decompositions are endothermic, with $\\Delta H > 0$."
+    },
+    {
+      "id": "jeec-thq-02",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Gibbs energy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A reaction is spontaneous at constant temperature and pressure when:",
+      "options": [
+        "$\\Delta H < 0$",
+        "$\\Delta S > 0$",
+        "$\\Delta G < 0$",
+        "$\\Delta G = 0$"
+      ],
+      "answer": 2,
+      "solution": "The criterion is $\\mathbf{\\Delta G < 0}$, where $\\Delta G = \\Delta H - T\\Delta S$.\n\nNeither $\\Delta H$ nor $\\Delta S$ decides on its own. Ice melting is endothermic yet spontaneous above $0^\\circ\\text{C}$, because the entropy term wins.\n\n$\\Delta G = 0$ is **equilibrium**."
+    },
+    {
+      "id": "jeec-thq-03",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Le Chatelier",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For $\\text{N}_2 + 3\\text{H}_2 \\rightleftharpoons 2\\text{NH}_3$, increasing the pressure shifts the equilibrium:",
+      "options": [
+        "To the left",
+        "To the right",
+        "No change",
+        "Depends on temperature only"
+      ],
+      "answer": 1,
+      "solution": "There are 4 moles of gas on the left and 2 on the right.\n\nBy Le Chatelier's principle, raising the pressure shifts the equilibrium towards the side with **fewer** gas molecules, which relieves the pressure. So it moves **to the right**, towards ammonia.\n\nThis is exactly why the Haber process runs at around 200 atm."
+    },
+    {
+      "id": "jeec-thq-04",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Equilibrium constant",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The relation between $K_p$ and $K_c$ is:",
+      "options": [
+        "$K_p = K_c$",
+        "$K_p = K_c(RT)^{\\Delta n}$",
+        "$K_p = K_c/RT$",
+        "$K_p = K_c + RT$"
+      ],
+      "answer": 1,
+      "solution": "$K_p = K_c(RT)^{\\Delta n}$, where $\\Delta n$ is the change in the number of **moles of gas**, products minus reactants.\n\nWhen $\\Delta n = 0$ the two are equal, as for $\\text{H}_2 + \\text{I}_2 \\rightleftharpoons 2\\text{HI}$."
+    },
+    {
+      "id": "jeec-thq-05",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "pH",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The pH of a $0.001\\ \\text{M}$ solution of a strong acid is:",
+      "options": [
+        "$1$",
+        "$2$",
+        "$3$",
+        "$11$"
+      ],
+      "answer": 2,
+      "solution": "A strong acid dissociates completely, so $[\\text{H}^{+}] = 10^{-3}\\ \\text{M}$.\n\n$\\text{pH} = -\\log[\\text{H}^{+}] = -\\log(10^{-3}) = \\mathbf{3}$."
+    },
+    {
+      "id": "jeec-thq-06",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Entropy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which process has a **positive** entropy change?",
+      "options": [
+        "Freezing of water",
+        "Condensation of steam",
+        "Sublimation of iodine",
+        "Crystallisation of a salt"
+      ],
+      "answer": 2,
+      "solution": "Entropy measures disorder, and it rises sharply when a substance becomes more gas-like.\n\n**Sublimation** takes iodine from a highly ordered solid straight to a gas, so $\\Delta S > 0$ and it is large.\n\nThe other three all go from a less ordered to a more ordered state, so $\\Delta S < 0$.\n\nGeneral order: $S_{\\text{gas}} \\gg S_{\\text{liquid}} > S_{\\text{solid}}$."
+    },
+    {
+      "id": "jeec-thq-07",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Hess's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Hess's law follows from the fact that enthalpy is:",
+      "options": [
+        "Always negative",
+        "A state function",
+        "A rate constant",
+        "Independent of temperature"
+      ],
+      "answer": 1,
+      "solution": "Enthalpy is a **state function**: its change depends only on the initial and final states, not on the route taken.\n\nSo a reaction's $\\Delta H$ is the same whether it happens in one step or ten, which is exactly what Hess's law asserts and what lets us add thermochemical equations together.\n\nIt is the chemist's version of the fact that the change in height between two places does not depend on the path walked."
+    },
+    {
+      "id": "jeec-thq-08",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Buffer",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A buffer solution typically contains:",
+      "options": [
+        "A strong acid and a strong base",
+        "A weak acid and its salt with a strong base",
+        "Only a weak acid",
+        "Two strong acids"
+      ],
+      "answer": 1,
+      "solution": "A buffer resists changes in pH, and needs a **weak acid and its conjugate base**, or a weak base and its conjugate acid. In practice that means a weak acid together with its salt, such as $\\text{CH}_3\\text{COOH}$ with $\\text{CH}_3\\text{COONa}$.\n\nThe weak acid neutralises added base and the conjugate base neutralises added acid, so both directions are covered.\n\nIts pH is given by the Henderson-Hasselbalch equation, $\\text{pH} = \\text{p}K_a + \\log\\dfrac{[\\text{salt}]}{[\\text{acid}]}$."
+    },
+    {
+      "id": "jeec-thq-09",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Le Chatelier",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Adding a catalyst to a system at equilibrium:",
+      "options": [
+        "Shifts it to the right",
+        "Shifts it to the left",
+        "Does not shift it, but equilibrium is reached sooner",
+        "Increases $K$"
+      ],
+      "answer": 2,
+      "solution": "A catalyst lowers the activation energy of the **forward and reverse** reactions by exactly the same amount, so both rates rise equally.\n\nThe position of equilibrium and the value of $K$ are **unchanged**. Only the time taken to get there is shorter.\n\nThis follows necessarily from $\\Delta G$ being a state function: a catalyst cannot change $\\Delta G$, and $\\Delta G^\\circ = -RT\\ln K$."
+    },
+    {
+      "id": "jeec-thq-10",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Gibbs energy",
+      "type": "numeric",
+      "marks": 3,
+      "q": "For a reaction, $\\Delta H = -100\\ \\text{kJ}$ and $\\Delta S = -200\\ \\mathrm{J\\,K^{-1}}$ at $300\\ \\text{K}$. Find $\\Delta G$, in kilojoules.",
+      "answer": -40,
+      "tolerance": 1,
+      "accept": [
+        "-40 kJ",
+        "-40.0"
+      ],
+      "solution": "Convert the entropy to kilojoules: $\\Delta S = -0.2\\ \\mathrm{kJ\\,K^{-1}}$.\n\n$\\Delta G = \\Delta H - T\\Delta S = -100 - (300)(-0.2)$\n\n$= -100 + 60 = \\mathbf{-40\\ \\text{kJ}}$\n\nNegative, so spontaneous at this temperature. Note that the two terms oppose each other here and the enthalpy wins, but at a high enough temperature the entropy term would take over and the reaction would stop being spontaneous."
+    },
+    {
+      "id": "jeec-thq-11",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "pH",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A solution has $[\\text{OH}^{-}] = 10^{-4}\\ \\text{M}$. Find its pH.",
+      "answer": 10,
+      "tolerance": 0.1,
+      "accept": [
+        "10",
+        "10.0"
+      ],
+      "solution": "$\\text{pOH} = -\\log(10^{-4}) = 4$\n\n$\\text{pH} + \\text{pOH} = 14$\n\n$\\text{pH} = 14 - 4 = \\mathbf{10}$, a basic solution as expected."
+    },
+    {
+      "id": "jeec-thq-12",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Equilibrium constant",
+      "type": "numeric",
+      "marks": 2,
+      "q": "For $\\text{PCl}_5 \\rightleftharpoons \\text{PCl}_3 + \\text{Cl}_2$, find $\\Delta n$ (moles of gas, products minus reactants).",
+      "answer": 1,
+      "tolerance": 0.1,
+      "accept": [
+        "1",
+        "+1"
+      ],
+      "solution": "Products: $\\text{PCl}_3 + \\text{Cl}_2 = 2$ moles of gas.\n\nReactants: $\\text{PCl}_5 = 1$ mole of gas.\n\n$\\Delta n = 2 - 1 = \\mathbf{1}$\n\nSo $K_p = K_c(RT)^{1} = K_cRT$, and raising the pressure would shift this equilibrium to the **left**."
+    },
+    {
+      "id": "jeec-thq-13",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Hess's law",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Given $\\text{A} \\rightarrow \\text{B}$ with $\\Delta H = +50\\ \\text{kJ}$, and $\\text{B} \\rightarrow \\text{C}$ with $\\Delta H = -80\\ \\text{kJ}$, find $\\Delta H$ for $\\text{A} \\rightarrow \\text{C}$, in kilojoules.",
+      "answer": -30,
+      "tolerance": 1,
+      "accept": [
+        "-30 kJ",
+        "-30.0"
+      ],
+      "solution": "By Hess's law the enthalpy changes simply add along the route:\n\n$\\Delta H = (+50) + (-80) = \\mathbf{-30\\ \\text{kJ}}$.\n\nThe overall reaction is exothermic even though the first step is endothermic."
+    },
+    {
+      "id": "jeec-thq-14",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Gibbs energy",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A reaction has $\\Delta H = +30\\ \\text{kJ}$ and $\\Delta S = +100\\ \\mathrm{J\\,K^{-1}}$. Above what temperature, in kelvin, does it become spontaneous?",
+      "answer": 300,
+      "tolerance": 2,
+      "accept": [
+        "300 K",
+        "300"
+      ],
+      "solution": "Spontaneity begins where $\\Delta G$ changes sign, that is at $\\Delta G = 0$:\n\n$0 = \\Delta H - T\\Delta S$\n\n$T = \\dfrac{\\Delta H}{\\Delta S} = \\dfrac{30}{0.1} = \\mathbf{300\\ \\text{K}}$.\n\nAbove $300\\ \\text{K}$ the $T\\Delta S$ term exceeds $\\Delta H$ and the reaction goes."
+    },
+    {
+      "id": "jeec-thq-15",
+      "chapter": "Thermodynamics and Equilibrium",
+      "topic": "Le Chatelier",
+      "type": "long",
+      "marks": 5,
+      "q": "State Le Chatelier's principle. Apply it to the industrial synthesis of ammonia, $\\text{N}_2(g) + 3\\text{H}_2(g) \\rightleftharpoons 2\\text{NH}_3(g)$ with $\\Delta H = -92\\ \\mathrm{kJ\\,mol^{-1}}$, to predict the effect of pressure, temperature and a catalyst. Explain why the temperature actually used is a compromise.",
+      "solution": "**The principle.** If a system at equilibrium is subjected to a change in concentration, pressure or temperature, the equilibrium shifts in the direction that **partially opposes** that change.\n\n**Pressure.** There are 4 moles of gas on the left and 2 on the right.\n\nRaising the pressure is opposed by reducing the number of gas molecules, so the equilibrium shifts **to the right**, increasing the yield of ammonia.\n\nSo a high pressure is wanted. In practice around **200 atm** is used. The limit is engineering and cost rather than chemistry, since vessels holding higher pressures become prohibitively expensive.\n\n**Temperature.** The forward reaction is **exothermic**, so heat may be treated as a product.\n\nRaising the temperature is opposed by absorbing heat, which shifts the equilibrium **to the left** and reduces the yield.\n\nSo for yield alone, the temperature should be as **low** as possible.\n\n**Catalyst.** Finely divided iron with promoters. It lowers the activation energy of both directions equally, so it **does not shift the equilibrium at all** and does not change $K$. What it does is get the system to equilibrium far sooner.\n\n**Why the temperature is a compromise.** This is the heart of the problem, and it is a conflict between **thermodynamics and kinetics**.\n\nThermodynamics says: use a low temperature, because the reaction is exothermic and a low temperature maximises the equilibrium yield.\n\nKinetics says: use a high temperature, because the $\\text{N}\\equiv\\text{N}$ triple bond is extremely strong, at $941\\ \\mathrm{kJ\\,mol^{-1}}$, and the activation energy is correspondingly large. At a genuinely low temperature the reaction is so slow that the equilibrium yield is irrelevant, because it would take years to approach it.\n\nA very high yield reached impossibly slowly is worthless to a factory. So the temperature chosen, about **$450^\\circ\\text{C}$**, is not the best for either consideration. It sacrifices a good deal of equilibrium yield, only some $15\\%$ conversion per pass, in exchange for reaching that equilibrium in seconds rather than years.\n\nThe low yield is then made acceptable by a separate trick that has nothing to do with the temperature effect: the ammonia is **condensed out** as it forms and the unreacted gases are **recycled**. Removing a product shifts the equilibrium right each time round, so the overall conversion is high even though each single pass is poor.\n\n**The general lesson.** Le Chatelier's principle tells you where the equilibrium lies. It says nothing whatever about how long it takes to get there. Industrial conditions are almost always set by both together, and the answer is usually a compromise that is optimal for neither."
+    }
+  ]
+}

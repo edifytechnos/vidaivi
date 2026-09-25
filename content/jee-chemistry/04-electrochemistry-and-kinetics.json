@@ -1,0 +1,238 @@
+{
+  "id": "lib-jeec-eck",
+  "title": "Electrochemistry and Chemical Kinetics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeec-eck-01",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Electrochemical cells",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a galvanic cell, oxidation occurs at the:",
+      "options": [
+        "Cathode",
+        "Anode",
+        "Salt bridge",
+        "Electrolyte"
+      ],
+      "answer": 1,
+      "solution": "Oxidation always occurs at the **anode** and reduction at the cathode, in every electrochemical cell.\n\nWhat changes between a galvanic and an electrolytic cell is the **sign**: the anode is negative in a galvanic cell and positive in an electrolytic one.\n\nThe mnemonic is **an ox, red cat**: **an**ode = **ox**idation, **red**uction = **cat**hode."
+    },
+    {
+      "id": "jeec-eck-02",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Nernst equation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Nernst equation at $298\\ \\text{K}$ is $E = E^\\circ - \\dfrac{0.059}{n}\\log Q$. At equilibrium:",
+      "options": [
+        "$E = E^\\circ$",
+        "$E = 0$",
+        "$Q = 0$",
+        "$E^\\circ = 0$"
+      ],
+      "answer": 1,
+      "solution": "At equilibrium the cell is **dead** and no longer drives current, so $\\mathbf{E = 0}$.\n\nSetting $E = 0$ gives $E^\\circ = \\dfrac{0.059}{n}\\log K$, which is how the equilibrium constant is obtained from standard electrode potentials.\n\nThis is what happens to a battery when it goes flat."
+    },
+    {
+      "id": "jeec-eck-03",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For a first-order reaction, the half-life:",
+      "options": [
+        "Depends on the initial concentration",
+        "Is independent of the initial concentration",
+        "Doubles with concentration",
+        "Is zero"
+      ],
+      "answer": 1,
+      "solution": "For first order, $t_{1/2} = \\dfrac{0.693}{k}$ — it contains **only** the rate constant.\n\nSo the half-life is **independent of the starting concentration**: a sample takes just as long to fall from 100 to 50 as from 50 to 25.\n\nThis is the distinguishing feature of first-order kinetics, and it is why radioactive decay has a fixed half-life."
+    },
+    {
+      "id": "jeec-eck-04",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Arrhenius equation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "According to the Arrhenius equation, raising the temperature increases the rate constant because it:",
+      "options": [
+        "Lowers the activation energy",
+        "Increases the fraction of molecules with energy above $E_a$",
+        "Changes the order",
+        "Increases the equilibrium constant"
+      ],
+      "answer": 1,
+      "solution": "$k = Ae^{-E_a/RT}$.\n\nRaising $T$ does **not** change $E_a$, which is fixed by the reaction path. What it changes is the Boltzmann factor $e^{-E_a/RT}$, so a much larger **fraction of molecules** has enough energy to get over the barrier.\n\nOnly a catalyst lowers $E_a$, by providing a different path altogether."
+    },
+    {
+      "id": "jeec-eck-05",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Faraday's laws",
+      "type": "mcq",
+      "marks": 1,
+      "q": "One faraday of charge is approximately:",
+      "options": [
+        "$96500\\ \\text{C}$",
+        "$1.6\\times10^{-19}\\ \\text{C}$",
+        "$6.022\\times10^{23}\\ \\text{C}$",
+        "$9650\\ \\text{C}$"
+      ],
+      "answer": 0,
+      "solution": "$1\\ \\text{F} = N_A \\times e = 6.022\\times10^{23} \\times 1.6\\times10^{-19} \\approx \\mathbf{96500\\ \\text{C}}$.\n\nIt is the charge carried by **one mole of electrons**, and it is what deposits one mole of a monovalent metal in electrolysis."
+    },
+    {
+      "id": "jeec-eck-06",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Conductance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "On dilution, the **molar** conductivity of a strong electrolyte:",
+      "options": [
+        "Decreases",
+        "Increases slightly",
+        "Increases sharply",
+        "Stays exactly constant"
+      ],
+      "answer": 1,
+      "solution": "Molar conductivity $\\Lambda_m$ **increases slightly** on dilution for a strong electrolyte, because the ions are already fully dissociated and only the inter-ionic attractions ease.\n\nIt follows the Debye-Huckel-Onsager relation $\\Lambda_m = \\Lambda_m^\\circ - A\\sqrt{c}$, a straight line against $\\sqrt{c}$.\n\nA **weak** electrolyte behaves quite differently: dilution increases the degree of dissociation, so $\\Lambda_m$ rises **sharply** and the extrapolation to zero concentration fails — which is why Kohlrausch's law is needed for those."
+    },
+    {
+      "id": "jeec-eck-07",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The rate law for a reaction is $\\text{rate} = k[\\text{A}]^{2}[\\text{B}]$. The overall order is:",
+      "options": [
+        "$1$",
+        "$2$",
+        "$3$",
+        "$0$"
+      ],
+      "answer": 2,
+      "solution": "The overall order is the **sum** of the exponents in the rate law:\n\n$2 + 1 = \\mathbf{3}$.\n\nNote that order is found **experimentally** and need not match the stoichiometric coefficients, and it may be fractional or zero. Molecularity, by contrast, applies only to an elementary step and is always a small positive integer."
+    },
+    {
+      "id": "jeec-eck-08",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Electrochemical cells",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The standard hydrogen electrode is assigned a potential of:",
+      "options": [
+        "$1.0\\ \\text{V}$",
+        "$0.0\\ \\text{V}$",
+        "$-1.0\\ \\text{V}$",
+        "$0.059\\ \\text{V}$"
+      ],
+      "answer": 1,
+      "solution": "The standard hydrogen electrode is **defined** as $\\mathbf{0.00\\ \\text{V}}$ at all temperatures.\n\nThis is a convention, not a measurement. A single electrode potential cannot be measured in isolation — only a **difference** between two electrodes can — so one electrode has to be fixed arbitrarily as the reference, and every other potential is quoted against it."
+    },
+    {
+      "id": "jeec-eck-09",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Catalysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A catalyst increases the reaction rate by:",
+      "options": [
+        "Increasing the collision frequency",
+        "Providing an alternative path of lower activation energy",
+        "Raising the temperature",
+        "Shifting the equilibrium"
+      ],
+      "answer": 1,
+      "solution": "A catalyst provides an **alternative reaction path with a lower activation energy**.\n\nIt does not change $\\Delta H$, $\\Delta G$ or the equilibrium constant, and it lowers the barrier for the forward and reverse reactions by the same amount.\n\nA catalyst is also recovered chemically unchanged at the end, though it may be physically altered — which is why catalyst surfaces become pitted."
+    },
+    {
+      "id": "jeec-eck-10",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A first-order reaction has $k = 0.0693\\ \\mathrm{min^{-1}}$. Find its half-life, in minutes.",
+      "answer": 10,
+      "tolerance": 0.2,
+      "accept": [
+        "10 min",
+        "10.0"
+      ],
+      "solution": "$t_{1/2} = \\dfrac{0.693}{k} = \\dfrac{0.693}{0.0693} = \\mathbf{10\\ \\text{minutes}}$."
+    },
+    {
+      "id": "jeec-eck-11",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Faraday's laws",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the mass of copper, in grams, deposited by $96500\\ \\text{C}$ from a $\\text{Cu}^{2+}$ solution. (Atomic mass of Cu $= 63.5$.)",
+      "answer": 31.75,
+      "tolerance": 0.2,
+      "accept": [
+        "31.75",
+        "31.8"
+      ],
+      "solution": "$\\text{Cu}^{2+} + 2e^{-} \\rightarrow \\text{Cu}$, so **two** moles of electrons deposit one mole of copper.\n\n$96500\\ \\text{C} = 1\\ \\text{F} = 1$ mole of electrons, which deposits $\\dfrac{1}{2}$ mole of copper.\n\nMass $= \\dfrac{63.5}{2} = \\mathbf{31.75\\ \\text{g}}$.\n\nThe quantity $\\dfrac{63.5}{2}$ is the equivalent mass of copper."
+    },
+    {
+      "id": "jeec-eck-12",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Nernst equation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A cell has $E^\\circ = 1.10\\ \\text{V}$, $n = 2$ and $\\log Q = 2$ at $298\\ \\text{K}$. Find $E$, in volts, to two decimal places.",
+      "answer": 1.04,
+      "tolerance": 0.01,
+      "accept": [
+        "1.04",
+        "1.041"
+      ],
+      "solution": "$E = E^\\circ - \\dfrac{0.059}{n}\\log Q$\n\n$= 1.10 - \\dfrac{0.059}{2}(2)$\n\n$= 1.10 - 0.059 = 1.041$\n\n$\\approx \\mathbf{1.04\\ \\text{V}}$.\n\nThe potential falls because $Q > 1$ means products have accumulated, pushing the cell towards equilibrium."
+    },
+    {
+      "id": "jeec-eck-13",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a first-order reaction, how many half-lives are needed for the concentration to fall to one-eighth of its initial value?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3"
+      ],
+      "solution": "Each half-life halves the concentration:\n\n$1 \\rightarrow \\dfrac{1}{2} \\rightarrow \\dfrac{1}{4} \\rightarrow \\dfrac{1}{8}$\n\nThat is $\\mathbf{3}$ half-lives, since $\\left(\\dfrac{1}{2}\\right)^{3} = \\dfrac{1}{8}$."
+    },
+    {
+      "id": "jeec-eck-14",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Arrhenius equation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "For many reactions near room temperature, a $10\\ \\text{K}$ rise roughly multiplies the rate by what factor?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2",
+        "2-3",
+        "doubles"
+      ],
+      "solution": "A rough rule of thumb is that the rate of many reactions near room temperature **doubles** for every $10\\ \\text{K}$ rise, so the factor is about $\\mathbf{2}$ (often quoted as 2 to 3).\n\nIt is only a rule of thumb, and it follows from the Arrhenius factor $e^{-E_a/RT}$ for a typical activation energy of around $50\\ \\mathrm{kJ\\,mol^{-1}}$. A reaction with a very different $E_a$ does not obey it."
+    },
+    {
+      "id": "jeec-eck-15",
+      "chapter": "Electrochemistry and Chemical Kinetics",
+      "topic": "Order of reaction",
+      "type": "long",
+      "marks": 5,
+      "q": "Derive the integrated rate law for a first-order reaction, and hence obtain its half-life. Explain how a graph is used to confirm that a reaction is first order, and why the half-life being concentration-independent is the distinguishing test.",
+      "solution": "**The rate law.** For a first-order reaction $\\text{A} \\rightarrow$ products,\n\n$\\text{rate} = -\\dfrac{d[\\text{A}]}{dt} = k[\\text{A}]$\n\n**Separating the variables.**\n\n$\\dfrac{d[\\text{A}]}{[\\text{A}]} = -k\\,dt$\n\n**Integrating** from the initial concentration $[\\text{A}]_0$ at $t = 0$ to $[\\text{A}]$ at time $t$:\n\n$\\int_{[\\text{A}]_0}^{[\\text{A}]}\\dfrac{d[\\text{A}]}{[\\text{A}]} = -k\\int_{0}^{t}dt$\n\n$\\ln[\\text{A}] - \\ln[\\text{A}]_0 = -kt$\n\n$\\boxed{\\ln\\dfrac{[\\text{A}]_0}{[\\text{A}]} = kt}$\n\nor equivalently $[\\text{A}] = [\\text{A}]_0e^{-kt}$, and in base ten\n\n$k = \\dfrac{2.303}{t}\\log\\dfrac{[\\text{A}]_0}{[\\text{A}]}$\n\n**The half-life.** By definition, at $t = t_{1/2}$ the concentration has fallen to $\\dfrac{[\\text{A}]_0}{2}$:\n\n$\\ln\\dfrac{[\\text{A}]_0}{[\\text{A}]_0/2} = kt_{1/2}$\n\n$\\ln 2 = kt_{1/2}$\n\n$\\boxed{t_{1/2} = \\dfrac{0.693}{k}}$\n\n**Confirming first order graphically.** Rearrange the integrated law:\n\n$\\ln[\\text{A}] = -kt + \\ln[\\text{A}]_0$\n\nThis has the form $y = mx + c$. So plot $\\ln[\\text{A}]$ against $t$:\n\n- a **straight line** confirms first order;\n- the **slope** is $-k$, giving the rate constant;\n- the **intercept** is $\\ln[\\text{A}]_0$.\n\nIf instead a plot of $[\\text{A}]$ against $t$ is linear the reaction is zero order, and if $\\dfrac{1}{[\\text{A}]}$ against $t$ is linear it is second order. Trying all three and seeing which is straight is the standard method.\n\n**Why the constant half-life is the distinguishing test.**\n\nNotice what is **absent** from $t_{1/2} = \\dfrac{0.693}{k}$: the initial concentration. It contains only the rate constant.\n\nCompare the other orders:\n\nZero order: $t_{1/2} = \\dfrac{[\\text{A}]_0}{2k}$, so it is **proportional** to the starting concentration.\n\nSecond order: $t_{1/2} = \\dfrac{1}{k[\\text{A}]_0}$, so it is **inversely proportional** to it.\n\nFirst order is the only case where the half-life does not move at all. That makes it a powerful practical test: take a single decay curve and measure the time for the concentration to halve at several different points along it. If every one of those times is the same, the reaction is first order — and no measurement of absolute concentration, and no calibration of the instrument, is needed to establish it. Only times have to be read off.\n\nThis is precisely why radioactive decay, which is strictly first order, is described by a half-life at all, and why carbon dating works: the $5730$ years does not depend on how much carbon-14 was there to begin with."
+    }
+  ]
+}

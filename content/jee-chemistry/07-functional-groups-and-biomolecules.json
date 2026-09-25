@@ -1,0 +1,233 @@
+{
+  "id": "lib-jeec-fun",
+  "title": "Organic Functional Groups and Biomolecules",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeec-fun-01",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Alcohols and phenols",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Phenol is more acidic than ethanol because:",
+      "options": [
+        "Phenol is larger",
+        "The phenoxide ion is resonance-stabilised",
+        "Ethanol has more hydrogens",
+        "Phenol is aromatic"
+      ],
+      "answer": 1,
+      "solution": "When phenol loses its proton the resulting **phenoxide** ion has its negative charge delocalised into the benzene ring over three carbons, which stabilises it considerably.\n\nAn ethoxide ion has no such delocalisation — the charge sits entirely on the oxygen.\n\nA more stable conjugate base means a stronger acid: phenol is about $\\text{p}K_a\\ 10$ against ethanol's $16$, a difference of a million times.\n\nElectron-withdrawing groups on the ring stabilise the anion further, which is why 2,4,6-trinitrophenol (picric acid) is a genuinely strong acid."
+    },
+    {
+      "id": "jeec-fun-02",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Carbonyl compounds",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Aldehydes are more reactive than ketones towards nucleophilic addition because:",
+      "options": [
+        "Aldehydes are smaller only",
+        "Ketones have two electron-releasing alkyl groups and more steric hindrance",
+        "Aldehydes are acidic",
+        "Ketones have no carbonyl group"
+      ],
+      "answer": 1,
+      "solution": "Two effects work in the same direction.\n\n**Electronic:** a ketone has **two** alkyl groups releasing electron density ($+\\text{I}$) into the carbonyl carbon, reducing its partial positive charge and so its attraction for a nucleophile. An aldehyde has only one.\n\n**Steric:** two alkyl groups also crowd the carbon more, hindering the nucleophile's approach.\n\nSo reactivity runs $\\text{HCHO} > \\text{RCHO} > \\text{RCOR}'$, with formaldehyde the most reactive of all since it has no alkyl group at all."
+    },
+    {
+      "id": "jeec-fun-03",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Amines",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In **aqueous** solution, the order of basicity of methylamines is:",
+      "options": [
+        "$3^\\circ > 2^\\circ > 1^\\circ$",
+        "$2^\\circ > 1^\\circ > 3^\\circ$",
+        "$1^\\circ > 2^\\circ > 3^\\circ$",
+        "All equal"
+      ],
+      "answer": 1,
+      "solution": "In water the observed order is $\\mathbf{2^\\circ > 1^\\circ > 3^\\circ}$, which is not what the inductive effect alone would predict.\n\nThree factors compete:\n\n**$+\\text{I}$ effect** — more alkyl groups push more electron density onto nitrogen, favouring $3^\\circ > 2^\\circ > 1^\\circ$.\n\n**Solvation** — the protonated ion is stabilised by hydrogen bonding to water, and more alkyl groups leave fewer N-H bonds to hydrogen bond with, favouring $1^\\circ > 2^\\circ > 3^\\circ$.\n\n**Steric hindrance** — bulky groups obstruct protonation, penalising $3^\\circ$.\n\nThe compromise puts secondary first. **In the gas phase, with no solvent, the order is the pure inductive one:** $3^\\circ > 2^\\circ > 1^\\circ$ — which is the cleanest possible demonstration that solvation is what causes the anomaly."
+    },
+    {
+      "id": "jeec-fun-04",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Carboxylic acids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which is the strongest acid?",
+      "options": [
+        "$\\text{CH}_3\\text{COOH}$",
+        "$\\text{ClCH}_2\\text{COOH}$",
+        "$\\text{Cl}_2\\text{CHCOOH}$",
+        "$\\text{Cl}_3\\text{CCOOH}$"
+      ],
+      "answer": 3,
+      "solution": "Chlorine is electronegative and withdraws electron density through the sigma bonds ($-\\text{I}$ effect), which **disperses** the negative charge on the carboxylate ion and stabilises it.\n\nMore chlorines means more stabilisation and a stronger acid:\n\n$\\text{Cl}_3\\text{CCOOH} > \\text{Cl}_2\\text{CHCOOH} > \\text{ClCH}_2\\text{COOH} > \\text{CH}_3\\text{COOH}$\n\nTrichloroacetic acid has $\\text{p}K_a\\ 0.7$ against acetic acid's $4.76$ — about ten thousand times stronger.\n\nThe inductive effect falls off sharply with distance, so a chlorine three carbons away has almost no effect."
+    },
+    {
+      "id": "jeec-fun-05",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Biomolecules",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The bond linking two amino acids in a protein is:",
+      "options": [
+        "A glycosidic bond",
+        "A peptide bond",
+        "An ester bond",
+        "A phosphodiester bond"
+      ],
+      "answer": 1,
+      "solution": "A **peptide bond** is an amide linkage, $-\\text{CO}-\\text{NH}-$, formed by condensation between the carboxyl group of one amino acid and the amino group of the next, with the loss of water.\n\nIt has partial double-bond character from resonance, which makes it **planar and rigid** — and that rigidity is what makes defined protein secondary structures such as the alpha helix possible.\n\nA glycosidic bond joins sugars, an ester bond appears in fats, and a phosphodiester bond links nucleotides in DNA."
+    },
+    {
+      "id": "jeec-fun-06",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Haloalkanes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Aryl halides such as chlorobenzene are much less reactive towards nucleophilic substitution than alkyl halides because:",
+      "options": [
+        "They are larger",
+        "The C-Cl bond has partial double-bond character from resonance",
+        "They have no halogen",
+        "They are aromatic only"
+      ],
+      "answer": 1,
+      "solution": "A lone pair on the chlorine is delocalised into the ring, giving the **C-Cl bond partial double-bond character**. It is therefore shorter and stronger and much harder to break.\n\nThe $sp^{2}$ carbon is also more electronegative than an $sp^{3}$ one, holding the bond more tightly, and the ring's pi cloud repels an approaching nucleophile.\n\nSubstitution is possible but needs forcing conditions, such as $623\\ \\text{K}$ and $300\\ \\text{atm}$ for the Dow process — or strong electron-withdrawing groups ortho and para to the halogen, which is why 2,4-dinitrochlorobenzene reacts readily."
+    },
+    {
+      "id": "jeec-fun-07",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Carbonyl compounds",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which compound will **not** give the iodoform test?",
+      "options": [
+        "Ethanal",
+        "Propanone",
+        "Ethanol",
+        "Propanal"
+      ],
+      "answer": 3,
+      "solution": "The iodoform test is positive for a **methyl ketone** ($\\text{CH}_3\\text{CO}-$) or an alcohol oxidisable to one ($\\text{CH}_3\\text{CH(OH)}-$).\n\nEthanal is $\\text{CH}_3\\text{CHO}$ ✓, propanone is $\\text{CH}_3\\text{COCH}_3$ ✓, ethanol is $\\text{CH}_3\\text{CH}_2\\text{OH}$ ✓.\n\n**Propanal** is $\\text{CH}_3\\text{CH}_2\\text{CHO}$ — the carbon next to the carbonyl is a $\\text{CH}_2$, not a $\\text{CH}_3$, so there is no methyl ketone group and the test is **negative**.\n\nThis is the standard way of telling propanal from propanone."
+    },
+    {
+      "id": "jeec-fun-08",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Biomolecules",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Amino acids exist in solution mainly as:",
+      "options": [
+        "Neutral molecules",
+        "Zwitterions",
+        "Free radicals",
+        "Esters"
+      ],
+      "answer": 1,
+      "solution": "An amino acid has both an acidic $-\\text{COOH}$ and a basic $-\\text{NH}_2$ group, so an internal proton transfer occurs, giving a **zwitterion**: $\\text{H}_3\\text{N}^{+}-\\text{CHR}-\\text{COO}^{-}$.\n\nThe molecule carries both charges and is electrically neutral overall.\n\nThis explains properties that would otherwise be puzzling for small organic molecules: high melting points, solubility in water rather than organic solvents, and behaviour like an ionic solid.\n\nThe pH at which the zwitterion concentration is greatest, and the molecule does not migrate in an electric field, is the **isoelectric point**."
+    },
+    {
+      "id": "jeec-fun-09",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Alcohols and phenols",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Oxidation of a secondary alcohol gives:",
+      "options": [
+        "An aldehyde",
+        "A ketone",
+        "A carboxylic acid",
+        "An ester"
+      ],
+      "answer": 1,
+      "solution": "A secondary alcohol has one hydrogen on the carbinol carbon, so oxidation gives a **ketone** — and stops there, since further oxidation would require breaking a C-C bond.\n\nA **primary** alcohol goes to an aldehyde and then on to a carboxylic acid, which is why a mild reagent such as PCC is needed to stop at the aldehyde.\n\nA **tertiary** alcohol has no hydrogen on that carbon and resists oxidation altogether under ordinary conditions."
+    },
+    {
+      "id": "jeec-fun-10",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Biomolecules",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many amino acids are commonly found in proteins?",
+      "answer": 20,
+      "tolerance": 0.5,
+      "accept": [
+        "20"
+      ],
+      "solution": "**20** standard amino acids are encoded by the genetic code and make up essentially all proteins.\n\nOf these, nine are **essential** in humans — they cannot be synthesised by the body and must come from the diet."
+    },
+    {
+      "id": "jeec-fun-11",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Carboxylic acids",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many carbon atoms are there in acetic acid, $\\text{CH}_3\\text{COOH}$?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "One carbon in the methyl group and one in the carboxyl group: $\\mathbf{2}$ carbon atoms.\n\nIts molecular formula is $\\text{C}_2\\text{H}_4\\text{O}_2$, with a molar mass of $60\\ \\mathrm{g\\,mol^{-1}}$."
+    },
+    {
+      "id": "jeec-fun-12",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Biomolecules",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A tripeptide is formed from three amino acids. How many molecules of water are released?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "Each peptide bond is formed by a condensation releasing one water molecule.\n\nThree amino acids in a chain need $3 - 1 = \\mathbf{2}$ peptide bonds, so **2** water molecules are released.\n\nIn general, a polypeptide of $n$ residues releases $(n-1)$ waters."
+    },
+    {
+      "id": "jeec-fun-13",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Carbonyl compounds",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many alpha hydrogens does propanone, $\\text{CH}_3\\text{COCH}_3$, have?",
+      "answer": 6,
+      "tolerance": 0.5,
+      "accept": [
+        "6"
+      ],
+      "solution": "The alpha carbons are the two methyl carbons flanking the carbonyl, and each carries three hydrogens.\n\n$2 \\times 3 = \\mathbf{6}$ alpha hydrogens.\n\nThese are the acidic hydrogens that make aldol condensation and the iodoform reaction possible."
+    },
+    {
+      "id": "jeec-fun-14",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Biomolecules",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Glucose has the molecular formula $\\text{C}_6\\text{H}_{12}\\text{O}_6$. How many chiral carbon atoms does the open-chain form contain?",
+      "answer": 4,
+      "tolerance": 0.5,
+      "accept": [
+        "4"
+      ],
+      "solution": "Open-chain glucose is an aldohexose: C1 is the aldehyde, C6 is a $\\text{CH}_2\\text{OH}$, and C2 to C5 each bear four different groups.\n\nSo there are $\\mathbf{4}$ chiral carbons, giving $2^{4} = 16$ stereoisomers of which glucose is one.\n\nOn cyclisation C1 becomes chiral too, which is what creates the alpha and beta anomers."
+    },
+    {
+      "id": "jeec-fun-15",
+      "chapter": "Organic Functional Groups and Biomolecules",
+      "topic": "Amines",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain why the basicity of aliphatic amines in aqueous solution follows the order $2^\\circ > 1^\\circ > 3^\\circ$, while in the gas phase it follows $3^\\circ > 2^\\circ > 1^\\circ$. Also explain why aromatic amines such as aniline are far weaker bases than aliphatic ones.",
+      "solution": "**What basicity depends on.** An amine is basic because the lone pair on nitrogen accepts a proton. Anything that makes that lone pair more available, or makes the resulting ammonium ion more stable, increases basicity.\n\n**The gas phase first, because it is the simpler case.**\n\nWith no solvent, only the **inductive effect** operates. Each alkyl group releases electron density ($+\\text{I}$) onto the nitrogen, making the lone pair more available and stabilising the positive charge on the protonated ion.\n\nMore alkyl groups therefore means more basic:\n\n$3^\\circ > 2^\\circ > 1^\\circ > \\text{NH}_3$\n\nThis is the order actually measured in the gas phase, and it is exactly what the inductive effect predicts on its own.\n\n**In water, two further factors appear.**\n\n**Solvation.** The protonated amine $\\text{R}_n\\text{NH}_{(4-n)}^{+}$ is stabilised by **hydrogen bonding** to surrounding water molecules, and that stabilisation needs **N-H bonds** to donate from. Count them:\n\n$1^\\circ$ ammonium $\\text{RNH}_3^{+}$: three N-H bonds\n\n$2^\\circ$ ammonium $\\text{R}_2\\text{NH}_2^{+}$: two\n\n$3^\\circ$ ammonium $\\text{R}_3\\text{NH}^{+}$: one\n\nSo solvation favours exactly the **opposite** order: $1^\\circ > 2^\\circ > 3^\\circ$.\n\n**Steric hindrance.** Three bulky alkyl groups physically obstruct the approach of a proton and of solvating water molecules, penalising $3^\\circ$ specifically.\n\n**The compromise.** Going from $1^\\circ$ to $2^\\circ$, the gain from the added $+\\text{I}$ effect outweighs the loss of one hydrogen bond, so basicity rises. Going from $2^\\circ$ to $3^\\circ$, the loss of solvation plus the steric penalty outweighs the further inductive gain, so basicity falls.\n\nThe result is $\\mathbf{2^\\circ > 1^\\circ > 3^\\circ}$.\n\n**Why the two orders differ is itself the evidence.** The gas-phase order is the pure inductive prediction; the aqueous order deviates from it. Since the only thing added is the solvent, **solvation must be the cause** of the deviation. This is about as clean a controlled experiment as physical organic chemistry offers.\n\n**Aromatic amines.** Aniline, $\\text{C}_6\\text{H}_5\\text{NH}_2$, has $\\text{p}K_b \\approx 9.4$ against methylamine's $3.4$ — roughly a million times less basic.\n\nThe reason is **resonance**. The nitrogen lone pair is delocalised into the benzene ring, spreading onto the ortho and para carbons. That lone pair is therefore **not fully available** to accept a proton.\n\nProtonating it would also **destroy** that delocalisation and lose the stabilisation it provides, so the anilinium ion is relatively unstable. The $-\\text{I}$ effect of the $sp^{2}$ ring carbon pulls in the same direction.\n\nSubstituents confirm the mechanism: electron-**withdrawing** groups such as $-\\text{NO}_2$ pull the lone pair away even further and make aniline weaker still, while electron-**releasing** groups such as $-\\text{CH}_3$ make it slightly stronger. That the effect tracks the ring's electron density so predictably is what shows resonance into the ring is responsible."
+    }
+  ]
+}

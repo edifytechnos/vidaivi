@@ -1,0 +1,236 @@
+{
+  "id": "lib-jeec-coo",
+  "title": "Coordination Compounds, Solutions and the Solid State",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeec-coo-01",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Coordination compounds",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The oxidation state of cobalt in $[\\text{Co}(\\text{NH}_3)_6]\\text{Cl}_3$ is:",
+      "options": [
+        "$+1$",
+        "$+2$",
+        "$+3$",
+        "$0$"
+      ],
+      "answer": 2,
+      "solution": "Ammonia is a **neutral** ligand and there are three chloride counter-ions outside the coordination sphere, each $-1$.\n\nSo the complex ion is $[\\text{Co}(\\text{NH}_3)_6]^{3+}$, and since the ligands contribute nothing:\n\n$x + 6(0) = +3 \\Rightarrow x = \\mathbf{+3}$."
+    },
+    {
+      "id": "jeec-coo-02",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Crystal field theory",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In an octahedral field, the $d$ orbitals split into:",
+      "options": [
+        "$t_{2g}$ (lower) and $e_g$ (higher)",
+        "$e_g$ (lower) and $t_{2g}$ (higher)",
+        "Three equal sets",
+        "No splitting"
+      ],
+      "answer": 0,
+      "solution": "In an **octahedral** field the ligands approach along the $x$, $y$ and $z$ axes.\n\nThe $e_g$ orbitals ($d_{z^{2}}$ and $d_{x^{2}-y^{2}}$) point **directly at** the ligands, so they are repelled more and rise in energy. The $t_{2g}$ orbitals ($d_{xy}$, $d_{yz}$, $d_{zx}$) point **between** the ligands and fall.\n\nSo $t_{2g}$ is lower and $e_g$ higher, separated by $\\Delta_o$.\n\nIn a **tetrahedral** field the arrangement is reversed, and $\\Delta_t \\approx \\dfrac{4}{9}\\Delta_o$ — which is why tetrahedral complexes are almost always high spin."
+    },
+    {
+      "id": "jeec-coo-03",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Coordination compounds",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which ligand is a **strong field** ligand?",
+      "options": [
+        "$\\text{I}^{-}$",
+        "$\\text{H}_2\\text{O}$",
+        "$\\text{CN}^{-}$",
+        "$\\text{F}^{-}$"
+      ],
+      "answer": 2,
+      "solution": "The spectrochemical series runs, in part:\n\n$\\text{I}^{-} < \\text{Br}^{-} < \\text{Cl}^{-} < \\text{F}^{-} < \\text{H}_2\\text{O} < \\text{NH}_3 < \\text{en} < \\text{NO}_2^{-} < \\mathbf{\\text{CN}^{-}} < \\text{CO}$\n\n**Cyanide** is near the strong-field end. It produces a large $\\Delta_o$, so electrons pair up in $t_{2g}$ rather than occupy $e_g$, giving a **low-spin** complex.\n\nThe series is largely empirical, and its ordering is only partly explained by electrostatics — pi-acceptor ligands such as $\\text{CN}^{-}$ and $\\text{CO}$ rank far higher than charge alone would suggest."
+    },
+    {
+      "id": "jeec-coo-04",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Colligative properties",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which is a colligative property?",
+      "options": [
+        "Colour",
+        "Osmotic pressure",
+        "Viscosity",
+        "Density"
+      ],
+      "answer": 1,
+      "solution": "A colligative property depends on the **number** of solute particles and not on what they are.\n\nThe four are: relative lowering of vapour pressure, elevation of boiling point, depression of freezing point and **osmotic pressure**.\n\nOsmotic pressure is the most sensitive of them, which is why it is used to find the molar masses of polymers and proteins where the others are too small to measure."
+    },
+    {
+      "id": "jeec-coo-05",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Solid state",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of atoms per unit cell in a face-centred cubic lattice is:",
+      "options": [
+        "$1$",
+        "$2$",
+        "$4$",
+        "$8$"
+      ],
+      "answer": 2,
+      "solution": "Corners: $8 \\times \\dfrac{1}{8} = 1$ (each corner atom is shared by eight cells).\n\nFaces: $6 \\times \\dfrac{1}{2} = 3$ (each face atom is shared by two cells).\n\nTotal $= 1 + 3 = \\mathbf{4}$ atoms.\n\nFor comparison, simple cubic has 1 and body-centred cubic has 2. FCC packing efficiency is $74\\%$, the highest possible for equal spheres."
+    },
+    {
+      "id": "jeec-coo-06",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Isomerism in complexes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$[\\text{Pt}(\\text{NH}_3)_2\\text{Cl}_2]$ shows which kind of isomerism?",
+      "options": [
+        "Optical",
+        "Geometrical (cis-trans)",
+        "Linkage",
+        "Ionisation"
+      ],
+      "answer": 1,
+      "solution": "This is a square planar $\\text{MA}_2\\text{B}_2$ complex, which shows **geometrical** isomerism: the two chlorides may sit adjacent (**cis**) or opposite (**trans**).\n\nThe distinction is not academic. **Cisplatin**, the cis isomer, is a widely used anticancer drug, while the trans isomer is therapeutically inactive — because only the cis arrangement can bind to two adjacent guanine bases on DNA.\n\nSquare planar complexes are not optically active, since the molecular plane is a plane of symmetry."
+    },
+    {
+      "id": "jeec-coo-07",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Colligative properties",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The van't Hoff factor $i$ for $\\text{NaCl}$ assuming complete dissociation is:",
+      "options": [
+        "$1$",
+        "$2$",
+        "$3$",
+        "$0.5$"
+      ],
+      "answer": 1,
+      "solution": "$\\text{NaCl} \\rightarrow \\text{Na}^{+} + \\text{Cl}^{-}$ gives **two** particles from one formula unit, so $i = \\mathbf{2}$.\n\n$\\text{CaCl}_2$ gives $i = 3$ and $\\text{K}_4[\\text{Fe(CN)}_6]$ gives $i = 5$.\n\nIn real solutions $i$ is slightly **less** than the ideal value because of ion pairing, and it can be **less than 1** for solutes that associate, such as benzoic acid in benzene, which dimerises."
+    },
+    {
+      "id": "jeec-coo-08",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Solid state",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A **Schottky** defect in an ionic crystal involves:",
+      "options": [
+        "An ion moving to an interstitial site",
+        "Equal numbers of cations and anions missing",
+        "An extra electron",
+        "An impurity atom"
+      ],
+      "answer": 1,
+      "solution": "A **Schottky** defect is a pair of vacancies — one cation and one anion missing together, preserving electrical neutrality. It **decreases the density** of the crystal.\n\nA **Frenkel** defect is an ion displaced into an interstitial site, so nothing leaves the crystal and the **density is unchanged**.\n\nSchottky defects are favoured when the ions are of similar size, as in $\\text{NaCl}$; Frenkel defects when there is a large size difference, as in $\\text{AgBr}$, where the small $\\text{Ag}^{+}$ can fit interstitially."
+    },
+    {
+      "id": "jeec-coo-09",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Coordination compounds",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The coordination number of the central metal in $[\\text{Cu}(\\text{en})_2]^{2+}$, where en is ethylenediamine, is:",
+      "options": [
+        "$2$",
+        "$4$",
+        "$6$",
+        "$8$"
+      ],
+      "answer": 1,
+      "solution": "Ethylenediamine is **bidentate** — it donates through both of its nitrogen atoms.\n\nTwo such ligands give $2 \\times 2 = \\mathbf{4}$ donor atoms, so the coordination number is 4, not 2.\n\nCoordination number counts **donor atoms**, never ligand molecules. Chelating ligands like this form unusually stable complexes, an entropy-driven effect known as the chelate effect."
+    },
+    {
+      "id": "jeec-coo-10",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Colligative properties",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the boiling point elevation, in kelvin, of a $0.5\\ \\text{molal}$ aqueous solution of glucose. Take $K_b = 0.52\\ \\mathrm{K\\,kg\\,mol^{-1}}$.",
+      "answer": 0.26,
+      "tolerance": 0.01,
+      "accept": [
+        "0.26",
+        "0.26 K"
+      ],
+      "solution": "Glucose is a non-electrolyte, so $i = 1$.\n\n$\\Delta T_b = iK_bm = 1 \\times 0.52 \\times 0.5 = \\mathbf{0.26\\ \\text{K}}$.\n\nThe solution boils at $100.26^\\circ\\text{C}$."
+    },
+    {
+      "id": "jeec-coo-11",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Crystal field theory",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many unpaired electrons are there in the low-spin octahedral complex $[\\text{Fe}(\\text{CN})_6]^{4-}$? (Fe is $+2$, $d^{6}$.)",
+      "answer": 0,
+      "tolerance": 0.1,
+      "accept": [
+        "0",
+        "zero"
+      ],
+      "solution": "Iron(II) is $d^{6}$, and cyanide is a **strong field** ligand, so $\\Delta_o$ is large and the complex is **low spin**.\n\nAll six electrons therefore pair up in the three lower $t_{2g}$ orbitals rather than occupying the higher $e_g$ set:\n\n$t_{2g}^{6}e_g^{0}$\n\nUnpaired electrons $= \\mathbf{0}$, so the complex is **diamagnetic**.\n\nWith a weak-field ligand such as water the same $d^{6}$ ion would be high spin, $t_{2g}^{4}e_g^{2}$, with **four** unpaired electrons and paramagnetic — the same metal in the same oxidation state behaving quite differently."
+    },
+    {
+      "id": "jeec-coo-12",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Solid state",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many atoms are there per unit cell in a body-centred cubic lattice?",
+      "answer": 2,
+      "tolerance": 0.1,
+      "accept": [
+        "2"
+      ],
+      "solution": "Corners: $8 \\times \\dfrac{1}{8} = 1$.\n\nBody centre: $1 \\times 1 = 1$ (it lies wholly within the cell and is shared with nothing).\n\nTotal $= \\mathbf{2}$ atoms per unit cell."
+    },
+    {
+      "id": "jeec-coo-13",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Colligative properties",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the osmotic pressure, in atmospheres, of a $0.1\\ \\text{M}$ glucose solution at $300\\ \\text{K}$. Take $R = 0.082\\ \\mathrm{L\\,atm\\,mol^{-1}K^{-1}}$. Give the answer to two decimal places.",
+      "answer": 2.46,
+      "tolerance": 0.03,
+      "accept": [
+        "2.46"
+      ],
+      "solution": "$\\pi = iCRT$, with $i = 1$ for glucose.\n\n$\\pi = 1 \\times 0.1 \\times 0.082 \\times 300$\n\n$= 0.1 \\times 24.6 = \\mathbf{2.46\\ \\text{atm}}$."
+    },
+    {
+      "id": "jeec-coo-14",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Coordination compounds",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of iron in $\\text{K}_4[\\text{Fe}(\\text{CN})_6]$?",
+      "answer": 2,
+      "tolerance": 0.1,
+      "accept": [
+        "2",
+        "+2"
+      ],
+      "solution": "Potassium is $+1$ each and cyanide is $-1$ each. Let iron be $x$.\n\n$4(+1) + x + 6(-1) = 0$\n\n$4 + x - 6 = 0$\n\n$x = \\mathbf{+2}$"
+    },
+    {
+      "id": "jeec-coo-15",
+      "chapter": "Coordination Compounds, Solutions and the Solid State",
+      "topic": "Crystal field theory",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain crystal field splitting in octahedral complexes. Define the spectrochemical series, and use crystal field theory to explain why $[\\text{Fe}(\\text{H}_2\\text{O})_6]^{2+}$ is paramagnetic while $[\\text{Fe}(\\text{CN})_6]^{4-}$ is diamagnetic, although the iron is $+2$ in both. Explain also why transition metal complexes are coloured.",
+      "solution": "**The splitting.** In a free metal ion the five $d$ orbitals are **degenerate**, all of the same energy.\n\nBring six ligands up along the $\\pm x$, $\\pm y$ and $\\pm z$ axes, as in an octahedral complex, and their lone pairs repel the $d$ electrons. But not equally, because the orbitals are not all pointing the same way:\n\n- $d_{z^{2}}$ and $d_{x^{2}-y^{2}}$ point **directly along the axes, straight at the ligands**. They are repelled strongly and are **raised** in energy. This pair is labelled $e_g$.\n- $d_{xy}$, $d_{yz}$ and $d_{zx}$ point **between** the axes, away from the ligands. They are repelled less and are **lowered**. This set of three is labelled $t_{2g}$.\n\nThe energy gap between them is the **crystal field splitting energy, $\\Delta_o$**. The centre of gravity is preserved: each $e_g$ orbital rises by $0.6\\Delta_o$ and each $t_{2g}$ orbital falls by $0.4\\Delta_o$.\n\n**The spectrochemical series** is the experimental ordering of ligands by the size of $\\Delta_o$ they produce:\n\n$\\text{I}^{-} < \\text{Br}^{-} < \\text{Cl}^{-} < \\text{F}^{-} < \\text{OH}^{-} < \\text{H}_2\\text{O} < \\text{NH}_3 < \\text{en} < \\text{NO}_2^{-} < \\text{CN}^{-} < \\text{CO}$\n\nWeak-field ligands are on the left, strong-field on the right.\n\n**High spin or low spin.** Two energies compete: $\\Delta_o$, the cost of promoting an electron to $e_g$, and $P$, the pairing energy, the cost of putting two electrons in one orbital.\n\nIf $\\Delta_o < P$, promotion is cheaper, so electrons spread out: **high spin**, maximum unpaired electrons.\n\nIf $\\Delta_o > P$, pairing is cheaper, so electrons fill $t_{2g}$ first: **low spin**, minimum unpaired electrons.\n\n**The two iron complexes.** In both, iron is $+2$, so the configuration is $d^{6}$ in both. The metal, the oxidation state and the electron count are identical. **Only the ligand differs**, and that alone accounts for the difference.\n\n$[\\text{Fe}(\\text{H}_2\\text{O})_6]^{2+}$: water is a **weak field** ligand, so $\\Delta_o < P$. The electrons obey Hund's rule as far as they can, filling all five orbitals singly before pairing:\n\n$t_{2g}^{4}e_g^{2}$, giving **4 unpaired electrons** — **paramagnetic**.\n\n$[\\text{Fe}(\\text{CN})_6]^{4-}$: cyanide is a **strong field** ligand, so $\\Delta_o > P$. All six electrons pair up in the three $t_{2g}$ orbitals rather than pay the larger $\\Delta_o$:\n\n$t_{2g}^{6}e_g^{0}$, giving **0 unpaired electrons** — **diamagnetic**.\n\nThis pair is the cleanest possible demonstration that the ligand, not the metal, sets the magnetic behaviour — and measuring the magnetic moment is in practice how the spin state is determined.\n\n**Why the complexes are coloured.** The gap $\\Delta_o$ happens to correspond to the energy of **visible light**.\n\nAn electron in $t_{2g}$ absorbs a photon of exactly that energy and is promoted to $e_g$ — a **d-d transition**. The wavelength absorbed is removed from the white light passing through, and what we see is the **complementary colour** of what was absorbed.\n\nTwo predictions follow, and both hold:\n\n1. A **stronger-field ligand gives a larger $\\Delta_o$**, so a shorter absorbed wavelength and a different colour. $[\\text{Cu}(\\text{H}_2\\text{O})_4]^{2+}$ is pale blue; adding ammonia gives the deep blue $[\\text{Cu}(\\text{NH}_3)_4]^{2+}$.\n\n2. An ion with **no $d$ electrons ($d^{0}$) or a full $d$ subshell ($d^{10}$) has no possible d-d transition**, and must be colourless. $\\text{Sc}^{3+}$ ($d^{0}$) and $\\text{Zn}^{2+}$ ($d^{10}$) are indeed both colourless — which is exactly what the theory requires and would be hard to explain any other way."
+    }
+  ]
+}
