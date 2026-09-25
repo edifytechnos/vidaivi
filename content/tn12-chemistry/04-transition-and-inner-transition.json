@@ -1,0 +1,236 @@
+{
+  "id": "lib-tn12c-tra",
+  "title": "Transition and Inner Transition Elements",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-tra-01",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "General properties",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Transition elements show variable oxidation states because:",
+      "options": [
+        "They are metals",
+        "The $(n-1)d$ and $ns$ electrons have similar energies and both take part in bonding",
+        "They are large",
+        "They have high density"
+      ],
+      "answer": 1,
+      "solution": "In a transition element the $(n-1)d$ and $ns$ orbitals are **very close in energy**, so electrons from **both** can be lost or involved in bonding.\n\nThe number removed can vary, giving a range of oxidation states differing by one — manganese runs from $+2$ to $+7$.\n\nContrast a main-group metal, where only the outermost $s$ and $p$ electrons are accessible and the oxidation states typically differ by **two**, because the inner shell is far lower in energy."
+    },
+    {
+      "id": "tn12c-tra-02",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Colour",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which ion is colourless?",
+      "options": [
+        "$\\text{Cu}^{2+}$",
+        "$\\text{Zn}^{2+}$",
+        "$\\text{Fe}^{3+}$",
+        "$\\text{Cr}^{3+}$"
+      ],
+      "answer": 1,
+      "solution": "Colour in a transition metal complex comes from **d-d transitions**, which require a **partially filled** $d$ subshell.\n\n$\\text{Zn}^{2+}$ is $3d^{10}$ — **completely full**, so no $d$ electron can be promoted within the subshell and the ion is **colourless**.\n\nThe same applies to $\\text{Sc}^{3+}$ ($d^{0}$) and $\\text{Cu}^{+}$ ($d^{10}$). This is also why zinc is often not counted as a true transition metal: it has no partially filled $d$ subshell in any of its common states."
+    },
+    {
+      "id": "tn12c-tra-03",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Lanthanoid contraction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The lanthanoid contraction is caused by:",
+      "options": [
+        "Increasing nuclear charge with poor shielding by $4f$ electrons",
+        "Decreasing nuclear charge",
+        "Removal of electrons",
+        "Increasing atomic mass"
+      ],
+      "answer": 0,
+      "solution": "Across the lanthanoid series, electrons enter the **$4f$** subshell, whose orbitals are **diffuse and shield very poorly**.\n\nThe nuclear charge rises steadily while the shielding barely improves, so the **effective nuclear charge increases** and the radii shrink gradually — the **lanthanoid contraction**.\n\nIts consequences reach far beyond the lanthanoids: the second and third transition series have **almost identical radii** (zirconium and hafnium, niobium and tantalum), which is why those pairs are so difficult to separate chemically."
+    },
+    {
+      "id": "tn12c-tra-04",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Magnetic properties",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The spin-only magnetic moment of an ion with 3 unpaired electrons is approximately:",
+      "options": [
+        "$1.73\\ \\text{BM}$",
+        "$2.83\\ \\text{BM}$",
+        "$3.87\\ \\text{BM}$",
+        "$5.92\\ \\text{BM}$"
+      ],
+      "answer": 2,
+      "solution": "$\\mu = \\sqrt{n(n+2)}$ Bohr magnetons, where $n$ is the number of unpaired electrons.\n\n$\\mu = \\sqrt{3(3+2)} = \\sqrt{15} = \\mathbf{3.87\\ \\text{BM}}$\n\nThe useful values to recognise: $n = 1$ gives $1.73$, $n = 2$ gives $2.83$, $n = 4$ gives $4.90$, $n = 5$ gives $5.92$.\n\nMeasuring the moment and working backwards is the standard way of finding how many unpaired electrons a complex has, and hence whether it is high or low spin."
+    },
+    {
+      "id": "tn12c-tra-05",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Catalysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Transition metals act as good catalysts mainly because they:",
+      "options": [
+        "Are dense",
+        "Show variable oxidation states and can adsorb reactants on their surface",
+        "Are coloured",
+        "Have high melting points"
+      ],
+      "answer": 1,
+      "solution": "Two properties matter.\n\n**Variable oxidation states** let the metal accept and donate electrons, forming intermediates that offer a lower-energy path — iron in the Haber process, vanadium(V) oxide in the contact process.\n\n**Surface adsorption**: partially filled $d$ orbitals bind reactant molecules to the surface, raising their local concentration and **weakening their bonds**, so they react more readily. Nickel in hydrogenation works this way.\n\nThe adsorption must be **moderate** — strong enough to weaken the bond, weak enough to release the product. That balance is why only some metals catalyse a given reaction."
+    },
+    {
+      "id": "tn12c-tra-06",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Oxidation states",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The highest oxidation state shown by manganese is:",
+      "options": [
+        "$+4$",
+        "$+6$",
+        "$+7$",
+        "$+8$"
+      ],
+      "answer": 2,
+      "solution": "Manganese is $[\\text{Ar}]3d^{5}4s^{2}$ — seven electrons available in total, so the maximum is $\\mathbf{+7}$, as in the permanganate ion $\\text{MnO}_4^{-}$.\n\nThat is the highest of the first transition series, and it occurs at manganese precisely because it sits mid-series with the most electrons available before pairing makes removal harder.\n\nHigh oxidation states are found in oxides and fluorides, because only the most electronegative elements can stabilise them."
+    },
+    {
+      "id": "tn12c-tra-07",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Alloys",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Transition metals readily form interstitial compounds with elements such as H, C and N because:",
+      "options": [
+        "They are ionic",
+        "Small atoms occupy the interstitial voids in the metal lattice",
+        "They are radioactive",
+        "They are gases"
+      ],
+      "answer": 1,
+      "solution": "Small atoms — hydrogen, carbon, nitrogen, boron — fit into the **interstitial voids** of the transition metal lattice without disturbing it.\n\nThe resulting compounds are typically **hard, rigid, non-stoichiometric** and retain metallic conductivity.\n\nThey are usually **harder than the pure metal**, because the trapped atoms obstruct the sliding of layers past one another. Steel is the familiar case: carbon in iron's interstices is what turns a soft metal into a structural one."
+    },
+    {
+      "id": "tn12c-tra-08",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "General properties",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Zinc, cadmium and mercury are not regarded as typical transition metals because:",
+      "options": [
+        "They are liquids",
+        "Their $d$ subshells are completely filled in both the atom and their common ions",
+        "They are toxic",
+        "They have low melting points"
+      ],
+      "answer": 1,
+      "solution": "The definition of a transition element requires a **partially filled $d$ subshell in the atom or in one of its common ions**.\n\nZinc, cadmium and mercury are $d^{10}$ in the atom and $d^{10}$ in their usual $+2$ ions, so they never satisfy it.\n\nThe consequences are exactly what you would expect from a full $d$ subshell: their compounds are **colourless and diamagnetic**, they show **no variable oxidation states** (the $\\text{Hg}_2^{2+}$ ion being the notable exception), and they are poor catalysts. They also have much **lower melting points**, since $d$ electrons do not contribute to the metallic bonding."
+    },
+    {
+      "id": "tn12c-tra-09",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Actinoids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Actinoids show a greater range of oxidation states than lanthanoids because:",
+      "options": [
+        "They are heavier",
+        "$5f$, $6d$ and $7s$ orbitals are close in energy",
+        "They are radioactive",
+        "They are larger"
+      ],
+      "answer": 1,
+      "solution": "In the actinoids the **$5f$, $6d$ and $7s$** orbitals lie **close in energy**, so electrons from all three can take part in bonding.\n\nUranium therefore shows $+3$ to $+6$, and neptunium reaches $+7$.\n\nIn the lanthanoids the $4f$ orbitals are **buried deep** inside the atom and well shielded, so they contribute little to bonding and $+3$ dominates almost throughout — with $\\text{Ce}^{4+}$ and $\\text{Eu}^{2+}$ as the notable exceptions, both explained by proximity to an empty or half-filled $f$ subshell.\n\nActinoid $5f$ orbitals are more spatially extended than lanthanoid $4f$ ones, and that extension is what makes the difference."
+    },
+    {
+      "id": "tn12c-tra-10",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Magnetic properties",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Calculate the spin-only magnetic moment, in Bohr magnetons, of $\\text{Fe}^{3+}$ in a high-spin octahedral complex ($d^{5}$). Give the answer to two decimal places.",
+      "answer": 5.92,
+      "tolerance": 0.05,
+      "accept": [
+        "5.92",
+        "5.9"
+      ],
+      "solution": "$\\text{Fe}^{3+}$ is $d^{5}$, and in a **high-spin** complex all five electrons stay unpaired, so $n = 5$.\n\n$\\mu = \\sqrt{n(n+2)} = \\sqrt{5 \\times 7} = \\sqrt{35} = \\mathbf{5.92\\ \\text{BM}}$\n\nThis is the largest spin-only moment possible for a $d$-block ion. In a **low-spin** $d^{5}$ complex such as $[\\text{Fe(CN)}_6]^{3-}$ only **one** electron is unpaired, giving $1.73\\ \\text{BM}$ — a measurable difference that reveals the spin state."
+    },
+    {
+      "id": "tn12c-tra-11",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Oxidation states",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of manganese in $\\text{KMnO}_4$?",
+      "answer": 7,
+      "tolerance": 0.1,
+      "accept": [
+        "7",
+        "+7"
+      ],
+      "solution": "Potassium is $+1$ and oxygen $-2$ each.\n\n$(+1) + x + 4(-2) = 0$\n\n$1 + x - 8 = 0 \\Rightarrow x = \\mathbf{+7}$"
+    },
+    {
+      "id": "tn12c-tra-12",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Oxidation states",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of chromium in $\\text{K}_2\\text{Cr}_2\\text{O}_7$?",
+      "answer": 6,
+      "tolerance": 0.1,
+      "accept": [
+        "6",
+        "+6"
+      ],
+      "solution": "Potassium is $+1$ each and oxygen $-2$ each.\n\n$2(+1) + 2x + 7(-2) = 0$\n\n$2 + 2x - 14 = 0$\n\n$2x = 12 \\Rightarrow x = \\mathbf{+6}$"
+    },
+    {
+      "id": "tn12c-tra-13",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "General properties",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many unpaired electrons are there in a $\\text{Cr}^{3+}$ ion? (Cr is $Z = 24$.)",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3"
+      ],
+      "solution": "Chromium is $[\\text{Ar}]3d^{5}4s^{1}$. Forming $\\text{Cr}^{3+}$ removes the $4s$ electron and two $3d$ electrons, leaving $[\\text{Ar}]3d^{3}$.\n\nBy Hund's rule those three occupy separate orbitals with parallel spins, so there are $\\mathbf{3}$ unpaired electrons.\n\nThe magnetic moment is then $\\sqrt{3 \\times 5} = 3.87\\ \\text{BM}$."
+    },
+    {
+      "id": "tn12c-tra-14",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Lanthanoids",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many elements are there in the lanthanoid series?",
+      "answer": 14,
+      "tolerance": 0.1,
+      "accept": [
+        "14"
+      ],
+      "solution": "$\\mathbf{14}$ elements, cerium (58) to lutetium (71), corresponding to the filling of the seven $4f$ orbitals with 14 electrons.\n\nThe actinoids likewise number 14, thorium (90) to lawrencium (103)."
+    },
+    {
+      "id": "tn12c-tra-15",
+      "chapter": "Transition and Inner Transition Elements",
+      "topic": "Lanthanoid contraction",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the lanthanoid contraction and its causes. Discuss three of its consequences, including its effect on the second and third transition series, and explain why lanthanoids are difficult to separate from one another.",
+      "solution": "**What it is.** The **lanthanoid contraction** is the steady decrease in atomic and ionic radii across the lanthanoid series from cerium to lutetium.\n\n$\\text{La}^{3+}$: $106\\ \\text{pm}$ down to $\\text{Lu}^{3+}$: $85\\ \\text{pm}$ — a fall of about $21\\ \\text{pm}$ across fourteen elements, so roughly $1.5\\ \\text{pm}$ per element. Small per step, substantial in total.\n\n**The cause.** Across the series, each added electron enters the **$4f$** subshell.\n\nThe $4f$ orbitals have a **diffuse, deeply buried shape** and **shield the outer electrons very poorly** from the nucleus. The shielding order runs $s > p > d > f$, so $f$ electrons are the worst shielders of all.\n\nSo with each element the **nuclear charge increases by one** while the **shielding barely improves**. The **effective nuclear charge felt by the outer electrons therefore rises steadily**, pulling the whole electron cloud inward.\n\nThe contraction is gradual because the effect is a small imbalance repeated fourteen times, not a sudden change.\n\n**Consequence 1: the second and third transition series have nearly identical radii.**\n\nThis is the most important consequence, and it reaches well outside the lanthanoids themselves.\n\nNormally radii increase down a group as a new shell is added. Between the **second (4d)** and **third (5d)** transition series, however, the fourteen lanthanoids intervene — and their contraction almost exactly **cancels** the expected increase.\n\nZr $160\\ \\text{pm}$ / Hf $159\\ \\text{pm}$\n\nNb $143$ / Ta $143$\n\nMo $136$ / W $137$\n\nThe pairs are effectively the same size, and since chemical behaviour depends heavily on size and charge, they have **almost identical chemistry**. Zirconium and hafnium are notoriously among the hardest pairs of elements to separate — which matters commercially, because hafnium absorbs neutrons strongly and zirconium does not, so nuclear-grade zirconium must be hafnium-free.\n\nThe third series is also unusually **dense** for the same reason: nearly the same volume, roughly twice the mass. Osmium and iridium are the densest elements known.\n\n**Consequence 2: basicity of the hydroxides decreases across the series.**\n\nAs the ionic radius falls, the charge density of $\\text{M}^{3+}$ rises, so the metal holds the hydroxide oxygen more tightly and releases $\\text{OH}^{-}$ less readily.\n\n$\\text{La(OH)}_3$ is the most basic and $\\text{Lu(OH)}_3$ the least.\n\nThis graded difference is exploited in **fractional precipitation**, one of the classical separation methods.\n\n**Consequence 3: a small but usable gradation in solubility and complex stability.**\n\nComplex stability **increases** slightly across the series as the ions get smaller and more polarising, and salt solubilities change gradually in step. These differences are the basis of **ion-exchange chromatography**, the modern separation method.\n\n**Why lanthanoids are so hard to separate.**\n\nThree reasons compound each other.\n\n**They almost all show the same oxidation state, $+3$.** Because the $4f$ electrons are buried and well shielded, they take little part in bonding. So the series offers none of the chemical variety that makes transition metals easy to separate by oxidation and reduction. Cerium ($+4$) and europium ($+2$) are the exceptions, and are consequently the **easiest two to separate** — which itself demonstrates that the shared oxidation state is the real obstacle.\n\n**Their sizes differ by only about $1.5\\ \\text{pm}$ per element.** Since chemistry is governed by charge and size, and the charge is identical while the sizes are nearly so, **adjacent lanthanoids behave almost identically**.\n\n**The $4f$ electrons are shielded from the ligand field.** Being buried beneath the $5s$ and $5p$ shells, they barely feel their surroundings — so the ligand-field effects that distinguish transition metal complexes so sharply are largely absent here.\n\n**How separation is actually done.** The classical methods — fractional crystallisation and fractional precipitation — required **hundreds or thousands** of repetitions to exploit the tiny differences, which is why pure lanthanoids were rare and expensive for so long.\n\nModern practice uses **ion-exchange chromatography** and **solvent extraction**, which repeat that small difference automatically over many theoretical plates. It is the same tiny gradation being used, simply amplified mechanically rather than by hand."
+    }
+  ]
+}
