@@ -242,8 +242,48 @@ const DLG = ".modal-scrim .ns";
   await phone.waitForSelector("#sub-new", { timeout: 25000 });
   await phone.click("#sub-new");
   await phone.waitForSelector('[data-group="national"]', { timeout: 20000 });
-  const w = await phone.$eval(DLG, (el) => el.getBoundingClientRect().width);
-  check(w <= 390, `the dialog fits a 390px screen (${Math.round(w)}px)`);
+  // It is a POPUP on a phone, not a sheet welded to the bottom edge. The three
+  // things that say so, and all three were wrong once: a gutter on both sides,
+  // a radius on all four corners, and it is not stuck to the floor.
+  const box = await phone.$eval(DLG, (el) => {
+    const r = el.getBoundingClientRect();
+    const cs = getComputedStyle(el);
+    return {
+      left: r.left,
+      right: window.innerWidth - r.right,
+      bottom: window.innerHeight - r.bottom,
+      width: r.width,
+      radius: [cs.borderTopLeftRadius, cs.borderBottomLeftRadius, cs.borderBottomRightRadius],
+    };
+  });
+  check(
+    box.left >= 8 && box.right >= 8,
+    `there is a gutter on both sides (${Math.round(box.left)}px / ${Math.round(box.right)}px)`
+  );
+  check(
+    Math.abs(box.left - box.right) < 2,
+    `and it is centred (${Math.round(box.left)} vs ${Math.round(box.right)})`
+  );
+  check(
+    box.radius.every((r) => parseFloat(r) > 0),
+    `every corner is rounded, so it reads as a popup (${box.radius.join(", ")})`
+  );
+  check(box.bottom > 4, `it is not welded to the bottom edge (${Math.round(box.bottom)}px clear)`);
+  check(box.width <= 390, `the dialog fits a 390px screen (${Math.round(box.width)}px)`);
+
+  // The button a teacher came to press sits furthest from the thumb. This read
+  // Back / Cancel / Create for a release, because the markup carried neither
+  // .modal-submit nor .modal-back and the shared ordering rule never fired.
+  const order = await phone.$$eval(".modal-actions .btn", (els) =>
+    els
+      .filter((e) => e.offsetParent !== null)
+      .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)
+      .map((e) => e.textContent.trim())
+  );
+  check(
+    /Continue|Create/.test(order[0] ?? ""),
+    `the primary is on top on a phone (${order.join(" → ")})`
+  );
   const cols = await phone.$eval(".ns-scroll", () => {
     const t = document.querySelector(".ns-tiles");
     return t ? getComputedStyle(t).gridTemplateColumns.split(" ").length : 1;

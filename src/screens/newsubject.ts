@@ -82,10 +82,10 @@ export function openNewSubject(onDone?: () => void): void {
       <p class="hint modal-desc" id="ns-blurb"></p>
       <div class="modal-body" id="ns-body"></div>
       <div class="modal-actions">
-        <button class="btn btn-ghost ns-back" id="ns-back" hidden>Back</button>
+        <button class="btn btn-ghost modal-back" id="ns-back" hidden>Back</button>
         <span class="modal-actions-gap"></span>
         <button class="btn btn-ghost" data-close id="ns-cancel">Cancel</button>
-        <button class="btn btn-primary" id="ns-next"></button>
+        <button class="btn btn-primary modal-submit" id="ns-next"></button>
       </div>
     </div>`;
   document.body.appendChild(host);
@@ -345,11 +345,11 @@ export function openNewSubject(onDone?: () => void): void {
           ? `${p.tests.length} ready-made test${p.tests.length === 1 ? "" : "s"} · ${p.tests.reduce((n, t) => n + (t.questionCount || 0), 0)} questions`
           : "Nothing ready-made yet — created empty";
         return `
-        <label class="choice ns-choice">
-          <input class="checkbox" type="checkbox" data-paper="${escapeHtml(p.name)}"${ticked ? " checked" : ""} />
-          <span class="choice-text">
-            <span class="choice-label">${escapeHtml(p.name)}</span>
-            <span class="choice-desc">${escapeHtml(meta)}</span>
+        <label class="modal-choice ns-choice">
+          <input class="modal-choice-input" type="checkbox" data-paper="${escapeHtml(p.name)}"${ticked ? " checked" : ""} />
+          <span class="modal-choice-main">
+            <span class="modal-choice-label">${escapeHtml(p.name)}</span>
+            <span class="modal-hint">${escapeHtml(meta)}</span>
           </span>
         </label>`;
       })
@@ -410,10 +410,10 @@ export function openNewSubject(onDone?: () => void): void {
     return `
       <div class="ns-chap">
         <div class="ns-chapline">
-          <input class="checkbox" type="checkbox" data-test="${escapeHtml(t.id)}"${on ? " checked" : ""} aria-label="${escapeHtml(label)}" />
-          <span class="choice-text">
-            <span class="choice-label">${escapeHtml(label)}</span>
-            <span class="choice-desc">${t.questionCount} questions · ${t.totalMarks} marks</span>
+          <input class="modal-choice-input" type="checkbox" data-test="${escapeHtml(t.id)}"${on ? " checked" : ""} aria-label="${escapeHtml(label)}" />
+          <span class="modal-choice-main">
+            <span class="modal-choice-label">${escapeHtml(label)}</span>
+            <span class="modal-hint">${t.questionCount} questions · ${t.totalMarks} marks</span>
           </span>
           <button class="btn-link" type="button" data-peek="${escapeHtml(t.id)}">${showing ? "Hide" : "Peek"}</button>
         </div>

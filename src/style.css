@@ -3152,14 +3152,28 @@ body.drawer-open {
   }
 }
 
+/* On a phone a dialog is a CARD WITH A GUTTER, not a sheet welded to the
+   bottom edge.
+
+   It used to be the sheet: `padding: 0`, `align-items: flex-end`, and the two
+   bottom corners squared off. Edge to edge with a straight bottom edge, it
+   read as a page that had taken the screen over rather than as something
+   sitting on top of it — "stretched", which is exactly how it looked on a real
+   phone. A sheet earns its shape when it is tall and full of content; these
+   are short forms, and a short sheet is just a slab.
+
+   The gutter is 14px rather than the 2px first suggested: at 2px the corners
+   have nothing to sit against and it still reads as edge to edge. 14px is what
+   the rest of the app uses at this width. */
 @media (max-width: 520px) {
   .modal-scrim {
-    padding: 0;
-    align-items: flex-end;
+    padding: 14px;
+    align-items: center;
   }
   .modal {
     max-width: none;
-    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 18px;
+    /* The radius stays on all four corners — that is what says "popup". */
   }
 }
 
@@ -4601,6 +4615,7 @@ body.drawer-open {
 }
 .ns-choice {
   border-bottom: 1px solid var(--border);
+  border-radius: 0;
 }
 .ns-choice:last-child {
   border-bottom: none;
@@ -4675,8 +4690,14 @@ body.drawer-open {
 .ns-chap:last-child .ns-chapline {
   border-bottom: none;
 }
-.ns-chapline .choice-text {
+.ns-chapline .modal-choice-main {
   flex-grow: 1;
+}
+/* A chapter row is not inside a .modal-choice, so it does not inherit that
+   rule's `flex: none` and the box would stretch with the row. */
+.ns-chapline .modal-choice-input {
+  margin-top: 2px;
+  flex: none;
 }
 
 .ns-peek {

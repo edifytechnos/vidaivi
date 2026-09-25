@@ -2654,6 +2654,35 @@ the right, and the sheet-with-primary-on-top below 520px.
 imported.** The app has a palette, and a second one is two systems that
 disagree the first time either moves. Every `.ns-*` rule maps onto `:root`.
 
+**That was only half-done, and the other half shipped broken.** The tokens
+were kept out and then the canvas's **class names** were copied straight into
+the markup — `.choice-text`, `.choice-label`, `.choice-desc`, `.checkbox`,
+none of which exist in this app's CSS at all. So every subject and chapter row
+rendered its title and its meta as one inline run: *"1. Solutions 15 questions
+· 31 marks"*. The rows use the app's own `.modal-choice` / `.modal-choice-main`
+/ `.modal-choice-label` / `.modal-hint` family now, which is what "one system"
+was supposed to mean. **A class name borrowed from a design is the same import
+as a token borrowed from one.**
+
+### On a phone a dialog is a card with a gutter, not a sheet
+
+`.modal-scrim` at ≤520px used to set `padding: 0`, `align-items: flex-end` and
+square off the bottom two corners. Edge to edge with a straight bottom edge, a
+short form reads as a page that has taken the screen over rather than as
+something sitting on top of it. A sheet earns its shape when it is tall and
+full; a short sheet is a slab. It is a centred card with a **14px** gutter and
+a radius on all four corners.
+
+**The actions were stacking in DOM order**, so the button a teacher came to
+press sat at the bottom under the thumb: *Back · Cancel · Create*. The rule
+that fixes it (`.modal-submit { order: -1 }`) had been there all along and
+never fired, because this dialog's markup carried neither `.modal-submit` nor
+`.modal-back`. Reusing the shared shell means wearing its class names.
+
+`e2e/newsubject.cjs` asserts all four now — a gutter on both sides, centred,
+every corner rounded, not welded to the floor — and that the primary is on
+top. Verified to fail against the sheet.
+
 ### Two things the tests caught
 
 - **A subject typed by hand outlived the board it was typed under.** Somebody
