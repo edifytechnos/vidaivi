@@ -1,0 +1,238 @@
+{
+  "id": "lib-jeep-els",
+  "title": "Electrostatics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-els-01",
+      "chapter": "Electrostatics",
+      "topic": "Coulomb's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two point charges are separated by a distance $r$ in a medium of dielectric constant $K$. The force between them compared with that in vacuum is:",
+      "options": [
+        "$K$ times larger",
+        "$K$ times smaller",
+        "Unchanged",
+        "$K^{2}$ times smaller"
+      ],
+      "answer": 1,
+      "solution": "$F = \\dfrac{1}{4\\pi\\varepsilon_0 K}\\dfrac{q_1q_2}{r^{2}}$.\n\nThe medium's molecules polarise and partly screen the charges, so the force is **$K$ times smaller** than in vacuum.\n\nFor water $K \\approx 80$, which is why ionic salts dissolve so readily in it."
+    },
+    {
+      "id": "jeep-els-02",
+      "chapter": "Electrostatics",
+      "topic": "Electric field",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The electric field inside a hollow charged conductor in electrostatic equilibrium is:",
+      "options": [
+        "Maximum",
+        "Zero",
+        "Equal to the surface field",
+        "Infinite"
+      ],
+      "answer": 1,
+      "solution": "In electrostatic equilibrium all the excess charge resides on the outer surface and the field inside the conducting material — and inside an empty cavity — is **zero**.\n\nIf it were not, free electrons would move until it was. This is electrostatic shielding, the principle of the Faraday cage, and why a car is a safe place in a lightning storm."
+    },
+    {
+      "id": "jeep-els-03",
+      "chapter": "Electrostatics",
+      "topic": "Gauss's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Gauss's law states that the flux through a closed surface equals:",
+      "options": [
+        "$q_{\\text{enc}}\\varepsilon_0$",
+        "$\\dfrac{q_{\\text{enc}}}{\\varepsilon_0}$",
+        "$\\dfrac{\\varepsilon_0}{q_{\\text{enc}}}$",
+        "$q_{\\text{enc}}$"
+      ],
+      "answer": 1,
+      "solution": "$\\oint \\vec{E}\\cdot d\\vec{A} = \\mathbf{\\dfrac{q_{\\text{enc}}}{\\varepsilon_0}}$.\n\nOnly the charge **enclosed** counts; charges outside contribute equal inward and outward flux that cancels. Choosing a surface that matches the symmetry of the charge distribution is what makes the law a calculating tool."
+    },
+    {
+      "id": "jeep-els-04",
+      "chapter": "Electrostatics",
+      "topic": "Capacitance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Three capacitors each of capacitance $C$ are connected in series. The equivalent capacitance is:",
+      "options": [
+        "$3C$",
+        "$C/3$",
+        "$C$",
+        "$2C/3$"
+      ],
+      "answer": 1,
+      "solution": "In series the reciprocals add:\n\n$\\dfrac{1}{C_{eq}} = \\dfrac{1}{C} + \\dfrac{1}{C} + \\dfrac{1}{C} = \\dfrac{3}{C}$\n\n$C_{eq} = \\mathbf{C/3}$.\n\nCapacitors behave the opposite way round to resistors: series **reduces** capacitance, parallel adds it."
+    },
+    {
+      "id": "jeep-els-05",
+      "chapter": "Electrostatics",
+      "topic": "Electric potential",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The work done in moving a charge between two points on the same equipotential surface is:",
+      "options": [
+        "Maximum",
+        "Zero",
+        "Negative",
+        "Depends on the path"
+      ],
+      "answer": 1,
+      "solution": "$W = q\\,\\Delta V$, and on an equipotential surface $\\Delta V = 0$, so $W = \\mathbf{0}$.\n\nIt follows that the field is always **perpendicular** to an equipotential surface — a component along it would do work on a charge moving there."
+    },
+    {
+      "id": "jeep-els-06",
+      "chapter": "Electrostatics",
+      "topic": "Electric dipole",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The torque on an electric dipole of moment $p$ in a uniform field $E$ is:",
+      "options": [
+        "$pE$",
+        "$pE\\sin\\theta$",
+        "$pE\\cos\\theta$",
+        "Zero always"
+      ],
+      "answer": 1,
+      "solution": "$\\vec{\\tau} = \\vec{p}\\times\\vec{E}$, so the magnitude is $\\mathbf{pE\\sin\\theta}$.\n\nThe torque is greatest when the dipole is perpendicular to the field and zero when it is aligned — which is the stable equilibrium.\n\nIn a *uniform* field the net **force** is zero, so the dipole rotates without translating."
+    },
+    {
+      "id": "jeep-els-07",
+      "chapter": "Electrostatics",
+      "topic": "Capacitance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The energy stored in a capacitor of capacitance $C$ charged to potential $V$ is:",
+      "options": [
+        "$CV$",
+        "$\\tfrac{1}{2}CV$",
+        "$\\tfrac{1}{2}CV^{2}$",
+        "$CV^{2}$"
+      ],
+      "answer": 2,
+      "solution": "$U = \\mathbf{\\tfrac{1}{2}CV^{2}}$, with the equivalent forms $\\dfrac{Q^{2}}{2C}$ and $\\tfrac{1}{2}QV$.\n\nThe factor of a half arises because the potential rises from $0$ to $V$ as the capacitor charges — the *average* potential through which charge is carried is $V/2$."
+    },
+    {
+      "id": "jeep-els-08",
+      "chapter": "Electrostatics",
+      "topic": "Electric field",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The electric field due to an infinite sheet of charge with surface density $\\sigma$ is:",
+      "options": [
+        "$\\dfrac{\\sigma}{\\varepsilon_0}$",
+        "$\\dfrac{\\sigma}{2\\varepsilon_0}$",
+        "$\\dfrac{\\sigma}{4\\pi\\varepsilon_0}$",
+        "Zero"
+      ],
+      "answer": 1,
+      "solution": "Taking a cylindrical Gaussian surface through the sheet, flux emerges from **both** end faces:\n\n$2EA = \\dfrac{\\sigma A}{\\varepsilon_0} \\Rightarrow E = \\mathbf{\\dfrac{\\sigma}{2\\varepsilon_0}}$\n\nNotice it is **independent of distance** — the field of an infinite sheet is uniform.\n\n(A conducting surface gives $\\sigma/\\varepsilon_0$, because there the field exists on one side only.)"
+    },
+    {
+      "id": "jeep-els-09",
+      "chapter": "Electrostatics",
+      "topic": "Coulomb's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Compared with the gravitational force between two protons, the electrostatic force is:",
+      "options": [
+        "Much smaller",
+        "About the same",
+        "About $10^{36}$ times larger",
+        "Exactly equal"
+      ],
+      "answer": 2,
+      "solution": "Both forces obey an inverse-square law, so the ratio is independent of separation:\n\n$\\dfrac{F_e}{F_g} = \\dfrac{ke^{2}}{Gm_p^{2}} \\approx \\mathbf{10^{36}}$\n\nGravity dominates on astronomical scales only because bulk matter is electrically neutral — the far stronger electrical forces cancel out, while mass always adds."
+    },
+    {
+      "id": "jeep-els-10",
+      "chapter": "Electrostatics",
+      "topic": "Coulomb's law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Two charges of $2\\ \\mu\\text{C}$ and $3\\ \\mu\\text{C}$ are $0.3\\ \\text{m}$ apart in vacuum. Taking $k = 9\\times10^{9}$ SI units, find the force between them, in newtons.",
+      "answer": 0.6,
+      "tolerance": 0.02,
+      "accept": [
+        "0.6 N",
+        "0.60"
+      ],
+      "solution": "$F = k\\dfrac{q_1q_2}{r^{2}} = 9\\times10^{9} \\times \\dfrac{(2\\times10^{-6})(3\\times10^{-6})}{(0.3)^{2}}$\n\nNumerator: $9\\times10^{9} \\times 6\\times10^{-12} = 5.4\\times10^{-2}$\n\nDivide by $0.09$: $\\dfrac{0.054}{0.09} = \\mathbf{0.6\\ \\text{N}}$."
+    },
+    {
+      "id": "jeep-els-11",
+      "chapter": "Electrostatics",
+      "topic": "Capacitance",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A $10\\ \\mu\\text{F}$ capacitor is charged to $100\\ \\text{V}$. Find the energy stored, in joules.",
+      "answer": 0.05,
+      "tolerance": 0.002,
+      "accept": [
+        "0.05 J",
+        "0.050"
+      ],
+      "solution": "$U = \\tfrac{1}{2}CV^{2} = \\tfrac{1}{2} \\times 10\\times10^{-6} \\times (100)^{2}$\n\n$= \\tfrac{1}{2} \\times 10^{-5} \\times 10^{4} = \\tfrac{1}{2} \\times 0.1 = \\mathbf{0.05\\ \\text{J}}$."
+    },
+    {
+      "id": "jeep-els-12",
+      "chapter": "Electrostatics",
+      "topic": "Electric potential",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the potential, in volts, at a distance $0.3\\ \\text{m}$ from a point charge of $3\\ \\text{nC}$. Take $k = 9\\times10^{9}$ SI units.",
+      "answer": 90,
+      "tolerance": 1,
+      "accept": [
+        "90 V",
+        "90.0"
+      ],
+      "solution": "$V = \\dfrac{kq}{r} = \\dfrac{9\\times10^{9} \\times 3\\times10^{-9}}{0.3}$\n\n$= \\dfrac{27}{0.3} = \\mathbf{90\\ \\text{V}}$."
+    },
+    {
+      "id": "jeep-els-13",
+      "chapter": "Electrostatics",
+      "topic": "Capacitance",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Capacitors of $2\\ \\mu\\text{F}$ and $3\\ \\mu\\text{F}$ are connected in series. Find the equivalent capacitance, in microfarads, to two decimal places.",
+      "answer": 1.2,
+      "tolerance": 0.02,
+      "accept": [
+        "1.2",
+        "1.20"
+      ],
+      "solution": "$\\dfrac{1}{C_{eq}} = \\dfrac{1}{2} + \\dfrac{1}{3} = \\dfrac{3 + 2}{6} = \\dfrac{5}{6}$\n\n$C_{eq} = \\dfrac{6}{5} = \\mathbf{1.2\\ \\mu\\text{F}}$.\n\nAs always in series, the result is smaller than either capacitor."
+    },
+    {
+      "id": "jeep-els-14",
+      "chapter": "Electrostatics",
+      "topic": "Gauss's law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A charge of $8.85\\times10^{-12}\\ \\text{C}$ is enclosed by a closed surface. Taking $\\varepsilon_0 = 8.85\\times10^{-12}\\ \\mathrm{C^{2}N^{-1}m^{-2}}$, find the electric flux, in $\\mathrm{N\\,m^{2}\\,C^{-1}}$.",
+      "answer": 1,
+      "tolerance": 0.02,
+      "accept": [
+        "1",
+        "1.0"
+      ],
+      "solution": "$\\Phi = \\dfrac{q_{\\text{enc}}}{\\varepsilon_0} = \\dfrac{8.85\\times10^{-12}}{8.85\\times10^{-12}} = \\mathbf{1\\ \\mathrm{N\\,m^{2}\\,C^{-1}}}$.\n\nThe shape of the surface is irrelevant — only the enclosed charge matters."
+    },
+    {
+      "id": "jeep-els-15",
+      "chapter": "Electrostatics",
+      "topic": "Gauss's law",
+      "type": "long",
+      "marks": 5,
+      "q": "Using Gauss's law, derive the electric field due to a uniformly charged infinite line of linear charge density $\\lambda$, at a perpendicular distance $r$. Explain the choice of Gaussian surface, and contrast the distance dependence with that of a point charge and an infinite sheet.",
+      "solution": "**Symmetry first.** An infinite uniformly charged line looks the same from any point at the same perpendicular distance, and the same in either direction along its length. So the field must:\n\n- point **radially** outward (for positive $\\lambda$), perpendicular to the line;\n- have a magnitude depending **only on $r$**.\n\nAny component along the line would have to point one way or the other, and there is nothing to choose between the two directions — so it is zero.\n\n**Choosing the Gaussian surface.** Take a **cylinder** of radius $r$ and length $l$, coaxial with the line. This is the right choice because it matches the symmetry: $\\vec{E}$ is perpendicular to the curved surface everywhere and constant in magnitude on it, and parallel to the two flat ends.\n\n**The flux.**\n\nCurved surface: $\\vec{E}$ is parallel to $d\\vec{A}$, so the flux is $E \\times (2\\pi r l)$.\n\nFlat ends: $\\vec{E}$ is perpendicular to $d\\vec{A}$, so $\\vec{E}\\cdot d\\vec{A} = 0$ and they contribute **nothing**.\n\n$\\Phi = E(2\\pi r l)$\n\n**The enclosed charge.**\n\n$q_{\\text{enc}} = \\lambda l$\n\n**Applying Gauss's law.**\n\n$E(2\\pi r l) = \\dfrac{\\lambda l}{\\varepsilon_0}$\n\nThe length $l$ cancels — as it must, since an infinite line has no special length:\n\n$\\boxed{E = \\dfrac{\\lambda}{2\\pi\\varepsilon_0 r}}$\n\nOften written $E = \\dfrac{2k\\lambda}{r}$.\n\n**Comparing the three geometries.**\n\nPoint charge: $E \\propto \\dfrac{1}{r^{2}}$\n\nInfinite line: $E \\propto \\dfrac{1}{r}$\n\nInfinite sheet: $E$ is **constant**, independent of distance.\n\nThe pattern is not a coincidence. Field lines from a point spread in three dimensions, so they thin out as $1/r^{2}$ (the area of a sphere). From a line they spread in only two dimensions, thinning as $1/r$ (the circumference of a circle). From a sheet they cannot spread at all, so the field never weakens.\n\n**A caution.** This is an idealisation. A real charged wire behaves like this only close to it, at distances small compared with its length — far away it looks like a point charge and reverts to $1/r^{2}$."
+    }
+  ]
+}

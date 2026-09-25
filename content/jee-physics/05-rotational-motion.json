@@ -1,0 +1,239 @@
+{
+  "id": "lib-jeep-rot",
+  "title": "Rotational Motion",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-rot-01",
+      "chapter": "Rotational Motion",
+      "topic": "Moment of inertia",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The moment of inertia of a uniform disc of mass $M$ and radius $R$ about an axis through its centre and perpendicular to its plane is:",
+      "options": [
+        "$MR^{2}$",
+        "$\\tfrac{1}{2}MR^{2}$",
+        "$\\tfrac{2}{5}MR^{2}$",
+        "$\\tfrac{1}{4}MR^{2}$"
+      ],
+      "answer": 1,
+      "solution": "For a uniform disc about the central perpendicular axis, $I = \\mathbf{\\tfrac{1}{2}MR^{2}}$.\n\nCompare the standard results: a ring is $MR^{2}$ (all mass at the rim), a solid sphere $\\tfrac{2}{5}MR^{2}$, a hollow sphere $\\tfrac{2}{3}MR^{2}$.\n\nThe pattern is that the further the mass sits from the axis, the larger the moment of inertia."
+    },
+    {
+      "id": "jeep-rot-02",
+      "chapter": "Rotational Motion",
+      "topic": "Angular momentum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A skater pulls her arms in while spinning. Her angular velocity:",
+      "options": [
+        "Decreases",
+        "Increases",
+        "Stays the same",
+        "Becomes zero"
+      ],
+      "answer": 1,
+      "solution": "No external torque acts about the spin axis, so angular momentum $L = I\\omega$ is conserved.\n\nPulling the arms in brings mass closer to the axis, **reducing** $I$. With $L$ fixed, $\\omega$ must **increase**.\n\nHer kinetic energy $\\tfrac{1}{2}I\\omega^{2} = L^{2}/2I$ also rises — supplied by the muscular work of pulling the arms in against the outward pull."
+    },
+    {
+      "id": "jeep-rot-03",
+      "chapter": "Rotational Motion",
+      "topic": "Torque",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Torque is given by:",
+      "options": [
+        "$\\vec{r}\\cdot\\vec{F}$",
+        "$\\vec{r}\\times\\vec{F}$",
+        "$\\vec{F}\\times\\vec{r}$",
+        "$\\vec{r}+\\vec{F}$"
+      ],
+      "answer": 1,
+      "solution": "$\\vec{\\tau} = \\vec{r}\\times\\vec{F}$, in that order.\n\nIt is a cross product, so the magnitude is $rF\\sin\\theta$ — a force applied along the line to the axis ($\\theta = 0$) gives no torque, which is why you push a door at the edge and perpendicular to it.\n\n$\\vec{F}\\times\\vec{r}$ is the same vector reversed, so the order matters."
+    },
+    {
+      "id": "jeep-rot-04",
+      "chapter": "Rotational Motion",
+      "topic": "Rolling",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A solid sphere, a disc and a ring of the same mass and radius roll down the same incline from rest. Which reaches the bottom first?",
+      "options": [
+        "The ring",
+        "The disc",
+        "The solid sphere",
+        "All together"
+      ],
+      "answer": 2,
+      "solution": "For rolling without slipping, $a = \\dfrac{g\\sin\\theta}{1 + k^{2}/R^{2}}$, where $I = mk^{2}$.\n\n$k^{2}/R^{2}$ is $\\tfrac{2}{5}$ for the sphere, $\\tfrac{1}{2}$ for the disc, $1$ for the ring.\n\nThe **smallest** ratio gives the largest acceleration, so the **solid sphere** wins. Mass and radius do not appear — only the shape does."
+    },
+    {
+      "id": "jeep-rot-05",
+      "chapter": "Rotational Motion",
+      "topic": "Centre of mass",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An isolated system explodes into fragments. The centre of mass of the system:",
+      "options": [
+        "Accelerates",
+        "Continues with its original velocity",
+        "Comes to rest",
+        "Moves towards the heaviest fragment"
+      ],
+      "answer": 1,
+      "solution": "Internal forces cannot change the total momentum of a system. The explosion supplies only internal forces, so\n\n$\\vec{v}_{\\text{cm}}$ is **unchanged**.\n\nA shell bursting in flight has fragments flying everywhere, yet their centre of mass carries on along the original parabola."
+    },
+    {
+      "id": "jeep-rot-06",
+      "chapter": "Rotational Motion",
+      "topic": "Parallel axis theorem",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The parallel axis theorem states that:",
+      "options": [
+        "$I = I_{cm} + Md^{2}$",
+        "$I = I_{cm} - Md^{2}$",
+        "$I = I_{cm}/Md^{2}$",
+        "$I = Md^{2}$"
+      ],
+      "answer": 0,
+      "solution": "$I = I_{cm} + Md^{2}$, where $d$ is the distance between the two parallel axes and $I_{cm}$ is about the one through the centre of mass.\n\nThe added term is always positive, so **the moment of inertia is least about an axis through the centre of mass** — a useful check on any answer."
+    },
+    {
+      "id": "jeep-rot-07",
+      "chapter": "Rotational Motion",
+      "topic": "Rotational dynamics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The rotational analogue of Newton's second law is:",
+      "options": [
+        "$F = ma$",
+        "$\\tau = I\\alpha$",
+        "$L = I\\omega$",
+        "$W = \\tau\\theta$"
+      ],
+      "answer": 1,
+      "solution": "Replacing force by torque, mass by moment of inertia and linear acceleration by angular acceleration gives $\\mathbf{\\tau = I\\alpha}$.\n\nThe other options are real equations but different ones: $L = I\\omega$ is angular momentum (the analogue of $p = mv$) and $W = \\tau\\theta$ is rotational work."
+    },
+    {
+      "id": "jeep-rot-08",
+      "chapter": "Rotational Motion",
+      "topic": "Rolling",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For a body rolling without slipping, the fraction of its total kinetic energy that is rotational is:",
+      "options": [
+        "Always $\\tfrac{1}{2}$",
+        "$\\dfrac{k^{2}/R^{2}}{1 + k^{2}/R^{2}}$",
+        "$\\dfrac{1}{1+k^{2}/R^{2}}$",
+        "Zero"
+      ],
+      "answer": 1,
+      "solution": "Total $K = \\tfrac{1}{2}mv^{2} + \\tfrac{1}{2}I\\omega^{2}$, with $I = mk^{2}$ and $\\omega = v/R$:\n\n$K = \\tfrac{1}{2}mv^{2}\\left(1 + \\dfrac{k^{2}}{R^{2}}\\right)$\n\nThe rotational part is $\\tfrac{1}{2}mv^{2}\\dfrac{k^{2}}{R^{2}}$, so the fraction is $\\mathbf{\\dfrac{k^{2}/R^{2}}{1 + k^{2}/R^{2}}}$.\n\nFor a ring that is $\\tfrac{1}{2}$; for a solid sphere $\\tfrac{2}{7}$."
+    },
+    {
+      "id": "jeep-rot-09",
+      "chapter": "Rotational Motion",
+      "topic": "Angular momentum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Angular momentum is conserved when:",
+      "options": [
+        "No external force acts",
+        "No external torque acts",
+        "Kinetic energy is constant",
+        "The body is rigid"
+      ],
+      "answer": 1,
+      "solution": "$\\dfrac{d\\vec{L}}{dt} = \\vec{\\tau}_{\\text{ext}}$, so $\\vec{L}$ is constant precisely when the **net external torque is zero**.\n\nThat is weaker than requiring zero force: a planet orbiting the Sun feels a large force but no torque about the Sun, because the force is along $\\vec{r}$ — which is exactly why Kepler's second law holds."
+    },
+    {
+      "id": "jeep-rot-10",
+      "chapter": "Rotational Motion",
+      "topic": "Moment of inertia",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the moment of inertia, in $\\mathrm{kg\\,m^{2}}$, of a ring of mass $2\\ \\text{kg}$ and radius $0.5\\ \\text{m}$ about its central perpendicular axis.",
+      "answer": 0.5,
+      "tolerance": 0.01,
+      "accept": [
+        "0.5 kg m^2",
+        "0.50"
+      ],
+      "solution": "For a ring, all the mass is at distance $R$ from the axis, so\n\n$I = MR^{2} = 2 \\times (0.5)^{2} = 2 \\times 0.25 = \\mathbf{0.5\\ \\mathrm{kg\\,m^{2}}}$."
+    },
+    {
+      "id": "jeep-rot-11",
+      "chapter": "Rotational Motion",
+      "topic": "Torque",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A force of $10\\ \\text{N}$ acts perpendicular to a rod at $0.4\\ \\text{m}$ from the pivot. Find the torque, in $\\mathrm{N\\,m}$.",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4 Nm",
+        "4.0"
+      ],
+      "solution": "$\\tau = rF\\sin\\theta$ with $\\theta = 90^\\circ$, so $\\sin\\theta = 1$:\n\n$\\tau = 0.4 \\times 10 = \\mathbf{4\\ \\mathrm{N\\,m}}$."
+    },
+    {
+      "id": "jeep-rot-12",
+      "chapter": "Rotational Motion",
+      "topic": "Angular momentum",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A disc spinning at $\\omega$ has its moment of inertia halved with no external torque. By what factor does its angular velocity change?",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2",
+        "doubles",
+        "x2"
+      ],
+      "solution": "Angular momentum is conserved:\n\n$I_1\\omega_1 = I_2\\omega_2$\n\n$I\\omega = \\left(\\tfrac{I}{2}\\right)\\omega_2$\n\n$\\omega_2 = \\mathbf{2\\omega}$ — the angular velocity **doubles**."
+    },
+    {
+      "id": "jeep-rot-13",
+      "chapter": "Rotational Motion",
+      "topic": "Rotational dynamics",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A torque of $6\\ \\mathrm{N\\,m}$ acts on a body of moment of inertia $3\\ \\mathrm{kg\\,m^{2}}$. Find the angular acceleration, in $\\mathrm{rad\\,s^{-2}}$.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2 rad/s^2",
+        "2.0"
+      ],
+      "solution": "$\\alpha = \\dfrac{\\tau}{I} = \\dfrac{6}{3} = \\mathbf{2\\ \\mathrm{rad\\,s^{-2}}}$."
+    },
+    {
+      "id": "jeep-rot-14",
+      "chapter": "Rotational Motion",
+      "topic": "Centre of mass",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Masses of $2\\ \\text{kg}$ and $3\\ \\text{kg}$ sit at $x = 0$ and $x = 5\\ \\text{m}$. Find the position of the centre of mass, in metres from the origin.",
+      "answer": 3,
+      "tolerance": 0.05,
+      "accept": [
+        "3 m",
+        "3.0"
+      ],
+      "solution": "$x_{\\text{cm}} = \\dfrac{m_1x_1 + m_2x_2}{m_1 + m_2}$\n\n$= \\dfrac{2(0) + 3(5)}{2 + 3} = \\dfrac{15}{5} = \\mathbf{3\\ \\text{m}}$.\n\nAs expected, it lies nearer the heavier mass."
+    },
+    {
+      "id": "jeep-rot-15",
+      "chapter": "Rotational Motion",
+      "topic": "Rolling",
+      "type": "long",
+      "marks": 5,
+      "q": "A body of mass $m$, radius $R$ and moment of inertia $I = mk^{2}$ rolls without slipping down an incline of angle $\\theta$. Derive its linear acceleration, and hence compare a solid sphere with a ring.",
+      "solution": "**Forces.** Along the incline, the component of weight $mg\\sin\\theta$ drives the body down and friction $f$ acts **up** the slope — it is friction that supplies the torque making the body rotate rather than slide.\n\nTranslation: $mg\\sin\\theta - f = ma$ ... (1)\n\n**Rotation** about the centre of mass. Only friction has a moment arm about that axis:\n\n$fR = I\\alpha = mk^{2}\\alpha$ ... (2)\n\n**The rolling condition.** Rolling without slipping means the contact point is instantaneously at rest, which gives $v = \\omega R$ and hence\n\n$a = \\alpha R \\Rightarrow \\alpha = \\dfrac{a}{R}$ ... (3)\n\n**Solving.** Substituting (3) into (2):\n\n$f = \\dfrac{mk^{2}a}{R^{2}}$\n\nPutting that into (1):\n\n$mg\\sin\\theta - \\dfrac{mk^{2}a}{R^{2}} = ma$\n\n$g\\sin\\theta = a\\left(1 + \\dfrac{k^{2}}{R^{2}}\\right)$\n\n$\\boxed{a = \\dfrac{g\\sin\\theta}{1 + k^{2}/R^{2}}}$\n\n**What it says.** The mass and the radius have both cancelled. Only the *shape*, through $k^{2}/R^{2}$, decides how fast a body rolls down — which is not at all obvious and is the whole point of the result.\n\n**Comparison.**\n\nSolid sphere: $k^{2}/R^{2} = \\tfrac{2}{5}$, so $a = \\dfrac{g\\sin\\theta}{1.4} \\approx 0.71\\,g\\sin\\theta$.\n\nRing: $k^{2}/R^{2} = 1$, so $a = \\dfrac{g\\sin\\theta}{2} = 0.5\\,g\\sin\\theta$.\n\nThe sphere accelerates about $1.4$ times as fast and reaches the bottom first. Physically, the ring carries all its mass at the rim, so a larger share of the released potential energy has to go into rotation and less is left for translation."
+    }
+  ]
+}

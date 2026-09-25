@@ -43,7 +43,20 @@ const SHELVES = {
   "alevel-maths": { board: "Cambridge A Level", klass: "12", subject: "Maths (9709)" },
   "alevel-physics": { board: "Cambridge A Level", klass: "12", subject: "Physics (9702)" },
   "alevel-chemistry": { board: "Cambridge A Level", klass: "12", subject: "Chemistry (9701)" },
-  "neet": { board: "NEET", klass: "12", subject: "Physics, Chemistry & Biology" },
+  // An entrance exam is a `board` like any other — see src/taxonomy.ts. It is
+  // seeded with klass "12" because that is the class sitting it; the New
+  // subject flow matches an exam's shelves on the BOARD ALONE, ignoring the
+  // class, precisely so a teacher picking an attempt year still finds them.
+  //
+  // NEET was ONE lumped shelf ("Physics, Chemistry & Biology") from before an
+  // exam had papers, and it had to be split: offering the exam's three papers
+  // beside it produced four rows, one holding every test and three empty.
+  // The test ids are unchanged, so the seeder simply re-files them — and the
+  // lumped shelf row itself is removed by RETIRED_SHELVES below.
+  "neet-physics": { board: "NEET", klass: "12", subject: "Physics" },
+  "neet-chemistry": { board: "NEET", klass: "12", subject: "Chemistry" },
+  "neet-biology": { board: "NEET", klass: "12", subject: "Biology" },
+  "jee-physics": { board: "JEE Main", klass: "12", subject: "Physics" },
 };
 
 if (!USER || !PASS) {
@@ -55,6 +68,27 @@ if (!USER || !PASS) {
 // published forever — nobody would ever see the deletion.
 const RETIRED = ["lib-matrices-demo"];
 
+// Shelves that were in the library and are not any more, named the way a shelf
+// is identified everywhere else — board/class/subject, not an id, because the
+// id is generated and nobody writing this file has it.
+//
+// This exists for the same reason RETIRED does: a shelf whose directory is gone
+// from content/ would otherwise sit on Browse forever, and after a re-seed it
+// sits there EMPTY, which is worse than wrong — it is a subject a teacher can
+// open and find nothing in.
+//
+// It is swept AFTER seeding, deliberately. `POST /api/subjects {action:"delete"}`
+// refuses while any test still points at the subject, and the tests that used to
+// point here are re-filed under the new shelves by the run itself. Sweeping
+// first would hit that refusal every time.
+const RETIRED_SHELVES = [
+  { board: "NEET", klass: "12", subject: "Physics, Chemistry & Biology" },
+];
+
+// A retired shelf is swept only on a whole-library run. Naming one directory is
+// how a single chapter gets corrected, and that run has not re-filed anything,
+// so sweeping there would only ever meet the "still in use" refusal.
+const fullRun = !dirs.length;
 if (!dirs.length) dirs.push(...Object.keys(SHELVES).map((d) => `content/${d}`));
 for (const d of dirs) {
   if (!SHELVES[path.basename(d)]) {
@@ -165,4 +199,20 @@ for (const dir of dirs) {
     console.log(`  ${file} → ${t.id} (${t.questions.length} questions)`);
   }
 }
+if (fullRun) {
+  const left = (await get("/api/subjects")).subjects || [];
+  for (const dead of RETIRED_SHELVES) {
+    const row = left.find(
+      (x) => x.platform && x.board === dead.board && x.klass === dead.klass && x.subject === dead.subject
+    );
+    if (!row) continue;
+    const gone = await post("/api/subjects", { action: "delete", id: row.id });
+    if (gone.status === 200) console.log(`\nretired shelf: ${row.title}`);
+    // A refusal here means a test still points at it, which is worth SAYING
+    // rather than swallowing: the shelf stays on Browse, and the reason is a
+    // chapter this run did not re-file.
+    else console.error(`\nCould not retire ${row.title} (${gone.status}) ${gone.data.error || ""}`);
+  }
+}
+
 console.log(`\n${seeded}/${wanted} chapters in the library.`);

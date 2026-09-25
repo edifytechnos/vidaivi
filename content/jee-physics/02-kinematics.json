@@ -1,0 +1,238 @@
+{
+  "id": "lib-jeep-kin",
+  "title": "Kinematics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-kin-01",
+      "chapter": "Kinematics",
+      "topic": "Motion in a straight line",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A body starts from rest and moves with uniform acceleration. The ratio of the distances covered in the $1$st, $2$nd and $3$rd seconds is:",
+      "options": [
+        "$1:2:3$",
+        "$1:3:5$",
+        "$1:4:9$",
+        "$1:1:1$"
+      ],
+      "answer": 1,
+      "solution": "Distance in the $n$th second is $s_n = u + \\dfrac{a}{2}(2n - 1)$.\n\nWith $u = 0$ this is $s_n = \\dfrac{a}{2}(2n - 1)$.\n\n$s_1 : s_2 : s_3 = 1 : 3 : 5$.\n\nThis is the odd-number rule Galileo found rolling balls down an inclined plane. Do not confuse it with total distance from rest, which goes as $1 : 4 : 9$."
+    },
+    {
+      "id": "jeep-kin-02",
+      "chapter": "Kinematics",
+      "topic": "Projectile motion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A projectile is thrown with speed $u$ at angle $\\theta$. Its horizontal range is maximum when $\\theta$ equals:",
+      "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$90^\\circ$"
+      ],
+      "answer": 1,
+      "solution": "Range $R = \\dfrac{u^{2}\\sin 2\\theta}{g}$.\n\n$R$ is largest when $\\sin 2\\theta = 1$, that is $2\\theta = 90^\\circ$, so $\\theta = \\mathbf{45^\\circ}$.\n\nA useful companion fact: $\\theta$ and $(90^\\circ - \\theta)$ give the *same* range, because $\\sin 2\\theta = \\sin(180^\\circ - 2\\theta)$."
+    },
+    {
+      "id": "jeep-kin-03",
+      "chapter": "Kinematics",
+      "topic": "Relative velocity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Rain falls vertically at $4\\ \\mathrm{m\\,s^{-1}}$. A man walks east at $3\\ \\mathrm{m\\,s^{-1}}$. He should hold his umbrella at an angle to the vertical of:",
+      "options": [
+        "$\\tan^{-1}(3/4)$ towards the east",
+        "$\\tan^{-1}(3/4)$ towards the west",
+        "$\\tan^{-1}(4/3)$ towards the east",
+        "$\\tan^{-1}(4/3)$ towards the west"
+      ],
+      "answer": 0,
+      "solution": "In the man's frame, the rain's velocity is $\\vec{v}_{\\text{rain}} - \\vec{v}_{\\text{man}}$.\n\nThe rain has velocity $4\\ \\mathrm{m\\,s^{-1}}$ downward; subtracting the man's $3\\ \\mathrm{m\\,s^{-1}}$ eastward adds a $3\\ \\mathrm{m\\,s^{-1}}$ **westward** component to the apparent rain.\n\nSo the rain appears to come from ahead of him — from the east — at an angle $\\tan\\alpha = \\dfrac{3}{4}$ from the vertical.\n\nThe umbrella must be tilted **towards the east**, into the apparent rain: $\\mathbf{\\tan^{-1}(3/4)}$ towards the east."
+    },
+    {
+      "id": "jeep-kin-04",
+      "chapter": "Kinematics",
+      "topic": "Graphs",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The area under a velocity-time graph gives:",
+      "options": [
+        "Acceleration",
+        "Displacement",
+        "Jerk",
+        "Average speed"
+      ],
+      "answer": 1,
+      "solution": "Velocity is $\\dfrac{dx}{dt}$, so $x = \\displaystyle\\int v\\,dt$ — which is exactly the area under the $v$-$t$ curve.\n\nIt gives **displacement**, not distance: area below the time axis counts as negative. To get distance travelled, take the area of the magnitude $|v|$.\n\nBy the same logic the *slope* of a $v$-$t$ graph is acceleration."
+    },
+    {
+      "id": "jeep-kin-05",
+      "chapter": "Kinematics",
+      "topic": "Projectile motion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "At the highest point of a projectile's path, its:",
+      "options": [
+        "Velocity is zero",
+        "Acceleration is zero",
+        "Vertical component of velocity is zero",
+        "Horizontal component of velocity is zero"
+      ],
+      "answer": 2,
+      "solution": "At the top the projectile has stopped rising and has not yet begun to fall, so $v_y = 0$.\n\nThe horizontal component $u\\cos\\theta$ is unchanged throughout — nothing acts horizontally.\n\nThe acceleration is $g$ downward at **every** point of the flight, including the top. That is the standard trap in this question."
+    },
+    {
+      "id": "jeep-kin-06",
+      "chapter": "Kinematics",
+      "topic": "Motion in a straight line",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A car moving at $v$ is brought to rest in a distance $s$ by a constant retarding force. If its speed is doubled, the stopping distance becomes:",
+      "options": [
+        "$s$",
+        "$2s$",
+        "$4s$",
+        "$s/2$"
+      ],
+      "answer": 2,
+      "solution": "Using $v^{2} = u^{2} + 2as$ with final velocity zero:\n\n$0 = u^{2} - 2as \\Rightarrow s = \\dfrac{u^{2}}{2a}$.\n\nSo $s \\propto u^{2}$ for a fixed retardation.\n\nDoubling the speed gives $2^{2} = \\mathbf{4s}$.\n\nThis is the physics behind every road-safety campaign about speed."
+    },
+    {
+      "id": "jeep-kin-07",
+      "chapter": "Kinematics",
+      "topic": "Relative velocity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two trains, $120\\ \\text{m}$ and $80\\ \\text{m}$ long, move towards each other at $20\\ \\mathrm{m\\,s^{-1}}$ and $30\\ \\mathrm{m\\,s^{-1}}$. The time to cross each other completely is:",
+      "options": [
+        "$2\\ \\text{s}$",
+        "$4\\ \\text{s}$",
+        "$5\\ \\text{s}$",
+        "$8\\ \\text{s}$"
+      ],
+      "answer": 1,
+      "solution": "Moving towards each other, relative speed $= 20 + 30 = 50\\ \\mathrm{m\\,s^{-1}}$.\n\nTo pass completely, the relative displacement is the sum of the lengths:\n\n$120 + 80 = 200\\ \\text{m}$.\n\n$t = \\dfrac{200}{50} = \\mathbf{4\\ \\text{s}}$."
+    },
+    {
+      "id": "jeep-kin-08",
+      "chapter": "Kinematics",
+      "topic": "Projectile motion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A stone is thrown horizontally from a tower. Neglecting air resistance, the time it takes to reach the ground depends on:",
+      "options": [
+        "The horizontal speed only",
+        "The height of the tower only",
+        "Both the speed and the height",
+        "Neither"
+      ],
+      "answer": 1,
+      "solution": "The vertical and horizontal motions are independent.\n\nVertically the stone starts with $u_y = 0$ and falls freely:\n\n$h = \\tfrac{1}{2}gt^{2} \\Rightarrow t = \\sqrt{\\dfrac{2h}{g}}$.\n\nThe horizontal speed appears nowhere in that expression — it sets *where* the stone lands, not *when*.\n\nA stone thrown horizontally and one simply dropped from the same height hit the ground together."
+    },
+    {
+      "id": "jeep-kin-09",
+      "chapter": "Kinematics",
+      "topic": "Motion in a straight line",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A particle's position is $x = 3t^{2} - 2t + 5$ (SI units). Its acceleration is:",
+      "options": [
+        "$3\\ \\mathrm{m\\,s^{-2}}$",
+        "$6\\ \\mathrm{m\\,s^{-2}}$",
+        "$-2\\ \\mathrm{m\\,s^{-2}}$",
+        "$4\\ \\mathrm{m\\,s^{-2}}$"
+      ],
+      "answer": 1,
+      "solution": "$v = \\dfrac{dx}{dt} = 6t - 2$\n\n$a = \\dfrac{dv}{dt} = \\mathbf{6\\ \\mathrm{m\\,s^{-2}}}$.\n\nThe acceleration is constant — as it must be, since $x$ is a quadratic in $t$."
+    },
+    {
+      "id": "jeep-kin-10",
+      "chapter": "Kinematics",
+      "topic": "Projectile motion",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A ball is projected at $20\\ \\mathrm{m\\,s^{-1}}$ at $30^\\circ$ to the horizontal. Taking $g = 10\\ \\mathrm{m\\,s^{-2}}$, find the time of flight in seconds.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2 s",
+        "2.0"
+      ],
+      "solution": "Time of flight $T = \\dfrac{2u\\sin\\theta}{g}$.\n\n$u\\sin\\theta = 20 \\times \\sin 30^\\circ = 20 \\times 0.5 = 10\\ \\mathrm{m\\,s^{-1}}$.\n\n$T = \\dfrac{2 \\times 10}{10} = \\mathbf{2\\ \\text{s}}$."
+    },
+    {
+      "id": "jeep-kin-11",
+      "chapter": "Kinematics",
+      "topic": "Projectile motion",
+      "type": "numeric",
+      "marks": 2,
+      "q": "For the ball in the previous question ($u = 20\\ \\mathrm{m\\,s^{-1}}$, $\\theta = 30^\\circ$, $g = 10\\ \\mathrm{m\\,s^{-2}}$), find the maximum height reached, in metres.",
+      "answer": 5,
+      "tolerance": 0.1,
+      "accept": [
+        "5 m",
+        "5.0"
+      ],
+      "solution": "$H = \\dfrac{u^{2}\\sin^{2}\\theta}{2g}$.\n\n$u\\sin\\theta = 10\\ \\mathrm{m\\,s^{-1}}$, so $(u\\sin\\theta)^{2} = 100$.\n\n$H = \\dfrac{100}{2 \\times 10} = \\mathbf{5\\ \\text{m}}$."
+    },
+    {
+      "id": "jeep-kin-12",
+      "chapter": "Kinematics",
+      "topic": "Motion in a straight line",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A body dropped from rest falls for $3\\ \\text{s}$. Taking $g = 10\\ \\mathrm{m\\,s^{-2}}$, how far does it fall, in metres?",
+      "answer": 45,
+      "tolerance": 0.5,
+      "accept": [
+        "45 m",
+        "45.0"
+      ],
+      "solution": "$s = ut + \\tfrac{1}{2}gt^{2}$ with $u = 0$:\n\n$s = \\tfrac{1}{2} \\times 10 \\times 3^{2} = \\tfrac{1}{2} \\times 10 \\times 9 = \\mathbf{45\\ \\text{m}}$."
+    },
+    {
+      "id": "jeep-kin-13",
+      "chapter": "Kinematics",
+      "topic": "Relative velocity",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A boat can row at $5\\ \\mathrm{m\\,s^{-1}}$ in still water. A river $100\\ \\text{m}$ wide flows at $3\\ \\mathrm{m\\,s^{-1}}$. If the boat heads straight across (perpendicular to the bank), how far downstream, in metres, does it land?",
+      "answer": 60,
+      "tolerance": 1,
+      "accept": [
+        "60 m",
+        "60.0"
+      ],
+      "solution": "Heading straight across, the crossing time is set by the boat's own speed:\n\n$t = \\dfrac{100}{5} = 20\\ \\text{s}$.\n\nThe current carries it downstream throughout that time:\n\ndrift $= 3 \\times 20 = \\mathbf{60\\ \\text{m}}$.\n\nNote the crossing time does **not** depend on the current when the boat heads perpendicular — the current has no component across the river."
+    },
+    {
+      "id": "jeep-kin-14",
+      "chapter": "Kinematics",
+      "topic": "Graphs",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A particle moves with velocity $v = 4t$ (SI units). Find the displacement, in metres, between $t = 0$ and $t = 3\\ \\text{s}$.",
+      "answer": 18,
+      "tolerance": 0.2,
+      "accept": [
+        "18 m",
+        "18.0"
+      ],
+      "solution": "$x = \\displaystyle\\int_{0}^{3} 4t\\,dt = \\left[2t^{2}\\right]_{0}^{3} = 2(9) - 0 = \\mathbf{18\\ \\text{m}}$.\n\nGeometrically this is the area of a triangle under the straight line $v = 4t$: base $3\\ \\text{s}$, height $12\\ \\mathrm{m\\,s^{-1}}$, area $\\tfrac{1}{2}(3)(12) = 18$."
+    },
+    {
+      "id": "jeep-kin-15",
+      "chapter": "Kinematics",
+      "topic": "Projectile motion",
+      "type": "long",
+      "marks": 5,
+      "q": "A projectile is launched with speed $u$ at an angle $\\theta$ above the horizontal. Derive expressions for its **time of flight**, **maximum height** and **horizontal range**, stating the assumptions. Hence show that the range is the same for $\\theta$ and $(90^\\circ - \\theta)$.",
+      "solution": "**Assumptions.** Gravity is uniform and vertical, air resistance is neglected, and the ground is level so the projectile lands at the height it was launched from.\n\n**Setting up.** Resolve the initial velocity:\n\nhorizontal $u_x = u\\cos\\theta$, constant, since nothing acts horizontally\n\nvertical $u_y = u\\sin\\theta$, with acceleration $-g$\n\n**Time of flight.** The projectile returns to $y = 0$:\n\n$0 = u\\sin\\theta\\,t - \\tfrac{1}{2}gt^{2} = t\\left(u\\sin\\theta - \\tfrac{1}{2}gt\\right)$\n\nRejecting $t = 0$ (the launch):\n\n$T = \\dfrac{2u\\sin\\theta}{g}$\n\n**Maximum height.** At the top $v_y = 0$. Using $v_y^{2} = u_y^{2} - 2gH$:\n\n$0 = u^{2}\\sin^{2}\\theta - 2gH \\Rightarrow H = \\dfrac{u^{2}\\sin^{2}\\theta}{2g}$\n\n**Horizontal range.** The horizontal speed is constant, so\n\n$R = u\\cos\\theta \\times T = u\\cos\\theta \\times \\dfrac{2u\\sin\\theta}{g} = \\dfrac{2u^{2}\\sin\\theta\\cos\\theta}{g}$\n\nUsing $2\\sin\\theta\\cos\\theta = \\sin 2\\theta$:\n\n$R = \\dfrac{u^{2}\\sin 2\\theta}{g}$\n\n**Complementary angles.** Replace $\\theta$ by $(90^\\circ - \\theta)$:\n\n$R' = \\dfrac{u^{2}\\sin\\left(2(90^\\circ - \\theta)\\right)}{g} = \\dfrac{u^{2}\\sin(180^\\circ - 2\\theta)}{g}$\n\nSince $\\sin(180^\\circ - x) = \\sin x$, this is $\\dfrac{u^{2}\\sin 2\\theta}{g} = R$.\n\nSo $30^\\circ$ and $60^\\circ$ give the same range, as do $20^\\circ$ and $70^\\circ$ — though the higher angle always takes longer and goes higher."
+    }
+  ]
+}

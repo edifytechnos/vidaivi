@@ -1,0 +1,239 @@
+{
+  "id": "lib-jeep-thr",
+  "title": "Thermodynamics and Kinetic Theory",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-thr-01",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "First law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The first law of thermodynamics is a statement of the conservation of:",
+      "options": [
+        "Momentum",
+        "Energy",
+        "Mass",
+        "Entropy"
+      ],
+      "answer": 1,
+      "solution": "$\\Delta Q = \\Delta U + \\Delta W$ — heat supplied to a system either raises its internal energy or is spent as work done by it.\n\nIt is simply the conservation of **energy** extended to include heat as a form of energy transfer."
+    },
+    {
+      "id": "jeep-thr-02",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Isothermal and adiabatic",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In an adiabatic process:",
+      "options": [
+        "$\\Delta Q = 0$",
+        "$\\Delta U = 0$",
+        "$\\Delta W = 0$",
+        "$\\Delta T = 0$"
+      ],
+      "answer": 0,
+      "solution": "An adiabatic process is one with **no heat exchange**: $\\Delta Q = 0$.\n\nThe first law then gives $\\Delta W = -\\Delta U$ — any work done by the gas comes entirely out of its internal energy, so an adiabatic expansion cools the gas.\n\n$\\Delta U = 0$ and $\\Delta T = 0$ describe an *isothermal* process instead."
+    },
+    {
+      "id": "jeep-thr-03",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Kinetic theory",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The rms speed of gas molecules is proportional to:",
+      "options": [
+        "$T$",
+        "$\\sqrt{T}$",
+        "$T^{2}$",
+        "$1/T$"
+      ],
+      "answer": 1,
+      "solution": "$v_{rms} = \\sqrt{\\dfrac{3RT}{M}}$, so $v_{rms} \\propto \\mathbf{\\sqrt{T}}$ at fixed molar mass.\n\nQuadrupling the absolute temperature only doubles the rms speed. Note also $v_{rms} \\propto 1/\\sqrt{M}$, which is why hydrogen leaks away from a planet's atmosphere and nitrogen does not."
+    },
+    {
+      "id": "jeep-thr-04",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Degrees of freedom",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For a monatomic ideal gas, the ratio $\\gamma = C_p/C_v$ is:",
+      "options": [
+        "$1.4$",
+        "$1.67$",
+        "$1.33$",
+        "$1.0$"
+      ],
+      "answer": 1,
+      "solution": "A monatomic gas has $f = 3$ degrees of freedom, so $C_v = \\tfrac{3}{2}R$ and $C_p = \\tfrac{5}{2}R$.\n\n$\\gamma = \\dfrac{5/2}{3/2} = \\dfrac{5}{3} \\approx \\mathbf{1.67}$.\n\nThe general rule is $\\gamma = 1 + 2/f$: a diatomic gas ($f = 5$) gives $1.4$ and a polyatomic one ($f = 6$) gives $1.33$."
+    },
+    {
+      "id": "jeep-thr-05",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Carnot engine",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The efficiency of a Carnot engine working between temperatures $T_1$ (source) and $T_2$ (sink) is:",
+      "options": [
+        "$1 - \\dfrac{T_2}{T_1}$",
+        "$1 - \\dfrac{T_1}{T_2}$",
+        "$\\dfrac{T_2}{T_1}$",
+        "$\\dfrac{T_1 - T_2}{T_2}$"
+      ],
+      "answer": 0,
+      "solution": "$\\eta = \\mathbf{1 - \\dfrac{T_2}{T_1}}$, with both temperatures in **kelvin**.\n\nIt is the maximum efficiency any engine can have between those two reservoirs, and reaching $100\\%$ would need a sink at absolute zero."
+    },
+    {
+      "id": "jeep-thr-06",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Second law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In any spontaneous process in an isolated system, the entropy:",
+      "options": [
+        "Decreases",
+        "Increases or stays the same",
+        "Stays constant always",
+        "Becomes zero"
+      ],
+      "answer": 1,
+      "solution": "The second law says $\\Delta S \\ge 0$ for an isolated system: entropy **increases** for an irreversible process and stays constant for a reversible one.\n\nThis is the law that gives time a direction — it is why heat flows from hot to cold and never the other way by itself."
+    },
+    {
+      "id": "jeep-thr-07",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Isothermal and adiabatic",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For an adiabatic process in an ideal gas, which relation holds?",
+      "options": [
+        "$PV = $ constant",
+        "$PV^{\\gamma} = $ constant",
+        "$P/V = $ constant",
+        "$V/T = $ constant"
+      ],
+      "answer": 1,
+      "solution": "$\\mathbf{PV^{\\gamma} = \\text{constant}}$, with the equivalent forms $TV^{\\gamma-1} = $ constant and $P^{1-\\gamma}T^{\\gamma} = $ constant.\n\n$PV = $ constant is the **isothermal** case. Since $\\gamma > 1$, an adiabatic curve on a $P$–$V$ diagram is always steeper than the isothermal one through the same point."
+    },
+    {
+      "id": "jeep-thr-08",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Kinetic theory",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The average kinetic energy of a molecule of an ideal gas depends only on:",
+      "options": [
+        "Its mass",
+        "Its pressure",
+        "The absolute temperature",
+        "The volume"
+      ],
+      "answer": 2,
+      "solution": "By the equipartition theorem, the mean translational kinetic energy is\n\n$\\bar{K} = \\tfrac{3}{2}k_BT$\n\nIt depends **only on the absolute temperature** — not on the mass of the molecule, nor on the pressure or volume.\n\nSo at the same temperature a hydrogen molecule and an oxygen molecule have the same average kinetic energy; the lighter one simply moves faster."
+    },
+    {
+      "id": "jeep-thr-09",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "First law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In an isothermal expansion of an ideal gas:",
+      "options": [
+        "$\\Delta U > 0$",
+        "$\\Delta U < 0$",
+        "$\\Delta U = 0$ and $\\Delta Q = \\Delta W$",
+        "$\\Delta Q = 0$"
+      ],
+      "answer": 2,
+      "solution": "For an ideal gas the internal energy depends only on temperature, so an isothermal process has $\\Delta U = 0$.\n\nThe first law then reduces to\n\n$\\Delta Q = \\Delta W$\n\n— every joule of heat absorbed comes straight back out as work done by the gas."
+    },
+    {
+      "id": "jeep-thr-10",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Carnot engine",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A Carnot engine works between $500\\ \\text{K}$ and $300\\ \\text{K}$. Find its efficiency as a percentage.",
+      "answer": 40,
+      "tolerance": 0.5,
+      "accept": [
+        "40%",
+        "40",
+        "0.4"
+      ],
+      "solution": "$\\eta = 1 - \\dfrac{T_2}{T_1} = 1 - \\dfrac{300}{500} = 1 - 0.6 = 0.4$\n\nAs a percentage, $\\mathbf{40\\%}$."
+    },
+    {
+      "id": "jeep-thr-11",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "First law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A gas absorbs $200\\ \\text{J}$ of heat and does $80\\ \\text{J}$ of work. Find the increase in its internal energy, in joules.",
+      "answer": 120,
+      "tolerance": 1,
+      "accept": [
+        "120 J",
+        "120.0"
+      ],
+      "solution": "$\\Delta U = \\Delta Q - \\Delta W = 200 - 80 = \\mathbf{120\\ \\text{J}}$."
+    },
+    {
+      "id": "jeep-thr-12",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Kinetic theory",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The rms speed of a gas at $300\\ \\text{K}$ is $v$. At what temperature, in kelvin, is the rms speed $2v$?",
+      "answer": 1200,
+      "tolerance": 5,
+      "accept": [
+        "1200 K",
+        "1200"
+      ],
+      "solution": "$v_{rms} \\propto \\sqrt{T}$, so\n\n$\\dfrac{2v}{v} = \\sqrt{\\dfrac{T_2}{300}}$\n\n$4 = \\dfrac{T_2}{300}$\n\n$T_2 = \\mathbf{1200\\ \\text{K}}$."
+    },
+    {
+      "id": "jeep-thr-13",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Degrees of freedom",
+      "type": "numeric",
+      "marks": 2,
+      "q": "For a diatomic gas (rigid, $f = 5$), find $C_v$ as a multiple of $R$. Give the multiple.",
+      "answer": 2.5,
+      "tolerance": 0.05,
+      "accept": [
+        "2.5",
+        "5/2"
+      ],
+      "solution": "$C_v = \\dfrac{f}{2}R = \\dfrac{5}{2}R = \\mathbf{2.5}\\,R$.\n\nAnd $C_p = C_v + R = 3.5R$, giving $\\gamma = 3.5/2.5 = 1.4$ as expected."
+    },
+    {
+      "id": "jeep-thr-14",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Isothermal and adiabatic",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A monatomic gas ($\\gamma = 5/3$) at volume $V$ is compressed adiabatically to $V/8$. By what factor does the temperature rise?",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4",
+        "x4"
+      ],
+      "solution": "For an adiabatic process, $TV^{\\gamma-1} = $ constant, and $\\gamma - 1 = \\dfrac{2}{3}$.\n\n$\\dfrac{T_2}{T_1} = \\left(\\dfrac{V_1}{V_2}\\right)^{\\gamma-1} = 8^{2/3}$\n\n$8^{1/3} = 2$, so $8^{2/3} = 2^{2} = \\mathbf{4}$.\n\nThe temperature becomes four times as large — this is why a bicycle pump warms up."
+    },
+    {
+      "id": "jeep-thr-15",
+      "chapter": "Thermodynamics and Kinetic Theory",
+      "topic": "Kinetic theory",
+      "type": "long",
+      "marks": 5,
+      "q": "Using the kinetic theory of gases, derive the expression $P = \\tfrac{1}{3}\\rho v_{rms}^{2}$ for the pressure of an ideal gas. Hence show that the mean translational kinetic energy per molecule is $\\tfrac{3}{2}k_BT$.",
+      "solution": "**The assumptions.** The gas consists of $N$ identical molecules of mass $m$ in a cube of side $L$, moving randomly, of negligible size compared with their separation, colliding elastically with the walls and with each other, and exerting no forces between collisions.\n\n**One molecule, one wall.** Take a molecule with $x$-component of velocity $v_x$ hitting the wall perpendicular to the $x$-axis. The collision is elastic, so the velocity component reverses and the momentum change is\n\n$\\Delta p = -mv_x - (mv_x) = -2mv_x$\n\nThe momentum given to the wall is $2mv_x$.\n\n**How often.** The molecule travels $2L$ between successive impacts on that same wall, so the time between them is\n\n$\\Delta t = \\dfrac{2L}{v_x}$\n\n**Force from one molecule.**\n\n$F = \\dfrac{2mv_x}{2L/v_x} = \\dfrac{mv_x^{2}}{L}$\n\n**All the molecules.** Summing over all $N$ molecules:\n\n$F_{\\text{total}} = \\dfrac{m}{L}\\sum v_x^{2} = \\dfrac{mN\\overline{v_x^{2}}}{L}$\n\n**Isotropy.** The motion is random, so no direction is special:\n\n$\\overline{v_x^{2}} = \\overline{v_y^{2}} = \\overline{v_z^{2}} = \\tfrac{1}{3}\\overline{v^{2}}$\n\nHence $F_{\\text{total}} = \\dfrac{mN\\overline{v^{2}}}{3L}$.\n\n**Pressure** is force per unit area, and the wall has area $L^{2}$:\n\n$P = \\dfrac{F}{L^{2}} = \\dfrac{mN\\overline{v^{2}}}{3L^{3}} = \\dfrac{mN\\overline{v^{2}}}{3V}$\n\nSince the density is $\\rho = mN/V$:\n\n$\\boxed{P = \\tfrac{1}{3}\\rho\\,v_{rms}^{2}}$\n\nwhere $v_{rms} = \\sqrt{\\overline{v^{2}}}$.\n\n**Connecting to temperature.** Rewrite as $PV = \\tfrac{1}{3}Nm\\,v_{rms}^{2}$ and compare with the ideal gas equation $PV = Nk_BT$:\n\n$\\tfrac{1}{3}Nm\\,v_{rms}^{2} = Nk_BT$\n\n$m\\,v_{rms}^{2} = 3k_BT$\n\nThe mean translational kinetic energy per molecule is therefore\n\n$\\bar{K} = \\tfrac{1}{2}m\\,v_{rms}^{2} = \\boxed{\\tfrac{3}{2}k_BT}$\n\n**What this means.** Temperature is *not* a separate quantity that happens to correlate with molecular motion — it **is** a measure of the mean kinetic energy per molecule. The result also explains why $\\bar{K}$ is independent of the molecular mass: at a given temperature, heavier molecules simply move more slowly."
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+  "id": "lib-jeep-lom",
+  "title": "Laws of Motion",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-lom-01",
+      "chapter": "Laws of Motion",
+      "topic": "Newton's laws",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A body of mass $m$ is at rest on a rough horizontal surface. A force less than the limiting friction is applied. The friction acting is:",
+      "options": [
+        "Zero",
+        "Equal to the limiting friction",
+        "Equal to the applied force",
+        "Greater than the applied force"
+      ],
+      "answer": 2,
+      "solution": "Static friction is **self-adjusting**: it takes whatever value is needed to keep the body at rest, up to a maximum $\\mu_s N$.\n\nSince the body does not move, the net force is zero, so friction exactly balances the applied force.\n\nOnly once the applied force exceeds $\\mu_s N$ does the body slide, and friction then drops to the kinetic value $\\mu_k N$."
+    },
+    {
+      "id": "jeep-lom-02",
+      "chapter": "Laws of Motion",
+      "topic": "Free body diagrams",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A lift accelerates upward at $a$. The apparent weight of a person of mass $m$ inside is:",
+      "options": [
+        "$mg$",
+        "$m(g + a)$",
+        "$m(g - a)$",
+        "$ma$"
+      ],
+      "answer": 1,
+      "solution": "Apparent weight is the normal reaction $N$ from the floor.\n\nTaking up as positive, Newton's second law for the person:\n\n$N - mg = ma \\Rightarrow N = \\mathbf{m(g + a)}$.\n\nAccelerating downward gives $m(g - a)$, and in free fall ($a = g$) the reaction is zero — weightlessness."
+    },
+    {
+      "id": "jeep-lom-03",
+      "chapter": "Laws of Motion",
+      "topic": "Friction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A block just begins to slide down an incline when the angle of inclination is $\\theta$. The coefficient of static friction is:",
+      "options": [
+        "$\\sin\\theta$",
+        "$\\cos\\theta$",
+        "$\\tan\\theta$",
+        "$\\cot\\theta$"
+      ],
+      "answer": 2,
+      "solution": "At the point of sliding, the component of weight along the incline equals the limiting friction:\n\n$mg\\sin\\theta = \\mu_s N = \\mu_s\\,mg\\cos\\theta$\n\n$\\mu_s = \\dfrac{\\sin\\theta}{\\cos\\theta} = \\mathbf{\\tan\\theta}$.\n\n$\\theta$ is called the angle of repose. Notice the mass cancels — a heavy block and a light one slip at the same angle."
+    },
+    {
+      "id": "jeep-lom-04",
+      "chapter": "Laws of Motion",
+      "topic": "Newton's laws",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Action and reaction forces:",
+      "options": [
+        "Act on the same body",
+        "Act on different bodies and cancel",
+        "Act on different bodies and never cancel",
+        "Are unequal in magnitude"
+      ],
+      "answer": 2,
+      "solution": "Newton's third law pairs are equal, opposite, and act on **different** bodies.\n\nBecause they act on different bodies they can never cancel each other — cancellation only makes sense for forces on the *same* body.\n\nThat is why a horse can pull a cart: the forward force on the cart and the backward force on the horse act on different objects."
+    },
+    {
+      "id": "jeep-lom-05",
+      "chapter": "Laws of Motion",
+      "topic": "Circular motion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A car takes a circular turn of radius $r$ on a level road with coefficient of friction $\\mu$. The maximum safe speed is:",
+      "options": [
+        "$\\sqrt{\\mu r g}$",
+        "$\\mu r g$",
+        "$\\sqrt{r g/\\mu}$",
+        "$\\mu\\sqrt{rg}$"
+      ],
+      "answer": 0,
+      "solution": "Friction supplies the centripetal force:\n\n$\\dfrac{mv^{2}}{r} \\le \\mu mg$\n\n$v^{2} \\le \\mu r g \\Rightarrow v_{\\max} = \\mathbf{\\sqrt{\\mu r g}}$.\n\nThe mass cancels — a loaded lorry and an empty one skid at the same speed on the same bend."
+    },
+    {
+      "id": "jeep-lom-06",
+      "chapter": "Laws of Motion",
+      "topic": "Momentum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A bullet of mass $m$ leaves a gun of mass $M$ with speed $v$. The recoil speed of the gun is:",
+      "options": [
+        "$\\dfrac{mv}{M}$",
+        "$\\dfrac{Mv}{m}$",
+        "$\\dfrac{mv}{M+m}$",
+        "$v$"
+      ],
+      "answer": 0,
+      "solution": "Momentum is conserved: the system starts at rest, so the total momentum stays zero.\n\n$0 = mv + MV \\Rightarrow V = -\\dfrac{mv}{M}$.\n\nThe magnitude of the recoil is $\\mathbf{mv/M}$, and the minus sign says it is opposite to the bullet.\n\nA heavy gun recoils slowly, which is why artillery pieces are massive."
+    },
+    {
+      "id": "jeep-lom-07",
+      "chapter": "Laws of Motion",
+      "topic": "Pulleys",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two masses $m_1 > m_2$ hang from a light string over a frictionless pulley. The acceleration of the system is:",
+      "options": [
+        "$\\dfrac{(m_1 - m_2)g}{m_1 + m_2}$",
+        "$\\dfrac{(m_1 + m_2)g}{m_1 - m_2}$",
+        "$\\dfrac{m_1 g}{m_2}$",
+        "$g$"
+      ],
+      "answer": 0,
+      "solution": "Take the direction of motion as positive for each mass and let $T$ be the tension.\n\nFor $m_1$ (descending): $m_1 g - T = m_1 a$\n\nFor $m_2$ (rising): $T - m_2 g = m_2 a$\n\nAdding eliminates $T$:\n\n$(m_1 - m_2)g = (m_1 + m_2)a \\Rightarrow a = \\mathbf{\\dfrac{(m_1 - m_2)g}{m_1 + m_2}}$.\n\nThis is Atwood's machine; equal masses give $a = 0$, as they must."
+    },
+    {
+      "id": "jeep-lom-08",
+      "chapter": "Laws of Motion",
+      "topic": "Impulse",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A cricketer moves his hands backwards while catching a ball in order to:",
+      "options": [
+        "Increase the impulse",
+        "Decrease the change in momentum",
+        "Increase the time of impact and so reduce the force",
+        "Increase the ball's momentum"
+      ],
+      "answer": 2,
+      "solution": "The change in momentum is fixed — the ball must be brought to rest either way.\n\nImpulse $= F\\,\\Delta t = \\Delta p$. With $\\Delta p$ fixed, increasing $\\Delta t$ **reduces** $F$.\n\nDrawing the hands back stretches the collision over a longer time, so the force on the hands is smaller. The same principle is behind crumple zones and airbags."
+    },
+    {
+      "id": "jeep-lom-09",
+      "chapter": "Laws of Motion",
+      "topic": "Friction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Kinetic friction is generally:",
+      "options": [
+        "Greater than limiting static friction",
+        "Less than limiting static friction",
+        "Equal to limiting static friction",
+        "Zero"
+      ],
+      "answer": 1,
+      "solution": "It takes a larger force to *start* a body sliding than to *keep* it sliding, so\n\n$\\mu_k < \\mu_s$.\n\nThe microscopic picture is that a stationary contact settles into interlocked asperities which must be broken; once moving, the surfaces skate over one another with less interlocking.\n\nThis is why a pushed crate lurches forward the moment it breaks free."
+    },
+    {
+      "id": "jeep-lom-10",
+      "chapter": "Laws of Motion",
+      "topic": "Newton's laws",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A force of $20\\ \\text{N}$ acts on a body of mass $4\\ \\text{kg}$ at rest on a frictionless surface. Find its speed, in $\\mathrm{m\\,s^{-1}}$, after $3\\ \\text{s}$.",
+      "answer": 15,
+      "tolerance": 0.2,
+      "accept": [
+        "15 m/s",
+        "15.0"
+      ],
+      "solution": "$a = \\dfrac{F}{m} = \\dfrac{20}{4} = 5\\ \\mathrm{m\\,s^{-2}}$.\n\n$v = u + at = 0 + 5 \\times 3 = \\mathbf{15\\ \\mathrm{m\\,s^{-1}}}$."
+    },
+    {
+      "id": "jeep-lom-11",
+      "chapter": "Laws of Motion",
+      "topic": "Friction",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A $10\\ \\text{kg}$ block on a horizontal surface has $\\mu_k = 0.2$. Taking $g = 10\\ \\mathrm{m\\,s^{-2}}$, find the kinetic friction force, in newtons.",
+      "answer": 20,
+      "tolerance": 0.5,
+      "accept": [
+        "20 N",
+        "20.0"
+      ],
+      "solution": "On a horizontal surface the normal reaction is $N = mg = 10 \\times 10 = 100\\ \\text{N}$.\n\n$f_k = \\mu_k N = 0.2 \\times 100 = \\mathbf{20\\ \\text{N}}$."
+    },
+    {
+      "id": "jeep-lom-12",
+      "chapter": "Laws of Motion",
+      "topic": "Momentum",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A $0.2\\ \\text{kg}$ ball moving at $10\\ \\mathrm{m\\,s^{-1}}$ strikes a wall normally and rebounds at $8\\ \\mathrm{m\\,s^{-1}}$. Find the magnitude of the impulse, in $\\mathrm{N\\,s}$.",
+      "answer": 3.6,
+      "tolerance": 0.05,
+      "accept": [
+        "3.6 Ns",
+        "3.6"
+      ],
+      "solution": "Take the initial direction as positive. The ball rebounds, so its final velocity is $-8\\ \\mathrm{m\\,s^{-1}}$.\n\n$\\Delta p = m(v - u) = 0.2\\,(-8 - 10) = 0.2 \\times (-18) = -3.6\\ \\mathrm{N\\,s}$.\n\nThe magnitude is $\\mathbf{3.6\\ \\mathrm{N\\,s}}$.\n\nThe sign reversal is what makes a rebound impulse larger than a dead stop would be."
+    },
+    {
+      "id": "jeep-lom-13",
+      "chapter": "Laws of Motion",
+      "topic": "Circular motion",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A stone of mass $0.5\\ \\text{kg}$ is whirled in a horizontal circle of radius $2\\ \\text{m}$ at $4\\ \\mathrm{m\\,s^{-1}}$. Find the tension in the string, in newtons.",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4 N",
+        "4.0"
+      ],
+      "solution": "In a horizontal circle the string tension provides the centripetal force:\n\n$T = \\dfrac{mv^{2}}{r} = \\dfrac{0.5 \\times 4^{2}}{2} = \\dfrac{0.5 \\times 16}{2} = \\dfrac{8}{2} = \\mathbf{4\\ \\text{N}}$."
+    },
+    {
+      "id": "jeep-lom-14",
+      "chapter": "Laws of Motion",
+      "topic": "Pulleys",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Masses of $6\\ \\text{kg}$ and $4\\ \\text{kg}$ hang over a frictionless pulley. Taking $g = 10\\ \\mathrm{m\\,s^{-2}}$, find the acceleration, in $\\mathrm{m\\,s^{-2}}$.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2 m/s^2",
+        "2.0"
+      ],
+      "solution": "$a = \\dfrac{(m_1 - m_2)g}{m_1 + m_2} = \\dfrac{(6 - 4) \\times 10}{6 + 4} = \\dfrac{20}{10} = \\mathbf{2\\ \\mathrm{m\\,s^{-2}}}$."
+    },
+    {
+      "id": "jeep-lom-15",
+      "chapter": "Laws of Motion",
+      "topic": "Banking of roads",
+      "type": "long",
+      "marks": 5,
+      "q": "Derive the expression for the maximum safe speed of a vehicle on a road banked at angle $\\theta$, with coefficient of friction $\\mu$ between tyres and road. Hence obtain the speed for which no friction is needed, and explain why roads are banked.",
+      "solution": "**Setting up.** Let the vehicle of mass $m$ move in a circle of radius $r$ on a road banked at $\\theta$. Three forces act: the weight $mg$ down, the normal reaction $N$ perpendicular to the road surface, and friction $f$ along the surface.\n\nAt maximum speed the vehicle tends to slide *outwards* and *up* the slope, so friction acts **down** the slope, $f = \\mu N$.\n\n**Resolving.** Vertically (no vertical acceleration):\n\n$N\\cos\\theta = mg + \\mu N\\sin\\theta$\n\nHorizontally (towards the centre, supplying the centripetal force):\n\n$N\\sin\\theta + \\mu N\\cos\\theta = \\dfrac{mv^{2}}{r}$\n\n**Dividing** the second by the first to eliminate $N$ and $m$:\n\n$\\dfrac{\\sin\\theta + \\mu\\cos\\theta}{\\cos\\theta - \\mu\\sin\\theta} = \\dfrac{v^{2}}{rg}$\n\nDividing numerator and denominator by $\\cos\\theta$:\n\n$v_{\\max} = \\sqrt{rg\\left(\\dfrac{\\tan\\theta + \\mu}{1 - \\mu\\tan\\theta}\\right)}$\n\n**The frictionless speed.** Setting $\\mu = 0$:\n\n$v_0 = \\sqrt{rg\\tan\\theta}$\n\nAt exactly this speed the horizontal component of the normal reaction alone supplies the centripetal force, and no friction is called on at all.\n\n**Why roads are banked.** On a level road the whole centripetal force must come from friction, which is unreliable — it falls sharply when the road is wet, icy or dusty. Banking makes a component of the normal reaction do the work instead, so the turn stays safe when friction cannot be counted on, and a much higher speed is possible for the same radius. Railway tracks are canted for the same reason."
+    }
+  ]
+}

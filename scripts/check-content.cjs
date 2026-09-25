@@ -42,6 +42,17 @@ const dirs = roots.length
       .map((d) => path.join("content", d))
       .filter((d) => fs.statSync(d).isDirectory());
 
+// Every LaTeX command beginning with "n" a maths or physics question here could
+// reasonably want. Deliberately a CLOSED list rather than "any lowercase word",
+// because `"line one\nline two"` written in a Python raw string is exactly the
+// bug this guard exists for and would sail straight through such a rule.
+const LATEX_N_COMMANDS = new Set([
+  "nu", "nabla", "ne", "neq", "not", "notin", "ni", "nmid", "ncong",
+  "nparallel", "nsubseteq", "nsupseteq", "nearrow", "nwarrow", "natural",
+  "negthinspace", "negmedspace", "negthickspace", "newline", "nonumber",
+  "nolimits", "noalign", "normalsize",
+]);
+
 const ids = new Map();
 let files = 0;
 let questions = 0;
@@ -92,8 +103,20 @@ for (const dir of dirs.sort()) {
       for (const field of ["q", "solution"]) {
         const text = q[field];
         if (typeof text !== "string") continue;
-        if (text.includes("\\n")) {
+        // A backslash-n is NOT automatically the bug. LaTeX has a handful of
+        // commands beginning with "n" — `\nu`, the frequency in a photoelectric
+        // question, is the one that found this out — and a blanket
+        // `includes("\\n")` condemns every one of them. So read the command name
+        // that follows and let the known ones through.
+        //
+        // Anything else really is a paragraph break that never became a
+        // newline. `\n\n` yields the name "n" and `"line one\nline two"` yields
+        // "nline", neither of which is a LaTeX command, so both shapes of the
+        // original bug are still caught.
+        for (const m of text.matchAll(/\\(n[a-z]*)/g)) {
+          if (LATEX_N_COMMANDS.has(m[1])) continue;
           fail(`${q.id} — ${field} contains a literal backslash-n; it needs a real newline`);
+          break;
         }
         for (const line of text.split("\n")) {
           const t = line.trim();
