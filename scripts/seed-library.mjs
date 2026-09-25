@@ -79,6 +79,8 @@ const SHELVES = {
   // scanning the list should not have to infer which is which.
   "tn12-physics": { board: "Tamil Nadu", klass: "12", subject: "Physics (English Medium)" },
   "tn12-physics-ta": { board: "Tamil Nadu", klass: "12", subject: "Physics (Tamil Medium)" },
+  "tn12-chemistry": { board: "Tamil Nadu", klass: "12", subject: "Chemistry (English Medium)" },
+  "tn12-chemistry-ta": { board: "Tamil Nadu", klass: "12", subject: "Chemistry (Tamil Medium)" },
 };
 
 if (!USER || !PASS) {

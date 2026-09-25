@@ -1,0 +1,236 @@
+{
+  "id": "lib-tn12c-met",
+  "title": "Metallurgy",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-met-01",
+      "chapter": "Metallurgy",
+      "topic": "Concentration of ores",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Froth flotation is used for the concentration of:",
+      "options": [
+        "Oxide ores",
+        "Sulphide ores",
+        "Carbonate ores",
+        "Native metals"
+      ],
+      "answer": 1,
+      "solution": "**Froth flotation** concentrates **sulphide** ores, exploiting the fact that sulphide particles are **preferentially wetted by oil** while the gangue is wetted by water.\n\nPine oil acts as the collector and sodium ethyl xanthate as the frothing agent. The ore floats with the froth and is skimmed off.\n\nOxide ores are concentrated by **gravity separation** or **magnetic separation**, and bauxite specifically by the chemical **Bayer process**."
+    },
+    {
+      "id": "tn12c-met-02",
+      "chapter": "Metallurgy",
+      "topic": "Ellingham diagram",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An Ellingham diagram plots:",
+      "options": [
+        "$\\Delta H$ against temperature",
+        "$\\Delta G^\\circ$ against temperature",
+        "$\\Delta S$ against pressure",
+        "$K$ against temperature"
+      ],
+      "answer": 1,
+      "solution": "An Ellingham diagram plots the standard free energy of formation $\\Delta G^\\circ$ of metal oxides **against temperature**.\n\nIts practical use is in choosing a **reducing agent**: a metal whose line lies **below** another's can reduce that other metal's oxide, because the overall $\\Delta G$ is then negative.\n\nMost lines slope **upward** because $\\Delta S$ is negative when a gas is consumed. The carbon line slopes **downward**, since $\\text{C} + \\text{O}_2 \\rightarrow 2\\text{CO}$ increases the number of gas molecules — which is exactly why carbon becomes a better reducing agent at high temperature and why it reduces almost any oxide if heated enough."
+    },
+    {
+      "id": "tn12c-met-03",
+      "chapter": "Metallurgy",
+      "topic": "Extraction of aluminium",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Hall-Heroult process, cryolite is added to alumina in order to:",
+      "options": [
+        "Increase the purity",
+        "Lower the melting point and increase conductivity",
+        "Act as a reducing agent",
+        "Remove silica"
+      ],
+      "answer": 1,
+      "solution": "Pure alumina melts at about $2045^\\circ\\text{C}$, which is impractical to maintain electrolytically.\n\nAdding **cryolite** ($\\text{Na}_3\\text{AlF}_6$) and fluorspar **lowers the melting point** to around $950^\\circ\\text{C}$ and **increases the electrical conductivity** of the melt.\n\nCryolite is not consumed and is not a reducing agent — the reduction is done by the current at the cathode. The carbon anodes are consumed, since the oxygen liberated burns them to $\\text{CO}_2$, and they have to be replaced periodically."
+    },
+    {
+      "id": "tn12c-met-04",
+      "chapter": "Metallurgy",
+      "topic": "Refining",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Zone refining is based on the principle that:",
+      "options": [
+        "Impurities are magnetic",
+        "Impurities are more soluble in the molten state than in the solid",
+        "The metal is volatile",
+        "Impurities are lighter"
+      ],
+      "answer": 1,
+      "solution": "**Zone refining** works because impurities are **more soluble in the molten metal than in the solid**.\n\nA mobile heater melts a narrow band, which is moved slowly along the rod. The impurities travel with the molten zone and collect at one end, which is then cut off.\n\nIt produces metals of **very high purity** and is used for silicon and germanium in semiconductor manufacture, where the tolerance for impurity is a few parts per billion."
+    },
+    {
+      "id": "tn12c-met-05",
+      "chapter": "Metallurgy",
+      "topic": "Extraction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Cyanide process is used for the extraction of:",
+      "options": [
+        "Iron",
+        "Copper",
+        "Gold and silver",
+        "Aluminium"
+      ],
+      "answer": 2,
+      "solution": "The **MacArthur-Forrest cyanide process** extracts **gold and silver**.\n\nThe ore is treated with dilute sodium cyanide in the presence of air, forming a soluble complex:\n\n$4\\text{Au} + 8\\text{NaCN} + 2\\text{H}_2\\text{O} + \\text{O}_2 \\rightarrow 4\\text{Na[Au(CN)}_2] + 4\\text{NaOH}$\n\nThe gold is then displaced by **zinc**, which is more electropositive:\n\n$2\\text{Na[Au(CN)}_2] + \\text{Zn} \\rightarrow \\text{Na}_2[\\text{Zn(CN)}_4] + 2\\text{Au}$\n\nIt is an oxidation followed by a displacement — the air is essential to the first step."
+    },
+    {
+      "id": "tn12c-met-06",
+      "chapter": "Metallurgy",
+      "topic": "Roasting and calcination",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The essential difference between roasting and calcination is that roasting is carried out:",
+      "options": [
+        "In the absence of air",
+        "In the presence of excess air",
+        "At lower temperature",
+        "In water"
+      ],
+      "answer": 1,
+      "solution": "**Roasting** heats the ore **in the presence of excess air**, and is used for **sulphide** ores, converting them to oxides and driving off $\\text{SO}_2$.\n\n**Calcination** heats the ore in the **absence or limited supply of air**, and is used for **carbonate and hydrated** ores, driving off $\\text{CO}_2$ or water.\n\nBoth end at the oxide, because the oxide is what carbon or another reducing agent can then reduce to the metal. The difference is only in what has to be removed to get there."
+    },
+    {
+      "id": "tn12c-met-07",
+      "chapter": "Metallurgy",
+      "topic": "Refining",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the van Arkel process, the metal is purified by:",
+      "options": [
+        "Electrolysis",
+        "Forming a volatile compound that is later decomposed on a hot filament",
+        "Distillation of the metal",
+        "Magnetic separation"
+      ],
+      "answer": 1,
+      "solution": "The **van Arkel process** converts the metal into a **volatile compound**, which is then decomposed on a hot tungsten filament to deposit the pure metal.\n\nFor titanium and zirconium:\n\n$\\text{Ti} + 2\\text{I}_2 \\xrightarrow{250^\\circ\\text{C}} \\text{TiI}_4 \\xrightarrow{1400^\\circ\\text{C}} \\text{Ti} + 2\\text{I}_2$\n\nThe iodine is recycled. The method is valuable because it removes **oxygen and nitrogen** as impurities, which other methods struggle with — and those are exactly the impurities that make titanium brittle."
+    },
+    {
+      "id": "tn12c-met-08",
+      "chapter": "Metallurgy",
+      "topic": "Extraction of iron",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the blast furnace, limestone is added to:",
+      "options": [
+        "Reduce the iron oxide",
+        "Act as a flux, removing silica as slag",
+        "Increase the temperature",
+        "Provide carbon"
+      ],
+      "answer": 1,
+      "solution": "Limestone decomposes to lime, which acts as a **basic flux** and combines with the acidic silica impurity to form a fusible **slag**:\n\n$\\text{CaCO}_3 \\rightarrow \\text{CaO} + \\text{CO}_2$\n\n$\\text{CaO} + \\text{SiO}_2 \\rightarrow \\text{CaSiO}_3$ (slag)\n\nThe slag is lighter than molten iron and floats on it, so the two are tapped off separately. It also protects the metal from re-oxidation.\n\nThe **reduction** is done by carbon monoxide, not by limestone."
+    },
+    {
+      "id": "tn12c-met-09",
+      "chapter": "Metallurgy",
+      "topic": "Thermodynamics of reduction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Aluminium is used to reduce the oxides of chromium and manganese because:",
+      "options": [
+        "It is cheaper",
+        "It is a stronger reducing agent than carbon for these oxides",
+        "It has a lower melting point",
+        "It is a good conductor"
+      ],
+      "answer": 1,
+      "solution": "In the **thermite (Goldschmidt) reaction**, aluminium reduces oxides such as $\\text{Cr}_2\\text{O}_3$ and $\\text{Mn}_3\\text{O}_4$.\n\nOn the Ellingham diagram the aluminium line lies **below** those of chromium and manganese, so the reduction has a negative $\\Delta G$ and proceeds.\n\nCarbon is avoided here for a practical reason rather than a thermodynamic one: at the temperatures needed, carbon would form **carbides** with these metals, contaminating the product. The thermite reaction is also strongly exothermic, which is why it is used for welding rails in place."
+    },
+    {
+      "id": "tn12c-met-10",
+      "chapter": "Metallurgy",
+      "topic": "Extraction",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of aluminium in $\\text{Al}_2\\text{O}_3$?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3",
+        "+3"
+      ],
+      "solution": "Oxygen is $-2$ each and there are three of them, giving $-6$. Let aluminium be $x$ each.\n\n$2x + 3(-2) = 0$\n\n$2x = 6 \\Rightarrow x = \\mathbf{+3}$"
+    },
+    {
+      "id": "tn12c-met-11",
+      "chapter": "Metallurgy",
+      "topic": "Extraction of iron",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In the reaction $\\text{Fe}_2\\text{O}_3 + 3\\text{CO} \\rightarrow 2\\text{Fe} + 3\\text{CO}_2$, how many moles of CO are needed per mole of iron produced?",
+      "answer": 1.5,
+      "tolerance": 0.05,
+      "accept": [
+        "1.5",
+        "3/2"
+      ],
+      "solution": "The equation gives 3 moles of CO for 2 moles of Fe.\n\nPer mole of iron: $\\dfrac{3}{2} = \\mathbf{1.5}$ moles of CO."
+    },
+    {
+      "id": "tn12c-met-12",
+      "chapter": "Metallurgy",
+      "topic": "Extraction of aluminium",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many faradays of charge are required to deposit 1 mole of aluminium from $\\text{Al}^{3+}$?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3"
+      ],
+      "solution": "$\\text{Al}^{3+} + 3e^{-} \\rightarrow \\text{Al}$\n\nThree moles of electrons are needed per mole of aluminium, so $\\mathbf{3}$ faradays, or $3 \\times 96500 = 289500\\ \\text{C}$.\n\nThis large charge requirement is precisely why aluminium extraction is so energy-intensive, and why recycling aluminium uses only about $5\\%$ of the energy of extracting it."
+    },
+    {
+      "id": "tn12c-met-13",
+      "chapter": "Metallurgy",
+      "topic": "Refining",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In the electrolytic refining of copper, at which electrode is the pure metal deposited? Answer 1 for anode, 2 for cathode.",
+      "answer": 2,
+      "tolerance": 0.1,
+      "accept": [
+        "2",
+        "cathode"
+      ],
+      "solution": "$\\mathbf{2}$ — the **cathode**.\n\nThe **impure** metal is the anode and dissolves; pure copper is deposited at the cathode by reduction. The more noble impurities such as gold, silver and platinum do not dissolve and collect below the anode as **anode mud**, which is valuable enough that its recovery helps pay for the refining."
+    },
+    {
+      "id": "tn12c-met-14",
+      "chapter": "Metallurgy",
+      "topic": "Concentration of ores",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of sulphur in the sulphide ion $\\text{S}^{2-}$?",
+      "answer": -2,
+      "tolerance": 0.1,
+      "accept": [
+        "-2"
+      ],
+      "solution": "A monatomic ion's oxidation state equals its charge, so sulphur is $\\mathbf{-2}$.\n\nRoasting oxidises it to $+4$ in $\\text{SO}_2$, which is a change of six units — a substantial oxidation, and the reason roasting releases so much heat."
+    },
+    {
+      "id": "tn12c-met-15",
+      "chapter": "Metallurgy",
+      "topic": "Ellingham diagram",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the principle and uses of the Ellingham diagram. Use it to explain why carbon is an effective reducing agent at high temperatures, why aluminium is used in the thermite reaction, and state two limitations of the diagram.",
+      "solution": "**What the diagram is.** An Ellingham diagram plots the standard free energy change $\\Delta G^\\circ$ for the formation of metal **oxides** against **temperature**, for reactions written per mole of oxygen consumed:\n\n$2\\text{M} + \\text{O}_2 \\rightarrow 2\\text{MO}$\n\nWriting them per mole of $\\text{O}_2$ is what makes the lines directly comparable.\n\n**Why most lines slope upward.** From $\\Delta G^\\circ = \\Delta H^\\circ - T\\Delta S^\\circ$, the slope of each line is $-\\Delta S^\\circ$.\n\nFor most oxidations a gas ($\\text{O}_2$) is consumed and a solid formed, so $\\Delta S^\\circ$ is **negative**, the slope $-\\Delta S^\\circ$ is **positive**, and the line rises. Oxide formation becomes **less** favourable as temperature rises.\n\n**The principle of use.** A metal can reduce the oxide of another metal if its own line lies **below** that oxide's line at the working temperature, because the coupled reaction then has a negative $\\Delta G$.\n\nThe vertical gap between the two lines is the $\\Delta G$ of the reduction, so a larger gap means a stronger driving force.\n\n**Why carbon works so well at high temperature.** Carbon is the important exception, and the reason is its entropy.\n\nThree carbon reactions matter:\n\n$\\text{C} + \\text{O}_2 \\rightarrow \\text{CO}_2$ — one mole of gas to one mole, so $\\Delta S \\approx 0$ and the line is roughly **horizontal**.\n\n$2\\text{C} + \\text{O}_2 \\rightarrow 2\\text{CO}$ — one mole of gas becomes **two**, so $\\Delta S$ is **positive** and the line slopes **downward**.\n\n$2\\text{CO} + \\text{O}_2 \\rightarrow 2\\text{CO}_2$ — three moles to two, so the line rises steeply.\n\nThe $\\text{CO}$ line falling while every metal oxide line rises means the two must **cross**. Above the crossing temperature carbon lies below the metal's line and can reduce its oxide.\n\n**This is the key insight of the whole diagram**: carbon becomes a **better** reducing agent the hotter it gets, while metals become worse. Given a high enough temperature, carbon will reduce almost any metal oxide — which is why carbon is the cheap industrial reductant of choice, used in the blast furnace for iron and for zinc, tin and lead.\n\n**Why aluminium is used in the thermite reaction.** The aluminium line lies **very low** on the diagram, below those of chromium, manganese and iron, so aluminium can reduce their oxides:\n\n$\\text{Cr}_2\\text{O}_3 + 2\\text{Al} \\rightarrow 2\\text{Cr} + \\text{Al}_2\\text{O}_3$\n\nThe large gap between the lines means a large negative $\\Delta G$, and the reaction is strongly **exothermic** — hot enough to produce molten metal, which is why thermite is used to weld railway rails in place.\n\nCarbon is avoided here not because it could not reduce these oxides thermodynamically, but for a practical reason: at the temperatures required, carbon forms **carbides** with chromium and manganese, contaminating the product. The diagram tells you what is possible; it does not tell you what is clean.\n\n**Two limitations.**\n\n**1. It says nothing about rate.** Ellingham diagrams are built entirely on **thermodynamics**. A reduction the diagram shows as feasible may proceed immeasurably slowly, because $\\Delta G$ says nothing about activation energy. Feasible and practical are different questions.\n\n**2. It assumes reactants and products are in their standard states, at unit activity.** Real processes involve alloys, solutions and varying partial pressures, so the actual $\\Delta G$ departs from $\\Delta G^\\circ$. The diagram also assumes the reactants are in equilibrium, which a flowing industrial furnace is not.\n\nA third worth knowing is that it gives no information about **side reactions** — exactly the carbide formation that rules carbon out for chromium, which the diagram itself cannot warn you about."
+    }
+  ]
+}
