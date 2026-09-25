@@ -4732,6 +4732,19 @@ body.drawer-open {
 .ns-peek-box p {
   margin: 0;
 }
+.ns-peek-box p + p {
+  margin-top: 8px;
+}
+/* A wide matrix or equation scrolls inside the box rather than off the card. */
+.ns-peek-box .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+@media (max-width: 560px) {
+  .ns-peek {
+    margin-left: 0;
+  }
+}
 
 .ns-alert {
   padding: 12px 14px;

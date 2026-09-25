@@ -30,7 +30,7 @@ import {
   type ServerTestMeta,
   type Subject,
 } from "../api";
-import { escapeHtml, formatText } from "../dom";
+import { escapeHtml, formatText, renderMath } from "../dom";
 import { paymentsAvailable } from "../payments";
 import { openBuyShelf } from "./buy";
 import { noteCopied } from "./subjects";
@@ -482,6 +482,10 @@ export function openNewSubject(onDone?: () => void): void {
             : step === "tests"
               ? testsStep()
               : doneStep());
+    // Peek shows a real question, and a real question is mostly maths:
+    // without this the teacher reads `$\mathrm{H_2O_2}$` as raw text.
+    const peekBox = body.querySelector<HTMLElement>(".ns-peek-box");
+    if (peekBox) renderMath(peekBox);
 
     nextBtn.textContent = nextLabel();
     nextBtn.disabled = busy || blocked();

@@ -228,6 +228,37 @@ const DLG = ".modal-scrim .ns";
   );
   const stem = (await page.textContent(".ns-peek-box")).trim();
   check(stem.length > 10, `Peek fetches a real question (${stem.slice(0, 48)}…)`);
+  // The stem is maths more often than not, so it must reach KaTeX. Raw
+  // `$\mathrm{…}$` in the box is what a teacher saw before this. Biology's
+  // first stem is plain words, so peek a Physics or Chemistry chapter — a
+  // check on a stem with no maths in it would pass while proving nothing.
+  const sciSec = await page.$$eval("[data-sec]", (els) =>
+    (els.find((e) => /Physics|Chemistry/.test(e.textContent || "")) || {}).dataset?.sec || ""
+  );
+  check(!!sciSec, `there is a Physics or Chemistry section to peek (${sciSec})`);
+  if (sciSec) {
+    await page.click(`[data-sec="${sciSec}"]`);
+    const peeks = page.locator(".ns-secbody [data-peek]");
+    const n = Math.min(await peeks.count(), 6);
+    let rendered = false;
+    for (let i = 0; i < n && !rendered; i++) {
+      await peeks.nth(i).click();
+      await page.waitForFunction(
+        () => !/Loading/.test(document.querySelector(".ns-peek-box")?.textContent || "Loading"),
+        { timeout: 25000 }
+      );
+      await page.waitForTimeout(600); // KaTeX is a lazy chunk
+      const has = await page.$eval(".ns-peek-box", (b) => ({
+        katex: !!b.querySelector(".katex"),
+        raw: /\$[^$]+\$/.test(b.textContent || ""),
+      }));
+      if (has.katex || has.raw) {
+        check(has.katex && !has.raw, "Peek renders its maths rather than showing raw $…$");
+        rendered = true;
+      }
+    }
+    check(rendered, "found a peeked stem with maths in it to check");
+  }
 
   // A closed section is its whole header, never a sliver of it. The list is a
   // flex column with a max-height, and `.ns-sec` clips (overflow: hidden), so
