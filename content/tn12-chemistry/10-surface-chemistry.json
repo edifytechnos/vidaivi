@@ -1,0 +1,218 @@
+{
+  "id": "lib-tn12c-sur",
+  "title": "Surface Chemistry",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-sur-01",
+      "chapter": "Surface Chemistry",
+      "topic": "Adsorption",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Adsorption is accompanied by:",
+      "options": [
+        "an increase in enthalpy and entropy",
+        "a decrease in enthalpy and entropy",
+        "an increase in enthalpy and a decrease in entropy",
+        "no change in enthalpy"
+      ],
+      "answer": 1,
+      "solution": "The adsorbed molecules lose freedom of movement, so $\\Delta S < 0$. For $\\Delta G = \\Delta H - T\\Delta S$ to be negative anyway, $\\Delta H$ **must be negative**.\n\nAdsorption is therefore always exothermic, with both $\\Delta H$ and $\\Delta S$ falling."
+    },
+    {
+      "id": "tn12c-sur-02",
+      "chapter": "Surface Chemistry",
+      "topic": "Physisorption and chemisorption",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which is a feature of chemisorption?",
+      "options": [
+        "It is reversible",
+        "It forms multimolecular layers",
+        "It is highly specific and forms a unimolecular layer",
+        "It decreases steadily with rising temperature"
+      ],
+      "answer": 2,
+      "solution": "Chemisorption involves **chemical bonds**, so it is specific to particular pairs of adsorbent and adsorbate and stops at a **monolayer**.\n\nIt is usually irreversible and first rises with temperature, because it needs activation energy. Physisorption is the opposite on each point."
+    },
+    {
+      "id": "tn12c-sur-03",
+      "chapter": "Surface Chemistry",
+      "topic": "Freundlich isotherm",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Freundlich adsorption isotherm is:",
+      "options": [
+        "$\\dfrac{x}{m} = kP^{1/n}$",
+        "$\\dfrac{x}{m} = kP^{n}$",
+        "$\\dfrac{x}{m} = \\dfrac{k}{P}$",
+        "$\\dfrac{x}{m} = k + P$"
+      ],
+      "answer": 0,
+      "solution": "$\\dfrac{x}{m} = kP^{1/n}$ with $n > 1$.\n\nIn log form, $\\log\\dfrac{x}{m} = \\log k + \\dfrac{1}{n}\\log P$, a straight line of slope $\\dfrac{1}{n}$. It fails at high pressure, where the surface becomes saturated."
+    },
+    {
+      "id": "tn12c-sur-04",
+      "chapter": "Surface Chemistry",
+      "topic": "Catalysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Haber process, $\\mathrm{N_2} + 3\\mathrm{H_2} \\rightarrow 2\\mathrm{NH_3}$, molybdenum acts as:",
+      "options": [
+        "a catalyst",
+        "a promoter",
+        "a catalytic poison",
+        "an inhibitor"
+      ],
+      "answer": 1,
+      "solution": "Iron is the catalyst; **molybdenum is a promoter**, a substance that increases the catalyst's activity without being a catalyst itself.\n\nA poison does the reverse: $\\mathrm{As_2O_3}$ poisons the platinum catalyst in the contact process."
+    },
+    {
+      "id": "tn12c-sur-05",
+      "chapter": "Surface Chemistry",
+      "topic": "Catalysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The hydrogenation of vegetable oils using nickel is an example of:",
+      "options": [
+        "homogeneous catalysis",
+        "heterogeneous catalysis",
+        "autocatalysis",
+        "enzyme catalysis"
+      ],
+      "answer": 1,
+      "solution": "Solid nickel, liquid oil and gaseous hydrogen are in **different phases**, so this is **heterogeneous catalysis**.\n\nIt proceeds by adsorption: $\\mathrm{H_2}$ is adsorbed and dissociated on the nickel surface, then adds across the C=C bonds of the oil."
+    },
+    {
+      "id": "tn12c-sur-06",
+      "chapter": "Surface Chemistry",
+      "topic": "Colloids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Tyndall effect is shown by:",
+      "options": [
+        "a true solution",
+        "a colloidal solution",
+        "pure water",
+        "an aqueous sugar solution"
+      ],
+      "answer": 1,
+      "solution": "Colloidal particles (1–1000 nm) are large enough to **scatter light**, making the beam's path visible.\n\nThe particles of a true solution are too small to scatter visibly, which is how the effect tells a sol from a solution."
+    },
+    {
+      "id": "tn12c-sur-07",
+      "chapter": "Surface Chemistry",
+      "topic": "Colloids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which ion is most effective in coagulating a negatively charged arsenious sulphide sol?",
+      "options": [
+        "$\\mathrm{Na^+}$",
+        "$\\mathrm{Ba^{2+}}$",
+        "$\\mathrm{Al^{3+}}$",
+        "$\\mathrm{PO_4^{3-}}$"
+      ],
+      "answer": 2,
+      "solution": "**Hardy–Schulze rule**: the ion carrying the charge opposite to the sol coagulates it, and the higher its charge the more effective it is.\n\nThe sol is negative, so cations count, and $\\mathbf{Al^{3+}} > \\mathrm{Ba^{2+}} > \\mathrm{Na^+}$."
+    },
+    {
+      "id": "tn12c-sur-08",
+      "chapter": "Surface Chemistry",
+      "topic": "Emulsions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Milk is an example of:",
+      "options": [
+        "water in oil emulsion",
+        "oil in water emulsion",
+        "a gel",
+        "a foam"
+      ],
+      "answer": 1,
+      "solution": "Milk is liquid fat dispersed in water, an **oil in water** emulsion, kept stable by casein acting as an emulsifier.\n\nButter is the reverse, water in oil."
+    },
+    {
+      "id": "tn12c-sur-09",
+      "chapter": "Surface Chemistry",
+      "topic": "Colloids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Brownian movement in colloidal particles is caused by:",
+      "options": [
+        "the charge on the particles",
+        "unequal bombardment by molecules of the dispersion medium",
+        "gravity",
+        "the Tyndall effect"
+      ],
+      "answer": 1,
+      "solution": "Molecules of the medium strike each particle **unequally** from different sides at every instant, so the particle is pushed in a random zigzag.\n\nThis constant motion stirs the sol and helps stop the particles settling."
+    },
+    {
+      "id": "tn12c-sur-10",
+      "chapter": "Surface Chemistry",
+      "topic": "Freundlich isotherm",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In a plot of $\\log\\dfrac{x}{m}$ against $\\log P$ for Freundlich adsorption, the slope is $0.5$. Find $n$.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "solution": "The slope is $\\dfrac{1}{n} = 0.5$, so $n = \\mathbf{2}$."
+    },
+    {
+      "id": "tn12c-sur-11",
+      "chapter": "Surface Chemistry",
+      "topic": "Freundlich isotherm",
+      "type": "numeric",
+      "marks": 3,
+      "q": "For an adsorption obeying $\\dfrac{x}{m} = kP^{1/2}$, by what factor does $\\dfrac{x}{m}$ increase when the pressure is increased four times?",
+      "answer": 2,
+      "tolerance": 0.05,
+      "solution": "$\\dfrac{(x/m)_2}{(x/m)_1} = \\left(\\dfrac{4P}{P}\\right)^{1/2} = 4^{1/2} = \\mathbf{2}$."
+    },
+    {
+      "id": "tn12c-sur-12",
+      "chapter": "Surface Chemistry",
+      "topic": "Colloids",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The diameter of colloidal particles lies between $1\\,\\mathrm{nm}$ and how many nanometres?",
+      "answer": 1000,
+      "tolerance": 1,
+      "solution": "Colloidal particles range from about $\\mathbf{1}$ **to** $\\mathbf{1000\\,nm}$.\n\nBelow 1 nm the mixture is a true solution; above 1000 nm it is a suspension whose particles settle."
+    },
+    {
+      "id": "tn12c-sur-13",
+      "chapter": "Surface Chemistry",
+      "topic": "Freundlich isotherm",
+      "type": "numeric",
+      "marks": 3,
+      "q": "An adsorption obeys $\\dfrac{x}{m} = kP^{1/3}$. By what factor does $\\dfrac{x}{m}$ increase when the pressure is increased eight times?",
+      "answer": 2,
+      "tolerance": 0.05,
+      "solution": "$\\dfrac{(x/m)_2}{(x/m)_1} = 8^{1/3} = \\mathbf{2}$.\n\nAn eightfold rise in pressure only doubles the amount adsorbed: with $n > 1$ the surface fills ever more slowly as it approaches saturation."
+    },
+    {
+      "id": "tn12c-sur-14",
+      "chapter": "Surface Chemistry",
+      "topic": "Adsorption",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$2\\,\\mathrm{g}$ of charcoal adsorbs $0.6\\,\\mathrm{g}$ of acetic acid from solution. Find $\\dfrac{x}{m}$.",
+      "answer": 0.3,
+      "tolerance": 0.01,
+      "solution": "$\\dfrac{x}{m} = \\dfrac{0.6}{2} = \\mathbf{0.3}$, the mass adsorbed per gram of adsorbent."
+    },
+    {
+      "id": "tn12c-sur-15",
+      "chapter": "Surface Chemistry",
+      "topic": "Colloids",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain how colloidal sols are purified by dialysis and electrodialysis, and describe two methods of preparing colloids: Bredig's arc method and peptisation.",
+      "solution": "**Why purify.** A freshly made sol carries dissolved electrolytes. A small amount stabilises it, but an excess coagulates it.\n\n**Dialysis.** The sol is placed in a bag of parchment or cellophane, a membrane that lets ions and small molecules through but holds back colloidal particles. The bag hangs in running water, and the electrolytes diffuse out.\n\n**Electrodialysis.** Dialysis is slow, so electrodes are placed either side of the membrane. The applied field pulls the ions out much faster. It works only when the impurity is an electrolyte.\n\n**Bredig's arc method** (dispersion). An electric arc is struck between two metal electrodes held under water containing a little KOH. The heat vaporises the metal, which condenses into colloidal particles. It is used for gold, silver and platinum sols.\n\n**Peptisation** (dispersion). A freshly made precipitate is turned into a sol by shaking it with a small amount of an electrolyte, the peptising agent. The precipitate adsorbs one of its ions, the particles become like-charged and push each other apart. For example, fresh $\\mathrm{Fe(OH)_3}$ with a little $\\mathrm{FeCl_3}$ adsorbs $\\mathrm{Fe^{3+}}$ and gives a positive sol."
+    }
+  ]
+}
