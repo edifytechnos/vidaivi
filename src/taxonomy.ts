@@ -145,8 +145,11 @@ export const BOARD_GROUPS: BoardGroup[] = [
   {
     id: "state",
     name: "State Board",
-    hint: "Tamil Nadu, Karnataka, Maharashtra and others",
-    boards: ["Tamil Nadu", "Karnataka", "Maharashtra", "Uttar Pradesh"],
+    hint: "Tamil Nadu and Kerala",
+    // Only the states with shelves being written. Another state is one entry
+    // here once its syllabus and papers are in hand — a board listed with
+    // nothing behind it reads as a promise the library cannot keep.
+    boards: ["Tamil Nadu", "Kerala"],
   },
 ];
 
