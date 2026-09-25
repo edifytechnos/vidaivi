@@ -1,0 +1,236 @@
+{
+  "id": "lib-tn12c-sol",
+  "title": "Solid State",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-sol-01",
+      "chapter": "Solid State",
+      "topic": "Unit cells",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of atoms per unit cell in a face-centred cubic lattice is:",
+      "options": [
+        "$1$",
+        "$2$",
+        "$4$",
+        "$8$"
+      ],
+      "answer": 2,
+      "solution": "Corners: $8 \\times \\dfrac{1}{8} = 1$ (each corner atom is shared by eight cells).\n\nFaces: $6 \\times \\dfrac{1}{2} = 3$ (each face atom is shared by two cells).\n\nTotal $= \\mathbf{4}$ atoms.\n\nSimple cubic has 1 and body-centred cubic has 2. FCC has a packing efficiency of $74\\%$, the highest possible for equal spheres."
+    },
+    {
+      "id": "tn12c-sol-02",
+      "chapter": "Solid State",
+      "topic": "Packing efficiency",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The packing efficiency of a body-centred cubic lattice is:",
+      "options": [
+        "$52.4\\%$",
+        "$68\\%$",
+        "$74\\%$",
+        "$90\\%$"
+      ],
+      "answer": 1,
+      "solution": "BCC has a packing efficiency of $\\mathbf{68\\%}$.\n\nThe full set worth knowing: simple cubic $52.4\\%$, BCC $68\\%$, FCC and HCP both $74\\%$.\n\nFCC and HCP are the **closest packings possible** for identical spheres — a fact only proved rigorously in 1998, though Kepler conjectured it in 1611."
+    },
+    {
+      "id": "tn12c-sol-03",
+      "chapter": "Solid State",
+      "topic": "Defects",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A Schottky defect in an ionic crystal:",
+      "options": [
+        "Increases the density",
+        "Decreases the density",
+        "Leaves the density unchanged",
+        "Makes the crystal conducting"
+      ],
+      "answer": 1,
+      "solution": "A **Schottky** defect is a pair of vacancies — one cation and one anion missing together, preserving electrical neutrality. Since ions have **left the crystal**, the mass falls while the volume does not, so the **density decreases**.\n\nA **Frenkel** defect is an ion displaced into an interstitial site. Nothing leaves the crystal, so the **density is unchanged**.\n\nSchottky defects are favoured when the ions are of similar size ($\\text{NaCl}$, $\\text{KCl}$); Frenkel defects when there is a large size difference ($\\text{AgBr}$, $\\text{ZnS}$), where the small cation can fit interstitially."
+    },
+    {
+      "id": "tn12c-sol-04",
+      "chapter": "Solid State",
+      "topic": "Unit cells",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a body-centred cubic unit cell of edge $a$, the relation between $a$ and the atomic radius $r$ is:",
+      "options": [
+        "$a = 2r$",
+        "$\\sqrt{2}a = 4r$",
+        "$\\sqrt{3}a = 4r$",
+        "$a = 4r$"
+      ],
+      "answer": 2,
+      "solution": "In BCC the atoms touch along the **body diagonal**, whose length is $\\sqrt{3}a$.\n\nThat diagonal spans one corner atom radius, the whole central atom, and another corner radius: $r + 2r + r = 4r$.\n\n$\\sqrt{3}a = 4r$, so $r = \\dfrac{\\sqrt{3}a}{4}$.\n\nCompare: simple cubic touches along the **edge** ($a = 2r$) and FCC along the **face diagonal** ($\\sqrt{2}a = 4r$). Identifying which direction the atoms touch along is the whole of these problems."
+    },
+    {
+      "id": "tn12c-sol-05",
+      "chapter": "Solid State",
+      "topic": "Crystal types",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which is a molecular solid held together by hydrogen bonding?",
+      "options": [
+        "Diamond",
+        "Ice",
+        "Sodium chloride",
+        "Copper"
+      ],
+      "answer": 1,
+      "solution": "**Ice** is a molecular solid whose $\\text{H}_2\\text{O}$ molecules are held by **hydrogen bonds**.\n\nThose bonds are directional and force an **open tetrahedral network** with hexagonal cavities — which is why ice is **less dense than liquid water** and floats, an unusual property with large consequences for aquatic life.\n\nDiamond is covalent network, sodium chloride ionic, copper metallic."
+    },
+    {
+      "id": "tn12c-sol-06",
+      "chapter": "Solid State",
+      "topic": "Defects",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The yellow colour of non-stoichiometric NaCl heated in sodium vapour is due to:",
+      "options": [
+        "Impurity atoms",
+        "F-centres, electrons trapped in anion vacancies",
+        "Oxidation",
+        "Frenkel defects"
+      ],
+      "answer": 1,
+      "solution": "Heating $\\text{NaCl}$ in sodium vapour makes sodium atoms deposit on the surface. Chloride ions diffuse outward to combine with them, leaving **anion vacancies** behind, and the electrons released by the sodium occupy those vacancies.\n\nAn electron trapped in an anion vacancy is an **F-centre** (from **Farbe**, German for colour). These absorb visible light, giving the crystal a **yellow** colour.\n\nThe same mechanism gives lithium chloride a pink tint and potassium chloride a violet one — the colour depends on the vacancy size, since that sets the electron's energy levels. It is essentially a particle in a box."
+    },
+    {
+      "id": "tn12c-sol-07",
+      "chapter": "Solid State",
+      "topic": "Magnetic properties",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A substance in which magnetic moments align in opposite directions but are unequal, giving a net moment, is:",
+      "options": [
+        "Ferromagnetic",
+        "Antiferromagnetic",
+        "Ferrimagnetic",
+        "Diamagnetic"
+      ],
+      "answer": 2,
+      "solution": "**Ferrimagnetic**: the moments align in opposite directions but are **unequal in magnitude**, so they do not fully cancel and a **net moment** remains. Magnetite $\\text{Fe}_3\\text{O}_4$ is the classic example.\n\n**Ferromagnetic**: all moments align in the **same** direction, giving a strong moment (iron, cobalt, nickel).\n\n**Antiferromagnetic**: moments align oppositely and are **equal**, so they cancel exactly and the net moment is **zero** ($\\text{MnO}$).\n\nThe distinction is purely whether the opposed moments are equal, and it is the difference between a useful magnet and none at all."
+    },
+    {
+      "id": "tn12c-sol-08",
+      "chapter": "Solid State",
+      "topic": "Semiconductors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Doping silicon with a trivalent impurity such as boron gives:",
+      "options": [
+        "n-type semiconductor",
+        "p-type semiconductor",
+        "An insulator",
+        "A superconductor"
+      ],
+      "answer": 1,
+      "solution": "Boron has only **three** valence electrons, so one of the four bonds to neighbouring silicon atoms is short of an electron, leaving a **hole**.\n\nHoles are the majority carriers, so the material is **p-type** and boron is an **acceptor**.\n\nA **pentavalent** dopant such as phosphorus gives a spare electron and hence n-type material. In both cases the crystal stays **electrically neutral overall**."
+    },
+    {
+      "id": "tn12c-sol-09",
+      "chapter": "Solid State",
+      "topic": "Crystal systems",
+      "type": "mcq",
+      "marks": 1,
+      "q": "How many crystal systems are there?",
+      "options": [
+        "$4$",
+        "$7$",
+        "$14$",
+        "$32$"
+      ],
+      "answer": 1,
+      "solution": "There are **7** crystal systems: cubic, tetragonal, orthorhombic, monoclinic, triclinic, hexagonal and rhombohedral.\n\nThese give rise to **14 Bravais lattices**, since some systems permit body-centred, face-centred or end-centred variants in addition to the primitive one.\n\nSo 7 systems, 14 lattices — the two numbers are often confused."
+    },
+    {
+      "id": "tn12c-sol-10",
+      "chapter": "Solid State",
+      "topic": "Unit cells",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many atoms are there per unit cell in a body-centred cubic lattice?",
+      "answer": 2,
+      "tolerance": 0.1,
+      "accept": [
+        "2"
+      ],
+      "solution": "Corners: $8 \\times \\dfrac{1}{8} = 1$.\n\nBody centre: $1 \\times 1 = 1$ (it lies wholly within the cell and is shared with nothing).\n\nTotal $= \\mathbf{2}$ atoms."
+    },
+    {
+      "id": "tn12c-sol-11",
+      "chapter": "Solid State",
+      "topic": "Unit cells",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A metal crystallises in an FCC lattice with edge length $400\\ \\text{pm}$. Find its atomic radius in picometres, to the nearest whole number.",
+      "answer": 141,
+      "tolerance": 2,
+      "accept": [
+        "141",
+        "141.4"
+      ],
+      "solution": "In FCC the atoms touch along the **face diagonal**, of length $\\sqrt{2}a$, which spans $4r$:\n\n$\\sqrt{2}a = 4r$\n\n$r = \\dfrac{\\sqrt{2} \\times 400}{4} = \\dfrac{565.7}{4} \\approx \\mathbf{141\\ \\text{pm}}$"
+    },
+    {
+      "id": "tn12c-sol-12",
+      "chapter": "Solid State",
+      "topic": "Packing efficiency",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the packing efficiency, as a percentage, of a simple cubic lattice? Give to one decimal place.",
+      "answer": 52.4,
+      "tolerance": 0.5,
+      "accept": [
+        "52.4",
+        "52"
+      ],
+      "solution": "Simple cubic has 1 atom per cell, and the atoms touch along the edge so $a = 2r$.\n\nPacking efficiency $= \\dfrac{\\tfrac{4}{3}\\pi r^{3}}{(2r)^{3}} \\times 100 = \\dfrac{\\tfrac{4}{3}\\pi}{8} \\times 100 = \\mathbf{52.4\\%}$\n\nNearly half the volume is empty, which is why simple cubic is rare in nature — polonium is essentially the only element that adopts it."
+    },
+    {
+      "id": "tn12c-sol-13",
+      "chapter": "Solid State",
+      "topic": "Voids",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a close-packed structure of $N$ spheres, how many tetrahedral voids are there? Give the multiple of $N$.",
+      "answer": 2,
+      "tolerance": 0.1,
+      "accept": [
+        "2",
+        "2N"
+      ],
+      "solution": "A close-packed arrangement of $N$ spheres contains $\\mathbf{2N}$ **tetrahedral** voids and $N$ **octahedral** voids.\n\nSo tetrahedral voids are twice as numerous, but each is **smaller** — radius ratio $0.225$ against $0.414$ for octahedral.\n\nWhich void a cation occupies is decided by its size relative to the anion, and that in turn determines the structure type: $\\text{ZnS}$ has cations in tetrahedral voids, $\\text{NaCl}$ in octahedral ones."
+    },
+    {
+      "id": "tn12c-sol-14",
+      "chapter": "Solid State",
+      "topic": "Crystal systems",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many Bravais lattices are there in total?",
+      "answer": 14,
+      "tolerance": 0.1,
+      "accept": [
+        "14"
+      ],
+      "solution": "$\\mathbf{14}$ Bravais lattices, arising from the **7** crystal systems once the possible centring types — primitive, body-centred, face-centred and end-centred — are taken into account.\n\nNot every centring is possible in every system: some would simply reproduce a smaller cell of another type, which is why the number is 14 rather than 28."
+    },
+    {
+      "id": "tn12c-sol-15",
+      "chapter": "Solid State",
+      "topic": "Unit cells",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the simple cubic, body-centred cubic and face-centred cubic unit cells. For each, derive the number of atoms per unit cell and the relation between edge length and atomic radius, and compare their packing efficiencies. Explain how the density of a crystal is calculated from its unit cell.",
+      "solution": "**Counting atoms: the sharing rule.** An atom on a unit cell boundary is shared between neighbouring cells, so only a fraction belongs to any one cell:\n\n**Corner** atom — shared by **8** cells, contributes $\\tfrac{1}{8}$\n\n**Face** atom — shared by **2** cells, contributes $\\tfrac{1}{2}$\n\n**Edge** atom — shared by **4** cells, contributes $\\tfrac{1}{4}$\n\n**Body centre** atom — shared by **none**, contributes $1$\n\n**Simple cubic.** Atoms only at the eight corners.\n\nAtoms per cell: $8 \\times \\tfrac{1}{8} = \\mathbf{1}$\n\nAtoms touch along the **edge**, so the edge spans two radii:\n\n$\\boxed{a = 2r}$\n\n**Body-centred cubic.** Corners plus one atom at the centre.\n\nAtoms per cell: $8 \\times \\tfrac{1}{8} + 1 = \\mathbf{2}$\n\nThe corner atoms do **not** touch each other; the central atom touches all eight corners, so contact is along the **body diagonal**, of length $\\sqrt{3}a$. That diagonal spans one corner radius, the whole central atom, and another corner radius:\n\n$\\sqrt{3}a = 4r$, so $\\boxed{r = \\dfrac{\\sqrt{3}a}{4}}$\n\n**Face-centred cubic.** Corners plus one atom at the centre of each of the six faces.\n\nAtoms per cell: $8 \\times \\tfrac{1}{8} + 6 \\times \\tfrac{1}{2} = 1 + 3 = \\mathbf{4}$\n\nContact is along the **face diagonal**, of length $\\sqrt{2}a$, spanning $4r$:\n\n$\\sqrt{2}a = 4r$, so $\\boxed{r = \\dfrac{\\sqrt{2}a}{4} = \\dfrac{a}{2\\sqrt{2}}}$\n\n**Identifying the direction of contact is the whole skill here** — everything else follows from geometry.\n\n**Packing efficiency.** Defined as the fraction of the cell volume actually occupied by spheres:\n\n$\\text{PE} = \\dfrac{Z \\times \\tfrac{4}{3}\\pi r^{3}}{a^{3}} \\times 100$\n\n**Simple cubic**: $Z = 1$, $a = 2r$\n\n$\\text{PE} = \\dfrac{\\tfrac{4}{3}\\pi r^{3}}{8r^{3}} \\times 100 = \\mathbf{52.4\\%}$\n\n**BCC**: $Z = 2$, $a = \\dfrac{4r}{\\sqrt{3}}$\n\n$\\text{PE} = \\mathbf{68\\%}$\n\n**FCC**: $Z = 4$, $a = 2\\sqrt{2}r$\n\n$\\text{PE} = \\mathbf{74\\%}$\n\n**What the trend means.** More atoms per cell means closer packing, and FCC at $74\\%$ is the **densest possible arrangement of identical spheres** — a claim conjectured by Kepler in 1611 and not rigorously proved until 1998. HCP achieves the same $74\\%$ by a different stacking sequence (ABAB rather than ABCABC), which is why both are called close-packed.\n\nSimple cubic wastes nearly half its volume, which is why almost no element adopts it — polonium is essentially the only one.\n\n**Calculating density from the unit cell.** This is the practical payoff of the whole topic.\n\nThe mass of one unit cell is the mass of the $Z$ atoms it contains:\n\n$\\text{mass} = \\dfrac{Z \\times M}{N_A}$\n\nwhere $M$ is the molar mass and $N_A$ Avogadro's number. Dividing by the cell volume $a^{3}$:\n\n$\\boxed{\\rho = \\dfrac{Z \\times M}{a^{3} \\times N_A}}$\n\nwith $a$ in centimetres for $\\rho$ in $\\mathrm{g\\,cm^{-3}}$.\n\n**Why this equation matters more than it looks.** It connects a **macroscopic, easily measured** quantity — density, found with a balance — to **atomic-scale** quantities: the cell dimension from X-ray diffraction and the number of atoms per cell.\n\nThat means it can be rearranged to find whichever quantity is unknown. Given $\\rho$ and $a$ you can calculate $Z$ and so **determine the lattice type**. Given $\\rho$, $a$ and $Z$ you can calculate $N_A$ — and this is in fact one of the accepted experimental routes to Avogadro's number.\n\nIt also provides a check on the whole picture: a measured density differing from the calculated one is evidence of **defects**. Schottky defects lower the density because ions have left the crystal; a measured density below the theoretical value is how their presence is quantified."
+    }
+  ]
+}
