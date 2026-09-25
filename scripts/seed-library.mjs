@@ -60,6 +60,13 @@ const SHELVES = {
   "jee-physics": { board: "JEE Main", klass: "12", subject: "Physics" },
   "jee-chemistry": { board: "JEE Main", klass: "12", subject: "Chemistry" },
   "jee-maths": { board: "JEE Main", klass: "12", subject: "Maths" },
+  // Tamil Nadu is a genuinely distinct syllabus, not an NCERT relabelling.
+  // Samacheer Kalvi Class 12 Physics is 11 chapters opening at Electrostatics,
+  // Chemistry is 15 opening at Metallurgy, Maths is 12 including Theory of
+  // Equations and Discrete Mathematics, and Biology is split into two SUBJECTS,
+  // Bio-Botany and Bio-Zoology, each with its own textbook and paper. None of
+  // that maps onto the NCERT chapters the CBSE shelves carry.
+  "tn12-physics": { board: "Tamil Nadu", klass: "12", subject: "Physics" },
 };
 
 if (!USER || !PASS) {

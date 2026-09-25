@@ -1,0 +1,238 @@
+{
+  "id": "lib-tn12p-cur",
+  "title": "Current Electricity",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-cur-01",
+      "chapter": "Current Electricity",
+      "topic": "Drift velocity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The relation between current and drift velocity is:",
+      "options": [
+        "$I = neAv_d$",
+        "$I = nAv_d$",
+        "$I = eAv_d$",
+        "$I = nev_d$"
+      ],
+      "answer": 0,
+      "solution": "$I = \\mathbf{neAv_d}$, where $n$ is the free-electron number density, $e$ the electronic charge, $A$ the cross-sectional area and $v_d$ the drift velocity.\n\nEach factor is needed for the dimensions to give charge per unit time. The drift velocity itself is tiny, of order $10^{-4}\\ \\mathrm{m\\,s^{-1}}$."
+    },
+    {
+      "id": "tn12p-cur-02",
+      "chapter": "Current Electricity",
+      "topic": "Resistivity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "With rising temperature, the resistivity of a metallic conductor:",
+      "options": [
+        "Decreases",
+        "Increases",
+        "Stays constant",
+        "Becomes zero"
+      ],
+      "answer": 1,
+      "solution": "In a metal the number of free electrons is essentially **fixed**. Heating makes the lattice ions vibrate more, so collisions are more frequent and the mean free time $\\tau$ **falls**.\n\nSince $\\rho = \\dfrac{m}{ne^{2}\\tau}$, a smaller $\\tau$ means a **larger** resistivity. A metal has a positive temperature coefficient.\n\nA **semiconductor** behaves oppositely: heating promotes many more carriers across the band gap, and that effect dominates, so its resistivity **falls**."
+    },
+    {
+      "id": "tn12p-cur-03",
+      "chapter": "Current Electricity",
+      "topic": "Kirchhoff's laws",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Kirchhoff's voltage (loop) rule follows from the conservation of:",
+      "options": [
+        "Charge",
+        "Energy",
+        "Momentum",
+        "Mass"
+      ],
+      "answer": 1,
+      "solution": "The loop rule, $\\sum V = 0$ around any closed loop, expresses the conservation of **energy**: a unit charge taken once round a loop returns to the same potential, so the energy gained equals the energy lost.\n\nThe **junction** rule, $\\sum I = 0$, is the conservation of **charge** instead — charge does not pile up at a node."
+    },
+    {
+      "id": "tn12p-cur-04",
+      "chapter": "Current Electricity",
+      "topic": "Wheatstone bridge",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A metre bridge is a practical form of the:",
+      "options": [
+        "Potentiometer",
+        "Wheatstone bridge",
+        "Ammeter",
+        "Galvanometer"
+      ],
+      "answer": 1,
+      "solution": "The **metre bridge** is a Wheatstone bridge in which two of the four arms are replaced by the two parts of a uniform one-metre wire.\n\nSince the wire is uniform, resistance is proportional to length, so the balance condition becomes\n\n$\\dfrac{R}{S} = \\dfrac{l}{100 - l}$\n\nwhere $l$ is the balancing length. Being a **null** method, the result does not depend on the sensitivity of the galvanometer or the emf of the cell."
+    },
+    {
+      "id": "tn12p-cur-05",
+      "chapter": "Current Electricity",
+      "topic": "Potentiometer",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A potentiometer measures the emf of a cell more accurately than a voltmeter because:",
+      "options": [
+        "It is longer",
+        "At balance it draws no current from the cell",
+        "It uses more cells",
+        "It is cheaper"
+      ],
+      "answer": 1,
+      "solution": "At the balance point **no current flows through the cell being measured**, so there is no $Ir$ drop across its internal resistance and the potentiometer reads the true **emf** rather than the terminal voltage.\n\nA voltmeter, however high its resistance, always draws some current and therefore always reads slightly low.\n\nA potentiometer is effectively an **ideal voltmeter of infinite resistance**, which is the whole point of a null method."
+    },
+    {
+      "id": "tn12p-cur-06",
+      "chapter": "Current Electricity",
+      "topic": "Heating effect",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Joule's law of heating states that the heat produced is:",
+      "options": [
+        "$I^{2}Rt$",
+        "$IRt$",
+        "$IR^{2}t$",
+        "$I^{2}R/t$"
+      ],
+      "answer": 0,
+      "solution": "$H = \\mathbf{I^{2}Rt}$ joules.\n\nThe equivalent forms $VIt$ and $\\dfrac{V^{2}t}{R}$ follow from Ohm's law, but care is needed over which quantity is held constant: in **series** the current is common, so $I^{2}R$ is the useful form and the largest resistance gets hottest; in **parallel** the voltage is common, so $V^{2}/R$ applies and the smallest resistance gets hottest."
+    },
+    {
+      "id": "tn12p-cur-07",
+      "chapter": "Current Electricity",
+      "topic": "Cells in combination",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$n$ identical cells each of emf $\\varepsilon$ and internal resistance $r$ are connected in series. The total emf and internal resistance are:",
+      "options": [
+        "$\\varepsilon$ and $r/n$",
+        "$n\\varepsilon$ and $nr$",
+        "$n\\varepsilon$ and $r/n$",
+        "$\\varepsilon/n$ and $nr$"
+      ],
+      "answer": 1,
+      "solution": "In **series** both add: total emf $= n\\varepsilon$ and total internal resistance $= nr$.\n\nIn **parallel** the emf stays $\\varepsilon$ while the internal resistance falls to $r/n$.\n\nSeries is preferred when the external resistance is **large** compared with $r$; parallel when it is **small**, since then the internal resistance is what limits the current."
+    },
+    {
+      "id": "tn12p-cur-08",
+      "chapter": "Current Electricity",
+      "topic": "Superconductivity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Below its critical temperature, the resistance of a superconductor is:",
+      "options": [
+        "Very large",
+        "Exactly zero",
+        "Slightly reduced",
+        "Infinite"
+      ],
+      "answer": 1,
+      "solution": "Below the critical temperature $T_c$, resistance falls to **exactly zero** — not merely very small. A current started in a superconducting loop persists indefinitely with no source driving it.\n\nMercury was the first, found by Kamerlingh Onnes in 1911 at $4.2\\ \\text{K}$.\n\nA superconductor also expels magnetic flux from its interior, the **Meissner effect**, which is what makes magnetic levitation possible and which distinguishes a superconductor from a merely perfect conductor."
+    },
+    {
+      "id": "tn12p-cur-09",
+      "chapter": "Current Electricity",
+      "topic": "Resistivity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The resistivity of a conductor depends on:",
+      "options": [
+        "Its length",
+        "Its area of cross-section",
+        "The material and the temperature",
+        "Its shape"
+      ],
+      "answer": 2,
+      "solution": "Resistivity is a property of the **material and its temperature** only. It does not depend on the dimensions of the specimen.\n\nThat is exactly the distinction from **resistance**, which does: $R = \\rho\\dfrac{l}{A}$.\n\nStretching a wire changes its resistance but leaves its resistivity untouched — which is why resistivity is the quantity tabulated for materials."
+    },
+    {
+      "id": "tn12p-cur-10",
+      "chapter": "Current Electricity",
+      "topic": "Resistors",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Resistors of $3\\ \\Omega$ and $6\\ \\Omega$ are connected in parallel. Find the equivalent resistance, in ohms.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2",
+        "2 ohm"
+      ],
+      "solution": "$R_{eq} = \\dfrac{R_1R_2}{R_1+R_2} = \\dfrac{3 \\times 6}{3+6} = \\dfrac{18}{9} = \\mathbf{2\\ \\Omega}$.\n\nAs always in parallel, the result is smaller than either resistor."
+    },
+    {
+      "id": "tn12p-cur-11",
+      "chapter": "Current Electricity",
+      "topic": "Cells",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A cell of emf $2\\ \\text{V}$ and internal resistance $0.5\\ \\Omega$ is connected to a $1.5\\ \\Omega$ resistor. Find the current, in amperes.",
+      "answer": 1,
+      "tolerance": 0.02,
+      "accept": [
+        "1",
+        "1 A",
+        "1.0"
+      ],
+      "solution": "$I = \\dfrac{\\varepsilon}{R + r} = \\dfrac{2}{1.5 + 0.5} = \\dfrac{2}{2} = \\mathbf{1\\ \\text{A}}$.\n\nThe terminal voltage is then $V = \\varepsilon - Ir = 2 - 0.5 = 1.5\\ \\text{V}$, which matches $IR$ as it must."
+    },
+    {
+      "id": "tn12p-cur-12",
+      "chapter": "Current Electricity",
+      "topic": "Heating effect",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A $5\\ \\Omega$ resistor carries $2\\ \\text{A}$ for $10\\ \\text{s}$. Find the heat produced, in joules.",
+      "answer": 200,
+      "tolerance": 2,
+      "accept": [
+        "200",
+        "200 J"
+      ],
+      "solution": "$H = I^{2}Rt = (2)^{2}(5)(10) = 4 \\times 50 = \\mathbf{200\\ \\text{J}}$."
+    },
+    {
+      "id": "tn12p-cur-13",
+      "chapter": "Current Electricity",
+      "topic": "Wheatstone bridge",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a metre bridge the balance point for an unknown resistance $R$ against a known $S = 6\\ \\Omega$ is at $40\\ \\text{cm}$ from the $R$ end. Find $R$, in ohms.",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4",
+        "4 ohm"
+      ],
+      "solution": "$\\dfrac{R}{S} = \\dfrac{l}{100 - l} = \\dfrac{40}{60} = \\dfrac{2}{3}$\n\n$R = \\dfrac{2}{3} \\times 6 = \\mathbf{4\\ \\Omega}$."
+    },
+    {
+      "id": "tn12p-cur-14",
+      "chapter": "Current Electricity",
+      "topic": "Drift velocity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The drift velocity of electrons in a metal is of the order of $10^{-n}\\ \\mathrm{m\\,s^{-1}}$. What is the value of $n$?",
+      "answer": 4,
+      "tolerance": 0.5,
+      "accept": [
+        "4"
+      ],
+      "solution": "Drift velocity is of order $10^{-4}\\ \\mathrm{m\\,s^{-1}}$, so $n = \\mathbf{4}$.\n\nAt that speed an electron would take nearly three hours to travel a metre — yet a lamp lights instantly, because the **electric field** is established through the circuit at close to the speed of light and the conductor is already full of electrons everywhere."
+    },
+    {
+      "id": "tn12p-cur-15",
+      "chapter": "Current Electricity",
+      "topic": "Potentiometer",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the principle of a potentiometer. Explain how it is used to compare the emfs of two cells and to measure the internal resistance of a cell, and explain why it is more accurate than a voltmeter for measuring emf.",
+      "solution": "**The principle.** A potentiometer consists of a long uniform wire of constant cross-section carrying a steady current from a driver cell.\n\nBecause the wire is uniform, its resistance per unit length is constant, so the potential drop is **uniform along its length**:\n\n$V \\propto l$\n\nThe constant of proportionality is the **potential gradient** $k = \\dfrac{V}{L}$, the fall of potential per unit length.\n\nThe instrument works by **balancing** an unknown potential difference against the drop along a measured length of this wire. At balance, the galvanometer shows **no deflection**, which means no current is flowing through the branch being tested.\n\n**Comparing the emfs of two cells.**\n\nThe two cells are connected through a two-way key so that either can be brought into the circuit, with their positive terminals joined to the same end of the wire.\n\nWith the first cell in circuit, the jockey is moved until the galvanometer reads zero, at balancing length $l_1$:\n\n$\\varepsilon_1 = kl_1$\n\nRepeat for the second cell, giving $l_2$:\n\n$\\varepsilon_2 = kl_2$\n\nDividing eliminates $k$ entirely:\n\n$\\boxed{\\dfrac{\\varepsilon_1}{\\varepsilon_2} = \\dfrac{l_1}{l_2}}$\n\nNotice that the potential gradient cancels, so its value need never be known and the driver cell's emf does not enter the result. Only **two lengths** are measured, and a length can be measured very precisely with a metre scale.\n\n**Measuring the internal resistance of a cell.**\n\nThe cell is connected to the potentiometer, and a resistance box $R$ with a key is placed across its terminals.\n\n**With the key open**, no current is drawn from the cell, so it is the full **emf** that is balanced, at length $l_1$:\n\n$\\varepsilon = kl_1$\n\n**With the key closed**, the cell drives a current through $R$, so what is now balanced is the **terminal voltage**, at a shorter length $l_2$:\n\n$V = kl_2$\n\nSince $\\varepsilon = I(R + r)$ and $V = IR$:\n\n$\\dfrac{\\varepsilon}{V} = \\dfrac{R + r}{R} = \\dfrac{l_1}{l_2}$\n\n$\\boxed{r = R\\left(\\dfrac{l_1 - l_2}{l_2}\\right)}$\n\nAgain $k$ cancels, and the answer rests on two length measurements and a known resistance.\n\n**Why it beats a voltmeter.**\n\nThis is the heart of the matter, and it is about what the two instruments actually measure.\n\nA **voltmeter** must draw a current $I$ through itself in order to deflect — that current is what moves the needle. But drawing current from the cell causes an internal drop $Ir$, so the voltmeter necessarily reads the **terminal voltage**\n\n$V = \\varepsilon - Ir$\n\nwhich is always **less** than the emf. Making the voltmeter's resistance very high reduces the error but can never remove it: a voltmeter that drew no current would give no reading at all. The error is built into the method.\n\nA **potentiometer** is a **null method**. At the balance point the galvanometer reads zero, which means **no current is being drawn from the cell**. With $I = 0$ there is no $Ir$ drop, and what is measured is the **true emf**.\n\nSo the potentiometer behaves as a voltmeter of **infinite resistance** — the ideal instrument, achieved not by building a better meter but by arranging for the measurement to be taken at the moment nothing is flowing.\n\nTwo further advantages follow from being a null method. The result does not depend on the **sensitivity or calibration of the galvanometer**, since it is only ever used to detect zero. And the sensitivity can be increased simply by using a **longer wire** or a smaller potential gradient, which makes the balance point easier to locate precisely."
+    }
+  ]
+}
