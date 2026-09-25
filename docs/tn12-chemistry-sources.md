@@ -132,11 +132,11 @@ No answer key was used; each was solved independently. Four worth naming:
 
 ## The Tamil medium
 
-The papers are bilingual, but their Tamil is set in a legacy font encoding that
-extracts as unreadable characters. So the Tamil-medium shelf
-(`content/tn12-chemistry-ta/`) carries **our translation of the paper's English
-wording**, with the same tag. The question is the one the board set; the Tamil
-sentence is not the board's own.
+The papers are bilingual. Their Tamil is set in a legacy font encoding that
+extracts as unreadable characters, but it reads cleanly off the **rendered
+page**, so every tagged question in the Tamil-medium shelf
+(`content/tn12-chemistry-ta/`) carries **the board's own Tamil stem and
+options**, read from the page image. The worked solutions are ours.
 
 ## If a tag looks wrong
 

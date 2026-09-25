@@ -124,9 +124,15 @@ de Broglie ratio and the bent bar magnet.
 
 ## The Tamil medium
 
-The page images carry the board's own Tamil in a readable font, so the
-Tamil-medium shelf's tagged questions can use **the board's own Tamil
-wording**, read from the page, rather than a translation.
+All 37 tagged questions in `content/tn12-physics-ta/` carry **the board's own
+Tamil stem and options**, read off the rendered pages (the Tamil text layer
+extracts as garbage; the page image does not). The worked solutions are ours,
+and where a unit had to be named for a typed answer, that phrase is ours too.
+
+`scripts/check-content.cjs` now also rejects Tamil written bare inside maths.
+KaTeX has no Tamil glyphs: inside `\text{…}` the run falls through to the page's
+Noto Sans Tamil, but bare in math mode each letter is set as a symbol. One
+draft solution here did exactly that before the check existed.
 
 ## If a tag looks wrong
 

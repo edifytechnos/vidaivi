@@ -414,8 +414,11 @@ Tagged today, with an evidence file per shelf under `docs/`:
 | Cambridge A Level Physics (9702) | 3 of 180 | from the Jun 2024 papers |
 | Cambridge A Level Chemistry (9701) | 4 of 180 | from the Jun 2024 papers |
 | Cambridge A Level Maths (9709) | 4 of 150 | recovered by reading pages as images |
+| Tamil Nadu Class 12 Chemistry | 42 of 225 | every chapter; TN HSE Mar 2023–25 |
+| Tamil Nadu Class 12 Physics | 37 of 165 | 10 of 11 chapters; TN HSE Mar 2023–25 |
+| Tamil Nadu Class 12 Physics (Tamil medium) | 37 of 165 | the board's own Tamil, read off the page |
 
-**261 of 1875 questions are evidenced.** The only shelf with nothing is **NEET**,
+**381 of 3000 questions are evidenced.** The only original shelf with nothing is **NEET**,
 because no public archive exists; nothing there will carry a year until one does.
 
 **Cambridge publishes past papers openly** at
@@ -427,7 +430,7 @@ that corpus is a real past paper, so every Cambridge tag names it:
 is `cambridge-igcse-science-combined-0653`, not the `-combined-science-` form
 every other subject uses.
 
-### Three ways content renders wrong, and all three shipped once
+### Four ways content renders wrong, and all four were caught once
 
 `formatText` in `src/dom.ts` supports `$…$` maths, `**bold**`, and a blank line
 as a paragraph break. **Nothing else.** Everything is escaped first, so anything
@@ -452,7 +455,13 @@ richer reaches the student literally.
   after text and requiring the two to be identical: **not one non-asterisk
   character changed** across 178 fields, so no formula and no word moved.
 
-`scripts/check-content.cjs` now rejects all three. None is catchable by
+- **Tamil written bare inside maths.** KaTeX has no Tamil glyphs. Inside
+  `\text{…}` the run falls through to the page's Noto Sans Tamil and renders
+  cleanly; bare in math mode each letter is set as a maths symbol —
+  `\text{நாள்}^{-1}`, never `நாள்^{-1}`. Caught in a draft of the Tamil-medium
+  Physics shelf, before it shipped.
+
+`scripts/check-content.cjs` now rejects all four. None is catchable by
 `validateQuestions` — all are perfectly valid strings, wrong only once a
 student reads them. The guard has already earned itself twice: writing twelve
 more questions the same way reproduced the backslash-n bug immediately and the

@@ -124,6 +124,20 @@ for (const dir of dirs.sort()) {
           );
         }
 
+        // Tamil inside maths must sit in `\text{…}`. KaTeX has no Tamil
+        // glyphs: in text mode it hands the run to the page's Noto Sans Tamil,
+        // but written bare in math mode each letter is flagged as unicode in
+        // math mode and set as a maths symbol. `\text{நாள்}^{-1}` is right,
+        // `நாள்^{-1}` is not — the second shipped in a draft of the
+        // Tamil-medium Physics shelf before this check existed.
+        for (const m of text.matchAll(/\$\$([^$]*)\$\$|\$([^$\n]*)\$/g)) {
+          const bare = (m[1] ?? m[2]).replace(/\\text\{[^}]*\}/g, "");
+          if (/[஀-௿]/.test(bare)) {
+            fail(`${q.id} — ${field} has Tamil in maths outside \\text{…}: ${m[0].slice(0, 40)}`);
+            break;
+          }
+        }
+
         // A backslash-n is NOT automatically the bug. LaTeX has a handful of
         // commands beginning with "n" — `\nu`, the frequency in a photoelectric
         // question, is the one that found this out — and a blanket
