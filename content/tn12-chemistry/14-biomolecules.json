@@ -1,0 +1,218 @@
+{
+  "id": "lib-tn12c-bio",
+  "title": "Biomolecules",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 14,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-bio-01",
+      "chapter": "Biomolecules",
+      "topic": "Carbohydrates",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Glucose is:",
+      "options": [
+        "a ketohexose",
+        "an aldohexose",
+        "an aldopentose",
+        "a disaccharide"
+      ],
+      "answer": 1,
+      "solution": "Glucose, $\\mathrm{C_6H_{12}O_6}$, has **six carbons** and an **aldehyde** group, making it an aldohexose.\n\nFructose has the same formula but a ketone group: a ketohexose."
+    },
+    {
+      "id": "tn12c-bio-02",
+      "chapter": "Biomolecules",
+      "topic": "Carbohydrates",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of these is a non-reducing sugar?",
+      "options": [
+        "glucose",
+        "maltose",
+        "lactose",
+        "sucrose"
+      ],
+      "answer": 3,
+      "solution": "In **sucrose** the glucose and fructose units are joined through both their anomeric carbons (C1 of glucose, C2 of fructose), so neither is free to open into an aldehyde or ketone.\n\nIt therefore does not reduce Tollens' or Fehling's reagent. Maltose and lactose keep one free anomeric carbon and are reducing."
+    },
+    {
+      "id": "tn12c-bio-03",
+      "chapter": "Biomolecules",
+      "topic": "Carbohydrates",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Starch is a polymer of:",
+      "options": [
+        "β-D-glucose",
+        "α-D-glucose",
+        "fructose",
+        "galactose"
+      ],
+      "answer": 1,
+      "solution": "Starch, amylose and amylopectin, is built from **α-D-glucose** units joined by α-glycosidic links.\n\nCellulose is built from β-D-glucose. That one change of linkage is why humans can digest starch and not cellulose."
+    },
+    {
+      "id": "tn12c-bio-04",
+      "chapter": "Biomolecules",
+      "topic": "Proteins",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The bond linking amino acids in a protein is:",
+      "options": [
+        "a glycosidic bond",
+        "a peptide bond, –CO–NH–",
+        "a phosphodiester bond",
+        "a hydrogen bond"
+      ],
+      "answer": 1,
+      "solution": "The –COOH of one amino acid condenses with the $\\mathrm{{-}NH_2}$ of the next, losing water and forming a **peptide (amide) bond**, $\\mathrm{{-}CO{-}NH{-}}$."
+    },
+    {
+      "id": "tn12c-bio-05",
+      "chapter": "Biomolecules",
+      "topic": "Proteins",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The α-helix is an example of which structure of a protein?",
+      "options": [
+        "primary",
+        "secondary",
+        "tertiary",
+        "quaternary"
+      ],
+      "answer": 1,
+      "solution": "**Secondary** structure is the local folding of the chain held by hydrogen bonds between C=O and N–H groups of the backbone: the α-helix and the β-pleated sheet.\n\nPrimary is the amino acid sequence; tertiary the overall 3-D folding; quaternary the assembly of several chains."
+    },
+    {
+      "id": "tn12c-bio-06",
+      "chapter": "Biomolecules",
+      "topic": "Proteins",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Denaturation of a protein destroys its:",
+      "options": [
+        "primary structure",
+        "secondary and tertiary structures, not the primary",
+        "peptide bonds",
+        "amino acids"
+      ],
+      "answer": 1,
+      "solution": "Heat, a change of pH or other agents break the **hydrogen bonds and other weak forces** that hold the 3-D shape, so the protein loses its secondary and tertiary structure and its biological activity.\n\nThe **primary structure survives**, because the covalent peptide bonds are not broken. Boiling an egg is the familiar case."
+    },
+    {
+      "id": "tn12c-bio-07",
+      "chapter": "Biomolecules",
+      "topic": "Nucleic acids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which base is present in RNA but not in DNA?",
+      "options": [
+        "adenine",
+        "guanine",
+        "thymine",
+        "uracil"
+      ],
+      "answer": 3,
+      "solution": "DNA has A, G, C and **thymine**. RNA has A, G, C and **uracil** in place of thymine.\n\nThe sugars differ too: deoxyribose in DNA, ribose in RNA."
+    },
+    {
+      "id": "tn12c-bio-08",
+      "chapter": "Biomolecules",
+      "topic": "Vitamins",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Deficiency of vitamin C causes:",
+      "options": [
+        "rickets",
+        "scurvy",
+        "night blindness",
+        "beriberi"
+      ],
+      "answer": 1,
+      "solution": "Vitamin C, ascorbic acid, is needed to make collagen; without it gums bleed and wounds heal poorly: **scurvy**.\n\nRickets is vitamin D, night blindness vitamin A, beriberi vitamin $\\mathrm{B_1}$."
+    },
+    {
+      "id": "tn12c-bio-09",
+      "chapter": "Biomolecules",
+      "topic": "Enzymes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Enzymes are:",
+      "options": [
+        "carbohydrates that catalyse reactions",
+        "mostly globular proteins that catalyse biochemical reactions",
+        "lipids that store energy",
+        "nucleic acids that carry genes"
+      ],
+      "answer": 1,
+      "solution": "Enzymes are mostly **globular proteins**. They are highly specific, work best at body temperature and a particular pH, and speed up reactions enormously by lowering the activation energy.\n\nThe lock-and-key model explains specificity: only a substrate of the right shape fits the active site."
+    },
+    {
+      "id": "tn12c-bio-10",
+      "chapter": "Biomolecules",
+      "topic": "Carbohydrates",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many carbon atoms are there in one molecule of sucrose?",
+      "answer": 12,
+      "tolerance": 0.1,
+      "solution": "Sucrose is glucose + fructose minus water: $\\mathrm{C_{12}H_{22}O_{11}}$, **12** carbons."
+    },
+    {
+      "id": "tn12c-bio-11",
+      "chapter": "Biomolecules",
+      "topic": "Carbohydrates",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many chiral carbon atoms are there in the open-chain form of glucose?",
+      "answer": 4,
+      "tolerance": 0.1,
+      "solution": "In $\\mathrm{CHO{-}(CHOH)_4{-}CH_2OH}$, carbons 2, 3, 4 and 5 each carry four different groups: **4** chiral centres.\n\nC1 is the aldehyde and C6 is $\\mathrm{CH_2OH}$; neither is chiral. Four centres allow $2^4 = 16$ stereoisomers, glucose being one."
+    },
+    {
+      "id": "tn12c-bio-12",
+      "chapter": "Biomolecules",
+      "topic": "Proteins",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many water molecules are released when a tripeptide is formed from three amino acids?",
+      "answer": 2,
+      "tolerance": 0.1,
+      "solution": "Each peptide bond releases one water molecule. A tripeptide has **2** peptide bonds, so 2 molecules of water."
+    },
+    {
+      "id": "tn12c-bio-13",
+      "chapter": "Biomolecules",
+      "topic": "Nucleic acids",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A DNA sample contains $30\\%$ adenine. What percentage of it is guanine?",
+      "answer": 20,
+      "tolerance": 0.1,
+      "solution": "Chargaff's rule: A = T and G = C.\n\nA + T $= 60\\%$, leaving $40\\%$ for G + C, so G $= \\mathbf{20\\%}$."
+    },
+    {
+      "id": "tn12c-bio-14",
+      "chapter": "Biomolecules",
+      "topic": "Carbohydrates",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many glucose molecules are produced by the complete hydrolysis of one molecule of maltose?",
+      "answer": 2,
+      "tolerance": 0.1,
+      "solution": "Maltose is two α-D-glucose units joined by an α-1,4 glycosidic link. Hydrolysis gives **2** glucose molecules."
+    },
+    {
+      "id": "tn12c-bio-15",
+      "chapter": "Biomolecules",
+      "topic": "Structure of glucose",
+      "type": "long",
+      "marks": 5,
+      "q": "Give the evidence for the open-chain structure of glucose. What observations cannot it explain, and how does the cyclic structure account for them?",
+      "solution": "**Evidence for the open chain.**\n\n- Molecular formula $\\mathrm{C_6H_{12}O_6}$; long heating with HI gives n-hexane, so the six carbons are in a **straight chain**.\n- It forms an oxime with hydroxylamine and adds HCN: a **carbonyl group** is present.\n- Mild oxidation by bromine water gives gluconic acid with the same number of carbons: the carbonyl is an **aldehyde**.\n- Acetylation gives a pentaacetate: **five –OH groups**, on different carbons since it is stable.\n- Nitric acid oxidises it to saccharic acid, a dicarboxylic acid: one end is $\\mathrm{{-}CH_2OH}$, a **primary alcohol**.\n\n**What the open chain cannot explain.**\n\n- Glucose does not give Schiff's test or form a bisulphite compound, though it has an aldehyde.\n- The pentaacetate does not react with hydroxylamine: no free –CHO.\n- Two crystalline forms exist, α and β, and either one's optical rotation changes in water until it settles at $+52.5^\\circ$ (**mutarotation**).\n\n**The cyclic structure.** The C5 –OH adds to the C1 aldehyde to form a six-membered ring (pyranose) with a hemiacetal at C1. C1 becomes a new chiral centre, giving two **anomers**, α and β, which differ only in the orientation of the C1 –OH. In water the ring opens and closes, interconverting them through a small amount of open chain; that equilibrium is mutarotation. Little free aldehyde is present at any moment, so the weak aldehyde tests fail."
+    }
+  ]
+}

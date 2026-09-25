@@ -1,0 +1,218 @@
+{
+  "id": "lib-tn12c-nit",
+  "title": "Organic Nitrogen Compounds",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 13,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-nit-01",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Basicity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In aqueous solution, the order of basic strength of the methylamines is:",
+      "options": [
+        "$\\mathrm{(CH_3)_3N} > \\mathrm{(CH_3)_2NH} > \\mathrm{CH_3NH_2}$",
+        "$\\mathrm{(CH_3)_2NH} > \\mathrm{CH_3NH_2} > \\mathrm{(CH_3)_3N}$",
+        "$\\mathrm{CH_3NH_2} > \\mathrm{(CH_3)_2NH} > \\mathrm{(CH_3)_3N}$",
+        "all are equal"
+      ],
+      "answer": 1,
+      "solution": "Three effects compete. Alkyl groups push electrons onto nitrogen (+I), which favours more alkyl groups. **Hydration** of the ammonium ion by hydrogen bonding favours more N–H bonds. **Steric crowding** hinders the tertiary amine.\n\nThe balance in water puts the **secondary** amine first and the tertiary last: $2^\\circ > 1^\\circ > 3^\\circ$. In the gas phase, with no solvent, the order is simply $3^\\circ > 2^\\circ > 1^\\circ$."
+    },
+    {
+      "id": "tn12c-nit-02",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Basicity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Aniline is a weaker base than methylamine because:",
+      "options": [
+        "aniline has a higher molar mass",
+        "the lone pair on nitrogen is delocalised into the benzene ring",
+        "aniline is insoluble in water",
+        "methylamine has more hydrogen atoms"
+      ],
+      "answer": 1,
+      "solution": "In aniline the nitrogen lone pair is **drawn into the ring by resonance**, so it is less available to accept a proton.\n\nIn methylamine the methyl group pushes electron density onto nitrogen, making the lone pair more available."
+    },
+    {
+      "id": "tn12c-nit-03",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Distinguishing tests",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The carbylamine reaction (chloroform and alcoholic KOH) is given by:",
+      "options": [
+        "primary amines only",
+        "secondary amines only",
+        "tertiary amines only",
+        "all amines"
+      ],
+      "answer": 0,
+      "solution": "Only **primary** amines give an isocyanide, recognised by its **offensive smell**.\n\n$\\mathrm{RNH_2} + \\mathrm{CHCl_3} + 3\\mathrm{KOH} \\rightarrow \\mathrm{RNC} + 3\\mathrm{KCl} + 3\\mathrm{H_2O}$"
+    },
+    {
+      "id": "tn12c-nit-04",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Hinsberg test",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Hinsberg test, the sulphonamide formed from a primary amine:",
+      "options": [
+        "is insoluble in alkali",
+        "is soluble in alkali",
+        "is not formed at all",
+        "is a gas"
+      ],
+      "answer": 1,
+      "solution": "Benzenesulphonyl chloride converts a **primary** amine to $\\mathrm{C_6H_5SO_2NHR}$. The N–H left is acidic, so the sulphonamide **dissolves in alkali**.\n\nA secondary amine gives $\\mathrm{C_6H_5SO_2NR_2}$ with no acidic H, insoluble in alkali. A tertiary amine does not react."
+    },
+    {
+      "id": "tn12c-nit-05",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Preparation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Hoffmann bromamide degradation converts:",
+      "options": [
+        "an amide to an amine with one carbon fewer",
+        "an amine to an amide",
+        "a nitrile to an amide",
+        "a nitro compound to an amine"
+      ],
+      "answer": 0,
+      "solution": "$\\mathrm{RCONH_2} + \\mathrm{Br_2} + 4\\mathrm{NaOH} \\rightarrow \\mathrm{RNH_2} + \\mathrm{Na_2CO_3} + 2\\mathrm{NaBr} + 2\\mathrm{H_2O}$\n\nThe carbonyl carbon leaves as carbonate, so the amine has **one carbon fewer** than the amide. It is the standard way to step down a carbon chain."
+    },
+    {
+      "id": "tn12c-nit-06",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Diazonium salts",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Benzenediazonium chloride is prepared from aniline by treatment with:",
+      "options": [
+        "$\\mathrm{NaNO_2}$ and HCl at $273$–$278\\,\\mathrm{K}$",
+        "$\\mathrm{NaNO_2}$ and HCl at $373\\,\\mathrm{K}$",
+        "$\\mathrm{HNO_3}$ and $\\mathrm{H_2SO_4}$",
+        "$\\mathrm{Br_2}$ water"
+      ],
+      "answer": 0,
+      "solution": "Diazotisation uses nitrous acid, made in situ from $\\mathrm{NaNO_2}$ and HCl, kept **ice cold** at $0$–$5\\,^\\circ\\mathrm{C}$.\n\nAbove that temperature the diazonium salt decomposes, releasing nitrogen and forming phenol."
+    },
+    {
+      "id": "tn12c-nit-07",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Diazonium salts",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Benzenediazonium chloride warmed with CuCl and HCl gives chlorobenzene. This is called:",
+      "options": [
+        "Gattermann reaction",
+        "Sandmeyer reaction",
+        "Friedel–Crafts reaction",
+        "Coupling reaction"
+      ],
+      "answer": 1,
+      "solution": "With cuprous salts, CuCl/HCl or CuBr/HBr or CuCN/KCN, it is the **Sandmeyer reaction**.\n\nThe Gattermann reaction does the same job with copper powder and the halogen acid."
+    },
+    {
+      "id": "tn12c-nit-08",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Coupling",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Benzenediazonium chloride couples with phenol in mildly alkaline solution to give:",
+      "options": [
+        "a colourless solid",
+        "an orange azo dye, p-hydroxyazobenzene",
+        "chlorobenzene",
+        "aniline"
+      ],
+      "answer": 1,
+      "solution": "The diazonium ion attacks the **para** position of phenol, giving **p-hydroxyazobenzene**, an orange dye.\n\nThe $\\mathrm{{-}N{=}N{-}}$ group linking two rings forms an extended conjugated system, which is why azo compounds are coloured."
+    },
+    {
+      "id": "tn12c-nit-09",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Nitro compounds",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Nitrobenzene is reduced by Sn and HCl to:",
+      "options": [
+        "azobenzene",
+        "aniline",
+        "nitrosobenzene",
+        "phenylhydroxylamine"
+      ],
+      "answer": 1,
+      "solution": "In **acid** with a metal, the nitro group is reduced completely: $\\mathrm{C_6H_5NO_2} + 6[\\mathrm{H}] \\rightarrow \\mathrm{C_6H_5NH_2} + 2\\mathrm{H_2O}$, giving **aniline**.\n\nIn neutral or alkaline conditions the reduction stops at intermediate products such as phenylhydroxylamine or azobenzene."
+    },
+    {
+      "id": "tn12c-nit-10",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Isomerism",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many amines, primary, secondary and tertiary together, have the formula $\\mathrm{C_3H_9N}$?",
+      "answer": 4,
+      "tolerance": 0.1,
+      "solution": "Primary: propan-1-amine and propan-2-amine.\n\nSecondary: N-methylethanamine.\n\nTertiary: N,N-dimethylmethanamine.\n\nTotal **4**."
+    },
+    {
+      "id": "tn12c-nit-11",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Hoffmann bromamide",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many carbon atoms are in the amine formed when butanamide undergoes Hoffmann bromamide degradation?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "solution": "Butanamide has 4 carbons. One leaves as carbonate, so the product, propan-1-amine, has **3**."
+    },
+    {
+      "id": "tn12c-nit-12",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Stoichiometry",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What mass of aniline, in grams, is obtained from $12.3\\,\\mathrm{g}$ of nitrobenzene if the reduction is complete? ($\\mathrm{C_6H_5NO_2} = 123$, $\\mathrm{C_6H_5NH_2} = 93$.)",
+      "answer": 9.3,
+      "tolerance": 0.05,
+      "solution": "One mole of nitrobenzene gives one mole of aniline.\n\nMoles $= \\dfrac{12.3}{123} = 0.1$, so mass of aniline $= 0.1 \\times 93 = \\mathbf{9.3\\,g}$."
+    },
+    {
+      "id": "tn12c-nit-13",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Stoichiometry",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many moles of $\\mathrm{N_2}$ are released when $0.25\\,\\mathrm{mol}$ of benzenediazonium chloride is warmed with water?",
+      "answer": 0.25,
+      "tolerance": 0.01,
+      "solution": "$\\mathrm{C_6H_5N_2Cl} + \\mathrm{H_2O} \\rightarrow \\mathrm{C_6H_5OH} + \\mathrm{N_2} + \\mathrm{HCl}$: one mole of $\\mathrm{N_2}$ per mole of salt, so **0.25 mol**."
+    },
+    {
+      "id": "tn12c-nit-14",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Basicity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The $\\mathrm{p}K_b$ of methylamine is $3.38$ and that of aniline is $9.38$. By what power of ten is methylamine the stronger base? (Give the exponent.)",
+      "answer": 6,
+      "tolerance": 0.05,
+      "solution": "$\\dfrac{K_b(\\mathrm{CH_3NH_2})}{K_b(\\mathrm{C_6H_5NH_2})} = 10^{9.38 - 3.38} = 10^{6}$.\n\nThe exponent is **6**: methylamine is a million times the stronger base, which shows how much resonance with the ring costs aniline's lone pair."
+    },
+    {
+      "id": "tn12c-nit-15",
+      "chapter": "Organic Nitrogen Compounds",
+      "topic": "Conversions",
+      "type": "long",
+      "marks": 5,
+      "q": "Starting from benzene, show how you would prepare (a) aniline, (b) phenol via a diazonium salt, (c) chlorobenzene via a diazonium salt, and (d) p-hydroxyazobenzene. Give the conditions for each step.",
+      "solution": "**(a) Benzene to aniline.** Nitrate with conc. $\\mathrm{HNO_3}$ and conc. $\\mathrm{H_2SO_4}$ below $330\\,\\mathrm{K}$ to get nitrobenzene. Reduce with Sn and HCl, then free the base with NaOH.\n\n$\\mathrm{C_6H_6} \\rightarrow \\mathrm{C_6H_5NO_2} \\rightarrow \\mathrm{C_6H_5NH_2}$\n\n**Diazotisation** (common to b–d). Aniline with $\\mathrm{NaNO_2}$ and HCl at $273$–$278\\,\\mathrm{K}$ gives benzenediazonium chloride, $\\mathrm{C_6H_5N_2^+Cl^-}$. It must be used cold and at once.\n\n**(b) Phenol.** Warm the diazonium solution with water: $\\mathrm{C_6H_5N_2Cl} + \\mathrm{H_2O} \\rightarrow \\mathrm{C_6H_5OH} + \\mathrm{N_2} + \\mathrm{HCl}$.\n\n**(c) Chlorobenzene.** Sandmeyer reaction with CuCl and HCl: $\\mathrm{C_6H_5N_2Cl} \\rightarrow \\mathrm{C_6H_5Cl} + \\mathrm{N_2}$.\n\n**(d) p-Hydroxyazobenzene.** Couple the cold diazonium salt with phenol (made as in b) in mildly alkaline solution. Attack is at the para position: $\\mathrm{C_6H_5N_2Cl} + \\mathrm{C_6H_5OH} \\rightarrow \\mathrm{C_6H_5N{=}NC_6H_4OH} + \\mathrm{HCl}$, an orange dye."
+    }
+  ]
+}
