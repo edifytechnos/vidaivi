@@ -4675,6 +4675,16 @@ body.drawer-open {
   font-size: 11.5px;
   color: var(--muted);
 }
+/* The list is a capped flex column and a section clips its content, which
+   makes its automatic min-height 0 — so without this the browser shrinks every
+   closed section below its own header to fit the cap. */
+.ns-scroll > * {
+  flex-shrink: 0;
+}
+/* Closed, the header is the whole card: its divider would double the border. */
+.ns-sechead[aria-expanded="false"] {
+  border-bottom: 0;
+}
 .ns-sechead[aria-expanded="false"] .ns-caret {
   transform: rotate(-90deg);
 }

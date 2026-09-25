@@ -154,10 +154,10 @@ export function openNewSubject(onDone?: () => void): void {
     // An exam's own papers, so a teacher sees Physics, Chemistry and Maths
     // under JEE Main before anybody has written a question for them.
     //
-    // **Only when the board has no shelf at all.** NEET's shelf is a single
-    // lumped subject, "Physics, Chemistry & Biology", left over from before an
-    // exam had papers — so adding the three on top of it offered FOUR rows,
-    // one of them holding every test and three of them empty. The rule is one
+    // **Only when the board has no shelf at all.** NEET's shelf was once a
+    // single lumped subject, "Physics, Chemistry & Biology" — adding the three
+    // papers on top of it offered FOUR rows, one holding every test and three
+    // empty. NEET and JEE Main have one shelf per paper now; the rule stands. The rule is one
     // sentence with nothing to guess at: what the library has, or what the
     // exam is made of, never both. A paper that is genuinely missing is what
     // "Not listed? Add your own" is for.
