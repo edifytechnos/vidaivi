@@ -1,0 +1,218 @@
+{
+  "id": "lib-tn12c-car",
+  "title": "Carbonyl Compounds and Carboxylic Acids",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-car-01",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Nucleophilic addition",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Aldehydes are generally more reactive than ketones towards nucleophilic addition because:",
+      "options": [
+        "aldehydes have a higher molar mass",
+        "ketones have two alkyl groups that reduce the positive charge on the carbonyl carbon and crowd it",
+        "aldehydes are gases",
+        "ketones cannot form hydrogen bonds"
+      ],
+      "answer": 1,
+      "solution": "Two reasons, both favouring aldehydes.\n\n**Electronic**: alkyl groups push electrons onto the carbonyl carbon, so a ketone's carbon, with two of them, is less positive.\n\n**Steric**: two alkyl groups crowd the approach of the nucleophile more than one alkyl group and a small hydrogen."
+    },
+    {
+      "id": "tn12c-car-02",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Distinguishing tests",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Tollens' reagent distinguishes:",
+      "options": [
+        "ethanal from propanone",
+        "propanone from butanone",
+        "ethanol from methanol",
+        "benzene from toluene"
+      ],
+      "answer": 0,
+      "solution": "Tollens' reagent, ammoniacal silver nitrate, is reduced by **aldehydes** to a silver mirror. Ketones do not reduce it.\n\nSo ethanal gives the mirror and propanone does not."
+    },
+    {
+      "id": "tn12c-car-03",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Aldol condensation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which compound undergoes aldol condensation?",
+      "options": [
+        "methanal",
+        "benzaldehyde",
+        "ethanal",
+        "2,2-dimethylpropanal"
+      ],
+      "answer": 2,
+      "solution": "Aldol condensation needs an **α-hydrogen**, which the base removes to make a carbanion.\n\nEthanal, $\\mathrm{CH_3CHO}$, has three. Methanal, benzaldehyde and 2,2-dimethylpropanal have none; they undergo the Cannizzaro reaction instead."
+    },
+    {
+      "id": "tn12c-car-04",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Cannizzaro reaction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Cannizzaro reaction of benzaldehyde with conc. NaOH, the products are:",
+      "options": [
+        "benzyl alcohol and sodium benzoate",
+        "benzoic acid only",
+        "benzyl alcohol only",
+        "benzene and sodium formate"
+      ],
+      "answer": 0,
+      "solution": "An aldehyde with no α-hydrogen **disproportionates**: one molecule is oxidised, another reduced.\n\n$2\\mathrm{C_6H_5CHO} + \\mathrm{NaOH} \\rightarrow \\mathrm{C_6H_5CH_2OH} + \\mathrm{C_6H_5COONa}$."
+    },
+    {
+      "id": "tn12c-car-05",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Reduction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Clemmensen reduction converts a carbonyl group to a $\\mathrm{CH_2}$ group using:",
+      "options": [
+        "$\\mathrm{LiAlH_4}$",
+        "zinc amalgam and conc. HCl",
+        "hydrazine and KOH",
+        "$\\mathrm{H_2/Pd}$"
+      ],
+      "answer": 1,
+      "solution": "**Clemmensen**: Zn–Hg with conc. HCl, suited to compounds stable in acid.\n\n**Wolff–Kishner**: hydrazine with KOH in ethylene glycol, suited to compounds stable in base. Both give the hydrocarbon; $\\mathrm{LiAlH_4}$ stops at the alcohol."
+    },
+    {
+      "id": "tn12c-car-06",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Acidity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which is the strongest acid?",
+      "options": [
+        "$\\mathrm{CH_3COOH}$",
+        "$\\mathrm{ClCH_2COOH}$",
+        "$\\mathrm{Cl_2CHCOOH}$",
+        "$\\mathrm{Cl_3CCOOH}$"
+      ],
+      "answer": 3,
+      "solution": "Chlorine atoms pull electron density away through the chain (**–I effect**), spreading the negative charge on the carboxylate ion and stabilising it.\n\nMore chlorines means a stronger effect, so **trichloroacetic acid** is strongest, with $\\mathrm{p}K_a$ about 0.7, against 4.76 for acetic acid."
+    },
+    {
+      "id": "tn12c-car-07",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Iodoform test",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which compound gives a positive iodoform test?",
+      "options": [
+        "methanal",
+        "propanal",
+        "propanone",
+        "pentan-3-one"
+      ],
+      "answer": 2,
+      "solution": "The test needs a $\\mathrm{CH_3CO}{-}$ group (or $\\mathrm{CH_3CH(OH)}{-}$, which is oxidised to one).\n\n**Propanone**, $\\mathrm{CH_3COCH_3}$, has it and gives yellow $\\mathrm{CHI_3}$. Propanal and pentan-3-one have ethyl groups beside the carbonyl, not methyl."
+    },
+    {
+      "id": "tn12c-car-08",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Preparation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Rosenmund reduction converts:",
+      "options": [
+        "an acid chloride to an aldehyde",
+        "an ester to an alcohol",
+        "a nitrile to an amine",
+        "a ketone to an alkane"
+      ],
+      "answer": 0,
+      "solution": "$\\mathrm{RCOCl} + \\mathrm{H_2} \\xrightarrow{\\mathrm{Pd/BaSO_4}} \\mathrm{RCHO} + \\mathrm{HCl}$.\n\nThe $\\mathrm{BaSO_4}$ **poisons** the palladium so the reduction stops at the **aldehyde** instead of going on to the alcohol."
+    },
+    {
+      "id": "tn12c-car-09",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Reactions of acids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Carboxylic acids do not give the typical reactions of the carbonyl group because:",
+      "options": [
+        "they are too acidic",
+        "resonance with the –OH group reduces the electrophilic character of the carbonyl carbon",
+        "they have no carbonyl group",
+        "they are insoluble in water"
+      ],
+      "answer": 1,
+      "solution": "The lone pair on the –OH oxygen is **delocalised onto the carbonyl**, so the carbonyl carbon is much less positive.\n\nSo carboxylic acids do not form oximes, hydrazones or cyanohydrins the way aldehydes and ketones do."
+    },
+    {
+      "id": "tn12c-car-10",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Nomenclature",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many carbon atoms are there in one molecule of 3-methylbutanal?",
+      "answer": 5,
+      "tolerance": 0.1,
+      "solution": "Butanal contributes a four-carbon chain; the methyl group adds one more: **5** carbons, $\\mathrm{(CH_3)_2CHCH_2CHO}$."
+    },
+    {
+      "id": "tn12c-car-11",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Aldol condensation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Two molecules of ethanal undergo aldol addition. How many carbon atoms does the product 3-hydroxybutanal contain?",
+      "answer": 4,
+      "tolerance": 0.1,
+      "solution": "The carbanion from one ethanal adds to the carbonyl of the other, joining two 2-carbon units: **4** carbons, $\\mathrm{CH_3CH(OH)CH_2CHO}$.\n\nOn heating it loses water to give but-2-enal, crotonaldehyde."
+    },
+    {
+      "id": "tn12c-car-12",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Stoichiometry",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What mass of silver, in grams, is deposited when $0.1\\,\\mathrm{mol}$ of ethanal is completely oxidised by Tollens' reagent? (Ag $= 108$.)",
+      "answer": 21.6,
+      "tolerance": 0.1,
+      "solution": "$\\mathrm{RCHO} + 2[\\mathrm{Ag(NH_3)_2}]^+ + 3\\mathrm{OH^-} \\rightarrow \\mathrm{RCOO^-} + 2\\mathrm{Ag} + 4\\mathrm{NH_3} + 2\\mathrm{H_2O}$.\n\nEach mole of aldehyde deposits 2 mol of Ag, so $0.2$ mol, which is $0.2 \\times 108 = \\mathbf{21.6\\,g}$."
+    },
+    {
+      "id": "tn12c-car-13",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Stoichiometry",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What volume of $\\mathrm{CO_2}$, in litres at STP, is evolved when $0.5\\,\\mathrm{mol}$ of acetic acid reacts completely with excess sodium bicarbonate? (1 mol of gas at STP $= 22.4\\,\\mathrm{L}$.)",
+      "answer": 11.2,
+      "tolerance": 0.05,
+      "solution": "$\\mathrm{CH_3COOH} + \\mathrm{NaHCO_3} \\rightarrow \\mathrm{CH_3COONa} + \\mathrm{H_2O} + \\mathrm{CO_2}$: one mole of acid, one mole of gas.\n\n$0.5 \\times 22.4 = \\mathbf{11.2\\,L}$. This brisk effervescence is the test for a carboxylic acid; phenols are too weak to give it."
+    },
+    {
+      "id": "tn12c-car-14",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Acidity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The $\\mathrm{p}K_a$ of acetic acid is $4.76$ and that of formic acid is $3.75$. By roughly what whole-number factor is formic acid the stronger acid? (Use $10^{1.01} \\approx 10$.)",
+      "answer": 10,
+      "tolerance": 0.5,
+      "solution": "$\\dfrac{K_a(\\mathrm{HCOOH})}{K_a(\\mathrm{CH_3COOH})} = 10^{4.76 - 3.75} = 10^{1.01} \\approx \\mathbf{10}$.\n\nThe methyl group in acetic acid pushes electrons onto the carboxylate and destabilises it; formic acid has a hydrogen there."
+    },
+    {
+      "id": "tn12c-car-15",
+      "chapter": "Carbonyl Compounds and Carboxylic Acids",
+      "topic": "Named reactions",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the following with one equation each: (a) aldol condensation, (b) Cannizzaro reaction, (c) Hell–Volhard–Zelinsky reaction, (d) decarboxylation, (e) Wolff–Kishner reduction.",
+      "solution": "**(a) Aldol condensation.** An aldehyde or ketone with an α-hydrogen, in dilute alkali, forms a β-hydroxy carbonyl compound, which loses water on heating.\n\n$2\\mathrm{CH_3CHO} \\xrightarrow{\\text{dil. NaOH}} \\mathrm{CH_3CH(OH)CH_2CHO} \\xrightarrow{\\Delta} \\mathrm{CH_3CH{=}CHCHO}$\n\n**(b) Cannizzaro reaction.** An aldehyde with no α-hydrogen, in conc. alkali, is half oxidised and half reduced.\n\n$2\\mathrm{HCHO} + \\mathrm{NaOH} \\rightarrow \\mathrm{CH_3OH} + \\mathrm{HCOONa}$\n\n**(c) Hell–Volhard–Zelinsky reaction.** A carboxylic acid with an α-hydrogen is halogenated at the α-carbon by $\\mathrm{Cl_2}$ or $\\mathrm{Br_2}$ with red phosphorus.\n\n$\\mathrm{CH_3COOH} \\xrightarrow{\\mathrm{Cl_2}/\\text{red P}} \\mathrm{ClCH_2COOH}$\n\n**(d) Decarboxylation.** The sodium salt of an acid heated with soda lime (NaOH + CaO) loses $\\mathrm{CO_2}$ and gives an alkane with one carbon fewer.\n\n$\\mathrm{CH_3COONa} + \\mathrm{NaOH} \\xrightarrow{\\text{CaO}, \\Delta} \\mathrm{CH_4} + \\mathrm{Na_2CO_3}$\n\n**(e) Wolff–Kishner reduction.** The carbonyl compound forms a hydrazone, which, heated with KOH in ethylene glycol, loses $\\mathrm{N_2}$ to give the hydrocarbon.\n\n$\\mathrm{CH_3COCH_3} \\xrightarrow{\\mathrm{NH_2NH_2}} \\mathrm{(CH_3)_2C{=}NNH_2} \\xrightarrow{\\text{KOH}, \\Delta} \\mathrm{CH_3CH_2CH_3} + \\mathrm{N_2}$"
+    }
+  ]
+}

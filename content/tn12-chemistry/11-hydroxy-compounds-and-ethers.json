@@ -1,0 +1,218 @@
+{
+  "id": "lib-tn12c-hyd",
+  "title": "Hydroxy Compounds and Ethers",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-hyd-01",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Classification",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of these is a tertiary alcohol?",
+      "options": [
+        "propan-1-ol",
+        "propan-2-ol",
+        "2-methylpropan-2-ol",
+        "butan-1-ol"
+      ],
+      "answer": 2,
+      "solution": "A tertiary alcohol has the –OH on a carbon joined to **three** other carbons.\n\nIn 2-methylpropan-2-ol, $\\mathrm{(CH_3)_3C{-}OH}$, the carbinol carbon carries three methyl groups. Propan-2-ol is secondary; the other two are primary."
+    },
+    {
+      "id": "tn12c-hyd-02",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Lucas test",
+      "type": "mcq",
+      "marks": 1,
+      "q": "With the Lucas reagent (conc. HCl + anhydrous $\\mathrm{ZnCl_2}$), turbidity appears immediately with:",
+      "options": [
+        "a primary alcohol",
+        "a secondary alcohol",
+        "a tertiary alcohol",
+        "methanol"
+      ],
+      "answer": 2,
+      "solution": "The Lucas test depends on how easily the alcohol forms a carbocation. A **tertiary** carbocation is the most stable, so tertiary alcohols give the insoluble alkyl chloride **at once**.\n\nSecondary alcohols take about five minutes, and primary alcohols show no turbidity at room temperature."
+    },
+    {
+      "id": "tn12c-hyd-03",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Acidity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Phenol is more acidic than ethanol because:",
+      "options": [
+        "phenol has more hydrogen atoms",
+        "the phenoxide ion is stabilised by resonance",
+        "ethanol is a gas",
+        "phenol has a higher molar mass"
+      ],
+      "answer": 1,
+      "solution": "Once phenol loses $\\mathrm{H^+}$, the negative charge on the phenoxide ion is **delocalised into the ring** by resonance, which stabilises it.\n\nThe ethoxide ion has no such spreading; the ethyl group even pushes electron density onto the oxygen. So phenol dissociates more readily."
+    },
+    {
+      "id": "tn12c-hyd-04",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Reactions of phenol",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Phenol reacts with bromine water to give:",
+      "options": [
+        "o-bromophenol",
+        "p-bromophenol",
+        "2,4,6-tribromophenol",
+        "bromobenzene"
+      ],
+      "answer": 2,
+      "solution": "The –OH group strongly activates the ring. In polar water, bromine substitutes at **all three** ortho and para positions at once, giving a white precipitate of **2,4,6-tribromophenol**.\n\nIn a non-polar solvent such as $\\mathrm{CS_2}$ at low temperature, monobromination can be achieved instead."
+    },
+    {
+      "id": "tn12c-hyd-05",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Reactions of phenol",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Kolbe reaction of sodium phenoxide with $\\mathrm{CO_2}$ followed by acidification gives:",
+      "options": [
+        "benzoic acid",
+        "salicylic acid",
+        "picric acid",
+        "phenyl acetate"
+      ],
+      "answer": 1,
+      "solution": "Sodium phenoxide heated with $\\mathrm{CO_2}$ under pressure is carboxylated at the **ortho** position; acidification gives **salicylic acid**, o-hydroxybenzoic acid.\n\nAcetylating salicylic acid gives aspirin."
+    },
+    {
+      "id": "tn12c-hyd-06",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Reactions of phenol",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Reimer–Tiemann reaction of phenol with $\\mathrm{CHCl_3}$ and aqueous NaOH gives:",
+      "options": [
+        "salicylaldehyde",
+        "salicylic acid",
+        "benzaldehyde",
+        "anisole"
+      ],
+      "answer": 0,
+      "solution": "The reactive species is dichlorocarbene, $\\mathrm{:CCl_2}$, made from chloroform and alkali. It attacks the ortho position, and hydrolysis gives **salicylaldehyde**, o-hydroxybenzaldehyde.\n\nUsing $\\mathrm{CCl_4}$ in place of chloroform gives salicylic acid instead."
+    },
+    {
+      "id": "tn12c-hyd-07",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Dehydration",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Ethanol heated with conc. $\\mathrm{H_2SO_4}$ at $443\\,\\mathrm{K}$ gives mainly:",
+      "options": [
+        "diethyl ether",
+        "ethene",
+        "ethanal",
+        "ethanoic acid"
+      ],
+      "answer": 1,
+      "solution": "At $443\\,\\mathrm{K}$ (170 °C) with excess acid, ethanol undergoes **intramolecular dehydration** to **ethene**.\n\nAt the lower temperature of $413\\,\\mathrm{K}$ with excess alcohol, two molecules lose one water between them and diethyl ether is the main product. The temperature decides the product."
+    },
+    {
+      "id": "tn12c-hyd-08",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Ethers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Anisole reacts with HI to give:",
+      "options": [
+        "iodobenzene and methanol",
+        "phenol and methyl iodide",
+        "benzene and methyl iodide",
+        "iodobenzene and methyl iodide"
+      ],
+      "answer": 1,
+      "solution": "The O–$\\mathrm{C_6H_5}$ bond has partial double-bond character from resonance, so it does not break. Iodide attacks the **methyl** carbon instead.\n\n$\\mathrm{C_6H_5OCH_3} + \\mathrm{HI} \\rightarrow \\mathrm{C_6H_5OH} + \\mathrm{CH_3I}$: **phenol and methyl iodide**."
+    },
+    {
+      "id": "tn12c-hyd-09",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Preparation of ethers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Williamson's synthesis prepares an ether by reacting:",
+      "options": [
+        "an alcohol with conc. $\\mathrm{H_2SO_4}$",
+        "an alkyl halide with sodium alkoxide",
+        "an alkene with water",
+        "an aldehyde with an alcohol"
+      ],
+      "answer": 1,
+      "solution": "$\\mathrm{R{-}X} + \\mathrm{R'ONa} \\rightarrow \\mathrm{R{-}O{-}R'} + \\mathrm{NaX}$, an $S_N2$ reaction.\n\nThe alkyl halide should be **primary**: with a tertiary halide the alkoxide acts as a base and elimination gives an alkene instead. It is the method of choice for unsymmetrical ethers."
+    },
+    {
+      "id": "tn12c-hyd-10",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Classification",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many of the following are secondary alcohols: propan-2-ol, butan-2-ol, 2-methylpropan-2-ol, cyclohexanol, ethanol?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "solution": "Secondary means the carbinol carbon is joined to two carbons.\n\nPropan-2-ol, butan-2-ol and cyclohexanol are secondary: **3**.\n\n2-methylpropan-2-ol is tertiary and ethanol is primary."
+    },
+    {
+      "id": "tn12c-hyd-11",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Isomerism",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many structural isomers, alcohols and ethers together, have the molecular formula $\\mathrm{C_3H_8O}$?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "solution": "Alcohols: propan-1-ol and propan-2-ol.\n\nEther: methoxyethane, $\\mathrm{CH_3OC_2H_5}$.\n\nTotal **3**. Alcohols and ethers of the same formula are functional isomers."
+    },
+    {
+      "id": "tn12c-hyd-12",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Stoichiometry",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many grams of sodium react completely with $4.6\\,\\mathrm{g}$ of ethanol? (Na $= 23$, $\\mathrm{C_2H_5OH} = 46$.)",
+      "answer": 2.3,
+      "tolerance": 0.02,
+      "solution": "$2\\mathrm{C_2H_5OH} + 2\\mathrm{Na} \\rightarrow 2\\mathrm{C_2H_5ONa} + \\mathrm{H_2}$: ethanol and sodium react 1 : 1.\n\nMoles of ethanol $= \\dfrac{4.6}{46} = 0.1$, so moles of Na $= 0.1$ and mass $= 0.1 \\times 23 = \\mathbf{2.3\\,g}$."
+    },
+    {
+      "id": "tn12c-hyd-13",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Stoichiometry",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What volume of hydrogen, in litres at STP, is released when $0.2\\,\\mathrm{mol}$ of ethanol reacts completely with sodium? (1 mol of gas at STP $= 22.4\\,\\mathrm{L}$.)",
+      "answer": 2.24,
+      "tolerance": 0.02,
+      "solution": "Two moles of ethanol release one mole of $\\mathrm{H_2}$.\n\n$0.2$ mol of ethanol gives $0.1$ mol of $\\mathrm{H_2}$ $= 0.1 \\times 22.4 = \\mathbf{2.24\\,L}$."
+    },
+    {
+      "id": "tn12c-hyd-14",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Reactions of phenol",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many bromine atoms are there in one molecule of the white precipitate formed when phenol reacts with bromine water?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "solution": "The precipitate is 2,4,6-tribromophenol, $\\mathrm{C_6H_2Br_3OH}$: **3** bromine atoms, at both ortho positions and the para position."
+    },
+    {
+      "id": "tn12c-hyd-15",
+      "chapter": "Hydroxy Compounds and Ethers",
+      "topic": "Distinguishing tests",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe chemical tests to distinguish between (a) ethanol and phenol, (b) primary, secondary and tertiary alcohols by the Victor Meyer method, and (c) methanol and ethanol.",
+      "solution": "**(a) Ethanol and phenol.** Add neutral $\\mathrm{FeCl_3}$ solution: phenol gives a **violet** colour, ethanol gives none. Alternatively, bromine water gives phenol a white precipitate of 2,4,6-tribromophenol, while ethanol does not react.\n\n**(b) Victor Meyer method.** The alcohol is converted to the iodide with red P and $\\mathrm{I_2}$, then to the nitroalkane with $\\mathrm{AgNO_2}$, then treated with nitrous acid and made alkaline.\n\n- **Primary** alcohols give a nitrolic acid, **blood red** in alkali.\n- **Secondary** alcohols give a pseudonitrole, **blue**.\n- **Tertiary** alcohols have no α-hydrogen on the nitro carbon and stay **colourless**.\n\n**(c) Methanol and ethanol.** The **iodoform test**: warm with $\\mathrm{I_2}$ and NaOH. Ethanol contains the $\\mathrm{CH_3CH(OH)}{-}$ unit and gives a yellow precipitate of iodoform, $\\mathrm{CHI_3}$. Methanol lacks it and gives none."
+    }
+  ]
+}
