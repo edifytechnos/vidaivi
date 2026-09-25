@@ -71,36 +71,38 @@
       "solution": "The central maximum runs between the first minima on either side, at $\\sin\\theta = \\pm\\dfrac{\\lambda}{a}$, so its angular width is $\\dfrac{2\\lambda}{a}$.\n\nThe secondary maxima each span only $\\dfrac{\\lambda}{a}$, so the central maximum is **twice** as wide — and far brighter.\n\nIt also **widens as the slit narrows**, which is the opposite of what intuition suggests and is the signature of diffraction."
     },
     {
-      "id": "tn12p-opt-05",
+      "id": "tn12p-opt-24q5",
       "chapter": "Optics",
       "topic": "Polarisation",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "Polarisation of light establishes that light is:",
+      "q": "The transverse nature of light is shown in :",
       "options": [
-        "A longitudinal wave",
-        "A transverse wave",
-        "A stream of particles",
-        "Not a wave"
+        "scattering",
+        "interference",
+        "polarisation",
+        "diffraction"
       ],
-      "answer": 1,
-      "solution": "A **longitudinal** wave has its oscillation along the direction of travel, so all directions perpendicular to it are equivalent and there is nothing to restrict — a longitudinal wave **cannot be polarised**.\n\nThat light **can** be polarised proves it is **transverse**.\n\nThis is why sound cannot be polarised, and it was a decisive piece of evidence in establishing the wave nature and later the electromagnetic nature of light."
+      "answer": 2,
+      "solution": "Only a transverse wave has a direction of vibration that can be selected. **Polarisation** filters one direction out; a longitudinal wave such as sound cannot be polarised.\n\nInterference and diffraction happen with any wave. (The 2025 paper asked this again.)"
     },
     {
-      "id": "tn12p-opt-06",
+      "id": "tn12p-opt-24q13",
       "chapter": "Optics",
       "topic": "Polarisation",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "Brewster's law states that at the polarising angle $i_p$:",
+      "q": "Light transmitted by Nicol prism is :",
       "options": [
-        "$\\tan i_p = n$",
-        "$\\sin i_p = n$",
-        "$\\cos i_p = n$",
-        "$i_p = n$"
+        "plane polarised",
+        "partially polarised",
+        "elliptically polarised",
+        "unpolarised"
       ],
       "answer": 0,
-      "solution": "**Brewster's law**: $\\tan i_p = n$.\n\nAt this angle the reflected ray is **completely plane polarised**, and the reflected and refracted rays are **perpendicular** to each other — the two facts are equivalent, and the perpendicularity is what the law really expresses.\n\nFor glass with $n = 1.5$, $i_p \\approx 57^\\circ$. It is why polarising sunglasses cut glare from water and roads, where the reflection is near this angle."
+      "solution": "A Nicol prism, cut from calcite, totally reflects the ordinary ray at its Canada balsam layer and transmits only the extraordinary ray, which is **plane polarised**."
     },
     {
       "id": "tn12p-opt-07",
@@ -135,20 +137,21 @@
       "solution": "The essential condition is **coherence**: a **constant phase difference** maintained over time. Without it the fringes shift so rapidly that only a uniform average brightness is seen.\n\nThe sources must also be of the **same frequency**. Equal intensity is not required, but it gives the best contrast, since the minima are then completely dark.\n\nTwo independent lamps are never coherent, which is why interference is demonstrated by **splitting one beam** — as Young's double slit does."
     },
     {
-      "id": "tn12p-opt-09",
+      "id": "tn12p-opt-23q10",
       "chapter": "Optics",
       "topic": "Refraction",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "The critical angle for a medium of refractive index $\\sqrt2$ is:",
+      "q": "For light incident from air on a slab of refractive index 2, the maximum possible angle of refraction is :",
       "options": [
-        "$30^\\circ$",
-        "$45^\\circ$",
         "$60^\\circ$",
-        "$90^\\circ$"
+        "$30^\\circ$",
+        "$90^\\circ$",
+        "$45^\\circ$"
       ],
       "answer": 1,
-      "solution": "$\\sin C = \\dfrac{1}{n} = \\dfrac{1}{\\sqrt2}$\n\n$C = \\sin^{-1}\\left(\\dfrac{1}{\\sqrt2}\\right) = \\mathbf{45^\\circ}$"
+      "solution": "The largest refraction angle occurs at grazing incidence, $i = 90^\\circ$:\n\n$\\sin r = \\dfrac{\\sin 90^\\circ}{2} = \\dfrac{1}{2}$, so $r = \\mathbf{30^\\circ}$.\n\n(The 2025 paper asked the same question.)"
     },
     {
       "id": "tn12p-opt-10",
@@ -166,33 +169,35 @@
       "solution": "Using the mirror formula with the real-is-positive convention $\\dfrac{1}{v} + \\dfrac{1}{u} = \\dfrac{1}{f}$ in magnitudes:\n\n$\\dfrac{1}{v} = \\dfrac{1}{20} - \\dfrac{1}{30} = \\dfrac{3 - 2}{60} = \\dfrac{1}{60}$\n\n$v = \\mathbf{60\\ \\text{cm}}$ — a real, inverted, magnified image, since the object lies between $f$ and $2f$."
     },
     {
-      "id": "tn12p-opt-11",
+      "id": "tn12p-opt-23q20",
       "chapter": "Optics",
       "topic": "Interference",
-      "type": "numeric",
-      "marks": 3,
-      "q": "In a double-slit experiment, $\\lambda = 500\\ \\text{nm}$, $d = 0.25\\ \\text{mm}$ and $D = 1\\ \\text{m}$. Find the fringe width, in millimetres.",
-      "answer": 2,
-      "tolerance": 0.05,
-      "accept": [
-        "2",
-        "2 mm"
-      ],
-      "solution": "$\\beta = \\dfrac{\\lambda D}{d} = \\dfrac{500\\times10^{-9} \\times 1}{0.25\\times10^{-3}}$\n\n$= \\dfrac{5\\times10^{-7}}{2.5\\times10^{-4}} = 2\\times10^{-3}\\ \\text{m} = \\mathbf{2\\ \\text{mm}}$"
-    },
-    {
-      "id": "tn12p-opt-12",
-      "chapter": "Optics",
-      "topic": "Optical instruments",
+      "source": "TN HSE Mar 2023",
       "type": "numeric",
       "marks": 2,
-      "q": "A telescope has an objective of focal length $100\\ \\text{cm}$ and an eyepiece of $5\\ \\text{cm}$. Find its magnifying power in normal adjustment.",
-      "answer": 20,
-      "tolerance": 0.5,
+      "q": "The ratio of intensities of two waves in an interference pattern is 36 : 1. What is the ratio of the amplitudes of the two interfering waves ? (Give the ratio as a single number, $a_1/a_2$.)",
+      "answer": 6,
+      "solution": "Intensity is proportional to the square of amplitude: $\\dfrac{a_1}{a_2} = \\sqrt{\\dfrac{I_1}{I_2}} = \\sqrt{36} = \\mathbf{6}$, a ratio of $6 : 1$.",
+      "tolerance": 0,
       "accept": [
-        "20"
-      ],
-      "solution": "In normal adjustment $M = \\dfrac{f_o}{f_e} = \\dfrac{100}{5} = \\mathbf{20}$.\n\nThe tube length is then $f_o + f_e = 105\\ \\text{cm}$."
+        "6:1",
+        "6 : 1"
+      ]
+    },
+    {
+      "id": "tn12p-opt-24q24",
+      "chapter": "Optics",
+      "topic": "Lenses",
+      "source": "TN HSE Mar 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If the focal length is 150 cm for a lens, what is the power of the lens, in dioptres ? (Give two decimal places.)",
+      "answer": 0.67,
+      "solution": "$P = \\dfrac{1}{f\\ (\\text{in m})} = \\dfrac{1}{1.5} = \\mathbf{0.67\\ D}$",
+      "tolerance": 0.01,
+      "accept": [
+        "2/3"
+      ]
     },
     {
       "id": "tn12p-opt-13",

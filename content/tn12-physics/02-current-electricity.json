@@ -87,20 +87,21 @@
       "solution": "At the balance point **no current flows through the cell being measured**, so there is no $Ir$ drop across its internal resistance and the potentiometer reads the true **emf** rather than the terminal voltage.\n\nA voltmeter, however high its resistance, always draws some current and therefore always reads slightly low.\n\nA potentiometer is effectively an **ideal voltmeter of infinite resistance**, which is the whole point of a null method."
     },
     {
-      "id": "tn12p-cur-06",
+      "id": "tn12p-cur-25q4",
       "chapter": "Current Electricity",
       "topic": "Heating effect",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "Joule's law of heating states that the heat produced is:",
+      "q": "In Joule’s heating law, when $R$ and $t$ are constant, if the $H$ is taken along the $y$-axis and $I^2$ along the $x$-axis, the graph is :",
       "options": [
-        "$I^{2}Rt$",
-        "$IRt$",
-        "$IR^{2}t$",
-        "$I^{2}R/t$"
+        "circle",
+        "straight line",
+        "ellipse",
+        "parabola"
       ],
-      "answer": 0,
-      "solution": "$H = \\mathbf{I^{2}Rt}$ joules.\n\nThe equivalent forms $VIt$ and $\\dfrac{V^{2}t}{R}$ follow from Ohm's law, but care is needed over which quantity is held constant: in **series** the current is common, so $I^{2}R$ is the useful form and the largest resistance gets hottest; in **parallel** the voltage is common, so $V^{2}/R$ applies and the smallest resistance gets hottest."
+      "answer": 1,
+      "solution": "$H = I^2Rt$. With $R$ and $t$ fixed, $H$ is directly proportional to $I^2$, so $H$ against $I^2$ is a **straight line** through the origin with slope $Rt$.\n\n(Against $I$ itself it would be a parabola.)"
     },
     {
       "id": "tn12p-cur-07",
@@ -135,20 +136,21 @@
       "solution": "Below the critical temperature $T_c$, resistance falls to **exactly zero** — not merely very small. A current started in a superconducting loop persists indefinitely with no source driving it.\n\nMercury was the first, found by Kamerlingh Onnes in 1911 at $4.2\\ \\text{K}$.\n\nA superconductor also expels magnetic flux from its interior, the **Meissner effect**, which is what makes magnetic levitation possible and which distinguishes a superconductor from a merely perfect conductor."
     },
     {
-      "id": "tn12p-cur-09",
+      "id": "tn12p-cur-23q5",
       "chapter": "Current Electricity",
-      "topic": "Resistivity",
+      "topic": "Colour code",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "The resistivity of a conductor depends on:",
+      "q": "A carbon resistor of $(47 \\pm 4.7)\\ \\mathrm{k\\Omega}$ is to be marked with rings of different colours for its identification. The colour code sequence will be :",
       "options": [
-        "Its length",
-        "Its area of cross-section",
-        "The material and the temperature",
-        "Its shape"
+        "Violet - Yellow - Orange - Silver",
+        "Yellow - Green - Violet - Gold",
+        "Green - Orange - Violet - Gold",
+        "Yellow - Violet - Orange - Silver"
       ],
-      "answer": 2,
-      "solution": "Resistivity is a property of the **material and its temperature** only. It does not depend on the dimensions of the specimen.\n\nThat is exactly the distinction from **resistance**, which does: $R = \\rho\\dfrac{l}{A}$.\n\nStretching a wire changes its resistance but leaves its resistivity untouched — which is why resistivity is the quantity tabulated for materials."
+      "answer": 3,
+      "solution": "$47\\ \\mathrm{k\\Omega} = 47 \\times 10^{3}\\ \\Omega$.\n\nFirst digit 4: **yellow**. Second digit 7: **violet**. Multiplier $10^3$: **orange**. Tolerance $\\dfrac{4.7}{47} = 10\\%$: **silver**."
     },
     {
       "id": "tn12p-cur-10",
@@ -166,35 +168,28 @@
       "solution": "$R_{eq} = \\dfrac{R_1R_2}{R_1+R_2} = \\dfrac{3 \\times 6}{3+6} = \\dfrac{18}{9} = \\mathbf{2\\ \\Omega}$.\n\nAs always in parallel, the result is smaller than either resistor."
     },
     {
-      "id": "tn12p-cur-11",
+      "id": "tn12p-cur-25q24",
       "chapter": "Current Electricity",
-      "topic": "Cells",
-      "type": "numeric",
-      "marks": 3,
-      "q": "A cell of emf $2\\ \\text{V}$ and internal resistance $0.5\\ \\Omega$ is connected to a $1.5\\ \\Omega$ resistor. Find the current, in amperes.",
-      "answer": 1,
-      "tolerance": 0.02,
-      "accept": [
-        "1",
-        "1 A",
-        "1.0"
-      ],
-      "solution": "$I = \\dfrac{\\varepsilon}{R + r} = \\dfrac{2}{1.5 + 0.5} = \\dfrac{2}{2} = \\mathbf{1\\ \\text{A}}$.\n\nThe terminal voltage is then $V = \\varepsilon - Ir = 2 - 0.5 = 1.5\\ \\text{V}$, which matches $IR$ as it must."
-    },
-    {
-      "id": "tn12p-cur-12",
-      "chapter": "Current Electricity",
-      "topic": "Heating effect",
+      "topic": "Internal resistance",
+      "source": "TN HSE Mar 2025",
       "type": "numeric",
       "marks": 2,
-      "q": "A $5\\ \\Omega$ resistor carries $2\\ \\text{A}$ for $10\\ \\text{s}$. Find the heat produced, in joules.",
-      "answer": 200,
-      "tolerance": 2,
-      "accept": [
-        "200",
-        "200 J"
-      ],
-      "solution": "$H = I^{2}Rt = (2)^{2}(5)(10) = 4 \\times 50 = \\mathbf{200\\ \\text{J}}$."
+      "q": "A cell supplies a current of 0.9 A through a $2\\ \\Omega$ resistor and a current of 0.3 A through a $7\\ \\Omega$ resistor. Calculate the internal resistance of the cell, in ohms.",
+      "answer": 0.5,
+      "solution": "$\\varepsilon = I(R + r)$ in both cases:\n\n$0.9(2 + r) = 0.3(7 + r)$\n\n$1.8 + 0.9r = 2.1 + 0.3r$, so $0.6r = 0.3$ and $r = \\mathbf{0.5\\ \\Omega}$.\n\n(The emf is then $0.9 \\times 2.5 = 2.25$ V.)",
+      "tolerance": 0.01
+    },
+    {
+      "id": "tn12p-cur-24q3",
+      "chapter": "Current Electricity",
+      "topic": "Heating effect",
+      "source": "TN HSE Mar 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A toaster operating at 240 V has resistance of $120\\ \\Omega$. Its power, in watts, is :",
+      "answer": 480,
+      "solution": "$P = \\dfrac{V^2}{R} = \\dfrac{240^2}{120} = \\dfrac{57600}{120} = \\mathbf{480\\ W}$",
+      "tolerance": 0
     },
     {
       "id": "tn12p-cur-13",
@@ -212,18 +207,16 @@
       "solution": "$\\dfrac{R}{S} = \\dfrac{l}{100 - l} = \\dfrac{40}{60} = \\dfrac{2}{3}$\n\n$R = \\dfrac{2}{3} \\times 6 = \\mathbf{4\\ \\Omega}$."
     },
     {
-      "id": "tn12p-cur-14",
+      "id": "tn12p-cur-24q26",
       "chapter": "Current Electricity",
       "topic": "Drift velocity",
+      "source": "TN HSE Mar 2024",
       "type": "numeric",
-      "marks": 2,
-      "q": "The drift velocity of electrons in a metal is of the order of $10^{-n}\\ \\mathrm{m\\,s^{-1}}$. What is the value of $n$?",
-      "answer": 4,
-      "tolerance": 0.5,
-      "accept": [
-        "4"
-      ],
-      "solution": "Drift velocity is of order $10^{-4}\\ \\mathrm{m\\,s^{-1}}$, so $n = \\mathbf{4}$.\n\nAt that speed an electron would take nearly three hours to travel a metre — yet a lamp lights instantly, because the **electric field** is established through the circuit at close to the speed of light and the conductor is already full of electrons everywhere."
+      "marks": 3,
+      "q": "A copper wire of cross-sectional area $0.5\\ \\mathrm{mm^2}$ carries a current of 0.2 A. If the free electron density of copper wire is $8.4\\times10^{28}\\ \\mathrm{m^{-3}}$, then compute the drift velocity of free electron, in units of $10^{-5}\\ \\mathrm{m\\,s^{-1}}$.",
+      "answer": 2.98,
+      "solution": "$I = neAv_d$, so\n\n$v_d = \\dfrac{I}{neA} = \\dfrac{0.2}{8.4\\times10^{28} \\times 1.6\\times10^{-19} \\times 0.5\\times10^{-6}} = \\dfrac{0.2}{6720} = 2.98\\times10^{-5}\\ \\mathrm{m\\,s^{-1}}$\n\nAnswer: $\\mathbf{2.98}$. Electrons drift at a fraction of a millimetre per second, yet the signal travels at nearly the speed of light.",
+      "tolerance": 0.03
     },
     {
       "id": "tn12p-cur-15",

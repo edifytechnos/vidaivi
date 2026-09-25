@@ -55,20 +55,21 @@
       "solution": "A **full-wave** rectifier uses **both** halves of each input cycle, inverting the negative half rather than discarding it. So there are **two** output pulses per input cycle:\n\n$f_{\\text{ripple}} = 2 \\times 50 = \\mathbf{100\\ \\text{Hz}}$\n\nA **half-wave** rectifier discards one half-cycle, so its ripple is $50\\ \\text{Hz}$.\n\nThe higher ripple frequency is an advantage: it is easier to smooth with a given filter capacitor, which is one reason full-wave rectification is preferred."
     },
     {
-      "id": "tn12p-sem-04",
+      "id": "tn12p-sem-23q11",
       "chapter": "Semiconductor Electronics",
       "topic": "Zener diode",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "A Zener diode used as a voltage regulator is operated in:",
+      "q": "The Zener diode is primarily used as :",
       "options": [
-        "Forward bias",
-        "Reverse bias beyond the breakdown voltage",
-        "Zero bias",
-        "Forward bias at low current"
+        "Oscillator",
+        "Rectifier",
+        "Voltage regulator",
+        "Amplifier"
       ],
-      "answer": 1,
-      "solution": "A Zener diode is operated in **reverse bias beyond its breakdown voltage**.\n\nIn that region the voltage across it stays **almost constant** over a wide range of current, which is exactly what a regulator needs — the current through it adjusts to absorb changes in supply or load while the output voltage holds steady.\n\nThe breakdown is **non-destructive** provided the current is limited by a series resistor. That is the key design point: the diode is not being abused, it is being used in the region it was made for."
+      "answer": 2,
+      "solution": "In reverse breakdown the voltage across a Zener diode stays almost constant over a wide range of current, so it holds a load's voltage steady: a **voltage regulator**."
     },
     {
       "id": "tn12p-sem-05",
@@ -103,36 +104,38 @@
       "solution": "**NAND** is universal, and so is NOR: any logic function whatever can be built from NAND gates alone.\n\nA NAND with both inputs tied together gives NOT; NAND followed by NOT gives AND; and inverting both inputs of a NAND gives OR by De Morgan's theorem.\n\nThis matters industrially — a manufacturer can fabricate one gate type and build everything from it, which is simpler and cheaper than making several."
     },
     {
-      "id": "tn12p-sem-07",
+      "id": "tn12p-sem-25q14",
       "chapter": "Semiconductor Electronics",
-      "topic": "Semiconductors",
+      "topic": "Oscillators",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "With rising temperature, the conductivity of an intrinsic semiconductor:",
+      "q": "To obtain sustained oscillation in an oscillator,",
       "options": [
-        "Decreases",
-        "Increases",
-        "Stays constant",
-        "Becomes zero"
+        "Feedback factor must be unity",
+        "Phase shift must be 0 or $2\\pi$",
+        "Feedback should be positive",
+        "All the above"
       ],
-      "answer": 1,
-      "solution": "Heating promotes many more electrons across the band gap into the conduction band, each leaving a hole behind, so the **number of charge carriers rises sharply**.\n\nThat effect far outweighs the increased lattice scattering, so **conductivity increases** and resistivity falls — a **negative** temperature coefficient.\n\nA metal behaves oppositely, because its carrier count is already fixed and only the scattering changes. This is the clearest single distinction between the two."
+      "answer": 3,
+      "solution": "These are the Barkhausen conditions: the loop gain $A\\beta$ must be 1, and the total phase shift round the loop must be $0$ or $2\\pi$, which is **positive** feedback. **All the above**."
     },
     {
-      "id": "tn12p-sem-08",
+      "id": "tn12p-sem-24q15",
       "chapter": "Semiconductor Electronics",
       "topic": "Energy bands",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "The forbidden energy gap in a typical insulator is of the order of:",
+      "q": "The value of forbidden energy gap for Si at room temperature is :",
       "options": [
-        "Zero",
-        "$1\\ \\text{eV}$",
-        "$6\\ \\text{eV}$ or more",
-        "$0.1\\ \\text{eV}$"
+        "1.1 V",
+        "0.7 eV",
+        "1.1 eV",
+        "0.7 V"
       ],
       "answer": 2,
-      "solution": "An **insulator** has a large forbidden gap, about $\\mathbf{6\\ \\text{eV}}$ or more — diamond's is around $5.5\\ \\text{eV}$ — so thermal energy at room temperature (about $0.026\\ \\text{eV}$) cannot lift electrons across it.\n\nA **semiconductor** has roughly $1\\ \\text{eV}$: silicon $1.1$, germanium $0.7$. Small enough that some electrons cross at room temperature, which is why semiconductors conduct a little and improve on heating.\n\nA **conductor** has **overlapping** bands and no gap at all."
+      "solution": "Silicon's band gap is about **1.1 eV**. An energy gap is measured in electronvolts, not volts, which rules out two options at once.\n\n0.7 V is the barrier potential of a silicon p-n junction, a different quantity. (The 2023 paper asked this too.)"
     },
     {
       "id": "tn12p-sem-09",
@@ -180,18 +183,16 @@
       "solution": "$I_C = \\beta I_B = 100 \\times 20\\times10^{-6} = 2\\times10^{-3}\\ \\text{A} = \\mathbf{2\\ \\text{mA}}$\n\nThe emitter current is then $I_E = I_B + I_C = 2.02\\ \\text{mA}$."
     },
     {
-      "id": "tn12p-sem-12",
+      "id": "tn12p-sem-24q33",
       "chapter": "Semiconductor Electronics",
       "topic": "Energy bands",
+      "source": "TN HSE Mar 2024",
       "type": "numeric",
       "marks": 3,
-      "q": "A semiconductor has a band gap of $1.24\\ \\text{eV}$. Find the longest wavelength of light it can absorb, in nanometres. Use $hc = 1240\\ \\text{eV nm}$.",
-      "answer": 1000,
-      "tolerance": 10,
-      "accept": [
-        "1000"
-      ],
-      "solution": "To lift an electron across the gap, the photon must supply at least $E_g$:\n\n$\\lambda_{\\max} = \\dfrac{hc}{E_g} = \\dfrac{1240}{1.24} = \\mathbf{1000\\ \\text{nm}}$\n\nLight of **longer** wavelength has too little energy per photon and passes through. This is why a photodiode or solar cell has a cut-off wavelength set by its band gap."
+      "q": "Determine the wavelength of the light emitted from LED, which is made up of GaAsP semiconductor, whose forbidden energy gap is 1.875 eV. Give the wavelength in nanometres. (Given $h = 6.6\\times10^{-34}$ Js)",
+      "answer": 660,
+      "solution": "$\\lambda = \\dfrac{hc}{E_g} = \\dfrac{6.6\\times10^{-34} \\times 3\\times10^{8}}{1.875 \\times 1.6\\times10^{-19}} = \\dfrac{1.98\\times10^{-25}}{3.0\\times10^{-19}} = 6.6\\times10^{-7}\\ \\mathrm{m}$\n\n$\\lambda = \\mathbf{660\\ nm}$, which is **red** light — the colour the paper also asks for.",
+      "tolerance": 3
     },
     {
       "id": "tn12p-sem-13",

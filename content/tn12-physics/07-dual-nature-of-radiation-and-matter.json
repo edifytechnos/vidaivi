@@ -165,18 +165,19 @@
       "solution": "$K_{\\max} = h\\nu - \\phi = 6 - 2.5 = \\mathbf{3.5\\ \\text{eV}}$.\n\nThe stopping potential needed to halt these electrons is therefore $3.5\\ \\text{V}$."
     },
     {
-      "id": "tn12p-dnr-11",
+      "id": "tn12p-dnr-24q12",
       "chapter": "Dual Nature of Radiation and Matter",
       "topic": "Work function",
+      "source": "TN HSE Mar 2024",
       "type": "numeric",
       "marks": 3,
-      "q": "A metal has work function $2.0\\ \\text{eV}$. Find its threshold wavelength, in nanometres. Use $hc = 1240\\ \\text{eV nm}$.",
-      "answer": 620,
-      "tolerance": 5,
+      "q": "The threshold wavelength for a metal surface whose photoelectric work function is 3.313 eV, in nanometres :",
+      "answer": 375,
+      "solution": "$\\lambda_0 = \\dfrac{hc}{\\phi_0} = \\dfrac{6.626\\times10^{-34} \\times 3\\times10^{8}}{3.313 \\times 1.6\\times10^{-19}} = \\dfrac{1.988\\times10^{-25}}{5.301\\times10^{-19}} = 3.75\\times10^{-7}\\ \\mathrm{m}$\n\n$\\lambda_0 = \\mathbf{375\\ nm}$ (3750 Å), in the near ultraviolet.",
+      "tolerance": 2,
       "accept": [
-        "620"
-      ],
-      "solution": "At threshold the photon energy exactly equals the work function:\n\n$\\dfrac{hc}{\\lambda_0} = \\phi$\n\n$\\lambda_0 = \\dfrac{hc}{\\phi} = \\dfrac{1240}{2.0} = \\mathbf{620\\ \\text{nm}}$\n\nThat is orange light, so this metal responds to most of the visible spectrum. Light of **longer** wavelength than $\\lambda_0$ causes no emission."
+        "3750 Å"
+      ]
     },
     {
       "id": "tn12p-dnr-12",
@@ -194,32 +195,27 @@
       "solution": "$\\sqrt{100} = 10$\n\n$\\lambda = \\dfrac{12.27}{10} = \\mathbf{1.23\\ \\text{Å}}$\n\nComparable to atomic spacing in a crystal, which is why such electrons are diffracted by one."
     },
     {
-      "id": "tn12p-dnr-13",
+      "id": "tn12p-dnr-24q29",
       "chapter": "Dual Nature of Radiation and Matter",
       "topic": "Photon",
+      "source": "TN HSE Mar 2024",
       "type": "numeric",
-      "marks": 2,
-      "q": "Find the energy, in electronvolts, of a photon of wavelength $400\\ \\text{nm}$. Use $hc = 1240\\ \\text{eV nm}$.",
-      "answer": 3.1,
-      "tolerance": 0.05,
-      "accept": [
-        "3.1"
-      ],
-      "solution": "$E = \\dfrac{hc}{\\lambda} = \\dfrac{1240}{400} = \\mathbf{3.1\\ \\text{eV}}$.\n\nThis is violet light, at the high-energy end of the visible spectrum."
+      "marks": 3,
+      "q": "How many photons per second emanate from a 50 mW laser of 640 nm ? Give the answer in units of $10^{17}$.",
+      "answer": 1.61,
+      "solution": "Energy of one photon: $E = \\dfrac{hc}{\\lambda} = \\dfrac{6.626\\times10^{-34} \\times 3\\times10^{8}}{640\\times10^{-9}} = 3.11\\times10^{-19}\\ \\mathrm{J}$\n\n$N = \\dfrac{P}{E} = \\dfrac{0.05}{3.11\\times10^{-19}} = 1.61\\times10^{17}$ photons per second. Answer: $\\mathbf{1.61}$.",
+      "tolerance": 0.03
     },
     {
-      "id": "tn12p-dnr-14",
+      "id": "tn12p-dnr-25q26",
       "chapter": "Dual Nature of Radiation and Matter",
       "topic": "Photoelectric effect",
+      "source": "TN HSE Mar 2025",
       "type": "numeric",
-      "marks": 2,
-      "q": "The stopping potential for a certain metal is $2\\ \\text{V}$. Find the maximum kinetic energy of the photoelectrons, in electronvolts.",
-      "answer": 2,
-      "tolerance": 0.05,
-      "accept": [
-        "2"
-      ],
-      "solution": "$K_{\\max} = eV_0 = e \\times 2\\ \\text{V} = \\mathbf{2\\ \\text{eV}}$.\n\nThe electronvolt is defined so that this conversion is immediate: an electron accelerated through one volt gains one electronvolt."
+      "marks": 3,
+      "q": "A radiation of wavelength 300 nm is incident on calcium surface. Will photoelectrons be observed ? Justify your answer. (Work function of calcium = 3.20 eV) Answer Yes or No.",
+      "answer": "Yes",
+      "solution": "$E = \\dfrac{hc}{\\lambda} = \\dfrac{6.626\\times10^{-34} \\times 3\\times10^{8}}{300\\times10^{-9} \\times 1.6\\times10^{-19}} = 4.14\\ \\mathrm{eV}$\n\n$4.14\\ \\mathrm{eV} > 3.20\\ \\mathrm{eV}$, so **Yes**: photoelectrons are emitted, with a maximum kinetic energy of about $0.94$ eV."
     },
     {
       "id": "tn12p-dnr-15",

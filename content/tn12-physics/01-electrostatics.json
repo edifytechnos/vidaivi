@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "tn12p-els-01",
+      "id": "tn12p-els-24q10",
       "chapter": "Electrostatics",
       "topic": "Coulomb's law",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "Two point charges $+q$ and $-q$ are separated by distance $r$. The force between them is:",
+      "q": "Two identical conducting balls having positive charges $q_1$ and $q_2$ are separated by a center to center distance ‘r’. If they are made to touch each other and then separated to the same distance, the force between them will be :",
       "options": [
-        "Repulsive and $\\propto r$",
-        "Attractive and $\\propto 1/r^{2}$",
-        "Zero",
-        "Attractive and $\\propto 1/r$"
+        "more than before",
+        "less than before",
+        "zero",
+        "same as before"
       ],
-      "answer": 1,
-      "solution": "Unlike charges **attract**, and Coulomb's law gives\n\n$F = \\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q_1q_2}{r^{2}}$\n\nso the force varies as $\\mathbf{1/r^{2}}$.\n\nThe inverse-square form is shared with gravitation, but Coulomb's force can be either attractive or repulsive whereas gravity is always attractive."
+      "answer": 0,
+      "solution": "On touching, the charge shares equally: each ball carries $\\dfrac{q_1+q_2}{2}$.\n\n$F' \\propto \\left(\\dfrac{q_1+q_2}{2}\\right)^2$ against $F \\propto q_1q_2$, and\n\n$\\left(\\dfrac{q_1+q_2}{2}\\right)^2 - q_1q_2 = \\left(\\dfrac{q_1-q_2}{2}\\right)^2 \\ge 0$\n\nSo the force is **more than before**, and equal only in the special case $q_1 = q_2$."
     },
     {
       "id": "tn12p-els-02",
@@ -87,20 +88,21 @@
       "solution": "The electrostatic field is **conservative**, so the work done round any closed path is **zero**.\n\nEquivalently $\\oint \\vec{E}\\cdot d\\vec{l} = 0$, which is what allows a potential to be defined at all: if the work depended on the route, no single number could be assigned to a point."
     },
     {
-      "id": "tn12p-els-06",
+      "id": "tn12p-els-25q7",
       "chapter": "Electrostatics",
       "topic": "Electric dipole",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "An electric dipole placed in a **uniform** electric field experiences:",
+      "q": "An electric dipole is placed at an alignment angle of $30^\\circ$ with an electric field of $2\\times10^{5}\\ \\mathrm{N\\,C^{-1}}$. It experiences a torque equal to 8 Nm. The charge on the dipole if the dipole length is 1 cm is :",
       "options": [
-        "A net force but no torque",
-        "A torque but no net force",
-        "Both a force and a torque",
-        "Neither"
+        "5 mC",
+        "4 mC",
+        "7 mC",
+        "8 mC"
       ],
-      "answer": 1,
-      "solution": "In a uniform field the forces on $+q$ and $-q$ are equal and opposite, so the **net force is zero** and the dipole does not translate.\n\nBut they act at different points, forming a **couple**, so there is a torque $\\vec{\\tau} = \\vec{p}\\times\\vec{E}$ of magnitude $pE\\sin\\theta$. The dipole rotates to align with the field.\n\nIn a **non-uniform** field the two forces differ in magnitude, so there is a net force as well — which is why a charged rod attracts neutral paper."
+      "answer": 3,
+      "solution": "$\\tau = pE\\sin\\theta = (q \\cdot 2a)E\\sin\\theta$\n\n$q = \\dfrac{\\tau}{(2a)E\\sin\\theta} = \\dfrac{8}{0.01 \\times 2\\times10^{5} \\times 0.5} = \\dfrac{8}{1000} = 8\\times10^{-3}\\ \\mathrm{C} = \\mathbf{8\\ mC}$"
     },
     {
       "id": "tn12p-els-07",
@@ -135,20 +137,21 @@
       "solution": "Excess charge resides **entirely on the outer surface**.\n\nThe charges repel one another and move as far apart as they can, which means the surface; and once there, the field inside the conductor is zero, so there is no force to move them further.\n\nThe **distribution** over that surface is not uniform unless the conductor is a sphere. Charge density is highest where the curvature is greatest, which is why the field is strongest at sharp points — the basis of the lightning conductor."
     },
     {
-      "id": "tn12p-els-09",
+      "id": "tn12p-els-23q8",
       "chapter": "Electrostatics",
       "topic": "Capacitors",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "A capacitor stores $U$ joules at potential $V$. If the potential is doubled, the stored energy becomes:",
+      "q": "A parallel plate capacitor stores a charge $Q$ at a voltage $V$. Suppose the area of the parallel plate capacitor and distance between the plates are each doubled then which is the quantity that will change ?",
       "options": [
-        "$2U$",
-        "$4U$",
-        "$U/2$",
-        "$U$"
+        "Voltage",
+        "Capacitance",
+        "Energy density",
+        "Charge"
       ],
-      "answer": 1,
-      "solution": "$U = \\tfrac{1}{2}CV^{2}$, so $U \\propto V^{2}$ at fixed capacitance.\n\nDoubling $V$ gives $2^{2} = \\mathbf{4U}$."
+      "answer": 2,
+      "solution": "$C = \\dfrac{\\varepsilon_0 A}{d}$: doubling both $A$ and $d$ leaves $C$ unchanged, so $Q$ and $V$ are unchanged too.\n\nBut the field between the plates is $E = \\dfrac{V}{d}$, which halves, and the **energy density** $u = \\tfrac{1}{2}\\varepsilon_0E^2$ falls to a quarter. The same energy is now spread through twice the volume."
     },
     {
       "id": "tn12p-els-10",
@@ -196,19 +199,20 @@
       "solution": "**Series combination** of three equal capacitors:\n\n$C_s = \\dfrac{6}{3} = 2\\ \\mu\\text{F}$\n\n**Parallel** with $6\\ \\mu\\text{F}$ — in parallel capacitances simply add:\n\n$C = 2 + 6 = \\mathbf{8\\ \\mu\\text{F}}$"
     },
     {
-      "id": "tn12p-els-13",
+      "id": "tn12p-els-25q16",
       "chapter": "Electrostatics",
-      "topic": "Electric potential",
+      "topic": "Capacitors",
+      "source": "TN HSE Mar 2025",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the work done, in joules, in moving a charge of $2\\ \\mu\\text{C}$ through a potential difference of $500\\ \\text{V}$. Give your answer in the form $a\\times10^{-3}$ and state $a$.",
-      "answer": 1,
-      "tolerance": 0.02,
+      "q": "A parallel plate capacitor has two square plates of side 5 cm and separated by a distance of 1 mm. Calculate the capacitance of this capacitor, in picofarads. ($\\varepsilon_0 = 8.85\\times10^{-12}\\ \\mathrm{F\\,m^{-1}}$)",
+      "answer": 22.1,
+      "solution": "$A = (0.05)^2 = 2.5\\times10^{-3}\\ \\mathrm{m^2}$, $d = 10^{-3}\\ \\mathrm{m}$.\n\n$C = \\dfrac{\\varepsilon_0 A}{d} = \\dfrac{8.85\\times10^{-12} \\times 2.5\\times10^{-3}}{10^{-3}} = 22.1\\times10^{-12}\\ \\mathrm{F} = \\mathbf{22.1\\ pF}$",
+      "tolerance": 0.2,
       "accept": [
-        "1",
-        "1e-3"
-      ],
-      "solution": "$W = qV = (2\\times10^{-6})(500) = 1\\times10^{-3}\\ \\text{J}$\n\nSo $a = \\mathbf{1}$."
+        "22",
+        "22.13"
+      ]
     },
     {
       "id": "tn12p-els-14",

@@ -7,20 +7,21 @@
   "access": "login",
   "questions": [
     {
-      "id": "tn12p-emw-01",
+      "id": "tn12p-emw-23q9",
       "chapter": "Electromagnetic Waves",
       "topic": "Nature of EM waves",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "In an electromagnetic wave, the electric and magnetic fields are:",
+      "q": "An electromagnetic wave is propagating in a medium with velocity $\\vec{v} = v\\hat{i}$. The instantaneous oscillating electric field of this electromagnetic wave is along +Y axis, then the direction of oscillating magnetic field of the electromagnetic wave will be along :",
       "options": [
-        "Parallel to each other",
-        "Mutually perpendicular and both perpendicular to the direction of propagation",
-        "At $45^\\circ$",
-        "In the direction of propagation"
+        "+Z direction",
+        "−Y direction",
+        "−Z direction",
+        "−X direction"
       ],
-      "answer": 1,
-      "solution": "$\\vec{E}$, $\\vec{B}$ and the direction of propagation form a **mutually perpendicular right-handed set**, with propagation along $\\vec{E}\\times\\vec{B}$.\n\nSo an electromagnetic wave is **transverse**, which is why light can be polarised — a longitudinal wave cannot be.\n\nThe two fields are also **in phase**, reaching their maxima and zeros together."
+      "answer": 0,
+      "solution": "The direction of travel is the direction of $\\vec{E} \\times \\vec{B}$.\n\n$\\hat{j} \\times \\hat{k} = \\hat{i}$, so with $\\vec{E}$ along $+Y$ and travel along $+X$, $\\vec{B}$ must be along **+Z**."
     },
     {
       "id": "tn12p-emw-02",
@@ -55,20 +56,21 @@
       "solution": "**Gamma rays** have the shortest wavelength and the highest frequency and energy.\n\nThe spectrum in order of increasing wavelength: gamma rays, X-rays, ultraviolet, visible, infrared, microwaves, radio waves.\n\nGamma rays originate in **nuclear** transitions, X-rays in transitions of inner **electrons** — the distinction is the source, not merely the wavelength, and the two ranges overlap."
     },
     {
-      "id": "tn12p-emw-04",
+      "id": "tn12p-emw-25q5",
       "chapter": "Electromagnetic Waves",
       "topic": "Speed of light",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "The speed of an electromagnetic wave in free space is given by:",
+      "q": "The dimension of $\\dfrac{1}{\\mu_0\\varepsilon_0}$ is :",
       "options": [
-        "$\\sqrt{\\mu_0\\varepsilon_0}$",
-        "$\\dfrac{1}{\\sqrt{\\mu_0\\varepsilon_0}}$",
-        "$\\dfrac{\\mu_0}{\\varepsilon_0}$",
-        "$\\mu_0\\varepsilon_0$"
+        "$[\\mathrm{L^{-1}T}]$",
+        "$[\\mathrm{LT^{-1}}]$",
+        "$[\\mathrm{L^{-2}T^{2}}]$",
+        "$[\\mathrm{L^{2}T^{-2}}]$"
       ],
-      "answer": 1,
-      "solution": "$c = \\mathbf{\\dfrac{1}{\\sqrt{\\mu_0\\varepsilon_0}}} \\approx 3\\times10^{8}\\ \\mathrm{m\\,s^{-1}}$.\n\nThis result is one of the great moments in physics: Maxwell computed it from two constants measured in purely **electrical and magnetic** experiments, and it came out equal to the measured speed of **light**. That agreement is what established light as an electromagnetic wave.\n\nIn a medium, $v = \\dfrac{1}{\\sqrt{\\mu\\varepsilon}} = \\dfrac{c}{n}$."
+      "answer": 3,
+      "solution": "$c = \\dfrac{1}{\\sqrt{\\mu_0\\varepsilon_0}}$, so $\\dfrac{1}{\\mu_0\\varepsilon_0} = c^2$.\n\nThe dimension of a speed squared is $\\mathbf{[L^2T^{-2}]}$."
     },
     {
       "id": "tn12p-emw-05",
@@ -119,20 +121,21 @@
       "solution": "Microwaves travel in straight lines, penetrate the atmosphere well, and are **strongly reflected by metallic objects** such as aircraft and ships.\n\nTheir short wavelength also allows a narrow beam from a reasonably sized aerial, which gives good directional resolution — a longer wave would spread too much to locate anything precisely.\n\nIn a microwave oven a quite different property is used: the frequency is chosen to be absorbed by water molecules."
     },
     {
-      "id": "tn12p-emw-08",
+      "id": "tn12p-emw-24q2",
       "chapter": "Electromagnetic Waves",
       "topic": "Nature of EM waves",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "The ratio $E_0/B_0$ of the amplitudes in an electromagnetic wave in free space equals:",
+      "q": "If the amplitude of the magnetic field is $3\\times10^{-6}\\ \\mathrm{T}$, then the amplitude of the electric field for a electromagnetic wave is :",
       "options": [
-        "$1$",
-        "$c$",
-        "$1/c$",
-        "$c^{2}$"
+        "$600\\ \\mathrm{V\\,m^{-1}}$",
+        "$100\\ \\mathrm{V\\,m^{-1}}$",
+        "$900\\ \\mathrm{V\\,m^{-1}}$",
+        "$300\\ \\mathrm{V\\,m^{-1}}$"
       ],
-      "answer": 1,
-      "solution": "$\\dfrac{E_0}{B_0} = \\mathbf{c}$, so $E_0 = cB_0$.\n\nBecause $c$ is large, the **numerical** value of $B_0$ is very small compared with $E_0$ — which misleads people into thinking the magnetic part is unimportant.\n\nIt is not: the **energy densities** of the two fields are exactly **equal**, $\\tfrac{1}{2}\\varepsilon_0E^{2} = \\dfrac{B^{2}}{2\\mu_0}$. The wave carries half its energy in each."
+      "answer": 2,
+      "solution": "$E_0 = cB_0 = 3\\times10^{8} \\times 3\\times10^{-6} = \\mathbf{900\\ V\\,m^{-1}}$\n\n(The 2023 paper asked the same question.)"
     },
     {
       "id": "tn12p-emw-09",
@@ -193,20 +196,16 @@
       "solution": "$I_d = \\varepsilon_0\\dfrac{d\\Phi_E}{dt} = (8.85\\times10^{-12})(4\\times10^{5})$\n\n$= 35.4\\times10^{-7} = 3.54\\times10^{-6}\\ \\text{A}$\n\n$= \\mathbf{3.54\\ \\mu\\text{A}}$"
     },
     {
-      "id": "tn12p-emw-13",
+      "id": "tn12p-emw-23q38",
       "chapter": "Electromagnetic Waves",
       "topic": "Speed of light",
+      "source": "TN HSE Mar 2023",
       "type": "numeric",
       "marks": 2,
-      "q": "Light takes how many minutes, approximately, to travel from the Sun to the Earth, a distance of $1.5\\times10^{11}\\ \\text{m}$? Take $c = 3\\times10^{8}\\ \\mathrm{m\\,s^{-1}}$.",
-      "answer": 8.33,
-      "tolerance": 0.2,
-      "accept": [
-        "8.33",
-        "8.3",
-        "8"
-      ],
-      "solution": "$t = \\dfrac{d}{c} = \\dfrac{1.5\\times10^{11}}{3\\times10^{8}} = 500\\ \\text{s}$\n\n$= \\dfrac{500}{60} \\approx \\mathbf{8.33\\ \\text{minutes}}$.\n\nSo the Sun you see is the Sun as it was eight and a third minutes ago."
+      "q": "The relative magnetic permeability of the medium is 2.5 and the relative electrical permittivity of the medium is 2.25. Compute the refractive index of the medium. (Give two decimal places.)",
+      "answer": 2.37,
+      "solution": "$n = \\dfrac{c}{v} = \\sqrt{\\mu_r\\varepsilon_r} = \\sqrt{2.5 \\times 2.25} = \\sqrt{5.625} = \\mathbf{2.37}$",
+      "tolerance": 0.01
     },
     {
       "id": "tn12p-emw-14",

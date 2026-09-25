@@ -103,52 +103,55 @@
       "solution": "**Surface plasmon resonance**: the conduction electrons in the nanoparticle oscillate collectively at a frequency that depends on the particle's **size and shape**, absorbing light strongly at that frequency.\n\nFor gold particles of a few tens of nanometres this absorption falls in the green, so the transmitted light appears **red**.\n\nThe effect was used long before it was understood — medieval stained glass gets its ruby colour from exactly this, and the Lycurgus Cup in the British Museum changes colour with the lighting for the same reason."
     },
     {
-      "id": "tn12p-rec-07",
+      "id": "tn12p-rec-23q15",
       "chapter": "Recent Developments in Physics",
       "topic": "Robotics",
+      "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
-      "q": "Which is an advantage of using robots in industry?",
+      "q": "The alloys used for muscle wires in Robots are :",
       "options": [
-        "They never need maintenance",
-        "They can work continuously in hazardous environments with consistent precision",
-        "They are always cheaper than humans",
-        "They require no programming"
+        "Gold silver alloys",
+        "Shape memory alloys",
+        "Two dimensional alloys",
+        "Gold copper alloys"
       ],
       "answer": 1,
-      "solution": "Robots work **continuously without fatigue**, with **consistent precision**, and in environments hazardous to people — high radiation, extreme temperature, toxic atmospheres, deep sea, outer space.\n\nThey are not maintenance-free, are expensive to install and program, and lack judgement outside what they were designed for.\n\nThe honest picture is that robots excel at tasks that are **repetitive, precise or dangerous**, and remain poor at those needing adaptability or judgement."
+      "solution": "Muscle wires are **shape memory alloys** such as nitinol (nickel–titanium). Heated by a current they return to a remembered shape and contract, working like a muscle."
     },
     {
-      "id": "tn12p-rec-08",
+      "id": "tn12p-rec-24q14",
       "chapter": "Recent Developments in Physics",
-      "topic": "Nanoscience",
+      "topic": "Gravitational waves",
+      "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
-      "q": "The approach to nanofabrication that builds structures atom by atom is called:",
+      "q": "The gravitational waves were theoretically proposed by :",
       "options": [
-        "Top-down",
-        "Bottom-up",
-        "Sideways",
-        "Lateral"
+        "Albert Einstein",
+        "Conrod Rontgen",
+        "Edward Purcell",
+        "Marie Curie"
       ],
-      "answer": 1,
-      "solution": "The **bottom-up** approach assembles nanostructures from atoms and molecules, by self-assembly or chemical synthesis. It gives finer control and less waste.\n\nThe **top-down** approach starts from bulk material and cuts it down, by lithography or ball milling. It is the established route in the semiconductor industry but is limited by how finely the tools can cut.\n\nRichard Feynman anticipated the bottom-up idea in his 1959 lecture **There's Plenty of Room at the Bottom**, well before any means existed of doing it."
+      "answer": 0,
+      "solution": "**Albert Einstein** predicted gravitational waves in 1916 from his general theory of relativity. LIGO first detected them in 2015, from two merging black holes."
     },
     {
-      "id": "tn12p-rec-09",
+      "id": "tn12p-rec-25q6",
       "chapter": "Recent Developments in Physics",
       "topic": "Applications",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "A significant concern about the widespread use of nanoparticles is:",
+      "q": "“Ski wax” is an application of nano product in the field of :",
       "options": [
-        "They are too large to handle",
-        "Their toxicity and ability to penetrate biological barriers is not fully understood",
-        "They are radioactive",
-        "They cannot be manufactured"
+        "Sports",
+        "Medicine",
+        "Automotive industry",
+        "Textile"
       ],
-      "answer": 1,
-      "solution": "The very properties that make nanoparticles useful — small size, high reactivity, large surface area — also let them **cross biological barriers** that stop larger particles, including the lungs' defences and potentially the blood-brain barrier.\n\nTheir long-term toxicity and environmental accumulation are **not yet well understood**, and a material safe in bulk is not automatically safe at the nanoscale.\n\nThis is a genuine open question rather than a settled objection, and it is why nanotoxicology has grown alongside nanotechnology."
+      "answer": 0,
+      "solution": "Nano ski wax gives a smoother, harder, water-repelling glide surface: an application in **sports**."
     },
     {
       "id": "tn12p-rec-10",

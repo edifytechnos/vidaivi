@@ -55,36 +55,38 @@
       "solution": "With a **radial** field, the plane of the coil is always **parallel** to the field whatever its position, so $\\sin\\theta = 1$ at every angle and the torque is $NIAB$ rather than $NIAB\\sin\\theta$.\n\nAt equilibrium $NIAB = k\\phi$, so\n\n$\\phi \\propto I$\n\nThe scale is therefore **linear and uniform**. Without the radial field the deflection would vary as $\\sin\\theta$ and the scale would be cramped at one end."
     },
     {
-      "id": "tn12p-mag-04",
-      "chapter": "Magnetism and Magnetic Effects of Electric Current",
-      "topic": "Earth's magnetism",
-      "type": "mcq",
-      "marks": 1,
-      "q": "The angle between the geographic meridian and the magnetic meridian at a place is called the:",
-      "options": [
-        "Dip",
-        "Declination",
-        "Inclination",
-        "Azimuth"
-      ],
-      "answer": 1,
-      "solution": "**Declination** is the horizontal angle between the geographic and magnetic meridians — it says how far a compass needle points away from true north.\n\n**Dip** (or inclination) is the **vertical** angle the needle makes with the horizontal. It is $0^\\circ$ at the magnetic equator and $90^\\circ$ at the poles.\n\nTogether with the horizontal component $B_H$, these three are the **elements of the Earth's magnetic field**."
-    },
-    {
-      "id": "tn12p-mag-05",
+      "id": "tn12p-mag-25q2",
       "chapter": "Magnetism and Magnetic Effects of Electric Current",
       "topic": "Magnetic materials",
+      "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
-      "q": "A diamagnetic material placed in a non-uniform magnetic field moves:",
+      "q": "If a material having intensity of magnetisation $500\\ \\mathrm{A\\,m^{-1}}$ is placed in a magnetising field of $1000\\ \\mathrm{A\\,m^{-1}}$, then the susceptibility of the material is :",
       "options": [
-        "Towards the stronger region",
-        "Towards the weaker region",
-        "Not at all",
-        "Perpendicular to the field"
+        "0.2",
+        "0.8",
+        "0.7",
+        "0.5"
+      ],
+      "answer": 3,
+      "solution": "$\\chi_m = \\dfrac{M}{H} = \\dfrac{500}{1000} = \\mathbf{0.5}$\n\nIt is positive, so the material is paramagnetic."
+    },
+    {
+      "id": "tn12p-mag-23q13",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic materials",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An example of Diamagnetic material is _________.",
+      "options": [
+        "Nickel",
+        "Water",
+        "Aluminium",
+        "Iron"
       ],
       "answer": 1,
-      "solution": "Diamagnetic materials are **feebly repelled** by a magnetic field, so they move from the stronger to the **weaker** region.\n\nTheir susceptibility is small and **negative**, and they have no permanent atomic dipole moment — the induced moment opposes the applied field, which is Lenz's law at the atomic scale.\n\nParamagnetic and ferromagnetic materials are attracted towards the stronger region instead. Bismuth, copper and water are diamagnetic, which is how a frog has been levitated in a strong field."
+      "solution": "**Water** is diamagnetic: it is weakly repelled by a magnet.\n\nNickel and iron are ferromagnetic; aluminium is paramagnetic."
     },
     {
       "id": "tn12p-mag-06",
