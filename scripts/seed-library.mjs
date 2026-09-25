@@ -66,7 +66,19 @@ const SHELVES = {
   // Equations and Discrete Mathematics, and Biology is split into two SUBJECTS,
   // Bio-Botany and Bio-Zoology, each with its own textbook and paper. None of
   // that maps onto the NCERT chapters the CBSE shelves carry.
-  "tn12-physics": { board: "Tamil Nadu", klass: "12", subject: "Physics" },
+  // Samacheer Kalvi publishes every textbook in BOTH Tamil and English medium,
+  // and a Tamil-medium student sits the same paper in Tamil. So the medium is
+  // carried in `subject`, exactly as an entrance exam is carried in `board`:
+  // the same three fields, stored the same way, gated the same way, and no
+  // storage-shape change - which CLAUDE.md is explicit cannot be exercised on
+  // QA before it merges.
+  //
+  // Both mediums are labelled explicitly rather than leaving English bare. An
+  // unlabelled "Physics" beside "Physics (Tamil Medium)" reads as though the
+  // first were the real one and the second an afterthought, and a teacher
+  // scanning the list should not have to infer which is which.
+  "tn12-physics": { board: "Tamil Nadu", klass: "12", subject: "Physics (English Medium)" },
+  "tn12-physics-ta": { board: "Tamil Nadu", klass: "12", subject: "Physics (Tamil Medium)" },
 };
 
 if (!USER || !PASS) {

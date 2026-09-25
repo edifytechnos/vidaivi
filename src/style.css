@@ -23,7 +23,14 @@
   --radius-sm: 8px;
   --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
   --shadow-lg: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 10px 15px -3px rgba(15, 23, 42, 0.08);
-  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* A font stack resolves PER GLYPH, not per element: the browser takes each
+     character from the first family that has it. So Inter still renders every
+     Latin character exactly as before, and Tamil - which Inter does not cover
+     at all - falls through to Noto Sans Tamil instead of to whatever the device
+     happens to have, or to tofu boxes on a device that has nothing.
+     Both families are already permitted by the CSP's font-src and style-src,
+     so this needs no policy change. */
+  --font: "Inter", "Noto Sans Tamil", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 * {
