@@ -1,0 +1,235 @@
+{
+  "id": "lib-tn12p-emi",
+  "title": "Electromagnetic Induction and Alternating Current",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-emi-01",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Faraday's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The induced emf in a coil depends on:",
+      "options": [
+        "The magnetic flux",
+        "The rate of change of magnetic flux",
+        "The resistance of the coil",
+        "The area alone"
+      ],
+      "answer": 1,
+      "solution": "$\\varepsilon = -N\\dfrac{d\\Phi}{dt}$ — the emf depends on the **rate of change** of flux, not on the flux itself.\n\nA coil sitting in a large but steady field has no emf at all. The resistance affects the induced **current**, by Ohm's law, but not the emf."
+    },
+    {
+      "id": "tn12p-emi-02",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Lenz's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Lenz's law is a consequence of the conservation of:",
+      "options": [
+        "Charge",
+        "Energy",
+        "Momentum",
+        "Flux"
+      ],
+      "answer": 1,
+      "solution": "Lenz's law — the induced effect opposes the change producing it — follows from the conservation of **energy**.\n\nIf the induced current aided the change, the change would grow without limit and energy would appear from nothing. Instead work must be done against the opposition, and that work is what becomes electrical energy.\n\nIt is the origin of the minus sign in Faraday's law."
+    },
+    {
+      "id": "tn12p-emi-03",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "AC circuits",
+      "type": "mcq",
+      "marks": 1,
+      "q": "At resonance in a series LCR circuit:",
+      "options": [
+        "The impedance is maximum",
+        "The impedance is minimum and equals $R$",
+        "The current is zero",
+        "The reactance is maximum"
+      ],
+      "answer": 1,
+      "solution": "At resonance $X_L = X_C$, so they cancel and\n\n$Z = \\sqrt{R^{2} + (X_L - X_C)^{2}} = R$\n\nThe impedance is at its **minimum**, the current at its **maximum**, and voltage and current are **in phase**.\n\nThe resonant frequency is $f_0 = \\dfrac{1}{2\\pi\\sqrt{LC}}$. A series LCR circuit at resonance is called an **acceptor** circuit, and it is how a radio is tuned to one station."
+    },
+    {
+      "id": "tn12p-emi-04",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Transformers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Eddy current losses in a transformer core are reduced by:",
+      "options": [
+        "Using a solid core",
+        "Laminating the core",
+        "Increasing the current",
+        "Using copper for the core"
+      ],
+      "answer": 1,
+      "solution": "**Laminating** the core — building it from thin sheets insulated from one another — confines eddy currents to each lamination and greatly increases the resistance of their paths, so the $I^{2}R$ loss falls sharply.\n\nThe other losses are dealt with differently: **hysteresis** loss by using soft iron with a narrow hysteresis loop, **copper** loss by using thick low-resistance windings, and **flux leakage** by winding the coils one over the other."
+    },
+    {
+      "id": "tn12p-emi-05",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Self inductance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The self-inductance of a coil depends on:",
+      "options": [
+        "The current through it",
+        "The emf across it",
+        "Its geometry and the core material",
+        "The resistance"
+      ],
+      "answer": 2,
+      "solution": "Self-inductance depends only on the coil's **geometry** — number of turns, area, length — and the **permeability of the core**. For a solenoid, $L = \\dfrac{\\mu_0\\mu_r N^{2}A}{l}$.\n\nIt does **not** depend on the current, exactly as capacitance does not depend on the charge. Both are properties of the arrangement, not of what is flowing through it.\n\nNote $L \\propto N^{2}$, not $N$: doubling the turns quadruples the inductance."
+    },
+    {
+      "id": "tn12p-emi-06",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "AC circuits",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The power factor of a purely inductive AC circuit is:",
+      "options": [
+        "$1$",
+        "$0$",
+        "$0.5$",
+        "Infinite"
+      ],
+      "answer": 1,
+      "solution": "Power factor is $\\cos\\phi$. In a purely inductive circuit the current lags the voltage by exactly $90^\\circ$, so\n\n$\\cos 90^\\circ = \\mathbf{0}$\n\nThe average power $V_{rms}I_{rms}\\cos\\phi$ is therefore **zero** — energy is stored in the magnetic field during one quarter cycle and returned to the source during the next. Such a current is called **wattless**.\n\nA purely resistive circuit has $\\cos\\phi = 1$, and at resonance an LCR circuit also has unity power factor."
+    },
+    {
+      "id": "tn12p-emi-07",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "AC generator",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In an AC generator, the emf induced is maximum when the plane of the coil is:",
+      "options": [
+        "Perpendicular to the field",
+        "Parallel to the field",
+        "At $45^\\circ$ to the field",
+        "Any position"
+      ],
+      "answer": 1,
+      "solution": "The emf is $\\varepsilon = NBA\\omega\\sin\\omega t$, and it is greatest when the **flux is changing fastest**, not when the flux is greatest.\n\nThat happens when the coil's plane is **parallel** to the field — the flux through it is momentarily zero, but it is sweeping through zero at its fastest rate.\n\nWhen the plane is perpendicular to the field the flux is maximum and, being at a turning point, is momentarily not changing at all — so the emf is **zero** there. Flux and emf are a quarter cycle out of step."
+    },
+    {
+      "id": "tn12p-emi-08",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "AC circuits",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The rms value of an alternating current of peak value $I_0$ is:",
+      "options": [
+        "$I_0$",
+        "$\\dfrac{I_0}{\\sqrt2}$",
+        "$\\dfrac{2I_0}{\\pi}$",
+        "$\\dfrac{I_0}{2}$"
+      ],
+      "answer": 1,
+      "solution": "$I_{rms} = \\mathbf{\\dfrac{I_0}{\\sqrt2}} \\approx 0.707\\,I_0$.\n\nThe rms value is defined as the steady direct current that would produce the **same heating** in a given resistance, which is why it is the value quoted for mains supply and the value an AC ammeter reads.\n\nThe **average** value over a half cycle is $\\dfrac{2I_0}{\\pi} \\approx 0.637\\,I_0$, a different quantity; over a full cycle the average is zero."
+    },
+    {
+      "id": "tn12p-emi-09",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Transformers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Power is transmitted over long distances at high voltage in order to:",
+      "options": [
+        "Increase the current",
+        "Reduce $I^{2}R$ losses in the transmission lines",
+        "Make cables cheaper",
+        "Increase the power delivered"
+      ],
+      "answer": 1,
+      "solution": "For a given power $P = VI$, raising $V$ **lowers** $I$ proportionally.\n\nThe line loss is $I^{2}R$, which depends on the **square** of the current — so reducing the current by a factor of 10 cuts the loss by a factor of 100.\n\nThe voltage is stepped up by a transformer at the generating station and stepped back down near the consumer. This is the single most important practical reason AC is used for distribution rather than DC, since a transformer works only on AC."
+    },
+    {
+      "id": "tn12p-emi-10",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Faraday's law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The flux through a 200-turn coil changes from $0.02\\ \\text{Wb}$ to $0.06\\ \\text{Wb}$ in $0.4\\ \\text{s}$. Find the magnitude of the induced emf, in volts.",
+      "answer": 20,
+      "tolerance": 0.5,
+      "accept": [
+        "20",
+        "20 V"
+      ],
+      "solution": "$|\\varepsilon| = N\\dfrac{\\Delta\\Phi}{\\Delta t} = 200 \\times \\dfrac{0.06 - 0.02}{0.4}$\n\n$= 200 \\times \\dfrac{0.04}{0.4} = 200 \\times 0.1 = \\mathbf{20\\ \\text{V}}$"
+    },
+    {
+      "id": "tn12p-emi-11",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "AC circuits",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A series LCR circuit has $L = 2\\ \\text{H}$ and $C = 8\\ \\mu\\text{F}$. Find the resonant angular frequency, in $\\mathrm{rad\\,s^{-1}}$.",
+      "answer": 250,
+      "tolerance": 3,
+      "accept": [
+        "250"
+      ],
+      "solution": "$\\omega_0 = \\dfrac{1}{\\sqrt{LC}} = \\dfrac{1}{\\sqrt{2 \\times 8\\times10^{-6}}}$\n\n$LC = 1.6\\times10^{-5}$, and $\\sqrt{1.6\\times10^{-5}} = 4\\times10^{-3}$\n\n$\\omega_0 = \\dfrac{1}{4\\times10^{-3}} = \\mathbf{250\\ \\mathrm{rad\\,s^{-1}}}$"
+    },
+    {
+      "id": "tn12p-emi-12",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Transformers",
+      "type": "numeric",
+      "marks": 2,
+      "q": "An ideal transformer steps $220\\ \\text{V}$ down to $11\\ \\text{V}$. If the primary has 400 turns, how many turns has the secondary?",
+      "answer": 20,
+      "tolerance": 0.5,
+      "accept": [
+        "20"
+      ],
+      "solution": "$\\dfrac{N_s}{N_p} = \\dfrac{V_s}{V_p} = \\dfrac{11}{220} = \\dfrac{1}{20}$\n\n$N_s = \\dfrac{400}{20} = \\mathbf{20}$ turns."
+    },
+    {
+      "id": "tn12p-emi-13",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Self inductance",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the energy stored, in joules, in an inductor of $0.5\\ \\text{H}$ carrying $4\\ \\text{A}$.",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4",
+        "4 J"
+      ],
+      "solution": "$U = \\tfrac{1}{2}LI^{2} = \\tfrac{1}{2}(0.5)(4)^{2} = 0.25 \\times 16 = \\mathbf{4\\ \\text{J}}$"
+    },
+    {
+      "id": "tn12p-emi-14",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "AC circuits",
+      "type": "numeric",
+      "marks": 2,
+      "q": "An AC source has an rms voltage of $220\\ \\text{V}$. Find the peak voltage, in volts, to the nearest whole number.",
+      "answer": 311,
+      "tolerance": 2,
+      "accept": [
+        "311"
+      ],
+      "solution": "$V_0 = \\sqrt2\\,V_{rms} = 1.414 \\times 220 \\approx \\mathbf{311\\ \\text{V}}$.\n\nInsulation in mains equipment must withstand the **peak**, not the quoted rms value — which is why the distinction matters practically and not only in examinations."
+    },
+    {
+      "id": "tn12p-emi-15",
+      "chapter": "Electromagnetic Induction and Alternating Current",
+      "topic": "Transformers",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the principle, construction and working of a transformer, deriving the turns ratio for an ideal transformer. List the energy losses in a real transformer and how each is minimised, and explain why power is transmitted at high voltage.",
+      "solution": "**Principle.** A transformer works on **mutual induction**: an alternating current in one coil produces a changing magnetic flux, which induces an emf in a second coil linked by the same flux.\n\nIt works on **AC only**. A steady direct current produces a constant flux, and a constant flux induces nothing.\n\n**Construction.** Two coils — the **primary** with $N_p$ turns and the **secondary** with $N_s$ — are wound on a **laminated soft iron core**. The core is laminated to reduce eddy currents and made of soft iron because it is easily magnetised and demagnetised. The coils are wound one over the other, insulated, so that nearly all the flux links both.\n\n**Working and the turns ratio.** An alternating voltage $V_p$ across the primary drives an alternating current, producing an alternating flux $\\Phi$ in the core. Because the core confines it, essentially the **same flux links every turn of both coils**.\n\nThe emf induced in each coil is therefore\n\n$\\varepsilon_p = -N_p\\dfrac{d\\Phi}{dt}$ and $\\varepsilon_s = -N_s\\dfrac{d\\Phi}{dt}$\n\nDividing, the flux term cancels — which is the crux of the derivation, and is only legitimate because the flux is shared:\n\n$\\boxed{\\dfrac{V_s}{V_p} = \\dfrac{N_s}{N_p} = k}$\n\n$k > 1$ is a **step-up** transformer, $k < 1$ a **step-down** one.\n\n**The current relation.** An ideal transformer is $100\\%$ efficient, so the power in equals the power out:\n\n$V_pI_p = V_sI_s \\Rightarrow \\dfrac{I_s}{I_p} = \\dfrac{N_p}{N_s} = \\dfrac{1}{k}$\n\nSo **voltage and current go opposite ways**. A step-up transformer raises the voltage and lowers the current in the same proportion. A transformer trades one for the other; it is not a source of energy, and anything else would violate conservation of energy.\n\n**Energy losses in a real transformer, and their remedies.**\n\n**Copper loss** — $I^{2}R$ heating in the windings. Minimised by using **thick copper wire** of low resistance.\n\n**Eddy current loss** — circulating currents induced in the core itself, heating it. Minimised by **laminating** the core into thin insulated sheets, which breaks up the paths available to those currents.\n\n**Hysteresis loss** — energy spent in repeatedly reversing the magnetisation of the core, once per cycle. Minimised by using **soft iron**, whose narrow hysteresis loop means little energy is lost per cycle. The loop area **is** the energy lost per cycle per unit volume, which is why the shape of the loop is what matters.\n\n**Flux leakage** — flux from the primary that does not link the secondary. Minimised by winding the coils **one over the other** on a closed core.\n\n**Humming loss** — magnetostriction makes the core vibrate audibly. Reduced by clamping the laminations tightly.\n\nGood transformers reach efficiencies above $95\\%$, which is unusually high for any energy conversion device.\n\n**Why transmission uses high voltage.**\n\nFor a given power, $P = VI$, so raising $V$ **lowers** $I$ in proportion.\n\nThe power wasted in the transmission line is\n\n$P_{\\text{loss}} = I^{2}R$\n\nwhich depends on the **square** of the current. So reducing the current by a factor of 10 reduces the loss by a factor of **100**.\n\nA worked comparison makes the point. Transmitting $100\\ \\text{kW}$ through a line of resistance $10\\ \\Omega$:\n\nAt $1000\\ \\text{V}$: $I = 100\\ \\text{A}$, loss $= 100^{2} \\times 10 = 100\\ \\text{kW}$ — the **entire** power is lost.\n\nAt $100{,}000\\ \\text{V}$: $I = 1\\ \\text{A}$, loss $= 1^{2} \\times 10 = 10\\ \\text{W}$ — utterly negligible.\n\nSo the voltage is stepped **up** at the generating station, transmitted at hundreds of kilovolts, and stepped **down** near the consumer. Since a transformer can only do this with alternating current, this is the decisive practical reason electricity is distributed as AC rather than DC."
+    }
+  ]
+}
