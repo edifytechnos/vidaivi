@@ -1,0 +1,236 @@
+{
+  "id": "lib-c12bio-mol",
+  "title": "Molecular Basis of Inheritance",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-mol-01",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "DNA structure",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Watson-Crick model of DNA, adenine pairs with thymine by:",
+      "options": [
+        "One hydrogen bond",
+        "Two hydrogen bonds",
+        "Three hydrogen bonds",
+        "A covalent bond"
+      ],
+      "answer": 1,
+      "solution": "**A pairs with T by two hydrogen bonds**; G pairs with C by **three**.\n\nThis is why a GC-rich region has a **higher melting temperature** — more bonds must be broken to separate the strands.\n\nNote the pairing is always **purine with pyrimidine**, which keeps the width of the helix constant at $2\\ \\text{nm}$ along its whole length."
+    },
+    {
+      "id": "c12bio-mol-02",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "DNA replication",
+      "type": "mcq",
+      "marks": 1,
+      "q": "DNA replication is described as semi-conservative because:",
+      "options": [
+        "Half the DNA is destroyed",
+        "Each daughter molecule has one parental and one new strand",
+        "Both strands are new",
+        "Only one strand replicates"
+      ],
+      "answer": 1,
+      "solution": "Each daughter molecule keeps **one parental strand** and gains **one newly synthesised** strand.\n\nThe parental strand acts as the template, so the information is conserved exactly.\n\nThis was proved by **Meselson and Stahl** in 1958, using heavy nitrogen $^{15}\\text{N}$ and density-gradient centrifugation — the first generation gave a single intermediate band, which ruled out conservative replication, and the second gave two bands, which ruled out dispersive."
+    },
+    {
+      "id": "c12bio-mol-03",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Transcription",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The enzyme that synthesises RNA from a DNA template is:",
+      "options": [
+        "DNA polymerase",
+        "RNA polymerase",
+        "Ligase",
+        "Helicase"
+      ],
+      "answer": 1,
+      "solution": "**RNA polymerase** carries out transcription, reading the template strand $3'\\to5'$ and building RNA $5'\\to3'$.\n\nUnlike DNA polymerase it needs **no primer** — it can start a chain from nothing, which is one reason primers for DNA replication are made of RNA.\n\nIt also lacks proofreading, so transcription is less accurate than replication — tolerable, because a faulty transcript is discarded rather than inherited."
+    },
+    {
+      "id": "c12bio-mol-04",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Genetic code",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The genetic code is said to be **degenerate** because:",
+      "options": [
+        "It changes over time",
+        "Some amino acids are coded by more than one codon",
+        "One codon codes for many amino acids",
+        "It is different in every species"
+      ],
+      "answer": 1,
+      "solution": "**Degeneracy** means most amino acids are specified by **more than one codon** — there are 64 codons for 20 amino acids.\n\nCrucially, the code is still **unambiguous**: each codon specifies exactly one amino acid. Degeneracy runs one way only.\n\nThe redundancy is mostly in the **third base**, which is why many third-position mutations are silent — a built-in buffer against mutation."
+    },
+    {
+      "id": "c12bio-mol-05",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Transformation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Hershey-Chase experiment established that:",
+      "options": [
+        "Protein is the genetic material",
+        "DNA is the genetic material",
+        "RNA is the genetic material",
+        "Lipids carry genes"
+      ],
+      "answer": 1,
+      "solution": "Hershey and Chase used bacteriophages with **radioactive labels**: $^{32}\\text{P}$ for DNA (protein has no phosphorus) and $^{35}\\text{S}$ for protein (DNA has no sulphur).\n\nAfter infection, only $^{32}\\text{P}$ entered the bacteria and appeared in the progeny phages. The $^{35}\\text{S}$ stayed outside in the discarded coats.\n\nSo **DNA is the genetic material**. The elegance is in the choice of labels: each element is present in one molecule and absent from the other, so the result cannot be ambiguous."
+    },
+    {
+      "id": "c12bio-mol-06",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Lac operon",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the lac operon, the repressor protein binds to the:",
+      "options": [
+        "Promoter",
+        "Operator",
+        "Structural genes",
+        "Inducer"
+      ],
+      "answer": 1,
+      "solution": "The repressor binds the **operator**, a short sequence between the promoter and the structural genes.\n\nBound there, it physically blocks RNA polymerase from moving forward, so transcription is switched **off**.\n\nWhen lactose is present, its isomer **allolactose** acts as the inducer: it binds the repressor, changes its shape, and the repressor falls off the operator — switching the operon **on**. This is **negative regulation**, since the default state is off."
+    },
+    {
+      "id": "c12bio-mol-07",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Translation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The initiation codon in the genetic code is:",
+      "options": [
+        "UAA",
+        "AUG",
+        "UGA",
+        "UAG"
+      ],
+      "answer": 1,
+      "solution": "**AUG** is the start codon, and it also codes for **methionine** — so every newly made polypeptide begins with methionine, often removed later.\n\nThe three **stop** codons are UAA, UAG and UGA. They code for no amino acid and have no tRNA; translation ends when a release factor binds them."
+    },
+    {
+      "id": "c12bio-mol-08",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "DNA structure",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The two strands of DNA are described as antiparallel, meaning:",
+      "options": [
+        "They are identical",
+        "They run in opposite $5'\\to3'$ directions",
+        "They are of different lengths",
+        "They are not paired"
+      ],
+      "answer": 1,
+      "solution": "**Antiparallel** means one strand runs $5'\\to3'$ while its partner runs $3'\\to5'$.\n\nThis has a real consequence at the replication fork. DNA polymerase can only add nucleotides to a $3'$ end, so it synthesises in one direction only. One strand is therefore made **continuously** (the leading strand) and the other in short **Okazaki fragments** (the lagging strand), later joined by ligase.\n\nThe awkwardness of lagging-strand synthesis is entirely a consequence of antiparallelism."
+    },
+    {
+      "id": "c12bio-mol-09",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Human Genome Project",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Approximately how many genes were found in the human genome?",
+      "options": [
+        "$1{,}000$",
+        "$20{,}000$ to $25{,}000$",
+        "$100{,}000$",
+        "$3$ billion"
+      ],
+      "answer": 1,
+      "solution": "About **20,000 to 25,000** protein-coding genes — a considerable surprise, since estimates before the project ran to 100,000.\n\nThe $3$ billion figure is the number of **base pairs**, not genes.\n\nThe low count means complexity cannot come from gene number alone. It comes from **alternative splicing**, post-translational modification and regulation, so one gene can yield many proteins."
+    },
+    {
+      "id": "c12bio-mol-10",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "DNA structure",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A double-stranded DNA molecule contains $30\\%$ adenine. What percentage of guanine does it contain?",
+      "answer": 20,
+      "tolerance": 0.5,
+      "accept": [
+        "20",
+        "20%"
+      ],
+      "solution": "By **Chargaff's rules**, $A = T$ and $G = C$.\n\nIf $A = 30\\%$ then $T = 30\\%$, so together they are $60\\%$.\n\nThe remaining $40\\%$ is shared equally between G and C:\n\n$G = \\dfrac{40}{2} = \\mathbf{20\\%}$"
+    },
+    {
+      "id": "c12bio-mol-11",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Genetic code",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many codons are there in the genetic code?",
+      "answer": 64,
+      "tolerance": 0.5,
+      "accept": [
+        "64"
+      ],
+      "solution": "A codon is three bases, and each position can be any of four bases.\n\n$4^{3} = \\mathbf{64}$ codons.\n\nOf these, 61 specify amino acids and 3 are stop codons."
+    },
+    {
+      "id": "c12bio-mol-12",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Translation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "An mRNA has 300 nucleotides in its coding sequence, including the stop codon. How many amino acids are in the resulting polypeptide?",
+      "answer": 99,
+      "tolerance": 0.5,
+      "accept": [
+        "99"
+      ],
+      "solution": "$\\dfrac{300}{3} = 100$ codons in total.\n\nThe **stop codon codes for no amino acid**, so it must be subtracted:\n\n$100 - 1 = \\mathbf{99}$ amino acids.\n\nForgetting the stop codon and answering 100 is the usual error."
+    },
+    {
+      "id": "c12bio-mol-13",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "DNA structure",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many base pairs are there in one complete turn of the B-form DNA double helix?",
+      "answer": 10,
+      "tolerance": 0.5,
+      "accept": [
+        "10",
+        "10.5"
+      ],
+      "solution": "One full turn of B-DNA spans about $3.4\\ \\text{nm}$ and contains roughly $\\mathbf{10}$ base pairs, so consecutive pairs are $0.34\\ \\text{nm}$ apart.\n\nThe measured value is closer to 10.5, but 10 is the figure normally quoted."
+    },
+    {
+      "id": "c12bio-mol-14",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "Human Genome Project",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Approximately how many base pairs, in billions, are there in the human genome?",
+      "answer": 3,
+      "tolerance": 0.2,
+      "accept": [
+        "3",
+        "3.2"
+      ],
+      "solution": "About $\\mathbf{3}$ billion base pairs, roughly $3.2\\times10^{9}$.\n\nRemarkably, less than $2\\%$ of it codes for protein. Much of the rest is regulatory sequence, repetitive DNA and material whose function is still being worked out."
+    },
+    {
+      "id": "c12bio-mol-15",
+      "chapter": "Molecular Basis of Inheritance",
+      "topic": "DNA replication",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the process of semi-conservative DNA replication, naming the main enzymes. Explain why one strand is synthesised continuously and the other discontinuously, and describe how the Meselson-Stahl experiment distinguished the semi-conservative model from its two rivals.",
+      "solution": "**The three models that were on the table.**\n\n**Conservative:** the parent double helix stays intact and an entirely new double helix is made alongside it.\n\n**Semi-conservative:** the strands separate, and each templates a new partner, so every daughter molecule is half old and half new.\n\n**Dispersive:** the DNA is broken up and old and new segments are interspersed throughout both daughter molecules.\n\n**The process, as it actually works.**\n\n**1. Unwinding.** **Helicase** breaks the hydrogen bonds between the bases and unwinds the double helix, forming a replication fork. **Topoisomerase** relieves the supercoiling that builds up ahead of the fork, and single-strand binding proteins keep the separated strands apart.\n\n**2. Priming.** **Primase** lays down a short RNA primer, because DNA polymerase cannot start a chain from nothing — it can only **extend** an existing $3'$ end.\n\n**3. Elongation.** **DNA polymerase III** adds nucleotides complementary to the template, working strictly in the $5'\\to3'$ direction. It also **proofreads**, excising a mismatched base and replacing it, which is why replication is so accurate.\n\n**4. Finishing.** **DNA polymerase I** removes the RNA primers and fills the gaps with DNA, and **ligase** seals the remaining nicks in the sugar-phosphate backbone.\n\n**Why one strand is continuous and the other is not.**\n\nTwo facts collide:\n\n- The two strands are **antiparallel** — one runs $5'\\to3'$, the other $3'\\to5'$.\n- DNA polymerase can add nucleotides **only to a free $3'$ end**, so it can only build in the $5'\\to3'$ direction.\n\nThe fork opens in one direction. On the template running $3'\\to5'$ towards the fork, the polymerase can follow the fork continuously — this is the **leading strand**, made in one unbroken piece.\n\nOn the other template the required direction of synthesis points **away** from the fork. The polymerase cannot run backwards, so it must wait for a stretch to open up, then synthesise a short piece **backwards** relative to the fork's movement, then wait again. The result is the **lagging strand**, built as a series of **Okazaki fragments** (1000 to 2000 nucleotides in prokaryotes, much shorter in eukaryotes), each needing its own primer, and joined afterwards by ligase.\n\nSo the discontinuity is not a design feature or an inefficiency — it is the **unavoidable consequence** of an antiparallel molecule copied by a one-directional enzyme.\n\n**The Meselson-Stahl experiment (1958).**\n\n**E. coli** was grown for many generations in medium containing the heavy nitrogen isotope $^{15}\\text{N}$, so all its DNA was heavy. The cells were then transferred to ordinary $^{14}\\text{N}$ medium and samples taken each generation, with the DNA separated by **caesium chloride density-gradient centrifugation** — denser DNA settles lower in the tube.\n\n**Generation 0:** one band, at the heavy position. As expected.\n\n**Generation 1:** one band, at **intermediate** density — every molecule half heavy and half light.\n\nThis single result **eliminates the conservative model outright**. Conservative replication would give **two** bands, one fully heavy and one fully light, and there is no intermediate band in it at all.\n\n**Generation 2:** **two** bands, one intermediate and one light, in equal amounts.\n\nThis eliminates the **dispersive** model, which predicts a single band getting progressively lighter each generation and never splitting in two. Semi-conservative replication predicts exactly what was seen: each hybrid molecule separates into one heavy and one light strand, giving two hybrid molecules and two fully light ones.\n\n**Why it is such a good experiment.** Neither generation alone would settle the question — generation 1 is consistent with both semi-conservative and dispersive replication. It is the **pair of results** that leaves only one model standing, and each rival is ruled out by a different observation. Taylor later confirmed the same conclusion in the broad bean using radioactive thymidine, showing it holds in eukaryotes too."
+    }
+  ]
+}

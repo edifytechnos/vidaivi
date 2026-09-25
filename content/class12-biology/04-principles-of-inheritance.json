@@ -1,0 +1,237 @@
+{
+  "id": "lib-c12bio-inh",
+  "title": "Principles of Inheritance and Variation",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-inh-01",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Mendelian genetics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Mendel's law of segregation states that:",
+      "options": [
+        "Alleles of different genes assort independently",
+        "The two alleles of a gene separate during gamete formation",
+        "Dominant alleles mask recessive ones",
+        "Genes are located on chromosomes"
+      ],
+      "answer": 1,
+      "solution": "The **law of segregation** says that the two alleles of a gene separate during gamete formation, so each gamete receives **only one** of them.\n\nIts physical basis is the separation of homologous chromosomes at **anaphase I** of meiosis — though Mendel knew nothing of chromosomes when he proposed it.\n\nIndependent assortment is Mendel's other law, and dominance is a separate principle."
+    },
+    {
+      "id": "c12bio-inh-02",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Monohybrid cross",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The phenotypic ratio of a monohybrid cross in the $\\text{F}_2$ generation is:",
+      "options": [
+        "$1:2:1$",
+        "$3:1$",
+        "$9:3:3:1$",
+        "$1:1$"
+      ],
+      "answer": 1,
+      "solution": "Crossing $\\text{Tt} \\times \\text{Tt}$ gives genotypes $\\text{TT} : \\text{Tt} : \\text{tt}$ in the ratio $1:2:1$.\n\nBecause $\\text{TT}$ and $\\text{Tt}$ look alike under complete dominance, the **phenotypic** ratio is $\\mathbf{3:1}$.\n\nThe $1:2:1$ genotypic ratio is still there underneath, and a **test cross** is what reveals it."
+    },
+    {
+      "id": "c12bio-inh-03",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Dihybrid cross",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The $9:3:3:1$ ratio in a dihybrid cross demonstrates:",
+      "options": [
+        "Segregation only",
+        "Independent assortment",
+        "Linkage",
+        "Incomplete dominance"
+      ],
+      "answer": 1,
+      "solution": "$9:3:3:1$ is exactly $(3:1) \\times (3:1)$ — the two characters behave as if the other were not there.\n\nThat is the **law of independent assortment**: alleles of different genes separate independently during gamete formation.\n\nIt holds only for genes on **different chromosomes**, or far apart on the same one. Genes close together are **linked**, and Mendel's ratio breaks down — which is how linkage was discovered."
+    },
+    {
+      "id": "c12bio-inh-04",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Incomplete dominance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In snapdragon, red $\\times$ white flowers give pink offspring. This is an example of:",
+      "options": [
+        "Complete dominance",
+        "Incomplete dominance",
+        "Codominance",
+        "Epistasis"
+      ],
+      "answer": 1,
+      "solution": "**Incomplete dominance**: the heterozygote shows a **blended, intermediate** phenotype because one functional allele produces only enough pigment for pink.\n\nThe $\\text{F}_2$ ratio is $1$ red $: 2$ pink $: 1$ white — the genotypic and phenotypic ratios **coincide**, because every genotype looks different.\n\n**Codominance** is different: there both alleles are fully expressed **side by side**, as in AB blood group, where the cells carry both A and B antigens rather than something in between."
+    },
+    {
+      "id": "c12bio-inh-05",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Sex-linked inheritance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Haemophilia is far more common in males because:",
+      "options": [
+        "The gene is on the Y chromosome",
+        "Males have only one X chromosome",
+        "Males are weaker",
+        "The gene is dominant in males"
+      ],
+      "answer": 1,
+      "solution": "Haemophilia is an **X-linked recessive** condition.\n\nA male is $\\text{XY}$, so he has **only one X**. A single recessive allele on it is enough to express the disease — there is no second X to mask it, a state called **hemizygous**.\n\nA female is $\\text{XX}$ and needs the allele on **both** X chromosomes, which is far rarer. A female with one copy is a **carrier**.\n\nThis is why such conditions typically pass from a carrier mother to her sons, skipping her daughters."
+    },
+    {
+      "id": "c12bio-inh-06",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Blood groups",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ABO blood group system is an example of:",
+      "options": [
+        "Multiple alleles and codominance",
+        "Incomplete dominance only",
+        "Sex linkage",
+        "Polygenic inheritance"
+      ],
+      "answer": 0,
+      "solution": "Two things are illustrated at once.\n\n**Multiple alleles**: three alleles, $\\text{I}^{A}$, $\\text{I}^{B}$ and $i$, exist in the population — though any one person carries only two.\n\n**Codominance**: $\\text{I}^{A}\\text{I}^{B}$ gives blood group AB, with **both** antigens present on the red cells, not a blend.\n\n$\\text{I}^{A}$ and $\\text{I}^{B}$ are each completely dominant over $i$, so group O requires $ii$."
+    },
+    {
+      "id": "c12bio-inh-07",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Chromosomal disorders",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Down's syndrome is caused by:",
+      "options": [
+        "Monosomy of chromosome 21",
+        "Trisomy of chromosome 21",
+        "An extra X chromosome",
+        "Deletion on chromosome 21"
+      ],
+      "answer": 1,
+      "solution": "Down's syndrome is **trisomy 21** — three copies of chromosome 21, giving 47 chromosomes in all.\n\nIt arises from **non-disjunction**, the failure of chromosome 21 to separate during meiosis, and its frequency rises sharply with maternal age.\n\nCompare the sex-chromosome aneuploidies: Klinefelter's is $\\text{XXY}$ (47) and Turner's is $\\text{XO}$ (45)."
+    },
+    {
+      "id": "c12bio-inh-08",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Pleiotropy and polygeny",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Human skin colour, showing a continuous range of shades, is an example of:",
+      "options": [
+        "Pleiotropy",
+        "Polygenic inheritance",
+        "Codominance",
+        "Sex linkage"
+      ],
+      "answer": 1,
+      "solution": "**Polygenic inheritance**: several genes each contribute a small additive effect, so the phenotype varies **continuously** rather than falling into discrete classes.\n\nHeight and skin colour are the standard examples, and both are further modified by the environment.\n\n**Pleiotropy** is the reverse relationship — one gene affecting many traits, as in phenylketonuria, where a single enzyme defect causes intellectual disability, reduced hair pigment and more."
+    },
+    {
+      "id": "c12bio-inh-09",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Test cross",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A test cross is performed by crossing an individual with the:",
+      "options": [
+        "Homozygous dominant parent",
+        "Homozygous recessive parent",
+        "Heterozygote",
+        "$\\text{F}_1$ generation"
+      ],
+      "answer": 1,
+      "solution": "A test cross pairs the unknown individual with the **homozygous recessive**.\n\nThe point is that the recessive parent contributes only recessive alleles and so **hides nothing** — every offspring's phenotype reveals what the unknown parent gave it.\n\nAll dominant offspring means the unknown was homozygous dominant; a $1:1$ ratio means it was heterozygous. Crossing with a dominant parent would mask the difference and teach nothing."
+    },
+    {
+      "id": "c12bio-inh-10",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Monohybrid cross",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In a cross $\\text{Tt} \\times \\text{Tt}$, what percentage of offspring are expected to be homozygous recessive?",
+      "answer": 25,
+      "tolerance": 0.5,
+      "accept": [
+        "25",
+        "25%",
+        "1/4"
+      ],
+      "solution": "The Punnett square gives $\\text{TT} : \\text{Tt} : \\text{Tt} : \\text{tt}$.\n\nOne of the four is $\\text{tt}$, so $\\dfrac{1}{4} = \\mathbf{25\\%}$."
+    },
+    {
+      "id": "c12bio-inh-11",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Dihybrid cross",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many different types of gametes can an individual of genotype $\\text{RrYy}$ produce?",
+      "answer": 4,
+      "tolerance": 0.5,
+      "accept": [
+        "4"
+      ],
+      "solution": "The number of gamete types is $2^{n}$, where $n$ is the number of **heterozygous** gene pairs.\n\nHere $n = 2$, so $2^{2} = \\mathbf{4}$: RY, Ry, rY and ry, in equal proportions.\n\nAn individual $\\text{RRYy}$ would give only 2 types, since the R locus is homozygous."
+    },
+    {
+      "id": "c12bio-inh-12",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Sex-linked inheritance",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A carrier mother $\\text{X}^{H}\\text{X}^{h}$ marries a normal father $\\text{X}^{H}\\text{Y}$. What percentage of their **sons** are expected to be haemophilic?",
+      "answer": 50,
+      "tolerance": 1,
+      "accept": [
+        "50",
+        "50%",
+        "1/2"
+      ],
+      "solution": "The sons all receive the **Y** from their father, so their phenotype depends entirely on which X the mother gives.\n\nThe mother gives $\\text{X}^{H}$ or $\\text{X}^{h}$ with equal probability.\n\nSons: $\\text{X}^{H}\\text{Y}$ (normal) or $\\text{X}^{h}\\text{Y}$ (haemophilic), so $\\mathbf{50\\%}$ of sons are affected.\n\nNo daughter is affected here, since each receives a healthy $\\text{X}^{H}$ from the father; half of them are carriers."
+    },
+    {
+      "id": "c12bio-inh-13",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Chromosomal disorders",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many chromosomes are present in a person with Klinefelter's syndrome?",
+      "answer": 47,
+      "tolerance": 0.5,
+      "accept": [
+        "47"
+      ],
+      "solution": "Klinefelter's syndrome is $\\text{XXY}$ — 44 autosomes plus three sex chromosomes.\n\n$44 + 3 = \\mathbf{47}$ chromosomes.\n\nTurner's syndrome ($\\text{XO}$) has 45, and Down's syndrome has 47 by a different route, an extra autosome rather than an extra sex chromosome."
+    },
+    {
+      "id": "c12bio-inh-14",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Dihybrid cross",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a dihybrid cross giving a $9:3:3:1$ ratio, out of 160 offspring how many are expected to show both recessive traits?",
+      "answer": 10,
+      "tolerance": 0.5,
+      "accept": [
+        "10"
+      ],
+      "solution": "The double recessive is the $1$ in $9+3+3+1 = 16$ parts.\n\n$\\dfrac{1}{16} \\times 160 = \\mathbf{10}$ offspring."
+    },
+    {
+      "id": "c12bio-inh-15",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Mendelian genetics",
+      "type": "long",
+      "marks": 5,
+      "q": "State and explain Mendel's laws of inheritance, using a dihybrid cross to illustrate. Explain why Mendel's choice of the garden pea was so fortunate, and describe one circumstance in which his law of independent assortment does not hold.",
+      "solution": "**The three principles.**\n\n**1. The law of dominance.** When two contrasting alleles are present, only one — the **dominant** — is expressed, while the **recessive** is masked. This is why the $\\text{F}_1$ of a cross between two pure-breeding parents resembles just one of them.\n\n**2. The law of segregation.** The two alleles of a gene **separate** during gamete formation, so each gamete carries only one. This law has no exceptions, because its physical basis is the separation of homologous chromosomes at anaphase I of meiosis.\n\n**3. The law of independent assortment.** Alleles of **different** genes segregate independently of one another, so the inheritance of one character does not influence another.\n\n**A dihybrid cross.** Cross a pure-breeding round yellow pea ($\\text{RRYY}$) with a pure-breeding wrinkled green one ($\\text{rryy}$).\n\n$\\text{F}_1$: all $\\text{RrYy}$, **round and yellow** — demonstrating dominance.\n\nSelf-pollinating the $\\text{F}_1$: each parent produces four gamete types in equal numbers — RY, Ry, rY, ry — which is segregation and independent assortment acting together. A $4\\times4$ Punnett square gives sixteen combinations:\n\n**9** round yellow : **3** round green : **3** wrinkled yellow : **1** wrinkled green\n\nThe key observation is that $9:3:3:1$ factorises as $(3:1)\\times(3:1)$. Considering shape alone, $12$ are round and $4$ wrinkled — still $3:1$. Considering colour alone, likewise. **Each character behaves exactly as it would in a monohybrid cross, regardless of the other**, and that independence is the whole content of the third law.\n\nThe appearance of the two **new combinations** — round green and wrinkled yellow, which neither grandparent had — is the visible consequence.\n\n**Why the garden pea was a fortunate choice.**\n\n- It has several **sharply contrasting** characters with no intermediates — round or wrinkled, tall or dwarf. Continuous variation would have hidden the ratios entirely.\n- It is normally **self-pollinating**, giving naturally pure-breeding lines, yet can be **cross-pollinated** by hand, so Mendel controlled every cross.\n- It has a **short generation time** and produces many seeds, so his ratios rested on large numbers — which matters, because these are statistical predictions that only emerge from big samples.\n- It is easy to grow and the flower structure makes emasculation straightforward.\n\n**And one piece of luck he could not have known about.** The seven characters Mendel studied happen to lie either on **different chromosomes** or far enough apart on the same one to assort freely. The pea has only seven pairs of chromosomes, so this was not guaranteed. Had he chosen closely linked characters, he would have got ratios that made no sense and the laws might have gone undiscovered for decades.\n\n**Where independent assortment fails: linkage.**\n\nGenes located **close together on the same chromosome** do not assort independently. They tend to be inherited **together**, because they travel on the same physical piece of DNA and crossing over rarely separates them.\n\nThe result is that a dihybrid cross gives far more **parental** combinations than the $9:3:3:1$ ratio predicts, and correspondingly fewer recombinants.\n\nMorgan demonstrated this in **Drosophila**, and it turned out to be more useful than an exception has any right to be: the **frequency of recombination is proportional to the distance** between two genes, since a wider gap gives crossing over more opportunity to occur. Sturtevant used exactly that to draw the first genetic maps.\n\nSo the failure of Mendel's third law became the tool for mapping genes onto chromosomes."
+    }
+  ]
+}

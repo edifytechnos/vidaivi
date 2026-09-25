@@ -1,0 +1,235 @@
+{
+  "id": "lib-c12bio-bio",
+  "title": "Biotechnology: Principles, Processes and Applications",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-bio-01",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Restriction enzymes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Restriction endonucleases cut DNA at:",
+      "options": [
+        "Random positions",
+        "Specific palindromic recognition sequences",
+        "Only the ends",
+        "Only in RNA"
+      ],
+      "answer": 1,
+      "solution": "A restriction endonuclease recognises a **specific palindromic sequence**, usually 4 to 8 base pairs, and cuts within it.\n\nPalindromic here means the sequence reads the same $5'\\to3'$ on **both** strands, as in $\\text{GAATTC}$ for EcoRI.\n\nA staggered cut leaves single-stranded **sticky ends**, and because the same enzyme leaves complementary sticky ends on any DNA, fragments from **different organisms** can be joined. That is the whole basis of recombinant DNA technology."
+    },
+    {
+      "id": "c12bio-bio-02",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Cloning vectors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A cloning vector must possess:",
+      "options": [
+        "Only an origin of replication",
+        "An origin of replication, a selectable marker and cloning sites",
+        "Only antibiotic resistance",
+        "A large size"
+      ],
+      "answer": 1,
+      "solution": "Three features are essential:\n\n**Origin of replication (ori)** — so the vector copies itself inside the host\n\n**Selectable marker** — usually antibiotic resistance, to identify transformed cells among the vast majority that took up nothing\n\n**Cloning sites** — unique restriction sites where the foreign DNA is inserted\n\nA **small size** also helps, since large plasmids transform poorly. pBR322 is the classic example."
+    },
+    {
+      "id": "c12bio-bio-03",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "PCR",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The enzyme used in PCR is:",
+      "options": [
+        "DNA ligase",
+        "Taq polymerase",
+        "Restriction enzyme",
+        "Reverse transcriptase"
+      ],
+      "answer": 1,
+      "solution": "**Taq polymerase**, from the hot-spring bacterium **Thermus aquaticus**.\n\nIt is used because it is **thermostable** — it survives the $94^\\circ\\text{C}$ denaturation step, which destroys ordinary DNA polymerase.\n\nBefore Taq, fresh enzyme had to be added after every single cycle, which made PCR impractical. The thermostable enzyme is what allowed it to be automated, and it is the reason the technique became universal."
+    },
+    {
+      "id": "c12bio-bio-04",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Bt crops",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Bt cotton is resistant to bollworms because it carries a gene from:",
+      "options": [
+        "Agrobacterium tumefaciens",
+        "Bacillus thuringiensis",
+        "Escherichia coli",
+        "A virus"
+      ],
+      "answer": 1,
+      "solution": "The **cry** genes come from **Bacillus thuringiensis**, which produces a crystal protein toxin.\n\nThe toxin is a clever piece of chemistry: it exists as an **inactive protoxin** and is only activated by the **alkaline** gut of the insect. The human gut is acidic, so it is not activated there — which is why the protein is toxic to the bollworm and harmless to us.\n\nDifferent cry genes target different pests: cryIAc for cotton bollworms, cryIIAb likewise, cryIAb for corn borer.\n\n**Agrobacterium tumefaciens** is used as a **vector** in plant transformation, not as the source of this gene."
+    },
+    {
+      "id": "c12bio-bio-05",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Gene therapy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The first successful gene therapy was performed for:",
+      "options": [
+        "Cystic fibrosis",
+        "ADA deficiency (SCID)",
+        "Haemophilia",
+        "Diabetes"
+      ],
+      "answer": 1,
+      "solution": "The first was in 1990, on a four-year-old girl with **adenosine deaminase deficiency**, a form of severe combined immunodeficiency.\n\nLymphocytes were taken from her blood, a functional ADA gene was introduced using a retroviral vector, and the cells were returned.\n\nIt was not a permanent cure, because those lymphocytes have a limited lifespan and the infusion must be repeated. A lasting cure would require introducing the gene into **bone marrow stem cells**, which is the direction the field took."
+    },
+    {
+      "id": "c12bio-bio-06",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Recombinant insulin",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Human insulin produced by recombinant DNA technology is marketed as:",
+      "options": [
+        "Humulin",
+        "Bt toxin",
+        "Interferon",
+        "Somatostatin"
+      ],
+      "answer": 0,
+      "solution": "**Humulin**, produced by Eli Lilly in 1983 — the first recombinant pharmaceutical approved for human use.\n\nThe A and B chains were made **separately** in **E. coli** and then joined by disulphide bonds.\n\nIt replaced insulin extracted from pig and cattle pancreas, which caused allergic reactions in some patients because it is not quite the human sequence. The recombinant protein is identical to human insulin, so that problem disappears — and the supply is no longer limited by the number of animals slaughtered."
+    },
+    {
+      "id": "c12bio-bio-07",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Gel electrophoresis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In gel electrophoresis, DNA fragments move towards the anode because DNA is:",
+      "options": [
+        "Positively charged",
+        "Negatively charged",
+        "Neutral",
+        "Attracted by the gel"
+      ],
+      "answer": 1,
+      "solution": "DNA carries **negatively charged phosphate groups** along its backbone, so it migrates towards the positive electrode, the **anode**.\n\nSeparation is by **size**: the agarose gel acts as a sieve, so smaller fragments travel further in a given time.\n\nThe bands are visualised by staining with **ethidium bromide** and viewing under UV light."
+    },
+    {
+      "id": "c12bio-bio-08",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "PCR",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The three steps of one PCR cycle, in order, are:",
+      "options": [
+        "Annealing, denaturation, extension",
+        "Denaturation, annealing, extension",
+        "Extension, denaturation, annealing",
+        "Denaturation, extension, annealing"
+      ],
+      "answer": 1,
+      "solution": "**Denaturation** at about $94^\\circ\\text{C}$ separates the strands.\n\n**Annealing** at roughly $50$–$65^\\circ\\text{C}$ lets the primers bind their complementary sequences.\n\n**Extension** at $72^\\circ\\text{C}$, the optimum for Taq, builds the new strands.\n\nThe order is forced by the chemistry: strands must be separated before primers can reach them, and primers must be in place before the polymerase can extend anything."
+    },
+    {
+      "id": "c12bio-bio-09",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Bioethics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Biopiracy refers to:",
+      "options": [
+        "Illegal fishing",
+        "The use of bio-resources and traditional knowledge without authorisation or compensation",
+        "Stealing laboratory equipment",
+        "Growing GM crops"
+      ],
+      "answer": 1,
+      "solution": "**Biopiracy** is the exploitation of another nation's biological resources or traditional knowledge without proper authorisation or fair compensation.\n\nThe standard Indian examples are the **basmati rice**, **turmeric** and **neem** patents, all of which were challenged and revoked because the knowledge was demonstrably centuries old and not novel.\n\nIndia's Biological Diversity Act 2002 exists to prevent it."
+    },
+    {
+      "id": "c12bio-bio-10",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "PCR",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Starting from one DNA molecule, how many copies are present after 10 cycles of PCR?",
+      "answer": 1024,
+      "tolerance": 1,
+      "accept": [
+        "1024",
+        "2^10"
+      ],
+      "solution": "Each cycle **doubles** the amount of DNA, so after $n$ cycles there are $2^{n}$ copies.\n\n$2^{10} = \\mathbf{1024}$ copies.\n\nThe exponential growth is the point: 30 cycles gives about a **billion** copies, which is how a trace of DNA at a crime scene becomes enough to analyse."
+    },
+    {
+      "id": "c12bio-bio-11",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "PCR",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many primers are required for one PCR reaction amplifying a single target?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "$\\mathbf{2}$ — a **forward** and a **reverse** primer, one for each strand.\n\nThey define the two ends of the region amplified, which is why PCR requires you to already know some sequence flanking the target."
+    },
+    {
+      "id": "c12bio-bio-12",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "PCR",
+      "type": "numeric",
+      "marks": 2,
+      "q": "At approximately what temperature, in degrees Celsius, does the denaturation step of PCR occur?",
+      "answer": 94,
+      "tolerance": 2,
+      "accept": [
+        "94",
+        "95"
+      ],
+      "solution": "About $\\mathbf{94^\\circ\\text{C}}$, often quoted as $94$ to $95^\\circ\\text{C}$.\n\nThis is hot enough to break every hydrogen bond between the strands — and hot enough to destroy an ordinary DNA polymerase, which is exactly why thermostable Taq is needed."
+    },
+    {
+      "id": "c12bio-bio-13",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Restriction enzymes",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A linear DNA molecule has 4 recognition sites for a restriction enzyme. How many fragments result from complete digestion?",
+      "answer": 5,
+      "tolerance": 0.5,
+      "accept": [
+        "5"
+      ],
+      "solution": "Cutting a **linear** molecule at $n$ sites gives $n + 1$ fragments — think of cutting a piece of string in 4 places.\n\n$4 + 1 = \\mathbf{5}$ fragments.\n\nA **circular** molecule behaves differently: $n$ cuts give exactly $n$ fragments, because the first cut only opens the circle."
+    },
+    {
+      "id": "c12bio-bio-14",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Recombinant insulin",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many polypeptide chains make up a human insulin molecule?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "$\\mathbf{2}$ — the **A chain** of 21 amino acids and the **B chain** of 30, linked by disulphide bridges.\n\nIn the body it is made as a single chain, **proinsulin**, from which the connecting C peptide is cut out. Recombinant production sidesteps that by making the two chains separately and joining them."
+    },
+    {
+      "id": "c12bio-bio-15",
+      "chapter": "Biotechnology: Principles, Processes and Applications",
+      "topic": "Recombinant DNA",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the main steps in making a recombinant DNA molecule and obtaining a product from it. Explain the role of restriction enzymes, vectors and selectable markers, and describe the principle of insertional inactivation.",
+      "solution": "**Step 1: isolating the DNA.** The cell is broken open and the DNA freed using enzymes chosen for the organism — **lysozyme** for bacteria, **cellulase** for plants, **chitinase** for fungi. **RNase** and **protease** remove RNA and protein, and the purified DNA is precipitated with chilled ethanol, appearing as fine white threads.\n\n**Step 2: cutting with restriction enzymes.** Both the **gene of interest** and the **vector** are cut with the **same** restriction enzyme.\n\nThis is the crucial choice. A restriction endonuclease recognises a specific **palindromic** sequence and makes a **staggered** cut, leaving short single-stranded overhangs called **sticky ends**. Because the same enzyme leaves **complementary** sticky ends on any DNA whatsoever, the insert and the vector will base-pair with each other — even though one came from a human and the other from a bacterium.\n\nThis is why restriction enzymes are called molecular scissors, and why the palindromic recognition site matters: it guarantees both cuts leave matching overhangs.\n\n**Step 3: joining with ligase.** The sticky ends anneal by hydrogen bonding, and **DNA ligase** seals the nicks in the sugar-phosphate backbone, producing a single **recombinant DNA** molecule.\n\n**Step 4: transformation into a host.** The recombinant vector is introduced into a host cell, usually **E. coli**. Bacterial cells are made **competent** by treatment with divalent calcium ions followed by a brief **heat shock** at $42^\\circ\\text{C}$. Other routes are **microinjection** for animal cells, the **gene gun** for plants, and **Agrobacterium** as a natural plant vector.\n\n**Step 5: selecting the transformants.** Only a tiny fraction of cells take up the vector, so the transformed ones must be found — this is what the selectable marker is for, and it is dealt with below.\n\n**Step 6: culture and downstream processing.** The selected cells are grown in a **bioreactor**, which maintains optimal temperature, pH, oxygen and agitation at volumes of 100 to 1000 litres. The product is then extracted, purified, and formulated with preservatives, followed by clinical trials and quality control.\n\n**The role of the vector.**\n\nA gene on its own cannot multiply inside a cell. The vector is the vehicle that carries it and, more importantly, **replicates** it. Three features are essential:\n\n**Origin of replication (ori)** — the sequence at which replication starts. It also governs **copy number**: a vector with a high-copy-number ori yields far more product.\n\n**Selectable marker** — to pick out transformants.\n\n**Unique cloning sites** — single recognition sites for particular restriction enzymes. They must be **unique**, because a second site elsewhere would cut the vector into pieces.\n\n**Selectable markers, and why they are needed.**\n\nTransformation is extremely inefficient. Perhaps one cell in ten thousand takes up the vector, and there is no way to see which. A selectable marker — typically a gene for **antibiotic resistance** — solves this: grow everything on medium containing the antibiotic, and only the transformants survive.\n\nBut this leaves a second problem, and it is the interesting one. **The marker identifies cells that took up a vector — not cells that took up a vector carrying the insert.** A vector that re-ligated without the gene would confer resistance just as well.\n\n**Insertional inactivation.**\n\nThe trick is to insert the foreign gene **into the middle of a second marker gene**, deliberately destroying it.\n\nIn pBR322 there are two resistance genes, **ampicillin** and **tetracycline**. Cloning into the **Bam**HI site, which lies inside the tetracycline gene, **inactivates** it.\n\nNow the three possible outcomes are distinguishable:\n\n**Non-transformed cells** die on ampicillin.\n\n**Cells with a re-circularised vector** grow on ampicillin **and** on tetracycline.\n\n**True recombinants** grow on ampicillin but **not** on tetracycline, because the insert has broken that gene.\n\nSo the recombinants are precisely the colonies that grow on one plate and fail on the other.\n\nThe drawback is that it requires **replica plating** onto two media, which is laborious. The modern alternative uses a gene whose product gives a **colour**: insertion into the **lacZ** gene destroys beta-galactosidase, so recombinant colonies appear **white** on a chromogenic substrate while non-recombinants turn **blue**. One plate, one glance — which is why blue-white screening largely replaced the antibiotic version."
+    }
+  ]
+}

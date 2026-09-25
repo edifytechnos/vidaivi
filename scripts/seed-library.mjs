@@ -38,6 +38,7 @@ const SHELVES = {
   "class12-maths": { board: "CBSE", klass: "12", subject: "Maths" },
   "class12-physics": { board: "CBSE", klass: "12", subject: "Physics" },
   "class12-chemistry": { board: "CBSE", klass: "12", subject: "Chemistry" },
+  "class12-biology": { board: "CBSE", klass: "12", subject: "Biology" },
   "igcse-maths": { board: "Cambridge IGCSE", klass: "10", subject: "Maths (0580)" },
   "igcse-science": { board: "Cambridge IGCSE", klass: "10", subject: "Combined Science (0653)" },
   "alevel-maths": { board: "Cambridge A Level", klass: "12", subject: "Maths (9709)" },

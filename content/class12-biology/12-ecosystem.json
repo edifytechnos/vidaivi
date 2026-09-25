@@ -1,0 +1,238 @@
+{
+  "id": "lib-c12bio-eco",
+  "title": "Ecosystem and Energy Flow",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-eco-01",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Trophic levels",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In an ecosystem, green plants occupy which trophic level?",
+      "options": [
+        "First",
+        "Second",
+        "Third",
+        "Fourth"
+      ],
+      "answer": 0,
+      "solution": "Green plants are **producers** and occupy the **first** trophic level, since they fix solar energy into chemical energy by photosynthesis.\n\nHerbivores are the second level, primary carnivores the third, and so on.\n\nAll other levels depend on the first, which is why the productivity of the producers sets a ceiling on everything above them."
+    },
+    {
+      "id": "c12bio-eco-02",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Energy flow",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ten per cent law of energy transfer states that:",
+      "options": [
+        "Ten per cent of energy is lost at each level",
+        "About ten per cent of energy passes to the next trophic level",
+        "Ten per cent of species survive",
+        "Energy increases by ten per cent"
+      ],
+      "answer": 1,
+      "solution": "Lindeman's ten per cent law: only about **10%** of the energy at one trophic level is incorporated into the next. The other 90% is lost as **heat in respiration**, in undigested matter and in unconsumed biomass.\n\nIt is a rule of thumb rather than a constant — real values range from 1% to 20%.\n\nThe consequence is that food chains are **short**, rarely more than four or five links: after four transfers there is simply not enough energy left to support another level."
+    },
+    {
+      "id": "c12bio-eco-03",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Ecological pyramids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which ecological pyramid is **always** upright?",
+      "options": [
+        "Pyramid of numbers",
+        "Pyramid of biomass",
+        "Pyramid of energy",
+        "All of them"
+      ],
+      "answer": 2,
+      "solution": "The **pyramid of energy** is always upright, without exception.\n\nThe reason is thermodynamic rather than biological: energy is lost as heat at every transfer, so a higher level can never contain more energy than the one below it. It would violate the second law.\n\nThe other two **can** be inverted. A single large tree supporting many insects inverts the pyramid of **numbers**; a sea where small, fast-reproducing phytoplankton support a larger standing crop of zooplankton inverts the pyramid of **biomass**, because biomass measures a standing stock at an instant rather than a rate."
+    },
+    {
+      "id": "c12bio-eco-04",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Decomposition",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The correct sequence of steps in decomposition is:",
+      "options": [
+        "Humification, fragmentation, leaching, mineralisation",
+        "Fragmentation, leaching, catabolism, humification, mineralisation",
+        "Mineralisation, humification, leaching",
+        "Leaching, humification, fragmentation"
+      ],
+      "answer": 1,
+      "solution": "**Fragmentation** — detritivores such as earthworms break the litter into smaller pieces, greatly increasing the surface area.\n\n**Leaching** — water-soluble nutrients percolate down and may be lost to the soil.\n\n**Catabolism** — bacterial and fungal enzymes break the detritus into simpler compounds.\n\n**Humification** — a dark, amorphous, highly resistant substance called **humus** accumulates.\n\n**Mineralisation** — the humus is slowly degraded, releasing inorganic nutrients back to the soil.\n\nDecomposition is largely an **oxygen-requiring** process, so it is fastest where it is warm and moist and very slow where it is cold or waterlogged."
+    },
+    {
+      "id": "c12bio-eco-05",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Productivity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Net primary productivity (NPP) equals:",
+      "options": [
+        "GPP plus respiration",
+        "GPP minus respiration",
+        "GPP times respiration",
+        "Respiration minus GPP"
+      ],
+      "answer": 1,
+      "solution": "$\\text{NPP} = \\text{GPP} - \\text{R}$.\n\n**Gross primary productivity** is the total organic matter produced by photosynthesis. Plants use a substantial part of it for their **own respiration**, and what is left over — the NPP — is the biomass actually **available to herbivores**.\n\nSo NPP, not GPP, is what determines how much animal life an ecosystem can support."
+    },
+    {
+      "id": "c12bio-eco-06",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Ecological succession",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The final, stable community reached at the end of ecological succession is called the:",
+      "options": [
+        "Pioneer community",
+        "Seral community",
+        "Climax community",
+        "Primary community"
+      ],
+      "answer": 2,
+      "solution": "The **climax community** is the stable, self-perpetuating end point, in equilibrium with the climate.\n\nThe first colonisers are the **pioneer** community — lichens on bare rock in primary succession — and the intermediate stages are **seral** communities.\n\n**Secondary** succession, on land that already has soil after a fire or flood, reaches climax far faster than primary succession, which must build soil from bare rock."
+    },
+    {
+      "id": "c12bio-eco-07",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Nutrient cycling",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The reservoir for the phosphorus cycle is:",
+      "options": [
+        "The atmosphere",
+        "Rocks and sediments",
+        "The oceans only",
+        "Living organisms"
+      ],
+      "answer": 1,
+      "solution": "Phosphorus has a **sedimentary** cycle: its reservoir is **rock**, and it is released by weathering.\n\nThis is the key contrast with the **gaseous** cycles of carbon and nitrogen, whose reservoir is the atmosphere.\n\nBecause rock weathers slowly and there is no atmospheric pool to draw on, phosphorus is often the **limiting nutrient** in an ecosystem — and why phosphate run-off from fertiliser so readily causes eutrophication."
+    },
+    {
+      "id": "c12bio-eco-08",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Energy flow",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Energy flow in an ecosystem is:",
+      "options": [
+        "Cyclic",
+        "Unidirectional",
+        "Bidirectional",
+        "Random"
+      ],
+      "answer": 1,
+      "solution": "Energy flow is **unidirectional**: sun → producers → consumers → decomposers, and out as heat. It never returns.\n\nThis is a direct consequence of the second law of thermodynamics, and it is why an ecosystem needs a **continuous** input of sunlight to keep running.\n\n**Nutrients** are quite different — they **cycle** indefinitely between the living and non-living components. Energy flows through; matter goes round."
+    },
+    {
+      "id": "c12bio-eco-09",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Productivity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which ecosystem has the highest net primary productivity per unit area?",
+      "options": [
+        "Open ocean",
+        "Desert",
+        "Tropical rainforest",
+        "Tundra"
+      ],
+      "answer": 2,
+      "solution": "**Tropical rainforest** has the highest NPP per unit area, because it has abundant light, warmth, water and nutrients all year round.\n\nThe **open ocean** has very low productivity per unit area — it is a nutrient desert — yet contributes an enormous share of global productivity simply because it covers so much of the planet.\n\nDeserts are limited by water and tundra by temperature."
+    },
+    {
+      "id": "c12bio-eco-10",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Energy flow",
+      "type": "numeric",
+      "marks": 3,
+      "q": "If producers capture $10{,}000\\ \\text{J}$ of energy, how much is available to secondary consumers, in joules, by the ten per cent law?",
+      "answer": 100,
+      "tolerance": 1,
+      "accept": [
+        "100",
+        "100 J"
+      ],
+      "solution": "Producers: $10{,}000\\ \\text{J}$\n\nPrimary consumers (herbivores): $10\\%$ of $10{,}000 = 1000\\ \\text{J}$\n\nSecondary consumers: $10\\%$ of $1000 = \\mathbf{100\\ \\text{J}}$\n\nTwo transfers, so the energy falls by a factor of a hundred."
+    },
+    {
+      "id": "c12bio-eco-11",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Productivity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If GPP is $1000\\ \\mathrm{g\\,m^{-2}\\,yr^{-1}}$ and respiration is $400\\ \\mathrm{g\\,m^{-2}\\,yr^{-1}}$, find the NPP in the same units.",
+      "answer": 600,
+      "tolerance": 5,
+      "accept": [
+        "600"
+      ],
+      "solution": "$\\text{NPP} = \\text{GPP} - \\text{R} = 1000 - 400 = \\mathbf{600\\ \\mathrm{g\\,m^{-2}\\,yr^{-1}}}$.\n\nThis is the amount actually available to the herbivores."
+    },
+    {
+      "id": "c12bio-eco-12",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Energy flow",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a food chain with four trophic levels, what percentage of the producers' energy reaches the top level?",
+      "answer": 0.1,
+      "tolerance": 0.01,
+      "accept": [
+        "0.1",
+        "0.1%"
+      ],
+      "solution": "Three transfers separate level 1 from level 4.\n\n$(0.1)^{3} = 0.001 = \\mathbf{0.1\\%}$\n\nOnly a thousandth of the producers' energy reaches the fourth level, which is exactly why food chains are so short and why top predators are always rare."
+    },
+    {
+      "id": "c12bio-eco-13",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Nutrient cycling",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What percentage of the atmosphere is nitrogen gas, to the nearest whole number?",
+      "answer": 78,
+      "tolerance": 1,
+      "accept": [
+        "78",
+        "78%"
+      ],
+      "solution": "About $\\mathbf{78\\%}$ of the atmosphere is $\\text{N}_2$.\n\nDespite this abundance, nitrogen is frequently the **limiting nutrient**, because the triple bond in $\\text{N}_2$ is so strong that most organisms cannot use it. Only nitrogen-fixing bacteria, and lightning, can break it."
+    },
+    {
+      "id": "c12bio-eco-14",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Ecological pyramids",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many trophic levels are typically found in a food chain at most?",
+      "answer": 5,
+      "tolerance": 1,
+      "accept": [
+        "4",
+        "5",
+        "4-5"
+      ],
+      "solution": "Rarely more than $\\mathbf{4}$ or $\\mathbf{5}$ levels.\n\nThe reason is energetic, not biological: with only about $10\\%$ passing on at each step, there is simply too little energy left after four transfers to support another level."
+    },
+    {
+      "id": "c12bio-eco-15",
+      "chapter": "Ecosystem and Energy Flow",
+      "topic": "Energy flow",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain energy flow through an ecosystem, including the ten per cent law. Describe the three ecological pyramids, explaining which can be inverted and why the pyramid of energy never can.",
+      "solution": "**The source, and the route.**\n\nEssentially all energy in an ecosystem comes from the **sun**. Of the solar radiation reaching the Earth, only about **50%** is photosynthetically active, and green plants capture only **2 to 10%** of that. Everything that follows is built on this small fraction.\n\nProducers convert it to chemical energy in organic compounds. It then passes along a **food chain**: producers → herbivores → carnivores → top carnivores, with decomposers acting on every level.\n\n**Why the flow is one-way.**\n\nEnergy flow is **unidirectional and non-cyclic**. At each transfer a large part is lost as **heat** during respiration, and by the second law of thermodynamics that heat cannot be recovered as useful energy.\n\nThis is the fundamental contrast with **nutrients**, which cycle round indefinitely. Energy **flows through** an ecosystem; matter **goes round** it. That is why an ecosystem needs a continuous supply of sunlight but not a continuous supply of carbon.\n\n**The ten per cent law.** Lindeman's rule: roughly **10%** of the energy at one trophic level is incorporated into the next. The remaining 90% goes to:\n\n- **respiration**, by far the largest share, lost as heat\n- material **not eaten**\n- material eaten but **not digested**, lost in faeces\n\nThe figure varies in reality from about 1% to 20%; 10% is a convenient average, not a constant.\n\n**Its consequence.** Food chains are **short**. After four transfers, only $(0.1)^{4} = 0.01\\%$ of the original energy remains — not enough to sustain a further level. This single fact explains why top predators are always few, why they need large territories, and why no ecosystem has a ten-link food chain.\n\nIt also explains a human question: a given area of land feeds far more people growing grain than raising cattle, because eating one level lower avoids a 90% loss.\n\n**The three ecological pyramids.**\n\n**Pyramid of numbers** — the number of individuals at each level.\n\nUsually upright, as in a grassland. But it **can be inverted**: a single large tree supports thousands of insects, which support fewer birds, giving a narrow base and a wide middle. A parasitic food chain is inverted throughout, since each host carries many parasites and each parasite many hyperparasites.\n\n**Pyramid of biomass** — the total dry mass at each level.\n\nUsually upright on land. But it is **famously inverted in the sea**. Phytoplankton have a **small standing biomass** at any instant, yet they reproduce so rapidly that they support a much larger biomass of zooplankton.\n\nThis is worth being clear about, because it looks impossible. Biomass is a **standing stock measured at one moment**, not a rate. The phytoplankton are being eaten almost as fast as they grow, so few are present at any instant — but the **total produced over a year** is enormous. There is no paradox and no violation of anything; the pyramid is simply measuring the wrong quantity to reveal the flow.\n\n**Pyramid of energy** — the energy flow per unit area per unit time at each level.\n\n**Always upright. There are no exceptions.**\n\nThe reason is thermodynamic rather than ecological. Energy is lost as heat at every single transfer, so the energy passing through a level can **never** exceed that passing through the level below it. An inverted pyramid of energy would mean a level receiving more energy than was supplied to it, which the first and second laws forbid outright.\n\n**Which pyramid to trust.** The pyramid of energy is the most accurate representation of how an ecosystem works, precisely because it measures a **rate** rather than a standing stock — and it is a rate that the losses apply to. The apparent paradoxes in the other two pyramids arise entirely from measuring a snapshot of numbers or mass instead of the flow of energy through time. Where the three disagree, the pyramid of energy is the one that is telling the truth."
+    }
+  ]
+}
