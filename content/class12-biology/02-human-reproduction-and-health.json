@@ -1,0 +1,236 @@
+{
+  "id": "lib-c12bio-hrp",
+  "title": "Human Reproduction and Reproductive Health",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-hrp-01",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Gametogenesis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Spermatogenesis occurs in the:",
+      "options": [
+        "Epididymis",
+        "Seminiferous tubules of the testis",
+        "Vas deferens",
+        "Prostate gland"
+      ],
+      "answer": 1,
+      "solution": "Sperm are produced in the **seminiferous tubules** of the testis, from spermatogonia at the wall inward.\n\nTwo supporting cell types matter: **Sertoli cells** inside the tubules nourish the developing sperm, while **Leydig cells** in the tissue between the tubules secrete **testosterone**.\n\nThe **epididymis** stores and matures sperm rather than producing them, and the prostate contributes fluid to the semen."
+    },
+    {
+      "id": "c12bio-hrp-02",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Menstrual cycle",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Ovulation in a typical 28-day human menstrual cycle occurs around day:",
+      "options": [
+        "$1$",
+        "$7$",
+        "$14$",
+        "$28$"
+      ],
+      "answer": 2,
+      "solution": "Ovulation occurs around **day 14**, triggered by a sharp **surge in luteinising hormone (LH)**.\n\nThe cycle runs: menstrual phase (days 1 to 5), follicular phase (6 to 13), **ovulation** (14), and luteal phase (15 to 28).\n\nThe LH surge is the immediate cause, and it is itself triggered by the high oestrogen produced by the maturing follicle — one of the few examples of **positive** feedback in human physiology."
+    },
+    {
+      "id": "c12bio-hrp-03",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Fertilisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Fertilisation in humans normally occurs in the:",
+      "options": [
+        "Uterus",
+        "Ampullary region of the fallopian tube",
+        "Ovary",
+        "Cervix"
+      ],
+      "answer": 1,
+      "solution": "Fertilisation takes place in the **ampullary-isthmic junction** of the fallopian tube, not the uterus.\n\nBoth the sperm and the ovum must reach that point at the same time, which is why fertilisation is far from guaranteed after any single act of intercourse.\n\nThe zygote then travels down to the uterus, dividing as it goes, and implants as a **blastocyst** about 6 to 7 days later. An embryo implanting in the tube instead is an **ectopic** pregnancy."
+    },
+    {
+      "id": "c12bio-hrp-04",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Hormones",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The corpus luteum secretes mainly:",
+      "options": [
+        "Oestrogen",
+        "Progesterone",
+        "LH",
+        "FSH"
+      ],
+      "answer": 1,
+      "solution": "After ovulation the ruptured follicle becomes the **corpus luteum**, which secretes large amounts of **progesterone**.\n\nProgesterone maintains the **endometrium**, preparing it for implantation.\n\nIf fertilisation does not occur the corpus luteum degenerates, progesterone falls, and the endometrium breaks down — which **is** menstruation. If it does occur, **hCG** from the embryo keeps the corpus luteum alive, and it is hCG that a pregnancy test detects."
+    },
+    {
+      "id": "c12bio-hrp-05",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Embryonic development",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The structure that implants in the uterine wall is the:",
+      "options": [
+        "Zygote",
+        "Morula",
+        "Blastocyst",
+        "Gastrula"
+      ],
+      "answer": 2,
+      "solution": "The **blastocyst** implants, about 6 to 7 days after fertilisation.\n\nThe sequence is zygote → 2, 4, 8, 16 cells → **morula** (a solid ball) → **blastocyst** (a hollow ball).\n\nThe blastocyst has two parts: the **trophoblast**, an outer layer which attaches to the endometrium and later forms the placenta, and the **inner cell mass**, which becomes the embryo itself."
+    },
+    {
+      "id": "c12bio-hrp-06",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Placenta",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The placenta functions as:",
+      "options": [
+        "Only a nutritive organ",
+        "A structure for exchange and also an endocrine gland",
+        "Only a barrier",
+        "A storage organ"
+      ],
+      "answer": 1,
+      "solution": "The placenta does two quite different jobs.\n\n**Exchange**: oxygen and nutrients pass from mother to foetus, and carbon dioxide and wastes the other way. Maternal and foetal blood come close but **never mix**.\n\n**Endocrine**: it secretes **hCG**, **hPL**, oestrogen, progesterone and relaxin. This is why the corpus luteum is no longer needed after the first trimester — the placenta has taken over its hormonal role."
+    },
+    {
+      "id": "c12bio-hrp-07",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Contraception",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which contraceptive method also protects against sexually transmitted infections?",
+      "options": [
+        "Oral pills",
+        "IUDs",
+        "Condoms",
+        "Tubectomy"
+      ],
+      "answer": 2,
+      "solution": "**Condoms** are the only method listed that acts as a **physical barrier** to the exchange of body fluids, so they protect against STIs including HIV as well as preventing pregnancy.\n\nPills, IUDs and surgical sterilisation prevent conception but offer **no protection whatever** against infection.\n\nThat dual protection is why condoms are promoted even alongside other methods."
+    },
+    {
+      "id": "c12bio-hrp-08",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "ART",
+      "type": "mcq",
+      "marks": 1,
+      "q": "IVF followed by transfer of an embryo of more than 8 blastomeres into the uterus is called:",
+      "options": [
+        "ZIFT",
+        "GIFT",
+        "IUT",
+        "ICSI"
+      ],
+      "answer": 2,
+      "solution": "**IUT — intrauterine transfer** — is used for an embryo of **more than 8 blastomeres**, transferred into the **uterus**.\n\n**ZIFT** (zygote intrafallopian transfer) places an embryo of up to 8 blastomeres into the **fallopian tube**.\n\nThe logic is developmental: an early embryo is transferred to where it would naturally be at that stage, and a later one to where it would have reached by then.\n\n**GIFT** transfers an ovum rather than an embryo, and **ICSI** injects a single sperm directly into an ovum."
+    },
+    {
+      "id": "c12bio-hrp-09",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Reproductive health",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Amniocentesis is misused in India for:",
+      "options": [
+        "Detecting genetic disorders",
+        "Female foeticide after sex determination",
+        "Treating infertility",
+        "Preventing infection"
+      ],
+      "answer": 1,
+      "solution": "Amniocentesis is a legitimate diagnostic test, sampling amniotic fluid to detect chromosomal abnormalities and metabolic disorders before birth.\n\nIts **misuse** is for sex determination followed by the abortion of female foetuses. This is why **sex determination using it is legally banned in India**, under the PCPNDT Act.\n\nIt is a clear case of a beneficial technique needing legal restriction because of how it came to be used — the test itself is unchanged, only its permitted purpose."
+    },
+    {
+      "id": "c12bio-hrp-10",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Gametogenesis",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many functional sperm are produced from one primary spermatocyte?",
+      "answer": 4,
+      "tolerance": 0.5,
+      "accept": [
+        "4"
+      ],
+      "solution": "One primary spermatocyte undergoes meiosis I to give 2 secondary spermatocytes, and meiosis II to give $\\mathbf{4}$ spermatids, all of which mature into functional sperm.\n\nContrast **oogenesis**, where one primary oocyte gives just **one** ovum plus three polar bodies that degenerate — the cytoplasm is kept in a single cell rather than shared out, because the ovum must provision the early embryo."
+    },
+    {
+      "id": "c12bio-hrp-11",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Gametogenesis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many ova are produced from one primary oocyte?",
+      "answer": 1,
+      "tolerance": 0.1,
+      "accept": [
+        "1"
+      ],
+      "solution": "$\\mathbf{1}$ ovum, together with **three polar bodies** that degenerate.\n\nThe divisions are deliberately **unequal**: nearly all the cytoplasm goes to the one surviving cell. Sharing it four ways would leave each with too little to support an embryo before implantation."
+    },
+    {
+      "id": "c12bio-hrp-12",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Menstrual cycle",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the duration, in days, of a typical human menstrual cycle?",
+      "answer": 28,
+      "tolerance": 1,
+      "accept": [
+        "28"
+      ],
+      "solution": "About $\\mathbf{28}$ days, though 21 to 35 is within the normal range.\n\nThe **luteal** phase after ovulation is the consistent part at about 14 days; most of the variation between women lies in the **follicular** phase before it."
+    },
+    {
+      "id": "c12bio-hrp-13",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Embryonic development",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the normal gestation period in humans, in months?",
+      "answer": 9,
+      "tolerance": 0.5,
+      "accept": [
+        "9",
+        "9 months",
+        "280 days"
+      ],
+      "solution": "About $\\mathbf{9}$ months, conventionally 280 days counted from the last menstrual period.\n\nBy the end of the first trimester most major organ systems are formed, which is why that period is the most vulnerable to teratogens."
+    },
+    {
+      "id": "c12bio-hrp-14",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Embryonic development",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many days after fertilisation does implantation typically occur?",
+      "answer": 7,
+      "tolerance": 1,
+      "accept": [
+        "7",
+        "6-7"
+      ],
+      "solution": "About $\\mathbf{7}$ days, usually quoted as 6 to 7.\n\nThe embryo spends that time travelling down the fallopian tube and dividing, reaching the uterus as a blastocyst. It does not implant earlier because only the blastocyst's trophoblast can attach to the endometrium."
+    },
+    {
+      "id": "c12bio-hrp-15",
+      "chapter": "Human Reproduction and Reproductive Health",
+      "topic": "Menstrual cycle",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the hormonal control of the human menstrual cycle through its four phases. Explain what happens differently if fertilisation occurs, and why the fall in progesterone is the immediate cause of menstruation.",
+      "solution": "**The hormones involved.** Four matter: **FSH** and **LH** from the anterior pituitary, and **oestrogen** and **progesterone** from the ovary.\n\n**1. Menstrual phase, days 1 to 5.**\n\nOestrogen and progesterone are both at their lowest. Without progesterone to maintain it, the **endometrium breaks down** and is shed with blood — this is menstruation.\n\nThe low hormone levels **release the pituitary from inhibition**, so FSH begins to rise, starting the next cycle.\n\n**2. Follicular (proliferative) phase, days 6 to 13.**\n\n**FSH** stimulates several ovarian follicles, one of which becomes dominant while the rest degenerate.\n\nThe growing follicle secretes increasing **oestrogen**, which causes the endometrium to **proliferate** and thicken.\n\n**3. Ovulation, around day 14.**\n\nHere the feedback **reverses**, which is the interesting part. Through most of the cycle oestrogen **inhibits** LH by negative feedback. But once oestrogen passes a threshold and stays high, it begins to **stimulate** LH instead — a switch to **positive** feedback, one of very few in human physiology.\n\nThe result is a sharp **LH surge**, which ruptures the follicle and releases the ovum.\n\n**4. Luteal (secretory) phase, days 15 to 28.**\n\nUnder LH, the ruptured follicle becomes the **corpus luteum**, secreting large amounts of **progesterone**.\n\nProgesterone **maintains and further prepares** the endometrium, making it thick, well supplied with blood and secretory — ready to receive an embryo. It also suppresses FSH and LH, which prevents another follicle maturing.\n\n**If fertilisation does NOT occur.**\n\nThe corpus luteum has a fixed lifespan of about 10 to 12 days and then **degenerates** into the corpus albicans.\n\nProgesterone therefore **falls sharply**. The endometrium, whose blood supply depends entirely on it, can no longer be maintained: the spiral arteries constrict, the tissue becomes ischaemic and breaks down, and it is shed as menstruation.\n\n**This is why the fall in progesterone is the immediate cause.** Menstruation is not something actively triggered — it is the **withdrawal** of the support that was holding the endometrium in place. The lining is being continuously maintained, and it collapses when that maintenance stops.\n\nThe falling progesterone also lifts its inhibition of the pituitary, so FSH rises again and the next cycle begins. The cycle is therefore self-restarting.\n\n**If fertilisation DOES occur.**\n\nThe problem the embryo faces is precise: the corpus luteum is about to die on schedule, and if it does, the lining the embryo has just implanted in will be shed with the embryo in it.\n\nThe solution is that the implanting **trophoblast** secretes **human chorionic gonadotropin (hCG)**, which mimics LH and **rescues the corpus luteum**, keeping it alive and secreting progesterone.\n\nSo progesterone never falls, the endometrium is never shed, and **menstruation does not occur** — which is the first sign of pregnancy.\n\nhCG is detectable in urine within days of implantation, and detecting it is exactly how a home pregnancy test works.\n\nBy the end of the **first trimester** the **placenta** is producing enough progesterone itself, and the corpus luteum is no longer needed. It regresses, and the pregnancy continues unaffected — the handover having already taken place."
+    }
+  ]
+}

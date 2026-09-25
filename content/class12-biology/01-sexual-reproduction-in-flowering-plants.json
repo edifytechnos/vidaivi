@@ -1,0 +1,235 @@
+{
+  "id": "lib-c12bio-flw",
+  "title": "Sexual Reproduction in Flowering Plants",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-flw-01",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Flower structure",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The male reproductive part of a flower is the:",
+      "options": [
+        "Carpel",
+        "Stamen",
+        "Sepal",
+        "Petal"
+      ],
+      "answer": 1,
+      "solution": "The **stamen** is the male part, consisting of a **filament** and an **anther** in which pollen is produced. All the stamens together are the **androecium**.\n\nThe **carpel** (or pistil) is the female part — stigma, style and ovary — collectively the **gynoecium**.\n\nSepals and petals are accessory structures, protecting the bud and attracting pollinators respectively."
+    },
+    {
+      "id": "c12bio-flw-02",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Microsporogenesis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A mature pollen grain at the time of shedding usually contains:",
+      "options": [
+        "One cell",
+        "Two cells: a vegetative and a generative cell",
+        "Four cells",
+        "Eight cells"
+      ],
+      "answer": 1,
+      "solution": "In about $60\\%$ of angiosperms pollen is shed at the **two-celled** stage: a large **vegetative cell** with abundant food reserves, and a small **generative cell** floating in its cytoplasm.\n\nThe generative cell divides later, in the pollen tube, to give the **two male gametes**.\n\nIn the remaining $40\\%$ that division happens before shedding, so the grain is released at the **three-celled** stage."
+    },
+    {
+      "id": "c12bio-flw-03",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Embryo sac",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A typical mature embryo sac is:",
+      "options": [
+        "8-nucleate and 7-celled",
+        "7-nucleate and 8-celled",
+        "4-nucleate and 4-celled",
+        "2-nucleate"
+      ],
+      "answer": 0,
+      "solution": "The typical embryo sac is **8-nucleate but 7-celled**.\n\nThe functional megaspore divides three times mitotically to give eight nuclei. Cell walls then form around six of them — three **antipodals**, two **synergids** and one **egg cell** — while the remaining **two polar nuclei** stay together in one large **central cell**.\n\nSo eight nuclei end up in seven cells, because one cell holds two of them. That central cell is the one fertilised by the second male gamete."
+    },
+    {
+      "id": "c12bio-flw-04",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Double fertilisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In double fertilisation, the second male gamete fuses with:",
+      "options": [
+        "The egg cell",
+        "The two polar nuclei",
+        "A synergid",
+        "An antipodal cell"
+      ],
+      "answer": 1,
+      "solution": "**Syngamy**: the first male gamete fuses with the egg to form the diploid **zygote** ($2n$).\n\n**Triple fusion**: the second fuses with the **two polar nuclei** to form the triploid **primary endosperm nucleus** ($3n$), which develops into the nutritive endosperm.\n\nBoth happening in one embryo sac is **double fertilisation**, and it is unique to flowering plants. Its advantage is that the food store is made **only** when fertilisation has actually succeeded, so nothing is invested in an ovule that was never fertilised."
+    },
+    {
+      "id": "c12bio-flw-05",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Pollination",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Cleistogamous flowers are:",
+      "options": [
+        "Always cross-pollinated",
+        "Closed flowers that are invariably self-pollinated",
+        "Wind pollinated",
+        "Sterile"
+      ],
+      "answer": 1,
+      "solution": "**Cleistogamous** flowers never open, so the anthers and stigma lie close together inside and pollen is shed directly onto the stigma.\n\nThey are therefore **invariably self-pollinated** and assured of setting seed even when no pollinator is available.\n\nThe cost is that there is **no genetic variation** at all — no new combinations can arise. Many such plants, like **Commelina**, produce both cleistogamous and normal chasmogamous flowers, hedging between certainty and variation."
+    },
+    {
+      "id": "c12bio-flw-06",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Outbreeding devices",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Self-incompatibility prevents self-pollen from:",
+      "options": [
+        "Being produced",
+        "Germinating or growing a pollen tube on the same flower's stigma",
+        "Reaching the stigma",
+        "Being viable"
+      ],
+      "answer": 1,
+      "solution": "**Self-incompatibility** is a genetic mechanism that blocks self-pollen **after** it has landed — it inhibits germination on the stigma, or arrests the pollen tube in the style.\n\nThis is an **outbreeding device**: continued self-pollination causes inbreeding depression, so plants have evolved several ways to prevent it.\n\nThe others are **dichogamy** (anthers and stigma maturing at different times), **herkogamy** (their being positioned apart), and producing **unisexual** flowers, which in a dioecious plant prevents selfing absolutely."
+    },
+    {
+      "id": "c12bio-flw-07",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Apomixis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Apomixis is:",
+      "options": [
+        "Seed formation without fertilisation",
+        "Double fertilisation",
+        "Pollen formation",
+        "Fruit without seed"
+      ],
+      "answer": 0,
+      "solution": "**Apomixis** is the formation of seeds **without fertilisation** — a form of asexual reproduction that mimics the sexual one.\n\nIt has real agricultural value. Hybrid seed is expensive because hybrid vigour is lost in the next generation, so farmers must buy fresh seed every year. If apomixis could be introduced into hybrid varieties, the hybrid would breed true and seed could be kept from one harvest to the next.\n\n**Parthenocarpy** is different: fruit without seeds, as in the banana."
+    },
+    {
+      "id": "c12bio-flw-08",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Seed and fruit",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ovary wall develops into the:",
+      "options": [
+        "Seed coat",
+        "Pericarp",
+        "Embryo",
+        "Endosperm"
+      ],
+      "answer": 1,
+      "solution": "After fertilisation the ovary becomes the **fruit** and its wall becomes the **pericarp**.\n\nThe correspondences are worth learning together: ovule → seed, integuments → seed coat, zygote → embryo, primary endosperm nucleus → endosperm, and ovary → fruit.\n\nA fruit developing from the ovary alone is a **true** fruit; one in which the thalamus also contributes, as in the apple, is a **false** fruit."
+    },
+    {
+      "id": "c12bio-flw-09",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Pollination",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Wind-pollinated flowers typically have:",
+      "options": [
+        "Bright petals and nectar",
+        "Light dry pollen and feathery stigmas",
+        "Heavy sticky pollen",
+        "Strong scent"
+      ],
+      "answer": 1,
+      "solution": "Wind pollination is a lottery, so the adaptations all serve to increase the odds: **light, dry, non-sticky pollen** produced in enormous quantity, **feathery or hairy stigmas** to catch it, well-exposed anthers, and flowers that are small and inconspicuous.\n\nThere is **no point** in bright petals, scent or nectar, since the wind is not attracted by them, and these flowers duly lack all three.\n\nThe pollen-to-ovule ratio in wind-pollinated plants is enormous, which is the price of leaving it to chance."
+    },
+    {
+      "id": "c12bio-flw-10",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Double fertilisation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What is the ploidy of the endosperm in a typical flowering plant? Give the number.",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3",
+        "3n",
+        "triploid"
+      ],
+      "solution": "The endosperm arises from **triple fusion**: one haploid male gamete ($n$) fusing with **two** haploid polar nuclei ($n + n$).\n\n$n + n + n = \\mathbf{3n}$, triploid.\n\nThe embryo, by contrast, is $2n$."
+    },
+    {
+      "id": "c12bio-flw-11",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Microsporogenesis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many pollen grains are produced from one pollen mother cell?",
+      "answer": 4,
+      "tolerance": 0.5,
+      "accept": [
+        "4"
+      ],
+      "solution": "One diploid pollen mother cell undergoes **meiosis**, producing $\\mathbf{4}$ haploid microspores — a **tetrad** — each of which becomes a pollen grain."
+    },
+    {
+      "id": "c12bio-flw-12",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Embryo sac",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many mitotic divisions does the functional megaspore undergo to form the mature embryo sac?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3"
+      ],
+      "solution": "$\\mathbf{3}$ successive mitotic divisions: $1 \\to 2 \\to 4 \\to 8$ nuclei.\n\nThey are **free-nuclear** divisions — the nuclei divide without cell walls forming — and walls appear only afterwards, which is exactly why two nuclei end up sharing the central cell."
+    },
+    {
+      "id": "c12bio-flw-13",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Embryo sac",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many synergids are present in a typical embryo sac?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "$\\mathbf{2}$ synergids, sitting either side of the egg cell at the micropylar end and forming the **egg apparatus** with it.\n\nThey carry **filiform apparatus**, finger-like thickenings that guide the pollen tube into the embryo sac. The pollen tube in fact enters through a synergid, not the egg."
+    },
+    {
+      "id": "c12bio-flw-14",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Double fertilisation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many male gametes are involved in double fertilisation in one embryo sac?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "$\\mathbf{2}$ — one fuses with the egg in **syngamy**, the other with the two polar nuclei in **triple fusion**.\n\nBoth are delivered by a single pollen tube, and both are used. That is what makes the fertilisation double."
+    },
+    {
+      "id": "c12bio-flw-15",
+      "chapter": "Sexual Reproduction in Flowering Plants",
+      "topic": "Double fertilisation",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe double fertilisation in angiosperms, from pollination to the formation of the zygote and endosperm. Explain why it is regarded as an advantage unique to flowering plants, and describe what each part of the flower becomes after fertilisation.",
+      "solution": "**Pollination and germination.** A pollen grain lands on a **compatible** stigma. If the stigma accepts it, the grain absorbs water and nutrients and germinates, the **vegetative cell** producing a **pollen tube** that emerges through a germ pore.\n\n**Growth of the pollen tube.** The tube grows down through the style, guided chemically. The **generative cell** divides mitotically inside it, producing the **two male gametes** — in species shed at the three-celled stage this has already happened.\n\n**Entry into the ovule.** The tube usually enters through the **micropyle** (porogamy) and then penetrates a **synergid**, guided by its filiform apparatus. There it bursts, releasing both male gametes into the embryo sac.\n\n**The two fusions.**\n\n**Syngamy.** One male gamete ($n$) fuses with the **egg cell** ($n$), giving the diploid **zygote** ($2n$), which develops into the embryo.\n\n**Triple fusion.** The other male gamete ($n$) fuses with the **two polar nuclei** ($n + n$) in the central cell, giving the triploid **primary endosperm nucleus** ($3n$), which develops into the endosperm.\n\nBoth fusions occurring in a single embryo sac is **double fertilisation**, and it happens nowhere else in the plant or animal kingdoms.\n\n**Why it is an advantage, and it is a subtle one.**\n\nEvery seed-bearing plant must provision its seed with a food store. The question is **when**.\n\nIn a **gymnosperm**, the nutritive tissue is formed **before** fertilisation, from the female gametophyte. This is wasteful: if fertilisation fails — and it often does — the plant has already spent the resources on an ovule that will produce nothing.\n\nIn an angiosperm, the endosperm is formed **only after and only because** the second male gamete has arrived. Fertilisation is therefore the **trigger** for provisioning. No unfertilised ovule is ever stocked with food.\n\nSo double fertilisation is an economy measure, and the saving is real: an angiosperm can afford to produce very many ovules because it pays for a seed only when it has one. Combined with the fact that the endosperm is genetically related to both parents and carries a double dose of the maternal genome, it is thought to be one reason flowering plants came to dominate the land flora so completely.\n\n**What each part becomes after fertilisation.**\n\n**Ovary** → **fruit**\n\n**Ovary wall** → **pericarp**, the fruit wall\n\n**Ovule** → **seed**\n\n**Integuments** → **seed coat**, the outer testa and inner tegmen\n\n**Zygote** → **embryo**\n\n**Primary endosperm nucleus** → **endosperm**\n\n**Synergids and antipodals** → degenerate; they have done their work\n\n**Sepals, petals and stamens** → usually **fall off**, though the sepals persist in the tomato and the brinjal\n\n**Style and stigma** → wither, though the style persists as a feathery structure for dispersal in **Clematis**\n\n**Endosperm and the two kinds of seed.** In an **albuminous** seed — wheat, maize, castor, coconut — the endosperm persists and is the food store of the mature seed. In a **non-albuminous** seed — pea, gram, groundnut — it is completely consumed by the developing embryo, and the food is stored instead in the swollen **cotyledons**. Both routes reach the same end; they differ only in where the food is finally kept."
+    }
+  ]
+}
