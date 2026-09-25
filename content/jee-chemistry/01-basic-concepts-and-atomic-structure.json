@@ -1,0 +1,237 @@
+{
+  "id": "lib-jeec-bas",
+  "title": "Some Basic Concepts and Atomic Structure",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeec-bas-01",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Mole concept",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of molecules in $11.2\\ \\text{L}$ of a gas at STP is:",
+      "options": [
+        "$6.022\\times10^{23}$",
+        "$3.011\\times10^{23}$",
+        "$1.2\\times10^{24}$",
+        "$6.022\\times10^{22}$"
+      ],
+      "answer": 1,
+      "solution": "At STP one mole of any gas occupies $22.4\\ \\text{L}$.\n\n$n = \\dfrac{11.2}{22.4} = 0.5\\ \\text{mol}$\n\nNumber of molecules $= 0.5 \\times 6.022\\times10^{23} = \\mathbf{3.011\\times10^{23}}$."
+    },
+    {
+      "id": "jeec-bas-02",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Quantum numbers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The maximum number of electrons in a subshell with azimuthal quantum number $l$ is:",
+      "options": [
+        "$2l+1$",
+        "$2(2l+1)$",
+        "$4l+2$ only for $p$",
+        "$n^{2}$"
+      ],
+      "answer": 1,
+      "solution": "A subshell of given $l$ has $(2l+1)$ orbitals (the values of $m_l$ from $-l$ to $+l$), and each orbital holds **two** electrons of opposite spin.\n\nMaximum $= \\mathbf{2(2l+1)}$.\n\nSo $s$ ($l=0$) holds 2, $p$ ($l=1$) holds 6, $d$ ($l=2$) holds 10 and $f$ ($l=3$) holds 14."
+    },
+    {
+      "id": "jeec-bas-03",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Electronic configuration",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The electronic configuration of $\\text{Cr}$ (Z = 24) is:",
+      "options": [
+        "$[\\text{Ar}]3d^{4}4s^{2}$",
+        "$[\\text{Ar}]3d^{5}4s^{1}$",
+        "$[\\text{Ar}]3d^{6}$",
+        "$[\\text{Ar}]4s^{2}4p^{4}$"
+      ],
+      "answer": 1,
+      "solution": "Chromium is one of the two famous exceptions to the filling order.\n\n$\\mathbf{[\\text{Ar}]3d^{5}4s^{1}}$, not $3d^{4}4s^{2}$, because a **half-filled** $d$ subshell is unusually stable — the exchange energy gained outweighs the cost of promoting the $4s$ electron.\n\nCopper is the other: $[\\text{Ar}]3d^{10}4s^{1}$, for the same reason with a completely filled subshell."
+    },
+    {
+      "id": "jeec-bas-04",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Empirical formula",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A compound contains $40\\%$ C, $6.7\\%$ H and $53.3\\%$ O by mass. Its empirical formula is:",
+      "options": [
+        "$\\text{CHO}$",
+        "$\\text{CH}_2\\text{O}$",
+        "$\\text{C}_2\\text{H}_4\\text{O}_2$",
+        "$\\text{CH}_4\\text{O}$"
+      ],
+      "answer": 1,
+      "solution": "Divide each percentage by the atomic mass to get moles in $100\\ \\text{g}$:\n\nC: $\\dfrac{40}{12} = 3.33$\n\nH: $\\dfrac{6.7}{1} = 6.7$\n\nO: $\\dfrac{53.3}{16} = 3.33$\n\nDivide through by the smallest ($3.33$):\n\nC : H : O $= 1 : 2 : 1$\n\nEmpirical formula $\\mathbf{\\text{CH}_2\\text{O}}$ — which is glucose's empirical formula, its molecular formula being $\\text{C}_6\\text{H}_{12}\\text{O}_6$."
+    },
+    {
+      "id": "jeec-bas-05",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Quantum numbers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which set of quantum numbers is **not** possible?",
+      "options": [
+        "$n=3, l=2, m_l=-2$",
+        "$n=2, l=1, m_l=0$",
+        "$n=2, l=2, m_l=1$",
+        "$n=4, l=0, m_l=0$"
+      ],
+      "answer": 2,
+      "solution": "The rule is $l = 0, 1, \\ldots, (n-1)$ — so $l$ must be **less than** $n$.\n\nFor $n = 2$, $l$ can only be $0$ or $1$. **$n=2, l=2$ is impossible**; there is no $2d$ subshell.\n\nThe others are all legal: $m_l$ runs from $-l$ to $+l$ in each case."
+    },
+    {
+      "id": "jeec-bas-06",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Limiting reagent",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the reaction $\\text{N}_2 + 3\\text{H}_2 \\rightarrow 2\\text{NH}_3$, $1\\ \\text{mol}$ of $\\text{N}_2$ reacts with $2\\ \\text{mol}$ of $\\text{H}_2$. The limiting reagent is:",
+      "options": [
+        "$\\text{N}_2$",
+        "$\\text{H}_2$",
+        "Neither",
+        "Both equally"
+      ],
+      "answer": 1,
+      "solution": "The equation needs $3\\ \\text{mol}$ of $\\text{H}_2$ per mole of $\\text{N}_2$.\n\nOnly $2\\ \\text{mol}$ of $\\text{H}_2$ is supplied, which is enough for just $\\dfrac{2}{3}\\ \\text{mol}$ of $\\text{N}_2$.\n\nSo **$\\text{H}_2$ runs out first** and is the limiting reagent; $\\dfrac{1}{3}\\ \\text{mol}$ of $\\text{N}_2$ is left over."
+    },
+    {
+      "id": "jeec-bas-07",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Atomic structure",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Heisenberg uncertainty principle states that:",
+      "options": [
+        "$\\Delta x \\cdot \\Delta p \\ge \\dfrac{h}{4\\pi}$",
+        "$\\Delta x \\cdot \\Delta p = h$",
+        "$\\Delta x = \\Delta p$",
+        "$\\Delta E \\cdot \\Delta t = 0$"
+      ],
+      "answer": 0,
+      "solution": "$\\Delta x \\cdot \\Delta p \\ge \\dfrac{h}{4\\pi}$.\n\nPosition and momentum cannot both be known exactly — not because our instruments are poor, but because a particle does not simultaneously possess both to arbitrary precision.\n\nThis is why Bohr's definite orbits had to give way to **orbitals**, which are regions of probability."
+    },
+    {
+      "id": "jeec-bas-08",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Concentration",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Molality is defined as moles of solute per:",
+      "options": [
+        "Litre of solution",
+        "Kilogram of solvent",
+        "Litre of solvent",
+        "Mole of solution"
+      ],
+      "answer": 1,
+      "solution": "Molality $= \\dfrac{\\text{moles of solute}}{\\text{kilogram of \\textbf{solvent}}}$.\n\nMolarity uses litres of **solution** instead. The distinction matters because volume changes with temperature while mass does not — so molality is **temperature-independent**, which is why colligative-property work uses it."
+    },
+    {
+      "id": "jeec-bas-09",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Atomic structure",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Hund's rule of maximum multiplicity states that:",
+      "options": [
+        "Electrons fill the lowest orbital first",
+        "Orbitals of equal energy are singly occupied before any is doubled",
+        "No two electrons have the same four quantum numbers",
+        "Electrons pair with opposite spins"
+      ],
+      "answer": 1,
+      "solution": "Hund's rule: within a set of **degenerate** orbitals, every orbital is singly occupied, all with parallel spins, before any is doubly occupied.\n\nPairing two electrons in one orbital costs repulsion energy, so the atom avoids it while empty orbitals of the same energy remain.\n\nThe other options are the Aufbau principle and the Pauli exclusion principle."
+    },
+    {
+      "id": "jeec-bas-10",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Mole concept",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the number of moles in $88\\ \\text{g}$ of $\\text{CO}_2$ (molar mass $44\\ \\mathrm{g\\,mol^{-1}}$).",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2 mol",
+        "2.0"
+      ],
+      "solution": "$n = \\dfrac{\\text{mass}}{\\text{molar mass}} = \\dfrac{88}{44} = \\mathbf{2\\ \\text{mol}}$."
+    },
+    {
+      "id": "jeec-bas-11",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Concentration",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the molarity of a solution containing $0.5\\ \\text{mol}$ of solute in $250\\ \\text{mL}$ of solution, in $\\mathrm{mol\\,L^{-1}}$.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2 M",
+        "2.0"
+      ],
+      "solution": "$250\\ \\text{mL} = 0.25\\ \\text{L}$.\n\n$M = \\dfrac{n}{V} = \\dfrac{0.5}{0.25} = \\mathbf{2\\ \\mathrm{mol\\,L^{-1}}}$."
+    },
+    {
+      "id": "jeec-bas-12",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Atomic structure",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the energy, in electronvolts, of the $n = 3$ level of the hydrogen atom. Give the magnitude to two decimal places.",
+      "answer": 1.51,
+      "tolerance": 0.02,
+      "accept": [
+        "1.51",
+        "-1.51"
+      ],
+      "solution": "$E_n = -\\dfrac{13.6}{n^{2}}\\ \\text{eV}$\n\n$E_3 = -\\dfrac{13.6}{9} = -1.511\\ \\text{eV}$\n\nThe magnitude is $\\mathbf{1.51\\ \\text{eV}}$."
+    },
+    {
+      "id": "jeec-bas-13",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Limiting reagent",
+      "type": "numeric",
+      "marks": 3,
+      "q": "$4\\ \\text{g}$ of $\\text{H}_2$ reacts with $32\\ \\text{g}$ of $\\text{O}_2$ to form water ($2\\text{H}_2 + \\text{O}_2 \\rightarrow 2\\text{H}_2\\text{O}$). Find the mass of water formed, in grams.",
+      "answer": 36,
+      "tolerance": 0.5,
+      "accept": [
+        "36 g",
+        "36.0"
+      ],
+      "solution": "Moles: $\\text{H}_2 = \\dfrac{4}{2} = 2\\ \\text{mol}$, $\\text{O}_2 = \\dfrac{32}{32} = 1\\ \\text{mol}$.\n\nThe equation needs them in the ratio $2 : 1$, and $2 : 1$ is exactly what is supplied — **neither is limiting**, both are used up completely.\n\n$2\\ \\text{mol}$ of $\\text{H}_2$ gives $2\\ \\text{mol}$ of $\\text{H}_2\\text{O}$:\n\nmass $= 2 \\times 18 = \\mathbf{36\\ \\text{g}}$.\n\nCheck by conservation of mass: $4 + 32 = 36\\ \\text{g}$ ✓"
+    },
+    {
+      "id": "jeec-bas-14",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Quantum numbers",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the total number of orbitals in the shell $n = 3$.",
+      "answer": 9,
+      "tolerance": 0.5,
+      "accept": [
+        "9"
+      ],
+      "solution": "The number of orbitals in a shell is $n^{2}$.\n\n$n = 3$: $3^{2} = \\mathbf{9}$ — made up of one $3s$, three $3p$ and five $3d$ orbitals.\n\nThey hold $2n^{2} = 18$ electrons in total."
+    },
+    {
+      "id": "jeec-bas-15",
+      "chapter": "Some Basic Concepts and Atomic Structure",
+      "topic": "Atomic structure",
+      "type": "long",
+      "marks": 5,
+      "q": "State the postulates of Bohr's model of the hydrogen atom. Derive an expression for the radius of the $n$th orbit, and explain two limitations of the model.",
+      "solution": "**The postulates.**\n\n1. The electron moves in certain **stationary circular orbits** about the nucleus without radiating energy — contradicting classical electrodynamics, and asserted precisely because atoms do not collapse.\n2. The angular momentum is **quantised**: $mvr = \\dfrac{nh}{2\\pi}$, where $n = 1, 2, 3\\ldots$\n3. Radiation is emitted or absorbed only when the electron **jumps between** orbits, with $h\\nu = E_2 - E_1$.\n\n**Deriving the radius.**\n\nThe electrostatic attraction supplies the centripetal force:\n\n$\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{e^{2}}{r^{2}} = \\dfrac{mv^{2}}{r}$\n\n$mv^{2} = \\dfrac{e^{2}}{4\\pi\\varepsilon_0 r}$ ... (1)\n\nFrom the quantisation condition:\n\n$v = \\dfrac{nh}{2\\pi mr}$ ... (2)\n\nSubstituting (2) into (1):\n\n$m\\left(\\dfrac{nh}{2\\pi mr}\\right)^{2} = \\dfrac{e^{2}}{4\\pi\\varepsilon_0 r}$\n\n$\\dfrac{n^{2}h^{2}}{4\\pi^{2}mr^{2}} = \\dfrac{e^{2}}{4\\pi\\varepsilon_0 r}$\n\nRearranging for $r$:\n\n$\\boxed{r_n = \\dfrac{n^{2}h^{2}\\varepsilon_0}{\\pi m e^{2}}}$\n\nEverything except $n$ is a constant, so\n\n$r_n \\propto n^{2}$\n\nPutting in the numbers for $n = 1$ gives the **Bohr radius**, $r_1 = 0.529\\ \\text{Å}$, and $r_n = 0.529\\,n^{2}\\ \\text{Å}$.\n\nThe corresponding energy works out as $E_n = -\\dfrac{13.6}{n^{2}}\\ \\text{eV}$, which predicts the hydrogen spectral series exactly — the model's great triumph.\n\n**Two limitations.**\n\n1. **It fails for any atom with more than one electron.** The derivation assumes a single electron feeling only the nucleus. Add a second and the electron-electron repulsion makes the problem unsolvable this way; the model gets helium's spectrum badly wrong.\n\n2. **It contradicts the uncertainty principle.** A Bohr orbit specifies the electron's position **and** its momentum simultaneously and exactly, which $\\Delta x \\cdot \\Delta p \\ge \\dfrac{h}{4\\pi}$ forbids. The orbit is not merely unmeasurable — it is not a meaningful description. This is why quantum mechanics replaced the orbit with the **orbital**, a probability distribution.\n\nOther failures worth knowing: it cannot explain the **fine structure** (the splitting of spectral lines seen at high resolution), the **Zeeman** and **Stark** effects (splitting in magnetic and electric fields), or the **relative intensities** of spectral lines. And the quantisation of angular momentum is simply **asserted**, with no reason given — de Broglie later supplied one by treating the orbit as a standing electron wave, requiring $2\\pi r = n\\lambda$."
+    }
+  ]
+}

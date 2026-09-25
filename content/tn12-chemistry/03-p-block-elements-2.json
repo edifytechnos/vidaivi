@@ -1,0 +1,237 @@
+{
+  "id": "lib-tn12c-pb2",
+  "title": "p-Block Elements – II",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-pb2-01",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 15",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Nitrogen does not form $\\text{NCl}_5$ whereas phosphorus forms $\\text{PCl}_5$ because nitrogen:",
+      "options": [
+        "Is less electronegative",
+        "Has no vacant $d$ orbitals",
+        "Is larger",
+        "Is a gas"
+      ],
+      "answer": 1,
+      "solution": "Nitrogen is in **period 2** and its valence shell has only $2s$ and $2p$ orbitals — **no vacant $d$ orbitals**. It therefore cannot expand its octet beyond four bonds.\n\nPhosphorus is in period 3 with empty $3d$ orbitals available, so it can accommodate five bonds using $sp^{3}d$ hybridisation.\n\nThis is a general period-2 restriction: oxygen and fluorine are similarly limited, which is why $\\text{OF}_6$ and $\\text{FCl}_3$ do not exist while $\\text{SF}_6$ does."
+    },
+    {
+      "id": "tn12c-pb2-02",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 15",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The correct order of basic strength is:",
+      "options": [
+        "$\\text{NH}_3 > \\text{PH}_3 > \\text{AsH}_3 > \\text{SbH}_3$",
+        "$\\text{SbH}_3 > \\text{AsH}_3 > \\text{PH}_3 > \\text{NH}_3$",
+        "$\\text{PH}_3 > \\text{NH}_3 > \\text{AsH}_3$",
+        "All are equally basic"
+      ],
+      "answer": 0,
+      "solution": "Basicity depends on how **available** the lone pair is.\n\nDown the group the atom gets **larger**, so the lone pair occupies a more **diffuse** orbital and is spread over a bigger volume — less concentrated and so less readily donated.\n\nHence $\\mathbf{\\text{NH}_3 > \\text{PH}_3 > \\text{AsH}_3 > \\text{SbH}_3 > \\text{BiH}_3}$.\n\nNote that **thermal stability** follows the same order (the M-H bond weakens down the group) but **reducing power** runs the opposite way, for exactly that reason."
+    },
+    {
+      "id": "tn12c-pb2-03",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 16",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The correct order of acidic strength of the hydrides of group 16 is:",
+      "options": [
+        "$\\text{H}_2\\text{O} > \\text{H}_2\\text{S} > \\text{H}_2\\text{Se} > \\text{H}_2\\text{Te}$",
+        "$\\text{H}_2\\text{Te} > \\text{H}_2\\text{Se} > \\text{H}_2\\text{S} > \\text{H}_2\\text{O}$",
+        "All equal",
+        "$\\text{H}_2\\text{S} > \\text{H}_2\\text{O} > \\text{H}_2\\text{Te}$"
+      ],
+      "answer": 1,
+      "solution": "$\\mathbf{\\text{H}_2\\text{Te} > \\text{H}_2\\text{Se} > \\text{H}_2\\text{S} > \\text{H}_2\\text{O}}$.\n\nThis looks backwards from electronegativity, and the reason is that **bond strength**, not polarity, controls it. Down the group the H-M bond gets **longer and weaker**, so the proton is released more easily.\n\nWater is the **weakest** acid of the four despite oxygen being by far the most electronegative — the O-H bond is very strong and extensive hydrogen bonding holds the molecule together further.\n\nThe same reasoning explains $\\text{HI} > \\text{HBr} > \\text{HCl} > \\text{HF}$ in group 17."
+    },
+    {
+      "id": "tn12c-pb2-25q7",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 17",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Assertion : Bond dissociation energy of Fluorine is greater than Chlorine gas.\n\nReason : Chlorine has more electronic repulsion than Fluorine.",
+      "options": [
+        "Assertion is true but Reason is false.",
+        "Both Assertion and Reason are true and Reason is the correct explanation of Assertion.",
+        "Both Assertion and Reason are false.",
+        "Both Assertion and Reason are true, but Reason is not the correct explanation of Assertion."
+      ],
+      "answer": 2,
+      "solution": "**Assertion is false.** The bond dissociation energy of $\\mathrm{F_2}$ (about $158\\,\\mathrm{kJ\\,mol^{-1}}$) is lower than that of $\\mathrm{Cl_2}$ (about $242\\,\\mathrm{kJ\\,mol^{-1}}$).\n\n**Reason is false too.** It is fluorine, with its very small atoms, whose lone pairs sit close together and repel strongly; that repulsion is what weakens the F–F bond.\n\nSo both are false."
+    },
+    {
+      "id": "tn12c-pb2-05",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 18",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The first noble gas compound prepared was:",
+      "options": [
+        "$\\text{XeF}_2$",
+        "$\\text{Xe}^{+}[\\text{PtF}_6]^{-}$",
+        "$\\text{KrF}_2$",
+        "$\\text{XeO}_3$"
+      ],
+      "answer": 1,
+      "solution": "**Neil Bartlett** prepared $\\text{Xe}^{+}[\\text{PtF}_6]^{-}$ in 1962, ending the belief that the noble gases were inert.\n\nHis reasoning was elegant: he had observed $\\text{PtF}_6$ oxidising $\\text{O}_2$ to $\\text{O}_2^{+}$, and noticed that the **first ionisation energy of xenon ($1170\\ \\mathrm{kJ\\,mol^{-1}}$) is very close to that of $\\text{O}_2$ ($1175$)**. If $\\text{PtF}_6$ could take an electron from oxygen, it should take one from xenon.\n\nIt did. The prediction came from a numerical coincidence taken seriously, which is what makes it a good story as well as good chemistry."
+    },
+    {
+      "id": "tn12c-pb2-24q3",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 17",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is the strongest acid among all ?",
+      "options": [
+        "HBr",
+        "HI",
+        "HCl",
+        "HF"
+      ],
+      "answer": 1,
+      "solution": "Down the group the H–X bond gets longer and weaker, so the proton is released more easily.\n\nAcid strength: $\\mathrm{HF} < \\mathrm{HCl} < \\mathrm{HBr} < \\mathbf{HI}$. HF is weakest because the H–F bond is very strong and HF is hydrogen bonded."
+    },
+    {
+      "id": "tn12c-pb2-07",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 16",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the contact process for sulphuric acid, $\\text{SO}_3$ is absorbed in concentrated $\\text{H}_2\\text{SO}_4$ rather than water because:",
+      "options": [
+        "Water is expensive",
+        "Direct absorption in water forms a dense fog that is hard to condense",
+        "$\\text{SO}_3$ is insoluble in water",
+        "The reaction is endothermic"
+      ],
+      "answer": 1,
+      "solution": "$\\text{SO}_3$ reacts with water so violently and exothermically that it produces a dense **fog or mist of sulphuric acid** droplets, which is difficult to condense and largely escapes.\n\nInstead it is absorbed in concentrated $\\text{H}_2\\text{SO}_4$ to give **oleum**:\n\n$\\text{SO}_3 + \\text{H}_2\\text{SO}_4 \\rightarrow \\text{H}_2\\text{S}_2\\text{O}_7$\n\nThe oleum is then diluted with the right amount of water to give sulphuric acid of any desired strength. The same total chemistry, done in two controllable steps rather than one uncontrollable one."
+    },
+    {
+      "id": "tn12c-pb2-08",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 15",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The shape of the $\\text{PCl}_5$ molecule in the gas phase is:",
+      "options": [
+        "Square pyramidal",
+        "Trigonal bipyramidal",
+        "Tetrahedral",
+        "Octahedral"
+      ],
+      "answer": 1,
+      "solution": "Five bonding pairs and no lone pairs give **five** electron domains, so $sp^{3}d$ hybridisation and a **trigonal bipyramidal** shape.\n\nThe three **equatorial** bonds ($120^\\circ$ apart) are shorter and stronger than the two **axial** ones ($90^\\circ$ to them), because the axial bonds suffer more repulsion.\n\nThat inequality has a real consequence: in the **solid** state $\\text{PCl}_5$ exists as $[\\text{PCl}_4]^{+}[\\text{PCl}_6]^{-}$, tetrahedral and octahedral ions, because the unequal bonds make the neutral molecule less stable than the ion pair."
+    },
+    {
+      "id": "tn12c-pb2-09",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 18",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The hybridisation of xenon in $\\text{XeF}_4$ is:",
+      "options": [
+        "$sp^{3}$",
+        "$sp^{3}d$",
+        "$sp^{3}d^{2}$",
+        "$sp^{2}$"
+      ],
+      "answer": 2,
+      "solution": "Xenon has 8 valence electrons; four are used in the Xe-F bonds, leaving **two lone pairs**.\n\nFour bonding pairs plus two lone pairs give **six** electron domains, so $\\mathbf{sp^{3}d^{2}}$ and an octahedral electron geometry.\n\nThe two lone pairs occupy **opposite axial** positions to be as far apart as possible, so the **shape** is **square planar**.\n\nFor comparison: $\\text{XeF}_2$ is $sp^{3}d$ and linear, $\\text{XeF}_6$ is $sp^{3}d^{3}$ and distorted octahedral."
+    },
+    {
+      "id": "tn12c-pb2-10",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 16",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of sulphur in $\\text{H}_2\\text{SO}_4$?",
+      "answer": 6,
+      "tolerance": 0.1,
+      "accept": [
+        "6",
+        "+6"
+      ],
+      "solution": "Hydrogen is $+1$ and oxygen $-2$.\n\n$2(+1) + x + 4(-2) = 0$\n\n$2 + x - 8 = 0 \\Rightarrow x = \\mathbf{+6}$\n\nThis is sulphur's maximum, matching its six valence electrons."
+    },
+    {
+      "id": "tn12c-pb2-11",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 15",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many lone pairs are on the nitrogen atom in $\\text{NH}_3$?",
+      "answer": 1,
+      "tolerance": 0.1,
+      "accept": [
+        "1"
+      ],
+      "solution": "Nitrogen has 5 valence electrons; three are used in N-H bonds, leaving 2 electrons $= \\mathbf{1}$ lone pair.\n\nThat lone pair is what makes ammonia **basic** and a good ligand, and it is what squeezes the bond angle from $109.5^\\circ$ down to $107^\\circ$."
+    },
+    {
+      "id": "tn12c-pb2-12",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 18",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many lone pairs are on xenon in $\\text{XeF}_2$?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3"
+      ],
+      "solution": "Xenon has 8 valence electrons; two are used in the Xe-F bonds, leaving 6 electrons $= \\mathbf{3}$ lone pairs.\n\nTwo bonding pairs plus three lone pairs give five domains, so $sp^{3}d$ and a trigonal bipyramidal geometry. The three lone pairs take the **equatorial** positions, where they have most room, leaving the two fluorines **axial** — so the molecule is **linear**."
+    },
+    {
+      "id": "tn12c-pb2-13",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 17",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of chlorine in $\\text{HClO}_4$?",
+      "answer": 7,
+      "tolerance": 0.1,
+      "accept": [
+        "7",
+        "+7"
+      ],
+      "solution": "$(+1) + x + 4(-2) = 0$\n\n$1 + x - 8 = 0 \\Rightarrow x = \\mathbf{+7}$\n\nThis is chlorine's maximum. Perchloric acid is the strongest of the common oxoacids of chlorine — acid strength rises with the oxidation state, since more oxygens stabilise the anion."
+    },
+    {
+      "id": "tn12c-pb2-14",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 15",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many equatorial bonds are there in a trigonal bipyramidal $\\text{PCl}_5$ molecule?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3"
+      ],
+      "solution": "$\\mathbf{3}$ equatorial bonds, $120^\\circ$ apart in a plane, plus **2** axial bonds perpendicular to that plane.\n\nThe equatorial bonds ($202\\ \\text{pm}$) are **shorter** than the axial ones ($214\\ \\text{pm}$), because an axial bond faces repulsion from three equatorial neighbours at $90^\\circ$ while an equatorial bond faces only two."
+    },
+    {
+      "id": "tn12c-pb2-15",
+      "chapter": "p-Block Elements – II",
+      "topic": "Group 17",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the anomalous behaviour of fluorine compared with the other halogens. Discuss its small size, absence of $d$ orbitals, low bond dissociation energy and high hydration enthalpy, and explain why HF is a weak acid while HI is strong.",
+      "solution": "**Fluorine departs from its group in several ways, and nearly all of them trace back to two facts**: it is exceptionally **small**, and it has **no $d$ orbitals**.\n\n**1. Small size and high electronegativity.** Fluorine is the most electronegative element (4.0) and the smallest halogen. Its nucleus is very close to the bonding electrons, so it attracts them strongly.\n\nConsequence: fluorine shows **only the $-1$ oxidation state** and never a positive one, while chlorine, bromine and iodine show $+1$, $+3$, $+5$ and $+7$ in their oxoacids. There is nothing more electronegative to oxidise it.\n\n**2. No $d$ orbitals.** Being in period 2, fluorine's valence shell has only $2s$ and $2p$. It **cannot expand its octet**, so it forms only **one** covalent bond.\n\nConsequence: interhalogens such as $\\text{ClF}_3$, $\\text{BrF}_5$ and $\\text{IF}_7$ exist, but there is no $\\text{FCl}_3$ — fluorine is always the terminal atom, never the central one.\n\n**3. Anomalously low bond dissociation energy.** This is the most striking anomaly, because it runs against the trend.\n\n$\\text{F}_2$: $158\\ \\mathrm{kJ\\,mol^{-1}}$\n\n$\\text{Cl}_2$: $242$\n\n$\\text{Br}_2$: $193$\n\n$\\text{I}_2$: $151$\n\nThe expected order would put $\\text{F}_2$ highest, since short bonds are usually strong. Instead it is lower than both chlorine and bromine.\n\nThe reason is that the two fluorine atoms are so **small** that their **lone pairs are forced very close together**, and the resulting **repulsion** destabilises the bond.\n\nThis weak F-F bond is a large part of why fluorine is **so reactive**: very little energy is needed to break the molecule and start a reaction.\n\n**4. High hydration enthalpy.** $\\text{F}^{-}$ is small with a high charge density, so it is **strongly hydrated**: $-515\\ \\mathrm{kJ\\,mol^{-1}}$ against $-381$ for $\\text{Cl}^{-}$.\n\nThis is why fluorides of the alkali metals are **less soluble** than the corresponding chlorides — the high lattice enthalpy of the small ion outweighs the hydration — while $\\text{AgF}$ is soluble where $\\text{AgCl}$ is not, the ionic character of the small fluoride winning there instead.\n\n**Why HF is a weak acid and HI a strong one.**\n\nThis is the result that most often confuses, because electronegativity predicts the opposite. Fluorine is the most electronegative halogen, so the H-F bond is the most polar, and one might expect it to release its proton most readily.\n\nIt does not. The acid strengths are\n\n$\\text{HI} > \\text{HBr} > \\text{HCl} \\gg \\text{HF}$\n\nwith $\\text{HF}$ having $\\text{p}K_a \\approx 3.2$ while the others are all strong acids.\n\n**The controlling factor is bond dissociation energy, not polarity.**\n\n$\\text{H-F}$: $567\\ \\mathrm{kJ\\,mol^{-1}}$\n\n$\\text{H-Cl}$: $431$\n\n$\\text{H-Br}$: $366$\n\n$\\text{H-I}$: $299$\n\nIonisation requires **breaking the bond**. The H-F bond is by a wide margin the strongest, because the two atoms are small and the overlap is excellent — so it is the hardest to break and HF is the weakest acid.\n\nTwo further effects reinforce it:\n\n**Hydrogen bonding.** HF molecules are extensively hydrogen bonded to each other and to water, which holds the proton back. The other hydrogen halides are not.\n\n**Anion stability.** The conjugate base $\\text{F}^{-}$ is **small**, so its negative charge is concentrated and it is less stable in solution than the large, diffuse $\\text{I}^{-}$, whose charge is spread over a much greater volume. A less stable conjugate base means a weaker acid.\n\n**The general point.** For an acid $\\text{HX}$ **within a group**, bond strength dominates and acidity increases down the group. **Across a period**, where bond strengths are more similar, electronegativity dominates instead — which is why $\\text{HF}$ is a stronger acid than $\\text{H}_2\\text{O}$, and $\\text{H}_2\\text{O}$ stronger than $\\text{NH}_3$. Knowing which factor is in charge is the whole skill here."
+    }
+  ]
+}

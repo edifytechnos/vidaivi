@@ -3338,8 +3338,21 @@ handlers.tests = async (context, req) => {
 // (the library's shelves live in PLATFORM_PK), RK = subject id — see the note
 // on the tests table above for why the constant partition key had to go.
 
+// An entrance exam stores its attempt YEAR where a school board stores its
+// class, because the year is what an exam's batches are told apart by. So the
+// middle of the title is rendered from the VALUE, not from a list of exam
+// boards: a four-digit year reads bare ("JEE Main 2027 Physics") and anything
+// else reads as a class ("CBSE Class 12 Maths").
+//
+// Deciding it on the value is what keeps this honest. A list of exam boards
+// here would be a second copy of the one in src/taxonomy.ts, and the first
+// time somebody added an exam to one and not the other a real subject would
+// come out titled "JEE Advanced Class 2027 Physics".
+const isYearLike = (k) => /^(19|20)\d{2}$/.test(String(k || "").trim());
+
 function subjectTitle(board, klass, subject) {
-  return [board, klass ? `Class ${klass}` : "", subject].filter(Boolean).join(" ");
+  const middle = !klass ? "" : isYearLike(klass) ? klass : `Class ${klass}`;
+  return [board, middle, subject].filter(Boolean).join(" ");
 }
 
 function subjectOut(e) {

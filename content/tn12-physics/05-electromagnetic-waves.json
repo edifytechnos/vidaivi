@@ -1,0 +1,234 @@
+{
+  "id": "lib-tn12p-emw",
+  "title": "Electromagnetic Waves",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-emw-23q9",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Nature of EM waves",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An electromagnetic wave is propagating in a medium with velocity $\\vec{v} = v\\hat{i}$. The instantaneous oscillating electric field of this electromagnetic wave is along +Y axis, then the direction of oscillating magnetic field of the electromagnetic wave will be along :",
+      "options": [
+        "+Z direction",
+        "−Y direction",
+        "−Z direction",
+        "−X direction"
+      ],
+      "answer": 0,
+      "solution": "The direction of travel is the direction of $\\vec{E} \\times \\vec{B}$.\n\n$\\hat{j} \\times \\hat{k} = \\hat{i}$, so with $\\vec{E}$ along $+Y$ and travel along $+X$, $\\vec{B}$ must be along **+Z**."
+    },
+    {
+      "id": "tn12p-emw-02",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Displacement current",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Maxwell introduced the concept of displacement current to:",
+      "options": [
+        "Explain conduction in metals",
+        "Make Ampere's circuital law consistent for a charging capacitor",
+        "Explain resistance",
+        "Describe static charges"
+      ],
+      "answer": 1,
+      "solution": "Ampere's original law gave **contradictory answers** for a charging capacitor: a surface cutting the wire encloses a current, while a surface passing between the plates encloses none — yet both are bounded by the same loop.\n\nMaxwell resolved it by adding the **displacement current**\n\n$I_d = \\varepsilon_0\\dfrac{d\\Phi_E}{dt}$\n\nA changing electric field between the plates acts as a current. The modified law is $\\oint\\vec{B}\\cdot d\\vec{l} = \\mu_0(I_c + I_d)$.\n\nThis was not a patch: it is the term that makes electromagnetic waves possible at all, since it says a changing electric field produces a magnetic field."
+    },
+    {
+      "id": "tn12p-emw-03",
+      "chapter": "Electromagnetic Waves",
+      "topic": "EM spectrum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which has the shortest wavelength?",
+      "options": [
+        "X-rays",
+        "Gamma rays",
+        "Ultraviolet",
+        "Microwaves"
+      ],
+      "answer": 1,
+      "solution": "**Gamma rays** have the shortest wavelength and the highest frequency and energy.\n\nThe spectrum in order of increasing wavelength: gamma rays, X-rays, ultraviolet, visible, infrared, microwaves, radio waves.\n\nGamma rays originate in **nuclear** transitions, X-rays in transitions of inner **electrons** — the distinction is the source, not merely the wavelength, and the two ranges overlap."
+    },
+    {
+      "id": "tn12p-emw-25q5",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Speed of light",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The dimension of $\\dfrac{1}{\\mu_0\\varepsilon_0}$ is :",
+      "options": [
+        "$[\\mathrm{L^{-1}T}]$",
+        "$[\\mathrm{LT^{-1}}]$",
+        "$[\\mathrm{L^{-2}T^{2}}]$",
+        "$[\\mathrm{L^{2}T^{-2}}]$"
+      ],
+      "answer": 3,
+      "solution": "$c = \\dfrac{1}{\\sqrt{\\mu_0\\varepsilon_0}}$, so $\\dfrac{1}{\\mu_0\\varepsilon_0} = c^2$.\n\nThe dimension of a speed squared is $\\mathbf{[L^2T^{-2}]}$."
+    },
+    {
+      "id": "tn12p-emw-05",
+      "chapter": "Electromagnetic Waves",
+      "topic": "EM spectrum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Infrared radiation is detected by:",
+      "options": [
+        "Photographic plates only",
+        "Thermopiles and bolometers",
+        "The human eye",
+        "Geiger counters"
+      ],
+      "answer": 1,
+      "solution": "Infrared is detected by its **heating effect**, using a **thermopile** or **bolometer**.\n\nIt is produced by hot bodies and by the vibration of molecules, which is why it is called heat radiation and why thermal imaging works.\n\nIt is also what greenhouse gases absorb — the Earth radiates in the infrared, and trapping that radiation is the greenhouse effect."
+    },
+    {
+      "id": "tn12p-emw-06",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Energy and momentum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An electromagnetic wave carries momentum, so it exerts:",
+      "options": [
+        "No force",
+        "Radiation pressure on a surface",
+        "Only heat",
+        "An electric current"
+      ],
+      "answer": 1,
+      "solution": "An electromagnetic wave carries momentum $p = \\dfrac{U}{c}$, so absorbing or reflecting it delivers an impulse — **radiation pressure**.\n\nIt is tiny for ordinary light but real. It is why a comet's tail points away from the Sun, and it is the principle of the **solar sail**.\n\nA perfectly reflecting surface feels **twice** the pressure of a perfectly absorbing one, since the momentum is reversed rather than merely stopped."
+    },
+    {
+      "id": "tn12p-emw-07",
+      "chapter": "Electromagnetic Waves",
+      "topic": "EM spectrum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Microwaves are used in RADAR because they:",
+      "options": [
+        "Are absorbed by the atmosphere",
+        "Travel in straight lines and are reflected by metal objects",
+        "Have very long wavelengths",
+        "Are visible"
+      ],
+      "answer": 1,
+      "solution": "Microwaves travel in straight lines, penetrate the atmosphere well, and are **strongly reflected by metallic objects** such as aircraft and ships.\n\nTheir short wavelength also allows a narrow beam from a reasonably sized aerial, which gives good directional resolution — a longer wave would spread too much to locate anything precisely.\n\nIn a microwave oven a quite different property is used: the frequency is chosen to be absorbed by water molecules."
+    },
+    {
+      "id": "tn12p-emw-24q2",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Nature of EM waves",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the amplitude of the magnetic field is $3\\times10^{-6}\\ \\mathrm{T}$, then the amplitude of the electric field for a electromagnetic wave is :",
+      "options": [
+        "$600\\ \\mathrm{V\\,m^{-1}}$",
+        "$100\\ \\mathrm{V\\,m^{-1}}$",
+        "$900\\ \\mathrm{V\\,m^{-1}}$",
+        "$300\\ \\mathrm{V\\,m^{-1}}$"
+      ],
+      "answer": 2,
+      "solution": "$E_0 = cB_0 = 3\\times10^{8} \\times 3\\times10^{-6} = \\mathbf{900\\ V\\,m^{-1}}$\n\n(The 2023 paper asked the same question.)"
+    },
+    {
+      "id": "tn12p-emw-09",
+      "chapter": "Electromagnetic Waves",
+      "topic": "EM spectrum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Ultraviolet radiation from the Sun is largely absorbed by:",
+      "options": [
+        "Nitrogen",
+        "The ozone layer",
+        "Carbon dioxide",
+        "Water vapour"
+      ],
+      "answer": 1,
+      "solution": "The **ozone layer** in the stratosphere absorbs most of the harmful ultraviolet.\n\nThis matters because UV has enough energy to break chemical bonds, causing skin cancer and cataracts, and damaging phytoplankton at the base of the marine food chain.\n\nCarbon dioxide and water vapour absorb in the **infrared** instead, which is the greenhouse effect — a different gas, a different band, a different problem."
+    },
+    {
+      "id": "tn12p-emw-10",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Speed of light",
+      "type": "numeric",
+      "marks": 2,
+      "q": "An electromagnetic wave has frequency $6\\times10^{14}\\ \\text{Hz}$. Find its wavelength in vacuum, in nanometres. Take $c = 3\\times10^{8}\\ \\mathrm{m\\,s^{-1}}$.",
+      "answer": 500,
+      "tolerance": 5,
+      "accept": [
+        "500"
+      ],
+      "solution": "$\\lambda = \\dfrac{c}{f} = \\dfrac{3\\times10^{8}}{6\\times10^{14}} = 5\\times10^{-7}\\ \\text{m}$\n\n$= \\mathbf{500\\ \\text{nm}}$ — green light, in the middle of the visible range."
+    },
+    {
+      "id": "tn12p-emw-11",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Nature of EM waves",
+      "type": "numeric",
+      "marks": 2,
+      "q": "An electromagnetic wave has $E_0 = 6\\ \\mathrm{V\\,m^{-1}}$. Find $B_0$, in tesla. Take $c = 3\\times10^{8}\\ \\mathrm{m\\,s^{-1}}$. Give the answer in the form $a\\times10^{-8}$ and state $a$.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2"
+      ],
+      "solution": "$B_0 = \\dfrac{E_0}{c} = \\dfrac{6}{3\\times10^{8}} = 2\\times10^{-8}\\ \\text{T}$\n\nSo $a = \\mathbf{2}$."
+    },
+    {
+      "id": "tn12p-emw-12",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Displacement current",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The electric flux between capacitor plates changes at $4\\times10^{5}\\ \\mathrm{V\\,m\\,s^{-1}}$. Taking $\\varepsilon_0 = 8.85\\times10^{-12}$ SI units, find the displacement current, in microamperes. Give the answer to two decimal places.",
+      "answer": 3.54,
+      "tolerance": 0.05,
+      "accept": [
+        "3.54"
+      ],
+      "solution": "$I_d = \\varepsilon_0\\dfrac{d\\Phi_E}{dt} = (8.85\\times10^{-12})(4\\times10^{5})$\n\n$= 35.4\\times10^{-7} = 3.54\\times10^{-6}\\ \\text{A}$\n\n$= \\mathbf{3.54\\ \\mu\\text{A}}$"
+    },
+    {
+      "id": "tn12p-emw-23q38",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Speed of light",
+      "source": "TN HSE Mar 2023",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The relative magnetic permeability of the medium is 2.5 and the relative electrical permittivity of the medium is 2.25. Compute the refractive index of the medium. (Give two decimal places.)",
+      "answer": 2.37,
+      "solution": "$n = \\dfrac{c}{v} = \\sqrt{\\mu_r\\varepsilon_r} = \\sqrt{2.5 \\times 2.25} = \\sqrt{5.625} = \\mathbf{2.37}$",
+      "tolerance": 0.01
+    },
+    {
+      "id": "tn12p-emw-14",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Energy and momentum",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A surface completely absorbs $6\\times10^{-8}\\ \\text{J}$ of electromagnetic energy. Find the momentum delivered, in $\\mathrm{kg\\,m\\,s^{-1}}$. Take $c = 3\\times10^{8}\\ \\mathrm{m\\,s^{-1}}$. Give the answer in the form $a\\times10^{-16}$ and state $a$.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2"
+      ],
+      "solution": "$p = \\dfrac{U}{c} = \\dfrac{6\\times10^{-8}}{3\\times10^{8}} = 2\\times10^{-16}\\ \\mathrm{kg\\,m\\,s^{-1}}$\n\nSo $a = \\mathbf{2}$. Had the surface been a perfect **reflector**, the momentum delivered would be twice this."
+    },
+    {
+      "id": "tn12p-emw-15",
+      "chapter": "Electromagnetic Waves",
+      "topic": "Displacement current",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the inconsistency Maxwell found in Ampere's circuital law, and how the displacement current resolves it. State Maxwell's four equations in words, and explain how they predict electromagnetic waves travelling at the speed of light.",
+      "solution": "**The inconsistency.** Ampere's circuital law in its original form states\n\n$\\oint\\vec{B}\\cdot d\\vec{l} = \\mu_0 I_c$\n\nwhere $I_c$ is the conduction current threading **any** surface bounded by the closed loop. The phrase \"any surface\" is where the trouble lies.\n\nConsider a **capacitor being charged**. Take a circular loop around the connecting wire, and choose two different surfaces bounded by it:\n\n**Surface 1**, a flat disc cutting the wire. It is pierced by the current $I$, so the law gives $\\oint\\vec{B}\\cdot d\\vec{l} = \\mu_0 I$.\n\n**Surface 2**, a bag-shaped surface passing **between the capacitor plates**. No charge crosses the gap, so no conduction current pierces it, and the law gives $\\oint\\vec{B}\\cdot d\\vec{l} = 0$.\n\nBoth surfaces share the same boundary loop, so the left-hand side is identical. **The law gives two different answers for the same quantity**, which means it cannot be right as stated.\n\n**Maxwell's resolution.** Something must be crossing the gap that the law was not counting. Between the plates there is no charge flow, but there **is** a changing electric field, since the charge on the plates is growing.\n\nMaxwell defined the **displacement current**\n\n$I_d = \\varepsilon_0\\dfrac{d\\Phi_E}{dt}$\n\nand showed that for a charging capacitor it is exactly equal to the conduction current in the wire. So the modified law,\n\n$\\oint\\vec{B}\\cdot d\\vec{l} = \\mu_0(I_c + I_d)$\n\ngives $\\mu_0 I$ for **both** surfaces. The contradiction disappears.\n\n**Why this is not merely a repair.** The new term says something physically new and enormous: **a changing electric field produces a magnetic field**, just as Faraday had shown that a changing magnetic field produces an electric one. That symmetry is what makes a self-sustaining wave possible, and without the displacement current there would be no electromagnetic waves in the theory at all.\n\n**Maxwell's equations in words.**\n\n**1. Gauss's law for electricity.** The total electric flux through a closed surface is the enclosed charge divided by $\\varepsilon_0$. Electric field lines begin and end on charges.\n\n**2. Gauss's law for magnetism.** The total magnetic flux through any closed surface is **zero**. Magnetic field lines form closed loops, and **isolated magnetic poles do not exist**.\n\n**3. Faraday's law of induction.** The line integral of the electric field around a closed loop equals the rate of change of magnetic flux through it. **A changing magnetic field produces an electric field.**\n\n**4. Ampere-Maxwell law.** The line integral of the magnetic field around a closed loop equals $\\mu_0$ times the sum of the conduction and displacement currents. **A changing electric field, as well as a current, produces a magnetic field.**\n\n**How waves follow.** Take equations 3 and 4 together and read them as a pair:\n\nA changing $\\vec{E}$ creates a changing $\\vec{B}$ (equation 4).\n\nThat changing $\\vec{B}$ creates a changing $\\vec{E}$ (equation 3).\n\nWhich creates a changing $\\vec{B}$ again, and so on.\n\nThe two fields **regenerate each other**, so once started the disturbance propagates onward with no charges or currents needed to sustain it. It needs **no medium**, which is why light crosses empty space — and why the luminiferous ether turned out to be unnecessary.\n\nCombining the equations mathematically gives a wave equation whose speed is\n\n$c = \\dfrac{1}{\\sqrt{\\mu_0\\varepsilon_0}}$\n\n**And this is the climax.** Both constants come from experiments having nothing to do with light: $\\varepsilon_0$ from measuring forces between static charges, $\\mu_0$ from forces between current-carrying wires. Putting in the measured values gives\n\n$c \\approx 3\\times10^{8}\\ \\mathrm{m\\,s^{-1}}$\n\nwhich was, to within experimental error, the **measured speed of light**.\n\nMaxwell's conclusion was immediate and correct: light **is** an electromagnetic wave. Two entire branches of physics — optics, and electricity and magnetism — turned out to be one subject. Hertz produced and detected such waves experimentally twenty years later, confirming it.\n\nThe result also carries a sting that took another forty years to resolve. The theory predicts a single definite speed $c$ with **no reference to any observer**, which is irreconcilable with Galilean relativity — and that tension is precisely what Einstein took seriously in 1905."
+    }
+  ]
+}

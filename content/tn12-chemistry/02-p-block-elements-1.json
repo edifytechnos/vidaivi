@@ -1,0 +1,237 @@
+{
+  "id": "lib-tn12c-pb1",
+  "title": "p-Block Elements – I",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-pb1-01",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 13",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Boron differs from the other group 13 elements chiefly because it is:",
+      "options": [
+        "A metal",
+        "A non-metal with small size and high ionisation energy",
+        "Radioactive",
+        "Trivalent"
+      ],
+      "answer": 1,
+      "solution": "Boron is the only **non-metal** in group 13; the rest are metals.\n\nIt is exceptionally **small** with a **high ionisation energy**, so it never forms $\\text{B}^{3+}$ — the energy required is prohibitive. Its compounds are **covalent**, not ionic.\n\nIt also shows a **diagonal relationship with silicon**, both being small, highly charged and forming covalent, hydrolysable halides and acidic oxides."
+    },
+    {
+      "id": "tn12c-pb1-02",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 13",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Diborane $\\text{B}_2\\text{H}_6$ is described as electron deficient because:",
+      "options": [
+        "It has unpaired electrons",
+        "It has fewer valence electrons than needed for normal two-centre two-electron bonds",
+        "It is a free radical",
+        "Boron is electronegative"
+      ],
+      "answer": 1,
+      "solution": "Diborane has **12 valence electrons** but appears to need 8 bonds, which would require 16.\n\nThe structure resolves this with **three-centre two-electron bonds**: two bridging hydrogens each share a single electron pair across **B-H-B**, a banana bond.\n\nSo there are four ordinary terminal B-H bonds and two bridging three-centre bonds. The molecule is not a free radical — all electrons are paired — it simply has too few of them for a conventional Lewis structure, which is what **electron deficient** means."
+    },
+    {
+      "id": "tn12c-pb1-03",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 14",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The tendency of carbon to form long chains with itself is called:",
+      "options": [
+        "Allotropy",
+        "Catenation",
+        "Isomerism",
+        "Polymerisation"
+      ],
+      "answer": 1,
+      "solution": "**Catenation** is the ability of an element to bond to itself in chains and rings.\n\nCarbon is supreme at it because the **C-C bond is strong** ($348\\ \\mathrm{kJ\\,mol^{-1}}$) and carbon is small enough for effective overlap.\n\nThe ability falls sharply down the group as bonds weaken: $\\text{C} > \\text{Si} > \\text{Ge} \\approx \\text{Sn} > \\text{Pb}$. This single property is why organic chemistry is a subject of its own and silicon chemistry is not."
+    },
+    {
+      "id": "tn12c-pb1-04",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 14",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Carbon dioxide is a gas while silicon dioxide is a high-melting solid because:",
+      "options": [
+        "$\\text{CO}_2$ is lighter",
+        "$\\text{CO}_2$ is a discrete molecule while $\\text{SiO}_2$ is a giant covalent network",
+        "$\\text{SiO}_2$ is ionic",
+        "$\\text{CO}_2$ is unstable"
+      ],
+      "answer": 1,
+      "solution": "Carbon is small enough for effective **$p\\pi$-$p\\pi$ overlap**, so it forms **double bonds** to oxygen, giving the discrete linear molecule $\\text{O}=\\text{C}=\\text{O}$. Only weak van der Waals forces act between molecules, so it is a gas.\n\nSilicon is too large for effective $p\\pi$-$p\\pi$ overlap, so it forms **four single bonds** instead, building a **giant covalent network** in which every silicon is tetrahedrally bonded to four oxygens.\n\nMelting $\\text{SiO}_2$ means breaking covalent bonds throughout the lattice, hence $1710^\\circ\\text{C}$.\n\nThis is one of the clearest illustrations that **size controls bonding type, and bonding type controls physical state**."
+    },
+    {
+      "id": "tn12c-pb1-05",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 13",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Anhydrous $\\text{AlCl}_3$ exists as a dimer $\\text{Al}_2\\text{Cl}_6$ because:",
+      "options": [
+        "Aluminium is large",
+        "Aluminium completes its octet by accepting lone pairs from chlorine",
+        "It is ionic",
+        "Chlorine is electronegative"
+      ],
+      "answer": 1,
+      "solution": "In monomeric $\\text{AlCl}_3$, aluminium has only **six** electrons around it — an incomplete octet, making it a strong **Lewis acid**.\n\nIt completes the octet by accepting a **lone pair from a chlorine of a second molecule**, forming two chloride bridges and the dimer $\\text{Al}_2\\text{Cl}_6$.\n\nEach aluminium is then tetrahedral with a full octet. The dimer dissociates back to the monomer at high temperature, and this Lewis acidity is exactly what makes $\\text{AlCl}_3$ the standard catalyst for Friedel-Crafts reactions."
+    },
+    {
+      "id": "tn12c-pb1-06",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 14",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The inert pair effect makes which oxidation state more stable for lead?",
+      "options": [
+        "$+4$",
+        "$+2$",
+        "$0$",
+        "$-2$"
+      ],
+      "answer": 1,
+      "solution": "Down group 14 the $ns^{2}$ pair becomes increasingly reluctant to take part in bonding, because poor shielding by the intervening $d$ and $f$ electrons holds it tightly.\n\nSo the **lower** oxidation state grows more stable down the group, and for lead $\\mathbf{+2}$ dominates while $\\text{Pb}^{4+}$ is a strong oxidising agent.\n\nFor carbon and silicon the $+4$ state dominates instead. This is why $\\text{PbO}_2$ oxidises readily — it is trying to reach $\\text{Pb}^{2+}$ — and why $\\text{SnCl}_2$ is a reducing agent, tin still preferring $+4$."
+    },
+    {
+      "id": "tn12c-pb1-25q5",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 13",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Boric acid is an acid because its molecule :",
+      "options": [
+        "combines with proton to form water molecule.",
+        "contains replaceable $\\mathrm{H^+}$ ion.",
+        "accepts $\\mathrm{OH^-}$ from water, releasing proton.",
+        "gives up a proton."
+      ],
+      "answer": 2,
+      "solution": "Boric acid is a **Lewis acid**, not a proton donor. Boron has an empty orbital, so it accepts a hydroxide ion from water and frees a proton:\n\n$\\mathrm{B(OH)_3} + \\mathrm{H_2O} \\rightarrow [\\mathrm{B(OH)_4}]^- + \\mathrm{H^+}$"
+    },
+    {
+      "id": "tn12c-pb1-24q4",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 14",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is not $sp^2$ hybridised ?",
+      "options": [
+        "Fullerene",
+        "Graphite",
+        "Dry ice",
+        "Graphene"
+      ],
+      "answer": 2,
+      "solution": "Fullerene, graphite and graphene are all built from $sp^2$ carbon in hexagonal (and, in fullerene, pentagonal) rings.\n\n**Dry ice** is solid $\\mathrm{CO_2}$, a linear molecule $\\mathrm{O{=}C{=}O}$ in which carbon is $sp$ hybridised."
+    },
+    {
+      "id": "tn12c-pb1-09",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 13",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Borax bead test is used to identify:",
+      "options": [
+        "Alkali metals",
+        "Coloured transition metal ions",
+        "Halides",
+        "Sulphates"
+      ],
+      "answer": 1,
+      "solution": "On heating, borax gives a transparent glassy bead of **sodium metaborate and boric anhydride**:\n\n$\\text{Na}_2\\text{B}_4\\text{O}_7 \\rightarrow 2\\text{NaBO}_2 + \\text{B}_2\\text{O}_3$\n\nThe $\\text{B}_2\\text{O}_3$ reacts with a **transition metal oxide** to form a **coloured metaborate** — blue for cobalt, green for chromium, brown for iron.\n\nIt works only for coloured ions, so alkali metals and non-metallic anions give nothing."
+    },
+    {
+      "id": "tn12c-pb1-10",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 13",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many bridging hydrogen atoms are there in diborane, $\\text{B}_2\\text{H}_6$?",
+      "answer": 2,
+      "tolerance": 0.1,
+      "accept": [
+        "2"
+      ],
+      "solution": "$\\mathbf{2}$ bridging hydrogens, each in a **three-centre two-electron** B-H-B bond.\n\nThe other **four** are terminal, in ordinary two-centre two-electron bonds. The two bridging hydrogens lie in a plane perpendicular to that of the four terminal ones."
+    },
+    {
+      "id": "tn12c-pb1-11",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 13",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many valence electrons does diborane $\\text{B}_2\\text{H}_6$ have in total?",
+      "answer": 12,
+      "tolerance": 0.5,
+      "accept": [
+        "12"
+      ],
+      "solution": "Boron contributes 3 each: $2 \\times 3 = 6$.\n\nHydrogen contributes 1 each: $6 \\times 1 = 6$.\n\nTotal $= \\mathbf{12}$ valence electrons.\n\nEight conventional bonds would need 16, which is precisely why the molecule is called **electron deficient** and why the bridging bonds exist."
+    },
+    {
+      "id": "tn12c-pb1-12",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 14",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of silicon in $\\text{SiO}_2$?",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4",
+        "+4"
+      ],
+      "solution": "Oxygen is $-2$ each, two of them giving $-4$.\n\n$x + 2(-2) = 0 \\Rightarrow x = \\mathbf{+4}$"
+    },
+    {
+      "id": "tn12c-pb1-13",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 13",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In boric acid, how many hydrogen atoms are replaceable by a base? (That is, what is its basicity?)",
+      "answer": 1,
+      "tolerance": 0.1,
+      "accept": [
+        "1",
+        "monobasic"
+      ],
+      "solution": "$\\mathbf{1}$ — boric acid is **monobasic**, despite containing three hydrogens.\n\nIt does not donate its own protons at all. It acts as a **Lewis acid**, accepting $\\text{OH}^{-}$ from water and thereby releasing one $\\text{H}^{+}$ from the water. Answering 3 is the standard error."
+    },
+    {
+      "id": "tn12c-pb1-14",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 14",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In diamond, how many other carbon atoms is each carbon atom bonded to?",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4"
+      ],
+      "solution": "$\\mathbf{4}$, tetrahedrally, in a giant covalent network with $sp^{3}$ hybridisation.\n\nIn **graphite** each carbon is bonded to only **3**, leaving one delocalised electron per atom — which is the whole difference between an insulator and a conductor."
+    },
+    {
+      "id": "tn12c-pb1-15",
+      "chapter": "p-Block Elements – I",
+      "topic": "Group 14",
+      "type": "long",
+      "marks": 5,
+      "q": "Compare the structures and properties of diamond and graphite, explaining how the difference in bonding accounts for hardness, electrical conductivity and lubricating behaviour. Also explain why $\\text{CO}_2$ is a gas while $\\text{SiO}_2$ is a hard high-melting solid.",
+      "solution": "**Diamond: structure.** Every carbon is **$sp^{3}$ hybridised** and bonded tetrahedrally to **four** others at $109.5^\\circ$, with a C-C distance of $154\\ \\text{pm}$. The result is a **three-dimensional giant covalent network** — the entire crystal is effectively one molecule.\n\n**Graphite: structure.** Every carbon is **$sp^{2}$ hybridised** and bonded to **three** others at $120^\\circ$ in flat **hexagonal layers**, with a C-C distance of $142\\ \\text{pm}$ — shorter than in diamond because of partial double-bond character. The fourth electron occupies an unhybridised $p$ orbital, and these overlap sideways to give a **delocalised $\\pi$ cloud** above and below each layer. The layers are $340\\ \\text{pm}$ apart, held only by weak **van der Waals** forces.\n\n**Hardness.** Diamond is the **hardest natural substance**. Scratching it requires breaking **strong covalent bonds** in three dimensions, and there is no direction in which the structure is weak.\n\nGraphite is **soft**. The layers are strongly bonded within themselves but only weakly attracted to one another, so they slide apart easily. The strength is two-dimensional, and the weakness in the third dimension is what you feel.\n\n**Electrical conductivity.** Diamond is an **insulator**: all four valence electrons per atom are locked in localised $\\sigma$ bonds and none is free to move.\n\nGraphite is a **good conductor along the layers**, because the delocalised $\\pi$ electrons move freely within each sheet. It is a **poor conductor perpendicular** to them, since electrons cannot easily jump the gap. Its conductivity is therefore strongly **anisotropic** — a fact that is itself evidence for the layered structure.\n\nWorth noting: diamond is an excellent **thermal** conductor despite being an electrical insulator, because heat travels through the rigid lattice as vibrations rather than by electrons. Thermal and electrical conduction are different mechanisms, and diamond separates them cleanly.\n\n**Lubricating behaviour.** Graphite's layers slide over one another under slight force, so it acts as a **dry lubricant** — valuable where oil would burn off or attract dust, as in high-temperature machinery.\n\nA subtlety worth knowing: the lubrication depends on **adsorbed gases or moisture** between the layers. In a high vacuum graphite loses much of its lubricating power and abrades instead — which caused real problems for early spacecraft mechanisms, and shows the effect is not purely a matter of the layer spacing.\n\n**Why diamond is denser.** $3.51$ against $2.25\\ \\mathrm{g\\,cm^{-3}}$: the tetrahedral network packs atoms more compactly than layers separated by a $340\\ \\text{pm}$ gap.\n\n**$\\text{CO}_2$ versus $\\text{SiO}_2$.** These have analogous formulae and utterly different properties, and the reason is **atomic size**.\n\n**Carbon is small**, so its $2p$ orbitals overlap sideways with oxygen's $2p$ effectively. Carbon therefore forms **$p\\pi$-$p\\pi$ double bonds**, giving the discrete linear molecule\n\n$\\text{O}=\\text{C}=\\text{O}$\n\nEach carbon satisfies its valency within one small molecule. Between molecules there are only weak **van der Waals** forces, so very little energy is needed to separate them — $\\text{CO}_2$ sublimes at $-78^\\circ\\text{C}$ and is a **gas** at room temperature.\n\n**Silicon is larger**, with $3p$ orbitals that are more diffuse and further from the nucleus. Sideways overlap is poor, so silicon **cannot form effective double bonds** to oxygen.\n\nInstead each silicon forms **four single bonds**, and each oxygen bridges **two** silicons. The result is a **giant covalent network** of $\\text{SiO}_4$ tetrahedra extending through the whole crystal.\n\nMelting it means **breaking covalent bonds** throughout the lattice, so $\\text{SiO}_2$ melts at $1710^\\circ\\text{C}$ and is hard and insoluble.\n\n**The general lesson.** The two comparisons in this answer make the same point twice. In diamond and graphite, **the same atoms in different arrangements** give opposite properties. In $\\text{CO}_2$ and $\\text{SiO}_2$, **analogous formulae with different bonding** give opposite properties. In neither case does the formula predict the behaviour — the **structure** does, and structure is decided by size and the overlap it permits."
+    }
+  ]
+}

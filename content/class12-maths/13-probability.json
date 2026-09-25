@@ -41,7 +41,7 @@
       "topic": "Independent events",
       "type": "mcq",
       "q": "Events $A$ and $B$ are independent if:",
-      "solution": "Independent means knowing one tells you nothing about the other, which is exactly $P(A \\mid B) = P(A)$ — and multiplying up gives $\\mathbf{P(A \\cap B) = P(A)P(B)}$.\n\n**Independent is not the same as mutually exclusive.** Mutually exclusive events are the *most* dependent there is: if one happens, the other certainly did not.",
+      "solution": "Independent means knowing one tells you nothing about the other, which is exactly $P(A \\mid B) = P(A)$ — and multiplying up gives $\\mathbf{P(A \\cap B) = P(A)P(B)}$.\n\n**Independent is not the same as mutually exclusive.** Mutually exclusive events are the **most** dependent there is: if one happens, the other certainly did not.",
       "marks": 1,
       "options": [
         "$P(A \\cap B) = P(A) + P(B)$",

@@ -37,7 +37,7 @@
         "$\\dfrac{2}{3}$"
       ],
       "answer": 1,
-      "solution": "Counting \"different\" directly means listing 30 outcomes. Count the **opposite** instead.\n\nThe dice show the *same* number in exactly 6 ways: $(1,1), (2,2), (3,3), (4,4), (5,5), (6,6)$.\n\n$P(\\text{same}) = \\dfrac{6}{36} = \\dfrac{1}{6}$\n\nNow use the complement rule, $P(\\text{not } E) = 1 - P(E)$:\n\n$P(\\text{different}) = 1 - \\dfrac{1}{6} = \\mathbf{\\dfrac{5}{6}}$\n\nWhenever the favourable outcomes are many and the unfavourable ones are few, count the few. \"At least one…\", \"different…\", \"not…\" are the phrases that should make you reach for the complement.\n\nA sanity check on the answer: two dice agreeing is clearly unusual, so the probability of *disagreeing* should be close to 1. $\\tfrac{5}{6} \\approx 0.83$ ✓",
+      "solution": "Counting \"different\" directly means listing 30 outcomes. Count the **opposite** instead.\n\nThe dice show the **same** number in exactly 6 ways: $(1,1), (2,2), (3,3), (4,4), (5,5), (6,6)$.\n\n$P(\\text{same}) = \\dfrac{6}{36} = \\dfrac{1}{6}$\n\nNow use the complement rule, $P(\\text{not } E) = 1 - P(E)$:\n\n$P(\\text{different}) = 1 - \\dfrac{1}{6} = \\mathbf{\\dfrac{5}{6}}$\n\nWhenever the favourable outcomes are many and the unfavourable ones are few, count the few. \"At least one…\", \"different…\", \"not…\" are the phrases that should make you reach for the complement.\n\nA sanity check on the answer: two dice agreeing is clearly unusual, so the probability of **disagreeing** should be close to 1. $\\tfrac{5}{6} \\approx 0.83$ ✓",
       "chapter": "Probability"
     },
     {
@@ -71,7 +71,7 @@
         "$395$"
       ],
       "answer": 1,
-      "solution": "**Find the bad eggs first.**\n\n$P(\\text{bad}) = \\dfrac{\\text{number of bad eggs}}{400} = 0.045$\n\nnumber of bad eggs $= 0.045 \\times 400 = 18$\n\n**Then the good ones:**\n\n$400 - 18 = \\mathbf{382}$\n\nOption (A), $18$, is the number of *bad* eggs — the answer to the question one step before the one asked. It is the most-chosen wrong answer in questions of this shape.\n\nThe check is easy: $P(\\text{good}) = 1 - 0.045 = 0.955$, and $0.955 \\times 400 = 382$ ✓ Either route works; the second avoids the trap altogether.",
+      "solution": "**Find the bad eggs first.**\n\n$P(\\text{bad}) = \\dfrac{\\text{number of bad eggs}}{400} = 0.045$\n\nnumber of bad eggs $= 0.045 \\times 400 = 18$\n\n**Then the good ones:**\n\n$400 - 18 = \\mathbf{382}$\n\nOption (A), $18$, is the number of **bad** eggs — the answer to the question one step before the one asked. It is the most-chosen wrong answer in questions of this shape.\n\nThe check is easy: $P(\\text{good}) = 1 - 0.045 = 0.955$, and $0.955 \\times 400 = 382$ ✓ Either route works; the second avoids the trap altogether.",
       "chapter": "Probability"
     },
     {
@@ -122,7 +122,7 @@
         "$1$"
       ],
       "answer": 2,
-      "solution": "**Write out the sample space.** Two coins give four equally likely outcomes:\n\n$HH,\\ HT,\\ TH,\\ TT$\n\n**\"At most one tail\"** means zero tails or one tail — so $HH$, $HT$ and $TH$. That is 3 outcomes.\n\n$P = \\mathbf{\\dfrac{3}{4}}$\n\nThe only outcome excluded is $TT$, with two tails. So you could get there by the complement: $1 - P(TT) = 1 - \\tfrac{1}{4} = \\tfrac{3}{4}$ ✓\n\n**At most** trips people up because it *includes* the number named and everything below it — right down to zero. And note that $HT$ and $TH$ are two different outcomes: the first coin and the second coin are distinguishable, even if they look identical in your hand.",
+      "solution": "**Write out the sample space.** Two coins give four equally likely outcomes:\n\n$HH,\\ HT,\\ TH,\\ TT$\n\n**\"At most one tail\"** means zero tails or one tail — so $HH$, $HT$ and $TH$. That is 3 outcomes.\n\n$P = \\mathbf{\\dfrac{3}{4}}$\n\nThe only outcome excluded is $TT$, with two tails. So you could get there by the complement: $1 - P(TT) = 1 - \\tfrac{1}{4} = \\tfrac{3}{4}$ ✓\n\n**At most** trips people up because it **includes** the number named and everything below it — right down to zero. And note that $HT$ and $TH$ are two different outcomes: the first coin and the second coin are distinguishable, even if they look identical in your hand.",
       "chapter": "Probability"
     },
     {
@@ -157,7 +157,7 @@
       "q": "One card is drawn at random from a well-shuffled pack of 52 cards. The probability that it is a king is $\\dfrac{1}{a}$. Give the value of $a$.",
       "answer": 13,
       "tolerance": 0,
-      "solution": "A standard pack has 52 cards and **four** kings — one in each suit (hearts, diamonds, clubs, spades).\n\n$P(\\text{king}) = \\dfrac{4}{52} = \\dfrac{1}{13}$, so $a = \\mathbf{13}$.\n\nThe pack facts worth memorising, because half the probability questions in the paper assume them:\n\n- 52 cards, 4 suits of 13\n- **red**: hearts and diamonds — 26 cards; **black**: clubs and spades — 26\n- **face cards**: jack, queen, king — 3 per suit, **12** in all\n- **aces**: 4, and an ace is *not* a face card\n\nThat last point catches people out every year.",
+      "solution": "A standard pack has 52 cards and **four** kings — one in each suit (hearts, diamonds, clubs, spades).\n\n$P(\\text{king}) = \\dfrac{4}{52} = \\dfrac{1}{13}$, so $a = \\mathbf{13}$.\n\nThe pack facts worth memorising, because half the probability questions in the paper assume them:\n\n- 52 cards, 4 suits of 13\n- **red**: hearts and diamonds — 26 cards; **black**: clubs and spades — 26\n- **face cards**: jack, queen, king — 3 per suit, **12** in all\n- **aces**: 4, and an ace is **not** a face card\n\nThat last point catches people out every year.",
       "chapter": "Probability"
     },
     {
@@ -186,7 +186,7 @@
       "type": "long",
       "marks": 3,
       "q": "A bag contains 5 red, 8 white and 7 black balls. One ball is drawn at random. Find the probability that it is:\n\n(i) red or white\n\n(ii) not black\n\n(iii) neither white nor black",
-      "solution": "**Total balls:** $5 + 8 + 7 = 20$.\n\n**(i) Red or white.** These cannot both happen at once, so add the counts:\n\n$5 + 8 = 13$, giving $P = \\mathbf{\\dfrac{13}{20}}$\n\n**(ii) Not black.** Use the complement:\n\n$P(\\text{black}) = \\dfrac{7}{20}$, so $P(\\text{not black}) = 1 - \\dfrac{7}{20} = \\mathbf{\\dfrac{13}{20}}$\n\nThe same answer as (i) — and that is no accident. With three colours, \"not black\" *is* \"red or white\". The two parts are the same event described two ways, and getting the same number is a free check on your working.\n\n**(iii) Neither white nor black.** That leaves only red:\n\n$P = \\dfrac{5}{20} = \\mathbf{\\dfrac{1}{4}}$\n\nEach part is really a translation exercise. Convert the wording into a set of balls first, count them, and the arithmetic takes one line.",
+      "solution": "**Total balls:** $5 + 8 + 7 = 20$.\n\n**(i) Red or white.** These cannot both happen at once, so add the counts:\n\n$5 + 8 = 13$, giving $P = \\mathbf{\\dfrac{13}{20}}$\n\n**(ii) Not black.** Use the complement:\n\n$P(\\text{black}) = \\dfrac{7}{20}$, so $P(\\text{not black}) = 1 - \\dfrac{7}{20} = \\mathbf{\\dfrac{13}{20}}$\n\nThe same answer as (i) — and that is no accident. With three colours, \"not black\" **is** \"red or white\". The two parts are the same event described two ways, and getting the same number is a free check on your working.\n\n**(iii) Neither white nor black.** That leaves only red:\n\n$P = \\dfrac{5}{20} = \\mathbf{\\dfrac{1}{4}}$\n\nEach part is really a translation exercise. Convert the wording into a set of balls first, count them, and the arithmetic takes one line.",
       "chapter": "Probability"
     },
     {
@@ -204,7 +204,7 @@
       "type": "long",
       "marks": 2,
       "q": "A box contains 90 discs numbered from 1 to 90. If one disc is drawn at random, find the probability that it bears a two-digit number.",
-      "solution": "**Total outcomes:** 90 discs, numbered 1 to 90.\n\n**Count the two-digit numbers.** These run from 10 to 90:\n\n$90 - 10 + 1 = 81$ numbers\n\n$P = \\dfrac{81}{90} = \\mathbf{\\dfrac{9}{10}}$\n\n**Or by the complement**, which is quicker: the discs that are *not* two-digit are the single-digit ones, $1$ to $9$ — nine of them.\n\n$P = 1 - \\dfrac{9}{90} = 1 - \\dfrac{1}{10} = \\dfrac{9}{10}$ ✓\n\nThe $+1$ in the first method is the fence-post count again: from 10 to 90 there are 80 *gaps* but 81 *numbers*. Whenever you count a run of consecutive integers from $a$ to $b$, it is $b - a + 1$.\n\nThe complement route sidesteps that entirely, which is why it is the safer of the two.",
+      "solution": "**Total outcomes:** 90 discs, numbered 1 to 90.\n\n**Count the two-digit numbers.** These run from 10 to 90:\n\n$90 - 10 + 1 = 81$ numbers\n\n$P = \\dfrac{81}{90} = \\mathbf{\\dfrac{9}{10}}$\n\n**Or by the complement**, which is quicker: the discs that are **not** two-digit are the single-digit ones, $1$ to $9$ — nine of them.\n\n$P = 1 - \\dfrac{9}{90} = 1 - \\dfrac{1}{10} = \\dfrac{9}{10}$ ✓\n\nThe $+1$ in the first method is the fence-post count again: from 10 to 90 there are 80 **gaps** but 81 **numbers**. Whenever you count a run of consecutive integers from $a$ to $b$, it is $b - a + 1$.\n\nThe complement route sidesteps that entirely, which is why it is the safer of the two.",
       "chapter": "Probability"
     }
   ]

@@ -46,7 +46,7 @@
       "topic": "Irrational numbers — assertion and reason",
       "type": "mcq",
       "q": "**Assertion (A):** $(\\sqrt{3} + \\sqrt{5})$ is an irrational number.\n\n**Reason (R):** The sum of any two irrational numbers is always irrational.\n\nChoose the correct option:",
-      "solution": "(A) is **true**: $\\sqrt{3} + \\sqrt{5}$ cannot be written as a ratio of two integers.\n\n(R) is **false**, and one counter-example is enough to sink it: $\\sqrt{3}$ and $-\\sqrt{3}$ are both irrational, yet their sum is $0$, which is rational.\n\nSo the assertion stands, but not for the reason offered. Any claim with *always* in it falls to a single counter-example — one black swan ends 'all swans are white'.",
+      "solution": "(A) is **true**: $\\sqrt{3} + \\sqrt{5}$ cannot be written as a ratio of two integers.\n\n(R) is **false**, and one counter-example is enough to sink it: $\\sqrt{3}$ and $-\\sqrt{3}$ are both irrational, yet their sum is $0$, which is rational.\n\nSo the assertion stands, but not for the reason offered. Any claim with **always** in it falls to a single counter-example — one black swan ends 'all swans are white'.",
       "marks": 1,
       "source": "CBSE 2026",
       "options": [
@@ -89,7 +89,7 @@
         "198"
       ],
       "answer": 2,
-      "solution": "Break both into primes: $98 = 2 \\times 7^{2}$ and $28 = 2^{2} \\times 7$.\n\n**HCF** takes each shared prime at its *lowest* power: $2 \\times 7 = 14$, so $m = 14$.\n\n**LCM** takes every prime at its *highest* power: $2^{2} \\times 7^{2} = 196$, so $n = 196$.\n\n$n - 7m = 196 - 7 \\times 14 = 196 - 98 = \\mathbf{98}$.\n\nCheck it the other way: $98 \\times 28 = 2744 = 14 \\times 196$. The HCF and LCM always multiply back to the two numbers."
+      "solution": "Break both into primes: $98 = 2 \\times 7^{2}$ and $28 = 2^{2} \\times 7$.\n\n**HCF** takes each shared prime at its **lowest** power: $2 \\times 7 = 14$, so $m = 14$.\n\n**LCM** takes every prime at its **highest** power: $2^{2} \\times 7^{2} = 196$, so $n = 196$.\n\n$n - 7m = 196 - 7 \\times 14 = 196 - 98 = \\mathbf{98}$.\n\nCheck it the other way: $98 \\times 28 = 2744 = 14 \\times 196$. The HCF and LCM always multiply back to the two numbers."
     },
     {
       "id": "rn-018",
@@ -106,7 +106,7 @@
         "10"
       ],
       "answer": 3,
-      "solution": "Factorise all three:\n\n$40 = 2^{3} \\times 5$\n\n$110 = 2 \\times 5 \\times 11$\n\n$360 = 2^{3} \\times 3^{2} \\times 5$\n\nThe HCF keeps only the primes that appear in **every** one of them, each at its lowest power. Both $2$ and $5$ appear in all three; the lowest power of $2$ is $2^{1}$ (from 110) and of $5$ is $5^{1}$.\n\nHCF $= 2 \\times 5 = \\mathbf{10}$.\n\n$3$ and $11$ are each missing from at least one number, so neither can be in the HCF. A chain is only as strong as its weakest link — the HCF is only as big as the *poorest* supply of each prime."
+      "solution": "Factorise all three:\n\n$40 = 2^{3} \\times 5$\n\n$110 = 2 \\times 5 \\times 11$\n\n$360 = 2^{3} \\times 3^{2} \\times 5$\n\nThe HCF keeps only the primes that appear in **every** one of them, each at its lowest power. Both $2$ and $5$ appear in all three; the lowest power of $2$ is $2^{1}$ (from 110) and of $5$ is $5^{1}$.\n\nHCF $= 2 \\times 5 = \\mathbf{10}$.\n\n$3$ and $11$ are each missing from at least one number, so neither can be in the HCF. A chain is only as strong as its weakest link — the HCF is only as big as the **poorest** supply of each prime."
     },
     {
       "id": "rn-019",
@@ -123,7 +123,7 @@
         "Assertion (A) is false, but Reason (R) is true."
       ],
       "answer": 1,
-      "solution": "**Is (A) true?** Write both out: $36m^{2} = 2^{2} \\times 3^{2} \\times m^{2}$ and $18m = 2 \\times 3^{2} \\times m$. Take each shared prime at its lowest power: $2^{1} \\times 3^{2} \\times m^{1} = 18m$. So **(A) is true**.\n\n**Is (R) true?** Yes. The HCF divides both numbers, and a divisor of a positive number can never exceed it — so it cannot exceed the smaller one either. **(R) is true**.\n\n**Does (R) explain (A)?** No. (R) only tells you the HCF is *at most* $18m$; it never tells you it *reaches* $18m$. The factorisation does that. True, but not the reason.\n\nSo the answer is **(B)**: both true, (R) not the correct explanation."
+      "solution": "**Is (A) true?** Write both out: $36m^{2} = 2^{2} \\times 3^{2} \\times m^{2}$ and $18m = 2 \\times 3^{2} \\times m$. Take each shared prime at its lowest power: $2^{1} \\times 3^{2} \\times m^{1} = 18m$. So **(A) is true**.\n\n**Is (R) true?** Yes. The HCF divides both numbers, and a divisor of a positive number can never exceed it — so it cannot exceed the smaller one either. **(R) is true**.\n\n**Does (R) explain (A)?** No. (R) only tells you the HCF is **at most** $18m$; it never tells you it **reaches** $18m$. The factorisation does that. True, but not the reason.\n\nSo the answer is **(B)**: both true, (R) not the correct explanation."
     },
     {
       "id": "rn-010",

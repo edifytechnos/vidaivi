@@ -1,0 +1,239 @@
+{
+  "id": "lib-c12bio-evo",
+  "title": "Evolution",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-evo-01",
+      "chapter": "Evolution",
+      "topic": "Natural selection",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Darwin's theory of evolution by natural selection requires:",
+      "options": [
+        "Inheritance of acquired characters",
+        "Variation, heritability and differential survival",
+        "A predetermined goal",
+        "Sudden large mutations only"
+      ],
+      "answer": 1,
+      "solution": "Natural selection needs three conditions and nothing more:\n\n1. **Variation** exists among individuals in a population\n2. Some of that variation is **heritable**\n3. It causes **differential survival and reproduction**\n\nGiven those three, the favourable variants necessarily become commoner. Evolution has no goal and no foresight — it is simply the arithmetic consequence of those conditions.\n\nInheritance of acquired characters is **Lamarck's** idea, which Darwin's theory replaced."
+    },
+    {
+      "id": "c12bio-evo-02",
+      "chapter": "Evolution",
+      "topic": "Evidence",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The forelimbs of a whale, a bat and a human are:",
+      "options": [
+        "Analogous organs",
+        "Homologous organs",
+        "Vestigial organs",
+        "Unrelated"
+      ],
+      "answer": 1,
+      "solution": "**Homologous** organs share the same **basic structure and embryonic origin** but perform different functions — swimming, flying, grasping.\n\nThey point to a **common ancestor** whose limb was modified in different directions. This is **divergent** evolution.\n\n**Analogous** organs are the reverse: different structure, same function, as in the wings of a bird and an insect. Those show **convergent** evolution, where unrelated lineages meet the same problem."
+    },
+    {
+      "id": "c12bio-evo-03",
+      "chapter": "Evolution",
+      "topic": "Hardy-Weinberg",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Hardy-Weinberg principle states that allele frequencies remain constant unless there is:",
+      "options": [
+        "Random mating",
+        "Mutation, migration, drift or selection",
+        "A large population",
+        "No selection"
+      ],
+      "answer": 1,
+      "solution": "The principle says a population's allele frequencies stay constant **provided** five conditions hold: no mutation, no migration (gene flow), no genetic drift, no selection, and random mating in a large population.\n\nSo it is a **null model**. Its value is that any observed **departure** from $p^{2} + 2pq + q^{2} = 1$ tells you that one of those forces is acting — which is exactly how evolution in a population is detected.\n\nA principle stating that nothing changes is useful precisely because things do."
+    },
+    {
+      "id": "c12bio-evo-04",
+      "chapter": "Evolution",
+      "topic": "Industrial melanism",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The rise of dark-coloured peppered moths in industrial England is an example of:",
+      "options": [
+        "Mutation creating a new species",
+        "Natural selection in action",
+        "Lamarckian inheritance",
+        "Genetic drift"
+      ],
+      "answer": 1,
+      "solution": "Both light and dark moths already existed before industrialisation. Soot darkened the tree trunks, so the **light** moths became conspicuous to birds and the **dark** ones were camouflaged.\n\nSelection did not create the dark variant — it **changed which existing variant survived better**. That distinction is the whole point.\n\nIt is one of the best-documented cases because the frequencies **reversed again** after the Clean Air Acts, which is as close to a controlled experiment as field evolution offers."
+    },
+    {
+      "id": "c12bio-evo-05",
+      "chapter": "Evolution",
+      "topic": "Speciation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Darwin's finches on the Galapagos islands illustrate:",
+      "options": [
+        "Convergent evolution",
+        "Adaptive radiation",
+        "Vestigial organs",
+        "Analogous organs"
+      ],
+      "answer": 1,
+      "solution": "**Adaptive radiation** is the diversification of one ancestral stock into many forms, each adapted to a different niche.\n\nThe finches diverged mainly in **beak shape**, tracking their food sources — seeds, insects, cactus.\n\nIt is a form of **divergent** evolution, driven here by geographical isolation among the islands. Australian marsupials are the other standard example."
+    },
+    {
+      "id": "c12bio-evo-06",
+      "chapter": "Evolution",
+      "topic": "Origin of life",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Miller-Urey experiment demonstrated that:",
+      "options": [
+        "Life arose from other planets",
+        "Organic molecules can form from inorganic ones under early-Earth conditions",
+        "Cells can form spontaneously",
+        "DNA came before RNA"
+      ],
+      "answer": 1,
+      "solution": "Miller and Urey passed electric discharges through a mixture of $\\text{CH}_4$, $\\text{NH}_3$, $\\text{H}_2$ and water vapour — a simulated reducing early atmosphere with lightning.\n\nWithin a week, **amino acids** and other organic molecules had formed.\n\nIt supports **chemical evolution**: the building blocks of life can arise abiotically. It did **not** create life or a cell, and it is important not to overstate what it showed."
+    },
+    {
+      "id": "c12bio-evo-07",
+      "chapter": "Evolution",
+      "topic": "Evidence",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Vestigial organs such as the human appendix are evidence of evolution because they:",
+      "options": [
+        "Are useful now",
+        "Are remnants of structures functional in ancestors",
+        "Appear suddenly",
+        "Are found only in humans"
+      ],
+      "answer": 1,
+      "solution": "Vestigial organs are **reduced remnants** of structures that were functional in an ancestor and have since lost their use.\n\nThe appendix, the nictitating membrane and the ear muscles are human examples; a whale's pelvic bones are another.\n\nThe argument is that a structure with no current function makes no sense as a design and makes complete sense as **inherited history** — which is why vestigial organs are among the more persuasive lines of evidence."
+    },
+    {
+      "id": "c12bio-evo-08",
+      "chapter": "Evolution",
+      "topic": "Genetic drift",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Genetic drift has the greatest effect in:",
+      "options": [
+        "Very large populations",
+        "Small populations",
+        "Populations under strong selection",
+        "Populations with high mutation"
+      ],
+      "answer": 1,
+      "solution": "Genetic drift is change in allele frequency by **chance** rather than by selection — the sampling error of which individuals happen to reproduce.\n\nLike any sampling effect it is **largest when the sample is small**, so drift dominates in **small populations** and is negligible in very large ones.\n\nThe **founder effect** and the **bottleneck effect** are two named cases. Drift is non-adaptive: it can fix a harmful allele purely by accident, which is why small isolated populations carry raised rates of genetic disease."
+    },
+    {
+      "id": "c12bio-evo-09",
+      "chapter": "Evolution",
+      "topic": "Human evolution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The correct sequence in human evolution is:",
+      "options": [
+        "Homo habilis, Australopithecus, Homo erectus, Homo sapiens",
+        "Australopithecus, Homo habilis, Homo erectus, Homo sapiens",
+        "Homo erectus, Homo habilis, Homo sapiens",
+        "Homo sapiens, Homo erectus, Homo habilis"
+      ],
+      "answer": 1,
+      "solution": "The sequence is **Australopithecus** (about 4 million years ago, bipedal, small brain) → **Homo habilis** (the first tool maker, around $650$–$800\\ \\text{cc}$) → **Homo erectus** (about $900\\ \\text{cc}$, used fire) → **Homo sapiens**.\n\nThe brain volume increases along the line, while bipedalism came **first** — before the large brain, not after it, which was the surprise when the fossils were found."
+    },
+    {
+      "id": "c12bio-evo-10",
+      "chapter": "Evolution",
+      "topic": "Hardy-Weinberg",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a Hardy-Weinberg population, the frequency of the recessive allele $q$ is $0.2$. Find the frequency of heterozygotes, as a decimal.",
+      "answer": 0.32,
+      "tolerance": 0.01,
+      "accept": [
+        "0.32",
+        "32%"
+      ],
+      "solution": "Since $p + q = 1$: $p = 1 - 0.2 = 0.8$.\n\nHeterozygote frequency $= 2pq = 2(0.8)(0.2)$\n\n$= \\mathbf{0.32}$, that is $32\\%$ of the population.\n\nAs a check: $p^{2} + 2pq + q^{2} = 0.64 + 0.32 + 0.04 = 1$ ✓"
+    },
+    {
+      "id": "c12bio-evo-11",
+      "chapter": "Evolution",
+      "topic": "Hardy-Weinberg",
+      "type": "numeric",
+      "marks": 3,
+      "q": "If $4\\%$ of a population shows a recessive phenotype, find the frequency of the recessive allele.",
+      "answer": 0.2,
+      "tolerance": 0.01,
+      "accept": [
+        "0.2",
+        "20%"
+      ],
+      "solution": "The recessive phenotype corresponds to $q^{2}$:\n\n$q^{2} = 0.04$\n\n$q = \\sqrt{0.04} = \\mathbf{0.2}$\n\nSo $p = 0.8$. Note that although only $4\\%$ show the trait, $2pq = 32\\%$ are carriers — recessive alleles are far commoner than the phenotype suggests, which is why they persist."
+    },
+    {
+      "id": "c12bio-evo-12",
+      "chapter": "Evolution",
+      "topic": "Human evolution",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the approximate cranial capacity, in cubic centimetres, of modern Homo sapiens?",
+      "answer": 1350,
+      "tolerance": 150,
+      "accept": [
+        "1350",
+        "1400",
+        "1300-1600"
+      ],
+      "solution": "Modern humans have a cranial capacity of about $\\mathbf{1350\\ \\text{cc}}$, usually quoted in the range $1300$ to $1600\\ \\text{cc}$.\n\nThe progression is roughly: Australopithecus $450$, Homo habilis $700$, Homo erectus $900$, Neanderthal $1400$, Homo sapiens $1350$.\n\nNeanderthals had slightly larger brains than we do, which is a useful reminder that brain size alone does not track capability."
+    },
+    {
+      "id": "c12bio-evo-13",
+      "chapter": "Evolution",
+      "topic": "Hardy-Weinberg",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In a Hardy-Weinberg population $p = 0.6$. Find $p^{2}$, the frequency of homozygous dominants, as a decimal.",
+      "answer": 0.36,
+      "tolerance": 0.01,
+      "accept": [
+        "0.36",
+        "36%"
+      ],
+      "solution": "$p^{2} = (0.6)^{2} = \\mathbf{0.36}$, that is $36\\%$ homozygous dominant."
+    },
+    {
+      "id": "c12bio-evo-14",
+      "chapter": "Evolution",
+      "topic": "Origin of life",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Approximately how many billion years ago did life first appear on Earth?",
+      "answer": 3.5,
+      "tolerance": 0.5,
+      "accept": [
+        "3.5",
+        "4"
+      ],
+      "solution": "The first cellular life appeared roughly $\\mathbf{3.5}$ billion years ago, as shown by stromatolite fossils.\n\nThe Earth itself is about $4.5$ billion years old, so life arose within about a billion years of the planet cooling enough to allow it."
+    },
+    {
+      "id": "c12bio-evo-15",
+      "chapter": "Evolution",
+      "topic": "Natural selection",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain Darwin's theory of evolution by natural selection. Contrast it with Lamarck's theory, and explain why the evolution of antibiotic resistance in bacteria is a demonstration of natural selection and not of Lamarckian adaptation.",
+      "solution": "**Darwin's theory.** It rests on a small number of observations and one inference.\n\n**Observation 1: overproduction.** Organisms produce far more offspring than can possibly survive. A single cod lays millions of eggs; the population does not explode.\n\n**Observation 2: variation.** Individuals in a population differ from one another in many heritable respects.\n\n**Observation 3: limited resources.** Food, space and mates are finite, so there is a **struggle for existence**.\n\n**The inference.** Individuals whose variations happen to suit their circumstances survive and reproduce more successfully. Since those variations are heritable, they become commoner in the next generation. Over many generations the population **changes**, and given enough change and enough isolation, new species arise.\n\nThe crucial point is that this requires no foresight and no goal. It is the arithmetic consequence of the three observations — which is why it was such a powerful idea.\n\n**Lamarck's theory, and how it differs.**\n\nLamarck proposed the **inheritance of acquired characters**: an organism changes during its own lifetime in response to use or disuse, and passes those changes to its offspring. The giraffe stretches its neck to reach high leaves, and its calves are born with longer necks.\n\nThe contrast is sharp and it is about **where the change originates**:\n\n**Source of variation.** Lamarck: acquired during life, in response to need. Darwin: already present, arising randomly.\n\n**Direction.** Lamarck: the environment **instructs** the change. Darwin: the environment **selects** among existing variants.\n\n**What is inherited.** Lamarck: changes made during the organism's own life. Darwin: only what was in the germ line to begin with.\n\n**What adapts.** Lamarck: the individual adapts. Darwin: the individual does not change at all; the **population** does.\n\nLamarck's mechanism fails because changes to the **body** do not reach the **germ cells**. A weightlifter's children are not born strong, and Weismann famously cut the tails off mice for generations without producing tailless offspring.\n\n**Antibiotic resistance, and why it settles the question.**\n\nExpose a bacterial population to an antibiotic. Most die; a few survive and multiply; soon the whole population is resistant.\n\n**The Lamarckian reading** would be: the bacteria encountered the antibiotic and **developed** resistance in response, then passed it on.\n\n**The Darwinian reading** is: a few bacteria were **already** resistant, by chance mutations that arose before the antibiotic was ever present. The antibiotic killed the rest, leaving the resistant ones to reproduce.\n\nThese make **different predictions**, so the question is decidable.\n\nThe **Luria-Delbruck fluctuation test** (1943) settled it. If resistance arose **in response** to exposure, every culture should yield a similar number of resistant cells — the response would be consistent. If it arose by **random mutation beforehand**, the number should **fluctuate wildly** between cultures, because a mutation happening early in a culture's growth produces an enormous resistant clone while a late one produces only a few cells.\n\nThe counts fluctuated enormously. The mutations existed **before** the selective agent was applied.\n\nThe **Lederbergs' replica plating** experiment made the same point even more directly: resistant colonies could be identified from a master plate that had **never been exposed** to the antibiotic at all.\n\n**Why this matters practically.** It is why the advice is to finish a course of antibiotics rather than stop when symptoms ease. Stopping early leaves the partially resistant survivors alive to multiply — you have run a selection experiment inside your own body. And it is why antibiotic resistance is a problem that gets worse the more antibiotics are used, which would make no sense at all on the Lamarckian picture."
+    }
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "id": "lib-tn12p-mag",
+  "title": "Magnetism and Magnetic Effects of Electric Current",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-mag-01",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Biot-Savart law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The magnetic field at the centre of a circular coil of $N$ turns, radius $R$, carrying current $I$ is:",
+      "options": [
+        "$\\dfrac{\\mu_0 NI}{2\\pi R}$",
+        "$\\dfrac{\\mu_0 NI}{2R}$",
+        "$\\dfrac{\\mu_0 NI}{4\\pi R}$",
+        "$\\dfrac{\\mu_0 I}{2\\pi R}$"
+      ],
+      "answer": 1,
+      "solution": "$B = \\mathbf{\\dfrac{\\mu_0 NI}{2R}}$ at the centre of a circular coil.\n\nEvery element of the loop is at the same distance $R$ from the centre and contributes in the same direction, which is why the integration is so simple.\n\nDo not confuse it with the field of a **long straight wire**, $\\dfrac{\\mu_0 I}{2\\pi R}$ — the geometry is different and so is the $\\pi$."
+    },
+    {
+      "id": "tn12p-mag-02",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic force",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A charged particle enters a uniform magnetic field along the field direction. Its path is:",
+      "options": [
+        "Circular",
+        "Helical",
+        "A straight line",
+        "Parabolic"
+      ],
+      "answer": 2,
+      "solution": "$\\vec{F} = q\\vec{v}\\times\\vec{B}$ has magnitude $qvB\\sin\\theta$. Moving **along** the field means $\\theta = 0$, so the force is zero and the particle continues in a **straight line** undeflected.\n\nPerpendicular entry gives a **circle**; entry at any other angle gives a **helix**, since the parallel component is unaffected while the perpendicular component circles."
+    },
+    {
+      "id": "tn12p-mag-03",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Moving coil galvanometer",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a moving coil galvanometer, the radial magnetic field is produced by concave pole pieces so that:",
+      "options": [
+        "The coil rotates faster",
+        "The deflection is proportional to the current",
+        "The field is stronger",
+        "The coil does not heat"
+      ],
+      "answer": 1,
+      "solution": "With a **radial** field, the plane of the coil is always **parallel** to the field whatever its position, so $\\sin\\theta = 1$ at every angle and the torque is $NIAB$ rather than $NIAB\\sin\\theta$.\n\nAt equilibrium $NIAB = k\\phi$, so\n\n$\\phi \\propto I$\n\nThe scale is therefore **linear and uniform**. Without the radial field the deflection would vary as $\\sin\\theta$ and the scale would be cramped at one end."
+    },
+    {
+      "id": "tn12p-mag-25q2",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic materials",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If a material having intensity of magnetisation $500\\ \\mathrm{A\\,m^{-1}}$ is placed in a magnetising field of $1000\\ \\mathrm{A\\,m^{-1}}$, then the susceptibility of the material is :",
+      "options": [
+        "0.2",
+        "0.8",
+        "0.7",
+        "0.5"
+      ],
+      "answer": 3,
+      "solution": "$\\chi_m = \\dfrac{M}{H} = \\dfrac{500}{1000} = \\mathbf{0.5}$\n\nIt is positive, so the material is paramagnetic."
+    },
+    {
+      "id": "tn12p-mag-23q13",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic materials",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An example of Diamagnetic material is _________.",
+      "options": [
+        "Nickel",
+        "Water",
+        "Aluminium",
+        "Iron"
+      ],
+      "answer": 1,
+      "solution": "**Water** is diamagnetic: it is weakly repelled by a magnet.\n\nNickel and iron are ferromagnetic; aluminium is paramagnetic."
+    },
+    {
+      "id": "tn12p-mag-06",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Ampere's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The magnetic field inside a long solenoid of $n$ turns per unit length carrying current $I$ is:",
+      "options": [
+        "$\\mu_0 nI$",
+        "$\\dfrac{\\mu_0 nI}{2}$",
+        "$\\dfrac{\\mu_0 I}{2\\pi n}$",
+        "Zero"
+      ],
+      "answer": 0,
+      "solution": "$B = \\mathbf{\\mu_0 nI}$ inside a long solenoid, where $n$ is turns **per unit length**.\n\nThe field is **uniform** along the axis and essentially **zero outside**, which is what makes a solenoid the standard way of producing a known uniform field.\n\nAt the **ends** it falls to half this value, $\\tfrac{1}{2}\\mu_0 nI$, because only half the solenoid contributes there."
+    },
+    {
+      "id": "tn12p-mag-07",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic dipole",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The magnetic moment of a current loop of area $A$ carrying current $I$ with $N$ turns is:",
+      "options": [
+        "$NIA$",
+        "$IA/N$",
+        "$NI/A$",
+        "$N^{2}IA$"
+      ],
+      "answer": 0,
+      "solution": "$m = \\mathbf{NIA}$, directed perpendicular to the plane of the loop by the right-hand rule.\n\nThis is why a current loop behaves as a **magnetic dipole**: it experiences a torque $\\vec{\\tau} = \\vec{m}\\times\\vec{B}$ in a field, exactly as a bar magnet does, and it is the basis of the moving coil galvanometer and the electric motor."
+    },
+    {
+      "id": "tn12p-mag-08",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic materials",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Above the Curie temperature, a ferromagnetic material becomes:",
+      "options": [
+        "Diamagnetic",
+        "Paramagnetic",
+        "More strongly ferromagnetic",
+        "A superconductor"
+      ],
+      "answer": 1,
+      "solution": "Above the **Curie temperature** the thermal agitation destroys the alignment within the magnetic **domains**, and the material becomes **paramagnetic**.\n\nIt does not become non-magnetic altogether — the atomic dipoles survive, they simply no longer align cooperatively.\n\nFor iron the Curie point is $1043\\ \\text{K}$. Above it the susceptibility follows the Curie-Weiss law, $\\chi \\propto \\dfrac{1}{T - T_C}$."
+    },
+    {
+      "id": "tn12p-mag-09",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic force",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The work done by a magnetic force on a moving charged particle is:",
+      "options": [
+        "Always positive",
+        "Always zero",
+        "Always negative",
+        "Equal to $qvB$"
+      ],
+      "answer": 1,
+      "solution": "The magnetic force $q\\vec{v}\\times\\vec{B}$ is **always perpendicular to the velocity**, so $\\vec{F}\\cdot\\vec{v} = 0$ and the work done is **always zero**.\n\nA magnetic field can therefore change a particle's **direction** but never its **speed** or kinetic energy — which is exactly why a cyclotron needs an electric field to accelerate the particle and uses the magnetic field only to bend it round."
+    },
+    {
+      "id": "tn12p-mag-10",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Biot-Savart law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A circular coil of 50 turns and radius $0.1\\ \\text{m}$ carries $2\\ \\text{A}$. Taking $\\mu_0 = 4\\pi\\times10^{-7}$ SI units, find the field at its centre, in millitesla. Give the answer to two decimal places.",
+      "answer": 0.63,
+      "tolerance": 0.02,
+      "accept": [
+        "0.63",
+        "6.28e-4"
+      ],
+      "solution": "$B = \\dfrac{\\mu_0 NI}{2R} = \\dfrac{(4\\pi\\times10^{-7})(50)(2)}{2 \\times 0.1}$\n\nNumerator: $4\\pi\\times10^{-7} \\times 100 = 4\\pi\\times10^{-5}$\n\n$B = \\dfrac{4\\pi\\times10^{-5}}{0.2} = 2\\pi\\times10^{-4} = 6.28\\times10^{-4}\\ \\text{T}$\n\n$= \\mathbf{0.63\\ \\text{mT}}$"
+    },
+    {
+      "id": "tn12p-mag-11",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Ampere's law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A solenoid has 500 turns over a length of $0.25\\ \\text{m}$ and carries $3\\ \\text{A}$. Taking $\\mu_0 = 4\\pi\\times10^{-7}$ SI units, find the field inside, in millitesla. Give the answer to two decimal places.",
+      "answer": 7.54,
+      "tolerance": 0.1,
+      "accept": [
+        "7.54",
+        "7.5"
+      ],
+      "solution": "Turns per unit length: $n = \\dfrac{500}{0.25} = 2000\\ \\mathrm{m^{-1}}$\n\n$B = \\mu_0 nI = (4\\pi\\times10^{-7})(2000)(3)$\n\n$= 4\\pi\\times10^{-7} \\times 6000 = 7.54\\times10^{-3}\\ \\text{T} = \\mathbf{7.54\\ \\text{mT}}$"
+    },
+    {
+      "id": "tn12p-mag-12",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic dipole",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A coil of 100 turns and area $2\\times10^{-3}\\ \\text{m}^{2}$ carries $0.5\\ \\text{A}$. Find its magnetic moment, in $\\mathrm{A\\,m^{2}}$.",
+      "answer": 0.1,
+      "tolerance": 0.005,
+      "accept": [
+        "0.1"
+      ],
+      "solution": "$m = NIA = (100)(0.5)(2\\times10^{-3})$\n\n$= 50 \\times 2\\times10^{-3} = \\mathbf{0.1\\ \\mathrm{A\\,m^{2}}}$"
+    },
+    {
+      "id": "tn12p-mag-13",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Magnetic force",
+      "type": "numeric",
+      "marks": 3,
+      "q": "An electron of charge $1.6\\times10^{-19}\\ \\text{C}$ moves at $2\\times10^{6}\\ \\mathrm{m\\,s^{-1}}$ perpendicular to a field of $0.5\\ \\text{T}$. Find the force on it, in newtons. Give the answer in the form $a\\times10^{-13}$ and state $a$.",
+      "answer": 1.6,
+      "tolerance": 0.05,
+      "accept": [
+        "1.6"
+      ],
+      "solution": "$F = qvB\\sin 90^\\circ = (1.6\\times10^{-19})(2\\times10^{6})(0.5)$\n\n$= 1.6\\times10^{-19} \\times 10^{6} = 1.6\\times10^{-13}\\ \\text{N}$\n\nSo $a = \\mathbf{1.6}$."
+    },
+    {
+      "id": "tn12p-mag-14",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Earth's magnetism",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the angle of dip, in degrees, at the magnetic equator?",
+      "answer": 0,
+      "tolerance": 0.5,
+      "accept": [
+        "0"
+      ],
+      "solution": "At the magnetic equator the Earth's field is **horizontal**, so the dip needle rests horizontally and the angle of dip is $\\mathbf{0^\\circ}$.\n\nAt the magnetic poles the field is vertical and the dip is $90^\\circ$. Since $B_H = B\\cos\\delta$, the horizontal component is greatest at the equator and zero at the poles."
+    },
+    {
+      "id": "tn12p-mag-15",
+      "chapter": "Magnetism and Magnetic Effects of Electric Current",
+      "topic": "Moving coil galvanometer",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the construction and working of a moving coil galvanometer, deriving the relation between current and deflection. Explain the purpose of the radial magnetic field, and describe how the instrument is converted into an ammeter and into a voltmeter.",
+      "solution": "**Construction.** A rectangular coil of $N$ turns of fine insulated wire is wound on a light non-magnetic frame and suspended by a **phosphor bronze strip** between the **concave pole pieces** of a permanent horseshoe magnet. A soft iron **cylindrical core** sits inside the coil without touching it. A mirror on the suspension allows the deflection to be read by a lamp and scale.\n\n**Working.** When a current $I$ flows, the coil — a magnetic dipole of moment $NIA$ — experiences a **deflecting torque** in the field:\n\n$\\tau_{\\text{def}} = NIAB\\sin\\theta$\n\nAs the coil turns, the suspension wire twists and exerts a **restoring torque** proportional to the angle of twist:\n\n$\\tau_{\\text{res}} = k\\phi$\n\nwhere $k$ is the torsional constant. The coil settles where the two balance.\n\n**Deriving the relation.** At equilibrium, with the radial field ensuring $\\sin\\theta = 1$:\n\n$NIAB = k\\phi$\n\n$\\boxed{I = \\left(\\dfrac{k}{NAB}\\right)\\phi}$\n\nor equivalently $\\phi = \\left(\\dfrac{NAB}{k}\\right)I$, so $\\phi \\propto I$.\n\nThe quantity $\\dfrac{k}{NAB}$ is the **galvanometer constant** or figure of merit — the current needed for unit deflection.\n\n**The purpose of the radial field, which is the point of the design.**\n\nThe concave pole pieces together with the soft iron core produce a **radial** field: the field lines run along radii, so that **whatever position the coil takes, its plane is always parallel to the field**.\n\nThis matters because it makes $\\theta$ always $90^\\circ$ between the normal to the coil and the field, so $\\sin\\theta = 1$ **at every deflection**.\n\nWithout it the torque would be $NIAB\\sin\\theta$ and the relation would be $I \\propto \\dfrac{\\phi}{\\sin\\theta}$ — a **non-linear** scale, cramped at one end and stretched at the other, which would have to be individually calibrated rather than simply divided into equal parts.\n\nThe soft iron core does a second job as well: being highly permeable, it concentrates the field lines and so **increases** $B$, making the instrument more sensitive.\n\n**Sensitivity.** Current sensitivity is $\\dfrac{\\phi}{I} = \\dfrac{NAB}{k}$. It is raised by increasing $N$, $A$ or $B$, or by reducing $k$ — which is why a phosphor bronze strip is used, having a very small torsional constant.\n\nBut increasing $N$ and $A$ also increases the coil's **resistance**, and voltage sensitivity is $\\dfrac{\\phi}{V} = \\dfrac{NAB}{kR}$. So **raising the current sensitivity does not necessarily raise the voltage sensitivity** — a genuinely useful point, and the reason the two are quoted separately.\n\n**Conversion into an ammeter.**\n\nAn ammeter goes in **series** and must therefore have **low** resistance, and must carry a large current the delicate coil cannot take.\n\nA **low resistance $S$, called a shunt, is connected in parallel** with the galvanometer, so most of the current bypasses the coil.\n\nIf $I_g$ is the full-scale galvanometer current and $I$ the current to be measured, the parallel voltages are equal:\n\n$I_gG = (I - I_g)S \\Rightarrow S = \\dfrac{I_gG}{I - I_g}$\n\nThe combination has resistance $\\dfrac{GS}{G+S}$, which is **less than $S$** and so very small — as required, since an ideal ammeter has zero resistance and would not disturb the circuit it measures.\n\n**Conversion into a voltmeter.**\n\nA voltmeter goes in **parallel** and must therefore have **high** resistance, so that it draws as little current as possible from the circuit.\n\nA **high resistance $R$ is connected in series** with the galvanometer.\n\nFor a full-scale reading $V$:\n\n$V = I_g(G + R) \\Rightarrow R = \\dfrac{V}{I_g} - G$\n\nThe combination has resistance $G + R$, which is large — as required, since an ideal voltmeter has infinite resistance.\n\n**The symmetry is worth noticing.** Both conversions start from the same instrument and go in opposite directions: **low resistance in parallel** for the series instrument, **high resistance in series** for the parallel one. In each case the added resistance is chosen so that the galvanometer still receives exactly $I_g$ at full scale, and in each case it moves the instrument's total resistance towards the ideal value that disturbs the circuit least."
+    }
+  ]
+}

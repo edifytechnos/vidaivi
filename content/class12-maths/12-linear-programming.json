@@ -177,7 +177,7 @@
       "topic": "Minimum over an unbounded region",
       "type": "long",
       "q": "Minimise $Z = 3x + 5y$ subject to $x + y \\ge 2$, $x \\ge 0$, $y \\ge 0$, and explain why the answer is trustworthy even though the region is unbounded.",
-      "solution": "The corner points of this unbounded region are $(2, 0)$ and $(0, 2)$.\n\n$Z(2,0) = 6$ and $Z(0,2) = 10$, so the candidate minimum is $6$.\n\n**The check for an unbounded region:** does $3x + 5y < 6$ contain any feasible point?\n\nOn the feasible region $x + y \\ge 2$, and since $3x + 5y \\ge 3(x + y) \\ge 6$, no feasible point can beat $6$.\n\n**Minimum $= 6$ at $(2, 0)$.**\n\nFor an unbounded region the corner values are only candidates until that half-plane test is done — and a *minimum* with positive coefficients is the case that usually survives it.",
+      "solution": "The corner points of this unbounded region are $(2, 0)$ and $(0, 2)$.\n\n$Z(2,0) = 6$ and $Z(0,2) = 10$, so the candidate minimum is $6$.\n\n**The check for an unbounded region:** does $3x + 5y < 6$ contain any feasible point?\n\nOn the feasible region $x + y \\ge 2$, and since $3x + 5y \\ge 3(x + y) \\ge 6$, no feasible point can beat $6$.\n\n**Minimum $= 6$ at $(2, 0)$.**\n\nFor an unbounded region the corner values are only candidates until that half-plane test is done — and a **minimum** with positive coefficients is the case that usually survives it.",
       "marks": 3
     },
     {

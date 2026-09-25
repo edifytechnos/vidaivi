@@ -1,0 +1,225 @@
+{
+  "id": "lib-tn12c-ele",
+  "title": "Electrochemistry",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-ele-01",
+      "chapter": "Electrochemistry",
+      "topic": "Conductance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The SI unit of molar conductivity is:",
+      "options": [
+        "$\\mathrm{S\\,m^{-1}}$",
+        "$\\mathrm{S\\,m^2\\,mol^{-1}}$",
+        "$\\mathrm{S\\,cm^{-1}}$",
+        "$\\mathrm{\\Omega\\,m}$"
+      ],
+      "answer": 1,
+      "solution": "$\\Lambda_m = \\dfrac{\\kappa}{C}$. With $\\kappa$ in $\\mathrm{S\\,m^{-1}}$ and $C$ in $\\mathrm{mol\\,m^{-3}}$, the unit is $\\mathbf{S\\,m^2\\,mol^{-1}}$."
+    },
+    {
+      "id": "tn12c-ele-02",
+      "chapter": "Electrochemistry",
+      "topic": "Conductance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "On dilution, the specific conductance of an electrolyte solution:",
+      "options": [
+        "increases",
+        "decreases",
+        "stays the same",
+        "first increases then decreases"
+      ],
+      "answer": 1,
+      "solution": "Specific conductance is the conductance of a **unit volume**, so it depends on how many ions are in that volume. Dilution lowers that number and $\\kappa$ **decreases**.\n\nMolar conductivity does the opposite: it rises on dilution, because it counts the ions from one mole however much solution they are spread through, and they move more freely."
+    },
+    {
+      "id": "tn12c-ele-03",
+      "chapter": "Electrochemistry",
+      "topic": "Kohlrausch's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Kohlrausch's law is used to find the limiting molar conductivity of:",
+      "options": [
+        "strong electrolytes only",
+        "weak electrolytes, which cannot be found by extrapolation",
+        "non-electrolytes",
+        "metals"
+      ],
+      "answer": 1,
+      "solution": "For a strong electrolyte $\\Lambda_m$ against $\\sqrt{C}$ is a straight line that can be extrapolated to zero concentration.\n\nFor a **weak electrolyte** the curve rises steeply near zero and cannot be extrapolated, so $\\Lambda_m^\\circ$ is built from ionic contributions: $\\Lambda_m^\\circ(\\mathrm{CH_3COOH}) = \\Lambda^\\circ(\\mathrm{CH_3COONa}) + \\Lambda^\\circ(\\mathrm{HCl}) - \\Lambda^\\circ(\\mathrm{NaCl})$."
+    },
+    {
+      "id": "tn12c-ele-04",
+      "chapter": "Electrochemistry",
+      "topic": "Galvanic cells",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a galvanic cell, oxidation takes place at the:",
+      "options": [
+        "cathode, which is positive",
+        "anode, which is negative",
+        "anode, which is positive",
+        "salt bridge"
+      ],
+      "answer": 1,
+      "solution": "Oxidation always happens at the **anode**. In a galvanic cell electrons are released there, so the anode is the **negative** terminal.\n\nIn an electrolytic cell the anode is still where oxidation happens but it is positive, because an outside source is driving the electrons."
+    },
+    {
+      "id": "tn12c-ele-05",
+      "chapter": "Electrochemistry",
+      "topic": "Salt bridge",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The function of a salt bridge is to:",
+      "options": [
+        "let electrons flow between the half cells",
+        "maintain electrical neutrality of the two solutions",
+        "increase the emf",
+        "act as a catalyst"
+      ],
+      "answer": 1,
+      "solution": "The salt bridge lets **ions** move to keep each solution electrically neutral, completing the circuit.\n\nElectrons travel through the external wire, never through the bridge. Without it charge builds up in each beaker and the current stops almost at once."
+    },
+    {
+      "id": "tn12c-ele-06",
+      "chapter": "Electrochemistry",
+      "topic": "Electrode potential",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Given $E^\\circ(\\mathrm{Zn^{2+}/Zn}) = -0.76\\,\\mathrm{V}$ and $E^\\circ(\\mathrm{Cu^{2+}/Cu}) = +0.34\\,\\mathrm{V}$, which is true?",
+      "options": [
+        "Cu displaces Zn from zinc sulphate solution",
+        "Zn displaces Cu from copper sulphate solution",
+        "Neither displaces the other",
+        "Both displace each other"
+      ],
+      "answer": 1,
+      "solution": "The metal with the **lower (more negative)** reduction potential is the stronger reducing agent, so it gives up its electrons.\n\nZinc reduces $\\mathrm{Cu^{2+}}$: $\\mathrm{Zn} + \\mathrm{Cu^{2+}} \\rightarrow \\mathrm{Zn^{2+}} + \\mathrm{Cu}$. This is the Daniell cell reaction."
+    },
+    {
+      "id": "tn12c-ele-25q12",
+      "chapter": "Electrochemistry",
+      "topic": "Faraday's laws",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of electrons that have a total charge of 9650 coulombs is :",
+      "options": [
+        "$6.022 \\times 10^{22}$",
+        "$6.22 \\times 10^{23}$",
+        "$6.022 \\times 10^{-34}$",
+        "$6.022 \\times 10^{24}$"
+      ],
+      "answer": 0,
+      "solution": "One faraday, $96500\\,\\mathrm{C}$, is the charge on one mole of electrons.\n\n$9650\\,\\mathrm{C} = 0.1$ mol of electrons $= 0.1 \\times 6.022 \\times 10^{23} = \\mathbf{6.022 \\times 10^{22}}$."
+    },
+    {
+      "id": "tn12c-ele-24q10",
+      "chapter": "Electrochemistry",
+      "topic": "Batteries",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Among the following cells primary cells are :\n\n(i) Leclanche cell (ii) Nickel-Cadmium cell\n\n(iii) Lead Storage Battery (iv) Mercury cell",
+      "options": [
+        "(iii) and (iv)",
+        "(i) and (iv)",
+        "(ii) and (iii)",
+        "(i) and (iii)"
+      ],
+      "answer": 1,
+      "solution": "A primary cell cannot be recharged; its reaction runs once. The **Leclanche** dry cell and the **mercury** cell are primary.\n\nThe nickel-cadmium cell and the lead storage battery are secondary cells: passing current backwards reverses the reaction."
+    },
+    {
+      "id": "tn12c-ele-09",
+      "chapter": "Electrochemistry",
+      "topic": "Corrosion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Rusting of iron is prevented by galvanisation because zinc:",
+      "options": [
+        "is less reactive than iron",
+        "has a higher reduction potential than iron",
+        "is more easily oxidised than iron and acts as a sacrificial anode",
+        "forms an alloy with iron"
+      ],
+      "answer": 2,
+      "solution": "Zinc has the more negative electrode potential ($-0.76\\,\\mathrm{V}$ against $-0.44\\,\\mathrm{V}$ for iron), so it is **oxidised in preference**.\n\nEven when the coating is scratched, zinc corrodes first and protects the iron as a sacrificial anode. Tin plating cannot do this: tin is below iron, so a scratch speeds up rusting."
+    },
+    {
+      "id": "tn12c-ele-24q20",
+      "chapter": "Electrochemistry",
+      "topic": "Electrode potential",
+      "source": "TN HSE Mar 2024",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Can $\\mathrm{Fe^{3+}}$ oxidise bromide to bromine under Standard Conditions ? Given : $E^\\circ_{\\mathrm{Fe^{3+}|Fe^{2+}}} = 0.771\\ \\mathrm{V}$, $E^\\circ_{\\mathrm{Br_2|Br^-}} = 1.09\\ \\mathrm{V}$. (Answer Yes or No.)",
+      "answer": "No",
+      "solution": "For $2\\mathrm{Fe^{3+}} + 2\\mathrm{Br^-} \\rightarrow 2\\mathrm{Fe^{2+}} + \\mathrm{Br_2}$:\n\n$E^\\circ_{\\text{cell}} = E^\\circ_{\\text{cathode}} - E^\\circ_{\\text{anode}} = 0.771 - 1.09 = -0.319\\ \\mathrm{V}$\n\nA negative emf makes $\\Delta G^\\circ = -nFE^\\circ$ positive, so the reaction is not spontaneous. **No**: $\\mathrm{Fe^{3+}}$ cannot oxidise bromide. It is bromine, with the higher reduction potential, that oxidises $\\mathrm{Fe^{2+}}$.",
+      "accept": [
+        "No, it cannot",
+        "cannot",
+        "no it cannot"
+      ]
+    },
+    {
+      "id": "tn12c-ele-11",
+      "chapter": "Electrochemistry",
+      "topic": "Faraday's laws",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A current of $2\\,\\mathrm{A}$ is passed through a copper sulphate solution for $965$ seconds. Find the mass of copper deposited, in grams. (Molar mass of Cu $= 63.5\\,\\mathrm{g\\,mol^{-1}}$, $1\\,F = 96500\\,\\mathrm{C}$.)",
+      "answer": 0.635,
+      "tolerance": 0.005,
+      "solution": "Charge $Q = It = 2 \\times 965 = 1930\\,\\mathrm{C}$.\n\nMoles of electrons $= \\dfrac{1930}{96500} = 0.02$.\n\n$\\mathrm{Cu^{2+}} + 2e^- \\rightarrow \\mathrm{Cu}$, so moles of Cu $= 0.01$.\n\nMass $= 0.01 \\times 63.5 = \\mathbf{0.635\\,g}$."
+    },
+    {
+      "id": "tn12c-ele-12",
+      "chapter": "Electrochemistry",
+      "topic": "Gibbs energy",
+      "type": "numeric",
+      "marks": 3,
+      "q": "For the Daniell cell, $E^\\circ = 1.1\\,\\mathrm{V}$ and $n = 2$. Find $\\Delta G^\\circ$ in $\\mathrm{kJ\\,mol^{-1}}$. ($1\\,F = 96500\\,\\mathrm{C}$.)",
+      "answer": -212.3,
+      "tolerance": 0.3,
+      "solution": "$\\Delta G^\\circ = -nFE^\\circ = -2 \\times 96500 \\times 1.1 = -212\\,300\\,\\mathrm{J\\,mol^{-1}}$.\n\n$\\Delta G^\\circ = \\mathbf{-212.3\\,kJ\\,mol^{-1}}$. It is negative, so the cell reaction is spontaneous."
+    },
+    {
+      "id": "tn12c-ele-13",
+      "chapter": "Electrochemistry",
+      "topic": "Conductance",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The specific conductance of a $0.01\\,\\mathrm{M}$ KCl solution is $0.0014\\,\\mathrm{S\\,cm^{-1}}$. Find its molar conductivity in $\\mathrm{S\\,cm^2\\,mol^{-1}}$.",
+      "answer": 140,
+      "tolerance": 0.5,
+      "solution": "$\\Lambda_m = \\dfrac{\\kappa \\times 1000}{C} = \\dfrac{0.0014 \\times 1000}{0.01} = \\mathbf{140\\,S\\,cm^2\\,mol^{-1}}$.\n\nThe factor 1000 converts litres to $\\mathrm{cm^3}$."
+    },
+    {
+      "id": "tn12c-ele-14",
+      "chapter": "Electrochemistry",
+      "topic": "Nernst equation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the electrode potential, in volts, of a $\\mathrm{Cu^{2+}/Cu}$ electrode in $0.01\\,\\mathrm{M}$ $\\mathrm{Cu^{2+}}$ at $298\\,\\mathrm{K}$, given $E^\\circ = 0.34\\,\\mathrm{V}$. (Give two decimal places.)",
+      "answer": 0.28,
+      "tolerance": 0.005,
+      "solution": "$E = E^\\circ - \\dfrac{0.0591}{n}\\log\\dfrac{1}{[\\mathrm{Cu^{2+}}]}$ with $n = 2$.\n\n$E = 0.34 - \\dfrac{0.0591}{2}\\log 100 = 0.34 - 0.0591 = \\mathbf{0.28\\,V}$.\n\nLess $\\mathrm{Cu^{2+}}$ means less drive to reduce it, so the potential falls."
+    },
+    {
+      "id": "tn12c-ele-15",
+      "chapter": "Electrochemistry",
+      "topic": "Nernst equation",
+      "type": "long",
+      "marks": 5,
+      "q": "Derive the Nernst equation for a single electrode $M^{n+}/M$. Use it to write the emf of the Daniell cell in terms of the ion concentrations.",
+      "solution": "**Starting point.** For $M^{n+} + ne^- \\rightarrow M$, the free energy change is $\\Delta G = \\Delta G^\\circ + RT\\ln\\dfrac{1}{[M^{n+}]}$, since the activity of the pure metal is 1.\n\n**Link to potential.** $\\Delta G = -nFE$ and $\\Delta G^\\circ = -nFE^\\circ$. Substituting and dividing by $-nF$:\n\n$$E = E^\\circ - \\frac{RT}{nF}\\ln\\frac{1}{[M^{n+}]}$$\n\n**At 298 K**, converting to base-10 logarithms, $\\dfrac{2.303RT}{F} = 0.0591\\,\\mathrm{V}$:\n\n$$E = E^\\circ - \\frac{0.0591}{n}\\log\\frac{1}{[M^{n+}]}$$\n\n**Daniell cell.** $\\mathrm{Zn} + \\mathrm{Cu^{2+}} \\rightarrow \\mathrm{Zn^{2+}} + \\mathrm{Cu}$, $n = 2$:\n\n$$E_{\\text{cell}} = E^\\circ_{\\text{cell}} - \\frac{0.0591}{2}\\log\\frac{[\\mathrm{Zn^{2+}}]}{[\\mathrm{Cu^{2+}}]}$$\n\nwith $E^\\circ_{\\text{cell}} = 1.10\\,\\mathrm{V}$. As the cell runs, $[\\mathrm{Zn^{2+}}]$ rises and $[\\mathrm{Cu^{2+}}]$ falls, so the emf drops, reaching zero at equilibrium, where $E^\\circ_{\\text{cell}} = \\dfrac{0.0591}{2}\\log K$."
+    }
+  ]
+}

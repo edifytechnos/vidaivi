@@ -1,0 +1,233 @@
+{
+  "id": "lib-jeem-int",
+  "title": "Integral Calculus and Differential Equations",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeem-int-01",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Indefinite integrals",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\displaystyle\\int x^{n}\\,dx$ for $n \\neq -1$ equals:",
+      "options": [
+        "$\\dfrac{x^{n+1}}{n+1} + C$",
+        "$nx^{n-1} + C$",
+        "$\\dfrac{x^{n}}{n} + C$",
+        "$x^{n+1} + C$"
+      ],
+      "answer": 0,
+      "solution": "$\\displaystyle\\int x^{n}\\,dx = \\mathbf{\\dfrac{x^{n+1}}{n+1} + C}$.\n\nThe condition $n \\neq -1$ matters: at $n = -1$ the formula would divide by zero, and indeed $\\displaystyle\\int\\dfrac{1}{x}\\,dx = \\ln|x| + C$ instead — a logarithm, not a power."
+    },
+    {
+      "id": "jeem-int-02",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Definite integrals",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The fundamental theorem of calculus states that $\\displaystyle\\int_a^b f(x)\\,dx$ equals:",
+      "options": [
+        "$F(b) + F(a)$",
+        "$F(b) - F(a)$",
+        "$f(b) - f(a)$",
+        "$F'(b) - F'(a)$"
+      ],
+      "answer": 1,
+      "solution": "$\\displaystyle\\int_a^b f(x)\\,dx = \\mathbf{F(b) - F(a)}$, where $F$ is any antiderivative of $f$.\n\nThe theorem is remarkable because it links two things with no obvious connection: **area under a curve** and **antidifferentiation**. Note that any antiderivative will do, since the constants cancel in the subtraction."
+    },
+    {
+      "id": "jeem-int-03",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Properties",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $f$ is an **odd** function, then $\\displaystyle\\int_{-a}^{a}f(x)\\,dx$ equals:",
+      "options": [
+        "$2\\displaystyle\\int_0^a f(x)\\,dx$",
+        "$0$",
+        "$a$",
+        "$f(a)$"
+      ],
+      "answer": 1,
+      "solution": "An odd function satisfies $f(-x) = -f(x)$, so its graph has rotational symmetry about the origin.\n\nThe signed area from $-a$ to $0$ exactly cancels the area from $0$ to $a$, giving $\\mathbf{0}$.\n\nFor an **even** function the two halves are equal instead, so $\\displaystyle\\int_{-a}^{a}f = 2\\int_0^a f$. Spotting the symmetry first often removes the need to integrate at all."
+    },
+    {
+      "id": "jeem-int-04",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Differential equations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The order of the differential equation $\\dfrac{d^{2}y}{dx^{2}} + \\left(\\dfrac{dy}{dx}\\right)^{3} = 0$ is:",
+      "options": [
+        "$1$",
+        "$2$",
+        "$3$",
+        "$6$"
+      ],
+      "answer": 1,
+      "solution": "The **order** is the order of the **highest derivative** present, which here is the second derivative. So the order is $\\mathbf{2}$.\n\nThe **degree** is the power of that highest derivative once the equation is polynomial in derivatives — here the second derivative appears to the first power, so the degree is 1.\n\nThe cube on $\\dfrac{dy}{dx}$ affects neither, since it is not the highest derivative."
+    },
+    {
+      "id": "jeem-int-05",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Indefinite integrals",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\displaystyle\\int e^{x}\\,dx$ equals:",
+      "options": [
+        "$e^{x} + C$",
+        "$xe^{x} + C$",
+        "$\\dfrac{e^{x}}{x} + C$",
+        "$e^{x+1} + C$"
+      ],
+      "answer": 0,
+      "solution": "$\\displaystyle\\int e^{x}\\,dx = \\mathbf{e^{x} + C}$.\n\n$e^{x}$ is the unique function (up to a constant multiple) that is its own derivative, and so also its own integral. That property is what makes it central to the solution of differential equations."
+    },
+    {
+      "id": "jeem-int-06",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Differential equations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The integrating factor for $\\dfrac{dy}{dx} + Py = Q$, where $P$ and $Q$ are functions of $x$, is:",
+      "options": [
+        "$e^{\\int P\\,dx}$",
+        "$e^{\\int Q\\,dx}$",
+        "$e^{-\\int P\\,dx}$",
+        "$\\int P\\,dx$"
+      ],
+      "answer": 0,
+      "solution": "The integrating factor is $\\text{IF} = \\mathbf{e^{\\int P\\,dx}}$.\n\nMultiplying through by it makes the left side an exact derivative, $\\dfrac{d}{dx}(y\\cdot\\text{IF})$, so the equation integrates directly:\n\n$y \\cdot \\text{IF} = \\displaystyle\\int Q \\cdot \\text{IF}\\,dx + C$\n\nNote it depends on $P$ alone, never on $Q$."
+    },
+    {
+      "id": "jeem-int-07",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Definite integrals",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\displaystyle\\int_a^b f(x)\\,dx$ equals $-\\displaystyle\\int_b^a f(x)\\,dx$ because:",
+      "options": [
+        "Of symmetry",
+        "Reversing the limits reverses the sign",
+        "The integral is always positive",
+        "$f$ is odd"
+      ],
+      "answer": 1,
+      "solution": "**Reversing the limits of integration reverses the sign.** It follows immediately from the fundamental theorem:\n\n$\\displaystyle\\int_a^b f = F(b) - F(a)$ and $\\displaystyle\\int_b^a f = F(a) - F(b)$, which are negatives of each other.\n\nA corollary is that $\\displaystyle\\int_a^a f(x)\\,dx = 0$ always, whatever $f$ is."
+    },
+    {
+      "id": "jeem-int-08",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Area",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The area bounded by $y = f(x)$, the $x$-axis and the lines $x = a$, $x = b$ (with $f \\ge 0$) is:",
+      "options": [
+        "$\\displaystyle\\int_a^b f(x)\\,dx$",
+        "$f(b)-f(a)$",
+        "$\\displaystyle\\int_a^b f'(x)\\,dx$",
+        "$b - a$"
+      ],
+      "answer": 0,
+      "solution": "The area is $\\mathbf{\\displaystyle\\int_a^b f(x)\\,dx}$, provided $f(x) \\ge 0$ throughout.\n\nWhere $f$ dips below the axis the integral counts that region as **negative**, so for a genuine geometric area the curve must be split at its roots and the absolute values added:\n\n$\\text{Area} = \\displaystyle\\int_a^b |f(x)|\\,dx$\n\nForgetting this is the most common error in area problems."
+    },
+    {
+      "id": "jeem-int-09",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Differential equations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The general solution of a differential equation of order $n$ contains:",
+      "options": [
+        "No arbitrary constants",
+        "One arbitrary constant",
+        "$n$ arbitrary constants",
+        "Infinitely many constants"
+      ],
+      "answer": 2,
+      "solution": "A differential equation of order $n$ has a general solution with exactly $\\mathbf{n}$ arbitrary constants — one for each integration performed.\n\nFixing those constants requires $n$ initial or boundary conditions, and the result is a **particular** solution.\n\nThis is why a second-order equation of motion needs both an initial position and an initial velocity."
+    },
+    {
+      "id": "jeem-int-10",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Definite integrals",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Evaluate $\\displaystyle\\int_0^2 x\\,dx$.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2"
+      ],
+      "solution": "$\\displaystyle\\int_0^2 x\\,dx = \\left[\\dfrac{x^{2}}{2}\\right]_0^2 = \\dfrac{4}{2} - 0 = \\mathbf{2}$.\n\nGeometrically this is the area of a triangle with base 2 and height 2, which is $\\tfrac12(2)(2) = 2$ ✓"
+    },
+    {
+      "id": "jeem-int-11",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Definite integrals",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Evaluate $\\displaystyle\\int_0^1 3x^{2}\\,dx$.",
+      "answer": 1,
+      "tolerance": 0.05,
+      "accept": [
+        "1"
+      ],
+      "solution": "$\\displaystyle\\int_0^1 3x^{2}\\,dx = \\left[x^{3}\\right]_0^1 = 1 - 0 = \\mathbf{1}$."
+    },
+    {
+      "id": "jeem-int-12",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Properties",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Evaluate $\\displaystyle\\int_{-3}^{3} x^{5}\\,dx$.",
+      "answer": 0,
+      "tolerance": 0.01,
+      "accept": [
+        "0"
+      ],
+      "solution": "$x^{5}$ is an **odd** function, since $(-x)^{5} = -x^{5}$, and the limits are symmetric about the origin.\n\nSo the integral is $\\mathbf{0}$ without any calculation.\n\nChecking the long way: $\\left[\\dfrac{x^{6}}{6}\\right]_{-3}^{3} = \\dfrac{729}{6} - \\dfrac{729}{6} = 0$ ✓"
+    },
+    {
+      "id": "jeem-int-13",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Differential equations",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the degree of the differential equation $\\left(\\dfrac{d^{2}y}{dx^{2}}\\right)^{3} + \\dfrac{dy}{dx} = 0$?",
+      "answer": 3,
+      "tolerance": 0.1,
+      "accept": [
+        "3"
+      ],
+      "solution": "The highest derivative is $\\dfrac{d^{2}y}{dx^{2}}$, so the **order** is 2.\n\nThe **degree** is the power to which that highest derivative is raised, which is $\\mathbf{3}$.\n\nDegree is only defined when the equation is a polynomial in its derivatives, so an equation containing $\\sin\\left(\\dfrac{dy}{dx}\\right)$ has no degree."
+    },
+    {
+      "id": "jeem-int-14",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Area",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the area, in square units, bounded by $y = x^{2}$, the $x$-axis, $x = 0$ and $x = 3$.",
+      "answer": 9,
+      "tolerance": 0.1,
+      "accept": [
+        "9"
+      ],
+      "solution": "$\\text{Area} = \\displaystyle\\int_0^3 x^{2}\\,dx = \\left[\\dfrac{x^{3}}{3}\\right]_0^3$\n\n$= \\dfrac{27}{3} - 0 = \\mathbf{9}$ square units.\n\n$x^{2} \\ge 0$ throughout the interval, so no splitting is needed."
+    },
+    {
+      "id": "jeem-int-15",
+      "chapter": "Integral Calculus and Differential Equations",
+      "topic": "Differential equations",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the method of separation of variables and the integrating factor method for first-order differential equations. Solve $\\dfrac{dy}{dx} + 2y = 6$ with $y(0) = 0$, and interpret the behaviour of the solution as $x \\to \\infty$.",
+      "solution": "**Method 1: separation of variables.**\n\nApplies when the equation can be written as\n\n$\\dfrac{dy}{dx} = g(x)h(y)$\n\nso that all the $y$ terms can be gathered on one side and all the $x$ terms on the other:\n\n$\\dfrac{dy}{h(y)} = g(x)\\,dx$\n\nIntegrating both sides gives the general solution, with one arbitrary constant. It is the simplest method and should always be tried first.\n\n**Method 2: the integrating factor.**\n\nApplies to any **linear** first-order equation, that is one of the form\n\n$\\dfrac{dy}{dx} + P(x)y = Q(x)$\n\nEven when the variables will not separate. The idea is to multiply through by a cleverly chosen function that turns the left side into an exact derivative.\n\nLet $\\text{IF} = e^{\\int P\\,dx}$. Multiplying through:\n\n$\\text{IF}\\dfrac{dy}{dx} + P\\cdot\\text{IF}\\cdot y = Q\\cdot\\text{IF}$\n\nSince $\\dfrac{d}{dx}(\\text{IF}) = P\\cdot\\text{IF}$, the left side is exactly the product-rule expansion of $\\dfrac{d}{dx}(y\\cdot\\text{IF})$. So\n\n$\\dfrac{d}{dx}(y\\cdot\\text{IF}) = Q\\cdot\\text{IF}$\n\nand integrating:\n\n$y\\cdot\\text{IF} = \\displaystyle\\int Q\\cdot\\text{IF}\\,dx + C$\n\n**Solving the given equation.**\n\n$\\dfrac{dy}{dx} + 2y = 6$, with $y(0) = 0$.\n\nThis is linear with $P = 2$ and $Q = 6$.\n\n$\\int P\\,dx = \\int 2\\,dx = 2x$, so $\\text{IF} = e^{2x}$.\n\nMultiply through:\n\n$e^{2x}\\dfrac{dy}{dx} + 2e^{2x}y = 6e^{2x}$\n\n$\\dfrac{d}{dx}\\left(ye^{2x}\\right) = 6e^{2x}$\n\nIntegrate both sides:\n\n$ye^{2x} = \\displaystyle\\int 6e^{2x}\\,dx = 3e^{2x} + C$\n\nDivide by $e^{2x}$:\n\n$y = 3 + Ce^{-2x}$\n\n**Applying the initial condition.** At $x = 0$, $y = 0$:\n\n$0 = 3 + C \\Rightarrow C = -3$\n\n$\\boxed{y = 3\\left(1 - e^{-2x}\\right)}$\n\n**Check.** $\\dfrac{dy}{dx} = 6e^{-2x}$, and $\\dfrac{dy}{dx} + 2y = 6e^{-2x} + 6 - 6e^{-2x} = 6$ ✓, with $y(0) = 3(1-1) = 0$ ✓\n\n**Behaviour as $x \\to \\infty$.**\n\nAs $x$ grows, $e^{-2x} \\to 0$, so\n\n$y \\to 3$\n\nThe solution **rises from 0 and approaches 3 asymptotically**, never quite reaching it. It is monotonically increasing, since $\\dfrac{dy}{dx} = 6e^{-2x} > 0$ always, and its rate of increase decays exponentially.\n\n**Why 3, and why this shape.** The solution has two parts. The constant $3$ is the **steady state**: setting $\\dfrac{dy}{dx} = 0$ in the original equation gives $2y = 6$, so $y = 3$ is the value at which the system stops changing. The term $-3e^{-2x}$ is the **transient**, the part that remembers the initial condition and dies away.\n\nThis structure — a steady state plus a decaying transient — is the general shape of every stable linear first-order system, and the coefficient 2 sets how fast the transient dies. The same equation with the same solution describes a capacitor charging through a resistor, a body warming towards its surroundings by Newton's law of cooling, and a population approaching a carrying capacity under constant immigration."
+    }
+  ]
+}

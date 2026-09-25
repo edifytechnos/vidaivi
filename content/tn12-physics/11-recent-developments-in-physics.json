@@ -1,0 +1,236 @@
+{
+  "id": "lib-tn12p-rec",
+  "title": "Recent Developments in Physics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-rec-01",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Nanoscience",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A nanometre is equal to:",
+      "options": [
+        "$10^{-6}\\ \\text{m}$",
+        "$10^{-9}\\ \\text{m}$",
+        "$10^{-12}\\ \\text{m}$",
+        "$10^{-3}\\ \\text{m}$"
+      ],
+      "answer": 1,
+      "solution": "$1\\ \\text{nm} = \\mathbf{10^{-9}\\ \\text{m}}$, a billionth of a metre.\n\nNanoscience deals with structures between about **1 and 100 nm**. For scale, a hydrogen atom is about $0.1\\ \\text{nm}$ across and a DNA double helix about $2\\ \\text{nm}$ wide.\n\nThe lower bound is roughly atomic size; the upper bound is where the special properties of the nanoscale fade into ordinary bulk behaviour."
+    },
+    {
+      "id": "tn12p-rec-02",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Nanoscience",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Nanomaterials differ markedly from the same substance in bulk chiefly because of:",
+      "options": [
+        "A change in chemical composition",
+        "A very large surface area to volume ratio and quantum confinement",
+        "Lower density",
+        "Higher temperature"
+      ],
+      "answer": 1,
+      "solution": "Two effects act together.\n\n**Surface area to volume ratio** becomes enormous as particles shrink, so a far greater fraction of atoms lies on the surface — and surface atoms are more reactive. This is why nanoparticle catalysts are so effective.\n\n**Quantum confinement**: when a particle becomes comparable in size to the electron wavelength, the energy levels become discrete and size-dependent. The band gap widens as the particle shrinks.\n\nThe composition is unchanged throughout — gold nanoparticles are still gold, yet they appear red rather than golden and melt hundreds of degrees below bulk gold."
+    },
+    {
+      "id": "tn12p-rec-03",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Carbon nanotubes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Carbon nanotubes are:",
+      "options": [
+        "Spheres of 60 carbon atoms",
+        "Cylindrical structures of rolled-up graphene sheets",
+        "Diamond crystals",
+        "Amorphous carbon"
+      ],
+      "answer": 1,
+      "solution": "A carbon nanotube is a **rolled-up sheet of graphene** forming a seamless cylinder, typically a few nanometres across and up to millimetres long.\n\nThey have extraordinary properties: tensile strength around **100 times that of steel at one sixth the weight**, excellent thermal conductivity, and electrical behaviour that is either **metallic or semiconducting depending on how the sheet is rolled** — the chirality.\n\n**Fullerene** ($\\text{C}_{60}$) is the spherical form, the buckyball."
+    },
+    {
+      "id": "tn12p-rec-04",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Robotics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The degrees of freedom of a robotic arm refers to:",
+      "options": [
+        "Its speed",
+        "The number of independent movements it can make",
+        "Its weight capacity",
+        "Its power consumption"
+      ],
+      "answer": 1,
+      "solution": "**Degrees of freedom** is the number of **independent movements** a robot can perform, each usually corresponding to one joint.\n\nA rigid body in three-dimensional space has **six** degrees of freedom — three translations and three rotations — so an arm needs at least six to place an object at any position **and** in any orientation.\n\nMore than six gives redundancy, which allows the arm to reach round obstacles; the human arm has seven for this reason."
+    },
+    {
+      "id": "tn12p-rec-05",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Robotics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a robot, the component that provides motion is the:",
+      "options": [
+        "Sensor",
+        "Actuator",
+        "Controller",
+        "Power supply"
+      ],
+      "answer": 1,
+      "solution": "The **actuator** converts energy into motion — an electric motor, or a hydraulic or pneumatic cylinder. It is the robot's muscle.\n\nThe **sensor** gathers information about the environment, the robot's senses. The **controller** is the computer that processes that information and commands the actuators, the brain.\n\nA robot needs all four, and the **feedback loop** from sensor to controller to actuator is what distinguishes a robot from a merely automatic machine."
+    },
+    {
+      "id": "tn12p-rec-06",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Nanoscience",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Gold nanoparticles appear red rather than golden because of:",
+      "options": [
+        "A chemical reaction",
+        "Surface plasmon resonance at the nanoscale",
+        "Impurities",
+        "Oxidation"
+      ],
+      "answer": 1,
+      "solution": "**Surface plasmon resonance**: the conduction electrons in the nanoparticle oscillate collectively at a frequency that depends on the particle's **size and shape**, absorbing light strongly at that frequency.\n\nFor gold particles of a few tens of nanometres this absorption falls in the green, so the transmitted light appears **red**.\n\nThe effect was used long before it was understood — medieval stained glass gets its ruby colour from exactly this, and the Lycurgus Cup in the British Museum changes colour with the lighting for the same reason."
+    },
+    {
+      "id": "tn12p-rec-23q15",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Robotics",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The alloys used for muscle wires in Robots are :",
+      "options": [
+        "Gold silver alloys",
+        "Shape memory alloys",
+        "Two dimensional alloys",
+        "Gold copper alloys"
+      ],
+      "answer": 1,
+      "solution": "Muscle wires are **shape memory alloys** such as nitinol (nickel–titanium). Heated by a current they return to a remembered shape and contract, working like a muscle."
+    },
+    {
+      "id": "tn12p-rec-24q14",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Gravitational waves",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The gravitational waves were theoretically proposed by :",
+      "options": [
+        "Albert Einstein",
+        "Conrod Rontgen",
+        "Edward Purcell",
+        "Marie Curie"
+      ],
+      "answer": 0,
+      "solution": "**Albert Einstein** predicted gravitational waves in 1916 from his general theory of relativity. LIGO first detected them in 2015, from two merging black holes."
+    },
+    {
+      "id": "tn12p-rec-25q6",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Applications",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "“Ski wax” is an application of nano product in the field of :",
+      "options": [
+        "Sports",
+        "Medicine",
+        "Automotive industry",
+        "Textile"
+      ],
+      "answer": 0,
+      "solution": "Nano ski wax gives a smoother, harder, water-repelling glide surface: an application in **sports**."
+    },
+    {
+      "id": "tn12p-rec-10",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Nanoscience",
+      "type": "numeric",
+      "marks": 3,
+      "q": "By what factor does the surface area to volume ratio increase when a sphere's radius is reduced from $1000\\ \\text{nm}$ to $10\\ \\text{nm}$?",
+      "answer": 100,
+      "tolerance": 1,
+      "accept": [
+        "100"
+      ],
+      "solution": "For a sphere, $\\dfrac{\\text{surface area}}{\\text{volume}} = \\dfrac{4\\pi r^{2}}{\\tfrac{4}{3}\\pi r^{3}} = \\dfrac{3}{r}$.\n\nSo the ratio is **inversely proportional to the radius**.\n\nReducing $r$ by a factor of $\\dfrac{1000}{10} = 100$ increases the ratio by a factor of $\\mathbf{100}$.\n\nThis single fact is most of why nanomaterials behave differently: a hundred times more of the material is at the surface, where the chemistry happens."
+    },
+    {
+      "id": "tn12p-rec-11",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Nanoscience",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many nanometres are there in one micrometre?",
+      "answer": 1000,
+      "tolerance": 1,
+      "accept": [
+        "1000"
+      ],
+      "solution": "$1\\ \\mu\\text{m} = 10^{-6}\\ \\text{m}$ and $1\\ \\text{nm} = 10^{-9}\\ \\text{m}$.\n\n$\\dfrac{10^{-6}}{10^{-9}} = \\mathbf{1000}\\ \\text{nm}$"
+    },
+    {
+      "id": "tn12p-rec-12",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Robotics",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many degrees of freedom does a rigid body have in three-dimensional space?",
+      "answer": 6,
+      "tolerance": 0.5,
+      "accept": [
+        "6"
+      ],
+      "solution": "$\\mathbf{6}$ — three **translations** along the $x$, $y$ and $z$ axes, and three **rotations** about them (roll, pitch and yaw).\n\nThis is why a robotic arm needs at least six joints to place an object at any position **and** in any orientation. Fewer, and some orientations are unreachable."
+    },
+    {
+      "id": "tn12p-rec-13",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Nanoscience",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Nanomaterials are conventionally defined as having at least one dimension smaller than how many nanometres?",
+      "answer": 100,
+      "tolerance": 1,
+      "accept": [
+        "100"
+      ],
+      "solution": "$\\mathbf{100\\ \\text{nm}}$ is the conventional upper limit.\n\nAbove it, the surface-to-volume ratio and quantum confinement effects become too weak to distinguish the material from the bulk. The boundary is a convention rather than a sharp physical threshold, but it is where the special behaviour fades."
+    },
+    {
+      "id": "tn12p-rec-14",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Carbon nanotubes",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many carbon atoms are there in a buckminsterfullerene molecule?",
+      "answer": 60,
+      "tolerance": 0.5,
+      "accept": [
+        "60"
+      ],
+      "solution": "$\\mathbf{60}$ carbon atoms, hence $\\text{C}_{60}$.\n\nThey are arranged in 12 pentagons and 20 hexagons — exactly the pattern of a football. It is named after Buckminster Fuller, whose geodesic domes have the same structure, and its discovery won the 1996 Nobel Prize in Chemistry."
+    },
+    {
+      "id": "tn12p-rec-15",
+      "chapter": "Recent Developments in Physics",
+      "topic": "Nanoscience",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain what is meant by nanoscience and nanotechnology. Describe why materials behave differently at the nanoscale, outline the two approaches to nanofabrication, and discuss both applications and concerns.",
+      "solution": "**Definitions.** **Nanoscience** is the study of structures and phenomena at the nanoscale, conventionally **1 to 100 nm** in at least one dimension. **Nanotechnology** is the application of that understanding to make useful devices and materials.\n\nFor scale: a hydrogen atom is about $0.1\\ \\text{nm}$, a DNA helix $2\\ \\text{nm}$ wide, a virus $100\\ \\text{nm}$, and a human hair about $80{,}000\\ \\text{nm}$ thick.\n\n**Why behaviour changes at the nanoscale.** This is the heart of the subject, and there are two distinct reasons.\n\n**1. Surface area to volume ratio.** For a sphere this ratio is $\\dfrac{3}{r}$ — **inversely proportional to the radius**. Shrinking a particle a hundredfold increases the ratio a hundredfold.\n\nA far greater fraction of the atoms therefore sits at the **surface**, where bonds are unsatisfied and reactivity is high. A 3 nm particle has roughly half its atoms on the surface; a bulk crystal has essentially none.\n\nThis explains why nanoparticle catalysts work so well, why nanoscale aluminium is used in rocket propellant while a block of aluminium is inert, and why melting points drop — a surface atom is less strongly held than one in the interior, so a particle mostly made of surface melts more easily. Gold melts at $1064^\\circ\\text{C}$ in bulk and near $300^\\circ\\text{C}$ at a few nanometres.\n\n**2. Quantum confinement.** When a particle's size approaches the electron's wavelength, the electron is confined in a box small enough for quantum mechanics to dominate. Its energy levels become **discrete** and depend on the box size, so the **band gap widens as the particle shrinks**.\n\nThe consequence is striking: **optical properties become tunable by size alone**. Quantum dots of the same material fluoresce at different colours depending only on their diameter — used in displays and in biological imaging.\n\nGold nanoparticles appear **red** rather than golden through the related effect of surface plasmon resonance, where the conduction electrons oscillate collectively at a size-dependent frequency.\n\n**The crucial point** is that in both cases the **chemical composition is unchanged**. Gold nanoparticles are still gold. The properties change because of **size**, which is a genuinely new idea — classically, a material's properties do not depend on how much of it there is.\n\n**Two approaches to fabrication.**\n\n**Top-down** starts with bulk material and removes from it: photolithography, electron-beam lithography, ball milling. It is the established route of the semiconductor industry and is well controlled, but it is **limited by the resolution of the tools** and is wasteful, since most of the material is discarded.\n\n**Bottom-up** builds structures **from atoms and molecules upward**: chemical vapour deposition, sol-gel methods, molecular self-assembly. It offers finer control, less waste and the possibility of structures top-down cannot reach, but controlling self-assembly is difficult and it does not yet scale as readily.\n\nFeynman anticipated the bottom-up idea in 1959 in **There's Plenty of Room at the Bottom**, decades before any means of doing it existed.\n\n**Applications.**\n\n**Medicine** — targeted drug delivery, where a nanocarrier releases its drug only at a tumour, sparing healthy tissue; contrast agents for imaging; nanoparticle-based diagnostics.\n\n**Electronics** — transistors now have features of a few nanometres, and carbon nanotubes and graphene are candidates to succeed silicon.\n\n**Energy** — higher-capacity batteries, more efficient solar cells, better fuel-cell catalysts.\n\n**Materials** — nanotube composites of great strength and low weight, scratch-resistant coatings, self-cleaning and water-repellent surfaces.\n\n**Environment** — water purification membranes, and nanoparticles for remediating contaminated soil.\n\n**Concerns, which deserve to be stated honestly.**\n\n**Toxicity.** The very properties that make nanoparticles useful — small size, high reactivity, large surface area — also let them **cross biological barriers** that stop larger particles: deep into the lungs, potentially the blood-brain barrier. **A material safe in bulk is not automatically safe at the nanoscale**, and long-term effects are not yet well characterised.\n\n**Environmental persistence.** Nanoparticles released into water or soil may accumulate through food chains in ways not yet understood.\n\n**Regulation.** Legal frameworks lag behind the technology, and products containing nanomaterials have reached the market ahead of settled safety standards.\n\n**Ethical and social questions.** Military uses, surveillance made possible by very small sensors, and the risk that the benefits accrue only to wealthy countries.\n\n**The balanced position** is that nanotechnology is genuinely transformative and that its risks are real but largely **unquantified rather than demonstrated**. The responsible course is to develop the technology and the toxicology together, which is why nanotoxicology has grown up alongside it — and it is a better response than either uncritical enthusiasm or refusal."
+    }
+  ]
+}

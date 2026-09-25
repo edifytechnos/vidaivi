@@ -1,0 +1,239 @@
+{
+  "id": "lib-c12bio-bdv",
+  "title": "Biodiversity and Conservation",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 13,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-bdv-01",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Biodiversity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The three levels of biodiversity are:",
+      "options": [
+        "Plant, animal, microbe",
+        "Genetic, species and ecosystem diversity",
+        "Local, regional, global",
+        "Alpha, beta, gamma"
+      ],
+      "answer": 1,
+      "solution": "**Genetic diversity** — variation within a species, as in the 50,000 genetically distinct strains of rice in India.\n\n**Species diversity** — the variety of species in a region.\n\n**Ecosystem diversity** — the variety of habitats, from rainforest to desert to estuary.\n\nGenetic diversity is the one most often overlooked, and it is the raw material on which natural selection acts. A species reduced to a single genetic strain is far more vulnerable, however many individuals remain."
+    },
+    {
+      "id": "c12bio-bdv-02",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Species-area relationship",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The species-area relationship is described by:",
+      "options": [
+        "$\\log S = \\log C + Z\\log A$",
+        "$S = ZA$",
+        "$S = A/C$",
+        "$S = C - ZA$"
+      ],
+      "answer": 0,
+      "solution": "Alexander von Humboldt's relationship is $S = CA^{Z}$, usually plotted in logarithms as $\\mathbf{\\log S = \\log C + Z\\log A}$ — a straight line of slope $Z$.\n\nThe slope $Z$ is remarkably consistent: about **0.1 to 0.2** for small regions, whatever the taxonomic group or continent.\n\nFor very large areas such as whole continents the slope is steeper, $0.6$ to $1.2$, because those areas span entirely different biomes rather than more of the same."
+    },
+    {
+      "id": "c12bio-bdv-03",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Extinction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The main cause of biodiversity loss is:",
+      "options": [
+        "Natural disasters",
+        "Habitat loss and fragmentation",
+        "Volcanic activity",
+        "Solar radiation"
+      ],
+      "answer": 1,
+      "solution": "**Habitat loss and fragmentation** is the single largest cause.\n\nThe four together are known as **The Evil Quartet**: habitat loss and fragmentation, over-exploitation, alien species invasion, and co-extinctions.\n\nFragmentation matters as much as outright loss: species needing large territories, and migratory animals, are badly affected even when the total remaining area looks adequate, because they cannot use it as separated patches."
+    },
+    {
+      "id": "c12bio-bdv-04",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Conservation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "National parks and wildlife sanctuaries are examples of:",
+      "options": [
+        "In situ conservation",
+        "Ex situ conservation",
+        "Cryopreservation",
+        "Tissue culture"
+      ],
+      "answer": 0,
+      "solution": "**In situ** conservation protects the species **in its natural habitat** — national parks, sanctuaries, biosphere reserves, sacred groves.\n\nIt is generally preferred, because it conserves the whole ecosystem and the species continues to evolve in its natural setting.\n\n**Ex situ** conservation removes the organism to a protected setting — zoos, botanical gardens, seed banks, cryopreservation. It is the fallback when the habitat cannot be saved, or the last resort for a species too depleted to survive in the wild."
+    },
+    {
+      "id": "c12bio-bdv-05",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Biodiversity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Biodiversity is greatest:",
+      "options": [
+        "At the poles",
+        "In temperate regions",
+        "In the tropics",
+        "In deserts"
+      ],
+      "answer": 2,
+      "solution": "Species diversity **decreases from the equator towards the poles**.\n\nThree explanations are usually offered: tropical latitudes have been **undisturbed for far longer**, since temperate regions were glaciated repeatedly; the tropical environment is **less seasonal and more constant**, favouring niche specialisation; and there is **more available solar energy**, supporting greater productivity.\n\nThe Amazon rainforest alone holds well over 40,000 plant species."
+    },
+    {
+      "id": "c12bio-bdv-06",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Extinction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The current loss of species is often called the sixth extinction because:",
+      "options": [
+        "Six species go extinct each year",
+        "It is the sixth mass extinction in Earth's history",
+        "Six regions are affected",
+        "It lasts six centuries"
+      ],
+      "answer": 1,
+      "solution": "Five mass extinctions have occurred in the geological past, the best known being the end-Cretaceous event that removed the dinosaurs.\n\nThe present loss is called the **sixth** because its rate is comparable to those events — currently estimated at **100 to 1000 times** the natural background rate.\n\nThe difference is the cause. The previous five were driven by asteroid impacts, volcanism and climate shifts. This one has a **single species** as its cause, which is also the reason it is the first that could in principle be stopped."
+    },
+    {
+      "id": "c12bio-bdv-07",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Conservation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A biodiversity hotspot is a region with:",
+      "options": [
+        "High temperature",
+        "High species richness, many endemics, and serious threat",
+        "Many national parks",
+        "Only rare animals"
+      ],
+      "answer": 1,
+      "solution": "A hotspot must satisfy **two** criteria together: exceptional **endemism** — species found nowhere else — and serious **threat**, having lost at least $70\\%$ of its original habitat.\n\nBoth are required. High diversity alone does not make a hotspot; the threat is what makes it urgent.\n\nIndia has four: the **Western Ghats and Sri Lanka**, the **Himalaya**, the **Indo-Burma** region and **Sundaland**. Hotspots cover a very small share of the land surface yet hold a large fraction of all species, which is what makes them efficient conservation targets."
+    },
+    {
+      "id": "c12bio-bdv-08",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Rivet popper",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Paul Ehrlich's rivet popper hypothesis compares an ecosystem to:",
+      "options": [
+        "A machine with spare parts",
+        "An aeroplane held together by rivets, each rivet a species",
+        "A pyramid",
+        "A food chain"
+      ],
+      "answer": 1,
+      "solution": "Ehrlich likened an ecosystem to an **aeroplane** held together by thousands of **rivets**, each rivet a species.\n\nLosing a few rivets may weaken the plane without causing failure. But rivets continue to be lost, and at some point the loss becomes **catastrophic** — and there is no way to know in advance which rivet is the critical one.\n\nThe analogy makes a further point: rivets on the **wings** matter far more than those on the seats. Losing a **keystone species** is far more dangerous than losing a rare one with few connections."
+    },
+    {
+      "id": "c12bio-bdv-09",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Conservation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Earth Summit that produced the Convention on Biological Diversity was held in:",
+      "options": [
+        "Rio de Janeiro, 1992",
+        "Kyoto, 1997",
+        "Stockholm, 1972",
+        "Paris, 2015"
+      ],
+      "answer": 0,
+      "solution": "The **Earth Summit** was held in **Rio de Janeiro in 1992**, and produced the Convention on Biological Diversity.\n\nThe follow-up World Summit on Sustainable Development was at Johannesburg in 2002, where 190 countries pledged to reduce the rate of biodiversity loss by 2010.\n\nKyoto (1997) and Paris (2015) concern climate change rather than biodiversity."
+    },
+    {
+      "id": "c12bio-bdv-10",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Species-area relationship",
+      "type": "numeric",
+      "marks": 3,
+      "q": "For the species-area relationship on a logarithmic scale within a small region, what is the typical value of the slope $Z$? Give the midpoint of the usual range.",
+      "answer": 0.15,
+      "tolerance": 0.06,
+      "accept": [
+        "0.15",
+        "0.1-0.2"
+      ],
+      "solution": "For small regions the slope $Z$ lies in the range **0.1 to 0.2**, so the midpoint is about $\\mathbf{0.15}$.\n\nThe striking finding is how **constant** it is — the same range emerges whatever the taxonomic group and whatever the continent, for plants, birds, molluscs and bats alike.\n\nFor very large areas such as entire continents it rises to $0.6$ to $1.2$, because those areas encompass wholly different biomes."
+    },
+    {
+      "id": "c12bio-bdv-11",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Biodiversity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Approximately how many biodiversity hotspots are recognised worldwide?",
+      "answer": 34,
+      "tolerance": 3,
+      "accept": [
+        "34",
+        "36",
+        "35"
+      ],
+      "solution": "About $\\mathbf{34}$ hotspots are usually cited, though the number has risen to 36 as more regions qualify.\n\nTogether they cover a little over $2\\%$ of the Earth's land surface yet hold a very large share of all endemic species — which is precisely what makes them such efficient targets for limited conservation funding."
+    },
+    {
+      "id": "c12bio-bdv-12",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Biodiversity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Approximately what percentage of the world's recorded species does India hold, despite having only about $2.4\\%$ of the land area?",
+      "answer": 8,
+      "tolerance": 1,
+      "accept": [
+        "8",
+        "8.1",
+        "8%"
+      ],
+      "solution": "India holds roughly $\\mathbf{8\\%}$ of the world's recorded species on about $2.4\\%$ of the land area — over three times its share.\n\nThis is why India is classed as one of the world's **megadiverse** countries."
+    },
+    {
+      "id": "c12bio-bdv-13",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Extinction",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many mass extinctions had occurred in Earth's history before the present one?",
+      "answer": 5,
+      "tolerance": 0.5,
+      "accept": [
+        "5"
+      ],
+      "solution": "$\\mathbf{5}$ mass extinctions, which is why the current loss is termed the **sixth extinction**.\n\nThe most recent of the five was the end-Cretaceous event about 65 million years ago, which ended the dinosaurs."
+    },
+    {
+      "id": "c12bio-bdv-14",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Biodiversity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Approximately what percentage of all described species are insects?",
+      "answer": 70,
+      "tolerance": 5,
+      "accept": [
+        "70",
+        "70%"
+      ],
+      "solution": "Insects make up roughly $\\mathbf{70\\%}$ of all described species — more than **20 out of every 25** animal species.\n\nThe biologist J.B.S. Haldane is said to have remarked that the Creator, if one exists, must have an inordinate fondness for beetles."
+    },
+    {
+      "id": "c12bio-bdv-15",
+      "chapter": "Biodiversity and Conservation",
+      "topic": "Conservation",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the patterns of biodiversity and the causes of its loss. Compare in situ and ex situ conservation, explaining the circumstances in which each is appropriate, and give reasons why biodiversity should be conserved.",
+      "solution": "**Patterns of biodiversity.**\n\n**The latitudinal gradient.** Diversity falls from the equator towards the poles. Colombia, near the equator, has about 1400 bird species; New York at $41^\\circ$N has 105; Greenland at $71^\\circ$N has 56. Three reasons are usually given: tropical regions have remained **undisturbed for far longer**, since temperate regions were repeatedly glaciated; the tropical environment is **less seasonal and more constant**, which favours niche specialisation; and **more solar energy** is available, supporting higher productivity.\n\n**The species-area relationship.** Within a region, species richness rises with area as $S = CA^{Z}$, a straight line of slope $Z$ on log axes. The slope is remarkably constant at $0.1$ to $0.2$ regardless of taxon or continent.\n\n**Causes of loss: the Evil Quartet.**\n\n**1. Habitat loss and fragmentation** — the largest single cause. The Amazon rainforest, the lungs of the planet, is being cleared for soya and cattle. Fragmentation matters independently of total loss, because animals needing large territories or migration routes cannot use scattered patches even when their combined area seems sufficient.\n\n**2. Over-exploitation** — Steller's sea cow and the passenger pigeon were hunted to extinction, and many marine fisheries are now over-harvested.\n\n**3. Alien species invasion** — the Nile perch introduced into Lake Victoria drove more than 200 native cichlid species to extinction. **Parthenium**, **Lantana** and water hyacinth are damaging invaders in India.\n\n**4. Co-extinctions** — a species does not go alone. Its obligate parasites, its specialist pollinators and its mutualists go with it. In a plant-pollinator pair evolved for each other exclusively, the loss of one guarantees the loss of the other.\n\n**In situ conservation.**\n\nProtecting the species **in its natural habitat**: national parks, wildlife sanctuaries, biosphere reserves and sacred groves.\n\n**Advantages.** The **whole ecosystem** is conserved, not one species. It is far cheaper per species, since protecting one hotspot saves thousands at once. The species continues to **evolve and adapt** in its natural setting, keeping its genetic diversity and its behaviour intact.\n\n**Limitations.** It needs large areas, it competes with human land use, and it cannot help a species already reduced below a viable population.\n\n**Ex situ conservation.**\n\nRemoving the organism to a protected setting: zoos, botanical gardens, wildlife safari parks, **seed banks**, gene banks and **cryopreservation** of gametes and embryos at $-196^\\circ\\text{C}$.\n\n**Advantages.** It can save a species whose habitat is already gone. Cryopreservation stores genetic material almost indefinitely in little space. Captive breeding can rebuild numbers for later reintroduction, and the black-footed ferret and California condor were both saved this way.\n\n**Limitations.** Only a **small number of individuals** can be kept, so genetic diversity is lost and inbreeding follows. Animals may lose the behaviours needed for survival in the wild. It is expensive per species. And it conserves the organism without conserving its **ecosystem** or its ecological role.\n\n**When each is appropriate.** In situ conservation should be the default wherever a viable habitat and population still exist. Ex situ conservation is the **emergency measure** — for a species whose habitat is destroyed, or whose numbers have fallen too low to recover unaided. In practice the two are complementary: captive breeding is only worth doing if there is somewhere to release the animals back into, which means in situ protection must continue alongside it.\n\n**Why conserve biodiversity: three kinds of argument.**\n\n**Narrowly utilitarian.** Humans draw direct economic benefit: food, firewood, fibre, and above all **medicine**. About 25% of drugs are derived from plants, and some 25,000 plant species are used in traditional medicines. The genetic diversity of wild crop relatives is the raw material for breeding disease resistance into cultivated varieties.\n\n**Broadly utilitarian.** Ecosystems provide services that are not traded and are hard to replace. The Amazon produces an estimated 20% of the Earth's oxygen. Pollinators sustain the crops we eat. Ecosystems regulate climate, purify water, form soil and control floods. These services are enormous in value and become visible mainly when they fail.\n\n**Ethical.** Every species has an intrinsic value and a right to exist, independent of its usefulness to us. We share this planet with millions of other species and have a moral obligation to pass them on to the next generation in no worse a state than we received them.\n\nThe ethical argument is the one that does not depend on our being able to name a use — which matters, because most species have never been studied well enough for anyone to know what they are good for."
+    }
+  ]
+}

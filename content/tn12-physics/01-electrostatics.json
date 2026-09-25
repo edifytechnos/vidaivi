@@ -1,0 +1,243 @@
+{
+  "id": "lib-tn12p-els",
+  "title": "Electrostatics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-els-24q10",
+      "chapter": "Electrostatics",
+      "topic": "Coulomb's law",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two identical conducting balls having positive charges $q_1$ and $q_2$ are separated by a center to center distance ‘r’. If they are made to touch each other and then separated to the same distance, the force between them will be :",
+      "options": [
+        "more than before",
+        "less than before",
+        "zero",
+        "same as before"
+      ],
+      "answer": 0,
+      "solution": "On touching, the charge shares equally: each ball carries $\\dfrac{q_1+q_2}{2}$.\n\n$F' \\propto \\left(\\dfrac{q_1+q_2}{2}\\right)^2$ against $F \\propto q_1q_2$, and\n\n$\\left(\\dfrac{q_1+q_2}{2}\\right)^2 - q_1q_2 = \\left(\\dfrac{q_1-q_2}{2}\\right)^2 \\ge 0$\n\nSo the force is **more than before**, and equal only in the special case $q_1 = q_2$."
+    },
+    {
+      "id": "tn12p-els-02",
+      "chapter": "Electrostatics",
+      "topic": "Electric dipole",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The electric field on the axial line of a short dipole at distance $r$ varies as:",
+      "options": [
+        "$1/r$",
+        "$1/r^{2}$",
+        "$1/r^{3}$",
+        "$1/r^{4}$"
+      ],
+      "answer": 2,
+      "solution": "For a short dipole the axial field is\n\n$E_{\\text{axial}} = \\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{2p}{r^{3}}$\n\nso it falls as $\\mathbf{1/r^{3}}$ — faster than a point charge's $1/r^{2}$.\n\nThe reason is that the two charges are equal and opposite, so their fields very nearly cancel at a distance; what survives is the small difference. The equatorial field is $\\dfrac{p}{4\\pi\\varepsilon_0 r^{3}}$, half the axial value and oppositely directed."
+    },
+    {
+      "id": "tn12p-els-03",
+      "chapter": "Electrostatics",
+      "topic": "Gauss law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The electric field inside a uniformly charged spherical **shell** is:",
+      "options": [
+        "$\\dfrac{kQ}{r^{2}}$",
+        "Zero",
+        "$\\dfrac{kQ}{R^{2}}$",
+        "Infinite"
+      ],
+      "answer": 1,
+      "solution": "Take a Gaussian sphere inside the shell. It encloses **no charge**, since all the charge lies on the outer surface.\n\nBy Gauss's law $\\Phi = q_{\\text{enc}}/\\varepsilon_0 = 0$, and by symmetry the field must be the same everywhere on that surface, so $E = \\mathbf{0}$ throughout the interior.\n\nOutside, the shell behaves exactly like a point charge at its centre. This is the shell theorem, and it is the basis of electrostatic shielding."
+    },
+    {
+      "id": "tn12p-els-04",
+      "chapter": "Electrostatics",
+      "topic": "Capacitors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "When a dielectric of constant $K$ is fully inserted into a capacitor kept connected to a battery, the charge on it:",
+      "options": [
+        "Decreases $K$ times",
+        "Increases $K$ times",
+        "Is unchanged",
+        "Becomes zero"
+      ],
+      "answer": 1,
+      "solution": "**Connected to a battery, the potential difference $V$ is fixed.**\n\nThe capacitance rises to $C' = KC$, so\n\n$Q' = C'V = KCV = KQ$ — the charge **increases $K$ times**, drawn from the battery.\n\nThe contrast is worth holding onto: if the battery is **disconnected** first, the **charge** is fixed instead, and it is the voltage that falls to $V/K$. Which quantity stays constant depends entirely on whether the battery is still attached."
+    },
+    {
+      "id": "tn12p-els-05",
+      "chapter": "Electrostatics",
+      "topic": "Electric potential",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The work done in moving a charge around a closed path in an electrostatic field is:",
+      "options": [
+        "Always positive",
+        "Always negative",
+        "Zero",
+        "Depends on the path"
+      ],
+      "answer": 2,
+      "solution": "The electrostatic field is **conservative**, so the work done round any closed path is **zero**.\n\nEquivalently $\\oint \\vec{E}\\cdot d\\vec{l} = 0$, which is what allows a potential to be defined at all: if the work depended on the route, no single number could be assigned to a point."
+    },
+    {
+      "id": "tn12p-els-25q7",
+      "chapter": "Electrostatics",
+      "topic": "Electric dipole",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An electric dipole is placed at an alignment angle of $30^\\circ$ with an electric field of $2\\times10^{5}\\ \\mathrm{N\\,C^{-1}}$. It experiences a torque equal to 8 Nm. The charge on the dipole if the dipole length is 1 cm is :",
+      "options": [
+        "5 mC",
+        "4 mC",
+        "7 mC",
+        "8 mC"
+      ],
+      "answer": 3,
+      "solution": "$\\tau = pE\\sin\\theta = (q \\cdot 2a)E\\sin\\theta$\n\n$q = \\dfrac{\\tau}{(2a)E\\sin\\theta} = \\dfrac{8}{0.01 \\times 2\\times10^{5} \\times 0.5} = \\dfrac{8}{1000} = 8\\times10^{-3}\\ \\mathrm{C} = \\mathbf{8\\ mC}$"
+    },
+    {
+      "id": "tn12p-els-07",
+      "chapter": "Electrostatics",
+      "topic": "Capacitors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The energy density of an electric field $E$ in free space is:",
+      "options": [
+        "$\\varepsilon_0 E$",
+        "$\\tfrac{1}{2}\\varepsilon_0 E^{2}$",
+        "$\\varepsilon_0 E^{2}$",
+        "$\\dfrac{E^{2}}{2\\varepsilon_0}$"
+      ],
+      "answer": 1,
+      "solution": "Energy per unit volume $u = \\mathbf{\\tfrac{1}{2}\\varepsilon_0 E^{2}}$.\n\nThe idea it carries is important: the energy of a charged capacitor is not stored in the plates but **in the field between them**. Multiplying $u$ by the volume $Ad$ of a parallel plate capacitor recovers $\\tfrac{1}{2}CV^{2}$ exactly."
+    },
+    {
+      "id": "tn12p-els-08",
+      "chapter": "Electrostatics",
+      "topic": "Conductors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Excess charge given to a conductor resides:",
+      "options": [
+        "Uniformly throughout its volume",
+        "Entirely on its outer surface",
+        "At its centre",
+        "Only at sharp points"
+      ],
+      "answer": 1,
+      "solution": "Excess charge resides **entirely on the outer surface**.\n\nThe charges repel one another and move as far apart as they can, which means the surface; and once there, the field inside the conductor is zero, so there is no force to move them further.\n\nThe **distribution** over that surface is not uniform unless the conductor is a sphere. Charge density is highest where the curvature is greatest, which is why the field is strongest at sharp points — the basis of the lightning conductor."
+    },
+    {
+      "id": "tn12p-els-23q8",
+      "chapter": "Electrostatics",
+      "topic": "Capacitors",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A parallel plate capacitor stores a charge $Q$ at a voltage $V$. Suppose the area of the parallel plate capacitor and distance between the plates are each doubled then which is the quantity that will change ?",
+      "options": [
+        "Voltage",
+        "Capacitance",
+        "Energy density",
+        "Charge"
+      ],
+      "answer": 2,
+      "solution": "$C = \\dfrac{\\varepsilon_0 A}{d}$: doubling both $A$ and $d$ leaves $C$ unchanged, so $Q$ and $V$ are unchanged too.\n\nBut the field between the plates is $E = \\dfrac{V}{d}$, which halves, and the **energy density** $u = \\tfrac{1}{2}\\varepsilon_0E^2$ falls to a quarter. The same energy is now spread through twice the volume."
+    },
+    {
+      "id": "tn12p-els-10",
+      "chapter": "Electrostatics",
+      "topic": "Coulomb's law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Two charges of $4\\ \\mu\\text{C}$ and $9\\ \\mu\\text{C}$ are $0.6\\ \\text{m}$ apart in vacuum. Taking $k = 9\\times10^{9}$ SI units, find the force between them, in newtons.",
+      "answer": 0.9,
+      "tolerance": 0.02,
+      "accept": [
+        "0.9 N",
+        "0.90"
+      ],
+      "solution": "$F = k\\dfrac{q_1q_2}{r^{2}} = 9\\times10^{9} \\times \\dfrac{(4\\times10^{-6})(9\\times10^{-6})}{(0.6)^{2}}$\n\nNumerator: $9\\times10^{9} \\times 36\\times10^{-12} = 0.324$\n\nDivide by $0.36$: $\\dfrac{0.324}{0.36} = \\mathbf{0.9\\ \\text{N}}$."
+    },
+    {
+      "id": "tn12p-els-11",
+      "chapter": "Electrostatics",
+      "topic": "Electric dipole",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A dipole of moment $4\\times10^{-9}\\ \\mathrm{C\\,m}$ is placed at $30^\\circ$ to a field of $5\\times10^{4}\\ \\mathrm{N\\,C^{-1}}$. Find the torque, in $\\mathrm{N\\,m}$. Give your answer in the form $a\\times10^{-5}$ and state $a$.",
+      "answer": 10,
+      "tolerance": 0.2,
+      "accept": [
+        "10",
+        "1e-4"
+      ],
+      "solution": "$\\tau = pE\\sin\\theta = (4\\times10^{-9})(5\\times10^{4})\\sin 30^\\circ$\n\n$= (4\\times10^{-9})(5\\times10^{4})(0.5)$\n\n$= 2\\times10^{-4} \\times 0.5 = 1\\times10^{-4} = 10\\times10^{-5}$\n\nSo $a = \\mathbf{10}$."
+    },
+    {
+      "id": "tn12p-els-12",
+      "chapter": "Electrostatics",
+      "topic": "Capacitors",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Three capacitors of $6\\ \\mu\\text{F}$ each are connected in series and then that combination is joined in parallel with another $6\\ \\mu\\text{F}$ capacitor. Find the total capacitance, in microfarads.",
+      "answer": 8,
+      "tolerance": 0.1,
+      "accept": [
+        "8",
+        "8 uF"
+      ],
+      "solution": "**Series combination** of three equal capacitors:\n\n$C_s = \\dfrac{6}{3} = 2\\ \\mu\\text{F}$\n\n**Parallel** with $6\\ \\mu\\text{F}$ — in parallel capacitances simply add:\n\n$C = 2 + 6 = \\mathbf{8\\ \\mu\\text{F}}$"
+    },
+    {
+      "id": "tn12p-els-25q16",
+      "chapter": "Electrostatics",
+      "topic": "Capacitors",
+      "source": "TN HSE Mar 2025",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A parallel plate capacitor has two square plates of side 5 cm and separated by a distance of 1 mm. Calculate the capacitance of this capacitor, in picofarads. ($\\varepsilon_0 = 8.85\\times10^{-12}\\ \\mathrm{F\\,m^{-1}}$)",
+      "answer": 22.1,
+      "solution": "$A = (0.05)^2 = 2.5\\times10^{-3}\\ \\mathrm{m^2}$, $d = 10^{-3}\\ \\mathrm{m}$.\n\n$C = \\dfrac{\\varepsilon_0 A}{d} = \\dfrac{8.85\\times10^{-12} \\times 2.5\\times10^{-3}}{10^{-3}} = 22.1\\times10^{-12}\\ \\mathrm{F} = \\mathbf{22.1\\ pF}$",
+      "tolerance": 0.2,
+      "accept": [
+        "22",
+        "22.13"
+      ]
+    },
+    {
+      "id": "tn12p-els-14",
+      "chapter": "Electrostatics",
+      "topic": "Gauss law",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A charge of $2\\ \\mu\\text{C}$ is placed at the centre of a cube. Find the electric flux through **one face**, in $\\mathrm{N\\,m^{2}\\,C^{-1}}$. Take $\\varepsilon_0 = 8.85\\times10^{-12}$ SI units. Give the answer to the nearest whole number.",
+      "answer": 37665,
+      "tolerance": 400,
+      "accept": [
+        "37665",
+        "37666",
+        "3.77e4"
+      ],
+      "solution": "Total flux through the whole cube, by Gauss's law:\n\n$\\Phi = \\dfrac{q}{\\varepsilon_0} = \\dfrac{2\\times10^{-6}}{8.85\\times10^{-12}} = 2.26\\times10^{5}\\ \\mathrm{N\\,m^{2}\\,C^{-1}}$\n\nThe charge is at the **centre**, so by symmetry the six faces share the flux equally:\n\n$\\Phi_{\\text{face}} = \\dfrac{2.26\\times10^{5}}{6} \\approx \\mathbf{37665\\ \\mathrm{N\\,m^{2}\\,C^{-1}}}$\n\nThe symmetry argument does the work here; no integration is needed."
+    },
+    {
+      "id": "tn12p-els-15",
+      "chapter": "Electrostatics",
+      "topic": "Gauss law",
+      "type": "long",
+      "marks": 5,
+      "q": "State Gauss's law. Use it to derive the electric field due to a uniformly charged infinite plane sheet and due to a uniformly charged spherical shell, both inside and outside. Explain why the choice of Gaussian surface matters.",
+      "solution": "**Gauss's law.** The total electric flux through any closed surface equals the charge enclosed divided by the permittivity of free space:\n\n$\\oint \\vec{E}\\cdot d\\vec{A} = \\dfrac{q_{\\text{enc}}}{\\varepsilon_0}$\n\nOnly the charge **inside** the surface counts. Charges outside contribute equal inward and outward flux, which cancels exactly.\n\n**Case 1: an infinite plane sheet of surface charge density $\\sigma$.**\n\n**Symmetry.** The sheet looks the same from every point at the same perpendicular distance, so the field must be **perpendicular to the sheet** and depend only on that distance.\n\n**Gaussian surface.** A **cylinder** pierced through the sheet, with its flat faces of area $A$ parallel to the sheet, one on each side.\n\n**Flux.** The curved side contributes nothing, since $\\vec{E}$ is parallel to it. Both flat faces contribute $EA$ each, so\n\n$\\Phi = 2EA$\n\n**Enclosed charge.** $q_{\\text{enc}} = \\sigma A$\n\n**Applying the law.**\n\n$2EA = \\dfrac{\\sigma A}{\\varepsilon_0} \\Rightarrow \\boxed{E = \\dfrac{\\sigma}{2\\varepsilon_0}}$\n\nThe area $A$ cancels, and — strikingly — the **distance does not appear at all**. The field of an infinite sheet is uniform.\n\n**Case 2: a uniformly charged spherical shell of radius $R$ carrying charge $Q$.**\n\n**Symmetry.** The field must be **radial** and depend only on $r$.\n\n**Gaussian surface.** A concentric **sphere** of radius $r$. On it, $\\vec{E}$ is everywhere perpendicular to the surface and constant in magnitude, so\n\n$\\Phi = E(4\\pi r^{2})$\n\n**Outside, $r > R$:** the whole charge is enclosed.\n\n$E(4\\pi r^{2}) = \\dfrac{Q}{\\varepsilon_0} \\Rightarrow \\boxed{E = \\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{Q}{r^{2}}}$\n\nThe shell behaves **exactly like a point charge at its centre** — which is not obvious, and is what makes the result worth deriving.\n\n**Inside, $r < R$:** the Gaussian sphere encloses **no charge**, because all the charge lies on the shell at radius $R$.\n\n$E(4\\pi r^{2}) = 0 \\Rightarrow \\boxed{E = 0}$\n\nThe field is zero **everywhere** inside, not merely at the centre.\n\nNote the field is **discontinuous** at the surface, jumping from 0 to $\\dfrac{\\sigma}{\\varepsilon_0}$ — a consequence of idealising the charge as an infinitely thin layer.\n\n**Why the choice of Gaussian surface matters.**\n\nGauss's law is **always true**, for any closed surface whatever. But it is only **useful** for finding $E$ when the surface is chosen so that the integral can be evaluated without knowing $E$ in advance.\n\nThat requires the surface to match the symmetry of the charge distribution, so that at every point either:\n\n- $\\vec{E}$ is **perpendicular** to the surface and **constant** in magnitude, so $\\oint\\vec{E}\\cdot d\\vec{A}$ becomes simply $EA$; or\n- $\\vec{E}$ is **parallel** to the surface, so that part contributes nothing.\n\nThis is why a **sphere** is used for a point charge or a shell, a **cylinder** for a line or a plane, and why the flat ends of the line-charge cylinder and the curved side of the plane-sheet cylinder can be dismissed at once.\n\nChoose a badly matched surface — say a cube around a point charge, off-centre — and Gauss's law still holds and still gives the right total flux, but $E$ varies over the surface in a complicated way and cannot be taken outside the integral. The law then tells you nothing you can use.\n\n**So Gauss's law is a calculating tool only where there is symmetry to exploit.** For a charge distribution with no symmetry — two unequal charges at arbitrary positions — it remains true and is simply not helpful, and the field must be found by integrating Coulomb's law instead."
+    }
+  ]
+}

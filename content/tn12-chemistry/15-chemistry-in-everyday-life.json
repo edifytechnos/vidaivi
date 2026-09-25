@@ -1,0 +1,220 @@
+{
+  "id": "lib-tn12c-eve",
+  "title": "Chemistry in Everyday Life",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 15,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12c-eve-24q6",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Drugs",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Aspirin is :",
+      "options": [
+        "chlorobenzoic acid",
+        "acetyl salicylic acid",
+        "anthranilic acid",
+        "benzoyl salicylic acid"
+      ],
+      "answer": 1,
+      "solution": "Aspirin is **acetyl salicylic acid**, made by acetylating the –OH group of salicylic acid. It is an analgesic and antipyretic."
+    },
+    {
+      "id": "tn12c-eve-02",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Drugs",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Ranitidine is used as:",
+      "options": [
+        "an antacid that blocks histamine receptors",
+        "an antibiotic",
+        "an antiseptic",
+        "an analgesic"
+      ],
+      "answer": 0,
+      "solution": "Histamine stimulates the stomach to secrete acid. **Ranitidine blocks the histamine receptor** in the stomach wall, so less acid is produced.\n\nThis is better than a simple antacid such as $\\mathrm{Mg(OH)_2}$, which neutralises acid already made but does not treat the cause."
+    },
+    {
+      "id": "tn12c-eve-03",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Drugs",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Penicillin is:",
+      "options": [
+        "a narrow-spectrum antibiotic",
+        "an antiseptic",
+        "a tranquilliser",
+        "an antihistamine"
+      ],
+      "answer": 0,
+      "solution": "Penicillin G is effective mainly against Gram-positive bacteria, making it a **narrow-spectrum antibiotic**.\n\nChloramphenicol and tetracycline are broad-spectrum: they act on both Gram-positive and Gram-negative bacteria."
+    },
+    {
+      "id": "tn12c-eve-04",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Antiseptics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Dettol is a mixture of:",
+      "options": [
+        "chloroxylenol and terpineol",
+        "iodine and alcohol",
+        "phenol and water",
+        "bithionol and soap"
+      ],
+      "answer": 0,
+      "solution": "Dettol is **chloroxylenol with terpineol**.\n\nTincture of iodine is iodine in alcohol and water. Bithionol is added to soaps for its antiseptic property."
+    },
+    {
+      "id": "tn12c-eve-23q1",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Antacids",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Milk of Magnesia is used as __________.",
+      "options": [
+        "Tranquilizer",
+        "Analgesic",
+        "Antacid",
+        "Anaesthetic"
+      ],
+      "answer": 2,
+      "solution": "Milk of Magnesia is a suspension of $\\mathrm{Mg(OH)_2}$, a weak base that neutralises excess stomach acid: an **antacid**.\n\n$\\mathrm{Mg(OH)_2} + 2\\mathrm{HCl} \\rightarrow \\mathrm{MgCl_2} + 2\\mathrm{H_2O}$"
+    },
+    {
+      "id": "tn12c-eve-06",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Food chemicals",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which artificial sweetener is unstable at cooking temperature?",
+      "options": [
+        "saccharin",
+        "aspartame",
+        "sucralose",
+        "alitame"
+      ],
+      "answer": 1,
+      "solution": "**Aspartame** breaks down on heating, so it is used only in cold foods and drinks.\n\nSucralose, made from sucrose, is stable at cooking temperatures, and saccharin is heat-stable too."
+    },
+    {
+      "id": "tn12c-eve-07",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Food chemicals",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Sodium benzoate is used as:",
+      "options": [
+        "a sweetener",
+        "a food preservative",
+        "an antioxidant",
+        "a colouring agent"
+      ],
+      "answer": 1,
+      "solution": "Sodium benzoate is a **preservative**: it slows the growth of microorganisms in pickles, sauces and soft drinks. In the body it is metabolised to hippuric acid and excreted.\n\nBHA and BHT are the common antioxidants."
+    },
+    {
+      "id": "tn12c-eve-08",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Detergents",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Sodium lauryl sulphate is:",
+      "options": [
+        "a cationic detergent",
+        "an anionic detergent",
+        "a non-ionic detergent",
+        "a soap"
+      ],
+      "answer": 1,
+      "solution": "$\\mathrm{CH_3(CH_2)_{11}OSO_3^-Na^+}$: the part that cleans is the long chain carrying a **negative** charge, so it is an **anionic** detergent. It is used in toothpaste and shampoo.\n\nCetyltrimethylammonium bromide is cationic; esters of polyethylene glycol are non-ionic."
+    },
+    {
+      "id": "tn12c-eve-09",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Detergents",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Detergents work better than soaps in hard water because:",
+      "options": [
+        "they are more expensive",
+        "their calcium and magnesium salts are soluble in water",
+        "they have longer chains",
+        "they are more acidic"
+      ],
+      "answer": 1,
+      "solution": "Soap forms insoluble scum, calcium and magnesium stearates, with the ions in hard water, wasting the soap.\n\nThe **calcium and magnesium salts of detergents stay soluble**, so detergents keep working. Branched-chain detergents are, however, slow to biodegrade and pollute rivers."
+    },
+    {
+      "id": "tn12c-eve-10",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Antiseptics",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Phenol is an antiseptic at $0.2\\%$ and a disinfectant at $1\\%$. How many times more concentrated is the disinfectant solution?",
+      "answer": 5,
+      "tolerance": 0.1,
+      "solution": "$\\dfrac{1}{0.2} = \\mathbf{5}$ times."
+    },
+    {
+      "id": "tn12c-eve-11",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Drugs",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Aspirin, $\\mathrm{C_9H_8O_4}$, has molar mass $180\\,\\mathrm{g\\,mol^{-1}}$. How many millimoles of aspirin are in a $360\\,\\mathrm{mg}$ tablet?",
+      "answer": 2,
+      "tolerance": 0.02,
+      "solution": "Moles $= \\dfrac{0.360\\,\\mathrm{g}}{180} = 0.002$ mol $= \\mathbf{2}$ **millimoles**."
+    },
+    {
+      "id": "tn12c-eve-12",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Antacids",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many moles of HCl are neutralised by $0.1\\,\\mathrm{mol}$ of magnesium hydroxide?",
+      "answer": 0.2,
+      "tolerance": 0.01,
+      "solution": "$\\mathrm{Mg(OH)_2} + 2\\mathrm{HCl} \\rightarrow \\mathrm{MgCl_2} + 2\\mathrm{H_2O}$: each mole neutralises two of HCl, so **0.2 mol**."
+    },
+    {
+      "id": "tn12c-eve-13",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Food chemicals",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Sucralose is about 600 times as sweet as sucrose. How many grams of sucrose would give the sweetness of $0.05\\,\\mathrm{g}$ of sucralose?",
+      "answer": 30,
+      "tolerance": 0.5,
+      "solution": "$0.05 \\times 600 = \\mathbf{30\\,g}$ of sucrose."
+    },
+    {
+      "id": "tn12c-eve-14",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Drugs",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Aspirin is made by acetylating salicylic acid, $\\mathrm{C_7H_6O_3}$ (molar mass $138$). How many grams of aspirin (molar mass $180$) form from $13.8\\,\\mathrm{g}$ of salicylic acid, assuming complete conversion?",
+      "answer": 18,
+      "tolerance": 0.1,
+      "solution": "One mole gives one mole. $\\dfrac{13.8}{138} = 0.1$ mol, so $0.1 \\times 180 = \\mathbf{18\\,g}$ of aspirin."
+    },
+    {
+      "id": "tn12c-eve-15",
+      "chapter": "Chemistry in Everyday Life",
+      "topic": "Soaps and detergents",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the cleansing action of soap using the idea of micelles. Why does soap not work well in hard water, and how do detergents overcome this?",
+      "solution": "**Structure.** A soap such as sodium stearate, $\\mathrm{C_{17}H_{35}COO^-Na^+}$, has a long **hydrophobic** hydrocarbon tail and a **hydrophilic** ionic head.\n\n**Micelles.** Above a certain concentration, the critical micelle concentration, the soap ions cluster into spheres: the tails point inward, away from water, and the heads face outward into it.\n\n**Cleansing.** Grease and oily dirt do not dissolve in water. The hydrocarbon tails dissolve in the grease, trapping it inside the micelle, while the heads stay in the water. The negatively charged micelles repel each other, so they stay dispersed as an emulsion and are rinsed away.\n\n**Hard water.** It contains $\\mathrm{Ca^{2+}}$ and $\\mathrm{Mg^{2+}}$, which form insoluble salts with soap:\n\n$2\\mathrm{C_{17}H_{35}COONa} + \\mathrm{Ca^{2+}} \\rightarrow (\\mathrm{C_{17}H_{35}COO})_2\\mathrm{Ca}\\downarrow + 2\\mathrm{Na^+}$\n\nThis scum wastes soap and sticks to cloth.\n\n**Detergents.** Synthetic detergents such as sodium lauryl sulphate have a sulphate or sulphonate head. Their **calcium and magnesium salts are soluble**, so no scum forms and they clean in hard water. Straight-chain detergents are preferred because microorganisms degrade them, where branched chains persist in rivers."
+    }
+  ]
+}

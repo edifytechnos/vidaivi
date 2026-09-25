@@ -1190,93 +1190,66 @@ function check(ok, label) {
     // A subject with no tests opens the same shell, with an empty tree.
     // Created and removed here so the check does not depend on live data.
     const probe = `E2E${Date.now().toString().slice(-6)}`;
-    // The modal must never let a placeholder pass for a value: the old inline
-    // form pre-filled board and class and left subject showing only a
-    // placeholder, so a form that looked complete failed with "Board, class and
-    // subject are all needed" and named no field in particular.
-    await page.click("#sub-new");
+    // The shared modal must never let a placeholder pass for a value, and an
+    // empty required field must be NAMED rather than lumped in with the
+    // filled ones. That used to be exercised through the New subject form;
+    // that screen has its own dialog now (src/screens/newsubject.ts), so the
+    // rule is checked where openModal still lives — Add teacher, on Admin.
+    await page.click('[data-rail="admin"]');
+    await page.waitForSelector("#te-add", { timeout: 25000 });
+    await page.click("#te-add");
     await page.waitForSelector(".modal", { timeout: 15000 });
-    // Step 1 asks what you teach; the three fields live behind "Something else".
-    check(
-      (await page.textContent("#modal-count")).trim() === "Step 1 of 2",
-      "New subject opens on step 1 of 2"
-    );
-    check(
-      (await page.$$(".modal-card")).length >= 2,
-      "the built-in subjects are offered as cards"
-    );
-    check(
-      !(await page.isVisible('.modal-input[name="subject"]')),
-      "the taxonomy fields are not asked up front"
-    );
-    await page.click('.modal-card:has(input[value="__custom__"])');
-    await page.click(".modal-submit");
-    await page.waitForSelector('.modal-input[name="subject"]:visible', { timeout: 10000 });
-    check(
-      (await page.textContent("#modal-count")).trim() === "Step 2 of 2",
-      "choosing Something else advances to the fields"
-    );
-    await page.fill('.modal-input[name="klass"]', "10");
     await page.click(".modal-submit");
     await page.waitForSelector(".modal-error:not([hidden])", { timeout: 10000 });
     check(
-      (await page.textContent(".modal-error")).trim() === "Subject is needed.",
+      (await page.textContent(".modal-error")).trim() === "Gmail address is needed.",
       "an empty required field is named, not lumped in with the filled ones"
     );
     check(
-      await page.evaluate(() =>
-        document.activeElement?.getAttribute("name") === "subject"
-      ),
+      await page.evaluate(() => document.activeElement?.getAttribute("name") === "email"),
       "and the cursor lands in it"
     );
     await page.keyboard.press("Escape");
     await page.waitForSelector(".modal", { state: "detached", timeout: 10000 });
 
+    // ---------------------------------------------------------------------
+    // New subject: board -> class -> subjects -> tests. Driven here only far
+    // enough to leave a subject with NO tests behind, which is what the
+    // skeleton checks below need. The flow's own assertions live in
+    // e2e/newsubject.cjs.
+    await page.click('[data-rail="subjects"]');
+    await page.waitForSelector("#sub-new", { timeout: 25000 });
     await page.click("#sub-new");
-    // Creating anything small goes through the shared modal now.
-    await page.waitForSelector(".modal", { timeout: 15000 });
+    await page.waitForSelector(".modal-scrim .ns", { timeout: 15000 });
+    await page.waitForSelector('[data-group="national"]', { timeout: 20000 });
+    check(
+      (await page.textContent("#ns-step")).trim() === "Step 1 of 4",
+      "New subject opens on step 1 of 4"
+    );
+    check(
+      !(await page.isVisible('[data-board="CBSE"]')),
+      "a board group's boards stay closed until it is picked"
+    );
+    await page.click('[data-group="national"]');
+    await page.click('[data-board="CBSE"]');
+    await page.click("#ns-next");
+    await page.click('[data-klass="12"]');
+    await page.click("#ns-next");
+    // Take nothing ready-made; name one subject of your own instead.
+    for (const b of await page.$$("[data-paper]")) await b.uncheck();
+    await page.fill("#ns-extra", probe);
+    check(
+      (await page.textContent("#ns-next")).trim() === "Create 1 subject",
+      `a typed subject alone creates exactly one (got "${(await page.textContent("#ns-next")).trim()}")`
+    );
+    await page.click("#ns-next");
+    // The flow ends on a Done step listing what it made, and stays open until
+    // the teacher leaves it — so close it rather than waiting for it to go.
+    await page.waitForSelector("#ns-title:text-is(\"1 subject created\")", { timeout: 30000 });
+    check(true, "creating lands on a Done step that names what was made");
+    await page.keyboard.press("Escape");
+    await page.waitForSelector(".modal-scrim .ns", { state: "detached", timeout: 10000 });
 
-    // A built-in card leads to that shelf's tests, and the button counts them.
-    await page.click(".modal-card:has(.modal-card-badge)");
-    await page.click(".modal-submit");
-    await page.waitForSelector(".modal-bulk", { timeout: 10000 });
-    check(
-      !(await page.isVisible('.modal-input[name="subject"]')),
-      "picking a built-in subject never asks for board, class and subject"
-    );
-    const ticks = await page.$$(".modal-step[data-step='1'] fieldset:not([hidden]) .modal-choice-input");
-    check(ticks.length > 1, `that shelf's tests are listed (${ticks.length})`);
-    check(
-      (await page.textContent(".modal-submit")).trim() === "Create subject",
-      "with nothing ticked the button offers an empty subject"
-    );
-    await ticks[0].click();
-    await page.waitForTimeout(200);
-    check(
-      (await page.textContent(".modal-submit")).trim() === "Create with 1 test",
-      `the button counts what is ticked (got "${(await page.textContent(".modal-submit")).trim()}")`
-    );
-    await page.click(".modal-bulk [data-bulk-none]");
-    await page.waitForTimeout(200);
-    check(
-      (await page.textContent(".modal-submit")).trim() === "Create subject",
-      "Clear empties the selection"
-    );
-    // Back returns to step 1 with the choice intact, then take the custom path.
-    await page.click(".modal-back");
-    await page.waitForTimeout(200);
-    check(
-      (await page.textContent("#modal-count")).trim() === "Step 1 of 2",
-      "Back returns to step 1"
-    );
-    await page.click('.modal-card:has(input[value="__custom__"])');
-    await page.click(".modal-submit");
-    await page.waitForSelector('.modal-input[name="subject"]:visible', { timeout: 10000 });
-    await page.fill('.modal-input[name="board"]', "CBSE");
-    await page.fill('.modal-input[name="klass"]', "12");
-    await page.fill('.modal-input[name="subject"]', probe);
-    await page.click(".modal-submit");
-    await page.waitForSelector(".modal", { state: "detached", timeout: 25000 });
     const card = `.subject-card:has(.subject-name:text-is("CBSE Class 12 ${probe}"))`;
     try {
       await page.waitForSelector(card, { timeout: 25000 });

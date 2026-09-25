@@ -156,7 +156,7 @@
       "topic": "Simultaneous equations",
       "type": "long",
       "q": "Solve simultaneously: $3x + 2y = 16$ and $5x - 3y = -5$.",
-      "solution": "**Elimination.** Multiply the first equation by 3 and the second by 2, so the $y$ terms match:\n\n$9x + 6y = 48$\n\n$10x - 6y = -10$\n\n**Add them** — the $y$ terms cancel:\n\n$19x = 38 \\Rightarrow x = \\mathbf{2}$.\n\n**Substitute back** into $3x + 2y = 16$:\n\n$6 + 2y = 16 \\Rightarrow y = \\mathbf{5}$.\n\n**Check in the second equation:** $5(2) - 3(5) = 10 - 15 = -5$ ✓\n\nChoose the multipliers so that one variable's coefficients become equal and opposite — then adding removes it in one line. Always check in the equation you did *not* substitute into.",
+      "solution": "**Elimination.** Multiply the first equation by 3 and the second by 2, so the $y$ terms match:\n\n$9x + 6y = 48$\n\n$10x - 6y = -10$\n\n**Add them** — the $y$ terms cancel:\n\n$19x = 38 \\Rightarrow x = \\mathbf{2}$.\n\n**Substitute back** into $3x + 2y = 16$:\n\n$6 + 2y = 16 \\Rightarrow y = \\mathbf{5}$.\n\n**Check in the second equation:** $5(2) - 3(5) = 10 - 15 = -5$ ✓\n\nChoose the multipliers so that one variable's coefficients become equal and opposite — then adding removes it in one line. Always check in the equation you did **not** substitute into.",
       "marks": 3
     },
     {

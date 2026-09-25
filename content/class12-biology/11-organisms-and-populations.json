@@ -1,0 +1,240 @@
+{
+  "id": "lib-c12bio-org",
+  "title": "Organisms and Populations",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-org-01",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Logistic population growth produces a curve that is:",
+      "options": [
+        "J-shaped",
+        "S-shaped (sigmoid)",
+        "Straight",
+        "U-shaped"
+      ],
+      "answer": 1,
+      "solution": "**Logistic** growth gives an **S-shaped** or sigmoid curve, described by $\\dfrac{dN}{dt} = rN\\left(\\dfrac{K-N}{K}\\right)$.\n\nGrowth is slow at first, then rapid, then slows again as the population approaches the **carrying capacity $K$** and levels off.\n\n**Exponential** growth, $\\dfrac{dN}{dt} = rN$, gives the **J-shaped** curve. It assumes unlimited resources, which no real environment provides, so logistic growth is considered the more realistic model."
+    },
+    {
+      "id": "c12bio-org-02",
+      "chapter": "Organisms and Populations",
+      "topic": "Interactions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An interaction in which one species benefits and the other is unaffected is:",
+      "options": [
+        "Mutualism",
+        "Commensalism",
+        "Parasitism",
+        "Competition"
+      ],
+      "answer": 1,
+      "solution": "**Commensalism** is $(+, 0)$ — one benefits, the other is neither helped nor harmed.\n\nAn orchid growing on a mango branch, or barnacles on a whale, are the standard examples.\n\nThe full set: **mutualism** $(+, +)$, **competition** $(-, -)$, **predation** and **parasitism** $(+, -)$, **amensalism** $(-, 0)$.\n\nTrue commensalism is harder to demonstrate than it looks, since very small effects on the host are difficult to rule out."
+    },
+    {
+      "id": "c12bio-org-03",
+      "chapter": "Organisms and Populations",
+      "topic": "Adaptations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Allen's rule states that mammals in colder climates have:",
+      "options": [
+        "Larger ears and limbs",
+        "Shorter ears and limbs to reduce heat loss",
+        "No fur",
+        "Higher metabolic rates only"
+      ],
+      "answer": 1,
+      "solution": "**Allen's rule**: mammals in cold climates have **shorter ears and limbs**, which reduces the **surface area to volume ratio** and so reduces heat loss.\n\nCompare the Arctic fox's small rounded ears with the enormous ears of the desert fennec fox, which uses them to **shed** heat.\n\n**Bergmann's rule** is the companion: body size tends to be larger in colder climates, for the same surface-area reason."
+    },
+    {
+      "id": "c12bio-org-04",
+      "chapter": "Organisms and Populations",
+      "topic": "Competitive exclusion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Gause's competitive exclusion principle states that:",
+      "options": [
+        "Two species can always coexist",
+        "Two species competing for the same limiting resource cannot coexist indefinitely",
+        "Competition is always fatal",
+        "Predators exclude prey"
+      ],
+      "answer": 1,
+      "solution": "**Gause's principle**: two species competing for the **same limiting resource** cannot coexist indefinitely — the inferior competitor is eventually eliminated.\n\nBut the principle is not the whole story, and the exceptions are what make it useful. **Resource partitioning** lets species coexist by dividing the resource: MacArthur's warblers all fed on the same trees but in **different parts of the canopy**.\n\nSo competition often drives **divergence** rather than extinction, which is why it is a force in evolution and not only in ecology."
+    },
+    {
+      "id": "c12bio-org-05",
+      "chapter": "Organisms and Populations",
+      "topic": "Adaptations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Aestivation is:",
+      "options": [
+        "Winter sleep",
+        "Summer dormancy to escape heat and desiccation",
+        "Migration",
+        "Hibernation in water"
+      ],
+      "answer": 1,
+      "solution": "**Aestivation** is **summer** dormancy, used to escape heat and water loss — snails and fish do it.\n\n**Hibernation** is the winter equivalent, as in bears.\n\n**Diapause** is a suspended stage of development in zooplankton, and migration is the alternative strategy of leaving rather than shutting down. All are ways of surviving a period when conditions are intolerable."
+    },
+    {
+      "id": "c12bio-org-06",
+      "chapter": "Organisms and Populations",
+      "topic": "Population attributes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An age pyramid that is broad at the base indicates a population that is:",
+      "options": [
+        "Declining",
+        "Stable",
+        "Expanding",
+        "Extinct"
+      ],
+      "answer": 2,
+      "solution": "A **broad base** means a large proportion of pre-reproductive individuals, so the population is **expanding** — those young will reproduce and the population will grow.\n\nA **bell-shaped** pyramid indicates a stable population, and one that is **narrow at the base** indicates decline.\n\nAge structure is therefore a **predictor**: it says what the population will do, not merely what it is doing now."
+    },
+    {
+      "id": "c12bio-org-07",
+      "chapter": "Organisms and Populations",
+      "topic": "Interactions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The relationship between the fig tree and its pollinator wasp is an example of:",
+      "options": [
+        "Parasitism",
+        "Mutualism",
+        "Commensalism",
+        "Predation"
+      ],
+      "answer": 1,
+      "solution": "**Mutualism** $(+, +)$: the wasp pollinates the fig, and the fig provides a site for the wasp to lay its eggs and developing seeds for its larvae to eat.\n\nIt is one of the tightest mutualisms known — **each fig species is pollinated by its own species of wasp**, and neither can reproduce without the other.\n\nLichens (alga plus fungus) and mycorrhizae (fungus plus plant roots) are the other standard examples."
+    },
+    {
+      "id": "c12bio-org-08",
+      "chapter": "Organisms and Populations",
+      "topic": "Adaptations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Kangaroo rats in the North American deserts meet their water needs:",
+      "options": [
+        "By drinking dew",
+        "Through internal fat oxidation",
+        "By migrating",
+        "From plant sap only"
+      ],
+      "answer": 1,
+      "solution": "The kangaroo rat obtains essentially all its water from the **oxidation of fat** in its own tissues — metabolic water — and never needs to drink.\n\nIt also excretes highly **concentrated urine** to waste as little as possible.\n\nThis is a physiological adaptation rather than a behavioural one, and it is what lets the animal live where there is no free water at all."
+    },
+    {
+      "id": "c12bio-org-09",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the logistic growth equation, $K$ represents:",
+      "options": [
+        "The growth rate",
+        "The carrying capacity of the environment",
+        "The initial population",
+        "The death rate"
+      ],
+      "answer": 1,
+      "solution": "$K$ is the **carrying capacity** — the maximum population the environment can sustain indefinitely, given its resources.\n\nIn $\\dfrac{dN}{dt} = rN\\left(\\dfrac{K-N}{K}\\right)$, the bracket acts as a brake: when $N$ is small it is close to 1 and growth is nearly exponential; as $N \\to K$ it approaches zero and growth stops.\n\nAt $N = K$ growth is exactly zero, which is why the curve levels off there rather than overshooting."
+    },
+    {
+      "id": "c12bio-org-10",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A population has a birth rate of $0.15$ and a death rate of $0.05$ per individual per year. Find the intrinsic rate of natural increase $r$.",
+      "answer": 0.1,
+      "tolerance": 0.005,
+      "accept": [
+        "0.1",
+        "0.10"
+      ],
+      "solution": "$r = b - d = 0.15 - 0.05 = \\mathbf{0.1}$ per individual per year.\n\nA positive $r$ means the population is growing. If $r$ were zero the population would be stationary, and negative $r$ means decline."
+    },
+    {
+      "id": "c12bio-org-11",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In the logistic equation, at what value of $N$ (as a fraction of $K$) is the population growth rate $dN/dt$ greatest?",
+      "answer": 0.5,
+      "tolerance": 0.02,
+      "accept": [
+        "0.5",
+        "K/2",
+        "half"
+      ],
+      "solution": "$\\dfrac{dN}{dt} = rN\\left(\\dfrac{K-N}{K}\\right)$ is a quadratic in $N$, opening downwards, with roots at $N = 0$ and $N = K$.\n\nA parabola peaks midway between its roots, so the growth rate is greatest at $N = \\mathbf{K/2}$, that is at $0.5K$.\n\nThis is the **inflection point** of the S-curve, and it has a practical use: it is the population at which a fishery or forest yields the most, which is the basis of maximum sustainable yield."
+    },
+    {
+      "id": "c12bio-org-12",
+      "chapter": "Organisms and Populations",
+      "topic": "Population attributes",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A population of 500 individuals in a $50\\ \\text{km}^{2}$ area has what population density, per square kilometre?",
+      "answer": 10,
+      "tolerance": 0.5,
+      "accept": [
+        "10"
+      ],
+      "solution": "Density $= \\dfrac{\\text{number of individuals}}{\\text{area}} = \\dfrac{500}{50} = \\mathbf{10}$ per $\\text{km}^{2}$."
+    },
+    {
+      "id": "c12bio-org-13",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If a population grows exponentially with $r = 0$, what happens to the population size?",
+      "answer": 0,
+      "tolerance": 0.01,
+      "accept": [
+        "0",
+        "no change",
+        "stays the same",
+        "constant"
+      ],
+      "solution": "$\\dfrac{dN}{dt} = rN = 0 \\times N = \\mathbf{0}$.\n\nThe population size does not change — births exactly balance deaths, so it is **stationary**.\n\nThis is the state a population reaches at the carrying capacity in the logistic model."
+    },
+    {
+      "id": "c12bio-org-14",
+      "chapter": "Organisms and Populations",
+      "topic": "Interactions",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many species benefit in a mutualistic interaction?",
+      "answer": 2,
+      "tolerance": 0.1,
+      "accept": [
+        "2",
+        "both"
+      ],
+      "solution": "$\\mathbf{2}$ — mutualism is $(+, +)$, with **both** partners benefiting.\n\nIt is the only one of the six interaction types in which neither party is harmed nor indifferent, and it is why such relationships tend to become obligate over evolutionary time."
+    },
+    {
+      "id": "c12bio-org-15",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "long",
+      "marks": 5,
+      "q": "Compare exponential and logistic population growth, giving the equation and curve shape for each. Explain why logistic growth is considered more realistic, and discuss the ecological significance of the carrying capacity.",
+      "solution": "**Exponential (geometric) growth.**\n\n$\\dfrac{dN}{dt} = (b - d)N = rN$\n\nwhere $b$ is the birth rate, $d$ the death rate and $r$ the **intrinsic rate of natural increase**. Integrating gives\n\n$N_t = N_0e^{rt}$\n\nThe curve is **J-shaped**: slow at first in absolute terms, then rising ever more steeply without limit.\n\nThe defining assumption is **unlimited resources**. Each individual reproduces at the same rate regardless of how crowded the population becomes, so the growth rate per individual never changes — and the **absolute** growth accelerates simply because there are more individuals doing it.\n\n**Logistic (Verhulst-Pearl) growth.**\n\n$\\dfrac{dN}{dt} = rN\\left(\\dfrac{K - N}{K}\\right)$\n\nwhere $K$ is the **carrying capacity**.\n\nThe curve is **S-shaped** or sigmoid, with three phases: a **lag phase** of slow initial growth, a **log phase** of rapid near-exponential growth, and a **stationary phase** where growth slows and levels off at $K$.\n\nThe extra term $\\left(\\dfrac{K-N}{K}\\right)$ is the whole difference. It is the **fraction of the carrying capacity still unused**, and it acts as a brake:\n\nWhen $N$ is small, the bracket is close to 1 and growth is essentially exponential.\n\nWhen $N = K/2$, the bracket is $0.5$ and the **absolute growth rate is at its maximum** — this is the inflection point.\n\nWhen $N \\to K$, the bracket approaches 0 and growth stops.\n\nIf $N$ ever exceeds $K$, the bracket goes **negative** and the population declines back towards $K$. The model is therefore self-correcting.\n\n**Why logistic growth is more realistic.**\n\nNo environment has unlimited resources. Food, space, nesting sites and water are finite, and as a population grows, **competition intensifies**. Birth rates fall, death rates rise, and disease and predation both increase with density. These are **density-dependent** factors, and the logistic term is a way of representing them.\n\nExponential growth does occur, but only **temporarily**: a population colonising a new habitat, a bacterial culture in fresh medium, or a pest on a new crop. It cannot be sustained, because any population growing exponentially will eventually exhaust something. A bacterium dividing every 20 minutes would, unchecked, cover the Earth in a few days.\n\nSo exponential growth describes a **phase**; logistic growth describes a **trajectory**.\n\n**The ecological significance of carrying capacity.**\n\n**It is a property of the environment, not the species.** $K$ depends on the resources available in a particular habitat, so the same species has a different $K$ in a rich habitat and a poor one. It is also **not fixed**: drought, fire, habitat degradation or a good season all move it, and a population tracking a falling $K$ will decline without anything having changed about the animals themselves.\n\n**It sets a limit on populations, including our own.** The concept applies directly to human population growth and to the debate over how many people the Earth can support — with the complication that technology has repeatedly raised $K$ for humans in ways no other species can manage.\n\n**It underpins sustainable harvesting.** Because growth is fastest at $N = K/2$, a fishery or forest yields the most when the population is kept at **half** its carrying capacity. Harvesting more than the population can replace drives $N$ down the left side of the curve, where growth is slower, so the recovery is worse than expected — which is precisely how fisheries collapse.\n\n**Overshoot is possible and damaging.** A population growing fast can exceed $K$ before density-dependent effects take hold, and the resulting crash may leave the environment degraded and $K$ itself permanently lower. Reindeer introduced to St. Matthew Island rose from 29 to 6000 and then collapsed to fewer than 50, having destroyed the lichen they depended on."
+    }
+  ]
+}

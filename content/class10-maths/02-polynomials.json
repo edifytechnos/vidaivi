@@ -20,7 +20,7 @@
         "$x^{2} - 24$"
       ],
       "answer": 1,
-      "solution": "A zero is an $x$ that makes the polynomial **zero**. So the quickest test is to substitute.\n\nTry **(B)** $(x+3)(-x+8)$:\n\nat $x = -3$: $(-3+3)(3+8) = 0 \\times 11 = 0$ ✓\n\nat $x = 8$: $(8+3)(-8+8) = 11 \\times 0 = 0$ ✓\n\nBoth work, so **(B)** is the answer.\n\nWhy the others fail: a polynomial with zeroes $-3$ and $8$ has sum of zeroes $5$ and product $-24$, so it must be a multiple of $x^{2} - 5x - 24$. Option (C) has $+5x$, giving zeroes $3$ and $-8$ — the right numbers with the wrong signs.\n\nThink of a factor as a switch: $(x + 3)$ is a switch that flips off at $x = -3$. Multiply switches together and the whole product goes off whenever *any one* of them does.",
+      "solution": "A zero is an $x$ that makes the polynomial **zero**. So the quickest test is to substitute.\n\nTry **(B)** $(x+3)(-x+8)$:\n\nat $x = -3$: $(-3+3)(3+8) = 0 \\times 11 = 0$ ✓\n\nat $x = 8$: $(8+3)(-8+8) = 11 \\times 0 = 0$ ✓\n\nBoth work, so **(B)** is the answer.\n\nWhy the others fail: a polynomial with zeroes $-3$ and $8$ has sum of zeroes $5$ and product $-24$, so it must be a multiple of $x^{2} - 5x - 24$. Option (C) has $+5x$, giving zeroes $3$ and $-8$ — the right numbers with the wrong signs.\n\nThink of a factor as a switch: $(x + 3)$ is a switch that flips off at $x = -3$. Multiply switches together and the whole product goes off whenever **any one** of them does.",
       "chapter": "Polynomials"
     },
     {
@@ -102,7 +102,7 @@
         "$x^{2} + 3x + 10$"
       ],
       "answer": 1,
-      "solution": "The standard form is\n\n$x^{2} - (\\text{sum})x + (\\text{product})$\n\nSo with sum $3$ and product $-10$:\n\n$x^{2} - 3x + (-10) = \\mathbf{x^{2} - 3x - 10}$\n\nCheck by factorising: $x^{2} - 3x - 10 = (x - 5)(x + 2)$, giving zeroes $5$ and $-2$. Their sum is $3$ ✓ and their product is $-10$ ✓.\n\nThe minus sign in front of the sum catches people out every time. Remember it as: *the sum comes in wearing the opposite sign, the product comes in as it is.*",
+      "solution": "The standard form is\n\n$x^{2} - (\\text{sum})x + (\\text{product})$\n\nSo with sum $3$ and product $-10$:\n\n$x^{2} - 3x + (-10) = \\mathbf{x^{2} - 3x - 10}$\n\nCheck by factorising: $x^{2} - 3x - 10 = (x - 5)(x + 2)$, giving zeroes $5$ and $-2$. Their sum is $3$ ✓ and their product is $-10$ ✓.\n\nThe minus sign in front of the sum catches people out every time. Remember it as: **the sum comes in wearing the opposite sign, the product comes in as it is.**",
       "chapter": "Polynomials"
     },
     {
@@ -138,7 +138,7 @@
       "q": "If $p$ and $q$ are the zeroes of the polynomial $21y^{2} - y - 2$, find the value of $(1 - p)(1 - q)$.\n\nGive your answer correct to two decimal places.",
       "answer": 0.86,
       "tolerance": 0.01,
-      "solution": "From the coefficients:\n\n$p + q = \\dfrac{1}{21}$ and $pq = \\dfrac{-2}{21}$\n\nExpand the bracket before substituting anything:\n\n$(1 - p)(1 - q) = 1 - p - q + pq = 1 - (p + q) + pq$\n\n$= 1 - \\dfrac{1}{21} + \\left(-\\dfrac{2}{21}\\right) = 1 - \\dfrac{3}{21} = 1 - \\dfrac{1}{7} = \\dfrac{6}{7} \\approx \\mathbf{0.86}$\n\nExpanding *first* is the whole method. It turns an expression about the individual zeroes into one about their sum and product — and those two are sitting in the coefficients, waiting.",
+      "solution": "From the coefficients:\n\n$p + q = \\dfrac{1}{21}$ and $pq = \\dfrac{-2}{21}$\n\nExpand the bracket before substituting anything:\n\n$(1 - p)(1 - q) = 1 - p - q + pq = 1 - (p + q) + pq$\n\n$= 1 - \\dfrac{1}{21} + \\left(-\\dfrac{2}{21}\\right) = 1 - \\dfrac{3}{21} = 1 - \\dfrac{1}{7} = \\dfrac{6}{7} \\approx \\mathbf{0.86}$\n\nExpanding **first** is the whole method. It turns an expression about the individual zeroes into one about their sum and product — and those two are sitting in the coefficients, waiting.",
       "chapter": "Polynomials"
     },
     {

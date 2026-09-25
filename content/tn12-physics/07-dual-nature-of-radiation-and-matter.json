@@ -1,0 +1,230 @@
+{
+  "id": "lib-tn12p-dnr",
+  "title": "Dual Nature of Radiation and Matter",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-dnr-01",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric effect",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The stopping potential in a photoelectric experiment depends on:",
+      "options": [
+        "The intensity of the incident light",
+        "The frequency of the incident light",
+        "The area of the cathode",
+        "The distance of the source"
+      ],
+      "answer": 1,
+      "solution": "$eV_0 = K_{\\max} = h\\nu - \\phi$, so the stopping potential depends on the **frequency** of the light and on the metal's work function — never on the intensity.\n\nA graph of $V_0$ against $\\nu$ is a straight line of slope $\\dfrac{h}{e}$, and that slope comes out the **same for every metal**, which is what shows $h$ to be a universal constant."
+    },
+    {
+      "id": "tn12p-dnr-02",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Work function",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The threshold frequency of a metal is $\\nu_0$. Photoelectrons are emitted only when the incident frequency $\\nu$ satisfies:",
+      "options": [
+        "$\\nu < \\nu_0$",
+        "$\\nu > \\nu_0$",
+        "$\\nu = 0$",
+        "Any value of $\\nu$"
+      ],
+      "answer": 1,
+      "solution": "Emission requires $h\\nu > \\phi = h\\nu_0$, that is $\\mathbf{\\nu > \\nu_0}$.\n\nBelow the threshold **no electrons are emitted at all**, however intense the light or however long it shines — because one electron absorbs one whole photon, and a photon below threshold simply lacks the energy to free it.\n\nThis is the observation the wave theory could not explain, since on that picture energy would accumulate until emission occurred."
+    },
+    {
+      "id": "tn12p-dnr-03",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "de Broglie",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The de Broglie wavelength of a particle of mass $m$ moving with velocity $v$ is:",
+      "options": [
+        "$\\dfrac{h}{mv}$",
+        "$\\dfrac{mv}{h}$",
+        "$\\dfrac{h}{mv^{2}}$",
+        "$hmv$"
+      ],
+      "answer": 0,
+      "solution": "$\\lambda = \\mathbf{\\dfrac{h}{mv}} = \\dfrac{h}{p}$.\n\nBecause $h$ is so small, an everyday object has an utterly unobservable wavelength — a cricket ball's is around $10^{-34}\\ \\text{m}$.\n\nAn electron accelerated through a few tens of volts, however, has $\\lambda$ of about an ångström, comparable to atomic spacing, which is exactly why electrons diffract off crystals and why the electron microscope works."
+    },
+    {
+      "id": "tn12p-dnr-04",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric effect",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Increasing the intensity of light above the threshold frequency increases:",
+      "options": [
+        "The maximum kinetic energy of photoelectrons",
+        "The photoelectric current",
+        "The threshold frequency",
+        "The work function"
+      ],
+      "answer": 1,
+      "solution": "Greater intensity means **more photons per second**, so more electrons are emitted per second and the **photoelectric current** rises.\n\nEach electron still absorbs exactly one photon of the same energy, so $K_{\\max}$ is unchanged.\n\nThe saturation current is proportional to intensity; the stopping potential is not."
+    },
+    {
+      "id": "tn12p-dnr-05",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Davisson-Germer",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Davisson-Germer experiment demonstrated:",
+      "options": [
+        "The particle nature of light",
+        "The wave nature of electrons",
+        "The existence of the neutron",
+        "Nuclear fission"
+      ],
+      "answer": 1,
+      "solution": "Davisson and Germer scattered electrons from a nickel crystal and found a **diffraction pattern** — intensity maxima at particular angles, exactly as X-rays give.\n\nDiffraction is a wave phenomenon, so this confirmed de Broglie's hypothesis that **electrons behave as waves**, and the measured wavelength agreed with $\\lambda = h/p$.\n\nTaken together with the photoelectric effect, which shows light behaving as particles, it establishes **wave-particle duality** as a property of matter and radiation alike."
+    },
+    {
+      "id": "tn12p-dnr-06",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photon",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The momentum of a photon of wavelength $\\lambda$ is:",
+      "options": [
+        "$\\dfrac{h}{\\lambda}$",
+        "$h\\lambda$",
+        "$\\dfrac{hc}{\\lambda}$",
+        "Zero, since a photon has no mass"
+      ],
+      "answer": 0,
+      "solution": "$p = \\mathbf{\\dfrac{h}{\\lambda}} = \\dfrac{E}{c}$.\n\nA photon has **zero rest mass but non-zero momentum** — which is not a contradiction, because the relation $p = mv$ does not apply to a massless particle. The correct relation is $E^{2} = p^{2}c^{2} + m_0^{2}c^{4}$, which for $m_0 = 0$ gives $E = pc$.\n\nThat photons carry momentum is confirmed by radiation pressure and by the Compton effect."
+    },
+    {
+      "id": "tn12p-dnr-07",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Work function",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The work function of a metal is the:",
+      "options": [
+        "Energy of the incident photon",
+        "Minimum energy needed to free an electron from the metal surface",
+        "Kinetic energy of the emitted electron",
+        "Total energy of the electron"
+      ],
+      "answer": 1,
+      "solution": "The work function $\\phi$ is the **minimum energy** required to remove an electron from the metal surface.\n\nIt is a property of the **metal**, not of the light. Caesium has a low work function of about $2.1\\ \\text{eV}$ and so responds to visible light, which is why it is used in photocells; platinum's is around $5.6\\ \\text{eV}$ and needs ultraviolet.\n\nIt relates to the threshold frequency by $\\phi = h\\nu_0$."
+    },
+    {
+      "id": "tn12p-dnr-08",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric effect",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Photoelectric emission is:",
+      "options": [
+        "Delayed by several minutes",
+        "Instantaneous, within about $10^{-9}\\ \\text{s}$",
+        "Delayed by hours for weak light",
+        "Never observed"
+      ],
+      "answer": 1,
+      "solution": "Emission is **instantaneous**, occurring within about $10^{-9}\\ \\text{s}$ of the light arriving, even for very faint light.\n\nThis is one of the observations that destroyed the wave theory. On that picture an electron would have to **accumulate** energy from the spreading wavefront, and the calculated delay for weak light runs to **hours**.\n\nThe photon picture explains it immediately: one electron absorbs one whole photon in a single event, so there is nothing to wait for."
+    },
+    {
+      "id": "tn12p-dnr-09",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "de Broglie",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For particles of the same kinetic energy, which has the longest de Broglie wavelength?",
+      "options": [
+        "Proton",
+        "Neutron",
+        "Electron",
+        "Alpha particle"
+      ],
+      "answer": 2,
+      "solution": "$\\lambda = \\dfrac{h}{p} = \\dfrac{h}{\\sqrt{2mK}}$, so at fixed kinetic energy $\\lambda \\propto \\dfrac{1}{\\sqrt{m}}$.\n\nThe **lightest** particle has the longest wavelength, and of these the **electron** is by far the lightest — about 1836 times lighter than a proton.\n\nThis is also why electron microscopes use electrons: a short wavelength gives fine resolution, and accelerating them makes $\\lambda$ shorter still."
+    },
+    {
+      "id": "tn12p-dnr-10",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric effect",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Light of energy $6\\ \\text{eV}$ falls on a metal of work function $2.5\\ \\text{eV}$. Find the maximum kinetic energy of the photoelectrons, in electronvolts.",
+      "answer": 3.5,
+      "tolerance": 0.05,
+      "accept": [
+        "3.5"
+      ],
+      "solution": "$K_{\\max} = h\\nu - \\phi = 6 - 2.5 = \\mathbf{3.5\\ \\text{eV}}$.\n\nThe stopping potential needed to halt these electrons is therefore $3.5\\ \\text{V}$."
+    },
+    {
+      "id": "tn12p-dnr-24q12",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Work function",
+      "source": "TN HSE Mar 2024",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The threshold wavelength for a metal surface whose photoelectric work function is 3.313 eV, in nanometres :",
+      "answer": 375,
+      "solution": "$\\lambda_0 = \\dfrac{hc}{\\phi_0} = \\dfrac{6.626\\times10^{-34} \\times 3\\times10^{8}}{3.313 \\times 1.6\\times10^{-19}} = \\dfrac{1.988\\times10^{-25}}{5.301\\times10^{-19}} = 3.75\\times10^{-7}\\ \\mathrm{m}$\n\n$\\lambda_0 = \\mathbf{375\\ nm}$ (3750 Å), in the near ultraviolet.",
+      "tolerance": 2,
+      "accept": [
+        "3750 Å"
+      ]
+    },
+    {
+      "id": "tn12p-dnr-12",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "de Broglie",
+      "type": "numeric",
+      "marks": 3,
+      "q": "An electron is accelerated through $100\\ \\text{V}$. Using $\\lambda = \\dfrac{12.27}{\\sqrt{V}}\\ \\text{Å}$, find its de Broglie wavelength in ångström, to two decimal places.",
+      "answer": 1.23,
+      "tolerance": 0.03,
+      "accept": [
+        "1.23",
+        "1.227"
+      ],
+      "solution": "$\\sqrt{100} = 10$\n\n$\\lambda = \\dfrac{12.27}{10} = \\mathbf{1.23\\ \\text{Å}}$\n\nComparable to atomic spacing in a crystal, which is why such electrons are diffracted by one."
+    },
+    {
+      "id": "tn12p-dnr-24q29",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photon",
+      "source": "TN HSE Mar 2024",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many photons per second emanate from a 50 mW laser of 640 nm ? Give the answer in units of $10^{17}$.",
+      "answer": 1.61,
+      "solution": "Energy of one photon: $E = \\dfrac{hc}{\\lambda} = \\dfrac{6.626\\times10^{-34} \\times 3\\times10^{8}}{640\\times10^{-9}} = 3.11\\times10^{-19}\\ \\mathrm{J}$\n\n$N = \\dfrac{P}{E} = \\dfrac{0.05}{3.11\\times10^{-19}} = 1.61\\times10^{17}$ photons per second. Answer: $\\mathbf{1.61}$.",
+      "tolerance": 0.03
+    },
+    {
+      "id": "tn12p-dnr-25q26",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric effect",
+      "source": "TN HSE Mar 2025",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A radiation of wavelength 300 nm is incident on calcium surface. Will photoelectrons be observed ? Justify your answer. (Work function of calcium = 3.20 eV) Answer Yes or No.",
+      "answer": "Yes",
+      "solution": "$E = \\dfrac{hc}{\\lambda} = \\dfrac{6.626\\times10^{-34} \\times 3\\times10^{8}}{300\\times10^{-9} \\times 1.6\\times10^{-19}} = 4.14\\ \\mathrm{eV}$\n\n$4.14\\ \\mathrm{eV} > 3.20\\ \\mathrm{eV}$, so **Yes**: photoelectrons are emitted, with a maximum kinetic energy of about $0.94$ eV."
+    },
+    {
+      "id": "tn12p-dnr-15",
+      "chapter": "Dual Nature of Radiation and Matter",
+      "topic": "Photoelectric effect",
+      "type": "long",
+      "marks": 5,
+      "q": "State the laws of the photoelectric effect. Explain in detail why the classical wave theory fails to account for them, write Einstein's photoelectric equation, and explain how a graph of stopping potential against frequency yields Planck's constant and the work function.",
+      "solution": "**The experimental laws.**\n\n1. Emission is **instantaneous** — within about $10^{-9}\\ \\text{s}$ — however faint the light.\n2. There is a **threshold frequency** $\\nu_0$ below which no emission occurs at all, whatever the intensity or duration.\n3. The **maximum kinetic energy** of the emitted electrons depends on the **frequency** of the light and on the metal, and is **completely independent of the intensity**.\n4. The **number** of electrons emitted per second, and so the photoelectric current, is proportional to the **intensity**.\n\n**Why the wave theory fails.** On the classical picture, light is a wave whose energy is spread continuously over the wavefront and carried by the intensity. Each of the four laws contradicts it, and the contradictions are not marginal.\n\n**Against law 1.** An electron would have to **accumulate** energy from the wave until it had enough to escape. For light faint enough, the calculation gives delays of **hours**. Experiment finds no measurable delay whatever.\n\n**Against law 2.** There should be **no threshold at all**. Light of any frequency, given enough intensity or enough time, ought eventually to deliver the required energy. Yet below $\\nu_0$ nothing is emitted however long one waits — which on the wave picture is inexplicable rather than merely surprising.\n\n**Against law 3.** A more intense wave carries more energy per unit area, so it should eject **faster** electrons. Instead it ejects **more** electrons at exactly the same maximum speed.\n\n**The deepest problem** is that the wave theory makes everything depend on **intensity**, and the experiment makes the crucial things depend on **frequency**. It is not that the theory is quantitatively off; it identifies the wrong variable.\n\n**Einstein's explanation (1905).** Light is absorbed in discrete quanta — **photons** — each of energy $h\\nu$. One electron absorbs **one whole photon**, all at once, in a single event.\n\nPart of that energy frees the electron from the metal, the **work function** $\\phi$; the rest appears as kinetic energy:\n\n$\\boxed{h\\nu = \\phi + K_{\\max}}$\n\nor $K_{\\max} = h\\nu - \\phi = h\\nu - h\\nu_0 = h(\\nu - \\nu_0)$.\n\nEvery law now follows without further assumption:\n\n- **One photon, one electron, one event** — so emission is instantaneous, with nothing to accumulate.\n- If $h\\nu < \\phi$, **no single photon** can free an electron, and a million such photons are a million individually inadequate attempts, not one adequate one. Hence the threshold, $\\nu_0 = \\phi/h$.\n- $K_{\\max}$ contains $\\nu$ and does not contain the intensity.\n- Greater intensity is simply **more photons**, hence more electrons.\n\n**Obtaining $h$ and $\\phi$ from a graph.**\n\nApply a reverse potential just sufficient to stop the fastest electrons. Then $eV_0 = K_{\\max}$, so\n\n$eV_0 = h\\nu - \\phi$\n\n$V_0 = \\left(\\dfrac{h}{e}\\right)\\nu - \\dfrac{\\phi}{e}$\n\nThis is $y = mx + c$. Measure $V_0$ at several frequencies and plot $V_0$ against $\\nu$. The graph is a **straight line**, and three quantities can be read from it:\n\n**Slope** $= \\dfrac{h}{e}$, so $h = e \\times \\text{slope}$.\n\n**Intercept on the $\\nu$ axis** $= \\nu_0$, the threshold frequency.\n\n**Intercept on the $V_0$ axis** $= -\\dfrac{\\phi}{e}$, giving the work function.\n\n**The decisive feature of this graph.** Repeat the experiment with a **different metal** and the line shifts — a different threshold, a different intercept — but the **slope is identical**.\n\nThat is what proves $h$ is a **universal constant of nature** and not a property of the particular surface. A result that depended on the metal would say something about caesium; a result that does not says something about the world.\n\nMillikan spent ten years attempting to **disprove** Einstein's equation, which he considered unjustified, and ended by confirming it to high precision and measuring $h$ by exactly this method. It is among the better illustrations of how a theory earns acceptance — not by its author's advocacy, but by surviving the efforts of someone determined to break it."
+    }
+  ]
+}

@@ -82,7 +82,7 @@
       "topic": "Area below the axis",
       "type": "mcq",
       "q": "When a curve dips below the $x$-axis over part of the interval, the area of the region is found by:",
-      "solution": "A definite integral counts area below the axis as **negative**, so a single integral across a sign change returns the *difference* of the two areas, not their total.\n\nSplit at the crossing points and add the modulus of each piece.\n\nBank statements do the same thing: a balance of zero does not mean nothing happened.",
+      "solution": "A definite integral counts area below the axis as **negative**, so a single integral across a sign change returns the **difference** of the two areas, not their total.\n\nSplit at the crossing points and add the modulus of each piece.\n\nBank statements do the same thing: a balance of zero does not mean nothing happened.",
       "marks": 1,
       "options": [
         "integrating as usual — the signs sort themselves out",

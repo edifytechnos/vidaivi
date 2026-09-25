@@ -1,9 +1,9 @@
 {
   "id": "lib-neet-chemistry-1",
-  "title": "NEET Chemistry: Physical Chemistry",
+  "title": "Physical Chemistry",
   "chapter": "Practice Test 3",
   "teacher": null,
-  "order": 3,
+  "order": 1,
   "access": "login",
   "questions": [
     {

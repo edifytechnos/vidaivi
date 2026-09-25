@@ -1,0 +1,239 @@
+{
+  "id": "lib-jeep-mag",
+  "title": "Magnetism and Electromagnetic Induction",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-mag-01",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Magnetic force",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A charged particle moves **parallel** to a uniform magnetic field. The force on it is:",
+      "options": [
+        "$qvB$",
+        "Zero",
+        "$qvB\\sin\\theta$ with $\\theta=90^\\circ$",
+        "Maximum"
+      ],
+      "answer": 1,
+      "solution": "$\\vec{F} = q\\vec{v}\\times\\vec{B}$, of magnitude $qvB\\sin\\theta$.\n\nParallel means $\\theta = 0$, so $\\sin\\theta = 0$ and the force is **zero**.\n\nThe force is greatest when the velocity is perpendicular to the field, and it is always perpendicular to $\\vec{v}$ — so a magnetic force never does work and never changes a particle's speed."
+    },
+    {
+      "id": "jeep-mag-02",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Faraday's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The induced emf in a coil is proportional to:",
+      "options": [
+        "The magnetic flux",
+        "The rate of change of magnetic flux",
+        "The magnetic field",
+        "The area of the coil"
+      ],
+      "answer": 1,
+      "solution": "$\\varepsilon = -N\\dfrac{d\\Phi}{dt}$ — the emf depends on the **rate of change** of flux, not on the flux itself.\n\nA coil sitting in a huge but steady field has no emf at all; a coil in a weak but rapidly changing field can have a large one."
+    },
+    {
+      "id": "jeep-mag-03",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Lenz's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Lenz's law is a consequence of the conservation of:",
+      "options": [
+        "Charge",
+        "Energy",
+        "Momentum",
+        "Flux"
+      ],
+      "answer": 1,
+      "solution": "Lenz's law says the induced current opposes the change producing it — the minus sign in Faraday's law.\n\nIt must be so, by the conservation of **energy**. If the induced effect **aided** the change, the change would grow without limit and energy would be created from nothing. Instead you must do work against the opposition, and that work is what appears as electrical energy."
+    },
+    {
+      "id": "jeep-mag-04",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Biot-Savart law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The magnetic field at distance $r$ from a long straight wire carrying current $I$ is:",
+      "options": [
+        "$\\dfrac{\\mu_0 I}{2\\pi r}$",
+        "$\\dfrac{\\mu_0 I}{4\\pi r}$",
+        "$\\dfrac{\\mu_0 I}{2r}$",
+        "$\\dfrac{\\mu_0 I r}{2\\pi}$"
+      ],
+      "answer": 0,
+      "solution": "From Ampère's circuital law with a circular loop of radius $r$:\n\n$B(2\\pi r) = \\mu_0 I \\Rightarrow B = \\mathbf{\\dfrac{\\mu_0 I}{2\\pi r}}$\n\nThe field circles the wire, with the direction given by the right-hand grip rule.\n\n($\\dfrac{\\mu_0I}{2r}$ is the field at the **centre of a circular loop** — a different geometry.)"
+    },
+    {
+      "id": "jeep-mag-05",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Cyclotron motion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The radius of the circular path of a charged particle moving perpendicular to a magnetic field is:",
+      "options": [
+        "$\\dfrac{qB}{mv}$",
+        "$\\dfrac{mv}{qB}$",
+        "$\\dfrac{mB}{qv}$",
+        "$\\dfrac{qv}{mB}$"
+      ],
+      "answer": 1,
+      "solution": "The magnetic force supplies the centripetal force:\n\n$qvB = \\dfrac{mv^{2}}{r} \\Rightarrow r = \\mathbf{\\dfrac{mv}{qB}} = \\dfrac{p}{qB}$\n\nThe period $T = \\dfrac{2\\pi m}{qB}$ is independent of the speed — which is the principle the cyclotron is built on."
+    },
+    {
+      "id": "jeep-mag-06",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Self inductance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The energy stored in an inductor of inductance $L$ carrying current $I$ is:",
+      "options": [
+        "$LI$",
+        "$\\tfrac{1}{2}LI$",
+        "$\\tfrac{1}{2}LI^{2}$",
+        "$LI^{2}$"
+      ],
+      "answer": 2,
+      "solution": "$U = \\mathbf{\\tfrac{1}{2}LI^{2}}$, stored in the magnetic field.\n\nCompare the capacitor's $\\tfrac{1}{2}CV^{2}$ — the same form, with the inductor's current playing the role of the capacitor's voltage. The half arises for the same reason: the current builds from zero."
+    },
+    {
+      "id": "jeep-mag-07",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "AC circuits",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a purely inductive AC circuit, the current:",
+      "options": [
+        "Leads the voltage by $90^\\circ$",
+        "Lags the voltage by $90^\\circ$",
+        "Is in phase with the voltage",
+        "Is zero"
+      ],
+      "answer": 1,
+      "solution": "In an inductor the current **lags** the voltage by $90^\\circ$.\n\nThe physical reason is Lenz's law: the inductor opposes any change in current, so the current cannot rise until after the voltage has.\n\nA capacitor is the mirror image — there the current **leads** by $90^\\circ$. The mnemonic is **CIVIL**: in a **C**apacitor **I** comes before **V**; **V** comes before **I** in an **L**."
+    },
+    {
+      "id": "jeep-mag-08",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Transformers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A step-up transformer has more turns in the secondary. Compared with the primary, the secondary has:",
+      "options": [
+        "Higher voltage and higher current",
+        "Higher voltage and lower current",
+        "Lower voltage and higher current",
+        "The same voltage"
+      ],
+      "answer": 1,
+      "solution": "$\\dfrac{V_s}{V_p} = \\dfrac{N_s}{N_p}$, so more secondary turns give a **higher voltage**.\n\nAn ideal transformer conserves power, $V_pI_p = V_sI_s$, so a higher voltage must come with a **lower current**. A transformer trades one for the other; it is not a source of energy.\n\nNote also that it works on AC only — a steady DC current produces no changing flux and so no secondary emf."
+    },
+    {
+      "id": "jeep-mag-09",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Magnetic force",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two long parallel wires carry currents in the **same** direction. They:",
+      "options": [
+        "Attract each other",
+        "Repel each other",
+        "Exert no force",
+        "Rotate"
+      ],
+      "answer": 0,
+      "solution": "Parallel currents in the same direction **attract**; antiparallel currents repel.\n\nThe force per unit length is $\\dfrac{\\mu_0 I_1 I_2}{2\\pi d}$.\n\nThis is the definition the ampere used to rest on. It is worth noticing that it is the opposite of the electrostatic rule, where like charges repel."
+    },
+    {
+      "id": "jeep-mag-10",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Biot-Savart law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A long straight wire carries $10\\ \\text{A}$. Taking $\\mu_0 = 4\\pi\\times10^{-7}$ SI units, find the field at $0.1\\ \\text{m}$ from it, in microtesla.",
+      "answer": 20,
+      "tolerance": 0.5,
+      "accept": [
+        "20 uT",
+        "20.0",
+        "2e-5 T"
+      ],
+      "solution": "$B = \\dfrac{\\mu_0 I}{2\\pi r} = \\dfrac{4\\pi\\times10^{-7} \\times 10}{2\\pi \\times 0.1}$\n\nThe $\\pi$ cancels:\n\n$= \\dfrac{4\\times10^{-7} \\times 10}{2 \\times 0.1} = \\dfrac{4\\times10^{-6}}{0.2} = 2\\times10^{-5}\\ \\text{T}$\n\n$= \\mathbf{20\\ \\mu\\text{T}}$."
+    },
+    {
+      "id": "jeep-mag-11",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Faraday's law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The flux through a $50$-turn coil changes from $0.01\\ \\text{Wb}$ to $0.05\\ \\text{Wb}$ in $0.2\\ \\text{s}$. Find the magnitude of the induced emf, in volts.",
+      "answer": 10,
+      "tolerance": 0.2,
+      "accept": [
+        "10 V",
+        "10.0"
+      ],
+      "solution": "$|\\varepsilon| = N\\dfrac{\\Delta\\Phi}{\\Delta t} = 50 \\times \\dfrac{0.05 - 0.01}{0.2}$\n\n$= 50 \\times \\dfrac{0.04}{0.2} = 50 \\times 0.2 = \\mathbf{10\\ \\text{V}}$."
+    },
+    {
+      "id": "jeep-mag-12",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Cyclotron motion",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A proton of momentum $1.6\\times10^{-21}\\ \\mathrm{kg\\,m\\,s^{-1}}$ moves perpendicular to a field of $0.1\\ \\text{T}$. Taking $q = 1.6\\times10^{-19}\\ \\text{C}$, find the radius of its path, in metres.",
+      "answer": 0.1,
+      "tolerance": 0.005,
+      "accept": [
+        "0.1 m",
+        "0.10"
+      ],
+      "solution": "$r = \\dfrac{p}{qB} = \\dfrac{1.6\\times10^{-21}}{1.6\\times10^{-19} \\times 0.1}$\n\nDenominator: $1.6\\times10^{-20}$\n\n$r = \\dfrac{1.6\\times10^{-21}}{1.6\\times10^{-20}} = \\mathbf{0.1\\ \\text{m}}$."
+    },
+    {
+      "id": "jeep-mag-13",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Transformers",
+      "type": "numeric",
+      "marks": 2,
+      "q": "An ideal transformer has $100$ primary and $500$ secondary turns. With $220\\ \\text{V}$ on the primary, find the secondary voltage, in volts.",
+      "answer": 1100,
+      "tolerance": 5,
+      "accept": [
+        "1100 V",
+        "1100.0"
+      ],
+      "solution": "$V_s = V_p\\dfrac{N_s}{N_p} = 220 \\times \\dfrac{500}{100} = 220 \\times 5 = \\mathbf{1100\\ \\text{V}}$."
+    },
+    {
+      "id": "jeep-mag-14",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "AC circuits",
+      "type": "numeric",
+      "marks": 2,
+      "q": "An AC supply has peak voltage $311\\ \\text{V}$. Find its rms voltage, in volts, to the nearest whole number.",
+      "answer": 220,
+      "tolerance": 2,
+      "accept": [
+        "220 V",
+        "220.0"
+      ],
+      "solution": "$V_{rms} = \\dfrac{V_0}{\\sqrt2} = \\dfrac{311}{1.414} \\approx \\mathbf{220\\ \\text{V}}$.\n\nThis is why Indian mains is quoted as $220\\ \\text{V}$ although it peaks at over $300\\ \\text{V}$ — the rms value is the one that delivers the same heating as a steady DC voltage."
+    },
+    {
+      "id": "jeep-mag-15",
+      "chapter": "Magnetism and Electromagnetic Induction",
+      "topic": "Faraday's law",
+      "type": "long",
+      "marks": 5,
+      "q": "State Faraday's laws of electromagnetic induction and Lenz's law. Derive the expression for the motional emf induced in a conducting rod of length $l$ moving with velocity $v$ perpendicular to a uniform field $B$, and show that the result is consistent with the conservation of energy.",
+      "solution": "**Faraday's laws.**\n\n**First law:** whenever the magnetic flux linked with a circuit changes, an emf is induced in it, and it lasts only as long as the change lasts.\n\n**Second law:** the magnitude of the induced emf is equal to the rate of change of flux linkage:\n\n$\\varepsilon = -N\\dfrac{d\\Phi}{dt}$\n\n**Lenz's law.** The induced current flows in the direction that **opposes** the change producing it. This is the origin of the minus sign.\n\n**Deriving the motional emf.**\n\nA rod $PQ$ of length $l$ slides with velocity $v$ along two rails, perpendicular to a uniform field $B$ directed into the plane.\n\n**By the flux method.** In time $dt$ the rod sweeps a distance $v\\,dt$, so the area of the circuit changes by\n\n$dA = l\\,v\\,dt$\n\nThe flux change is $d\\Phi = B\\,dA = Blv\\,dt$, so\n\n$|\\varepsilon| = \\dfrac{d\\Phi}{dt} = \\boxed{Blv}$\n\n**By the force method**, which shows the same thing from the electrons' point of view. Each free electron in the moving rod experiences a magnetic force $evB$ along the rod, pushing charge to one end. Charge accumulates until the electric field it creates balances the magnetic push:\n\n$eE = evB \\Rightarrow E = vB$\n\nThe potential difference across the rod is then\n\n$\\varepsilon = El = Blv$ ✓\n\nThe two derivations agree, which is reassuring since they appeal to quite different physics.\n\n**Consistency with energy conservation.**\n\nSuppose the rails are joined through a resistance $R$. The induced current is\n\n$I = \\dfrac{Blv}{R}$\n\nThis current, flowing in the field, experiences a force\n\n$F = BIl = \\dfrac{B^{2}l^{2}v}{R}$\n\nBy Lenz's law this force **opposes** the motion. So to keep the rod moving at constant $v$, an external agent must push with an equal force, doing work at the rate\n\n$P_{\\text{mech}} = Fv = \\dfrac{B^{2}l^{2}v^{2}}{R}$\n\nThe electrical power dissipated in the resistor is\n\n$P_{\\text{elec}} = I^{2}R = \\left(\\dfrac{Blv}{R}\\right)^{2}R = \\dfrac{B^{2}l^{2}v^{2}}{R}$\n\n$P_{\\text{mech}} = P_{\\text{elec}}$ — **exactly** the mechanical work done appears as electrical energy. Nothing is created and nothing is lost.\n\n**Why Lenz's law had to come out this way.** Had the induced force **assisted** the motion, the rod would accelerate on its own while also delivering electrical power, producing energy from nothing. The opposition in Lenz's law is not an extra empirical rule bolted on to Faraday's — it is the only direction consistent with the conservation of energy."
+    }
+  ]
+}

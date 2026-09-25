@@ -1,6 +1,6 @@
 {
   "id": "lib-neet-physics-1",
-  "title": "NEET Physics: Mechanics and Properties of Matter",
+  "title": "Mechanics and Properties of Matter",
   "chapter": "Practice Test 1",
   "teacher": null,
   "order": 1,
@@ -204,7 +204,7 @@
       "topic": "Kinetic theory",
       "type": "mcq",
       "q": "The average kinetic energy of a gas molecule depends only on:",
-      "solution": "$\\overline{E_{k}} = \\tfrac32 kT$ — it depends on **absolute temperature alone**.\n\nAt the same temperature, hydrogen and oxygen molecules have the same average kinetic energy, so the lighter hydrogen moves much faster. That is what temperature *is*, microscopically.",
+      "solution": "$\\overline{E_{k}} = \\tfrac32 kT$ — it depends on **absolute temperature alone**.\n\nAt the same temperature, hydrogen and oxygen molecules have the same average kinetic energy, so the lighter hydrogen moves much faster. That is what temperature **is**, microscopically.",
       "marks": 4,
       "options": [
         "pressure",

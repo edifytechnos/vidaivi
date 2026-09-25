@@ -1,0 +1,240 @@
+{
+  "id": "lib-jeep-opt",
+  "title": "Optics and Modern Physics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-opt-01",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Photoelectric effect",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the photoelectric effect, increasing the **intensity** of light of a fixed frequency (above threshold) increases:",
+      "options": [
+        "The maximum kinetic energy of the electrons",
+        "The number of electrons emitted per second",
+        "The threshold frequency",
+        "The work function"
+      ],
+      "answer": 1,
+      "solution": "Einstein's equation is $K_{\\max} = h\\nu - \\phi$ — the maximum kinetic energy depends on **frequency** alone.\n\nGreater intensity means more photons per second, so **more electrons per second**, but each electron still absorbs exactly one photon of the same energy.\n\nThis is precisely what the wave theory could not explain, and why the effect established the photon."
+    },
+    {
+      "id": "jeep-opt-02",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Interference",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In Young's double-slit experiment the fringe width is:",
+      "options": [
+        "$\\dfrac{\\lambda D}{d}$",
+        "$\\dfrac{\\lambda d}{D}$",
+        "$\\dfrac{D}{\\lambda d}$",
+        "$\\lambda D d$"
+      ],
+      "answer": 0,
+      "solution": "$\\beta = \\mathbf{\\dfrac{\\lambda D}{d}}$, where $D$ is the slit-to-screen distance and $d$ the slit separation.\n\nSo the fringes widen with longer wavelength or a more distant screen, and narrow as the slits are moved apart. Immersing the apparatus in water shortens $\\lambda$ and so **narrows** the fringes."
+    },
+    {
+      "id": "jeep-opt-03",
+      "chapter": "Optics and Modern Physics",
+      "topic": "de Broglie",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The de Broglie wavelength of a particle of momentum $p$ is:",
+      "options": [
+        "$hp$",
+        "$\\dfrac{h}{p}$",
+        "$\\dfrac{p}{h}$",
+        "$\\dfrac{h}{p^{2}}$"
+      ],
+      "answer": 1,
+      "solution": "$\\lambda = \\mathbf{\\dfrac{h}{p}}$.\n\nBecause $h$ is so small ($6.63\\times10^{-34}\\ \\mathrm{J\\,s}$), everyday objects have utterly unobservable wavelengths. An electron accelerated through a few tens of volts, however, has $\\lambda$ of about an ångström — comparable to atomic spacings, which is why electrons diffract off crystals."
+    },
+    {
+      "id": "jeep-opt-04",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Lenses",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The power of a lens of focal length $f$ (in metres) is:",
+      "options": [
+        "$f$",
+        "$\\dfrac{1}{f}$",
+        "$f^{2}$",
+        "$-f$"
+      ],
+      "answer": 1,
+      "solution": "$P = \\mathbf{\\dfrac{1}{f}}$, measured in dioptres when $f$ is in metres.\n\nA converging lens has positive power, a diverging one negative. Powers of lenses in contact simply **add**, which is why they are used rather than focal lengths."
+    },
+    {
+      "id": "jeep-opt-05",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Bohr model",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Bohr model of hydrogen, the energy of the $n$th level is proportional to:",
+      "options": [
+        "$n$",
+        "$n^{2}$",
+        "$-\\dfrac{1}{n^{2}}$",
+        "$-\\dfrac{1}{n}$"
+      ],
+      "answer": 2,
+      "solution": "$E_n = \\mathbf{-\\dfrac{13.6}{n^{2}}\\ \\text{eV}}$.\n\nThe negative sign means the electron is bound; the levels crowd together towards $E = 0$ as $n$ grows, which is the ionisation limit.\n\nThe radius goes the other way, $r_n \\propto n^{2}$."
+    },
+    {
+      "id": "jeep-opt-06",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Total internal reflection",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Total internal reflection occurs when light travels:",
+      "options": [
+        "From a rarer to a denser medium at any angle",
+        "From a denser to a rarer medium beyond the critical angle",
+        "At normal incidence",
+        "Through a vacuum"
+      ],
+      "answer": 1,
+      "solution": "Two conditions are both needed: the light must go from a **denser to a rarer** medium, and the angle of incidence must **exceed the critical angle** $C$, where $\\sin C = \\dfrac{1}{\\mu}$.\n\nThis is what makes optical fibres work, and it is why a diamond ($\\mu = 2.42$, so $C \\approx 24^\\circ$) sparkles — light entering it is trapped through many internal reflections."
+    },
+    {
+      "id": "jeep-opt-07",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Nuclear physics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The binding energy per nucleon is greatest for nuclei of mass number around:",
+      "options": [
+        "$4$",
+        "$56$",
+        "$150$",
+        "$238$"
+      ],
+      "answer": 1,
+      "solution": "The binding energy per nucleon peaks near $A \\approx \\mathbf{56}$ — iron and nickel — at about $8.8\\ \\text{MeV}$ per nucleon.\n\nThat peak is why **fusion** of light nuclei and **fission** of heavy ones both release energy: each moves the products towards the most tightly bound region of the curve. It is also why iron is the end of the line for stellar fusion."
+    },
+    {
+      "id": "jeep-opt-08",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Diffraction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For single-slit diffraction, the first minimum occurs at angle $\\theta$ where:",
+      "options": [
+        "$a\\sin\\theta = \\lambda$",
+        "$a\\sin\\theta = \\lambda/2$",
+        "$a\\sin\\theta = 2\\lambda$",
+        "$a\\cos\\theta = \\lambda$"
+      ],
+      "answer": 0,
+      "solution": "The **minima** of single-slit diffraction are at $a\\sin\\theta = n\\lambda$ for $n = 1, 2, 3\\ldots$, so the first is at $\\mathbf{a\\sin\\theta = \\lambda}$.\n\nBe careful: in the double-slit experiment the same expression gives the **maxima**. The two are easily confused and the distinction is worth memorising."
+    },
+    {
+      "id": "jeep-opt-09",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Photoelectric effect",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The stopping potential in a photoelectric experiment depends on:",
+      "options": [
+        "The intensity of light",
+        "The frequency of light",
+        "The area of the cathode",
+        "The distance of the source"
+      ],
+      "answer": 1,
+      "solution": "$eV_0 = K_{\\max} = h\\nu - \\phi$, so the stopping potential depends on the **frequency** of the light (and the metal's work function), not on its intensity.\n\nA graph of $V_0$ against $\\nu$ is a straight line of slope $h/e$ — the experiment Millikan used to measure Planck's constant."
+    },
+    {
+      "id": "jeep-opt-10",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Photoelectric effect",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Light of energy $5\\ \\text{eV}$ falls on a metal of work function $2\\ \\text{eV}$. Find the maximum kinetic energy of the emitted electrons, in electronvolts.",
+      "answer": 3,
+      "tolerance": 0.05,
+      "accept": [
+        "3 eV",
+        "3.0"
+      ],
+      "solution": "$K_{\\max} = h\\nu - \\phi = 5 - 2 = \\mathbf{3\\ \\text{eV}}$."
+    },
+    {
+      "id": "jeep-opt-11",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Interference",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a double-slit experiment, $\\lambda = 600\\ \\text{nm}$, $d = 0.3\\ \\text{mm}$ and $D = 1\\ \\text{m}$. Find the fringe width, in millimetres.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2 mm",
+        "2.0"
+      ],
+      "solution": "$\\beta = \\dfrac{\\lambda D}{d} = \\dfrac{600\\times10^{-9} \\times 1}{0.3\\times10^{-3}}$\n\n$= \\dfrac{6\\times10^{-7}}{3\\times10^{-4}} = 2\\times10^{-3}\\ \\text{m} = \\mathbf{2\\ \\text{mm}}$."
+    },
+    {
+      "id": "jeep-opt-12",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Bohr model",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the energy of the $n = 2$ level of hydrogen, in electronvolts. Give the magnitude.",
+      "answer": 3.4,
+      "tolerance": 0.05,
+      "accept": [
+        "3.4",
+        "-3.4",
+        "3.4 eV"
+      ],
+      "solution": "$E_2 = -\\dfrac{13.6}{2^{2}} = -\\dfrac{13.6}{4} = -3.4\\ \\text{eV}$.\n\nThe magnitude is $\\mathbf{3.4\\ \\text{eV}}$ — the energy needed to ionise hydrogen from its first excited state."
+    },
+    {
+      "id": "jeep-opt-13",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Total internal reflection",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A medium has refractive index $2$. Find its critical angle, in degrees.",
+      "answer": 30,
+      "tolerance": 0.5,
+      "accept": [
+        "30 degrees",
+        "30"
+      ],
+      "solution": "$\\sin C = \\dfrac{1}{\\mu} = \\dfrac{1}{2} = 0.5$\n\n$C = \\sin^{-1}(0.5) = \\mathbf{30^\\circ}$."
+    },
+    {
+      "id": "jeep-opt-14",
+      "chapter": "Optics and Modern Physics",
+      "topic": "de Broglie",
+      "type": "numeric",
+      "marks": 3,
+      "q": "An electron is accelerated through $150\\ \\text{V}$. Using $\\lambda = \\dfrac{12.27}{\\sqrt{V}}\\ \\text{Å}$, find its de Broglie wavelength in ångström, to two decimal places.",
+      "answer": 1.0,
+      "tolerance": 0.03,
+      "accept": [
+        "1.00",
+        "1 A",
+        "1.0"
+      ],
+      "solution": "$\\sqrt{150} \\approx 12.25$\n\n$\\lambda = \\dfrac{12.27}{12.25} \\approx \\mathbf{1.00\\ \\text{Å}}$.\n\nThat is about the spacing of atoms in a crystal, which is exactly why electrons of this energy are diffracted by one — the Davisson-Germer experiment."
+    },
+    {
+      "id": "jeep-opt-15",
+      "chapter": "Optics and Modern Physics",
+      "topic": "Photoelectric effect",
+      "type": "long",
+      "marks": 5,
+      "q": "State the laws of the photoelectric effect and explain why the classical wave theory of light fails to account for them. Write Einstein's photoelectric equation and describe how a graph of stopping potential against frequency is used to find Planck's constant.",
+      "solution": "**The experimental laws.**\n\n1. Emission is **instantaneous** — there is no measurable delay, even for very faint light.\n2. There is a **threshold frequency** $\\nu_0$ below which no electrons are emitted, however intense the light or however long it shines.\n3. The **maximum kinetic energy** of the emitted electrons depends on the frequency of the light and on the metal, but **not at all on the intensity**.\n4. The **number** of electrons emitted per second is proportional to the **intensity**.\n\n**Why the wave theory fails.** On the classical picture, light is a wave whose energy is spread continuously over the wavefront and is carried by the intensity.\n\n- **Against law 1:** an electron would have to **accumulate** energy from the wave. For faint light the calculation gives delays of hours; experiment finds less than $10^{-9}\\ \\text{s}$.\n- **Against law 2:** there should be **no threshold**. Light of any frequency, given enough intensity or enough time, ought eventually to supply the required energy. It does not.\n- **Against law 3:** a more intense wave carries more energy, so it should eject **faster** electrons. It does not — it ejects **more** of them at the same maximum speed.\n\nThe failure is not a matter of detail. The wave theory gets the **dependence on the wrong variable**: it makes everything hinge on intensity, and the experiment makes the crucial things hinge on frequency.\n\n**Einstein's explanation.** Light is absorbed in discrete quanta — **photons** — each of energy $h\\nu$. One electron absorbs one whole photon, all at once.\n\nPart of that energy is spent freeing the electron from the metal (the **work function** $\\phi$); the rest appears as kinetic energy:\n\n$\\boxed{h\\nu = \\phi + K_{\\max}}$\n\nor $K_{\\max} = h\\nu - \\phi$.\n\nEvery law now follows immediately:\n\n- One photon, one electron, one absorption event — so emission is **instantaneous**.\n- If $h\\nu < \\phi$ no single photon can free an electron, whatever the number of them — hence the **threshold**, $\\nu_0 = \\phi/h$.\n- $K_{\\max}$ contains $\\nu$ and not the intensity.\n- Greater intensity is simply more photons, so more electrons.\n\n**Measuring $h$.** Applying a reverse potential $V_0$ just large enough to stop the fastest electrons gives\n\n$eV_0 = K_{\\max} = h\\nu - \\phi$\n\n$V_0 = \\left(\\dfrac{h}{e}\\right)\\nu - \\dfrac{\\phi}{e}$\n\nMeasure $V_0$ for several frequencies and plot $V_0$ against $\\nu$. The result is a **straight line**, and:\n\n- the **slope** is $\\dfrac{h}{e}$, so $h = e \\times \\text{slope}$;\n- the **intercept on the $\\nu$ axis** is the threshold frequency $\\nu_0$;\n- the **intercept on the $V_0$ axis** is $-\\dfrac{\\phi}{e}$, giving the work function.\n\nThe decisive point is that the slope comes out the **same for every metal**, even though the intercepts differ. That is what shows $h$ to be a universal constant of nature and not a property of the particular surface — and it is the measurement for which Millikan, who had set out to disprove Einstein's equation, ended up confirming it."
+    }
+  ]
+}

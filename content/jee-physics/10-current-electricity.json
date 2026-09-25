@@ -1,0 +1,238 @@
+{
+  "id": "lib-jeep-cur",
+  "title": "Current Electricity",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-cur-01",
+      "chapter": "Current Electricity",
+      "topic": "Ohm's law",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The resistance of a wire of length $l$ and area $A$ is $R$. If it is stretched to twice its length (volume constant), the new resistance is:",
+      "options": [
+        "$2R$",
+        "$4R$",
+        "$R/2$",
+        "$R/4$"
+      ],
+      "answer": 1,
+      "solution": "Stretching at constant volume doubles the length and **halves** the area.\n\n$R' = \\rho\\dfrac{2l}{A/2} = 4\\rho\\dfrac{l}{A} = \\mathbf{4R}$.\n\nThe general rule is $R \\propto l^{2}$ at constant volume — both factors work in the same direction."
+    },
+    {
+      "id": "jeep-cur-02",
+      "chapter": "Current Electricity",
+      "topic": "Resistors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Three resistors each of $6\\ \\Omega$ are connected in parallel. The equivalent resistance is:",
+      "options": [
+        "$18\\ \\Omega$",
+        "$6\\ \\Omega$",
+        "$2\\ \\Omega$",
+        "$3\\ \\Omega$"
+      ],
+      "answer": 2,
+      "solution": "$\\dfrac{1}{R_{eq}} = \\dfrac{1}{6} + \\dfrac{1}{6} + \\dfrac{1}{6} = \\dfrac{3}{6} = \\dfrac{1}{2}$\n\n$R_{eq} = \\mathbf{2\\ \\Omega}$.\n\nFor $n$ equal resistors in parallel the shortcut is $R/n$, and the answer is always smaller than the smallest of them."
+    },
+    {
+      "id": "jeep-cur-03",
+      "chapter": "Current Electricity",
+      "topic": "Drift velocity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The drift velocity of electrons in a metal is typically of the order of:",
+      "options": [
+        "$10^{8}\\ \\mathrm{m\\,s^{-1}}$",
+        "$10^{6}\\ \\mathrm{m\\,s^{-1}}$",
+        "$10^{-4}\\ \\mathrm{m\\,s^{-1}}$",
+        "$10^{3}\\ \\mathrm{m\\,s^{-1}}$"
+      ],
+      "answer": 2,
+      "solution": "Drift velocity is remarkably small — of the order of $\\mathbf{10^{-4}\\ \\mathrm{m\\,s^{-1}}}$, a fraction of a millimetre per second.\n\nA lamp lights instantly not because electrons race along the wire, but because the **electric field** is established through it at close to the speed of light, and the conductor is already full of free electrons everywhere."
+    },
+    {
+      "id": "jeep-cur-04",
+      "chapter": "Current Electricity",
+      "topic": "Kirchhoff's laws",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Kirchhoff's junction rule is a statement of the conservation of:",
+      "options": [
+        "Energy",
+        "Charge",
+        "Momentum",
+        "Potential"
+      ],
+      "answer": 1,
+      "solution": "The junction rule ($\\sum I = 0$ at a node) says charge does not accumulate at a junction — it is the conservation of **charge**.\n\nThe loop rule ($\\sum V = 0$ round a closed loop) is the conservation of **energy**."
+    },
+    {
+      "id": "jeep-cur-05",
+      "chapter": "Current Electricity",
+      "topic": "Power",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Two bulbs rated $60\\ \\text{W}$ and $100\\ \\text{W}$ for the same voltage are connected in **series** across that voltage. Which glows brighter?",
+      "options": [
+        "The $100\\ \\text{W}$ bulb",
+        "The $60\\ \\text{W}$ bulb",
+        "Both equally",
+        "Neither lights"
+      ],
+      "answer": 1,
+      "solution": "At the rated voltage, $R = \\dfrac{V^{2}}{P}$, so the **lower**-wattage bulb has the **higher** resistance.\n\nIn series the current is the same through both, and $P = I^{2}R$. The larger resistance therefore dissipates more power, so the **$60\\ \\text{W}$ bulb glows brighter**.\n\nIn parallel the result reverses — there $V$ is shared and $P = V^{2}/R$, so the $100\\ \\text{W}$ bulb wins. This reversal catches people out every time."
+    },
+    {
+      "id": "jeep-cur-06",
+      "chapter": "Current Electricity",
+      "topic": "Internal resistance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A cell of emf $\\varepsilon$ and internal resistance $r$ drives current $I$ through an external resistance $R$. The terminal voltage is:",
+      "options": [
+        "$\\varepsilon$",
+        "$\\varepsilon + Ir$",
+        "$\\varepsilon - Ir$",
+        "$Ir$"
+      ],
+      "answer": 2,
+      "solution": "$V = \\mathbf{\\varepsilon - Ir}$.\n\nSome of the emf is dropped across the cell's own internal resistance, so the terminal voltage is always less than the emf when current flows.\n\nOn open circuit $I = 0$ and $V = \\varepsilon$, which is how emf is measured by a potentiometer — it draws no current at balance."
+    },
+    {
+      "id": "jeep-cur-07",
+      "chapter": "Current Electricity",
+      "topic": "Wheatstone bridge",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A Wheatstone bridge with arms $P$, $Q$, $R$, $S$ is balanced when:",
+      "options": [
+        "$P/Q = R/S$",
+        "$PQ = RS$",
+        "$P + Q = R + S$",
+        "$P/R = S/Q$"
+      ],
+      "answer": 0,
+      "solution": "The balance condition is $\\mathbf{\\dfrac{P}{Q} = \\dfrac{R}{S}}$, at which no current flows through the galvanometer.\n\nBecause it is a **null** method, the reading does not depend on the galvanometer's sensitivity or on the battery's emf — which is what makes it so accurate."
+    },
+    {
+      "id": "jeep-cur-08",
+      "chapter": "Current Electricity",
+      "topic": "Temperature dependence",
+      "type": "mcq",
+      "marks": 1,
+      "q": "As temperature rises, the resistance of a **semiconductor**:",
+      "options": [
+        "Increases",
+        "Decreases",
+        "Stays constant",
+        "Becomes infinite"
+      ],
+      "answer": 1,
+      "solution": "Heating a semiconductor promotes many more electrons across the band gap, so the number of charge carriers rises sharply — far outweighing the increased scattering. The resistance therefore **decreases**.\n\nA metal behaves the opposite way: its carrier count is fixed, so more scattering simply means more resistance. A semiconductor has a **negative** temperature coefficient, a metal a positive one."
+    },
+    {
+      "id": "jeep-cur-09",
+      "chapter": "Current Electricity",
+      "topic": "Drift velocity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The current in a conductor is given by:",
+      "options": [
+        "$I = nAv_d$",
+        "$I = neAv_d$",
+        "$I = nev_d$",
+        "$I = eAv_d$"
+      ],
+      "answer": 1,
+      "solution": "$I = \\mathbf{neAv_d}$, where $n$ is the number density of carriers, $e$ the charge on each, $A$ the cross-sectional area and $v_d$ the drift velocity.\n\nEach factor is needed for the dimensions to come out as charge per unit time."
+    },
+    {
+      "id": "jeep-cur-10",
+      "chapter": "Current Electricity",
+      "topic": "Ohm's law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A potential difference of $12\\ \\text{V}$ drives a current of $3\\ \\text{A}$. Find the resistance, in ohms.",
+      "answer": 4,
+      "tolerance": 0.1,
+      "accept": [
+        "4 ohm",
+        "4.0"
+      ],
+      "solution": "$R = \\dfrac{V}{I} = \\dfrac{12}{3} = \\mathbf{4\\ \\Omega}$."
+    },
+    {
+      "id": "jeep-cur-11",
+      "chapter": "Current Electricity",
+      "topic": "Resistors",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Resistors of $4\\ \\Omega$ and $6\\ \\Omega$ are connected in parallel. Find the equivalent resistance, in ohms, to one decimal place.",
+      "answer": 2.4,
+      "tolerance": 0.05,
+      "accept": [
+        "2.4",
+        "2.40"
+      ],
+      "solution": "$R_{eq} = \\dfrac{R_1R_2}{R_1+R_2} = \\dfrac{4 \\times 6}{4+6} = \\dfrac{24}{10} = \\mathbf{2.4\\ \\Omega}$."
+    },
+    {
+      "id": "jeep-cur-12",
+      "chapter": "Current Electricity",
+      "topic": "Power",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A heater of resistance $20\\ \\Omega$ carries $5\\ \\text{A}$. Find the power dissipated, in watts.",
+      "answer": 500,
+      "tolerance": 5,
+      "accept": [
+        "500 W",
+        "500.0"
+      ],
+      "solution": "$P = I^{2}R = 5^{2} \\times 20 = 25 \\times 20 = \\mathbf{500\\ \\text{W}}$."
+    },
+    {
+      "id": "jeep-cur-13",
+      "chapter": "Current Electricity",
+      "topic": "Internal resistance",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A cell of emf $6\\ \\text{V}$ and internal resistance $1\\ \\Omega$ is connected to a $5\\ \\Omega$ resistor. Find the terminal voltage, in volts.",
+      "answer": 5,
+      "tolerance": 0.1,
+      "accept": [
+        "5 V",
+        "5.0"
+      ],
+      "solution": "First the current:\n\n$I = \\dfrac{\\varepsilon}{R + r} = \\dfrac{6}{5 + 1} = 1\\ \\text{A}$\n\nThen the terminal voltage:\n\n$V = \\varepsilon - Ir = 6 - (1)(1) = \\mathbf{5\\ \\text{V}}$.\n\nEquivalently $V = IR = 1 \\times 5 = 5\\ \\text{V}$, which is a useful check."
+    },
+    {
+      "id": "jeep-cur-14",
+      "chapter": "Current Electricity",
+      "topic": "Wheatstone bridge",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In a balanced Wheatstone bridge, $P = 10\\ \\Omega$, $Q = 20\\ \\Omega$ and $R = 15\\ \\Omega$. Find $S$, in ohms.",
+      "answer": 30,
+      "tolerance": 0.5,
+      "accept": [
+        "30 ohm",
+        "30.0"
+      ],
+      "solution": "$\\dfrac{P}{Q} = \\dfrac{R}{S} \\Rightarrow S = \\dfrac{QR}{P}$\n\n$S = \\dfrac{20 \\times 15}{10} = \\dfrac{300}{10} = \\mathbf{30\\ \\Omega}$."
+    },
+    {
+      "id": "jeep-cur-15",
+      "chapter": "Current Electricity",
+      "topic": "Drift velocity",
+      "type": "long",
+      "marks": 5,
+      "q": "Derive the relation $I = neAv_d$ between current and drift velocity, and hence obtain Ohm's law in the form $\\rho = \\dfrac{m}{ne^{2}\\tau}$. Explain why a lamp lights instantly even though the drift velocity is only about $10^{-4}\\ \\mathrm{m\\,s^{-1}}$.",
+      "solution": "**Deriving $I = neAv_d$.**\n\nConsider a conductor of cross-sectional area $A$ carrying $n$ free electrons per unit volume, each of charge $e$, drifting with average velocity $v_d$.\n\nIn a time $\\Delta t$, every electron moves a distance $v_d\\Delta t$. So **all** the electrons within a cylinder of length $v_d\\Delta t$ behind the cross-section will cross it in that time.\n\nVolume of that cylinder: $A v_d \\Delta t$\n\nNumber of electrons in it: $nAv_d\\Delta t$\n\nCharge crossing: $\\Delta q = neAv_d\\Delta t$\n\n$I = \\dfrac{\\Delta q}{\\Delta t} = \\boxed{neAv_d}$\n\n**Deriving Ohm's law.**\n\nAn applied field $E$ exerts a force $eE$ on each electron, giving acceleration\n\n$a = \\dfrac{eE}{m}$\n\nThe electron accelerates freely only until its next collision with the lattice, after which its velocity is randomised. If $\\tau$ is the mean free time between collisions, the average drift velocity built up is\n\n$v_d = a\\tau = \\dfrac{eE\\tau}{m}$\n\nSubstituting into the current relation:\n\n$I = neA\\left(\\dfrac{eE\\tau}{m}\\right) = \\dfrac{ne^{2}A\\tau E}{m}$\n\nNow write $E = \\dfrac{V}{l}$ for a conductor of length $l$:\n\n$I = \\dfrac{ne^{2}A\\tau}{m}\\cdot\\dfrac{V}{l}$\n\n$V = I\\left(\\dfrac{ml}{ne^{2}A\\tau}\\right)$\n\nThis is $V = IR$ — **Ohm's law** — with\n\n$R = \\dfrac{ml}{ne^{2}A\\tau}$\n\nComparing with $R = \\rho\\dfrac{l}{A}$ gives the resistivity:\n\n$\\boxed{\\rho = \\dfrac{m}{ne^{2}\\tau}}$\n\nNotice $\\rho$ contains only properties of the **material** — carrier density and mean free time — and nothing about the shape of the sample, exactly as a material constant should.\n\nThis also explains the temperature behaviour of a metal: heating makes the lattice vibrate more, shortening $\\tau$, so $\\rho$ rises.\n\n**Why the lamp lights instantly.**\n\nThe drift velocity is indeed tiny — at $10^{-4}\\ \\mathrm{m\\,s^{-1}}$ an electron would take nearly three hours to travel a metre. But the lamp does not wait for any particular electron to arrive.\n\nThe conductor is **already full of free electrons everywhere**, including inside the filament. What has to travel from the switch to the lamp is not the electrons but the **electric field**, which propagates through the circuit at close to the speed of light. The moment it arrives, the electrons already sitting in the filament begin to drift, and the filament heats.\n\nThe usual analogy is a pipe already full of water: opening the tap at one end makes water come out of the other end immediately, even though no single molecule has made the journey."
+    }
+  ]
+}

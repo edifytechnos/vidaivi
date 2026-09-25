@@ -1,0 +1,233 @@
+{
+  "id": "lib-c12bio-hlt",
+  "title": "Human Health and Disease",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-hlt-01",
+      "chapter": "Human Health and Disease",
+      "topic": "Immunity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Antibodies are produced by:",
+      "options": [
+        "T lymphocytes",
+        "B lymphocytes (plasma cells)",
+        "Macrophages",
+        "Neutrophils"
+      ],
+      "answer": 1,
+      "solution": "**B lymphocytes** differentiate into **plasma cells**, which secrete antibodies — this is **humoral** immunity.\n\n**T lymphocytes** mediate **cell-mediated** immunity: they attack infected cells directly and help coordinate the response, but they do not secrete antibodies.\n\nThe distinction matters in transplantation, where graft rejection is T-cell mediated."
+    },
+    {
+      "id": "c12bio-hlt-02",
+      "chapter": "Human Health and Disease",
+      "topic": "Immunity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An antibody molecule has the structure:",
+      "options": [
+        "$\\text{H}_2\\text{L}_2$ — two heavy and two light chains",
+        "One single chain",
+        "Four heavy chains",
+        "$\\text{H}_4\\text{L}_4$"
+      ],
+      "answer": 0,
+      "solution": "An antibody is $\\mathbf{\\text{H}_2\\text{L}_2}$ — two identical **heavy** chains and two identical **light** chains, held by disulphide bonds in a Y shape.\n\nThe tips of the Y are the **variable** regions, which differ between antibodies and give the specificity for a particular antigen. The stem is constant and determines the class — IgG, IgM, IgA, IgE, IgD.\n\nHaving two identical binding sites is what lets antibodies cross-link antigens and clump them together."
+    },
+    {
+      "id": "c12bio-hlt-03",
+      "chapter": "Human Health and Disease",
+      "topic": "AIDS",
+      "type": "mcq",
+      "marks": 1,
+      "q": "HIV primarily infects and destroys:",
+      "options": [
+        "B lymphocytes",
+        "Helper T lymphocytes",
+        "Red blood cells",
+        "Platelets"
+      ],
+      "answer": 1,
+      "solution": "HIV targets **helper T cells** ($\\text{CD}4^{+}$), which are the coordinators of the whole immune response — they activate B cells and cytotoxic T cells alike.\n\nDestroying them cripples both humoral and cell-mediated immunity at once, which is why AIDS leaves the patient open to **opportunistic infections** that a healthy immune system dismisses easily.\n\nHIV is a **retrovirus**: it carries RNA and uses **reverse transcriptase** to make DNA that integrates into the host genome, which is why the infection is lifelong."
+    },
+    {
+      "id": "c12bio-hlt-04",
+      "chapter": "Human Health and Disease",
+      "topic": "Immunity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Vaccination confers:",
+      "options": [
+        "Active natural immunity",
+        "Active artificial immunity",
+        "Passive natural immunity",
+        "Passive artificial immunity"
+      ],
+      "answer": 1,
+      "solution": "A vaccine introduces a harmless form of the antigen, so the body makes **its own** antibodies and, crucially, **memory cells**. That makes it **active**; being deliberately induced makes it **artificial**.\n\nThe four types are worth keeping straight:\n\n**Active natural** — recovering from an infection.\n\n**Active artificial** — vaccination.\n\n**Passive natural** — antibodies crossing the placenta or in breast milk.\n\n**Passive artificial** — an injection of ready-made antibodies, as in antivenom.\n\nOnly the **active** kinds give lasting protection, because only they create memory cells. Passive immunity acts at once but fades."
+    },
+    {
+      "id": "c12bio-hlt-05",
+      "chapter": "Human Health and Disease",
+      "topic": "Malaria",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Malaria is caused by:",
+      "options": [
+        "A bacterium",
+        "A virus",
+        "Plasmodium, a protozoan",
+        "A fungus"
+      ],
+      "answer": 2,
+      "solution": "Malaria is caused by the protozoan **Plasmodium**, transmitted by the bite of the **female Anopheles** mosquito, which is the vector rather than the cause.\n\nThe fever spikes every 48 or 72 hours because the parasite bursts out of red blood cells in synchronised waves, releasing the toxin **haemozoin**.\n\nOnly the female mosquito bites, since she needs a blood meal for her eggs."
+    },
+    {
+      "id": "c12bio-hlt-06",
+      "chapter": "Human Health and Disease",
+      "topic": "Cancer",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The property that distinguishes a malignant tumour from a benign one is:",
+      "options": [
+        "Rapid growth",
+        "Metastasis, the ability to spread to other tissues",
+        "Large size",
+        "Being painful"
+      ],
+      "answer": 1,
+      "solution": "**Metastasis** — cells break away, travel in the blood or lymph, and start new tumours elsewhere — is the defining property of a **malignant** tumour.\n\nA **benign** tumour stays confined to its original site and is usually removable.\n\nMetastasis is what makes cancer lethal and difficult to treat: a localised mass can be excised, but cells already dispersed through the body cannot be."
+    },
+    {
+      "id": "c12bio-hlt-07",
+      "chapter": "Human Health and Disease",
+      "topic": "Drugs",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Morphine and heroin are obtained from:",
+      "options": [
+        "Cannabis sativa",
+        "Papaver somniferum, the opium poppy",
+        "Erythroxylum coca",
+        "Atropa belladonna"
+      ],
+      "answer": 1,
+      "solution": "Morphine, and heroin (diacetylmorphine) made from it, come from the latex of **Papaver somniferum**, the opium poppy.\n\nThey are **depressants** and powerful **analgesics** — morphine is still a mainstay of surgical pain relief. They are also strongly addictive.\n\nCannabinoids come from **Cannabis sativa** and cocaine from the coca plant, which is a stimulant rather than a depressant."
+    },
+    {
+      "id": "c12bio-hlt-08",
+      "chapter": "Human Health and Disease",
+      "topic": "Immunity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which is an example of an **innate** immune barrier?",
+      "options": [
+        "Antibodies",
+        "Memory cells",
+        "Skin and mucus",
+        "T lymphocytes"
+      ],
+      "answer": 2,
+      "solution": "Innate immunity is **non-specific** and present from birth. It has four kinds of barrier:\n\n**Physical** — skin and mucus membranes\n\n**Physiological** — stomach acid, saliva, tears\n\n**Cellular** — macrophages, neutrophils, natural killer cells\n\n**Cytokine** — interferons released by virus-infected cells\n\nAntibodies, memory cells and lymphocytes belong to **acquired** immunity, which is specific and, crucially, has **memory**."
+    },
+    {
+      "id": "c12bio-hlt-09",
+      "chapter": "Human Health and Disease",
+      "topic": "Allergy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An allergic reaction is mediated mainly by which antibody class?",
+      "options": [
+        "IgG",
+        "IgA",
+        "IgE",
+        "IgM"
+      ],
+      "answer": 2,
+      "solution": "**IgE** binds to mast cells and basophils. When the allergen cross-links it, those cells release **histamine** and serotonin, producing the sneezing, watering eyes and inflammation.\n\nAntihistamines work by blocking histamine receptors.\n\nAn allergy is therefore not a weak immune system but an **over-reaction** to something harmless — the machinery is working, just aimed at the wrong target."
+    },
+    {
+      "id": "c12bio-hlt-10",
+      "chapter": "Human Health and Disease",
+      "topic": "Immunity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many polypeptide chains are there in one antibody molecule?",
+      "answer": 4,
+      "tolerance": 0.5,
+      "accept": [
+        "4"
+      ],
+      "solution": "Two heavy chains and two light chains: $2 + 2 = \\mathbf{4}$ polypeptide chains, giving the $\\text{H}_2\\text{L}_2$ structure."
+    },
+    {
+      "id": "c12bio-hlt-11",
+      "chapter": "Human Health and Disease",
+      "topic": "Immunity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many antigen-binding sites does a single IgG antibody molecule have?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "$\\mathbf{2}$ — one at each tip of the Y, formed where a heavy and a light chain's variable regions meet.\n\nHaving two identical sites is what lets an antibody **cross-link** two antigens and clump them into a precipitate, which is how agglutination works. IgM, a pentamer, has ten."
+    },
+    {
+      "id": "c12bio-hlt-12",
+      "chapter": "Human Health and Disease",
+      "topic": "AIDS",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Below approximately what $\\text{CD}4^{+}$ cell count per microlitre is an HIV infection classified as AIDS?",
+      "answer": 200,
+      "tolerance": 10,
+      "accept": [
+        "200"
+      ],
+      "solution": "AIDS is diagnosed when the $\\text{CD}4^{+}$ count falls below about $\\mathbf{200}$ cells per microlitre, or when an AIDS-defining opportunistic infection appears.\n\nA healthy count is roughly $500$ to $1500$ per microlitre."
+    },
+    {
+      "id": "c12bio-hlt-13",
+      "chapter": "Human Health and Disease",
+      "topic": "Malaria",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In malaria caused by Plasmodium vivax, the fever recurs approximately every how many hours?",
+      "answer": 48,
+      "tolerance": 2,
+      "accept": [
+        "48"
+      ],
+      "solution": "Every $\\mathbf{48}$ hours, giving the pattern known as **tertian** fever.\n\nThe rhythm reflects the synchronised bursting of infected red blood cells, which releases the toxin haemozoin. **Plasmodium malariae** gives a 72-hour (quartan) cycle."
+    },
+    {
+      "id": "c12bio-hlt-14",
+      "chapter": "Human Health and Disease",
+      "topic": "Drugs",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many main classes of immunoglobulin are found in humans?",
+      "answer": 5,
+      "tolerance": 0.5,
+      "accept": [
+        "5"
+      ],
+      "solution": "$\\mathbf{5}$ classes: **IgG**, **IgM**, **IgA**, **IgE** and **IgD**.\n\nIgG is the commonest and the only one crossing the placenta; IgM appears first in an infection; IgA guards mucosal surfaces and is in breast milk; IgE mediates allergy; IgD's role is a receptor on B cells."
+    },
+    {
+      "id": "c12bio-hlt-15",
+      "chapter": "Human Health and Disease",
+      "topic": "Immunity",
+      "type": "long",
+      "marks": 5,
+      "q": "Distinguish between innate and acquired immunity. Explain the primary and secondary immune responses, and use the difference between them to explain how vaccination protects against disease.",
+      "solution": "**Innate immunity** is present from birth, acts immediately, and is **non-specific** — the same response whatever the invader. It has four kinds of barrier:\n\n**Physical** — the skin, and mucus lining the respiratory and digestive tracts\n\n**Physiological** — stomach acid, saliva, tears\n\n**Cellular** — macrophages, neutrophils and natural killer cells, which engulf or destroy invaders\n\n**Cytokine** — interferons, released by virus-infected cells, which warn neighbouring cells\n\nIt has **no memory**: the thousandth encounter is met exactly like the first.\n\n**Acquired immunity** develops after exposure, is **specific** to a particular antigen, and — the property that matters most — has **memory**.\n\nIt has two arms. **Humoral** immunity uses B lymphocytes, which become plasma cells and secrete **antibodies** into the blood, dealing with pathogens outside cells. **Cell-mediated** immunity uses T lymphocytes, which attack **infected cells** directly and reject grafts.\n\n**The primary response.** On first exposure:\n\n- There is a **lag of several days** while the few lymphocytes with a matching receptor are found and multiplied — clonal selection takes time.\n- **IgM** appears first, in **low** concentration.\n- The response is **slow and weak**, and the person usually falls ill.\n- Crucially, some activated lymphocytes become **memory cells** and persist, sometimes for life.\n\n**The secondary response.** On a later exposure to the same antigen:\n\n- The lag is **very short**, hours rather than days, because a large population of memory cells is already present and already specific.\n- **IgG** predominates, at a concentration perhaps a **hundred to a thousand times** higher.\n- The response is **faster, larger and longer-lasting**, and the pathogen is usually destroyed before symptoms appear.\n\n**How vaccination uses this.**\n\nA vaccine is a preparation of the pathogen's antigens in a form that **cannot cause the disease** — killed or inactivated organisms, a weakened (attenuated) strain, a purified surface protein, a toxoid, or mRNA encoding a viral protein.\n\nIt triggers a **primary response**. The person makes antibodies and, far more importantly, **memory cells** — but without ever suffering the illness.\n\nWhen the real pathogen later arrives, it meets a **secondary** response. The immune system is already primed, the response is immediate and overwhelming, and the infection is cleared before it can establish itself.\n\n**So vaccination does not give immunity directly — it gives the immune system a rehearsal.** The protection comes entirely from the memory cells the vaccine leaves behind. That is exactly why a vaccine takes a week or two to become effective and is useless given during an outbreak already underway in that person.\n\n**Why passive immunisation is different.** For a snake bite or a tetanus wound, there is no time for a primary response. **Ready-made antibodies** are injected instead. That works within minutes, but it creates **no memory cells**, so the protection lasts only until those borrowed antibodies are degraded — a few weeks. It is a treatment, not a vaccination.\n\n**Herd immunity** follows from all this: once enough of a population carries memory cells, the pathogen cannot find enough susceptible hosts to spread, which protects even those who were never vaccinated. That is how smallpox was eradicated, and it is the reason vaccination coverage is measured as a population figure rather than an individual one."
+    }
+  ]
+}

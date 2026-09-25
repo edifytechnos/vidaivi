@@ -1,0 +1,238 @@
+{
+  "id": "lib-c12bio-mic",
+  "title": "Microbes in Human Welfare",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "c12bio-mic-01",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Fermentation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The holes in Swiss cheese are produced by:",
+      "options": [
+        "Lactobacillus",
+        "Propionibacterium shermanii",
+        "Saccharomyces",
+        "Penicillium"
+      ],
+      "answer": 1,
+      "solution": "**Propionibacterium shermanii** produces large amounts of **carbon dioxide**, which forms the characteristic large holes in Swiss cheese.\n\n**Roquefort** cheese gets its flavour from the fungus **Penicillium roqueforti** growing through it.\n\n**Lactobacillus** curdles milk into curd, and **Saccharomyces cerevisiae** leavens bread and brews beer."
+    },
+    {
+      "id": "c12bio-mic-02",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Antibiotics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Penicillin was discovered by Alexander Fleming from:",
+      "options": [
+        "A bacterium",
+        "The mould Penicillium notatum",
+        "A virus",
+        "An alga"
+      ],
+      "answer": 1,
+      "solution": "Fleming noticed in 1928 that a mould, **Penicillium notatum**, had contaminated a **Staphylococcus** plate and that the bacteria around it had been killed.\n\nHe named the substance penicillin. **Chain and Florey** later established its therapeutic value and made mass production possible, and the three shared the Nobel Prize in 1945.\n\nIt was used extensively to treat wounded soldiers in the Second World War, and it is the classic instance of a chance observation being worth something only because the observer took it seriously."
+    },
+    {
+      "id": "c12bio-mic-03",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Sewage treatment",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Biological Oxygen Demand (BOD) measures:",
+      "options": [
+        "The oxygen in water",
+        "The oxygen consumed by bacteria to oxidise organic matter in a water sample",
+        "The number of bacteria",
+        "The temperature of water"
+      ],
+      "answer": 1,
+      "solution": "**BOD** is the amount of oxygen bacteria would consume in oxidising all the organic matter in a sample.\n\nSo it is an **indirect measure of organic pollution**: more organic matter means more bacterial activity and a higher BOD.\n\nThe damage is done by that consumption — heavily polluted water is stripped of dissolved oxygen, and fish suffocate. Sewage treatment is judged by how far it lowers the BOD before discharge."
+    },
+    {
+      "id": "c12bio-mic-04",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Biofertilisers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Rhizobium fixes atmospheric nitrogen in:",
+      "options": [
+        "The leaves of cereals",
+        "The root nodules of leguminous plants",
+        "The soil independently",
+        "Aquatic plants"
+      ],
+      "answer": 1,
+      "solution": "**Rhizobium** lives symbiotically in the **root nodules of legumes**, converting atmospheric $\\text{N}_2$ into ammonia the plant can use. In return the plant supplies it with carbohydrates.\n\nThe bacterium can only fix nitrogen inside the nodule, where **leghaemoglobin** keeps the oxygen concentration low — nitrogenase is destroyed by oxygen.\n\nThis is why legumes are rotated with cereals: they leave the soil richer in nitrogen rather than poorer."
+    },
+    {
+      "id": "c12bio-mic-05",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Biocontrol",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Ladybird beetles are used in biological control of:",
+      "options": [
+        "Mosquitoes",
+        "Aphids",
+        "Butterflies",
+        "Fungi"
+      ],
+      "answer": 1,
+      "solution": "**Ladybird beetles** are predators of **aphids**, and dragonflies control mosquitoes.\n\nBiological control uses a natural predator or pathogen instead of a chemical pesticide, which avoids poisoning the soil, the water and the non-target species.\n\n**Bacillus thuringiensis** and the fungus **Trichoderma** are the other standard agents, and **Baculovirus** is valued because it is narrowly species-specific — it attacks the pest and leaves everything else alone."
+    },
+    {
+      "id": "c12bio-mic-06",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Biogas",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The main constituent of biogas is:",
+      "options": [
+        "Carbon dioxide",
+        "Methane",
+        "Hydrogen",
+        "Nitrogen"
+      ],
+      "answer": 1,
+      "solution": "Biogas is mostly **methane**, typically 50 to 70 per cent, with carbon dioxide and traces of hydrogen and hydrogen sulphide.\n\nIt is produced by **methanogens** such as **Methanobacterium**, strict anaerobes which are also found in the rumen of cattle — which is why cattle dung is the usual feedstock and is already rich in them.\n\nThe spent slurry left behind is a good fertiliser, so nothing is wasted."
+    },
+    {
+      "id": "c12bio-mic-07",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Sewage treatment",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The secondary treatment of sewage is:",
+      "options": [
+        "Physical removal of solids",
+        "A biological process using aerobic microbes",
+        "Chemical treatment",
+        "Filtration only"
+      ],
+      "answer": 1,
+      "solution": "**Primary** treatment is **physical**: filtration and sedimentation remove floating debris and grit, producing primary sludge.\n\n**Secondary** treatment is **biological**. The effluent is agitated and aerated, and aerobic microbes form **flocs** — mesh-like masses of bacteria and fungal filaments — which consume the organic matter and reduce the BOD by $90$ to $95\\%$.\n\nThe anaerobic sludge digesters that follow produce biogas, so the treatment plant generates part of its own energy."
+    },
+    {
+      "id": "c12bio-mic-08",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Industrial products",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Cyclosporin A, used to prevent organ transplant rejection, is produced by:",
+      "options": [
+        "A bacterium",
+        "The fungus Trichoderma polysporum",
+        "A virus",
+        "An alga"
+      ],
+      "answer": 1,
+      "solution": "**Cyclosporin A** comes from the fungus **Trichoderma polysporum** and acts as an **immunosuppressant**, preventing the rejection of transplanted organs.\n\nIt transformed transplant surgery — before it, rejection was the limiting problem.\n\nTwo other microbial products worth knowing: **statins** from **Monascus purpureus**, which lower blood cholesterol by competitively inhibiting the enzyme that makes it, and **streptokinase** from **Streptococcus**, used as a clot buster after a heart attack."
+    },
+    {
+      "id": "c12bio-mic-09",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Fermentation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Distilled alcoholic drinks such as whisky differ from beer and wine in that they:",
+      "options": [
+        "Use different yeast",
+        "Are subjected to distillation after fermentation",
+        "Contain no alcohol",
+        "Are not fermented"
+      ],
+      "answer": 1,
+      "solution": "All are made by **fermentation** with **Saccharomyces cerevisiae**.\n\nThe difference is what happens afterwards. **Beer and wine are not distilled**, so their alcohol content is limited to roughly 5 to 12 per cent — yeast is killed by its own product above that.\n\n**Whisky, brandy and rum are distilled** after fermentation, which concentrates the alcohol well beyond what the yeast could survive."
+    },
+    {
+      "id": "c12bio-mic-10",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Sewage treatment",
+      "type": "numeric",
+      "marks": 3,
+      "q": "By approximately what percentage does secondary treatment reduce the BOD of sewage?",
+      "answer": 92,
+      "tolerance": 4,
+      "accept": [
+        "90",
+        "95",
+        "90-95",
+        "92"
+      ],
+      "solution": "Secondary treatment reduces BOD by roughly **90 to 95 per cent**, so about $\\mathbf{92\\%}$ as a midpoint.\n\nOnly once the BOD has fallen this far is the effluent released into a natural water body, because water with a high BOD would strip the river of its dissolved oxygen and kill the fish."
+    },
+    {
+      "id": "c12bio-mic-11",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Biogas",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the approximate percentage of methane in biogas? Give the midpoint of the usual range.",
+      "answer": 60,
+      "tolerance": 10,
+      "accept": [
+        "60",
+        "50-70"
+      ],
+      "solution": "Biogas is typically **50 to 70 per cent** methane, so about $\\mathbf{60\\%}$.\n\nMost of the remainder is carbon dioxide, which is why biogas has a lower energy content than pure natural gas."
+    },
+    {
+      "id": "c12bio-mic-12",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Fermentation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Approximately what percentage of alcohol does wine typically contain?",
+      "answer": 12,
+      "tolerance": 3,
+      "accept": [
+        "12",
+        "10-12"
+      ],
+      "solution": "Wine contains roughly $\\mathbf{12\\%}$ alcohol, usually quoted as 10 to 12 per cent.\n\nThe ceiling is set by the yeast itself: above about $14\\%$ the alcohol it has produced kills it, which is why any stronger drink must be distilled."
+    },
+    {
+      "id": "c12bio-mic-13",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Antibiotics",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In which year did Alexander Fleming discover penicillin?",
+      "answer": 1928,
+      "tolerance": 1,
+      "accept": [
+        "1928"
+      ],
+      "solution": "$\\mathbf{1928}$.\n\nIt was not brought into clinical use until the 1940s, when Chain and Florey solved the problem of producing it in quantity — the twelve-year gap is a reminder that a discovery and a usable drug are not the same thing."
+    },
+    {
+      "id": "c12bio-mic-14",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Biofertilisers",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many nitrogen atoms are in one molecule of atmospheric nitrogen gas?",
+      "answer": 2,
+      "tolerance": 0.1,
+      "accept": [
+        "2"
+      ],
+      "solution": "$\\mathbf{2}$ — atmospheric nitrogen is $\\text{N}_2$, held by a **triple bond**.\n\nThat bond is why nitrogen fixation is such a demanding process: it takes about $941\\ \\mathrm{kJ\\,mol^{-1}}$ to break, which is why only specialised bacteria with the enzyme nitrogenase can do it at ordinary temperatures, and why the industrial Haber process needs such extreme conditions."
+    },
+    {
+      "id": "c12bio-mic-15",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Sewage treatment",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the stages of sewage treatment in a municipal treatment plant. Explain the significance of BOD, and describe how microbes are used in both the aerobic and the anaerobic stages.",
+      "solution": "**Why sewage must be treated.** Municipal waste water carries large amounts of **organic matter** and pathogenic microbes. Released untreated into a river, the organic matter feeds an explosion of bacteria which consume the dissolved oxygen, suffocating the fish and other aquatic life. Treatment is essentially a way of letting that bacterial consumption happen in a tank rather than in the river.\n\n**Primary treatment: physical.**\n\nFloating debris is removed by **sequential filtration**, and grit and soil by **sedimentation**. The solids that settle are the **primary sludge**; the liquid above is the **primary effluent**.\n\nNo biology is involved. It simply removes what can be removed mechanically.\n\n**Secondary (biological) treatment: aerobic.**\n\nThe primary effluent is passed into large **aeration tanks** and **constantly agitated and aerated**.\n\nThis lets useful **aerobic microbes** grow rapidly into **flocs** — mesh-like masses of bacteria held together with fungal filaments.\n\nThese microbes **consume the organic matter** in the effluent, and in doing so they consume large amounts of oxygen. This is the stage that actually cleans the water, reducing the **BOD by 90 to 95 per cent**.\n\nOnce the BOD has fallen far enough, the effluent goes to a **settling tank**, where the flocs sediment out as **activated sludge**.\n\nA small part of that sludge is pumped **back into the aeration tank** as an **inoculum** — the microbes are reused rather than grown afresh each time, which is what makes the process economical.\n\n**Anaerobic sludge digestion.**\n\nThe bulk of the activated sludge goes to large **anaerobic sludge digesters**.\n\nHere a quite different community works: **anaerobic bacteria** digest the bacteria and fungi of the sludge itself, producing a mixture of **methane, hydrogen sulphide and carbon dioxide** — **biogas**.\n\nThat biogas is **inflammable and can be used as an energy source**, so the treatment plant generates part of its own power from its own waste. The spent slurry is a useful fertiliser.\n\nThe effluent from the settling tank is finally released into a natural water body such as a river.\n\n**The significance of BOD.**\n\nBOD is the **amount of oxygen that would be consumed by bacteria in oxidising all the organic matter** in one litre of water.\n\nIt is an **indirect but reliable measure of organic pollution**: more organic matter supports more bacterial activity, so BOD rises with the degree of pollution.\n\nIt matters for three reasons.\n\n**It measures the harm.** BOD is not merely correlated with pollution — it **is** the mechanism of the damage. High BOD water strips a river of dissolved oxygen, and that oxygen depletion is what kills the fish.\n\n**It is the test of the treatment.** The effectiveness of secondary treatment is judged by how far the BOD has been reduced, which is why the $90$ to $95\\%$ figure is quoted rather than any measure of how much material was removed.\n\n**It is a regulatory standard.** Effluent may not legally be discharged above a set BOD.\n\n**The contrast between the two microbial stages.** Both use microbes, and they use them for opposite purposes under opposite conditions. The **aerobic** stage uses oxygen-requiring microbes to **remove the pollutant**, and its product is clean water. The **anaerobic** stage uses oxygen-intolerant microbes to **digest the microbes from the first stage**, and its product is fuel. The waste of one stage is the raw material of the next, which is why the process is as efficient as it is."
+    }
+  ]
+}

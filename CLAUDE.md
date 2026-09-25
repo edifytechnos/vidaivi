@@ -414,8 +414,11 @@ Tagged today, with an evidence file per shelf under `docs/`:
 | Cambridge A Level Physics (9702) | 3 of 180 | from the Jun 2024 papers |
 | Cambridge A Level Chemistry (9701) | 4 of 180 | from the Jun 2024 papers |
 | Cambridge A Level Maths (9709) | 4 of 150 | recovered by reading pages as images |
+| Tamil Nadu Class 12 Chemistry | 42 of 225 | every chapter; TN HSE Mar 2023–25 |
+| Tamil Nadu Class 12 Physics | 37 of 165 | 10 of 11 chapters; TN HSE Mar 2023–25 |
+| Tamil Nadu Class 12 Physics (Tamil medium) | 37 of 165 | the board's own Tamil, read off the page |
 
-**261 of 1875 questions are evidenced.** The only shelf with nothing is **NEET**,
+**381 of 3000 questions are evidenced.** The only original shelf with nothing is **NEET**,
 because no public archive exists; nothing there will carry a year until one does.
 
 **Cambridge publishes past papers openly** at
@@ -427,7 +430,7 @@ that corpus is a real past paper, so every Cambridge tag names it:
 is `cambridge-igcse-science-combined-0653`, not the `-combined-science-` form
 every other subject uses.
 
-### Two ways content renders wrong, and both shipped once
+### Four ways content renders wrong, and all four were caught once
 
 `formatText` in `src/dom.ts` supports `$…$` maths, `**bold**`, and a blank line
 as a paragraph break. **Nothing else.** Everything is escaped first, so anything
@@ -443,11 +446,43 @@ richer reaches the student literally.
   fields were affected. Before fixing any, check that no occurrence is a LaTeX
   `\\` line break.
 
-`scripts/check-content.cjs` now rejects both. Neither is catchable by
-`validateQuestions` — both are perfectly valid strings, wrong only once a
-student reads them. The guard has already earned itself: writing twelve more
-questions the same way reproduced the backslash-n bug immediately, and the check
-caught all fourteen fields before they could ship.
+- **Single-asterisk `*italics*`** are not supported either, and this one was
+  live in front of students. `formatText` replaces `**bold**` and nothing else,
+  so `*linear*` is escaped and reaches the student with its asterisks showing.
+  **356 runs across eleven shelves**, 93 of them in Class 10 Maths — the pilot
+  shelf. All were rewritten as `**bold**`, which is the only emphasis there is.
+  The rewrite was proved safe by stripping every asterisk from the before and
+  after text and requiring the two to be identical: **not one non-asterisk
+  character changed** across 178 fields, so no formula and no word moved.
+
+- **Tamil written bare inside maths.** KaTeX has no Tamil glyphs. Inside
+  `\text{…}` the run falls through to the page's Noto Sans Tamil and renders
+  cleanly; bare in math mode each letter is set as a maths symbol —
+  `\text{நாள்}^{-1}`, never `நாள்^{-1}`. Caught in a draft of the Tamil-medium
+  Physics shelf, before it shipped.
+
+`scripts/check-content.cjs` now rejects all four. None is catchable by
+`validateQuestions` — all are perfectly valid strings, wrong only once a
+student reads them. The guard has already earned itself twice: writing twelve
+more questions the same way reproduced the backslash-n bug immediately and the
+check caught all fourteen fields before they could ship, and the italics rule
+found 356 runs that had already shipped.
+
+**Two of those guards need an exception for maths, and getting it wrong is the
+obvious mistake.** A blanket `includes("\\n")` condemns `$h\nu$`, `$\nabla f$`
+and `$a\neq b$`; a blanket asterisk-pair rule condemns `$\pi^{*}$` and `$V^*$`.
+Both were met for real — the first while writing a photoelectric question, the
+second while writing an antibonding orbital.
+
+- The backslash-n check reads the LaTeX command name that follows against a
+  **closed** list. Closed, because `"line one\nline two"` in a raw string yields
+  the name `nline`, and any “looks like a word” rule would wave the real bug
+  straight through.
+- The italics check **blanks `$…$` spans out before testing**, preserving their
+  offsets so a `*word*` sitting between two formulas is still caught.
+
+Both were re-verified to fail the bug they exist for after being taught the
+exception. A guard relaxed without that check is a guard switched off.
 
 ### Reading a paper as pages, when extraction is not enough
 
@@ -1032,6 +1067,8 @@ the function did not exist.
 - `screens/auth.ts` — welcome, student login, admin login, phone capture.
 - `screens/home.ts` — home test list, profile row, cloud-saved results.
 - `api.ts` — fetch client for the DB-backed tests API.
+- `screens/newsubject.ts` — New subject: board → class → subjects → tests.
+- `taxonomy.ts` — what a board can be: the groups, the entrance exams and their papers.
 - `screens/browse.ts` — read-only catalogue of built-in shelves and their tests.
 - `screens/console.ts` — teacher/admin console shell, allowlist, roster, student report, my tests.
 - `screens/builder.ts` — visual test builder (create/edit cloud tests).
@@ -1065,6 +1102,10 @@ the page holds still behind the open question list.
 the full-screen photo viewer in a real browser against two fake pages — no
 network, no session, no row written. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
+`node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
+phone, and deliberately **never presses Create** — the suite proxies to the
+live database, so the one real create is left to `regression.cjs` and its
+probe subject.
 `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
 in-process cache, `inBatches`) **and drives the second factor through the real
@@ -2577,34 +2618,120 @@ An hour-old session looked exactly like a teacher whose data had been deleted.
   state straight over the welcome; and `sessionJustExpired()` does **not** clear
   the flag on read, because the welcome screen can render more than once around
   an expiry. Both are cleared in `saveAuth` when someone signs in again.
+## New subject: board → class → subjects → tests (`src/screens/newsubject.ts`)
 
-## New subject asks one thing per step (`src/screens/subjects.ts`)
+Four short questions, each with one answer, from the approved design canvas.
+What it replaced was one flat column of **eleven shelf tiles** — CBSE 10, CBSE
+12, IGCSE, A Level and NEET in one ungrouped, unsearchable list — that asked
+"what do you teach?" and could only be answered by scrolling.
 
-**The taxonomy is a consequence, not a question.** Picking "CBSE Class 10 Maths"
-*is* the board, the class and the subject, so only **Something else** asks for
-them — and then those three fields are the only thing on screen. The dialog this
-replaced put a content choice, a taxonomy chore and a second content choice in
-one scrolling box, and asked for the taxonomy even when it already knew it.
+1. **Which board?** Four groups — National, International, **Entrance exam**,
+   State Board. Picking a group reveals its boards as pills *beneath it*, so
+   the board resolves in **one** step rather than two.
+2. **Which class?** Tiles for 10 and 12, each saying whether anything
+   ready-made exists, plus **Another class** which reveals a text box.
+3. **Which subjects?** **Multi-select** — each ticked subject becomes its own
+   subject card — plus "Not listed? Add your own".
+4. **Which ready-made tests?** A collapsible section per subject, everything
+   ticked, a live total across subjects, and **Peek** at the first question.
 
-- **Step 1 — what do you teach?** One `cards` field: a tile per built-in shelf
-  badged with its test count, plus a full-width **Something else**.
-- **Step 2 — which tests?** That shelf's tests as a `bulk` checklist (Select all
-  / Clear / a live count), or the three taxonomy fields on the Something-else
-  branch. The submit label counts — **Create with 3 tests**, falling back to
-  **Create subject** at zero, which is also how a teacher starts empty. There is
-  no separate Skip button because the label already says what will happen.
-- Copies land as **drafts**, and `vidai:justCopied` carries the count to the
-  editor, which shows one dismissible banner (`copiedBanner`) saying so and then
-  clears the key. That banner is the answer to "where did my test go?".
-- **A teacher who owns no subject gets `firstRunMarkup()`** instead of an empty
-  grid: a subject → holds your tests → students sit them, one button, and a note
-  that ready-made tests are included. Built-in shelves do not count as owning
-  one, or a teacher would never see it.
-- **This is where the library grows into a catalogue.** `openForm` currently
-  fetches every subject and every built-in test to open — fine at two shelves,
-  and the first thing to change when tests come from many authors. Search moves
-  server-side and the test list loads only for the shelf actually picked; the
-  two-step shape and Step 2 are already the right seam for it.
+Then a **Done** step listing what was made, all Draft, before the editor opens
+on the first.
+
+### An entrance exam is a `board`, and it asks for a year
+
+`"JEE Main Physics"` is `{board: "JEE Main", klass: "2027", subject:
+"Physics"}` — the same three fields, stored and gated the same way. That is how
+**NEET has been modelled since the library was seeded**, so JEE Main, JEE
+Advanced and CUET beside it changed a screen rather than a table. The rejected
+alternative was a fourth axis (`exam` beside board/klass/subject): more
+truthful to how a Class 12 student works — the same Physics chapters, two
+question styles — and a **storage-shape change**, which CLAUDE.md is explicit
+cannot be exercised on QA before it merges.
+
+**An exam stores its attempt year where a board stores its class.** NEET is not
+a class of school; it had nowhere to live in a board-and-class shape, which the
+design canvas's own note calls out. The year is what an exam's batches are told
+apart by: a 2027 group and a 2028 group become **two subjects**, with two
+rosters and two sets of attempts, instead of one that quietly accumulates both.
+`klass` was already a free string — "Another class" has always taken whatever
+is typed — so this needs no new field and no migration.
+
+**`subjectTitle` decides on the VALUE, not on a list.** A four-digit `klass`
+renders bare (`JEE Main 2027 Physics`), anything else as a class (`CBSE Class
+12 Maths`). A list of exam boards in `api/shared/core.js` would be a second
+copy of the one in `src/taxonomy.ts`, and the first time somebody added an exam
+to one and not the other a real subject would come out titled *"JEE Advanced
+Class 2027 Physics"*.
+
+**An exam matches shelves on the board alone**, ignoring the class: NEET's
+shelf carries the class it was seeded with (12) while the teacher has just
+picked a year, so matching on both would hide the one exam the library actually
+has behind a number nobody typed.
+
+**The library's subjects, or the exam's papers — never both.** NEET's shelf is
+a single lumped subject, `Physics, Chemistry & Biology`, from before an exam had
+papers. Adding the exam's three on top offered **four rows**, one holding every
+test and three empty. So an exam's own papers are offered only when the board
+has no shelf at all. One sentence, nothing to guess at; a genuinely missing
+paper is what "Not listed? Add your own" is for.
+
+### It is not `openModal`, for the reasons `buy.ts` is not
+
+That dialog is a list of fields you fill in and submit once. This one branches
+(an exam asks a different second question), reveals, collapses, **fetches while
+it is open** (Peek reads a test the listing projected the questions away from)
+and ends by creating **several** things. It borrows the modal's manners — the
+scrim, Escape, the focus trap, `body.modal-open`, the action row that ends at
+the right, and the sheet-with-primary-on-top below 520px.
+
+**The design canvas carries its own token file; it is deliberately not
+imported.** The app has a palette, and a second one is two systems that
+disagree the first time either moves. Every `.ns-*` rule maps onto `:root`.
+
+**That was only half-done, and the other half shipped broken.** The tokens
+were kept out and then the canvas's **class names** were copied straight into
+the markup — `.choice-text`, `.choice-label`, `.choice-desc`, `.checkbox`,
+none of which exist in this app's CSS at all. So every subject and chapter row
+rendered its title and its meta as one inline run: *"1. Solutions 15 questions
+· 31 marks"*. The rows use the app's own `.modal-choice` / `.modal-choice-main`
+/ `.modal-choice-label` / `.modal-hint` family now, which is what "one system"
+was supposed to mean. **A class name borrowed from a design is the same import
+as a token borrowed from one.**
+
+### On a phone a dialog is a card with a gutter, not a sheet
+
+`.modal-scrim` at ≤520px used to set `padding: 0`, `align-items: flex-end` and
+square off the bottom two corners. Edge to edge with a straight bottom edge, a
+short form reads as a page that has taken the screen over rather than as
+something sitting on top of it. A sheet earns its shape when it is tall and
+full; a short sheet is a slab. It is a centred card with a **14px** gutter and
+a radius on all four corners.
+
+**The actions were stacking in DOM order**, so the button a teacher came to
+press sat at the bottom under the thumb: *Back · Cancel · Create*. The rule
+that fixes it (`.modal-submit { order: -1 }`) had been there all along and
+never fired, because this dialog's markup carried neither `.modal-submit` nor
+`.modal-back`. Reusing the shared shell means wearing its class names.
+
+`e2e/newsubject.cjs` asserts all four now — a gutter on both sides, centred,
+every corner rounded, not welded to the floor — and that the primary is on
+top. Verified to fail against the sheet.
+
+### Two things the tests caught
+
+- **A subject typed by hand outlived the board it was typed under.** Somebody
+  who entered "Zoology" under NEET, pressed Back and chose JEE Main was about
+  to create a *JEE Main Zoology* they never asked for — and the button read
+  **"Create 4 subjects"** with three ticked, which is the tell. `reset()` now
+  clears everything answered *about* a board and class whenever either moves;
+  that it is one function rather than two assignments is why `extra` could not
+  be forgotten again.
+- **`e2e/newsubject.cjs` never presses the last button.** It walks every step
+  and asserts the arithmetic — which subjects, which tests, what the button
+  says it will do — then closes, because Create writes real subjects to the
+  live database the suite proxies to. `e2e/regression.cjs` does the one real
+  create, with a probe subject it removes.
 
 ## Small creation flows use one modal (`src/modal.ts`)
 

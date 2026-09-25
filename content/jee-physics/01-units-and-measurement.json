@@ -1,0 +1,240 @@
+{
+  "id": "lib-jeep-udm",
+  "title": "Units, Dimensions and Measurement",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-udm-01",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Dimensional analysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The dimensional formula of the coefficient of viscosity $\\eta$ is:",
+      "options": [
+        "$[ML^{-1}T^{-1}]$",
+        "$[MLT^{-1}]$",
+        "$[ML^{-2}T^{-1}]$",
+        "$[M L^{-1} T^{-2}]$"
+      ],
+      "answer": 0,
+      "solution": "From Newton's law of viscous flow, $F = \\eta A \\dfrac{dv}{dx}$.\n\nSo $\\eta = \\dfrac{F}{A\\,(dv/dx)}$.\n\nDimensionally: $\\dfrac{[MLT^{-2}]}{[L^{2}]\\cdot[T^{-1}]} = [ML^{-1}T^{-1}]$.\n\nThe SI unit is $\\mathrm{Pa\\,s}$, and $\\mathrm{Pa\\,s} = \\mathrm{N\\,s\\,m^{-2}}$, which carries the same dimensions."
+    },
+    {
+      "id": "jeep-udm-02",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Dimensional analysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following pairs does **not** have the same dimensions?",
+      "options": [
+        "Impulse and momentum",
+        "Work and torque",
+        "Stress and pressure",
+        "Force and surface tension"
+      ],
+      "answer": 3,
+      "solution": "Force is $[MLT^{-2}]$. Surface tension is force per unit length, $[MT^{-2}]$ — they differ by a length.\n\nThe other three pairs do match:\n\nImpulse $F\\,t = [MLT^{-1}]$ and momentum $mv = [MLT^{-1}]$.\n\nWork $[ML^{2}T^{-2}]$ and torque $[ML^{2}T^{-2}]$ — same dimensions, different physical meaning, which is why torque is never written in joules.\n\nStress and pressure are both force per area, $[ML^{-1}T^{-2}]$."
+    },
+    {
+      "id": "jeep-udm-03",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Significant figures",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The length, breadth and thickness of a block are measured as $5.12\\ \\text{cm}$, $2.1\\ \\text{cm}$ and $0.035\\ \\text{cm}$. The volume, to the correct number of significant figures, is:",
+      "options": [
+        "$0.38\\ \\text{cm}^{3}$",
+        "$0.376\\ \\text{cm}^{3}$",
+        "$0.3763\\ \\text{cm}^{3}$",
+        "$0.4\\ \\text{cm}^{3}$"
+      ],
+      "answer": 0,
+      "solution": "The product is $5.12 \\times 2.1 \\times 0.035 = 0.376320\\ \\text{cm}^{3}$.\n\nIn multiplication, the result carries as many significant figures as the **least** precise factor.\n\n$5.12$ has 3, $2.1$ has 2, $0.035$ has 2 (leading zeros are not significant).\n\nThe least is 2, so the answer is $\\mathbf{0.38\\ \\text{cm}^{3}}$."
+    },
+    {
+      "id": "jeep-udm-04",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Error analysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A physical quantity is given by $X = \\dfrac{a^{2}b^{3}}{c\\sqrt{d}}$. If the percentage errors in $a, b, c, d$ are $1\\%, 2\\%, 3\\%$ and $4\\%$, the percentage error in $X$ is:",
+      "options": [
+        "$10\\%$",
+        "$13\\%$",
+        "$14\\%$",
+        "$16\\%$"
+      ],
+      "answer": 1,
+      "solution": "For a product of powers, fractional errors **add**, each weighted by the magnitude of its exponent:\n\n$\\dfrac{\\Delta X}{X} = 2\\dfrac{\\Delta a}{a} + 3\\dfrac{\\Delta b}{b} + 1\\dfrac{\\Delta c}{c} + \\dfrac{1}{2}\\dfrac{\\Delta d}{d}$\n\n$= 2(1) + 3(2) + 1(3) + \\tfrac{1}{2}(4) = 2 + 6 + 3 + 2 = \\mathbf{13\\%}$.\n\nNote the exponents are taken as positive whatever their sign — errors never cancel, they accumulate."
+    },
+    {
+      "id": "jeep-udm-05",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Dimensional analysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If force $F$, velocity $v$ and time $T$ are taken as the fundamental units, the dimensional formula of mass is:",
+      "options": [
+        "$[FvT]$",
+        "$[Fv^{-1}T]$",
+        "$[Fv^{-1}T^{-1}]$",
+        "$[FvT^{-1}]$"
+      ],
+      "answer": 1,
+      "solution": "Let $[M] = [F]^{x}[v]^{y}[T]^{z}$.\n\nIn ordinary terms $[F] = MLT^{-2}$ and $[v] = LT^{-1}$, so\n\n$M = (MLT^{-2})^{x}(LT^{-1})^{y}(T)^{z}$.\n\nMatching $M$: $x = 1$.\n\nMatching $L$: $x + y = 0 \\Rightarrow y = -1$.\n\nMatching $T$: $-2x - y + z = 0 \\Rightarrow -2 + 1 + z = 0 \\Rightarrow z = 1$.\n\nSo mass is $\\mathbf{[Fv^{-1}T]}$."
+    },
+    {
+      "id": "jeep-udm-06",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Vernier and screw gauge",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A screw gauge has a pitch of $0.5\\ \\text{mm}$ and $50$ divisions on its circular scale. Its least count is:",
+      "options": [
+        "$0.001\\ \\text{mm}$",
+        "$0.01\\ \\text{mm}$",
+        "$0.005\\ \\text{mm}$",
+        "$0.05\\ \\text{mm}$"
+      ],
+      "answer": 1,
+      "solution": "Least count $= \\dfrac{\\text{pitch}}{\\text{number of circular scale divisions}}$\n\n$= \\dfrac{0.5\\ \\text{mm}}{50} = \\mathbf{0.01\\ \\text{mm}}$.\n\nThe pitch is the distance the screw advances in one full turn, so one division of the circular scale advances it by one-fiftieth of that."
+    },
+    {
+      "id": "jeep-udm-07",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Dimensional analysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The quantity $\\dfrac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}$ has the dimensions of:",
+      "options": [
+        "Velocity",
+        "Acceleration",
+        "Force",
+        "Energy"
+      ],
+      "answer": 0,
+      "solution": "From Maxwell's equations, the speed of light in vacuum is\n\n$c = \\dfrac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}$\n\nso the quantity has the dimensions of **velocity**, $[LT^{-1}]$.\n\nNumerically $\\dfrac{1}{\\sqrt{(4\\pi \\times 10^{-7})(8.85 \\times 10^{-12})}} \\approx 3 \\times 10^{8}\\ \\mathrm{m\\,s^{-1}}$, which is exactly $c$ — the result that first told Maxwell light was an electromagnetic wave."
+    },
+    {
+      "id": "jeep-udm-08",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Error analysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In an experiment the period of a simple pendulum is measured as $T$ and $g$ is found from $g = 4\\pi^{2}L/T^{2}$. If $L$ is measured to $0.5\\%$ and $T$ to $1\\%$, the error in $g$ is:",
+      "options": [
+        "$1.5\\%$",
+        "$2.0\\%$",
+        "$2.5\\%$",
+        "$3.0\\%$"
+      ],
+      "answer": 2,
+      "solution": "$g \\propto \\dfrac{L}{T^{2}}$, so\n\n$\\dfrac{\\Delta g}{g} = \\dfrac{\\Delta L}{L} + 2\\dfrac{\\Delta T}{T} = 0.5 + 2(1) = \\mathbf{2.5\\%}$.\n\nThe period is squared, so its error counts twice — which is why a pendulum experiment times many oscillations rather than one."
+    },
+    {
+      "id": "jeep-udm-09",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Dimensional analysis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the equation $\\left(P + \\dfrac{a}{V^{2}}\\right)(V - b) = RT$, the dimensions of $a$ are:",
+      "options": [
+        "$[ML^{5}T^{-2}]$",
+        "$[ML^{-1}T^{-2}]$",
+        "$[ML^{2}T^{-2}]$",
+        "$[M L^{3} T^{-2}]$"
+      ],
+      "answer": 0,
+      "solution": "Only like quantities may be added, so $\\dfrac{a}{V^{2}}$ must have the dimensions of pressure.\n\n$[a] = [P][V^{2}] = [ML^{-1}T^{-2}][L^{3}]^{2} = [ML^{-1}T^{-2}][L^{6}] = \\mathbf{[ML^{5}T^{-2}]}$.\n\nThe same rule fixes $b$: it is subtracted from $V$, so $b$ has the dimensions of volume, $[L^{3}]$."
+    },
+    {
+      "id": "jeep-udm-10",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Significant figures",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The radius of a sphere is measured as $r = 2.1\\ \\text{cm}$ with an uncertainty of $0.1\\ \\text{cm}$. What is the percentage error in its volume?",
+      "answer": 14.3,
+      "tolerance": 0.5,
+      "accept": [
+        "14.3%",
+        "14.3 %",
+        "approximately 14%"
+      ],
+      "solution": "$V = \\tfrac{4}{3}\\pi r^{3}$, so $\\dfrac{\\Delta V}{V} = 3\\dfrac{\\Delta r}{r}$.\n\n$\\dfrac{\\Delta r}{r} = \\dfrac{0.1}{2.1} = 0.0476$\n\n$\\dfrac{\\Delta V}{V} = 3 \\times 0.0476 = 0.1428 = \\mathbf{14.3\\%}$ (to 3 significant figures).\n\nThe cube is what makes a small length error a large volume error."
+    },
+    {
+      "id": "jeep-udm-11",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Unit conversion",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The density of a material is $8\\ \\mathrm{g\\,cm^{-3}}$. Express it in $\\mathrm{kg\\,m^{-3}}$.",
+      "answer": 8000,
+      "tolerance": 0,
+      "accept": [
+        "8000 kg/m^3",
+        "8 x 10^3",
+        "8000"
+      ],
+      "solution": "$1\\ \\mathrm{g} = 10^{-3}\\ \\mathrm{kg}$ and $1\\ \\mathrm{cm}^{3} = 10^{-6}\\ \\mathrm{m}^{3}$.\n\n$8\\ \\dfrac{\\mathrm{g}}{\\mathrm{cm}^{3}} = 8 \\times \\dfrac{10^{-3}\\ \\mathrm{kg}}{10^{-6}\\ \\mathrm{m}^{3}} = 8 \\times 10^{3}\\ \\mathrm{kg\\,m^{-3}}$\n\n$= \\mathbf{8000\\ \\mathrm{kg\\,m^{-3}}}$.\n\nThe factor of $1000$ between $\\mathrm{g\\,cm^{-3}}$ and $\\mathrm{kg\\,m^{-3}}$ is worth memorising — water is $1$ and $1000$ respectively."
+    },
+    {
+      "id": "jeep-udm-12",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Dimensional analysis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The frequency $f$ of a stretched string depends on length $L$, tension $F$ and mass per unit length $\\mu$ as $f \\propto L^{a}F^{b}\\mu^{c}$. Find the value of $a$.",
+      "answer": -1,
+      "tolerance": 0,
+      "accept": [
+        "-1",
+        "minus one"
+      ],
+      "solution": "Write the dimensions:\n\n$[T^{-1}] = [L]^{a}[MLT^{-2}]^{b}[ML^{-1}]^{c}$\n\nMatching $M$: $b + c = 0$.\n\nMatching $T$: $-2b = -1 \\Rightarrow b = \\tfrac{1}{2}$, so $c = -\\tfrac{1}{2}$.\n\nMatching $L$: $a + b - c = 0 \\Rightarrow a + \\tfrac{1}{2} + \\tfrac{1}{2} = 0 \\Rightarrow a = \\mathbf{-1}$.\n\nThis recovers the standard result $f = \\dfrac{1}{2L}\\sqrt{\\dfrac{F}{\\mu}}$."
+    },
+    {
+      "id": "jeep-udm-13",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Error analysis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Four readings of a length are $2.53, 2.55, 2.51$ and $2.57\\ \\text{cm}$. What is the mean absolute error, in cm?",
+      "answer": 0.02,
+      "tolerance": 0.002,
+      "accept": [
+        "0.02 cm",
+        "0.02"
+      ],
+      "solution": "Mean $= \\dfrac{2.53 + 2.55 + 2.51 + 2.57}{4} = \\dfrac{10.16}{4} = 2.54\\ \\text{cm}$.\n\nAbsolute deviations from the mean:\n\n$|2.53 - 2.54| = 0.01$\n\n$|2.55 - 2.54| = 0.01$\n\n$|2.51 - 2.54| = 0.03$\n\n$|2.57 - 2.54| = 0.03$\n\nMean absolute error $= \\dfrac{0.01 + 0.01 + 0.03 + 0.03}{4} = \\dfrac{0.08}{4} = \\mathbf{0.02\\ \\text{cm}}$."
+    },
+    {
+      "id": "jeep-udm-14",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Dimensional analysis",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The time period $T$ of a drop of liquid of density $\\rho$ and radius $r$ oscillating under surface tension $S$ is $T = k\\,\\rho^{x}r^{y}S^{z}$. Find $x + y + z$.",
+      "answer": 1.5,
+      "tolerance": 0,
+      "accept": [
+        "3/2",
+        "1.5"
+      ],
+      "solution": "Dimensions: $[\\rho] = ML^{-3}$, $[r] = L$, $[S] = MT^{-2}$.\n\n$[T] = [ML^{-3}]^{x}[L]^{y}[MT^{-2}]^{z}$\n\nMatching $M$: $x + z = 0$.\n\nMatching $T$: $-2z = 1 \\Rightarrow z = -\\tfrac{1}{2}$, so $x = \\tfrac{1}{2}$.\n\nMatching $L$: $-3x + y = 0 \\Rightarrow y = 3x = \\tfrac{3}{2}$.\n\n$x + y + z = \\tfrac{1}{2} + \\tfrac{3}{2} - \\tfrac{1}{2} = \\mathbf{\\tfrac{3}{2}}$.\n\nThe standard result is $T = k\\sqrt{\\dfrac{\\rho r^{3}}{S}}$, which matches these exponents."
+    },
+    {
+      "id": "jeep-udm-15",
+      "chapter": "Units, Dimensions and Measurement",
+      "topic": "Measurement",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain what is meant by the **least count** of an instrument and by a **zero error**. A vernier callipers has $10$ vernier divisions coinciding with $9$ main scale divisions, the main scale being graduated in millimetres. Find its least count. If the instrument reads $0.04\\ \\text{cm}$ when the jaws are closed, state the kind of zero error and how a reading of $2.36\\ \\text{cm}$ should be corrected.",
+      "solution": "**Least count.** The least count is the smallest change in the measured quantity that an instrument can resolve — the value of one division of its finest scale. Every reading carries an uncertainty of at least this size, so it sets the precision of the measurement.\n\n**Zero error.** A zero error is the reading an instrument gives when the true value is zero — with the jaws of a callipers fully closed, or the screw gauge fully tightened. It is a **systematic** error: it shifts every reading by the same amount, so averaging many readings does not remove it. It is removed by subtracting it.\n\n**Least count of this vernier.**\n\n$10$ vernier divisions $= 9$ main scale divisions $= 9\\ \\text{mm}$\n\nSo $1$ vernier division $= 0.9\\ \\text{mm}$.\n\nLeast count $= 1\\ \\text{MSD} - 1\\ \\text{VSD} = 1.0 - 0.9 = 0.1\\ \\text{mm} = \\mathbf{0.01\\ \\text{cm}}$.\n\n**The zero error.** The instrument reads $+0.04\\ \\text{cm}$ when it should read zero, so this is a **positive zero error**.\n\n**Correcting the reading.** The correction is the negative of the zero error, so it is subtracted:\n\nTrue reading $= 2.36 - 0.04 = \\mathbf{2.32\\ \\text{cm}}$.\n\nHad the error been negative, say $-0.04\\ \\text{cm}$, the same rule would **add** $0.04$ to every reading."
+    }
+  ]
+}

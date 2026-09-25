@@ -1,0 +1,237 @@
+{
+  "id": "lib-jeep-gra",
+  "title": "Gravitation",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-gra-01",
+      "chapter": "Gravitation",
+      "topic": "Newton's law of gravitation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the distance between two masses is doubled, the gravitational force between them becomes:",
+      "options": [
+        "Double",
+        "Half",
+        "One quarter",
+        "Four times"
+      ],
+      "answer": 2,
+      "solution": "$F = \\dfrac{Gm_1m_2}{r^{2}}$, so $F \\propto \\dfrac{1}{r^{2}}$.\n\nDoubling $r$ divides the force by $2^{2} = 4$, giving **one quarter**."
+    },
+    {
+      "id": "jeep-gra-02",
+      "chapter": "Gravitation",
+      "topic": "Acceleration due to gravity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of $g$ at a height $h$ above the Earth's surface (with $h \\ll R$) is approximately:",
+      "options": [
+        "$g\\left(1 - \\dfrac{2h}{R}\\right)$",
+        "$g\\left(1 + \\dfrac{2h}{R}\\right)$",
+        "$g\\left(1 - \\dfrac{h}{R}\\right)$",
+        "$g\\dfrac{h}{R}$"
+      ],
+      "answer": 0,
+      "solution": "$g_h = \\dfrac{GM}{(R+h)^{2}} = g\\left(1 + \\dfrac{h}{R}\\right)^{-2}$.\n\nFor $h \\ll R$ the binomial expansion keeps the first two terms:\n\n$g_h \\approx \\mathbf{g\\left(1 - \\dfrac{2h}{R}\\right)}$.\n\nNote the contrast with depth, where $g_d = g\\left(1 - \\dfrac{d}{R}\\right)$ — gravity falls off **twice as fast** going up as going down."
+    },
+    {
+      "id": "jeep-gra-03",
+      "chapter": "Gravitation",
+      "topic": "Escape velocity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The escape velocity from the Earth's surface is:",
+      "options": [
+        "$\\sqrt{gR}$",
+        "$\\sqrt{2gR}$",
+        "$2\\sqrt{gR}$",
+        "$gR$"
+      ],
+      "answer": 1,
+      "solution": "Escape requires the total energy to be at least zero:\n\n$\\tfrac{1}{2}mv_e^{2} - \\dfrac{GMm}{R} = 0$\n\n$v_e = \\sqrt{\\dfrac{2GM}{R}} = \\mathbf{\\sqrt{2gR}}$, using $g = GM/R^{2}$.\n\nThis is $\\sqrt2$ times the orbital speed $\\sqrt{gR}$, and works out to about $11.2\\ \\mathrm{km\\,s^{-1}}$. It does not depend on the escaping body's mass."
+    },
+    {
+      "id": "jeep-gra-04",
+      "chapter": "Gravitation",
+      "topic": "Kepler's laws",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Kepler's third law states that the square of the orbital period is proportional to:",
+      "options": [
+        "The radius",
+        "The cube of the semi-major axis",
+        "The square of the radius",
+        "The mass of the planet"
+      ],
+      "answer": 1,
+      "solution": "$T^{2} \\propto a^{3}$, where $a$ is the semi-major axis.\n\nFor a circular orbit it follows from equating gravity to the centripetal force:\n\n$\\dfrac{GMm}{r^{2}} = \\dfrac{4\\pi^{2}mr}{T^{2}} \\Rightarrow T^{2} = \\dfrac{4\\pi^{2}r^{3}}{GM}$.\n\nThe orbiting body's own mass cancels, which is why the law holds for every planet with the same constant."
+    },
+    {
+      "id": "jeep-gra-05",
+      "chapter": "Gravitation",
+      "topic": "Satellites",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The orbital speed of a satellite close to the Earth's surface is about:",
+      "options": [
+        "$3.1\\ \\mathrm{km\\,s^{-1}}$",
+        "$7.9\\ \\mathrm{km\\,s^{-1}}$",
+        "$11.2\\ \\mathrm{km\\,s^{-1}}$",
+        "$1.6\\ \\mathrm{km\\,s^{-1}}$"
+      ],
+      "answer": 1,
+      "solution": "$v_o = \\sqrt{gR} = \\sqrt{9.8 \\times 6.4\\times10^{6}} \\approx 7.9\\times10^{3}\\ \\mathrm{m\\,s^{-1}}$.\n\nThat is about $\\mathbf{7.9\\ \\mathrm{km\\,s^{-1}}}$ — the first cosmic speed. The escape speed of $11.2\\ \\mathrm{km\\,s^{-1}}$ is $\\sqrt2$ times it."
+    },
+    {
+      "id": "jeep-gra-06",
+      "chapter": "Gravitation",
+      "topic": "Gravitational potential energy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The gravitational potential energy of a mass $m$ at distance $r$ from a mass $M$ is:",
+      "options": [
+        "$\\dfrac{GMm}{r}$",
+        "$-\\dfrac{GMm}{r}$",
+        "$-\\dfrac{GMm}{r^{2}}$",
+        "$mgr$"
+      ],
+      "answer": 1,
+      "solution": "$U = \\mathbf{-\\dfrac{GMm}{r}}$, taking $U = 0$ at infinite separation.\n\nThe negative sign says the force is attractive: work must be **done on** the body to move it out to infinity. $mgh$ is only the near-surface approximation to the **change** in this quantity."
+    },
+    {
+      "id": "jeep-gra-07",
+      "chapter": "Gravitation",
+      "topic": "Acceleration due to gravity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "At the centre of the Earth, the value of $g$ is:",
+      "options": [
+        "Maximum",
+        "Zero",
+        "Equal to the surface value",
+        "Infinite"
+      ],
+      "answer": 1,
+      "solution": "$g_d = g\\left(1 - \\dfrac{d}{R}\\right)$, so at the centre $d = R$ and $g = \\mathbf{0}$.\n\nBy the shell theorem, a uniform spherical shell exerts no net gravitational force on anything inside it — at the centre every shell of the Earth contributes nothing, so the pull from all directions cancels exactly.\n\nNote that the **weight** is zero there, but the pressure is enormous."
+    },
+    {
+      "id": "jeep-gra-08",
+      "chapter": "Gravitation",
+      "topic": "Geostationary satellites",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A geostationary satellite has an orbital period of:",
+      "options": [
+        "$12\\ \\text{hours}$",
+        "$24\\ \\text{hours}$",
+        "$1\\ \\text{hour}$",
+        "$365\\ \\text{days}$"
+      ],
+      "answer": 1,
+      "solution": "To stay above the same point on the ground, the satellite must go round once in exactly one rotation of the Earth — **24 hours**.\n\nIt must also orbit in the equatorial plane and in the same sense as the rotation. Kepler's third law then fixes the radius at about $42{,}000\\ \\text{km}$ from the centre, roughly $36{,}000\\ \\text{km}$ above the surface."
+    },
+    {
+      "id": "jeep-gra-09",
+      "chapter": "Gravitation",
+      "topic": "Kepler's laws",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Kepler's second law — equal areas in equal times — is a direct consequence of the conservation of:",
+      "options": [
+        "Energy",
+        "Linear momentum",
+        "Angular momentum",
+        "Mass"
+      ],
+      "answer": 2,
+      "solution": "The areal velocity is $\\dfrac{dA}{dt} = \\dfrac{L}{2m}$.\n\nGravity is a **central** force, directed along $\\vec{r}$, so its torque about the Sun is zero and $L$ is constant. Hence $dA/dt$ is constant — equal areas in equal times.\n\nThis is why a planet moves fastest at perihelion."
+    },
+    {
+      "id": "jeep-gra-10",
+      "chapter": "Gravitation",
+      "topic": "Newton's law of gravitation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Two masses of $10\\ \\text{kg}$ each are $1\\ \\text{m}$ apart. Taking $G = 6.67\\times10^{-11}\\ \\mathrm{N\\,m^{2}\\,kg^{-2}}$, find the force between them, in newtons. Give your answer in the form $a\\times10^{-9}$ and state $a$.",
+      "answer": 6.67,
+      "tolerance": 0.05,
+      "accept": [
+        "6.67",
+        "6.67e-9"
+      ],
+      "solution": "$F = \\dfrac{Gm_1m_2}{r^{2}} = \\dfrac{6.67\\times10^{-11} \\times 10 \\times 10}{1^{2}}$\n\n$= 6.67\\times10^{-11} \\times 100 = 6.67\\times10^{-9}\\ \\text{N}$.\n\nSo $a = \\mathbf{6.67}$. Gravity between everyday objects is minute — this is about a billionth of a newton."
+    },
+    {
+      "id": "jeep-gra-11",
+      "chapter": "Gravitation",
+      "topic": "Acceleration due to gravity",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A planet has twice the Earth's mass and twice its radius. If $g$ on Earth is $10\\ \\mathrm{m\\,s^{-2}}$, find $g$ on that planet, in $\\mathrm{m\\,s^{-2}}$.",
+      "answer": 5,
+      "tolerance": 0.1,
+      "accept": [
+        "5 m/s^2",
+        "5.0"
+      ],
+      "solution": "$g = \\dfrac{GM}{R^{2}}$, so\n\n$\\dfrac{g_p}{g_e} = \\dfrac{M_p}{M_e}\\left(\\dfrac{R_e}{R_p}\\right)^{2} = 2 \\times \\left(\\dfrac{1}{2}\\right)^{2} = 2 \\times \\dfrac{1}{4} = \\dfrac{1}{2}$.\n\n$g_p = \\dfrac{10}{2} = \\mathbf{5\\ \\mathrm{m\\,s^{-2}}}$.\n\nThe radius wins because it is squared."
+    },
+    {
+      "id": "jeep-gra-12",
+      "chapter": "Gravitation",
+      "topic": "Escape velocity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Taking $g = 10\\ \\mathrm{m\\,s^{-2}}$ and $R = 6.4\\times10^{6}\\ \\text{m}$, find the escape velocity in $\\mathrm{km\\,s^{-1}}$, to one decimal place.",
+      "answer": 11.3,
+      "tolerance": 0.2,
+      "accept": [
+        "11.3",
+        "11.3 km/s"
+      ],
+      "solution": "$v_e = \\sqrt{2gR} = \\sqrt{2 \\times 10 \\times 6.4\\times10^{6}}$\n\n$= \\sqrt{1.28\\times10^{8}} = 1.13\\times10^{4}\\ \\mathrm{m\\,s^{-1}}$\n\n$= \\mathbf{11.3\\ \\mathrm{km\\,s^{-1}}}$."
+    },
+    {
+      "id": "jeep-gra-13",
+      "chapter": "Gravitation",
+      "topic": "Kepler's laws",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A planet orbits at four times the Earth's orbital radius. Find its period in Earth years.",
+      "answer": 8,
+      "tolerance": 0.2,
+      "accept": [
+        "8 years",
+        "8.0"
+      ],
+      "solution": "$T^{2} \\propto r^{3}$, so\n\n$\\left(\\dfrac{T_p}{T_e}\\right)^{2} = \\left(\\dfrac{r_p}{r_e}\\right)^{3} = 4^{3} = 64$\n\n$\\dfrac{T_p}{T_e} = \\sqrt{64} = 8$\n\nThe period is $\\mathbf{8}$ Earth years."
+    },
+    {
+      "id": "jeep-gra-14",
+      "chapter": "Gravitation",
+      "topic": "Satellites",
+      "type": "numeric",
+      "marks": 2,
+      "q": "For a satellite in a circular orbit, the ratio of its escape velocity to its orbital velocity is $\\sqrt{n}$. Find $n$.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2"
+      ],
+      "solution": "$v_e = \\sqrt{\\dfrac{2GM}{r}}$ and $v_o = \\sqrt{\\dfrac{GM}{r}}$.\n\n$\\dfrac{v_e}{v_o} = \\sqrt{2}$, so $n = \\mathbf{2}$.\n\nA satellite in orbit needs only a $41\\%$ increase in speed to escape altogether."
+    },
+    {
+      "id": "jeep-gra-15",
+      "chapter": "Gravitation",
+      "topic": "Satellites",
+      "type": "long",
+      "marks": 5,
+      "q": "Derive expressions for the orbital velocity and the total energy of a satellite of mass $m$ in a circular orbit of radius $r$ about a planet of mass $M$. Explain the significance of the sign of the total energy, and obtain the escape velocity from the orbit.",
+      "solution": "**Orbital velocity.** Gravity supplies the centripetal force:\n\n$\\dfrac{GMm}{r^{2}} = \\dfrac{mv^{2}}{r}$\n\n$v_o = \\sqrt{\\dfrac{GM}{r}}$\n\nThe satellite's own mass cancels — a heavy satellite and a light one orbit at the same speed at the same altitude.\n\n**Kinetic energy.**\n\n$K = \\tfrac{1}{2}mv_o^{2} = \\dfrac{GMm}{2r}$\n\n**Potential energy**, with zero at infinity:\n\n$U = -\\dfrac{GMm}{r}$\n\n**Total energy.**\n\n$E = K + U = \\dfrac{GMm}{2r} - \\dfrac{GMm}{r} = -\\dfrac{GMm}{2r}$\n\nTwo relations worth memorising fall straight out:\n\n$E = -K$ and $E = \\dfrac{U}{2}$\n\n**Significance of the sign.** The total energy is **negative**, which means the satellite is **bound**. It cannot reach infinity, where the energy would be zero, without energy being added from outside. A negative total energy is the signature of a closed orbit; zero gives a parabolic escape trajectory and positive a hyperbolic one.\n\nNote also that $E$ becomes **less** negative as $r$ increases — a higher orbit is a higher-energy orbit, even though the satellite moves more slowly in it. Firing a rocket forward raises the orbit and ends up **reducing** the speed, which is one of the genuinely counter-intuitive facts of orbital mechanics.\n\n**Escape from the orbit.** To escape, the total energy must be raised to zero:\n\n$\\tfrac{1}{2}mv_e^{2} - \\dfrac{GMm}{r} = 0$\n\n$v_e = \\sqrt{\\dfrac{2GM}{r}} = \\sqrt{2}\\,v_o$\n\nSo the extra speed needed is $(\\sqrt2 - 1)v_o \\approx 0.41\\,v_o$, about a $41\\%$ boost."
+    }
+  ]
+}

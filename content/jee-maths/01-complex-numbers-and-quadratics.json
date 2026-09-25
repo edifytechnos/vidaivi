@@ -1,0 +1,233 @@
+{
+  "id": "lib-jeem-cpx",
+  "title": "Complex Numbers and Quadratic Equations",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeem-cpx-01",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Complex numbers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of $i^{4n+3}$ for any integer $n$ is:",
+      "options": [
+        "$1$",
+        "$-1$",
+        "$i$",
+        "$-i$"
+      ],
+      "answer": 3,
+      "solution": "The powers of $i$ repeat with period 4: $i^{1}=i$, $i^{2}=-1$, $i^{3}=-i$, $i^{4}=1$.\n\nSince $i^{4n} = (i^{4})^{n} = 1$:\n\n$i^{4n+3} = i^{4n}\\cdot i^{3} = 1 \\cdot (-i) = \\mathbf{-i}$."
+    },
+    {
+      "id": "jeem-cpx-02",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Modulus and argument",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The modulus of $z = 3 + 4i$ is:",
+      "options": [
+        "$5$",
+        "$7$",
+        "$25$",
+        "$\\sqrt{7}$"
+      ],
+      "answer": 0,
+      "solution": "$|z| = \\sqrt{a^{2} + b^{2}} = \\sqrt{3^{2} + 4^{2}} = \\sqrt{9 + 16} = \\sqrt{25} = \\mathbf{5}$.\n\nGeometrically this is the distance of the point $(3, 4)$ from the origin in the Argand plane."
+    },
+    {
+      "id": "jeem-cpx-03",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Quadratic equations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The roots of $ax^{2} + bx + c = 0$ are real and equal when:",
+      "options": [
+        "$b^{2} - 4ac > 0$",
+        "$b^{2} - 4ac = 0$",
+        "$b^{2} - 4ac < 0$",
+        "$a = 0$"
+      ],
+      "answer": 1,
+      "solution": "The discriminant is $D = b^{2} - 4ac$.\n\n$D > 0$: two distinct real roots\n\n$\\mathbf{D = 0}$: **real and equal** roots, $x = -\\dfrac{b}{2a}$ twice\n\n$D < 0$: a conjugate pair of complex roots\n\nGeometrically $D = 0$ means the parabola just touches the $x$-axis."
+    },
+    {
+      "id": "jeem-cpx-04",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Cube roots of unity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\omega$ is a non-real cube root of unity, then $1 + \\omega + \\omega^{2}$ equals:",
+      "options": [
+        "$1$",
+        "$0$",
+        "$\\omega$",
+        "$3$"
+      ],
+      "answer": 1,
+      "solution": "The cube roots of unity satisfy $z^{3} = 1$, that is $z^{3} - 1 = 0$:\n\n$(z - 1)(z^{2} + z + 1) = 0$\n\nA non-real root $\\omega$ must satisfy the quadratic factor, so\n\n$\\omega^{2} + \\omega + 1 = \\mathbf{0}$.\n\nThe other standard fact is $\\omega^{3} = 1$; between them, almost every $\\omega$ problem reduces to these two."
+    },
+    {
+      "id": "jeem-cpx-05",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Quadratic equations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\alpha$ and $\\beta$ are the roots of $x^{2} - 5x + 6 = 0$, then $\\alpha + \\beta$ and $\\alpha\\beta$ are:",
+      "options": [
+        "$5$ and $6$",
+        "$-5$ and $6$",
+        "$5$ and $-6$",
+        "$6$ and $5$"
+      ],
+      "answer": 0,
+      "solution": "For $ax^{2} + bx + c = 0$:\n\nSum of roots $= -\\dfrac{b}{a} = -\\dfrac{-5}{1} = 5$\n\nProduct of roots $= \\dfrac{c}{a} = \\dfrac{6}{1} = 6$\n\nSo $\\mathbf{5}$ and $\\mathbf{6}$. (The roots are 2 and 3, which checks out.)"
+    },
+    {
+      "id": "jeem-cpx-06",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Conjugates",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For any complex number $z$, the product $z\\bar{z}$ equals:",
+      "options": [
+        "$|z|$",
+        "$|z|^{2}$",
+        "$2\\,\\text{Re}(z)$",
+        "$0$"
+      ],
+      "answer": 1,
+      "solution": "Writing $z = a + bi$, so $\\bar{z} = a - bi$:\n\n$z\\bar{z} = (a+bi)(a-bi) = a^{2} - (bi)^{2} = a^{2} + b^{2} = \\mathbf{|z|^{2}}$.\n\nThe result is always a **non-negative real number**, which is exactly why multiplying by the conjugate is the way to rationalise a complex denominator."
+    },
+    {
+      "id": "jeem-cpx-07",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "De Moivre",
+      "type": "mcq",
+      "marks": 1,
+      "q": "De Moivre's theorem states that $(\\cos\\theta + i\\sin\\theta)^{n}$ equals:",
+      "options": [
+        "$\\cos(n\\theta) + i\\sin(n\\theta)$",
+        "$n\\cos\\theta + in\\sin\\theta$",
+        "$\\cos^{n}\\theta + i\\sin^{n}\\theta$",
+        "$\\cos\\theta + in\\sin\\theta$"
+      ],
+      "answer": 0,
+      "solution": "$(\\cos\\theta + i\\sin\\theta)^{n} = \\mathbf{\\cos n\\theta + i\\sin n\\theta}$.\n\nIn exponential form this is simply $(e^{i\\theta})^{n} = e^{in\\theta}$, which makes it look obvious.\n\nIt is the standard route to the $n$th roots of a complex number, and to identities such as $\\cos 3\\theta = 4\\cos^{3}\\theta - 3\\cos\\theta$, got by expanding $n = 3$ and comparing real parts."
+    },
+    {
+      "id": "jeem-cpx-08",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Quadratic equations",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If one root of $x^{2} + px + q = 0$ (with $p, q$ real) is $2 + 3i$, the other root is:",
+      "options": [
+        "$2 - 3i$",
+        "$-2 + 3i$",
+        "$3 + 2i$",
+        "$-2 - 3i$"
+      ],
+      "answer": 0,
+      "solution": "For a polynomial with **real** coefficients, non-real roots always occur in **conjugate pairs**.\n\nSo if $2 + 3i$ is a root, so is $\\mathbf{2 - 3i}$.\n\nCheck: sum $= 4$ so $p = -4$; product $= 4 + 9 = 13$ so $q = 13$. Both are real, as required. If the coefficients were allowed to be complex this would not hold."
+    },
+    {
+      "id": "jeem-cpx-09",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Modulus and argument",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The argument of the complex number $i$ is:",
+      "options": [
+        "$0$",
+        "$\\dfrac{\\pi}{2}$",
+        "$\\pi$",
+        "$\\dfrac{3\\pi}{2}$"
+      ],
+      "answer": 1,
+      "solution": "$i = 0 + 1i$ is the point $(0, 1)$ in the Argand plane, lying on the positive imaginary axis.\n\nThe angle from the positive real axis is $\\mathbf{\\dfrac{\\pi}{2}}$, and $|i| = 1$.\n\nSo $i = \\cos\\dfrac{\\pi}{2} + i\\sin\\dfrac{\\pi}{2} = e^{i\\pi/2}$."
+    },
+    {
+      "id": "jeem-cpx-10",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Complex numbers",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the value of $i^{10}$.",
+      "answer": -1,
+      "tolerance": 0.01,
+      "accept": [
+        "-1"
+      ],
+      "solution": "$10 = 4(2) + 2$, and the powers of $i$ have period 4.\n\n$i^{10} = (i^{4})^{2}\\cdot i^{2} = 1 \\times (-1) = \\mathbf{-1}$."
+    },
+    {
+      "id": "jeem-cpx-11",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Modulus and argument",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find $|z|$ for $z = 5 - 12i$.",
+      "answer": 13,
+      "tolerance": 0.1,
+      "accept": [
+        "13"
+      ],
+      "solution": "$|z| = \\sqrt{5^{2} + (-12)^{2}} = \\sqrt{25 + 144} = \\sqrt{169} = \\mathbf{13}$."
+    },
+    {
+      "id": "jeem-cpx-12",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Quadratic equations",
+      "type": "numeric",
+      "marks": 3,
+      "q": "If $\\alpha$ and $\\beta$ are the roots of $x^{2} - 7x + 12 = 0$, find $\\alpha^{2} + \\beta^{2}$.",
+      "answer": 25,
+      "tolerance": 0.5,
+      "accept": [
+        "25"
+      ],
+      "solution": "Sum $\\alpha + \\beta = 7$ and product $\\alpha\\beta = 12$.\n\nUse the identity $\\alpha^{2} + \\beta^{2} = (\\alpha+\\beta)^{2} - 2\\alpha\\beta$:\n\n$= 7^{2} - 2(12) = 49 - 24 = \\mathbf{25}$\n\nThe identity avoids finding the roots at all, which is the point of the symmetric-function method. (Here they are 3 and 4, and $9 + 16 = 25$ ✓)"
+    },
+    {
+      "id": "jeem-cpx-13",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Quadratic equations",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the discriminant of $2x^{2} - 4x + 2 = 0$.",
+      "answer": 0,
+      "tolerance": 0.1,
+      "accept": [
+        "0"
+      ],
+      "solution": "$D = b^{2} - 4ac = (-4)^{2} - 4(2)(2) = 16 - 16 = \\mathbf{0}$.\n\nSo the roots are real and equal: $x = \\dfrac{4}{4} = 1$ twice. Indeed $2x^{2} - 4x + 2 = 2(x-1)^{2}$."
+    },
+    {
+      "id": "jeem-cpx-14",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Cube roots of unity",
+      "type": "numeric",
+      "marks": 3,
+      "q": "If $\\omega$ is a non-real cube root of unity, find the value of $\\omega^{100} + \\omega^{200}$.",
+      "answer": -1,
+      "tolerance": 0.01,
+      "accept": [
+        "-1"
+      ],
+      "solution": "Since $\\omega^{3} = 1$, reduce each exponent modulo 3.\n\n$100 = 3(33) + 1$, so $\\omega^{100} = \\omega$.\n\n$200 = 3(66) + 2$, so $\\omega^{200} = \\omega^{2}$.\n\n$\\omega^{100} + \\omega^{200} = \\omega + \\omega^{2}$\n\nAnd since $1 + \\omega + \\omega^{2} = 0$, we have $\\omega + \\omega^{2} = \\mathbf{-1}$."
+    },
+    {
+      "id": "jeem-cpx-15",
+      "chapter": "Complex Numbers and Quadratic Equations",
+      "topic": "Quadratic equations",
+      "type": "long",
+      "marks": 5,
+      "q": "Derive the quadratic formula by completing the square on $ax^{2} + bx + c = 0$ (with $a \\neq 0$). Discuss the three cases of the discriminant, and explain what each means geometrically for the graph of $y = ax^{2} + bx + c$.",
+      "solution": "**Completing the square.**\n\nStart from $ax^{2} + bx + c = 0$, with $a \\neq 0$.\n\nDivide throughout by $a$:\n\n$x^{2} + \\dfrac{b}{a}x + \\dfrac{c}{a} = 0$\n\nMove the constant across:\n\n$x^{2} + \\dfrac{b}{a}x = -\\dfrac{c}{a}$\n\nNow add the square of half the coefficient of $x$ to both sides. Half of $\\dfrac{b}{a}$ is $\\dfrac{b}{2a}$, so add $\\dfrac{b^{2}}{4a^{2}}$:\n\n$x^{2} + \\dfrac{b}{a}x + \\dfrac{b^{2}}{4a^{2}} = \\dfrac{b^{2}}{4a^{2}} - \\dfrac{c}{a}$\n\nThe left side is now a perfect square:\n\n$\\left(x + \\dfrac{b}{2a}\\right)^{2} = \\dfrac{b^{2} - 4ac}{4a^{2}}$\n\nTake square roots of both sides:\n\n$x + \\dfrac{b}{2a} = \\pm\\dfrac{\\sqrt{b^{2}-4ac}}{2a}$\n\n$\\boxed{x = \\dfrac{-b \\pm \\sqrt{b^{2}-4ac}}{2a}}$\n\n**The discriminant.** Everything now depends on $D = b^{2} - 4ac$, the quantity under the root.\n\n**Case 1: $D > 0$.** The square root is a non-zero real number, so the $\\pm$ gives **two distinct real roots**.\n\nGeometrically the parabola **crosses the $x$-axis at two points**.\n\n**Case 2: $D = 0$.** The square root is zero, so both signs give the same answer: **one repeated real root**, $x = -\\dfrac{b}{2a}$.\n\nGeometrically the parabola **touches the $x$-axis at exactly one point** — its vertex sits on the axis. Note that $-\\dfrac{b}{2a}$ is precisely the $x$-coordinate of the vertex, which is why this is the repeated root.\n\n**Case 3: $D < 0$.** The square root of a negative number is imaginary, so writing $\\sqrt{D} = i\\sqrt{|D|}$:\n\n$x = \\dfrac{-b \\pm i\\sqrt{|D|}}{2a}$\n\nTwo **complex conjugate roots**. They must be conjugates because $a$, $b$ and $c$ are real, and only the sign of the imaginary part differs.\n\nGeometrically the parabola **never meets the $x$-axis** — it lies entirely above it if $a > 0$, entirely below if $a < 0$.\n\n**A unifying observation.** In every case the two roots are symmetric about $x = -\\dfrac{b}{2a}$, which is the axis of symmetry of the parabola. The discriminant decides only **how far apart** they are: the separation is $\\dfrac{\\sqrt{D}}{|a|}$, which shrinks to zero as $D \\to 0$ and becomes imaginary beyond it.\n\nSo the three cases are not three different situations but one situation viewed at different values of a single parameter: the roots move together, collide at the vertex, and then leave the real line together."
+    }
+  ]
+}

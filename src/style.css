@@ -23,7 +23,14 @@
   --radius-sm: 8px;
   --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
   --shadow-lg: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 10px 15px -3px rgba(15, 23, 42, 0.08);
-  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* A font stack resolves PER GLYPH, not per element: the browser takes each
+     character from the first family that has it. So Inter still renders every
+     Latin character exactly as before, and Tamil - which Inter does not cover
+     at all - falls through to Noto Sans Tamil instead of to whatever the device
+     happens to have, or to tofu boxes on a device that has nothing.
+     Both families are already permitted by the CSP's font-src and style-src,
+     so this needs no policy change. */
+  --font: "Inter", "Noto Sans Tamil", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 * {
@@ -3152,14 +3159,28 @@ body.drawer-open {
   }
 }
 
+/* On a phone a dialog is a CARD WITH A GUTTER, not a sheet welded to the
+   bottom edge.
+
+   It used to be the sheet: `padding: 0`, `align-items: flex-end`, and the two
+   bottom corners squared off. Edge to edge with a straight bottom edge, it
+   read as a page that had taken the screen over rather than as something
+   sitting on top of it — "stretched", which is exactly how it looked on a real
+   phone. A sheet earns its shape when it is tall and full of content; these
+   are short forms, and a short sheet is just a slab.
+
+   The gutter is 14px rather than the 2px first suggested: at 2px the corners
+   have nothing to sit against and it still reads as edge to edge. 14px is what
+   the rest of the app uses at this width. */
 @media (max-width: 520px) {
   .modal-scrim {
-    padding: 0;
-    align-items: flex-end;
+    padding: 14px;
+    align-items: center;
   }
   .modal {
     max-width: none;
-    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 18px;
+    /* The radius stays on all four corners — that is what says "popup". */
   }
 }
 
@@ -4471,4 +4492,276 @@ body.drawer-open {
   background: var(--amber-bg);
   border-color: var(--amber);
   color: var(--amber);
+}
+
+/* ---------------------------------------------------------------------------
+   New subject (src/screens/newsubject.ts)
+
+   The four-step flow from the design canvas. It borrows the modal's shell
+   (.modal, .modal-head, .modal-actions) and adds only what that shell has no
+   idea about: a board group that opens its own pills, tiles that say whether
+   anything ready-made exists, a collapsible chapter list per subject, and an
+   inline peek at a question.
+
+   The design canvas carries its own token file. It is deliberately NOT
+   imported: the app already has a palette, and a second one is two systems
+   that disagree the first time either moves. Every value below maps onto the
+   tokens in :root.
+--------------------------------------------------------------------------- */
+
+.ns {
+  width: 640px;
+  max-width: 640px;
+}
+.ns-head {
+  flex-grow: 1;
+}
+.ns-crumbs {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* A scroller, so a long list of chapters never pushes the actions off screen.
+   The dialog's own height is what the phone sheet below takes over. */
+.ns-scroll {
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ns-scroll-tight {
+  gap: 0;
+}
+
+.ns-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.ns-group + .ns-group {
+  margin-top: 2px;
+}
+
+.ns-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 13px 14px;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  cursor: pointer;
+  width: 100%;
+}
+.ns-tile:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+.ns-tile[aria-pressed="true"] {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  box-shadow: 0 0 0 3px var(--primary-border);
+}
+.ns-tile-wide {
+  grid-column: 1 / -1;
+}
+.ns-tile-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ns-tile-hint {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* The board's own pills, revealed under the group that holds them. This is
+   what keeps the board ONE step instead of two. */
+.ns-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 2px 2px;
+}
+.ns-pill {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-family: inherit;
+  cursor: pointer;
+}
+.ns-pill:hover {
+  border-color: var(--primary);
+}
+.ns-pill[aria-pressed="true"] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.ns-grp {
+  margin: 2px 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+}
+.ns-field {
+  margin-top: 14px;
+}
+.ns-choice {
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+}
+.ns-choice:last-child {
+  border-bottom: none;
+}
+
+.ns-total {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.ns-total-n {
+  font-size: 13px;
+  font-weight: 600;
+}
+.ns-total-gap {
+  flex-grow: 1;
+}
+
+.ns-sec {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.ns-sechead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ns-sechead-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex-grow: 1;
+}
+.ns-sec-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+.ns-sec-meta {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+.ns-sechead[aria-expanded="false"] .ns-caret {
+  transform: rotate(-90deg);
+}
+.ns-caret {
+  flex-shrink: 0;
+  color: var(--faint);
+  transition: transform 0.12s ease;
+}
+.ns-secbody {
+  padding: 4px 12px 8px;
+}
+
+.ns-chapline {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ns-chap:last-child .ns-chapline {
+  border-bottom: none;
+}
+.ns-chapline .modal-choice-main {
+  flex-grow: 1;
+}
+/* A chapter row is not inside a .modal-choice, so it does not inherit that
+   rule's `flex: none` and the box would stretch with the row. */
+.ns-chapline .modal-choice-input {
+  margin-top: 2px;
+  flex: none;
+}
+
+.ns-peek {
+  margin: 2px 0 10px 28px;
+}
+.ns-peek-box {
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+.ns-peek-box p {
+  margin: 0;
+}
+
+.ns-alert {
+  padding: 12px 14px;
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.ns-alert b {
+  color: var(--text);
+}
+.ns-error {
+  margin-bottom: 12px;
+}
+
+.ns-made {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ns-madecard {
+  cursor: default;
+}
+
+/* On a phone the dialog is a bottom sheet, as the canvas draws it: full width,
+   94% tall, and the scroller grows to fill it rather than staying at its
+   desktop 340px — there is nothing else on screen to compete with.
+   The action row already stacks primary-on-top below 520px. */
+@media (max-width: 560px) {
+  .ns {
+    width: 100%;
+    max-width: 100%;
+  }
+  .ns-tiles {
+    grid-template-columns: 1fr;
+  }
+  .ns-scroll {
+    max-height: min(46vh, 420px);
+  }
 }

@@ -1,0 +1,234 @@
+{
+  "id": "lib-jeec-per",
+  "title": "Periodic Properties and the s- and p-Block",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeec-per-01",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Periodic trends",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Across a period from left to right, the atomic radius generally:",
+      "options": [
+        "Increases",
+        "Decreases",
+        "Stays constant",
+        "Increases then decreases"
+      ],
+      "answer": 1,
+      "solution": "Across a period, protons are added to the nucleus while electrons enter the **same** shell.\n\nThe added electrons shield each other poorly, so the **effective nuclear charge** rises and pulls the whole shell inward. The radius therefore **decreases**.\n\nDown a group the opposite happens: a new shell is added each time, and that outweighs the rising nuclear charge, so the radius increases."
+    },
+    {
+      "id": "jeec-per-02",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Ionisation energy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The first ionisation energy of nitrogen is **higher** than that of oxygen because:",
+      "options": [
+        "Nitrogen is larger",
+        "Nitrogen has a half-filled $2p$ subshell",
+        "Oxygen has more protons",
+        "Oxygen is a gas"
+      ],
+      "answer": 1,
+      "solution": "Nitrogen is $[\\text{He}]2s^{2}2p^{3}$ — a **half-filled** $2p$ subshell, which is unusually stable because all three electrons are in separate orbitals with parallel spins and the exchange energy is maximised.\n\nOxygen is $[\\text{He}]2s^{2}2p^{4}$, where the fourth $p$ electron must **pair up** in an already-occupied orbital, and the repulsion makes it easier to remove.\n\nSo the general left-to-right increase is broken here. The same dip occurs between phosphorus and sulphur, and between beryllium and boron for the analogous full-subshell reason."
+    },
+    {
+      "id": "jeec-per-03",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Electronegativity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The most electronegative element is:",
+      "options": [
+        "Oxygen",
+        "Chlorine",
+        "Fluorine",
+        "Nitrogen"
+      ],
+      "answer": 2,
+      "solution": "**Fluorine**, at 4.0 on the Pauling scale, is the most electronegative element.\n\nIt is small, so its nucleus is close to the bonding electrons, and it needs just one electron to complete its octet.\n\nElectronegativity increases across a period and decreases down a group, so it peaks at the top right of the table, excluding the noble gases."
+    },
+    {
+      "id": "jeec-per-04",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "s-block",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Lithium differs from the other alkali metals chiefly because of its:",
+      "options": [
+        "Low melting point",
+        "Small size and high polarising power",
+        "Large atomic radius",
+        "Low ionisation energy"
+      ],
+      "answer": 1,
+      "solution": "Lithium's ion is exceptionally **small**, giving it a very high charge-to-size ratio and so high **polarising power**.\n\nBy Fajans' rules that makes its compounds noticeably more **covalent** than those of sodium or potassium — $\\text{LiCl}$ dissolves in organic solvents, and $\\text{Li}_2\\text{CO}_3$ decomposes on heating where $\\text{Na}_2\\text{CO}_3$ does not.\n\nThis is also the basis of its **diagonal relationship** with magnesium, whose ion has a similar charge-to-size ratio."
+    },
+    {
+      "id": "jeec-per-05",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "p-block",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which is the correct order of acidic strength?",
+      "options": [
+        "$\\text{HF} > \\text{HCl} > \\text{HBr} > \\text{HI}$",
+        "$\\text{HI} > \\text{HBr} > \\text{HCl} > \\text{HF}$",
+        "$\\text{HCl} > \\text{HF} > \\text{HI} > \\text{HBr}$",
+        "All are equal"
+      ],
+      "answer": 1,
+      "solution": "$\\mathbf{\\text{HI} > \\text{HBr} > \\text{HCl} > \\text{HF}}$.\n\nThis looks backwards if you reason from electronegativity, and the reason is that **bond strength**, not polarity, controls it. Going down the group the H-X bond gets longer and weaker, so the proton is released more easily.\n\nHF is the weakest acid of the four despite fluorine being the most electronegative, because the H-F bond is very strong and hydrogen bonding holds the molecule together further."
+    },
+    {
+      "id": "jeec-per-06",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Periodic trends",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The electron gain enthalpy of chlorine is more negative than that of fluorine because:",
+      "options": [
+        "Chlorine is more electronegative",
+        "Fluorine's small size causes strong electron-electron repulsion",
+        "Chlorine has more protons",
+        "Fluorine is a gas"
+      ],
+      "answer": 1,
+      "solution": "Fluorine's $2p$ subshell is very **compact**, so an incoming electron meets severe repulsion from the electrons already there.\n\nChlorine's $3p$ subshell is larger and more diffuse, so the added electron is accommodated more comfortably and more energy is released.\n\nSo chlorine has the most negative electron gain enthalpy of any element, not fluorine — a common trap, because fluorine is the most electronegative. **Electronegativity and electron gain enthalpy are different quantities**, one about attraction within a bond and the other about adding an electron to an isolated atom."
+    },
+    {
+      "id": "jeec-per-07",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "p-block",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The inert pair effect explains why:",
+      "options": [
+        "Noble gases are unreactive",
+        "$\\text{Pb}^{2+}$ is more stable than $\\text{Pb}^{4+}$",
+        "Nitrogen is inert",
+        "Fluorine has no positive oxidation state"
+      ],
+      "answer": 1,
+      "solution": "Down groups 13 to 16, the $ns^{2}$ pair becomes increasingly reluctant to take part in bonding, because poor shielding by the intervening $d$ and $f$ electrons holds it tightly.\n\nSo the **lower** oxidation state grows more stable down the group: $\\text{Pb}^{2+}$ is more stable than $\\text{Pb}^{4+}$, while for carbon and silicon the $+4$ state dominates.\n\nThis is why $\\text{PbO}_2$ is a strong oxidising agent — it is trying to get back to $\\text{Pb}^{2+}$."
+    },
+    {
+      "id": "jeec-per-08",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "s-block",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which alkali metal imparts a **golden yellow** colour to a flame?",
+      "options": [
+        "Lithium",
+        "Sodium",
+        "Potassium",
+        "Caesium"
+      ],
+      "answer": 1,
+      "solution": "**Sodium** gives the familiar golden yellow flame, from the $589\\ \\text{nm}$ D-line.\n\nLithium is crimson, potassium lilac, rubidium red-violet and caesium blue.\n\nThe colour arises because the flame's heat promotes the outer electron, which then emits a photon of a characteristic energy on falling back. This is the basis of flame photometry."
+    },
+    {
+      "id": "jeec-per-09",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Periodic trends",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which species has the **smallest** radius?",
+      "options": [
+        "$\\text{Na}^{+}$",
+        "$\\text{Mg}^{2+}$",
+        "$\\text{F}^{-}$",
+        "$\\text{O}^{2-}$"
+      ],
+      "answer": 1,
+      "solution": "All four are **isoelectronic**, each having 10 electrons.\n\nFor an isoelectronic series the radius is decided by the **nuclear charge**: more protons pulling the same 10 electrons means a smaller ion.\n\n$\\text{O}^{2-}$ (8p) $> \\text{F}^{-}$ (9p) $> \\text{Na}^{+}$ (11p) $> \\mathbf{\\text{Mg}^{2+}}$ (12p).\n\nSo magnesium's ion is the smallest."
+    },
+    {
+      "id": "jeec-per-10",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Ionisation energy",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many electrons must be removed from a neutral magnesium atom (Z = 12) to reach a noble gas configuration?",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "Magnesium is $1s^{2}2s^{2}2p^{6}3s^{2}$.\n\nRemoving the **two** $3s$ electrons leaves $1s^{2}2s^{2}2p^{6}$, which is the neon configuration.\n\nSo $\\mathbf{2}$ electrons — which is why magnesium forms $\\text{Mg}^{2+}$, and why its third ionisation energy is enormously larger than its second."
+    },
+    {
+      "id": "jeec-per-11",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Periodic trends",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many elements are there in the fourth period of the periodic table?",
+      "answer": 18,
+      "tolerance": 0.5,
+      "accept": [
+        "18"
+      ],
+      "solution": "The fourth period fills $4s$ (2 electrons), $3d$ (10) and $4p$ (6).\n\n$2 + 10 + 6 = \\mathbf{18}$ elements, from potassium to krypton.\n\nThis is the first period to include the transition metals, which is why it is 18 long where periods 2 and 3 are 8."
+    },
+    {
+      "id": "jeec-per-12",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "p-block",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of sulphur in $\\text{H}_2\\text{SO}_4$?",
+      "answer": 6,
+      "tolerance": 0.5,
+      "accept": [
+        "6",
+        "+6"
+      ],
+      "solution": "Hydrogen is $+1$ and oxygen is $-2$. Let sulphur be $x$.\n\n$2(+1) + x + 4(-2) = 0$\n\n$2 + x - 8 = 0$\n\n$x = \\mathbf{+6}$ — the maximum for sulphur, matching its six valence electrons."
+    },
+    {
+      "id": "jeec-per-13",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "s-block",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the oxidation state of oxygen in hydrogen peroxide, $\\text{H}_2\\text{O}_2$?",
+      "answer": -1,
+      "tolerance": 0.1,
+      "accept": [
+        "-1"
+      ],
+      "solution": "Hydrogen is $+1$, and there are two oxygens. Let each oxygen be $x$.\n\n$2(+1) + 2x = 0 \\Rightarrow x = \\mathbf{-1}$.\n\nThe usual $-2$ does not apply because of the **O-O peroxide linkage**, where the two oxygens share electrons equally between themselves. Being midway between $0$ and $-2$, peroxide can act as both an oxidising and a reducing agent."
+    },
+    {
+      "id": "jeec-per-14",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Periodic trends",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many unpaired electrons are there in a ground-state nitrogen atom (Z = 7)?",
+      "answer": 3,
+      "tolerance": 0.5,
+      "accept": [
+        "3"
+      ],
+      "solution": "Nitrogen is $1s^{2}2s^{2}2p^{3}$.\n\nThe $1s$ and $2s$ electrons are paired. By Hund's rule the three $2p$ electrons occupy the three $2p$ orbitals **singly**, with parallel spins, before any pairing occurs.\n\nSo there are $\\mathbf{3}$ unpaired electrons, and the half-filled subshell is exactly what gives nitrogen its anomalously high ionisation energy."
+    },
+    {
+      "id": "jeec-per-15",
+      "chapter": "Periodic Properties and the s- and p-Block",
+      "topic": "Periodic trends",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the trends in atomic radius and first ionisation energy across period 3 and down group 1. Account for the two anomalies in the ionisation energy trend across period 3.",
+      "solution": "**Atomic radius across period 3** (Na to Ar): it **decreases**.\n\nEach step adds one proton to the nucleus and one electron to the **same** third shell. Electrons in the same shell shield one another poorly, so the **effective nuclear charge** $Z_{\\text{eff}}$ felt by the outer electrons rises steadily and draws the whole shell inward.\n\nSodium's radius is about $186\\ \\text{pm}$ and chlorine's about $99\\ \\text{pm}$.\n\n**Atomic radius down group 1** (Li to Cs): it **increases**.\n\nHere each step adds a whole new shell. The nuclear charge rises too, but the added inner shells shield the outer electron very effectively, so the increase in principal quantum number dominates and the atom gets larger.\n\n**First ionisation energy across period 3**: it **increases** overall.\n\nAs $Z_{\\text{eff}}$ rises and the radius falls, the outer electron is held more tightly, so more energy is needed to remove it. Sodium is about $496\\ \\mathrm{kJ\\,mol^{-1}}$ and argon about $1521$.\n\n**First ionisation energy down group 1**: it **decreases**.\n\nThe outer electron is progressively further from the nucleus and better shielded, so it is more easily removed. This is why caesium is far more reactive than lithium as a metal.\n\n**The two anomalies across period 3.** The rise is not smooth; it dips twice.\n\n**1. Magnesium to aluminium** ($738 \\rightarrow 578\\ \\mathrm{kJ\\,mol^{-1}}$).\n\nMagnesium is $[\\text{Ne}]3s^{2}$ — a **completely filled** $3s$ subshell, which is stable. Aluminium is $[\\text{Ne}]3s^{2}3p^{1}$, and the electron removed is a **$3p$** electron.\n\nA $3p$ orbital is higher in energy than $3s$ and, crucially, is **shielded by the filled $3s$ subshell**. So despite aluminium having one more proton, its outermost electron is easier to remove.\n\n**2. Phosphorus to sulphur** ($1012 \\rightarrow 1000\\ \\mathrm{kJ\\,mol^{-1}}$).\n\nPhosphorus is $[\\text{Ne}]3s^{2}3p^{3}$ — a **half-filled** $3p$ subshell, with all three electrons in separate orbitals and parallel spins. This maximises the exchange energy and is unusually stable.\n\nSulphur is $[\\text{Ne}]3s^{2}3p^{4}$, so its fourth $3p$ electron must **pair up** in an orbital that already holds one. The resulting electron-electron repulsion makes that electron easier to remove.\n\n**The general lesson.** Both dips occur where the **subshell structure** overrides the steady rise in nuclear charge. The same two anomalies appear in period 2, between beryllium and boron and between nitrogen and oxygen, for exactly the same two reasons — which is strong evidence that the explanation is the orbital structure and not something particular to period 3."
+    }
+  ]
+}

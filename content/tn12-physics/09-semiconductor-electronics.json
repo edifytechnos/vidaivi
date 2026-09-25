@@ -1,0 +1,235 @@
+{
+  "id": "lib-tn12p-sem",
+  "title": "Semiconductor Electronics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-sem-01",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Semiconductors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Doping silicon with a pentavalent impurity such as phosphorus produces:",
+      "options": [
+        "A p-type semiconductor",
+        "An n-type semiconductor",
+        "An insulator",
+        "A conductor"
+      ],
+      "answer": 1,
+      "solution": "Phosphorus has **five** valence electrons. Four form covalent bonds with neighbouring silicon atoms, leaving the fifth loosely bound and easily freed.\n\nSo the majority carriers are **electrons** and the material is **n-type**. The dopant is called a **donor**.\n\nA **trivalent** dopant such as boron leaves a vacancy — a **hole** — giving p-type material, and is called an **acceptor**.\n\nIn both cases the crystal remains **electrically neutral overall**; doping changes which carriers are plentiful, not the net charge."
+    },
+    {
+      "id": "tn12p-sem-02",
+      "chapter": "Semiconductor Electronics",
+      "topic": "pn junction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a forward-biased p-n junction, the width of the depletion region:",
+      "options": [
+        "Increases",
+        "Decreases",
+        "Is unchanged",
+        "Becomes infinite"
+      ],
+      "answer": 1,
+      "solution": "Forward bias applies the positive terminal to the p-side, which **opposes** the built-in potential barrier and pushes majority carriers towards the junction.\n\nThe depletion region therefore **narrows** and the barrier height falls, so a large current flows.\n\nReverse bias does the opposite: the depletion region **widens**, the barrier rises, and only a tiny leakage current due to minority carriers flows."
+    },
+    {
+      "id": "tn12p-sem-03",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Rectifier",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ripple frequency at the output of a full-wave rectifier fed from a $50\\ \\text{Hz}$ supply is:",
+      "options": [
+        "$25\\ \\text{Hz}$",
+        "$50\\ \\text{Hz}$",
+        "$100\\ \\text{Hz}$",
+        "$200\\ \\text{Hz}$"
+      ],
+      "answer": 2,
+      "solution": "A **full-wave** rectifier uses **both** halves of each input cycle, inverting the negative half rather than discarding it. So there are **two** output pulses per input cycle:\n\n$f_{\\text{ripple}} = 2 \\times 50 = \\mathbf{100\\ \\text{Hz}}$\n\nA **half-wave** rectifier discards one half-cycle, so its ripple is $50\\ \\text{Hz}$.\n\nThe higher ripple frequency is an advantage: it is easier to smooth with a given filter capacitor, which is one reason full-wave rectification is preferred."
+    },
+    {
+      "id": "tn12p-sem-23q11",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Zener diode",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Zener diode is primarily used as :",
+      "options": [
+        "Oscillator",
+        "Rectifier",
+        "Voltage regulator",
+        "Amplifier"
+      ],
+      "answer": 2,
+      "solution": "In reverse breakdown the voltage across a Zener diode stays almost constant over a wide range of current, so it holds a load's voltage steady: a **voltage regulator**."
+    },
+    {
+      "id": "tn12p-sem-05",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Transistor",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For a transistor to work as an amplifier, the emitter-base junction and the collector-base junction must be:",
+      "options": [
+        "Both forward biased",
+        "Both reverse biased",
+        "Emitter-base forward, collector-base reverse",
+        "Emitter-base reverse, collector-base forward"
+      ],
+      "answer": 2,
+      "solution": "Active-region operation requires the **emitter-base junction forward biased** and the **collector-base junction reverse biased**.\n\nForward bias on the emitter junction injects carriers into the thin, lightly doped base; reverse bias on the collector junction sweeps them across. The base is deliberately **thin and lightly doped** so that most carriers pass through rather than recombining.\n\nBoth junctions forward biased gives **saturation**, both reverse gives **cut-off** — the two states used for switching rather than amplification."
+    },
+    {
+      "id": "tn12p-sem-06",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Logic gates",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which gate is called a universal gate?",
+      "options": [
+        "AND",
+        "OR",
+        "NAND",
+        "XOR"
+      ],
+      "answer": 2,
+      "solution": "**NAND** is universal, and so is NOR: any logic function whatever can be built from NAND gates alone.\n\nA NAND with both inputs tied together gives NOT; NAND followed by NOT gives AND; and inverting both inputs of a NAND gives OR by De Morgan's theorem.\n\nThis matters industrially — a manufacturer can fabricate one gate type and build everything from it, which is simpler and cheaper than making several."
+    },
+    {
+      "id": "tn12p-sem-25q14",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Oscillators",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "To obtain sustained oscillation in an oscillator,",
+      "options": [
+        "Feedback factor must be unity",
+        "Phase shift must be 0 or $2\\pi$",
+        "Feedback should be positive",
+        "All the above"
+      ],
+      "answer": 3,
+      "solution": "These are the Barkhausen conditions: the loop gain $A\\beta$ must be 1, and the total phase shift round the loop must be $0$ or $2\\pi$, which is **positive** feedback. **All the above**."
+    },
+    {
+      "id": "tn12p-sem-24q15",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Energy bands",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of forbidden energy gap for Si at room temperature is :",
+      "options": [
+        "1.1 V",
+        "0.7 eV",
+        "1.1 eV",
+        "0.7 V"
+      ],
+      "answer": 2,
+      "solution": "Silicon's band gap is about **1.1 eV**. An energy gap is measured in electronvolts, not volts, which rules out two options at once.\n\n0.7 V is the barrier potential of a silicon p-n junction, a different quantity. (The 2023 paper asked this too.)"
+    },
+    {
+      "id": "tn12p-sem-09",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Logic gates",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The output of a two-input AND gate is HIGH when:",
+      "options": [
+        "Either input is HIGH",
+        "Both inputs are HIGH",
+        "Both inputs are LOW",
+        "Exactly one input is HIGH"
+      ],
+      "answer": 1,
+      "solution": "An **AND** gate outputs 1 only when **both** inputs are 1 — it implements multiplication, $Y = A \\cdot B$.\n\nFor comparison: **OR** is HIGH when at least one input is HIGH; **XOR** when exactly one is; **NAND** is the inverse of AND, so it is LOW only when both inputs are HIGH."
+    },
+    {
+      "id": "tn12p-sem-10",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Transistor",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A transistor has $\\alpha = 0.98$. Find its current gain $\\beta$ in common-emitter configuration.",
+      "answer": 49,
+      "tolerance": 1,
+      "accept": [
+        "49"
+      ],
+      "solution": "$\\beta = \\dfrac{\\alpha}{1 - \\alpha} = \\dfrac{0.98}{1 - 0.98} = \\dfrac{0.98}{0.02} = \\mathbf{49}$\n\nNote how sensitive $\\beta$ is to $\\alpha$: raising $\\alpha$ from $0.98$ to $0.99$ would take $\\beta$ from 49 to 99. This is why the base must be made very thin — a small improvement in the fraction of carriers reaching the collector doubles the gain."
+    },
+    {
+      "id": "tn12p-sem-11",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Transistor",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A transistor has $\\beta = 100$ and a base current of $20\\ \\mu\\text{A}$. Find the collector current, in milliamperes.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2",
+        "2 mA"
+      ],
+      "solution": "$I_C = \\beta I_B = 100 \\times 20\\times10^{-6} = 2\\times10^{-3}\\ \\text{A} = \\mathbf{2\\ \\text{mA}}$\n\nThe emitter current is then $I_E = I_B + I_C = 2.02\\ \\text{mA}$."
+    },
+    {
+      "id": "tn12p-sem-24q33",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Energy bands",
+      "source": "TN HSE Mar 2024",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Determine the wavelength of the light emitted from LED, which is made up of GaAsP semiconductor, whose forbidden energy gap is 1.875 eV. Give the wavelength in nanometres. (Given $h = 6.6\\times10^{-34}$ Js)",
+      "answer": 660,
+      "solution": "$\\lambda = \\dfrac{hc}{E_g} = \\dfrac{6.6\\times10^{-34} \\times 3\\times10^{8}}{1.875 \\times 1.6\\times10^{-19}} = \\dfrac{1.98\\times10^{-25}}{3.0\\times10^{-19}} = 6.6\\times10^{-7}\\ \\mathrm{m}$\n\n$\\lambda = \\mathbf{660\\ nm}$, which is **red** light — the colour the paper also asks for.",
+      "tolerance": 3
+    },
+    {
+      "id": "tn12p-sem-13",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Rectifier",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A half-wave rectifier is fed from a $50\\ \\text{Hz}$ supply. Find the ripple frequency of its output, in hertz.",
+      "answer": 50,
+      "tolerance": 1,
+      "accept": [
+        "50"
+      ],
+      "solution": "A half-wave rectifier passes only one half of each cycle, giving **one** pulse per input cycle.\n\nRipple frequency $= \\mathbf{50\\ \\text{Hz}}$, the same as the supply. A full-wave rectifier would give $100\\ \\text{Hz}$."
+    },
+    {
+      "id": "tn12p-sem-14",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Logic gates",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many rows are there in the truth table of a three-input logic gate?",
+      "answer": 8,
+      "tolerance": 0.5,
+      "accept": [
+        "8"
+      ],
+      "solution": "Each input is either 0 or 1, so with $n$ inputs there are $2^{n}$ combinations.\n\n$2^{3} = \\mathbf{8}$ rows."
+    },
+    {
+      "id": "tn12p-sem-15",
+      "chapter": "Semiconductor Electronics",
+      "topic": "Transistor",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the construction and working of an n-p-n transistor as a common-emitter amplifier. Derive the relations between the currents and between $\\alpha$ and $\\beta$, and explain why the base is made thin and lightly doped.",
+      "solution": "**Construction.** An n-p-n transistor is a thin layer of p-type semiconductor — the **base** — sandwiched between two n-type regions, the **emitter** and the **collector**.\n\nThe three regions are deliberately **not** symmetrical:\n\n**Emitter** — heavily doped, moderate size. Its job is to supply carriers in quantity.\n\n**Base** — very thin (of order $10^{-6}\\ \\text{m}$) and **lightly** doped.\n\n**Collector** — moderately doped and **physically largest**, because it must dissipate the heat.\n\n**Biasing.** For amplification the transistor is operated in the **active region**: the **emitter-base junction is forward biased** and the **collector-base junction reverse biased**.\n\n**Working.** Forward bias on the emitter junction injects a large number of **electrons** from the emitter into the base.\n\nIn the base these electrons are minority carriers among the holes. A few recombine, giving a small **base current** $I_B$. But because the base is thin and lightly doped, **the great majority — about $95$ to $99\\%$ — diffuse straight across** into the collector junction, where the reverse-bias field sweeps them into the collector.\n\nThe result is a large **collector current** $I_C$ controlled by a small $I_B$.\n\n**As an amplifier.** The input signal is applied between base and emitter, in series with the forward bias; the output is taken across a load resistance $R_L$ in the collector circuit.\n\nA small change in $V_{BE}$ produces a small change in $I_B$, which produces a **much larger** change in $I_C$, and hence a large change in the voltage across $R_L$. The voltage gain is\n\n$A_V = \\beta \\times \\dfrac{R_L}{r_i}$\n\nThe common-emitter amplifier also introduces a **$180^\\circ$ phase shift**: as $I_C$ rises, the drop across $R_L$ rises, so the collector voltage **falls**.\n\n**The current relations.** By Kirchhoff's junction rule applied to the transistor as a node:\n\n$\\boxed{I_E = I_B + I_C}$\n\nThe two current gains are defined as\n\n$\\alpha = \\dfrac{I_C}{I_E}$ (common base) and $\\beta = \\dfrac{I_C}{I_B}$ (common emitter)\n\n**Deriving the relation between them.** Start from $I_E = I_B + I_C$ and divide throughout by $I_C$:\n\n$\\dfrac{I_E}{I_C} = \\dfrac{I_B}{I_C} + 1$\n\n$\\dfrac{1}{\\alpha} = \\dfrac{1}{\\beta} + 1 = \\dfrac{1 + \\beta}{\\beta}$\n\n$\\boxed{\\alpha = \\dfrac{\\beta}{1 + \\beta}}$ and inverting, $\\boxed{\\beta = \\dfrac{\\alpha}{1 - \\alpha}}$\n\n**Why the base is thin and lightly doped.** This is the heart of the design, and both properties serve the same end: **minimising recombination in the base**.\n\n**Thin**, so that an injected electron has only a very short distance to cross and little time in which to meet a hole.\n\n**Lightly doped**, so that there are few holes there to meet in the first place.\n\nTogether these ensure that nearly every carrier leaving the emitter reaches the collector, making $\\alpha$ close to 1.\n\n**And $\\beta$ is extraordinarily sensitive to exactly that.** Since $\\beta = \\dfrac{\\alpha}{1 - \\alpha}$, the denominator is a small difference between two nearly equal numbers:\n\n$\\alpha = 0.95 \\Rightarrow \\beta = 19$\n\n$\\alpha = 0.98 \\Rightarrow \\beta = 49$\n\n$\\alpha = 0.99 \\Rightarrow \\beta = 99$\n\n$\\alpha = 0.995 \\Rightarrow \\beta = 199$\n\nA change in $\\alpha$ of less than a percent **doubles** the gain. So the thin lightly doped base is not a refinement — it is the single design feature that decides whether the device amplifies usefully at all, and it is why transistor manufacture demands such precise control of layer thickness.\n\n**Why the emitter is heavily doped** follows from the same reasoning: a large injected current gives a large $I_C$, and heavy doping ensures the current across the emitter junction consists almost entirely of electrons flowing **into** the base rather than holes flowing back out of it."
+    }
+  ]
+}

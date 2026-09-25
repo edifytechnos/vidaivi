@@ -1,0 +1,233 @@
+{
+  "id": "lib-tn12p-com",
+  "title": "Communication Systems",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-com-01",
+      "chapter": "Communication Systems",
+      "topic": "Modulation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Modulation is necessary in communication mainly because:",
+      "options": [
+        "It makes the signal louder",
+        "A low-frequency signal needs an impractically large antenna and does not travel far",
+        "It reduces cost",
+        "It removes noise entirely"
+      ],
+      "answer": 1,
+      "solution": "An efficient antenna must be about $\\dfrac{\\lambda}{4}$ long. An audio signal at $5\\ \\text{kHz}$ has $\\lambda = 60\\ \\text{km}$, needing a $15\\ \\text{km}$ antenna — impossible.\n\nRaising the signal onto a high-frequency **carrier** brings the wavelength down to metres, so the antenna becomes practical.\n\nTwo further reasons matter just as much: a low-frequency signal has **short range** because radiated power varies as $\\dfrac{1}{\\lambda^{2}}$, and modulation allows **many stations to share the medium** on different carrier frequencies without interfering."
+    },
+    {
+      "id": "tn12p-com-02",
+      "chapter": "Communication Systems",
+      "topic": "Modulation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In amplitude modulation, the quantity of the carrier that is varied in step with the message signal is its:",
+      "options": [
+        "Frequency",
+        "Amplitude",
+        "Phase",
+        "Wavelength"
+      ],
+      "answer": 1,
+      "solution": "In **amplitude modulation** the carrier's **amplitude** varies in step with the message, while its frequency and phase stay constant.\n\n**FM** varies the frequency instead, and **PM** the phase.\n\nFM is far more resistant to noise, because most noise adds itself as **amplitude** variation — which an FM receiver can simply clip off. That is why FM radio sounds cleaner than AM, at the cost of needing more bandwidth."
+    },
+    {
+      "id": "tn12p-com-03",
+      "chapter": "Communication Systems",
+      "topic": "Propagation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Long-distance short-wave radio communication is possible because of:",
+      "options": [
+        "Ground wave propagation",
+        "Reflection from the ionosphere",
+        "Direct line-of-sight waves",
+        "Diffraction around buildings"
+      ],
+      "answer": 1,
+      "solution": "**Sky wave** propagation: frequencies between about $3$ and $30\\ \\text{MHz}$ are **reflected by the ionosphere** back to Earth, and by repeated bounces can reach right around the world.\n\n**Ground waves** follow the Earth's curvature but are absorbed rapidly and are useful only below about $2\\ \\text{MHz}$ over short ranges.\n\nAbove roughly $30\\ \\text{MHz}$ waves **penetrate** the ionosphere instead of reflecting, so TV and FM need line-of-sight or satellite relay — which is exactly why satellites became necessary."
+    },
+    {
+      "id": "tn12p-com-04",
+      "chapter": "Communication Systems",
+      "topic": "Bandwidth",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The bandwidth of an amplitude-modulated wave with message frequency $f_m$ is:",
+      "options": [
+        "$f_m$",
+        "$2f_m$",
+        "$f_c$",
+        "$f_c + f_m$"
+      ],
+      "answer": 1,
+      "solution": "AM produces two sidebands, at $f_c + f_m$ and $f_c - f_m$.\n\nThe bandwidth is the difference between them:\n\n$(f_c + f_m) - (f_c - f_m) = \\mathbf{2f_m}$\n\nSo an AM station carrying $5\\ \\text{kHz}$ audio occupies $10\\ \\text{kHz}$ of the spectrum. Since the two sidebands carry the same information, single-sideband transmission halves this — which is why SSB is used where spectrum is scarce."
+    },
+    {
+      "id": "tn12p-com-05",
+      "chapter": "Communication Systems",
+      "topic": "Optical fibre",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Light travels along an optical fibre by:",
+      "options": [
+        "Diffraction",
+        "Repeated total internal reflection",
+        "Refraction at the ends only",
+        "Absorption and re-emission"
+      ],
+      "answer": 1,
+      "solution": "An optical fibre has a **core** of higher refractive index surrounded by a **cladding** of lower index.\n\nLight entering within the acceptance angle strikes the core-cladding boundary at greater than the **critical angle**, so it undergoes **total internal reflection** repeatedly and is guided along the fibre with very little loss.\n\nThe cladding is essential and not merely protective: without it the boundary would be with air, the critical angle would differ, and any dirt or contact on the surface would break the reflection and leak the signal out."
+    },
+    {
+      "id": "tn12p-com-06",
+      "chapter": "Communication Systems",
+      "topic": "Communication system",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The three essential elements of any communication system are:",
+      "options": [
+        "Antenna, amplifier, speaker",
+        "Transmitter, communication channel, receiver",
+        "Modulator, carrier, noise",
+        "Source, noise, destination"
+      ],
+      "answer": 1,
+      "solution": "Every communication system has a **transmitter**, a **channel** and a **receiver**.\n\nThe transmitter converts the message into a form suited to the channel — usually by modulation. The **channel** is the physical medium: free space, a cable, a fibre. The receiver recovers the message by demodulation.\n\n**Noise** is always present and enters mainly in the channel. It is not an element of the system but the thing every element is designed to cope with."
+    },
+    {
+      "id": "tn12p-com-07",
+      "chapter": "Communication Systems",
+      "topic": "Propagation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The range of a TV transmitting antenna of height $h$ over the Earth of radius $R$ is:",
+      "options": [
+        "$\\sqrt{2Rh}$",
+        "$2Rh$",
+        "$\\sqrt{Rh}$",
+        "$\\dfrac{R}{h}$"
+      ],
+      "answer": 0,
+      "solution": "For line-of-sight propagation the radio horizon is at $d = \\mathbf{\\sqrt{2Rh}}$.\n\nThe range grows only as $\\sqrt{h}$, so **quadrupling** the antenna height only **doubles** the range — which is why television coverage is extended by many transmitters rather than one very tall one.\n\nIf the receiving antenna also has height $h_R$, the total range is $\\sqrt{2Rh_T} + \\sqrt{2Rh_R}$."
+    },
+    {
+      "id": "tn12p-com-08",
+      "chapter": "Communication Systems",
+      "topic": "Modulation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The modulation index of an AM wave should not exceed 1 because:",
+      "options": [
+        "The signal becomes too weak",
+        "Overmodulation distorts the envelope and the message cannot be recovered",
+        "The carrier disappears",
+        "The bandwidth becomes zero"
+      ],
+      "answer": 1,
+      "solution": "The modulation index is $\\mu = \\dfrac{A_m}{A_c}$.\n\nIf $\\mu > 1$ the carrier amplitude would have to go **negative**, so the envelope is clipped and no longer has the shape of the message. The receiver, which recovers the message from the envelope, then reproduces it **distorted** — and the distortion cannot be undone afterwards.\n\nIf $\\mu$ is too small the transmission is inefficient and the signal-to-noise ratio poor, so practical systems keep $\\mu$ just below 1."
+    },
+    {
+      "id": "tn12p-com-09",
+      "chapter": "Communication Systems",
+      "topic": "Optical fibre",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Compared with copper cable, optical fibre offers:",
+      "options": [
+        "Lower bandwidth",
+        "Much higher bandwidth and immunity to electromagnetic interference",
+        "Greater weight",
+        "More signal loss"
+      ],
+      "answer": 1,
+      "solution": "Optical fibre carries a far **higher bandwidth**, because the carrier frequency of light is around $10^{14}\\ \\text{Hz}$ against a few $\\text{MHz}$ for a cable — and available bandwidth scales with carrier frequency.\n\nIt is also **immune to electromagnetic interference**, since light is unaffected by nearby electrical noise, and it neither radiates nor picks up crosstalk, which makes it secure.\n\nIt is lighter, has far lower attenuation, and needs repeaters only every $50$ to $100\\ \\text{km}$."
+    },
+    {
+      "id": "tn12p-com-10",
+      "chapter": "Communication Systems",
+      "topic": "Modulation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "An AM wave has carrier amplitude $10\\ \\text{V}$ and message amplitude $4\\ \\text{V}$. Find the modulation index.",
+      "answer": 0.4,
+      "tolerance": 0.01,
+      "accept": [
+        "0.4"
+      ],
+      "solution": "$\\mu = \\dfrac{A_m}{A_c} = \\dfrac{4}{10} = \\mathbf{0.4}$, that is $40\\%$ modulation."
+    },
+    {
+      "id": "tn12p-com-11",
+      "chapter": "Communication Systems",
+      "topic": "Bandwidth",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A carrier of $1000\\ \\text{kHz}$ is amplitude modulated by a $5\\ \\text{kHz}$ signal. Find the bandwidth, in kilohertz.",
+      "answer": 10,
+      "tolerance": 0.2,
+      "accept": [
+        "10"
+      ],
+      "solution": "Bandwidth $= 2f_m = 2 \\times 5 = \\mathbf{10\\ \\text{kHz}}$.\n\nThe sidebands lie at $995\\ \\text{kHz}$ and $1005\\ \\text{kHz}$; the carrier frequency itself does not affect the bandwidth."
+    },
+    {
+      "id": "tn12p-com-12",
+      "chapter": "Communication Systems",
+      "topic": "Propagation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A TV antenna is $80\\ \\text{m}$ tall. Taking $R = 6.4\\times10^{6}\\ \\text{m}$, find its line-of-sight range, in kilometres.",
+      "answer": 32,
+      "tolerance": 0.5,
+      "accept": [
+        "32"
+      ],
+      "solution": "$d = \\sqrt{2Rh} = \\sqrt{2 \\times 6.4\\times10^{6} \\times 80}$\n\n$= \\sqrt{1.024\\times10^{9}} = 3.2\\times10^{4}\\ \\text{m}$\n\n$= \\mathbf{32\\ \\text{km}}$"
+    },
+    {
+      "id": "tn12p-com-13",
+      "chapter": "Communication Systems",
+      "topic": "Modulation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A carrier of frequency $2\\ \\text{MHz}$ is modulated by a $10\\ \\text{kHz}$ signal. Find the frequency of the upper sideband, in kilohertz.",
+      "answer": 2010,
+      "tolerance": 2,
+      "accept": [
+        "2010"
+      ],
+      "solution": "Upper sideband $= f_c + f_m = 2000 + 10 = \\mathbf{2010\\ \\text{kHz}}$.\n\nThe lower sideband is at $1990\\ \\text{kHz}$, giving a bandwidth of $20\\ \\text{kHz}$."
+    },
+    {
+      "id": "tn12p-com-14",
+      "chapter": "Communication Systems",
+      "topic": "Modulation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "An antenna is to be about a quarter of a wavelength long. Find the required length, in metres, for a $3\\ \\text{MHz}$ signal. Take $c = 3\\times10^{8}\\ \\mathrm{m\\,s^{-1}}$.",
+      "answer": 25,
+      "tolerance": 0.5,
+      "accept": [
+        "25"
+      ],
+      "solution": "$\\lambda = \\dfrac{c}{f} = \\dfrac{3\\times10^{8}}{3\\times10^{6}} = 100\\ \\text{m}$\n\n$\\dfrac{\\lambda}{4} = \\mathbf{25\\ \\text{m}}$ — perfectly buildable, which is the whole point of using a high-frequency carrier."
+    },
+    {
+      "id": "tn12p-com-15",
+      "chapter": "Communication Systems",
+      "topic": "Modulation",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain why modulation is necessary in communication. Describe amplitude modulation, derive the expression for the modulation index and the bandwidth, and compare AM with FM in terms of noise immunity and bandwidth.",
+      "solution": "**Why modulation is necessary.** A baseband audio signal, roughly $20\\ \\text{Hz}$ to $20\\ \\text{kHz}$, cannot be transmitted directly. There are three independent reasons, and each alone would be decisive.\n\n**1. Antenna size.** An efficient antenna must be of the order of $\\dfrac{\\lambda}{4}$.\n\nFor a $5\\ \\text{kHz}$ audio signal, $\\lambda = \\dfrac{3\\times10^{8}}{5\\times10^{3}} = 60\\ \\text{km}$, so the antenna would need to be $\\mathbf{15\\ \\text{km}}$ tall. At a $1\\ \\text{MHz}$ carrier it becomes $75\\ \\text{m}$ — buildable.\n\n**2. Power radiated.** The power radiated by an antenna varies as $\\dfrac{1}{\\lambda^{2}}$, so a low-frequency signal radiates very feebly and has negligible range whatever power is fed to it.\n\n**3. Mixing of signals.** If every station transmitted at baseband, all their signals would occupy the **same frequencies** and be hopelessly mixed. Assigning each a different **carrier** separates them in frequency, so a receiver can tune to one — which is what makes broadcasting possible at all.\n\n**Amplitude modulation.** Let the carrier be $c(t) = A_c\\sin\\omega_c t$ and the message $m(t) = A_m\\sin\\omega_m t$.\n\nIn AM the carrier's **amplitude** is made to vary in step with the message:\n\n$c_m(t) = (A_c + A_m\\sin\\omega_m t)\\sin\\omega_c t$\n\n$= A_c\\left(1 + \\dfrac{A_m}{A_c}\\sin\\omega_m t\\right)\\sin\\omega_c t$\n\n**The modulation index** is defined as\n\n$\\boxed{\\mu = \\dfrac{A_m}{A_c}}$\n\nIt can also be found from the envelope's extremes: $\\mu = \\dfrac{A_{\\max} - A_{\\min}}{A_{\\max} + A_{\\min}}$.\n\n**Deriving the sidebands.** Expanding with $\\mu$ substituted:\n\n$c_m(t) = A_c\\sin\\omega_c t + \\mu A_c\\sin\\omega_m t\\,\\sin\\omega_c t$\n\nUsing $\\sin A\\sin B = \\tfrac{1}{2}[\\cos(A-B) - \\cos(A+B)]$:\n\n$c_m(t) = A_c\\sin\\omega_c t + \\dfrac{\\mu A_c}{2}\\cos(\\omega_c - \\omega_m)t - \\dfrac{\\mu A_c}{2}\\cos(\\omega_c + \\omega_m)t$\n\nSo the AM wave contains **three** frequencies: the carrier $\\omega_c$, the **lower sideband** $(\\omega_c - \\omega_m)$ and the **upper sideband** $(\\omega_c + \\omega_m)$.\n\n**Bandwidth:**\n\n$\\text{BW} = (f_c + f_m) - (f_c - f_m) = \\boxed{2f_m}$\n\n**Why $\\mu \\le 1$.** If $\\mu > 1$, the term $(A_c + A_m\\sin\\omega_m t)$ goes **negative** at the troughs. The envelope is then clipped and no longer matches the message shape, so a receiver recovering the envelope reproduces it **distorted** — irreversibly, since the information has been destroyed at the transmitter. This is **overmodulation**, and it is why practical systems run just below $\\mu = 1$.\n\n**AM compared with FM.**\n\n**Noise immunity.** This is the decisive difference, and it follows directly from how noise behaves. Atmospheric and electrical noise adds itself to a signal almost entirely as **amplitude** variation.\n\nIn **AM**, the information **is** the amplitude, so noise is indistinguishable from signal and cannot be removed. AM is therefore noisy.\n\nIn **FM**, the information is the **frequency**, and the amplitude carries nothing. A receiver can pass the signal through a **limiter** that clips it to constant amplitude, **discarding the noise entirely** without touching the message.\n\nSo FM's noise immunity is not a matter of better engineering — it comes from encoding the information in a quantity that noise does not corrupt.\n\n**Bandwidth.** This is the price. AM needs only $2f_m$, about $10\\ \\text{kHz}$ per station. FM needs $2(\\Delta f + f_m)$, around $200\\ \\text{kHz}$ — some twenty times more, so far fewer stations fit in a given band.\n\n**Other differences.** FM has better fidelity and transmits more efficiently, since all the power is in the sidebands rather than a large share being wasted on the carrier. AM has the greater range, because it is usually broadcast at lower frequencies that propagate by sky wave.\n\n**The trade is therefore spectrum for quality**, and it explains the division of use: AM for long-range broadcasting where range matters and spectrum is tight, FM for local high-fidelity broadcasting where quality matters and bandwidth can be afforded."
+    }
+  ]
+}

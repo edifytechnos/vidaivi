@@ -1,0 +1,238 @@
+{
+  "id": "lib-jeep-wep",
+  "title": "Work, Energy and Power",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeep-wep-01",
+      "chapter": "Work, Energy and Power",
+      "topic": "Work",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A body moves in a circle at constant speed under a centripetal force. The work done by that force in one revolution is:",
+      "options": [
+        "$2\\pi r F$",
+        "$\\pi r F$",
+        "Zero",
+        "$F r$"
+      ],
+      "answer": 2,
+      "solution": "Work is $W = \\vec{F}\\cdot\\vec{s} = Fs\\cos\\phi$.\n\nThe centripetal force points to the centre; the displacement at every instant is along the tangent. The angle between them is $90^\\circ$ throughout, so $\\cos 90^\\circ = 0$.\n\nThe work is **zero** — which is consistent with the speed, and so the kinetic energy, being constant."
+    },
+    {
+      "id": "jeep-wep-02",
+      "chapter": "Work, Energy and Power",
+      "topic": "Kinetic energy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If the momentum of a body is doubled, its kinetic energy becomes:",
+      "options": [
+        "Doubled",
+        "Halved",
+        "Four times",
+        "Unchanged"
+      ],
+      "answer": 2,
+      "solution": "$K = \\dfrac{p^{2}}{2m}$, so $K \\propto p^{2}$ at fixed mass.\n\nDoubling $p$ gives $2^{2} = \\mathbf{4}$ times the kinetic energy.\n\nThe companion relation is worth knowing the other way round too: $p = \\sqrt{2mK}$."
+    },
+    {
+      "id": "jeep-wep-03",
+      "chapter": "Work, Energy and Power",
+      "topic": "Conservative forces",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is a non-conservative force?",
+      "options": [
+        "Gravitational force",
+        "Electrostatic force",
+        "Friction",
+        "Spring force"
+      ],
+      "answer": 2,
+      "solution": "A conservative force does work that depends only on the endpoints, so the work round any closed path is zero and a potential energy can be defined.\n\nFriction always opposes motion, so it takes energy out on every leg of a journey — out and back costs more than staying put. No potential energy function exists for it.\n\nGravity, electrostatic and ideal spring forces are all conservative."
+    },
+    {
+      "id": "jeep-wep-04",
+      "chapter": "Work, Energy and Power",
+      "topic": "Power",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The SI unit of power expressed in base units is:",
+      "options": [
+        "$\\mathrm{kg\\,m^{2}\\,s^{-3}}$",
+        "$\\mathrm{kg\\,m^{2}\\,s^{-2}}$",
+        "$\\mathrm{kg\\,m\\,s^{-2}}$",
+        "$\\mathrm{kg\\,m^{-1}\\,s^{-2}}$"
+      ],
+      "answer": 0,
+      "solution": "Power is energy per unit time.\n\nEnergy (joule) $= \\mathrm{kg\\,m^{2}\\,s^{-2}}$.\n\nDividing by a second gives $\\mathbf{\\mathrm{kg\\,m^{2}\\,s^{-3}}}$, which is the watt."
+    },
+    {
+      "id": "jeep-wep-05",
+      "chapter": "Work, Energy and Power",
+      "topic": "Collisions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a perfectly inelastic collision between two bodies:",
+      "options": [
+        "Kinetic energy is conserved",
+        "Momentum is not conserved",
+        "The bodies move together after the collision",
+        "Both bodies come to rest"
+      ],
+      "answer": 2,
+      "solution": "A perfectly inelastic collision is defined by the bodies sticking together and moving with a **common velocity** afterwards.\n\nMomentum is conserved in every collision — that follows from Newton's third law and holds regardless of the type.\n\nKinetic energy is **not** conserved here; the loss is the maximum possible consistent with momentum conservation. The bodies come to rest only in the special case where the total momentum happens to be zero."
+    },
+    {
+      "id": "jeep-wep-06",
+      "chapter": "Work, Energy and Power",
+      "topic": "Spring energy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A spring of stiffness $k$ is stretched by $x$. The energy stored is:",
+      "options": [
+        "$kx$",
+        "$\\tfrac{1}{2}kx$",
+        "$\\tfrac{1}{2}kx^{2}$",
+        "$kx^{2}$"
+      ],
+      "answer": 2,
+      "solution": "The restoring force is $F = kx$, which grows from $0$ to $kx$ as the spring stretches.\n\nThe work done is the area under the force-extension graph — a triangle of base $x$ and height $kx$:\n\n$W = \\tfrac{1}{2}(x)(kx) = \\mathbf{\\tfrac{1}{2}kx^{2}}$.\n\nEquivalently $W = \\int_{0}^{x} kx'\\,dx' = \\tfrac{1}{2}kx^{2}$."
+    },
+    {
+      "id": "jeep-wep-07",
+      "chapter": "Work, Energy and Power",
+      "topic": "Work-energy theorem",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The work-energy theorem states that the net work done on a body equals:",
+      "options": [
+        "Its change in potential energy",
+        "Its change in kinetic energy",
+        "Its total mechanical energy",
+        "Its momentum"
+      ],
+      "answer": 1,
+      "solution": "$W_{\\text{net}} = \\Delta K = \\tfrac{1}{2}mv^{2} - \\tfrac{1}{2}mu^{2}$.\n\nIt is a completely general result — it holds for conservative and non-conservative forces alike, and for variable forces, because it follows directly from Newton's second law integrated over displacement."
+    },
+    {
+      "id": "jeep-wep-08",
+      "chapter": "Work, Energy and Power",
+      "topic": "Collisions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A body of mass $m$ moving at $v$ collides elastically head-on with an identical body at rest. After the collision:",
+      "options": [
+        "Both move at $v/2$",
+        "The first stops and the second moves at $v$",
+        "Both reverse direction",
+        "They stick together"
+      ],
+      "answer": 1,
+      "solution": "For an elastic head-on collision between **equal** masses, the velocities are exchanged.\n\nCheck both conservation laws with $v_1' = 0$, $v_2' = v$:\n\nMomentum: $mv + 0 = 0 + mv$ ✓\n\nKinetic energy: $\\tfrac{1}{2}mv^{2} + 0 = 0 + \\tfrac{1}{2}mv^{2}$ ✓\n\nThis is what happens in a Newton's cradle, and why a cue ball stops dead on a full-face hit."
+    },
+    {
+      "id": "jeep-wep-09",
+      "chapter": "Work, Energy and Power",
+      "topic": "Power",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A body moves with constant velocity $v$ against a resistive force $F$. The power delivered is:",
+      "options": [
+        "Zero",
+        "$Fv$",
+        "$Fv^{2}$",
+        "$F/v$"
+      ],
+      "answer": 1,
+      "solution": "Instantaneous power is $P = \\vec{F}\\cdot\\vec{v} = Fv$ when force and velocity are parallel.\n\nAt constant velocity the driving force exactly balances the resistance, so the engine delivers $\\mathbf{Fv}$ — all of it going to overcome resistance, none to acceleration."
+    },
+    {
+      "id": "jeep-wep-10",
+      "chapter": "Work, Energy and Power",
+      "topic": "Work",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A force of $10\\ \\text{N}$ acts at $60^\\circ$ to the displacement of $5\\ \\text{m}$. Find the work done, in joules.",
+      "answer": 25,
+      "tolerance": 0.5,
+      "accept": [
+        "25 J",
+        "25.0"
+      ],
+      "solution": "$W = Fs\\cos\\phi = 10 \\times 5 \\times \\cos 60^\\circ$\n\n$= 50 \\times 0.5 = \\mathbf{25\\ \\text{J}}$."
+    },
+    {
+      "id": "jeep-wep-11",
+      "chapter": "Work, Energy and Power",
+      "topic": "Kinetic energy",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A $2\\ \\text{kg}$ body moves at $6\\ \\mathrm{m\\,s^{-1}}$. Find its kinetic energy, in joules.",
+      "answer": 36,
+      "tolerance": 0.5,
+      "accept": [
+        "36 J",
+        "36.0"
+      ],
+      "solution": "$K = \\tfrac{1}{2}mv^{2} = \\tfrac{1}{2} \\times 2 \\times 6^{2} = 1 \\times 36 = \\mathbf{36\\ \\text{J}}$."
+    },
+    {
+      "id": "jeep-wep-12",
+      "chapter": "Work, Energy and Power",
+      "topic": "Power",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A pump raises $100\\ \\text{kg}$ of water through $10\\ \\text{m}$ in $20\\ \\text{s}$. Taking $g = 10\\ \\mathrm{m\\,s^{-2}}$, find its power output, in watts.",
+      "answer": 500,
+      "tolerance": 5,
+      "accept": [
+        "500 W",
+        "500.0"
+      ],
+      "solution": "Work done against gravity:\n\n$W = mgh = 100 \\times 10 \\times 10 = 10000\\ \\text{J}$.\n\n$P = \\dfrac{W}{t} = \\dfrac{10000}{20} = \\mathbf{500\\ \\text{W}}$."
+    },
+    {
+      "id": "jeep-wep-13",
+      "chapter": "Work, Energy and Power",
+      "topic": "Conservation of energy",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A body is dropped from a height of $20\\ \\text{m}$. Taking $g = 10\\ \\mathrm{m\\,s^{-2}}$ and neglecting air resistance, find its speed on reaching the ground, in $\\mathrm{m\\,s^{-1}}$.",
+      "answer": 20,
+      "tolerance": 0.5,
+      "accept": [
+        "20 m/s",
+        "20.0"
+      ],
+      "solution": "By conservation of mechanical energy, the potential energy lost becomes kinetic energy gained:\n\n$mgh = \\tfrac{1}{2}mv^{2}$\n\nThe mass cancels:\n\n$v = \\sqrt{2gh} = \\sqrt{2 \\times 10 \\times 20} = \\sqrt{400} = \\mathbf{20\\ \\mathrm{m\\,s^{-1}}}$."
+    },
+    {
+      "id": "jeep-wep-14",
+      "chapter": "Work, Energy and Power",
+      "topic": "Spring energy",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A spring of force constant $200\\ \\mathrm{N\\,m^{-1}}$ is compressed by $0.1\\ \\text{m}$. Find the energy stored, in joules.",
+      "answer": 1,
+      "tolerance": 0.05,
+      "accept": [
+        "1 J",
+        "1.0"
+      ],
+      "solution": "$U = \\tfrac{1}{2}kx^{2} = \\tfrac{1}{2} \\times 200 \\times (0.1)^{2}$\n\n$= 100 \\times 0.01 = \\mathbf{1\\ \\text{J}}$."
+    },
+    {
+      "id": "jeep-wep-15",
+      "chapter": "Work, Energy and Power",
+      "topic": "Collisions",
+      "type": "long",
+      "marks": 5,
+      "q": "Two bodies of masses $m_1$ and $m_2$ moving with velocities $u_1$ and $u_2$ along the same line collide **elastically**. Derive expressions for their velocities after the collision, and show that for $m_1 = m_2$ the velocities are simply exchanged.",
+      "solution": "**The two conditions.** An elastic collision conserves both momentum and kinetic energy.\n\nMomentum: $m_1u_1 + m_2u_2 = m_1v_1 + m_2v_2$ ... (1)\n\nKinetic energy: $\\tfrac{1}{2}m_1u_1^{2} + \\tfrac{1}{2}m_2u_2^{2} = \\tfrac{1}{2}m_1v_1^{2} + \\tfrac{1}{2}m_2v_2^{2}$ ... (2)\n\n**Rearranging.** From (1):\n\n$m_1(u_1 - v_1) = m_2(v_2 - u_2)$ ... (3)\n\nFrom (2), cancelling the halves:\n\n$m_1(u_1^{2} - v_1^{2}) = m_2(v_2^{2} - u_2^{2})$\n\n$m_1(u_1 - v_1)(u_1 + v_1) = m_2(v_2 - u_2)(v_2 + u_2)$ ... (4)\n\n**Dividing** (4) by (3):\n\n$u_1 + v_1 = v_2 + u_2$\n\nwhich rearranges to the useful form\n\n$u_1 - u_2 = -(v_1 - v_2)$\n\n**The relative velocity of approach equals the relative velocity of separation.** This is the defining signature of an elastic collision.\n\n**Solving.** Writing $v_2 = u_1 + v_1 - u_2$ and substituting into (1) gives, after simplification:\n\n$v_1 = \\dfrac{(m_1 - m_2)u_1 + 2m_2u_2}{m_1 + m_2}$\n\n$v_2 = \\dfrac{(m_2 - m_1)u_2 + 2m_1u_1}{m_1 + m_2}$\n\n**Equal masses.** Put $m_1 = m_2 = m$:\n\n$v_1 = \\dfrac{0 + 2mu_2}{2m} = u_2$\n\n$v_2 = \\dfrac{0 + 2mu_1}{2m} = u_1$\n\nThe velocities are **exchanged**. If the second body was at rest, the first stops dead and the second moves off with the first's original velocity."
+    }
+  ]
+}
