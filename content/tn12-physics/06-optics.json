@@ -1,0 +1,235 @@
+{
+  "id": "lib-tn12p-opt",
+  "title": "Optics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-opt-01",
+      "chapter": "Optics",
+      "topic": "Reflection",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The focal length of a spherical mirror of radius of curvature $R$ is:",
+      "options": [
+        "$R$",
+        "$R/2$",
+        "$2R$",
+        "$R/4$"
+      ],
+      "answer": 1,
+      "solution": "$f = \\mathbf{R/2}$ for a spherical mirror, for paraxial rays.\n\nThe relation is exact only near the axis; rays far from it converge at a different point, which is **spherical aberration**, and is why large telescopes use parabolic mirrors.\n\nA lens is different: its focal length depends on **both** surface radii and the refractive index, through the lensmaker's formula."
+    },
+    {
+      "id": "tn12p-opt-02",
+      "chapter": "Optics",
+      "topic": "Refraction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A convex lens of focal length $f$ in air is immersed in a liquid of refractive index greater than that of the lens. It behaves as:",
+      "options": [
+        "A stronger converging lens",
+        "A diverging lens",
+        "A plane glass plate",
+        "An unchanged converging lens"
+      ],
+      "answer": 1,
+      "solution": "By the lensmaker's formula,\n\n$\\dfrac{1}{f} = \\left(\\dfrac{n_{\\text{lens}}}{n_{\\text{medium}}} - 1\\right)\\left(\\dfrac{1}{R_1} - \\dfrac{1}{R_2}\\right)$\n\nIf $n_{\\text{medium}} > n_{\\text{lens}}$, the bracket $\\left(\\dfrac{n_{\\text{lens}}}{n_{\\text{medium}}} - 1\\right)$ becomes **negative**, so $f$ changes sign and the converging lens **diverges**.\n\nThe shape has not changed at all — what a lens does depends on the **contrast** with its surroundings, not on its geometry alone. If the two indices were equal the lens would vanish optically and act as a plane plate."
+    },
+    {
+      "id": "tn12p-opt-03",
+      "chapter": "Optics",
+      "topic": "Interference",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In Young's double-slit experiment, if the whole apparatus is immersed in water, the fringe width:",
+      "options": [
+        "Increases",
+        "Decreases",
+        "Stays the same",
+        "Becomes zero"
+      ],
+      "answer": 1,
+      "solution": "$\\beta = \\dfrac{\\lambda D}{d}$, and in water the wavelength shortens to $\\lambda' = \\dfrac{\\lambda}{n}$.\n\nSo $\\beta' = \\dfrac{\\beta}{n}$ — the fringes get **narrower** and move closer together.\n\nThe **frequency** of light does not change on entering a medium; it is the wavelength and the speed that do."
+    },
+    {
+      "id": "tn12p-opt-04",
+      "chapter": "Optics",
+      "topic": "Diffraction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In single-slit diffraction, the width of the central maximum is:",
+      "options": [
+        "Equal to that of the other maxima",
+        "Twice that of the other maxima",
+        "Half that of the other maxima",
+        "Independent of slit width"
+      ],
+      "answer": 1,
+      "solution": "The central maximum runs between the first minima on either side, at $\\sin\\theta = \\pm\\dfrac{\\lambda}{a}$, so its angular width is $\\dfrac{2\\lambda}{a}$.\n\nThe secondary maxima each span only $\\dfrac{\\lambda}{a}$, so the central maximum is **twice** as wide — and far brighter.\n\nIt also **widens as the slit narrows**, which is the opposite of what intuition suggests and is the signature of diffraction."
+    },
+    {
+      "id": "tn12p-opt-05",
+      "chapter": "Optics",
+      "topic": "Polarisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Polarisation of light establishes that light is:",
+      "options": [
+        "A longitudinal wave",
+        "A transverse wave",
+        "A stream of particles",
+        "Not a wave"
+      ],
+      "answer": 1,
+      "solution": "A **longitudinal** wave has its oscillation along the direction of travel, so all directions perpendicular to it are equivalent and there is nothing to restrict — a longitudinal wave **cannot be polarised**.\n\nThat light **can** be polarised proves it is **transverse**.\n\nThis is why sound cannot be polarised, and it was a decisive piece of evidence in establishing the wave nature and later the electromagnetic nature of light."
+    },
+    {
+      "id": "tn12p-opt-06",
+      "chapter": "Optics",
+      "topic": "Polarisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Brewster's law states that at the polarising angle $i_p$:",
+      "options": [
+        "$\\tan i_p = n$",
+        "$\\sin i_p = n$",
+        "$\\cos i_p = n$",
+        "$i_p = n$"
+      ],
+      "answer": 0,
+      "solution": "**Brewster's law**: $\\tan i_p = n$.\n\nAt this angle the reflected ray is **completely plane polarised**, and the reflected and refracted rays are **perpendicular** to each other — the two facts are equivalent, and the perpendicularity is what the law really expresses.\n\nFor glass with $n = 1.5$, $i_p \\approx 57^\\circ$. It is why polarising sunglasses cut glare from water and roads, where the reflection is near this angle."
+    },
+    {
+      "id": "tn12p-opt-07",
+      "chapter": "Optics",
+      "topic": "Optical instruments",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The resolving power of a telescope is increased by:",
+      "options": [
+        "Increasing the focal length",
+        "Increasing the objective aperture",
+        "Increasing the eyepiece power",
+        "Reducing the aperture"
+      ],
+      "answer": 1,
+      "solution": "Resolving power $= \\dfrac{a}{1.22\\lambda}$, where $a$ is the **objective aperture**, so a larger aperture resolves finer detail.\n\nThis is a **diffraction** limit, and it is why research telescopes are built ever larger — not to gather more light, though they do, but to see finer detail.\n\nIncreasing the eyepiece power raises the **magnification** and not the resolving power: it makes a blurred image bigger without making it sharper, which is empty magnification."
+    },
+    {
+      "id": "tn12p-opt-08",
+      "chapter": "Optics",
+      "topic": "Interference",
+      "type": "mcq",
+      "marks": 1,
+      "q": "For sustained interference, the two sources must be:",
+      "options": [
+        "Of equal intensity only",
+        "Coherent, with a constant phase difference",
+        "Of different frequency",
+        "Very far apart"
+      ],
+      "answer": 1,
+      "solution": "The essential condition is **coherence**: a **constant phase difference** maintained over time. Without it the fringes shift so rapidly that only a uniform average brightness is seen.\n\nThe sources must also be of the **same frequency**. Equal intensity is not required, but it gives the best contrast, since the minima are then completely dark.\n\nTwo independent lamps are never coherent, which is why interference is demonstrated by **splitting one beam** — as Young's double slit does."
+    },
+    {
+      "id": "tn12p-opt-09",
+      "chapter": "Optics",
+      "topic": "Refraction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The critical angle for a medium of refractive index $\\sqrt2$ is:",
+      "options": [
+        "$30^\\circ$",
+        "$45^\\circ$",
+        "$60^\\circ$",
+        "$90^\\circ$"
+      ],
+      "answer": 1,
+      "solution": "$\\sin C = \\dfrac{1}{n} = \\dfrac{1}{\\sqrt2}$\n\n$C = \\sin^{-1}\\left(\\dfrac{1}{\\sqrt2}\\right) = \\mathbf{45^\\circ}$"
+    },
+    {
+      "id": "tn12p-opt-10",
+      "chapter": "Optics",
+      "topic": "Reflection",
+      "type": "numeric",
+      "marks": 3,
+      "q": "An object is placed $30\\ \\text{cm}$ from a concave mirror of focal length $20\\ \\text{cm}$. Find the image distance, in centimetres. Give the magnitude.",
+      "answer": 60,
+      "tolerance": 1,
+      "accept": [
+        "60",
+        "-60"
+      ],
+      "solution": "Using the mirror formula with the real-is-positive convention $\\dfrac{1}{v} + \\dfrac{1}{u} = \\dfrac{1}{f}$ in magnitudes:\n\n$\\dfrac{1}{v} = \\dfrac{1}{20} - \\dfrac{1}{30} = \\dfrac{3 - 2}{60} = \\dfrac{1}{60}$\n\n$v = \\mathbf{60\\ \\text{cm}}$ — a real, inverted, magnified image, since the object lies between $f$ and $2f$."
+    },
+    {
+      "id": "tn12p-opt-11",
+      "chapter": "Optics",
+      "topic": "Interference",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a double-slit experiment, $\\lambda = 500\\ \\text{nm}$, $d = 0.25\\ \\text{mm}$ and $D = 1\\ \\text{m}$. Find the fringe width, in millimetres.",
+      "answer": 2,
+      "tolerance": 0.05,
+      "accept": [
+        "2",
+        "2 mm"
+      ],
+      "solution": "$\\beta = \\dfrac{\\lambda D}{d} = \\dfrac{500\\times10^{-9} \\times 1}{0.25\\times10^{-3}}$\n\n$= \\dfrac{5\\times10^{-7}}{2.5\\times10^{-4}} = 2\\times10^{-3}\\ \\text{m} = \\mathbf{2\\ \\text{mm}}$"
+    },
+    {
+      "id": "tn12p-opt-12",
+      "chapter": "Optics",
+      "topic": "Optical instruments",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A telescope has an objective of focal length $100\\ \\text{cm}$ and an eyepiece of $5\\ \\text{cm}$. Find its magnifying power in normal adjustment.",
+      "answer": 20,
+      "tolerance": 0.5,
+      "accept": [
+        "20"
+      ],
+      "solution": "In normal adjustment $M = \\dfrac{f_o}{f_e} = \\dfrac{100}{5} = \\mathbf{20}$.\n\nThe tube length is then $f_o + f_e = 105\\ \\text{cm}$."
+    },
+    {
+      "id": "tn12p-opt-13",
+      "chapter": "Optics",
+      "topic": "Polarisation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the polarising angle for glass of refractive index $1.732$, in degrees.",
+      "answer": 60,
+      "tolerance": 0.5,
+      "accept": [
+        "60"
+      ],
+      "solution": "$\\tan i_p = n = 1.732 = \\sqrt3$\n\n$i_p = \\tan^{-1}(\\sqrt3) = \\mathbf{60^\\circ}$"
+    },
+    {
+      "id": "tn12p-opt-14",
+      "chapter": "Optics",
+      "topic": "Diffraction",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Light of wavelength $600\\ \\text{nm}$ falls on a slit of width $0.2\\ \\text{mm}$. Find the angular position of the first minimum, in radians. Give the answer in the form $a\\times10^{-3}$ and state $a$.",
+      "answer": 3,
+      "tolerance": 0.05,
+      "accept": [
+        "3"
+      ],
+      "solution": "First minimum: $a\\sin\\theta = \\lambda$, and for small angles $\\sin\\theta \\approx \\theta$.\n\n$\\theta = \\dfrac{\\lambda}{a} = \\dfrac{600\\times10^{-9}}{0.2\\times10^{-3}} = \\dfrac{6\\times10^{-7}}{2\\times10^{-4}} = 3\\times10^{-3}\\ \\text{rad}$\n\nSo $a = \\mathbf{3}$."
+    },
+    {
+      "id": "tn12p-opt-15",
+      "chapter": "Optics",
+      "topic": "Interference",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe Young's double-slit experiment. Derive the expression for fringe width, state the conditions for sustained interference, and explain how interference is reconciled with the conservation of energy.",
+      "solution": "**The experiment.** Monochromatic light falls on a narrow single slit $S$, which then illuminates two close parallel slits $S_1$ and $S_2$ equidistant from it. Light from the two slits overlaps on a screen a distance $D$ away, producing alternate bright and dark **fringes**.\n\nThe single slit $S$ is essential and easily overlooked: it makes $S_1$ and $S_2$ **coherent** by deriving them both from one wavefront.\n\n**Deriving the fringe width.**\n\nLet $d$ be the slit separation and $D$ the slit-to-screen distance, with $D \\gg d$. Consider a point $P$ on the screen at distance $y$ from the centre.\n\nThe **path difference** between the two routes is\n\n$\\Delta = S_2P - S_1P \\approx \\dfrac{yd}{D}$\n\nusing the approximation valid when $D \\gg d$ and $y \\ll D$.\n\n**Bright fringes (constructive)** occur when the path difference is a whole number of wavelengths:\n\n$\\dfrac{y_nd}{D} = n\\lambda \\Rightarrow y_n = \\dfrac{n\\lambda D}{d}$, $n = 0, 1, 2 \\ldots$\n\n**Dark fringes (destructive)** occur at an odd number of half wavelengths:\n\n$y_n = \\dfrac{(2n-1)\\lambda D}{2d}$\n\n**Fringe width** $\\beta$ is the separation of consecutive bright fringes:\n\n$\\beta = y_{n+1} - y_n = \\dfrac{(n+1)\\lambda D}{d} - \\dfrac{n\\lambda D}{d}$\n\n$\\boxed{\\beta = \\dfrac{\\lambda D}{d}}$\n\nThe same expression comes out for consecutive dark fringes, so **bright and dark fringes are equally spaced** and the pattern is uniform.\n\nThree consequences follow at once: the fringes **widen** with longer wavelength (red gives wider fringes than blue), **widen** with a more distant screen, and **narrow** as the slits are moved apart. Immersing the apparatus in water shortens $\\lambda$ and so narrows the fringes by a factor of $n$.\n\n**Conditions for sustained interference.**\n\n- The sources must be **coherent** — a **constant phase difference** maintained in time. This is the essential condition, and it is why the pattern must be produced by splitting a single beam.\n- They must be of the **same frequency**, or the phase difference would drift.\n- They should be **narrow and close together**, so that $\\beta$ is large enough to see.\n- They should be of **comparable amplitude**, so the dark fringes are genuinely dark and the contrast is good.\n- For a stable pattern the light should be **monochromatic**; white light gives a white centre with coloured fringes either side, since each wavelength has its own $\\beta$.\n\n**Interference and the conservation of energy.**\n\nThis is the objection that troubled people when interference was first demonstrated, and it deserves a direct answer.\n\nThe worry is that at a dark fringe, two beams of light arrive and produce **darkness**. Where has that energy gone? It looks as though light plus light equals nothing, and energy has been destroyed.\n\nThe answer is that **energy is not destroyed but redistributed**.\n\nAt a bright fringe the amplitudes add, so if each slit alone gives amplitude $a$ and intensity $I \\propto a^{2}$:\n\n$I_{\\max} \\propto (a + a)^{2} = 4a^{2} = 4I$\n\nSo a bright fringe is **four times** as intense as one slit alone — not twice. The **extra** energy at the maxima is exactly the energy **missing** from the minima.\n\nAveraging over the whole pattern: the mean of $4I$ at the maxima and $0$ at the minima is $2I$ — which is precisely the total that the two slits deliver. Nothing is created and nothing is lost.\n\n**So the correct statement is that interference redistributes energy in space**, taking it from the dark fringes and concentrating it in the bright ones. The total energy falling on the screen is exactly what the two slits emit, and the conservation law is not merely respected but is what fixes the factor of 4.\n\nThat the maxima are four times, and not twice, the single-slit intensity is therefore not an incidental detail — it is the quantitative proof that energy is conserved."
+    }
+  ]
+}
