@@ -97,7 +97,9 @@ numbers, which survive extraction.
 | Chemistry in Everyday Life | Antacids | mcq | 1 | TN HSE Mar 2023 |
 
 The question id carries the paper's own numbering: `tn12c-kin-25q33` is question
-33 of the 2025 paper.
+33 of the 2025 paper. Every number was checked against the paper's text after
+writing, and nine that had been inferred from the section layout were wrong and
+were corrected — an id is a claim too.
 
 ## Answers were worked out, never copied
 
@@ -111,14 +113,14 @@ No answer key was used; each was solved independently. Four worth naming:
   with temperature; 2.71×10⁻¹⁴ is the only option above 1.00×10⁻¹⁴.
 - **1.73 BM (2023 Q4).** One unpaired electron: Cu²⁺ is d⁹. [CoCl₆]⁴⁻ has three,
   TiCl₄ none, and square planar [Ni(CN)₄]²⁻ none.
-- **Aluminium, ccp, r = 125 pm (2024 Q22).** a = 2√2 r = 353.6 pm.
+- **Aluminium, ccp, r = 125 pm (2024 Q27).** a = 2√2 r = 353.6 pm.
 
 ## Changes of form, stated plainly
 
 - Two paper MCQs are asked as **typed numbers**, because the app grades a number
   directly: the moles of I₂ from one mole of dichromate (3), and the oxidation
   number of Pt in [Pt(NO₂)(H₂O)(NH₃)₂]Br (+2).
-- *"Can Fe³⁺ oxidise bromide to bromine?"* (2024 Q23) is a **short answer** that
+- *"Can Fe³⁺ oxidise bromide to bromine?"* (2024 Q20) is a **short answer** that
   expects **No**; the paper wants the reasoning, which the worked solution gives.
 - Paper answers that ask for a unit now say which one (*"in pm"*, *"in seconds"*).
 - Degree signs, subscripts and charges lost in extraction are re-typeset in

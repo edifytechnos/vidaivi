@@ -120,7 +120,7 @@
       "solution": "One faraday, $96500\\,\\mathrm{C}$, is the charge on one mole of electrons.\n\n$9650\\,\\mathrm{C} = 0.1$ mol of electrons $= 0.1 \\times 6.022 \\times 10^{23} = \\mathbf{6.022 \\times 10^{22}}$."
     },
     {
-      "id": "tn12c-ele-24q11",
+      "id": "tn12c-ele-24q10",
       "chapter": "Electrochemistry",
       "topic": "Batteries",
       "source": "TN HSE Mar 2024",
@@ -153,7 +153,7 @@
       "solution": "Zinc has the more negative electrode potential ($-0.76\\,\\mathrm{V}$ against $-0.44\\,\\mathrm{V}$ for iron), so it is **oxidised in preference**.\n\nEven when the coating is scratched, zinc corrodes first and protects the iron as a sacrificial anode. Tin plating cannot do this: tin is below iron, so a scratch speeds up rusting."
     },
     {
-      "id": "tn12c-ele-24q23",
+      "id": "tn12c-ele-24q20",
       "chapter": "Electrochemistry",
       "topic": "Electrode potential",
       "source": "TN HSE Mar 2024",

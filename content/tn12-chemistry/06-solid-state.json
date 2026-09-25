@@ -88,7 +88,7 @@
       "solution": "In fluorite, $\\mathrm{Ca^{2+}}$ ions form an FCC lattice and $\\mathrm{F^-}$ ions fill **all** the tetrahedral voids.\n\nEach $\\mathrm{F^-}$ sits among 4 $\\mathrm{Ca^{2+}}$; each $\\mathrm{Ca^{2+}}$ is surrounded by 8 $\\mathrm{F^-}$. So **8 and 4**, in the ratio needed for $\\mathrm{CaF_2}$."
     },
     {
-      "id": "tn12c-sol-23q13",
+      "id": "tn12c-sol-23q12",
       "chapter": "Solid State",
       "topic": "Defects",
       "source": "TN HSE Mar 2023",
@@ -213,7 +213,7 @@
       "solution": "A close-packed arrangement of $N$ spheres contains $\\mathbf{2N}$ **tetrahedral** voids and $N$ **octahedral** voids.\n\nSo tetrahedral voids are twice as numerous, but each is **smaller** — radius ratio $0.225$ against $0.414$ for octahedral.\n\nWhich void a cation occupies is decided by its size relative to the anion, and that in turn determines the structure type: $\\text{ZnS}$ has cations in tetrahedral voids, $\\text{NaCl}$ in octahedral ones."
     },
     {
-      "id": "tn12c-sol-24q22",
+      "id": "tn12c-sol-24q27",
       "chapter": "Solid State",
       "topic": "Unit cells",
       "source": "TN HSE Mar 2024",
