@@ -1,0 +1,236 @@
+{
+  "id": "lib-tn12p-atn",
+  "title": "Atomic and Nuclear Physics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12p-atn-01",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Rutherford model",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Rutherford's alpha-scattering experiment established the existence of the:",
+      "options": [
+        "Electron",
+        "Small dense positively charged nucleus",
+        "Neutron",
+        "Proton"
+      ],
+      "answer": 1,
+      "solution": "A very small fraction of alpha particles were scattered through large angles, and a few came almost straight back — which Rutherford called as surprising as a shell bouncing off tissue paper.\n\nThat required a **small, dense, positively charged nucleus** containing almost all the atom's mass, with the atom otherwise mostly empty space.\n\nThe nucleus is about $10^{-15}\\ \\text{m}$ across against the atom's $10^{-10}\\ \\text{m}$ — a factor of $10^{5}$, which is why most alphas passed through undeflected."
+    },
+    {
+      "id": "tn12p-atn-02",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Bohr model",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Bohr model, the angular momentum of an electron in the $n$th orbit is:",
+      "options": [
+        "$\\dfrac{nh}{2\\pi}$",
+        "$\\dfrac{nh}{4\\pi}$",
+        "$nh$",
+        "$\\dfrac{h}{2\\pi n}$"
+      ],
+      "answer": 0,
+      "solution": "Bohr's quantisation condition is $mvr = \\mathbf{\\dfrac{nh}{2\\pi}} = n\\hbar$.\n\nBohr simply **postulated** it with no justification. De Broglie later supplied one: treating the orbit as a standing electron wave requires a whole number of wavelengths round the circumference,\n\n$2\\pi r = n\\lambda = \\dfrac{nh}{mv}$\n\nwhich rearranges to exactly Bohr's condition. That is a genuinely satisfying moment — an arbitrary postulate turning out to be a standing-wave condition."
+    },
+    {
+      "id": "tn12p-atn-03",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Nuclear binding energy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Energy is released in both nuclear fission and fusion because in each case the products have:",
+      "options": [
+        "Lower binding energy per nucleon",
+        "Higher binding energy per nucleon",
+        "The same binding energy",
+        "No binding energy"
+      ],
+      "answer": 1,
+      "solution": "The binding energy per nucleon curve peaks near $A \\approx 56$ (iron and nickel) at about $8.8\\ \\text{MeV}$.\n\n**Fission** of a heavy nucleus and **fusion** of light ones both move the products **towards** that peak, so the binding energy per nucleon **increases** and the difference is released.\n\nThis is why iron is the end of the line for stellar fusion: past it, fusion would **consume** energy rather than release it, which is what triggers a supernova."
+    },
+    {
+      "id": "tn12p-atn-04",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Radioactivity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In beta-minus decay, the atomic number of the nucleus:",
+      "options": [
+        "Decreases by 1",
+        "Increases by 1",
+        "Decreases by 2",
+        "Is unchanged"
+      ],
+      "answer": 1,
+      "solution": "In $\\beta^{-}$ decay a neutron converts into a proton, an electron and an antineutrino:\n\n$n \\rightarrow p + e^{-} + \\bar{\\nu}$\n\nSo $Z$ **increases by 1** while the mass number $A$ is **unchanged**.\n\nCompare: **alpha** decay reduces $Z$ by 2 and $A$ by 4; **gamma** emission changes neither, being only a loss of excitation energy."
+    },
+    {
+      "id": "tn12p-atn-05",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Radioactivity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The half-life of a radioactive sample is independent of:",
+      "options": [
+        "The nuclide",
+        "Temperature, pressure and chemical state",
+        "The decay constant",
+        "The type of decay"
+      ],
+      "answer": 1,
+      "solution": "Radioactive decay is a **nuclear** process, and the nucleus is shielded from the chemical environment by the surrounding electrons.\n\nSo the half-life is **unaffected by temperature, pressure or chemical combination** — uranium in an ore decays at the same rate as uranium metal.\n\nIt is entirely fixed by the nuclide, through $t_{1/2} = \\dfrac{0.693}{\\lambda}$. That reliability is precisely what makes radiometric dating possible."
+    },
+    {
+      "id": "tn12p-atn-06",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Bohr model",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The series of hydrogen spectral lines that falls in the visible region is the:",
+      "options": [
+        "Lyman series",
+        "Balmer series",
+        "Paschen series",
+        "Brackett series"
+      ],
+      "answer": 1,
+      "solution": "The **Balmer** series, with transitions ending at $n = 2$, falls in the **visible** region.\n\nThe **Lyman** series ($n = 1$) is in the ultraviolet, since those transitions involve the largest energy gaps; the **Paschen** ($n = 3$) and beyond are in the infrared.\n\nIt is no accident that the Balmer series was discovered first — it is the one the eye can see."
+    },
+    {
+      "id": "tn12p-atn-07",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Nuclear reactions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In a nuclear reactor, the moderator is used to:",
+      "options": [
+        "Absorb neutrons completely",
+        "Slow down fast neutrons",
+        "Speed up neutrons",
+        "Cool the reactor"
+      ],
+      "answer": 1,
+      "solution": "A **moderator** — graphite or heavy water — **slows fast neutrons** to thermal energies, because $\\text{U}^{235}$ fissions far more readily with slow neutrons.\n\nLight nuclei are used because a neutron loses most energy in a collision with a particle of similar mass, just as in an elastic collision between equal masses.\n\nThe **control rods**, of cadmium or boron, are the ones that **absorb** neutrons, and they regulate the chain reaction. The **coolant** carries away the heat. Three different jobs, three different materials."
+    },
+    {
+      "id": "tn12p-atn-08",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Nuclear binding energy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The mass of a nucleus is always less than the sum of the masses of its constituent nucleons. This difference is called the:",
+      "options": [
+        "Binding energy",
+        "Mass defect",
+        "Packing fraction",
+        "Nuclear density"
+      ],
+      "answer": 1,
+      "solution": "The **mass defect** $\\Delta m$ is that difference, and it is converted into the **binding energy** by\n\n$E_b = \\Delta m\\,c^{2}$\n\nThe mass is missing because it was released as energy when the nucleons came together; supplying that same energy back is what it takes to pull them apart.\n\nSo mass defect and binding energy are the same fact in two units — which is as direct a demonstration of $E = mc^{2}$ as physics offers."
+    },
+    {
+      "id": "tn12p-atn-09",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Nuclear properties",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The density of nuclear matter is:",
+      "options": [
+        "Proportional to the mass number",
+        "Nearly the same for all nuclei",
+        "Inversely proportional to $A$",
+        "Different for every element"
+      ],
+      "answer": 1,
+      "solution": "Since $R = R_0A^{1/3}$, the volume $\\propto R^{3} \\propto A$, while the mass also $\\propto A$.\n\nSo the density is **independent of $A$** and is nearly the same for every nucleus — about $2.3\\times10^{17}\\ \\mathrm{kg\\,m^{-3}}$.\n\nThat is around $10^{14}$ times the density of water; a teaspoon of it would weigh a hundred million tonnes. It also implies nuclear matter is **incompressible**, and is essentially the density of a neutron star."
+    },
+    {
+      "id": "tn12p-atn-10",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Bohr model",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the energy, in electronvolts, of the $n = 2$ level of hydrogen. Give the magnitude.",
+      "answer": 3.4,
+      "tolerance": 0.05,
+      "accept": [
+        "3.4",
+        "-3.4"
+      ],
+      "solution": "$E_n = -\\dfrac{13.6}{n^{2}}\\ \\text{eV}$\n\n$E_2 = -\\dfrac{13.6}{4} = -3.4\\ \\text{eV}$\n\nThe magnitude is $\\mathbf{3.4\\ \\text{eV}}$."
+    },
+    {
+      "id": "tn12p-atn-11",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Radioactivity",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A radioactive sample has a half-life of $4$ days. What fraction remains after $12$ days? Give the answer as a decimal.",
+      "answer": 0.125,
+      "tolerance": 0.005,
+      "accept": [
+        "0.125",
+        "1/8"
+      ],
+      "solution": "Number of half-lives: $\\dfrac{12}{4} = 3$\n\nFraction remaining $= \\left(\\dfrac{1}{2}\\right)^{3} = \\dfrac{1}{8} = \\mathbf{0.125}$"
+    },
+    {
+      "id": "tn12p-atn-12",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Radioactivity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A nuclide has a decay constant of $0.0231\\ \\mathrm{day^{-1}}$. Find its half-life, in days.",
+      "answer": 30,
+      "tolerance": 0.5,
+      "accept": [
+        "30"
+      ],
+      "solution": "$t_{1/2} = \\dfrac{0.693}{\\lambda} = \\dfrac{0.693}{0.0231} = \\mathbf{30\\ \\text{days}}$"
+    },
+    {
+      "id": "tn12p-atn-13",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Nuclear binding energy",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A mass defect of $0.1\\ \\text{u}$ corresponds to how much energy, in MeV? Take $1\\ \\text{u} = 931\\ \\text{MeV}/c^{2}$.",
+      "answer": 93.1,
+      "tolerance": 0.5,
+      "accept": [
+        "93.1",
+        "93"
+      ],
+      "solution": "$E = \\Delta m\\,c^{2} = 0.1 \\times 931 = \\mathbf{93.1\\ \\text{MeV}}$.\n\nThe conversion $1\\ \\text{u} = 931\\ \\text{MeV}$ is worth memorising — it turns every mass-defect calculation into a single multiplication."
+    },
+    {
+      "id": "tn12p-atn-14",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Nuclear properties",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Using $R = R_0A^{1/3}$ with $R_0 = 1.2\\ \\text{fm}$, find the radius of a nucleus with $A = 64$, in femtometres.",
+      "answer": 4.8,
+      "tolerance": 0.1,
+      "accept": [
+        "4.8"
+      ],
+      "solution": "$64^{1/3} = 4$\n\n$R = 1.2 \\times 4 = \\mathbf{4.8\\ \\text{fm}}$"
+    },
+    {
+      "id": "tn12p-atn-15",
+      "chapter": "Atomic and Nuclear Physics",
+      "topic": "Bohr model",
+      "type": "long",
+      "marks": 5,
+      "q": "State Bohr's postulates and derive the expression for the energy of the $n$th orbit of the hydrogen atom. Explain how the model accounts for the hydrogen spectral series, and state two of its limitations.",
+      "solution": "**The postulates.**\n\n**1. Stationary orbits.** The electron revolves in certain permitted circular orbits **without radiating energy**, contrary to classical electrodynamics — which is asserted precisely because atoms manifestly do not collapse. A classical accelerating electron would spiral into the nucleus in about $10^{-8}\\ \\text{s}$.\n\n**2. Quantisation of angular momentum.** Only those orbits are allowed for which\n\n$mvr = \\dfrac{nh}{2\\pi}$, $n = 1, 2, 3 \\ldots$\n\n**3. Emission and absorption.** Radiation is emitted or absorbed only when the electron **jumps** between orbits, with\n\n$h\\nu = E_2 - E_1$\n\n**Deriving the energy.**\n\nThe electrostatic attraction provides the centripetal force:\n\n$\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{e^{2}}{r^{2}} = \\dfrac{mv^{2}}{r}$\n\n$mv^{2} = \\dfrac{e^{2}}{4\\pi\\varepsilon_0 r}$ ... (1)\n\n**Kinetic energy** is therefore\n\n$K = \\tfrac{1}{2}mv^{2} = \\dfrac{e^{2}}{8\\pi\\varepsilon_0 r}$\n\n**Potential energy** of the electron in the nucleus's field:\n\n$U = -\\dfrac{e^{2}}{4\\pi\\varepsilon_0 r}$\n\n**Total energy:**\n\n$E = K + U = \\dfrac{e^{2}}{8\\pi\\varepsilon_0 r} - \\dfrac{e^{2}}{4\\pi\\varepsilon_0 r} = -\\dfrac{e^{2}}{8\\pi\\varepsilon_0 r}$\n\nNote $E = -K$, and the total energy is **negative**, meaning the electron is bound.\n\nNow bring in quantisation. From postulate 2, $v = \\dfrac{nh}{2\\pi mr}$; substituting into (1) and solving gives\n\n$r_n = \\dfrac{n^{2}h^{2}\\varepsilon_0}{\\pi me^{2}}$, so $r_n \\propto n^{2}$\n\nPutting this into the expression for $E$:\n\n$\\boxed{E_n = -\\dfrac{me^{4}}{8\\varepsilon_0^{2}h^{2}n^{2}} = -\\dfrac{13.6}{n^{2}}\\ \\text{eV}}$\n\n**Accounting for the spectral series.** A jump from level $n_2$ down to $n_1$ emits a photon of energy\n\n$h\\nu = E_{n_2} - E_{n_1} = 13.6\\left(\\dfrac{1}{n_1^{2}} - \\dfrac{1}{n_2^{2}}\\right)\\ \\text{eV}$\n\nwhich gives the Rydberg formula\n\n$\\dfrac{1}{\\lambda} = R\\left(\\dfrac{1}{n_1^{2}} - \\dfrac{1}{n_2^{2}}\\right)$\n\nEach series is defined by where the electron **lands**:\n\n**Lyman**, $n_1 = 1$ — ultraviolet, the largest energy gaps\n\n**Balmer**, $n_1 = 2$ — visible, and so the first to be discovered\n\n**Paschen**, $n_1 = 3$ — infrared\n\n**Brackett**, $n_1 = 4$, and **Pfund**, $n_1 = 5$ — far infrared\n\nThe triumph is that the Rydberg constant, previously an **empirical** number fitted to spectra, now emerges from $m$, $e$, $h$ and $\\varepsilon_0$ — and the computed value agrees with the measured one. A formula that had merely described the lines was now derived from a model.\n\n**Two limitations.**\n\n**1. It fails for every atom with more than one electron.** The derivation assumes a single electron feeling only the nucleus. Add a second and the electron-electron repulsion makes the problem intractable this way; the model gets helium's spectrum badly wrong. It works for hydrogen and for hydrogen-like ions ($\\text{He}^{+}$, $\\text{Li}^{2+}$) and nowhere else.\n\n**2. It contradicts the uncertainty principle.** A Bohr orbit specifies the electron's position **and** momentum simultaneously and exactly, which $\\Delta x\\,\\Delta p \\ge \\dfrac{h}{4\\pi}$ forbids. The orbit is not merely unmeasurable — it is not a meaningful description of where the electron is. This is why quantum mechanics replaced the **orbit** with the **orbital**, a probability distribution.\n\nOther failures worth knowing: it cannot explain the **fine structure** of spectral lines seen at high resolution, the **Zeeman** and **Stark** splittings in magnetic and electric fields, or the **relative intensities** of the lines — it says which lines appear but not how bright they are."
+    }
+  ]
+}
