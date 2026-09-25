@@ -1,0 +1,235 @@
+{
+  "id": "lib-jeec-bnd",
+  "title": "Chemical Bonding and Molecular Structure",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "jeec-bnd-01",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Hybridisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The hybridisation of carbon in ethyne ($\\text{C}_2\\text{H}_2$) is:",
+      "options": [
+        "$sp^{3}$",
+        "$sp^{2}$",
+        "$sp$",
+        "$sp^{3}d$"
+      ],
+      "answer": 2,
+      "solution": "Each carbon in ethyne is bonded to two things, one hydrogen and one carbon, with a triple bond between the carbons.\n\nTwo sigma bonds and no lone pairs means **two** electron domains, so the hybridisation is $\\mathbf{sp}$ and the molecule is **linear** ($180^\\circ$).\n\nThe remaining two unhybridised $p$ orbitals on each carbon form the two pi bonds of the triple bond."
+    },
+    {
+      "id": "jeec-bnd-02",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "VSEPR",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The shape of the $\\text{NH}_3$ molecule is:",
+      "options": [
+        "Trigonal planar",
+        "Pyramidal",
+        "Tetrahedral",
+        "Linear"
+      ],
+      "answer": 1,
+      "solution": "Nitrogen has three bonding pairs and **one lone pair** — four electron domains in all, so the electron geometry is tetrahedral.\n\nThe shape names only the atoms, so $\\text{NH}_3$ is **trigonal pyramidal**.\n\nThe lone pair repels more strongly than a bonding pair, which is why the bond angle is $107^\\circ$ rather than the tetrahedral $109.5^\\circ$."
+    },
+    {
+      "id": "jeec-bnd-03",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Molecular orbital theory",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The bond order of the $\\text{O}_2$ molecule is:",
+      "options": [
+        "$1$",
+        "$2$",
+        "$3$",
+        "$1.5$"
+      ],
+      "answer": 1,
+      "solution": "$\\text{O}_2$ has 16 electrons. Filling the molecular orbitals gives 10 bonding and 6 antibonding.\n\nBond order $= \\dfrac{N_b - N_a}{2} = \\dfrac{10 - 6}{2} = \\mathbf{2}$, a double bond.\n\nThe great success of MO theory here is that it also predicts the two electrons in the $\\pi^{*}$ orbitals are **unpaired**, making $\\text{O}_2$ **paramagnetic** — an observed fact the Lewis structure cannot account for at all."
+    },
+    {
+      "id": "jeec-bnd-04",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Polarity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which molecule has a **zero** dipole moment?",
+      "options": [
+        "$\\text{H}_2\\text{O}$",
+        "$\\text{NH}_3$",
+        "$\\text{CO}_2$",
+        "$\\text{HCl}$"
+      ],
+      "answer": 2,
+      "solution": "$\\text{CO}_2$ has polar C=O bonds, but the molecule is **linear**, so the two equal bond dipoles point in exactly opposite directions and cancel.\n\nDipole moment $= \\mathbf{0}$.\n\nWater and ammonia are bent and pyramidal respectively, so their bond dipoles do not cancel. **Polar bonds do not guarantee a polar molecule — the shape decides.**"
+    },
+    {
+      "id": "jeec-bnd-05",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Hydrogen bonding",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Water has an unusually high boiling point compared with $\\text{H}_2\\text{S}$ because of:",
+      "options": [
+        "Its higher molar mass",
+        "Hydrogen bonding",
+        "Covalent bonding",
+        "Its ionic character"
+      ],
+      "answer": 1,
+      "solution": "Water's molar mass (18) is actually **lower** than $\\text{H}_2\\text{S}$'s (34), so on mass alone it should boil at a lower temperature.\n\nIt does not, because oxygen is small and highly electronegative, allowing strong **hydrogen bonding** between molecules. Sulphur is too large and not electronegative enough for this.\n\nBreaking that extensive network takes a great deal of energy, which is also why ice floats and why water has such a high specific heat capacity."
+    },
+    {
+      "id": "jeec-bnd-06",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "VSEPR",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The bond angle in $\\text{H}_2\\text{O}$ is about:",
+      "options": [
+        "$109.5^\\circ$",
+        "$104.5^\\circ$",
+        "$120^\\circ$",
+        "$90^\\circ$"
+      ],
+      "answer": 1,
+      "solution": "Oxygen has two bonding pairs and **two** lone pairs — four domains, so tetrahedral electron geometry.\n\nTwo lone pairs squeeze the bonding pairs harder than one does, so the angle closes further than in ammonia:\n\n$\\text{CH}_4$: $109.5^\\circ$ (no lone pairs), $\\text{NH}_3$: $107^\\circ$ (one), $\\text{H}_2\\text{O}$: $\\mathbf{104.5^\\circ}$ (two)."
+    },
+    {
+      "id": "jeec-bnd-07",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Ionic character",
+      "type": "mcq",
+      "marks": 1,
+      "q": "According to Fajans' rules, covalent character in an ionic bond increases with:",
+      "options": [
+        "Larger cation size",
+        "Smaller cation and larger anion",
+        "Lower cation charge",
+        "Smaller anion"
+      ],
+      "answer": 1,
+      "solution": "Fajans' rules: covalent character rises when the cation **polarises** the anion more strongly.\n\nThat happens with a **small, highly charged cation** and a **large, easily polarised anion**.\n\nSo $\\text{LiI}$ is far more covalent than $\\text{LiF}$ — iodide is large and soft, fluoride small and hard — and $\\text{AlCl}_3$ is largely covalent because $\\text{Al}^{3+}$ is small and triply charged."
+    },
+    {
+      "id": "jeec-bnd-08",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Resonance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "All three C–O bonds in the carbonate ion $\\text{CO}_3^{2-}$ are:",
+      "options": [
+        "Of different lengths",
+        "Identical, of intermediate length",
+        "Two double and one single",
+        "Purely single"
+      ],
+      "answer": 1,
+      "solution": "A single Lewis structure shows one double and two single bonds, but experiment finds all three bonds **identical**, with a length between a single and a double bond.\n\nThe ion is a **resonance hybrid** of three equivalent structures. The pi electrons are delocalised over all three oxygens, giving each bond an order of $1\\tfrac{1}{3}$.\n\nThe individual resonance structures do not exist and the ion does not flicker between them. The hybrid is the real thing."
+    },
+    {
+      "id": "jeec-bnd-09",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Hybridisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The hybridisation of the central atom in $\\text{PCl}_5$ is:",
+      "options": [
+        "$sp^{3}$",
+        "$sp^{3}d$",
+        "$sp^{3}d^{2}$",
+        "$sp^{2}$"
+      ],
+      "answer": 1,
+      "solution": "Phosphorus forms five bonds with no lone pairs — **five** electron domains, so $\\mathbf{sp^{3}d}$ and a **trigonal bipyramidal** shape.\n\nThis needs an expanded octet, which phosphorus can manage because it has empty $3d$ orbitals. Nitrogen, in period 2, cannot, and $\\text{NCl}_5$ does not exist.\n\nThe axial bonds are longer than the equatorial ones, which is why $\\text{PCl}_5$ ionises readily in the solid state."
+    },
+    {
+      "id": "jeec-bnd-10",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Molecular orbital theory",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the bond order of $\\text{N}_2$, which has 10 bonding and 4 antibonding electrons.",
+      "answer": 3,
+      "tolerance": 0.05,
+      "accept": [
+        "3",
+        "3.0"
+      ],
+      "solution": "Bond order $= \\dfrac{N_b - N_a}{2} = \\dfrac{10 - 4}{2} = \\dfrac{6}{2} = \\mathbf{3}$.\n\nA triple bond, which is why $\\text{N}_2$ is so remarkably unreactive, with a bond dissociation energy of $941\\ \\mathrm{kJ\\,mol^{-1}}$."
+    },
+    {
+      "id": "jeec-bnd-11",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Molecular orbital theory",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the bond order of the $\\text{O}_2^{+}$ ion, which has 10 bonding and 5 antibonding electrons.",
+      "answer": 2.5,
+      "tolerance": 0.05,
+      "accept": [
+        "2.5"
+      ],
+      "solution": "Bond order $= \\dfrac{10 - 5}{2} = \\dfrac{5}{2} = \\mathbf{2.5}$.\n\nRemoving an electron from $\\text{O}_2$ takes it out of an **antibonding** orbital, so the bond order rises from 2 to 2.5 and the bond gets **shorter and stronger**. That is a genuinely counter-intuitive result and a favourite examination point."
+    },
+    {
+      "id": "jeec-bnd-12",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "VSEPR",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many lone pairs are on the central atom in $\\text{XeF}_4$? (Xe has 8 valence electrons.)",
+      "answer": 2,
+      "tolerance": 0.5,
+      "accept": [
+        "2"
+      ],
+      "solution": "Xenon has 8 valence electrons; four are used in the four Xe–F bonds, leaving 4 electrons $= \\mathbf{2}$ lone pairs.\n\nSix domains give an octahedral electron geometry, and the two lone pairs take opposite axial positions to be as far apart as possible, making $\\text{XeF}_4$ **square planar**."
+    },
+    {
+      "id": "jeec-bnd-13",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Hybridisation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In benzene ($\\text{C}_6\\text{H}_6$), how many sigma bonds are there in total?",
+      "answer": 12,
+      "tolerance": 0.5,
+      "accept": [
+        "12"
+      ],
+      "solution": "Six C–C sigma bonds around the ring, plus six C–H sigma bonds.\n\nTotal $= 6 + 6 = \\mathbf{12}$ sigma bonds.\n\nThere are also three pi bonds' worth of electrons, but they are delocalised over the whole ring rather than fixed between particular carbons, which is the source of benzene's aromatic stability."
+    },
+    {
+      "id": "jeec-bnd-14",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "Polarity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A bond has charge $1.6\\times10^{-19}\\ \\text{C}$ separated by $1\\ \\text{Å}$. Find the dipole moment in debye, given $1\\ \\text{D} = 3.33\\times10^{-30}\\ \\mathrm{C\\,m}$. Give the answer to one decimal place.",
+      "answer": 4.8,
+      "tolerance": 0.1,
+      "accept": [
+        "4.8",
+        "4.8 D"
+      ],
+      "solution": "$\\mu = q \\times d = 1.6\\times10^{-19} \\times 1\\times10^{-10} = 1.6\\times10^{-29}\\ \\mathrm{C\\,m}$\n\nConverting: $\\dfrac{1.6\\times10^{-29}}{3.33\\times10^{-30}} = \\mathbf{4.8\\ \\text{D}}$.\n\nThis is the dipole moment a bond would have if it were **completely ionic**, and comparing a measured value against it is how percentage ionic character is worked out."
+    },
+    {
+      "id": "jeec-bnd-15",
+      "chapter": "Chemical Bonding and Molecular Structure",
+      "topic": "VSEPR",
+      "type": "long",
+      "marks": 5,
+      "q": "State the main postulates of VSEPR theory. Use it to predict and explain the shapes and bond angles of $\\text{CH}_4$, $\\text{NH}_3$ and $\\text{H}_2\\text{O}$, and account for the trend in their bond angles.",
+      "solution": "**The postulates.**\n\n1. The shape of a molecule is decided by the number of **electron pairs** in the valence shell of the central atom, both bonding pairs and lone pairs.\n\n2. These pairs **repel** one another and arrange themselves as far apart as possible, minimising the repulsion.\n\n3. The strength of repulsion follows the order **lone pair-lone pair > lone pair-bond pair > bond pair-bond pair**, because a lone pair is held by only one nucleus and so spreads out more, occupying more angular space.\n\n4. A multiple bond counts as **one** domain, but repels slightly more strongly than a single bond.\n\n5. The **shape** is named by the positions of the atoms only. Lone pairs decide the geometry but are not part of the name.\n\n**The three molecules.** All three central atoms have **four** electron domains, so all three have a **tetrahedral electron geometry**. What differs is how many of those domains hold a lone pair.\n\n**Methane, $\\text{CH}_4$.** Carbon has 4 valence electrons, all four used in bonding. Four bonding pairs, **no lone pairs**.\n\nShape: **tetrahedral**. Bond angle: **$109.5^\\circ$**, the exact tetrahedral angle, because all four domains are identical and repel equally.\n\n**Ammonia, $\\text{NH}_3$.** Nitrogen has 5 valence electrons; three are bonded, leaving **one lone pair**.\n\nShape: **trigonal pyramidal**. Bond angle: **$107^\\circ$**.\n\nThe lone pair repels the three bonding pairs more strongly than they repel each other, pushing them together and closing the angle below $109.5^\\circ$.\n\n**Water, $\\text{H}_2\\text{O}$.** Oxygen has 6 valence electrons; two are bonded, leaving **two lone pairs**.\n\nShape: **bent**, or V-shaped. Bond angle: **$104.5^\\circ$**.\n\n**The trend, and why.**\n\n$\\text{CH}_4\\ (109.5^\\circ) > \\text{NH}_3\\ (107^\\circ) > \\text{H}_2\\text{O}\\ (104.5^\\circ)$\n\nThe angle closes by roughly $2.5^\\circ$ for **each lone pair added**. Each lone pair, being bound to only one nucleus, occupies a wider angular region than a bonding pair and squeezes the remaining bonds closer together.\n\nThis is the real test of VSEPR's third postulate. A theory that treated all electron pairs alike would predict $109.5^\\circ$ for all three, and the fact that the deviation is not only in the right direction but roughly proportional to the **number** of lone pairs is strong evidence that the lone-pair repulsion ordering is real.\n\n**A caution.** VSEPR predicts shape well and bond angles only approximately. It says nothing about bond lengths or bond strengths, and it fails for some transition metal complexes, where $d$-orbital effects dominate. It is a rule of thumb of remarkable reach, not a theory derived from first principles."
+    }
+  ]
+}

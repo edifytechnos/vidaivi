@@ -20,7 +20,7 @@
         "$10\\sqrt{3}$"
       ],
       "answer": 1,
-      "solution": "Join the centre $O$ to the two ends $A$ and $B$ of the chord. Both $OA$ and $OB$ are radii, so\n\n$OA = OB = 10$ cm and $\\angle AOB = 90°$\n\nThat makes $\\triangle OAB$ a right-angled triangle with the chord as its hypotenuse. By Pythagoras:\n\n$AB = \\sqrt{10^{2} + 10^{2}} = \\sqrt{200} = \\mathbf{10\\sqrt{2}}$ cm\n\nNo circle theorem is needed — the two radii and the chord simply *are* a right triangle, and an isosceles one at that.\n\nA quick check on size: the chord must be shorter than the diameter (20 cm) and longer than the radius. $10\\sqrt{2} \\approx 14.1$ sits nicely between.",
+      "solution": "Join the centre $O$ to the two ends $A$ and $B$ of the chord. Both $OA$ and $OB$ are radii, so\n\n$OA = OB = 10$ cm and $\\angle AOB = 90°$\n\nThat makes $\\triangle OAB$ a right-angled triangle with the chord as its hypotenuse. By Pythagoras:\n\n$AB = \\sqrt{10^{2} + 10^{2}} = \\sqrt{200} = \\mathbf{10\\sqrt{2}}$ cm\n\nNo circle theorem is needed — the two radii and the chord simply **are** a right triangle, and an isosceles one at that.\n\nA quick check on size: the chord must be shorter than the diameter (20 cm) and longer than the radius. $10\\sqrt{2} \\approx 14.1$ sits nicely between.",
       "chapter": "Circles"
     },
     {
@@ -69,7 +69,7 @@
         "infinitely many"
       ],
       "answer": 0,
-      "solution": "A tangent touches a circle at exactly one point and never enters it. A line through a point *inside* the circle must cut straight across and come out the other side — so it meets the circle **twice**, which makes it a secant, not a tangent.\n\nSo the answer is **$0$**: no tangent can be drawn from an interior point.\n\nThe full picture is worth holding as a set of three:\n\n- point **inside** the circle → **0** tangents\n- point **on** the circle → **1** tangent (at that very point)\n- point **outside** the circle → **2** tangents, and they are equal in length\n\nEach case follows from the same idea: how many lines through the point can touch without crossing.",
+      "solution": "A tangent touches a circle at exactly one point and never enters it. A line through a point **inside** the circle must cut straight across and come out the other side — so it meets the circle **twice**, which makes it a secant, not a tangent.\n\nSo the answer is **$0$**: no tangent can be drawn from an interior point.\n\nThe full picture is worth holding as a set of three:\n\n- point **inside** the circle → **0** tangents\n- point **on** the circle → **1** tangent (at that very point)\n- point **outside** the circle → **2** tangents, and they are equal in length\n\nEach case follows from the same idea: how many lines through the point can touch without crossing.",
       "chapter": "Circles"
     },
     {
@@ -153,7 +153,7 @@
       "type": "long",
       "marks": 3,
       "q": "From an external point $P$, two tangents $PA$ and $PB$ are drawn to a circle with centre $O$. Prove that $OP$ is the perpendicular bisector of the chord $AB$.",
-      "solution": "**Given.** Tangents $PA$ and $PB$ from an external point $P$ to a circle with centre $O$. Let $OP$ meet $AB$ at $M$.\n\n**To prove.** $AM = MB$ and $OP \\perp AB$.\n\n**Proof.** Compare $\\triangle PAM$ and $\\triangle PBM$:\n\n$PA = PB$ (tangents from an external point) … (1)\n\n$\\angle APM = \\angle BPM$ ($OP$ bisects the angle between the tangents, since $\\triangle OAP \\cong \\triangle OBP$ by RHS: $OA = OB$ as radii, $OP$ common, and right angles at $A$ and $B$) … (2)\n\n$PM = PM$ (common) … (3)\n\nBy **SAS**, $\\triangle PAM \\cong \\triangle PBM$.\n\nTherefore, by CPCT:\n\n$AM = MB$ … so $M$ is the mid-point of $AB$\n\nand\n\n$\\angle AMP = \\angle BMP$\n\nBut these two angles sit on the straight line $AB$, so they add to $180°$. Being equal, each must be $90°$:\n\n$OP \\perp AB$\n\nHence $OP$ is the perpendicular bisector of $AB$. ∎\n\nThe pattern is worth naming: prove two triangles congruent, then read off *both* conclusions from CPCT. The equal halves give the bisector; the equal angles on a straight line give the perpendicular.",
+      "solution": "**Given.** Tangents $PA$ and $PB$ from an external point $P$ to a circle with centre $O$. Let $OP$ meet $AB$ at $M$.\n\n**To prove.** $AM = MB$ and $OP \\perp AB$.\n\n**Proof.** Compare $\\triangle PAM$ and $\\triangle PBM$:\n\n$PA = PB$ (tangents from an external point) … (1)\n\n$\\angle APM = \\angle BPM$ ($OP$ bisects the angle between the tangents, since $\\triangle OAP \\cong \\triangle OBP$ by RHS: $OA = OB$ as radii, $OP$ common, and right angles at $A$ and $B$) … (2)\n\n$PM = PM$ (common) … (3)\n\nBy **SAS**, $\\triangle PAM \\cong \\triangle PBM$.\n\nTherefore, by CPCT:\n\n$AM = MB$ … so $M$ is the mid-point of $AB$\n\nand\n\n$\\angle AMP = \\angle BMP$\n\nBut these two angles sit on the straight line $AB$, so they add to $180°$. Being equal, each must be $90°$:\n\n$OP \\perp AB$\n\nHence $OP$ is the perpendicular bisector of $AB$. ∎\n\nThe pattern is worth naming: prove two triangles congruent, then read off **both** conclusions from CPCT. The equal halves give the bisector; the equal angles on a straight line give the perpendicular.",
       "chapter": "Circles"
     },
     {
@@ -182,7 +182,7 @@
       "type": "long",
       "marks": 3,
       "q": "A tangent $PQ$ at a point $P$ of a circle of radius 5 cm meets a line through the centre $O$ at a point $Q$ such that $OQ = 13$ cm. Find the length of $PQ$.",
-      "solution": "**Draw the radius to the point of contact.** $OP$ is a radius and $PQ$ is a tangent at $P$, so\n\n$OP \\perp PQ$, i.e. $\\angle OPQ = 90°$\n\nThat makes $\\triangle OPQ$ right-angled at $P$, with $OQ$ as the hypotenuse.\n\n**Apply Pythagoras:**\n\n$OQ^{2} = OP^{2} + PQ^{2}$\n\n$13^{2} = 5^{2} + PQ^{2}$\n\n$169 = 25 + PQ^{2}$\n\n$PQ^{2} = 144 \\Rightarrow PQ = \\mathbf{12}$ cm\n\n**Check the sides make sense:** $5, 12, 13$ is a right triangle ✓ and the hypotenuse $OQ = 13$ is the longest, as it must be.\n\nThe one decision in this question is *where* the right angle is. It is at $P$, the point of contact — not at $Q$ and not at $O$. Get that right and Pythagoras finishes it in one line.",
+      "solution": "**Draw the radius to the point of contact.** $OP$ is a radius and $PQ$ is a tangent at $P$, so\n\n$OP \\perp PQ$, i.e. $\\angle OPQ = 90°$\n\nThat makes $\\triangle OPQ$ right-angled at $P$, with $OQ$ as the hypotenuse.\n\n**Apply Pythagoras:**\n\n$OQ^{2} = OP^{2} + PQ^{2}$\n\n$13^{2} = 5^{2} + PQ^{2}$\n\n$169 = 25 + PQ^{2}$\n\n$PQ^{2} = 144 \\Rightarrow PQ = \\mathbf{12}$ cm\n\n**Check the sides make sense:** $5, 12, 13$ is a right triangle ✓ and the hypotenuse $OQ = 13$ is the longest, as it must be.\n\nThe one decision in this question is **where** the right angle is. It is at $P$, the point of contact — not at $Q$ and not at $O$. Get that right and Pythagoras finishes it in one line.",
       "chapter": "Circles"
     },
     {

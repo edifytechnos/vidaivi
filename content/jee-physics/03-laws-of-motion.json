@@ -68,7 +68,7 @@
         "Are unequal in magnitude"
       ],
       "answer": 2,
-      "solution": "Newton's third law pairs are equal, opposite, and act on **different** bodies.\n\nBecause they act on different bodies they can never cancel each other — cancellation only makes sense for forces on the *same* body.\n\nThat is why a horse can pull a cart: the forward force on the cart and the backward force on the horse act on different objects."
+      "solution": "Newton's third law pairs are equal, opposite, and act on **different** bodies.\n\nBecause they act on different bodies they can never cancel each other — cancellation only makes sense for forces on the **same** body.\n\nThat is why a horse can pull a cart: the forward force on the cart and the backward force on the horse act on different objects."
     },
     {
       "id": "jeep-lom-05",
@@ -148,7 +148,7 @@
         "Zero"
       ],
       "answer": 1,
-      "solution": "It takes a larger force to *start* a body sliding than to *keep* it sliding, so\n\n$\\mu_k < \\mu_s$.\n\nThe microscopic picture is that a stationary contact settles into interlocked asperities which must be broken; once moving, the surfaces skate over one another with less interlocking.\n\nThis is why a pushed crate lurches forward the moment it breaks free."
+      "solution": "It takes a larger force to **start** a body sliding than to **keep** it sliding, so\n\n$\\mu_k < \\mu_s$.\n\nThe microscopic picture is that a stationary contact settles into interlocked asperities which must be broken; once moving, the surfaces skate over one another with less interlocking.\n\nThis is why a pushed crate lurches forward the moment it breaks free."
     },
     {
       "id": "jeep-lom-10",
@@ -232,7 +232,7 @@
       "type": "long",
       "marks": 5,
       "q": "Derive the expression for the maximum safe speed of a vehicle on a road banked at angle $\\theta$, with coefficient of friction $\\mu$ between tyres and road. Hence obtain the speed for which no friction is needed, and explain why roads are banked.",
-      "solution": "**Setting up.** Let the vehicle of mass $m$ move in a circle of radius $r$ on a road banked at $\\theta$. Three forces act: the weight $mg$ down, the normal reaction $N$ perpendicular to the road surface, and friction $f$ along the surface.\n\nAt maximum speed the vehicle tends to slide *outwards* and *up* the slope, so friction acts **down** the slope, $f = \\mu N$.\n\n**Resolving.** Vertically (no vertical acceleration):\n\n$N\\cos\\theta = mg + \\mu N\\sin\\theta$\n\nHorizontally (towards the centre, supplying the centripetal force):\n\n$N\\sin\\theta + \\mu N\\cos\\theta = \\dfrac{mv^{2}}{r}$\n\n**Dividing** the second by the first to eliminate $N$ and $m$:\n\n$\\dfrac{\\sin\\theta + \\mu\\cos\\theta}{\\cos\\theta - \\mu\\sin\\theta} = \\dfrac{v^{2}}{rg}$\n\nDividing numerator and denominator by $\\cos\\theta$:\n\n$v_{\\max} = \\sqrt{rg\\left(\\dfrac{\\tan\\theta + \\mu}{1 - \\mu\\tan\\theta}\\right)}$\n\n**The frictionless speed.** Setting $\\mu = 0$:\n\n$v_0 = \\sqrt{rg\\tan\\theta}$\n\nAt exactly this speed the horizontal component of the normal reaction alone supplies the centripetal force, and no friction is called on at all.\n\n**Why roads are banked.** On a level road the whole centripetal force must come from friction, which is unreliable — it falls sharply when the road is wet, icy or dusty. Banking makes a component of the normal reaction do the work instead, so the turn stays safe when friction cannot be counted on, and a much higher speed is possible for the same radius. Railway tracks are canted for the same reason."
+      "solution": "**Setting up.** Let the vehicle of mass $m$ move in a circle of radius $r$ on a road banked at $\\theta$. Three forces act: the weight $mg$ down, the normal reaction $N$ perpendicular to the road surface, and friction $f$ along the surface.\n\nAt maximum speed the vehicle tends to slide **outwards** and **up** the slope, so friction acts **down** the slope, $f = \\mu N$.\n\n**Resolving.** Vertically (no vertical acceleration):\n\n$N\\cos\\theta = mg + \\mu N\\sin\\theta$\n\nHorizontally (towards the centre, supplying the centripetal force):\n\n$N\\sin\\theta + \\mu N\\cos\\theta = \\dfrac{mv^{2}}{r}$\n\n**Dividing** the second by the first to eliminate $N$ and $m$:\n\n$\\dfrac{\\sin\\theta + \\mu\\cos\\theta}{\\cos\\theta - \\mu\\sin\\theta} = \\dfrac{v^{2}}{rg}$\n\nDividing numerator and denominator by $\\cos\\theta$:\n\n$v_{\\max} = \\sqrt{rg\\left(\\dfrac{\\tan\\theta + \\mu}{1 - \\mu\\tan\\theta}\\right)}$\n\n**The frictionless speed.** Setting $\\mu = 0$:\n\n$v_0 = \\sqrt{rg\\tan\\theta}$\n\nAt exactly this speed the horizontal component of the normal reaction alone supplies the centripetal force, and no friction is called on at all.\n\n**Why roads are banked.** On a level road the whole centripetal force must come from friction, which is unreliable — it falls sharply when the road is wet, icy or dusty. Banking makes a component of the normal reaction do the work instead, so the turn stays safe when friction cannot be counted on, and a much higher speed is possible for the same radius. Railway tracks are canted for the same reason."
     }
   ]
 }

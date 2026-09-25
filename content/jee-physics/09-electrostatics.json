@@ -100,7 +100,7 @@
         "Zero always"
       ],
       "answer": 1,
-      "solution": "$\\vec{\\tau} = \\vec{p}\\times\\vec{E}$, so the magnitude is $\\mathbf{pE\\sin\\theta}$.\n\nThe torque is greatest when the dipole is perpendicular to the field and zero when it is aligned — which is the stable equilibrium.\n\nIn a *uniform* field the net **force** is zero, so the dipole rotates without translating."
+      "solution": "$\\vec{\\tau} = \\vec{p}\\times\\vec{E}$, so the magnitude is $\\mathbf{pE\\sin\\theta}$.\n\nThe torque is greatest when the dipole is perpendicular to the field and zero when it is aligned — which is the stable equilibrium.\n\nIn a **uniform** field the net **force** is zero, so the dipole rotates without translating."
     },
     {
       "id": "jeep-els-07",
@@ -116,7 +116,7 @@
         "$CV^{2}$"
       ],
       "answer": 2,
-      "solution": "$U = \\mathbf{\\tfrac{1}{2}CV^{2}}$, with the equivalent forms $\\dfrac{Q^{2}}{2C}$ and $\\tfrac{1}{2}QV$.\n\nThe factor of a half arises because the potential rises from $0$ to $V$ as the capacitor charges — the *average* potential through which charge is carried is $V/2$."
+      "solution": "$U = \\mathbf{\\tfrac{1}{2}CV^{2}}$, with the equivalent forms $\\dfrac{Q^{2}}{2C}$ and $\\tfrac{1}{2}QV$.\n\nThe factor of a half arises because the potential rises from $0$ to $V$ as the capacitor charges — the **average** potential through which charge is carried is $V/2$."
     },
     {
       "id": "jeep-els-08",

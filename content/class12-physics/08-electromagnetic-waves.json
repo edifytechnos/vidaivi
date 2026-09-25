@@ -12,7 +12,7 @@
       "topic": "Photon momentum",
       "type": "mcq",
       "q": "Which of the following electromagnetic waves has photons of largest momentum?",
-      "solution": "The momentum of a photon is\n\n$$p = \\frac{h}{\\lambda} = \\frac{hf}{c},$$\n\nso momentum rises with **frequency** and falls with wavelength.\n\nRanking the four by frequency, lowest first :\n\n$$\\text{AM radio} < \\text{TV} < \\text{microwaves} < \\text{X-rays}.$$\n\nX-rays sit at around $10^{18}$ Hz, while AM radio is around $10^6$ Hz — a factor of $10^{12}$. So **X-rays** carry photons of by far the largest momentum.\n\nThe same ordering gives photon *energy*, since $E = hf = pc$; for photons, energy and momentum are proportional.",
+      "solution": "The momentum of a photon is\n\n$$p = \\frac{h}{\\lambda} = \\frac{hf}{c},$$\n\nso momentum rises with **frequency** and falls with wavelength.\n\nRanking the four by frequency, lowest first :\n\n$$\\text{AM radio} < \\text{TV} < \\text{microwaves} < \\text{X-rays}.$$\n\nX-rays sit at around $10^{18}$ Hz, while AM radio is around $10^6$ Hz — a factor of $10^{12}$. So **X-rays** carry photons of by far the largest momentum.\n\nThe same ordering gives photon **energy**, since $E = hf = pc$; for photons, energy and momentum are proportional.",
       "marks": 1,
       "source": "CBSE 2025",
       "options": [
@@ -45,7 +45,7 @@
       "topic": "Speed of EM waves",
       "type": "mcq",
       "q": "The speed of electromagnetic waves in vacuum is given by:",
-      "solution": "$c = \\mathbf{\\dfrac{1}{\\sqrt{\\mu_{0}\\varepsilon_{0}}}} \\approx 3 \\times 10^{8}$ m/s.\n\nTwo constants measured in laboratory experiments on charges and currents combine to give the speed of light — the clue that told Maxwell light *is* an electromagnetic wave.",
+      "solution": "$c = \\mathbf{\\dfrac{1}{\\sqrt{\\mu_{0}\\varepsilon_{0}}}} \\approx 3 \\times 10^{8}$ m/s.\n\nTwo constants measured in laboratory experiments on charges and currents combine to give the speed of light — the clue that told Maxwell light **is** an electromagnetic wave.",
       "marks": 1,
       "options": [
         "$\\sqrt{\\mu_{0}\\varepsilon_{0}}$",

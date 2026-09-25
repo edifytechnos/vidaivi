@@ -124,7 +124,7 @@
       "topic": "Alternating current",
       "type": "mcq",
       "q": "In a purely inductive AC circuit, the current:",
-      "solution": "In a pure inductor the current **lags** by $90°$; in a pure capacitor it **leads** by $90°$.\n\nIn both cases the power factor is zero, so the average power consumed over a cycle is nil — a *wattless* current.",
+      "solution": "In a pure inductor the current **lags** by $90°$; in a pure capacitor it **leads** by $90°$.\n\nIn both cases the power factor is zero, so the average power consumed over a cycle is nil — a **wattless** current.",
       "marks": 4,
       "options": [
         "leads the voltage by 90°",

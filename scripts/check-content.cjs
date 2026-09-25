@@ -103,6 +103,27 @@ for (const dir of dirs.sort()) {
       for (const field of ["q", "solution"]) {
         const text = q[field];
         if (typeof text !== "string") continue;
+        // A THIRD way content renders wrong, and this one had already shipped:
+        // single-asterisk *italics*. `formatText` handles `**bold**` and
+        // nothing else, so `*linear*` is escaped and reaches the student with
+        // its asterisks showing. 356 runs were live across eleven shelves —
+        // 93 of them in Class 10 Maths, the pilot shelf — before this check
+        // existed. Bold is the only emphasis there is; use it.
+        //
+        // The pair must not begin or end with whitespace, so a stray
+        // multiplication like "2 * 3 * 4" is not mistaken for emphasis.
+        // Maths is blanked out first. LaTeX writes an antibonding orbital as
+        // `$\\pi^{*}$` and a dual space as `$V^*$`, and a lone asterisk there is
+        // not emphasis — condemning it would make the rule unusable in exactly
+        // the subjects that need it. Blanking rather than skipping keeps the
+        // offsets, so a `*word*` sitting between two formulas is still caught.
+        const prose = text.replace(/\$\$[^$]*\$\$|\$[^$\n]*\$/g, (m) => " ".repeat(m.length));
+        if (/(?<!\*)\*(?!\*)(\S|\S[^*\n]*\S)\*(?!\*)/.test(prose)) {
+          fail(
+            `${q.id} — ${field} uses *italics*, which formatText cannot render; use **bold**`
+          );
+        }
+
         // A backslash-n is NOT automatically the bug. LaTeX has a handful of
         // commands beginning with "n" — `\nu`, the frequency in a photoelectric
         // question, is the one that found this out — and a blanket

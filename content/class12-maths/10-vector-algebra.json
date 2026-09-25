@@ -184,7 +184,7 @@
       "topic": "Direction cosines",
       "type": "long",
       "q": "Find the direction cosines of the vector $\\vec{a} = \\hat{i} + 2\\hat{j} + 2\\hat{k}$, and verify that their squares add to 1.",
-      "solution": "$\\left|\\vec{a}\\right| = \\sqrt{1 + 4 + 4} = 3$.\n\nThe direction cosines are the components of the unit vector:\n\n$l = \\dfrac13, \\quad m = \\dfrac23, \\quad n = \\dfrac23$.\n\n$l^{2} + m^{2} + n^{2} = \\dfrac{1 + 4 + 4}{9} = 1$. ✓\n\nThey are the cosines of the angles the vector makes with the three axes, and the identity holds for every direction in space — it *is* Pythagoras for the unit vector.",
+      "solution": "$\\left|\\vec{a}\\right| = \\sqrt{1 + 4 + 4} = 3$.\n\nThe direction cosines are the components of the unit vector:\n\n$l = \\dfrac13, \\quad m = \\dfrac23, \\quad n = \\dfrac23$.\n\n$l^{2} + m^{2} + n^{2} = \\dfrac{1 + 4 + 4}{9} = 1$. ✓\n\nThey are the cosines of the angles the vector makes with the three axes, and the identity holds for every direction in space — it **is** Pythagoras for the unit vector.",
       "marks": 2
     }
   ]

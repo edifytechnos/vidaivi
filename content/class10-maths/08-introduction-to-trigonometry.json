@@ -71,7 +71,7 @@
         "$60°$"
       ],
       "answer": 1,
-      "solution": "Treat $\\sin\\theta$ as the unknown and solve the ordinary equation first:\n\n$7 + 4\\sin\\theta = 9$\n\n$4\\sin\\theta = 2$\n\n$\\sin\\theta = \\dfrac{1}{2}$\n\nNow ask which acute angle has sine $\\tfrac{1}{2}$:\n\n$\\theta = \\mathbf{30°}$\n\nThe three values worth knowing cold are $\\sin 30° = \\tfrac{1}{2}$, $\\sin 45° = \\tfrac{1}{\\sqrt{2}}$ and $\\sin 60° = \\tfrac{\\sqrt{3}}{2}$ — they climb as the angle grows, which is a useful check: a sine of only $\\tfrac{1}{2}$ must belong to the *smallest* of the three.\n\nThe word **acute** matters. Without it, $150°$ would also have sine $\\tfrac{1}{2}$.",
+      "solution": "Treat $\\sin\\theta$ as the unknown and solve the ordinary equation first:\n\n$7 + 4\\sin\\theta = 9$\n\n$4\\sin\\theta = 2$\n\n$\\sin\\theta = \\dfrac{1}{2}$\n\nNow ask which acute angle has sine $\\tfrac{1}{2}$:\n\n$\\theta = \\mathbf{30°}$\n\nThe three values worth knowing cold are $\\sin 30° = \\tfrac{1}{2}$, $\\sin 45° = \\tfrac{1}{\\sqrt{2}}$ and $\\sin 60° = \\tfrac{\\sqrt{3}}{2}$ — they climb as the angle grows, which is a useful check: a sine of only $\\tfrac{1}{2}$ must belong to the **smallest** of the three.\n\nThe word **acute** matters. Without it, $150°$ would also have sine $\\tfrac{1}{2}$.",
       "chapter": "Introduction to Trigonometry"
     },
     {
@@ -87,7 +87,7 @@
         "$\\sqrt{3}$"
       ],
       "answer": 1,
-      "solution": "Notice that $32° + 58° = 90°$ — the two angles are **complementary**.\n\nThe complementary rule says $\\cos(90° - \\theta) = \\sin\\theta$, so\n\n$\\cos 58° = \\cos(90° - 32°) = \\sin 32°$\n\nTherefore\n\n$\\dfrac{\\sin 32°}{\\cos 58°} = \\dfrac{\\sin 32°}{\\sin 32°} = \\mathbf{1}$\n\nWhy it works: in a right triangle the two acute angles add to $90°$, and the side that is *opposite* one of them is *adjacent* to the other. So one angle's sine is the other's cosine — the same ratio seen from the other corner.\n\nWhenever two angles in a question add to $90°$, that is the hint. Convert one into the other and watch things cancel.",
+      "solution": "Notice that $32° + 58° = 90°$ — the two angles are **complementary**.\n\nThe complementary rule says $\\cos(90° - \\theta) = \\sin\\theta$, so\n\n$\\cos 58° = \\cos(90° - 32°) = \\sin 32°$\n\nTherefore\n\n$\\dfrac{\\sin 32°}{\\cos 58°} = \\dfrac{\\sin 32°}{\\sin 32°} = \\mathbf{1}$\n\nWhy it works: in a right triangle the two acute angles add to $90°$, and the side that is **opposite** one of them is **adjacent** to the other. So one angle's sine is the other's cosine — the same ratio seen from the other corner.\n\nWhenever two angles in a question add to $90°$, that is the hint. Convert one into the other and watch things cancel.",
       "chapter": "Introduction to Trigonometry"
     },
     {
@@ -136,7 +136,7 @@
       "q": "Evaluate $\\dfrac{\\tan 60°}{\\sin 60°}$.\n\nGive your answer correct to two decimal places.",
       "answer": 2,
       "tolerance": 0.01,
-      "solution": "Substitute the standard values:\n\n$\\tan 60° = \\sqrt{3}$ and $\\sin 60° = \\dfrac{\\sqrt{3}}{2}$\n\n$\\dfrac{\\tan 60°}{\\sin 60°} = \\dfrac{\\sqrt{3}}{\\frac{\\sqrt{3}}{2}} = \\sqrt{3} \\times \\dfrac{2}{\\sqrt{3}} = \\mathbf{2}$\n\nThe $\\sqrt{3}$ cancels completely, which you could have predicted: $\\dfrac{\\tan\\theta}{\\sin\\theta} = \\dfrac{\\sin\\theta/\\cos\\theta}{\\sin\\theta} = \\dfrac{1}{\\cos\\theta} = \\sec\\theta$, and $\\sec 60° = \\dfrac{1}{1/2} = 2$.\n\nSimplifying the *expression* before putting numbers in usually turns a messy surd calculation into a single lookup. It is worth a moment's thought before you start substituting.",
+      "solution": "Substitute the standard values:\n\n$\\tan 60° = \\sqrt{3}$ and $\\sin 60° = \\dfrac{\\sqrt{3}}{2}$\n\n$\\dfrac{\\tan 60°}{\\sin 60°} = \\dfrac{\\sqrt{3}}{\\frac{\\sqrt{3}}{2}} = \\sqrt{3} \\times \\dfrac{2}{\\sqrt{3}} = \\mathbf{2}$\n\nThe $\\sqrt{3}$ cancels completely, which you could have predicted: $\\dfrac{\\tan\\theta}{\\sin\\theta} = \\dfrac{\\sin\\theta/\\cos\\theta}{\\sin\\theta} = \\dfrac{1}{\\cos\\theta} = \\sec\\theta$, and $\\sec 60° = \\dfrac{1}{1/2} = 2$.\n\nSimplifying the **expression** before putting numbers in usually turns a messy surd calculation into a single lookup. It is worth a moment's thought before you start substituting.",
       "chapter": "Introduction to Trigonometry"
     },
     {

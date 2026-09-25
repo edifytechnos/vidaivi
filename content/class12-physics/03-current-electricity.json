@@ -157,7 +157,7 @@
       "topic": "Wheatstone bridge",
       "type": "long",
       "q": "State the balance condition of a Wheatstone bridge and explain what 'balanced' means physically.",
-      "solution": "With resistances $P$, $Q$, $R$, $S$ in the four arms and a galvanometer across the bridge, the balance condition is\n\n$\\mathbf{\\dfrac{P}{Q} = \\dfrac{R}{S}}$.\n\n**Physically**, balance means the two ends of the galvanometer sit at the **same potential**, so no current flows through it.\n\nThe bridge then reports a *ratio*, and the reading does not depend on the supply voltage or on the galvanometer's own resistance — which is why it measures an unknown resistance so precisely.\n\nIt is a null method: instead of measuring a quantity, you adjust until there is nothing to measure, and a zero can be spotted far more accurately than a number can be read.",
+      "solution": "With resistances $P$, $Q$, $R$, $S$ in the four arms and a galvanometer across the bridge, the balance condition is\n\n$\\mathbf{\\dfrac{P}{Q} = \\dfrac{R}{S}}$.\n\n**Physically**, balance means the two ends of the galvanometer sit at the **same potential**, so no current flows through it.\n\nThe bridge then reports a **ratio**, and the reading does not depend on the supply voltage or on the galvanometer's own resistance — which is why it measures an unknown resistance so precisely.\n\nIt is a null method: instead of measuring a quantity, you adjust until there is nothing to measure, and a zero can be spotted far more accurately than a number can be read.",
       "marks": 3
     },
     {

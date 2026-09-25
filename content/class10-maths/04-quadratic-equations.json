@@ -20,7 +20,7 @@
         "not real"
       ],
       "answer": 3,
-      "solution": "Everything about the *nature* of the roots is decided by one number, the **discriminant**:\n\n$D = b^{2} - 4ac$\n\nHere $a = 1$, $b = 1$, $c = 1$:\n\n$D = 1^{2} - 4(1)(1) = 1 - 4 = -3$\n\n$D < 0$, so the roots are **not real**.\n\nThe rule in one line: $D > 0$ → two different real roots; $D = 0$ → two equal real roots; $D < 0$ → no real roots.\n\nPicture the parabola $y = x^{2} + x + 1$. A negative discriminant means it floats entirely above the $x$-axis and never touches it — and a root is exactly a place where it touches.",
+      "solution": "Everything about the **nature** of the roots is decided by one number, the **discriminant**:\n\n$D = b^{2} - 4ac$\n\nHere $a = 1$, $b = 1$, $c = 1$:\n\n$D = 1^{2} - 4(1)(1) = 1 - 4 = -3$\n\n$D < 0$, so the roots are **not real**.\n\nThe rule in one line: $D > 0$ → two different real roots; $D = 0$ → two equal real roots; $D < 0$ → no real roots.\n\nPicture the parabola $y = x^{2} + x + 1$. A negative discriminant means it floats entirely above the $x$-axis and never touches it — and a root is exactly a place where it touches.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -54,7 +54,7 @@
         "$7 : 2$"
       ],
       "answer": 1,
-      "solution": "For $ax^{2} + bx + c = 0$:\n\nSum of roots $= -\\dfrac{b}{a} = -\\dfrac{-6}{5} = \\dfrac{6}{5}$\n\nProduct of roots $= \\dfrac{c}{a} = \\dfrac{21}{5}$\n\nThe ratio is\n\n$\\dfrac{6/5}{21/5} = \\dfrac{6}{21} = \\dfrac{2}{7}$\n\nso **$2 : 7$**.\n\nThe fives cancel, and that is not a coincidence: both the sum and the product are divided by the same $a$, so in a *ratio* of the two, $a$ disappears entirely. You only ever needed $-b$ and $c$.",
+      "solution": "For $ax^{2} + bx + c = 0$:\n\nSum of roots $= -\\dfrac{b}{a} = -\\dfrac{-6}{5} = \\dfrac{6}{5}$\n\nProduct of roots $= \\dfrac{c}{a} = \\dfrac{21}{5}$\n\nThe ratio is\n\n$\\dfrac{6/5}{21/5} = \\dfrac{6}{21} = \\dfrac{2}{7}$\n\nso **$2 : 7$**.\n\nThe fives cancel, and that is not a coincidence: both the sum and the product are divided by the same $a$, so in a **ratio** of the two, $a$ disappears entirely. You only ever needed $-b$ and $c$.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -71,7 +71,7 @@
         "rational and equal"
       ],
       "answer": 2,
-      "solution": "$a = 4$, $b = -5$, $c = 4$:\n\n$D = (-5)^{2} - 4(4)(4) = 25 - 64 = -39$\n\n$D < 0$, so the roots are **not real**.\n\nOnce the discriminant comes out negative, every other option is beside the point — irrational, rational, distinct and equal all describe *real* roots, and there are none here.\n\nA useful sanity check: whenever $b^{2}$ is small next to $4ac$, expect a negative discriminant. Here $25$ was never going to beat $64$.",
+      "solution": "$a = 4$, $b = -5$, $c = 4$:\n\n$D = (-5)^{2} - 4(4)(4) = 25 - 64 = -39$\n\n$D < 0$, so the roots are **not real**.\n\nOnce the discriminant comes out negative, every other option is beside the point — irrational, rational, distinct and equal all describe **real** roots, and there are none here.\n\nA useful sanity check: whenever $b^{2}$ is small next to $4ac$, expect a negative discriminant. Here $25$ was never going to beat $64$.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -88,7 +88,7 @@
         "$-2$"
       ],
       "answer": 2,
-      "solution": "\"$y = 1$ is a solution\" means substituting $y = 1$ makes the equation true.\n\n$p(1)^{2} + p(1) + 3 = 0$\n\n$p + p + 3 = 0$\n\n$2p = -3$\n\n$p = \\mathbf{-\\dfrac{3}{2}}$\n\nCheck: with $p = -\\tfrac{3}{2}$ the equation is $-\\tfrac{3}{2}y^{2} - \\tfrac{3}{2}y + 3 = 0$, i.e. $y^{2} + y - 2 = 0$, which factors as $(y - 1)(y + 2)$ — so $y = 1$ is indeed a root ✓\n\nNo formula needed. A root is a value that *works*, so put it in and see what the unknown coefficient has to be.",
+      "solution": "\"$y = 1$ is a solution\" means substituting $y = 1$ makes the equation true.\n\n$p(1)^{2} + p(1) + 3 = 0$\n\n$p + p + 3 = 0$\n\n$2p = -3$\n\n$p = \\mathbf{-\\dfrac{3}{2}}$\n\nCheck: with $p = -\\tfrac{3}{2}$ the equation is $-\\tfrac{3}{2}y^{2} - \\tfrac{3}{2}y + 3 = 0$, i.e. $y^{2} + y - 2 = 0$, which factors as $(y - 1)(y + 2)$ — so $y = 1$ is indeed a root ✓\n\nNo formula needed. A root is a value that **works**, so put it in and see what the unknown coefficient has to be.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -104,7 +104,7 @@
         "$b^{2} - 4bc$"
       ],
       "answer": 1,
-      "solution": "The formula $D = b^{2} - 4ac$ is written for the *standard* equation $ax^{2} + bx + c = 0$ — where $a$ is the coefficient of $x^{2}$ and $b$ the coefficient of $x$.\n\nHere the letters have been **swapped on purpose**: the coefficient of $x^{2}$ is $b$, and the coefficient of $x$ is $a$.\n\nSo, matching by *position* and not by letter:\n\n$D = (\\text{coefficient of } x)^{2} - 4 \\times (\\text{coefficient of } x^{2}) \\times (\\text{constant})$\n\n$= \\mathbf{a^{2} - 4bc}$\n\nOption (A) is the trap — it is the memorised formula applied to the wrong letters. Learn the discriminant by *what each slot means*, not by which letter usually sits there.",
+      "solution": "The formula $D = b^{2} - 4ac$ is written for the **standard** equation $ax^{2} + bx + c = 0$ — where $a$ is the coefficient of $x^{2}$ and $b$ the coefficient of $x$.\n\nHere the letters have been **swapped on purpose**: the coefficient of $x^{2}$ is $b$, and the coefficient of $x$ is $a$.\n\nSo, matching by **position** and not by letter:\n\n$D = (\\text{coefficient of } x)^{2} - 4 \\times (\\text{coefficient of } x^{2}) \\times (\\text{constant})$\n\n$= \\mathbf{a^{2} - 4bc}$\n\nOption (A) is the trap — it is the memorised formula applied to the wrong letters. Learn the discriminant by **what each slot means**, not by which letter usually sits there.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -120,7 +120,7 @@
         "exactly one real root"
       ],
       "answer": 2,
-      "solution": "$a = 2$, $b = -4$, $c = 3$:\n\n$D = (-4)^{2} - 4(2)(3) = 16 - 24 = -8$\n\n$D < 0$, so there are **no real roots**.\n\nThe parabola $y = 2x^{2} - 4x + 3$ opens upwards (because $a > 0$) and its lowest point sits at $y = 1$, above the axis — so it never crosses.\n\nOption (D) is a distractor worth naming: a quadratic never has *exactly one* root in the sense of a single number arriving alone. When $D = 0$ it has two roots that happen to be equal, which is why the phrase is \"two equal real roots\".",
+      "solution": "$a = 2$, $b = -4$, $c = 3$:\n\n$D = (-4)^{2} - 4(2)(3) = 16 - 24 = -8$\n\n$D < 0$, so there are **no real roots**.\n\nThe parabola $y = 2x^{2} - 4x + 3$ opens upwards (because $a > 0$) and its lowest point sits at $y = 1$, above the axis — so it never crosses.\n\nOption (D) is a distractor worth naming: a quadratic never has **exactly one** root in the sense of a single number arriving alone. When $D = 0$ it has two roots that happen to be equal, which is why the phrase is \"two equal real roots\".",
       "chapter": "Quadratic Equations"
     },
     {
@@ -144,7 +144,7 @@
       "q": "Find the positive value of $k$ for which the quadratic equation $4x^{2} + kx + 1 = 0$ has real and equal roots.",
       "answer": 4,
       "tolerance": 0,
-      "solution": "Equal roots means $D = 0$.\n\n$D = k^{2} - 4(4)(1) = k^{2} - 16$\n\n$k^{2} - 16 = 0 \\Rightarrow k^{2} = 16 \\Rightarrow k = \\pm 4$\n\nThe positive value is $k = \\mathbf{4}$.\n\nCheck: $4x^{2} + 4x + 1 = (2x + 1)^{2}$ — a perfect square, root $x = -\\tfrac{1}{2}$ twice ✓\n\nNotice the shape of these questions: the unknown is always in the *middle* coefficient, because that is the one the discriminant squares. Set $D = 0$, and a question about roots turns into a one-line equation in $k$.",
+      "solution": "Equal roots means $D = 0$.\n\n$D = k^{2} - 4(4)(1) = k^{2} - 16$\n\n$k^{2} - 16 = 0 \\Rightarrow k^{2} = 16 \\Rightarrow k = \\pm 4$\n\nThe positive value is $k = \\mathbf{4}$.\n\nCheck: $4x^{2} + 4x + 1 = (2x + 1)^{2}$ — a perfect square, root $x = -\\tfrac{1}{2}$ twice ✓\n\nNotice the shape of these questions: the unknown is always in the **middle** coefficient, because that is the one the discriminant squares. Set $D = 0$, and a question about roots turns into a one-line equation in $k$.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -165,7 +165,7 @@
       "type": "long",
       "marks": 5,
       "q": "A train travels a distance of 90 km at a constant speed. Had the speed been 15 km/h more, it would have taken 30 minutes less for the journey. Find the original speed of the train.",
-      "solution": "**Name the unknown.** Let the original speed be $x$ km/h.\n\n**Write both times.** Time $=$ distance $\\div$ speed:\n\noriginal time $= \\dfrac{90}{x}$ hours,  faster time $= \\dfrac{90}{x + 15}$ hours\n\n**Turn the sentence into an equation.** 30 minutes is $\\tfrac{1}{2}$ hour, and the faster journey is *shorter*:\n\n$\\dfrac{90}{x} - \\dfrac{90}{x + 15} = \\dfrac{1}{2}$\n\n**Clear the fractions.** Multiply through by $2x(x + 15)$:\n\n$180(x + 15) - 180x = x(x + 15)$\n\n$2700 = x^{2} + 15x$\n\n$x^{2} + 15x - 2700 = 0$\n\n**Solve.** Two numbers multiplying to $-2700$ and adding to $15$: $60$ and $-45$.\n\n$(x + 60)(x - 45) = 0 \\Rightarrow x = -60$ or $x = 45$\n\nA speed cannot be negative, so the original speed is **45 km/h**.\n\n**Check:** $\\dfrac{90}{45} = 2$ hours; $\\dfrac{90}{60} = 1.5$ hours; the difference is $0.5$ hour $= 30$ minutes ✓\n\nTwo things earn the marks here. One is the half-hour — always convert minutes before writing the equation. The other is **rejecting $x = -60$ with a reason**: a quadratic gives two answers, and part of the work is knowing which one the real world allows.",
+      "solution": "**Name the unknown.** Let the original speed be $x$ km/h.\n\n**Write both times.** Time $=$ distance $\\div$ speed:\n\noriginal time $= \\dfrac{90}{x}$ hours,  faster time $= \\dfrac{90}{x + 15}$ hours\n\n**Turn the sentence into an equation.** 30 minutes is $\\tfrac{1}{2}$ hour, and the faster journey is **shorter**:\n\n$\\dfrac{90}{x} - \\dfrac{90}{x + 15} = \\dfrac{1}{2}$\n\n**Clear the fractions.** Multiply through by $2x(x + 15)$:\n\n$180(x + 15) - 180x = x(x + 15)$\n\n$2700 = x^{2} + 15x$\n\n$x^{2} + 15x - 2700 = 0$\n\n**Solve.** Two numbers multiplying to $-2700$ and adding to $15$: $60$ and $-45$.\n\n$(x + 60)(x - 45) = 0 \\Rightarrow x = -60$ or $x = 45$\n\nA speed cannot be negative, so the original speed is **45 km/h**.\n\n**Check:** $\\dfrac{90}{45} = 2$ hours; $\\dfrac{90}{60} = 1.5$ hours; the difference is $0.5$ hour $= 30$ minutes ✓\n\nTwo things earn the marks here. One is the half-hour — always convert minutes before writing the equation. The other is **rejecting $x = -60$ with a reason**: a quadratic gives two answers, and part of the work is knowing which one the real world allows.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -185,7 +185,7 @@
       "type": "long",
       "marks": 3,
       "q": "A rectangular lawn measuring 12 m by 10 m has a walkway of uniform width around it, on all four sides. The total area of the lawn and the walkway together is 360 square metres.\n\nTaking the width of the walkway to be $x$ metres:\n\n(i) Form the quadratic equation representing the total area.\n\n(ii) Solve it to find the width of the walkway.",
-      "solution": "**(i) Forming the equation.** The walkway adds $x$ metres on *each* side, so it adds $2x$ to both the length and the breadth:\n\nouter length $= 12 + 2x$,  outer breadth $= 10 + 2x$\n\n$(12 + 2x)(10 + 2x) = 360$\n\n$120 + 24x + 20x + 4x^{2} = 360$\n\n$4x^{2} + 44x - 240 = 0$\n\nDivide by 4:\n\n$x^{2} + 11x - 60 = 0$\n\n**(ii) Solving.** Two numbers multiplying to $-60$ and adding to $11$: $15$ and $-4$.\n\n$(x + 15)(x - 4) = 0 \\Rightarrow x = -15$ or $x = 4$\n\nA width cannot be negative, so the walkway is **4 m wide**.\n\n**Check:** $(12 + 8)(10 + 8) = 20 \\times 18 = 360$ ✓\n\nThe step that costs marks is $2x$, not $x$. Picture walking around the lawn: the path is on the left *and* the right, so the total width grows by two path-widths — the same on the other pair of sides.",
+      "solution": "**(i) Forming the equation.** The walkway adds $x$ metres on **each** side, so it adds $2x$ to both the length and the breadth:\n\nouter length $= 12 + 2x$,  outer breadth $= 10 + 2x$\n\n$(12 + 2x)(10 + 2x) = 360$\n\n$120 + 24x + 20x + 4x^{2} = 360$\n\n$4x^{2} + 44x - 240 = 0$\n\nDivide by 4:\n\n$x^{2} + 11x - 60 = 0$\n\n**(ii) Solving.** Two numbers multiplying to $-60$ and adding to $11$: $15$ and $-4$.\n\n$(x + 15)(x - 4) = 0 \\Rightarrow x = -15$ or $x = 4$\n\nA width cannot be negative, so the walkway is **4 m wide**.\n\n**Check:** $(12 + 8)(10 + 8) = 20 \\times 18 = 360$ ✓\n\nThe step that costs marks is $2x$, not $x$. Picture walking around the lawn: the path is on the left **and** the right, so the total width grows by two path-widths — the same on the other pair of sides.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -194,7 +194,7 @@
       "type": "long",
       "marks": 3,
       "q": "Solve the equation $2x^{2} + x - 6 = 0$ using the quadratic formula.",
-      "solution": "With $a = 2$, $b = 1$, $c = -6$:\n\n**Discriminant first:**\n\n$D = b^{2} - 4ac = 1^{2} - 4(2)(-6) = 1 + 48 = 49$\n\n$D > 0$ and it is a perfect square, so expect two neat rational roots.\n\n**Now the formula:**\n\n$x = \\dfrac{-b \\pm \\sqrt{D}}{2a} = \\dfrac{-1 \\pm \\sqrt{49}}{2(2)} = \\dfrac{-1 \\pm 7}{4}$\n\n$x = \\dfrac{-1 + 7}{4} = \\dfrac{6}{4} = \\dfrac{3}{2}$  or  $x = \\dfrac{-1 - 7}{4} = \\dfrac{-8}{4} = -2$\n\nSo $x = \\mathbf{\\dfrac{3}{2}}$ or $x = \\mathbf{-2}$.\n\n**Check:** $2\\left(\\tfrac{3}{2}\\right)^{2} + \\tfrac{3}{2} - 6 = 4.5 + 1.5 - 6 = 0$ ✓ and $2(4) - 2 - 6 = 0$ ✓\n\nWorking out $D$ *before* the formula is worth the extra line: it tells you whether real roots exist at all, and a perfect-square $D$ warns you that factorising would have been quicker — $2x^{2} + x - 6 = (2x - 3)(x + 2)$.",
+      "solution": "With $a = 2$, $b = 1$, $c = -6$:\n\n**Discriminant first:**\n\n$D = b^{2} - 4ac = 1^{2} - 4(2)(-6) = 1 + 48 = 49$\n\n$D > 0$ and it is a perfect square, so expect two neat rational roots.\n\n**Now the formula:**\n\n$x = \\dfrac{-b \\pm \\sqrt{D}}{2a} = \\dfrac{-1 \\pm \\sqrt{49}}{2(2)} = \\dfrac{-1 \\pm 7}{4}$\n\n$x = \\dfrac{-1 + 7}{4} = \\dfrac{6}{4} = \\dfrac{3}{2}$  or  $x = \\dfrac{-1 - 7}{4} = \\dfrac{-8}{4} = -2$\n\nSo $x = \\mathbf{\\dfrac{3}{2}}$ or $x = \\mathbf{-2}$.\n\n**Check:** $2\\left(\\tfrac{3}{2}\\right)^{2} + \\tfrac{3}{2} - 6 = 4.5 + 1.5 - 6 = 0$ ✓ and $2(4) - 2 - 6 = 0$ ✓\n\nWorking out $D$ **before** the formula is worth the extra line: it tells you whether real roots exist at all, and a perfect-square $D$ warns you that factorising would have been quicker — $2x^{2} + x - 6 = (2x - 3)(x + 2)$.",
       "chapter": "Quadratic Equations"
     },
     {
@@ -203,7 +203,7 @@
       "type": "long",
       "marks": 3,
       "q": "The sum of the squares of two consecutive positive integers is 365. Find the integers.",
-      "solution": "**Name the unknowns.** Let the integers be $x$ and $x + 1$, with $x$ a positive integer.\n\n**Write the equation:**\n\n$x^{2} + (x + 1)^{2} = 365$\n\n$x^{2} + x^{2} + 2x + 1 = 365$\n\n$2x^{2} + 2x - 364 = 0$\n\nDivide by 2:\n\n$x^{2} + x - 182 = 0$\n\n**Solve.** Two numbers multiplying to $-182$ and adding to $1$: $14$ and $-13$.\n\n$(x + 14)(x - 13) = 0 \\Rightarrow x = -14$ or $x = 13$\n\nThe question says *positive*, so $x = 13$ and the integers are **13 and 14**.\n\n**Check:** $13^{2} + 14^{2} = 169 + 196 = 365$ ✓\n\n\"Consecutive\" is the whole trick: it lets you describe two unknown numbers with one letter. And \"positive\" is not decoration either — it is what tells you to discard $x = -14$ (which would give $-14$ and $-13$, whose squares also sum to $365$).",
+      "solution": "**Name the unknowns.** Let the integers be $x$ and $x + 1$, with $x$ a positive integer.\n\n**Write the equation:**\n\n$x^{2} + (x + 1)^{2} = 365$\n\n$x^{2} + x^{2} + 2x + 1 = 365$\n\n$2x^{2} + 2x - 364 = 0$\n\nDivide by 2:\n\n$x^{2} + x - 182 = 0$\n\n**Solve.** Two numbers multiplying to $-182$ and adding to $1$: $14$ and $-13$.\n\n$(x + 14)(x - 13) = 0 \\Rightarrow x = -14$ or $x = 13$\n\nThe question says **positive**, so $x = 13$ and the integers are **13 and 14**.\n\n**Check:** $13^{2} + 14^{2} = 169 + 196 = 365$ ✓\n\n\"Consecutive\" is the whole trick: it lets you describe two unknown numbers with one letter. And \"positive\" is not decoration either — it is what tells you to discard $x = -14$ (which would give $-14$ and $-13$, whose squares also sum to $365$).",
       "chapter": "Quadratic Equations"
     }
   ]

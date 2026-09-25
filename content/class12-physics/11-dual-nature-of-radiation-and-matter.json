@@ -116,7 +116,7 @@
       "topic": "Stopping potential",
       "type": "numeric",
       "q": "Photons of energy $4$ eV fall on a metal of work function $1.5$ eV. Find the stopping potential, in volts.",
-      "solution": "$eV_{0} = h\nu - \\phi = 4 - 1.5 = 2.5$ eV, so $V_{0} = \\mathbf{2.5}$ V.\n\nWorking in electron-volts makes the arithmetic trivial: the number of eV *is* the number of volts.",
+      "solution": "$eV_{0} = h\nu - \\phi = 4 - 1.5 = 2.5$ eV, so $V_{0} = \\mathbf{2.5}$ V.\n\nWorking in electron-volts makes the arithmetic trivial: the number of eV **is** the number of volts.",
       "marks": 2,
       "answer": 2.5,
       "tolerance": 0.05

@@ -54,7 +54,7 @@
       "topic": "Iodoform test",
       "type": "mcq",
       "q": "The iodoform test is given by:",
-      "solution": "A yellow precipitate of $\\text{CHI}_{3}$ forms with $\\text{I}_{2}$/NaOH from a **methyl ketone** or a methyl carbinol (which is oxidised to one in the conditions).\n\nSo ethanal and acetone give it, but propanal and propanone's higher homologues do not. Ethanol gives it; methanol does not.\n\nIt is a test for a particular *fragment*, not a functional group — which is why it is so useful in structure determination.",
+      "solution": "A yellow precipitate of $\\text{CHI}_{3}$ forms with $\\text{I}_{2}$/NaOH from a **methyl ketone** or a methyl carbinol (which is oxidised to one in the conditions).\n\nSo ethanal and acetone give it, but propanal and propanone's higher homologues do not. Ethanol gives it; methanol does not.\n\nIt is a test for a particular **fragment**, not a functional group — which is why it is so useful in structure determination.",
       "marks": 1,
       "options": [
         "all aldehydes",

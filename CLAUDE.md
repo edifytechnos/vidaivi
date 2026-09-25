@@ -427,7 +427,7 @@ that corpus is a real past paper, so every Cambridge tag names it:
 is `cambridge-igcse-science-combined-0653`, not the `-combined-science-` form
 every other subject uses.
 
-### Two ways content renders wrong, and both shipped once
+### Three ways content renders wrong, and all three shipped once
 
 `formatText` in `src/dom.ts` supports `$…$` maths, `**bold**`, and a blank line
 as a paragraph break. **Nothing else.** Everything is escaped first, so anything
@@ -443,11 +443,37 @@ richer reaches the student literally.
   fields were affected. Before fixing any, check that no occurrence is a LaTeX
   `\\` line break.
 
-`scripts/check-content.cjs` now rejects both. Neither is catchable by
-`validateQuestions` — both are perfectly valid strings, wrong only once a
-student reads them. The guard has already earned itself: writing twelve more
-questions the same way reproduced the backslash-n bug immediately, and the check
-caught all fourteen fields before they could ship.
+- **Single-asterisk `*italics*`** are not supported either, and this one was
+  live in front of students. `formatText` replaces `**bold**` and nothing else,
+  so `*linear*` is escaped and reaches the student with its asterisks showing.
+  **356 runs across eleven shelves**, 93 of them in Class 10 Maths — the pilot
+  shelf. All were rewritten as `**bold**`, which is the only emphasis there is.
+  The rewrite was proved safe by stripping every asterisk from the before and
+  after text and requiring the two to be identical: **not one non-asterisk
+  character changed** across 178 fields, so no formula and no word moved.
+
+`scripts/check-content.cjs` now rejects all three. None is catchable by
+`validateQuestions` — all are perfectly valid strings, wrong only once a
+student reads them. The guard has already earned itself twice: writing twelve
+more questions the same way reproduced the backslash-n bug immediately and the
+check caught all fourteen fields before they could ship, and the italics rule
+found 356 runs that had already shipped.
+
+**Two of those guards need an exception for maths, and getting it wrong is the
+obvious mistake.** A blanket `includes("\\n")` condemns `$h\nu$`, `$\nabla f$`
+and `$a\neq b$`; a blanket asterisk-pair rule condemns `$\pi^{*}$` and `$V^*$`.
+Both were met for real — the first while writing a photoelectric question, the
+second while writing an antibonding orbital.
+
+- The backslash-n check reads the LaTeX command name that follows against a
+  **closed** list. Closed, because `"line one\nline two"` in a raw string yields
+  the name `nline`, and any “looks like a word” rule would wave the real bug
+  straight through.
+- The italics check **blanks `$…$` spans out before testing**, preserving their
+  offsets so a `*word*` sitting between two formulas is still caught.
+
+Both were re-verified to fail the bug they exist for after being taught the
+exception. A guard relaxed without that check is a guard switched off.
 
 ### Reading a paper as pages, when extraction is not enough
 

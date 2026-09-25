@@ -100,7 +100,7 @@
         "$mgr$"
       ],
       "answer": 1,
-      "solution": "$U = \\mathbf{-\\dfrac{GMm}{r}}$, taking $U = 0$ at infinite separation.\n\nThe negative sign says the force is attractive: work must be **done on** the body to move it out to infinity. $mgh$ is only the near-surface approximation to the *change* in this quantity."
+      "solution": "$U = \\mathbf{-\\dfrac{GMm}{r}}$, taking $U = 0$ at infinite separation.\n\nThe negative sign says the force is attractive: work must be **done on** the body to move it out to infinity. $mgh$ is only the near-surface approximation to the **change** in this quantity."
     },
     {
       "id": "jeep-gra-07",
@@ -116,7 +116,7 @@
         "Infinite"
       ],
       "answer": 1,
-      "solution": "$g_d = g\\left(1 - \\dfrac{d}{R}\\right)$, so at the centre $d = R$ and $g = \\mathbf{0}$.\n\nBy the shell theorem, a uniform spherical shell exerts no net gravitational force on anything inside it — at the centre every shell of the Earth contributes nothing, so the pull from all directions cancels exactly.\n\nNote that the *weight* is zero there, but the pressure is enormous."
+      "solution": "$g_d = g\\left(1 - \\dfrac{d}{R}\\right)$, so at the centre $d = R$ and $g = \\mathbf{0}$.\n\nBy the shell theorem, a uniform spherical shell exerts no net gravitational force on anything inside it — at the centre every shell of the Earth contributes nothing, so the pull from all directions cancels exactly.\n\nNote that the **weight** is zero there, but the pressure is enormous."
     },
     {
       "id": "jeep-gra-08",
@@ -231,7 +231,7 @@
       "type": "long",
       "marks": 5,
       "q": "Derive expressions for the orbital velocity and the total energy of a satellite of mass $m$ in a circular orbit of radius $r$ about a planet of mass $M$. Explain the significance of the sign of the total energy, and obtain the escape velocity from the orbit.",
-      "solution": "**Orbital velocity.** Gravity supplies the centripetal force:\n\n$\\dfrac{GMm}{r^{2}} = \\dfrac{mv^{2}}{r}$\n\n$v_o = \\sqrt{\\dfrac{GM}{r}}$\n\nThe satellite's own mass cancels — a heavy satellite and a light one orbit at the same speed at the same altitude.\n\n**Kinetic energy.**\n\n$K = \\tfrac{1}{2}mv_o^{2} = \\dfrac{GMm}{2r}$\n\n**Potential energy**, with zero at infinity:\n\n$U = -\\dfrac{GMm}{r}$\n\n**Total energy.**\n\n$E = K + U = \\dfrac{GMm}{2r} - \\dfrac{GMm}{r} = -\\dfrac{GMm}{2r}$\n\nTwo relations worth memorising fall straight out:\n\n$E = -K$ and $E = \\dfrac{U}{2}$\n\n**Significance of the sign.** The total energy is **negative**, which means the satellite is **bound**. It cannot reach infinity, where the energy would be zero, without energy being added from outside. A negative total energy is the signature of a closed orbit; zero gives a parabolic escape trajectory and positive a hyperbolic one.\n\nNote also that $E$ becomes *less* negative as $r$ increases — a higher orbit is a higher-energy orbit, even though the satellite moves more slowly in it. Firing a rocket forward raises the orbit and ends up **reducing** the speed, which is one of the genuinely counter-intuitive facts of orbital mechanics.\n\n**Escape from the orbit.** To escape, the total energy must be raised to zero:\n\n$\\tfrac{1}{2}mv_e^{2} - \\dfrac{GMm}{r} = 0$\n\n$v_e = \\sqrt{\\dfrac{2GM}{r}} = \\sqrt{2}\\,v_o$\n\nSo the extra speed needed is $(\\sqrt2 - 1)v_o \\approx 0.41\\,v_o$, about a $41\\%$ boost."
+      "solution": "**Orbital velocity.** Gravity supplies the centripetal force:\n\n$\\dfrac{GMm}{r^{2}} = \\dfrac{mv^{2}}{r}$\n\n$v_o = \\sqrt{\\dfrac{GM}{r}}$\n\nThe satellite's own mass cancels — a heavy satellite and a light one orbit at the same speed at the same altitude.\n\n**Kinetic energy.**\n\n$K = \\tfrac{1}{2}mv_o^{2} = \\dfrac{GMm}{2r}$\n\n**Potential energy**, with zero at infinity:\n\n$U = -\\dfrac{GMm}{r}$\n\n**Total energy.**\n\n$E = K + U = \\dfrac{GMm}{2r} - \\dfrac{GMm}{r} = -\\dfrac{GMm}{2r}$\n\nTwo relations worth memorising fall straight out:\n\n$E = -K$ and $E = \\dfrac{U}{2}$\n\n**Significance of the sign.** The total energy is **negative**, which means the satellite is **bound**. It cannot reach infinity, where the energy would be zero, without energy being added from outside. A negative total energy is the signature of a closed orbit; zero gives a parabolic escape trajectory and positive a hyperbolic one.\n\nNote also that $E$ becomes **less** negative as $r$ increases — a higher orbit is a higher-energy orbit, even though the satellite moves more slowly in it. Firing a rocket forward raises the orbit and ends up **reducing** the speed, which is one of the genuinely counter-intuitive facts of orbital mechanics.\n\n**Escape from the orbit.** To escape, the total energy must be raised to zero:\n\n$\\tfrac{1}{2}mv_e^{2} - \\dfrac{GMm}{r} = 0$\n\n$v_e = \\sqrt{\\dfrac{2GM}{r}} = \\sqrt{2}\\,v_o$\n\nSo the extra speed needed is $(\\sqrt2 - 1)v_o \\approx 0.41\\,v_o$, about a $41\\%$ boost."
     }
   ]
 }

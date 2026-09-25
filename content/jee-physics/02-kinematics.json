@@ -36,7 +36,7 @@
         "$90^\\circ$"
       ],
       "answer": 1,
-      "solution": "Range $R = \\dfrac{u^{2}\\sin 2\\theta}{g}$.\n\n$R$ is largest when $\\sin 2\\theta = 1$, that is $2\\theta = 90^\\circ$, so $\\theta = \\mathbf{45^\\circ}$.\n\nA useful companion fact: $\\theta$ and $(90^\\circ - \\theta)$ give the *same* range, because $\\sin 2\\theta = \\sin(180^\\circ - 2\\theta)$."
+      "solution": "Range $R = \\dfrac{u^{2}\\sin 2\\theta}{g}$.\n\n$R$ is largest when $\\sin 2\\theta = 1$, that is $2\\theta = 90^\\circ$, so $\\theta = \\mathbf{45^\\circ}$.\n\nA useful companion fact: $\\theta$ and $(90^\\circ - \\theta)$ give the **same** range, because $\\sin 2\\theta = \\sin(180^\\circ - 2\\theta)$."
     },
     {
       "id": "jeep-kin-03",
@@ -68,7 +68,7 @@
         "Average speed"
       ],
       "answer": 1,
-      "solution": "Velocity is $\\dfrac{dx}{dt}$, so $x = \\displaystyle\\int v\\,dt$ — which is exactly the area under the $v$-$t$ curve.\n\nIt gives **displacement**, not distance: area below the time axis counts as negative. To get distance travelled, take the area of the magnitude $|v|$.\n\nBy the same logic the *slope* of a $v$-$t$ graph is acceleration."
+      "solution": "Velocity is $\\dfrac{dx}{dt}$, so $x = \\displaystyle\\int v\\,dt$ — which is exactly the area under the $v$-$t$ curve.\n\nIt gives **displacement**, not distance: area below the time axis counts as negative. To get distance travelled, take the area of the magnitude $|v|$.\n\nBy the same logic the **slope** of a $v$-$t$ graph is acceleration."
     },
     {
       "id": "jeep-kin-05",
@@ -132,7 +132,7 @@
         "Neither"
       ],
       "answer": 1,
-      "solution": "The vertical and horizontal motions are independent.\n\nVertically the stone starts with $u_y = 0$ and falls freely:\n\n$h = \\tfrac{1}{2}gt^{2} \\Rightarrow t = \\sqrt{\\dfrac{2h}{g}}$.\n\nThe horizontal speed appears nowhere in that expression — it sets *where* the stone lands, not *when*.\n\nA stone thrown horizontally and one simply dropped from the same height hit the ground together."
+      "solution": "The vertical and horizontal motions are independent.\n\nVertically the stone starts with $u_y = 0$ and falls freely:\n\n$h = \\tfrac{1}{2}gt^{2} \\Rightarrow t = \\sqrt{\\dfrac{2h}{g}}$.\n\nThe horizontal speed appears nowhere in that expression — it sets **where** the stone lands, not **when**.\n\nA stone thrown horizontally and one simply dropped from the same height hit the ground together."
     },
     {
       "id": "jeep-kin-09",
