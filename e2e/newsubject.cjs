@@ -129,11 +129,12 @@ const DLG = ".modal-scrim .ns";
   const papers = await page.$$eval("[data-paper]", (els) =>
     els.map((e) => e.getAttribute("data-paper"))
   );
-  // NEET HAS a shelf, so the flow shows what the library holds rather than
-  // the exam's three papers on top of it. That is the rule under test: the
-  // library's subjects, or the exam's papers, never both.
+  // NEET HAS shelves — one per paper since the split — so the flow shows what
+  // the library holds rather than the exam's three papers on top of it. That
+  // is the rule under test: the library's subjects, or the exam's papers,
+  // never both. Both would read Physics twice.
   check(
-    papers.length === 1 && /Biology/.test(papers[0]),
+    papers.length === new Set(papers).size && papers.some((p) => /Biology/.test(p)),
     `a board with a shelf shows the shelf, not a duplicate set (${papers.join(", ")})`
   );
 
@@ -147,9 +148,10 @@ const DLG = ".modal-scrim .ns";
   );
 
   // An exam the library has nothing for offers its OWN papers instead.
+  // JEE Advanced, because JEE Main has shelves of its own now.
   await page.click("#ns-back");
   await page.click("#ns-back");
-  await page.click('[data-board="JEE Main"]');
+  await page.click('[data-board="JEE Advanced"]');
   await page.click("#ns-next");
   await page.click(`[data-klass="${offered[0]}"]`);
   await page.click("#ns-next");
@@ -166,7 +168,7 @@ const DLG = ".modal-scrim .ns";
   check(
     /Create 3 subjects/.test(allOn),
     // Three, not four: "Zoology" was typed on the NEET branch a moment ago and
-    // must not follow the teacher to JEE Main. This read "Create 4 subjects"
+    // must not follow the teacher to JEE Advanced. This read "Create 4 subjects"
     // before changing the board cleared it.
     `multi-select creates several, and a stale typed subject does not tag along (${allOn})`
   );
@@ -226,6 +228,54 @@ const DLG = ".modal-scrim .ns";
   );
   const stem = (await page.textContent(".ns-peek-box")).trim();
   check(stem.length > 10, `Peek fetches a real question (${stem.slice(0, 48)}…)`);
+  // The stem is maths more often than not, so it must reach KaTeX. Raw
+  // `$\mathrm{…}$` in the box is what a teacher saw before this. Biology's
+  // first stem is plain words, so peek a Physics or Chemistry chapter — a
+  // check on a stem with no maths in it would pass while proving nothing.
+  const sciSec = await page.$$eval("[data-sec]", (els) =>
+    (els.find((e) => /Physics|Chemistry/.test(e.textContent || "")) || {}).dataset?.sec || ""
+  );
+  check(!!sciSec, `there is a Physics or Chemistry section to peek (${sciSec})`);
+  if (sciSec) {
+    await page.click(`[data-sec="${sciSec}"]`);
+    const peeks = page.locator(".ns-secbody [data-peek]");
+    const n = Math.min(await peeks.count(), 6);
+    let rendered = false;
+    for (let i = 0; i < n && !rendered; i++) {
+      await peeks.nth(i).click();
+      await page.waitForFunction(
+        () => !/Loading/.test(document.querySelector(".ns-peek-box")?.textContent || "Loading"),
+        { timeout: 25000 }
+      );
+      await page.waitForTimeout(600); // KaTeX is a lazy chunk
+      const has = await page.$eval(".ns-peek-box", (b) => ({
+        katex: !!b.querySelector(".katex"),
+        raw: /\$[^$]+\$/.test(b.textContent || ""),
+      }));
+      if (has.katex || has.raw) {
+        check(has.katex && !has.raw, "Peek renders its maths rather than showing raw $…$");
+        rendered = true;
+      }
+    }
+    check(rendered, "found a peeked stem with maths in it to check");
+  }
+
+  // A closed section is its whole header, never a sliver of it. The list is a
+  // flex column with a max-height, and `.ns-sec` clips (overflow: hidden), so
+  // without `flex-shrink: 0` the browser squashed every closed section to fit
+  // the cap — on a phone the headers were cut to half height.
+  for (const [w, h] of [[1280, 800], [390, 844]]) {
+    await page.setViewportSize({ width: w, height: h });
+    const clipped = await page.$$eval(".ns-sec", (secs) =>
+      secs
+        .map((s) => ({ s, h: s.querySelector(".ns-sechead") }))
+        .filter(({ h }) => h && h.getAttribute("aria-expanded") === "false")
+        .filter(({ s, h }) => s.clientHeight + 1 < h.scrollHeight)
+        .map(({ s, h }) => `${s.clientHeight}<${h.scrollHeight}`)
+    );
+    check(clipped.length === 0, `closed sections are not squashed at ${w}px (${clipped.join(", ") || "none"})`);
+  }
+  await page.setViewportSize({ width: 1280, height: 800 });
 
   const viol = await page.evaluate(() => window.__cspViolations);
   check(viol.length === 0, `no CSP violations (${viol.join("; ") || "none"})`);
