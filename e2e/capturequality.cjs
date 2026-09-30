@@ -80,6 +80,29 @@ function write(c, ink = "#1b1f3a", size = 1) {
   return c;
 }
 
+// A page of working photographed on a dark desk with a keyboard above it.
+// size is the sheet's height as a share of the frame.
+function desk(size) {
+  const c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#1c1a22";
+  ctx.fillRect(0, 0, W, H);
+  // A keyboard: light keys in rows across the top.
+  ctx.fillStyle = "#d9d9dc";
+  for (let r = 0; r < 3; r++) for (let k = 0; k < 14; k++) ctx.fillRect(40 + k * 82, 20 + r * 54, 60, 40);
+  // Some cable and cloth texture below.
+  ctx.fillStyle = "#3a3742";
+  ctx.fillRect(0, H - 120, W, 120);
+  const page = write(sheet(Math.round(W * size * 0.75), Math.round(H * size)));
+  ctx.save();
+  ctx.translate(W / 2, H * 0.58);
+  ctx.rotate(-0.06);
+  ctx.drawImage(page, -page.width / 2, -page.height / 2);
+  ctx.restore();
+  return c;
+}
+
 function pixels(c) {
   const d = c.getContext("2d").getImageData(0, 0, c.width, c.height);
   return { data: d.data, width: d.width, height: d.height };
@@ -116,10 +139,15 @@ const IMAGES = {
   shadow: () => {
     const c = write(sheet());
     const ctx = c.getContext("2d");
-    ctx.fillStyle = "rgba(0,0,0,0.5)";
+    ctx.fillStyle = "rgba(0,0,0,0.35)";
     ctx.fillRect(0, 0, W / 2, H);
     return c;
   },
+  // The first real photo: a good sheet on a black cloth beside a keyboard,
+  // at an angle, filling under half the frame. The desk is not the page.
+  cluttered: () => desk(0.62),
+  // The same desk with the sheet far away — a fifth of the frame.
+  far: () => desk(0.3),
   // A page lit from a window: smoothly darker towards one edge, still readable.
   gradient: () => {
     const c = write(sheet());
@@ -246,6 +274,10 @@ function serve() {
   // gradient is not a shadow; an edge is.
   const gradient = await assess("gradient");
   check(gradient.ok, `a page lit from one side passes — a gradient is not a shadow (${fmt(gradient)})`);
+  // The first real photo: the sheet was fine and the black cloth and keyboard
+  // around it were read as a shadow across the page.
+  const cluttered = await assess("cluttered");
+  check(cluttered.ok, `a good sheet on a cluttered dark desk passes — the desk is not the page (${fmt(cluttered)})`);
 
   // [image, the check that must fail it, whether it must be the FIRST failure]
   const cases = [
@@ -256,6 +288,7 @@ function serve() {
     ["glare", "glare"],
     ["shadow", "shadow"],
     ["tiny", "resolution"],
+    ["far", "frame"],
     ["blank", "ink"],
   ];
   for (const [img, id] of cases) {

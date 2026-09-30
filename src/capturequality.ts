@@ -25,6 +25,7 @@
 
 export type CheckId =
   | "resolution"
+  | "frame"
   | "dark"
   | "bright"
   | "ink"
@@ -107,8 +108,17 @@ export const THRESHOLDS = {
   maxShadowStep: 60,
   /** Working size for the pixel checks — the long edge the luma is sampled at. */
   workEdge: 800,
-  /** Block size (in working pixels) for the glare grid. */
+  /** Block size (in working pixels) for the glare grid and the page mask. */
   glareBlock: 16,
+  /**
+   * A block is paper when its own paper level is at least this share of the
+   * frame's. Low enough that a shadowed part of the page still counts as
+   * page (so the shadow check can see it), high enough that a desk, a
+   * keyboard or a dark cloth around the sheet does not.
+   */
+  pageLevel: 0.55,
+  /** The page has to be at least this share of the frame to be judged at all. */
+  minPageShare: 0.2,
   /** Region grid for the shadow check. */
   shadowGrid: 6,
 } as const;
@@ -116,6 +126,7 @@ export const THRESHOLDS = {
 /** One student-facing sentence per check. */
 export const REASONS: Record<CheckId, string> = {
   resolution: "Move closer to the page",
+  frame: "Move closer so the page fills the photo",
   dark: "Too dark",
   bright: "Too bright",
   ink: "Page looks blank",
@@ -169,6 +180,155 @@ function percentile(sorted: Float32Array, p: number): number {
 /** The page's own brightness: the 90th percentile, so ink cannot drag it. */
 function paperLevel(sorted: Float32Array): number {
   return percentile(sorted, 0.9);
+}
+
+/**
+ * Where the page is. The first real photo the gate met was refused for a
+ * "shadow" that was the black cloth and the keyboard around a perfectly good
+ * sheet: every check was reading the whole frame. So the frame is cut into
+ * blocks, each block is paper or not by its own brightness against the
+ * frame's paper level, and the largest connected patch of paper blocks is
+ * the page. Everything after this is judged inside that patch only.
+ */
+export interface PageRegion {
+  /** Block grid dimensions and the block size in working pixels. */
+  bw: number;
+  bh: number;
+  block: number;
+  /** 1 for a block that is part of the page. */
+  mask: Uint8Array;
+  /** Bounding box of the page, in working pixels. */
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+  /** Share of the frame's blocks the page covers. */
+  share: number;
+}
+
+export function findPage(luma: Float32Array, w: number, h: number, sorted: Float32Array): PageRegion {
+  const B = THRESHOLDS.glareBlock;
+  const bw = Math.max(1, Math.floor(w / B));
+  const bh = Math.max(1, Math.floor(h / B));
+  const cut = paperLevel(sorted) * THRESHOLDS.pageLevel;
+  const bright = new Uint8Array(bw * bh);
+  const cell = new Float32Array(B * B);
+  for (let by = 0; by < bh; by++) {
+    for (let bx = 0; bx < bw; bx++) {
+      let k = 0;
+      for (let y = by * B; y < (by + 1) * B; y++) {
+        const row = y * w;
+        for (let x = bx * B; x < (bx + 1) * B; x++) cell[k++] = luma[row + x];
+      }
+      cell.sort();
+      bright[by * bw + bx] = percentile(cell, 0.75) >= cut ? 1 : 0;
+    }
+  }
+  const labels = new Int32Array(bw * bh).fill(-1);
+  let best = -1;
+  let bestSize = 0;
+  const stack: number[] = [];
+  let next = 0;
+  for (let s = 0; s < bright.length; s++) {
+    if (!bright[s] || labels[s] >= 0) continue;
+    const id = next++;
+    let size = 0;
+    stack.push(s);
+    labels[s] = id;
+    while (stack.length) {
+      const i = stack.pop()!;
+      size++;
+      const x = i % bw;
+      const y = (i - x) / bw;
+      const nb = [x > 0 ? i - 1 : -1, x < bw - 1 ? i + 1 : -1, y > 0 ? i - bw : -1, y < bh - 1 ? i + bw : -1];
+      for (const j of nb) {
+        if (j >= 0 && bright[j] && labels[j] < 0) {
+          labels[j] = id;
+          stack.push(j);
+        }
+      }
+    }
+    if (size > bestSize) {
+      bestSize = size;
+      best = id;
+    }
+  }
+  const whole = new Uint8Array(bw * bh);
+  for (let i = 0; i < whole.length; i++) if (labels[i] === best) whole[i] = 1;
+  // Erode by one block. A block on the sheet's edge is part paper and part
+  // desk, and its paper level lands in between — which is exactly a step to
+  // the block beside it. The edge of the sheet is not a shadow on it.
+  const mask = new Uint8Array(bw * bh);
+  let kept = 0;
+  for (let i = 0; i < whole.length; i++) {
+    if (!whole[i]) continue;
+    const x = i % bw;
+    const y = (i - x) / bw;
+    const inner =
+      x > 0 && whole[i - 1] && x < bw - 1 && whole[i + 1] && y > 0 && whole[i - bw] && y < bh - 1 && whole[i + bw];
+    if (inner) {
+      mask[i] = 1;
+      kept++;
+    }
+  }
+  // A sheet too small to survive erosion is judged whole rather than not at all.
+  if (!kept) mask.set(whole);
+  let minX = bw, minY = bh, maxX = -1, maxY = -1;
+  for (let i = 0; i < mask.length; i++) {
+    if (!mask[i]) continue;
+    const x = i % bw;
+    const y = (i - x) / bw;
+    if (x < minX) minX = x;
+    if (x > maxX) maxX = x;
+    if (y < minY) minY = y;
+    if (y > maxY) maxY = y;
+  }
+  if (maxX < 0) {
+    // Nothing bright enough anywhere: judge the whole frame, and let the
+    // dark check say why.
+    mask.fill(1);
+    return { bw, bh, block: B, mask, x0: 0, y0: 0, x1: bw * B, y1: bh * B, share: 1 };
+  }
+  return {
+    bw, bh, block: B, mask,
+    x0: minX * B, y0: minY * B, x1: (maxX + 1) * B, y1: (maxY + 1) * B,
+    share: bestSize / (bw * bh),
+  };
+}
+
+/** The luma of the page's own pixels — every block in the mask, nothing else. */
+export function pagePixels(luma: Float32Array, w: number, page: PageRegion): Float32Array {
+  const B = page.block;
+  let n = 0;
+  for (let i = 0; i < page.mask.length; i++) if (page.mask[i]) n++;
+  const out = new Float32Array(n * B * B);
+  let k = 0;
+  for (let i = 0; i < page.mask.length; i++) {
+    if (!page.mask[i]) continue;
+    const bx = i % page.bw;
+    const by = (i - bx) / page.bw;
+    for (let y = by * B; y < (by + 1) * B; y++) {
+      const row = y * w;
+      for (let x = bx * B; x < (bx + 1) * B; x++) out[k++] = luma[row + x];
+    }
+  }
+  return out;
+}
+
+/** A crop of the luma to the page's bounding box. */
+export function cropLuma(luma: Float32Array, w: number, page: PageRegion): { luma: Float32Array; w: number; h: number } {
+  const cw = page.x1 - page.x0;
+  const ch = page.y1 - page.y0;
+  const out = new Float32Array(cw * ch);
+  for (let y = 0; y < ch; y++) {
+    out.set(luma.subarray((page.y0 + y) * w + page.x0, (page.y0 + y) * w + page.x1), y * cw);
+  }
+  return { luma: out, w: cw, h: ch };
+}
+
+export function checkFrame(page: PageRegion): CheckResult {
+  const ok = page.share >= THRESHOLDS.minPageShare;
+  return { id: "frame", ok, value: page.share, reason: ok ? "" : REASONS.frame };
 }
 
 /**
@@ -299,38 +459,36 @@ export function checkGlare(luma: Float32Array, w: number, h: number): CheckResul
 }
 
 /**
- * A shadow is a hard edge in the light across the page. The page is cut into
- * a grid of regions and each region's *paper* brightness is taken as its 75th
- * percentile — so a region dense with writing does not read as a shadow — and
- * what fails is the largest step between two neighbouring regions. A smooth
- * gradient from a window spreads its darkening over every step and passes;
- * a hand, a phone or a lamp casting a shadow puts the whole drop in one.
+ * A shadow is a hard edge in the light across the page. Each block of the
+ * page takes its *paper* brightness as its 75th percentile — so a block dense
+ * with writing does not read as a shadow — and what fails is the largest step
+ * between two neighbouring blocks that are BOTH on the page. A smooth
+ * gradient from a window spreads its darkening over every step and passes; a
+ * hand or a lamp casting a shadow puts the whole drop in one. The edge of the
+ * sheet itself is never measured: the desk beside it is not on the page.
  */
-export function checkShadow(luma: Float32Array, w: number, h: number): CheckResult {
-  const G = THRESHOLDS.shadowGrid;
-  const paper = new Float32Array(G * G);
-  for (let gy = 0; gy < G; gy++) {
-    const y0 = Math.floor((gy * h) / G);
-    const y1 = Math.floor(((gy + 1) * h) / G);
-    for (let gx = 0; gx < G; gx++) {
-      const x0 = Math.floor((gx * w) / G);
-      const x1 = Math.floor(((gx + 1) * w) / G);
-      const n = (y1 - y0) * (x1 - x0);
-      if (n <= 0) continue;
-      const region = new Float32Array(n);
-      let k = 0;
-      for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) region[k++] = luma[y * w + x];
-      region.sort();
-      paper[gy * G + gx] = percentile(region, 0.75);
+export function checkShadow(luma: Float32Array, w: number, page: PageRegion): CheckResult {
+  const { bw, bh, block: B, mask } = page;
+  const paper = new Float32Array(bw * bh);
+  const cell = new Float32Array(B * B);
+  for (let i = 0; i < mask.length; i++) {
+    if (!mask[i]) continue;
+    const bx = i % bw;
+    const by = (i - bx) / bw;
+    let k = 0;
+    for (let y = by * B; y < (by + 1) * B; y++) {
+      const row = y * w;
+      for (let x = bx * B; x < (bx + 1) * B; x++) cell[k++] = luma[row + x];
     }
+    cell.sort();
+    paper[i] = percentile(cell, 0.75);
   }
   let value = 0;
-  for (let gy = 0; gy < G; gy++) {
-    for (let gx = 0; gx < G; gx++) {
-      const i = gy * G + gx;
-      if (gx < G - 1) value = Math.max(value, Math.abs(paper[i] - paper[i + 1]));
-      if (gy < G - 1) value = Math.max(value, Math.abs(paper[i] - paper[i + G]));
-    }
+  for (let i = 0; i < mask.length; i++) {
+    if (!mask[i]) continue;
+    const x = i % bw;
+    if (x < bw - 1 && mask[i + 1]) value = Math.max(value, Math.abs(paper[i] - paper[i + 1]));
+    if (i + bw < mask.length && mask[i + bw]) value = Math.max(value, Math.abs(paper[i] - paper[i + bw]));
   }
   const ok = value <= THRESHOLDS.maxShadowStep;
   return { id: "shadow", ok, value, reason: ok ? "" : REASONS.shadow };
@@ -339,27 +497,34 @@ export function checkShadow(luma: Float32Array, w: number, h: number): CheckResu
 /**
  * Run every check and return the first failure as the reason.
  *
- * The order is the order a student can act on it: a photo that is too small
- * or too dark is retaken before anything about its sharpness is worth saying;
+ * The order is the order a student can act on it: a photo that is too small,
+ * too far away or too dark is retaken before anything about its sharpness is
+ * worth saying;
  * a blank page has no edges and almost no spread, so it would read as blurred
  * or faint if the ink check did not come before both.
  */
 export function assessCapture(px: Pixels): CaptureVerdict {
   const { luma, width: w, height: h } = toLuma(px);
-  const sorted = Float32Array.from(luma).sort();
+  const frameSorted = Float32Array.from(luma).sort();
+  const page = findPage(luma, w, h, frameSorted);
+  // Every judgement from here on is about the page, not the desk around it.
+  const onPage = pagePixels(luma, w, page);
+  const sorted = Float32Array.from(onPage).sort();
   let mean = 0;
-  for (let i = 0; i < luma.length; i++) mean += luma[i];
-  mean /= luma.length || 1;
+  for (let i = 0; i < onPage.length; i++) mean += onPage[i];
+  mean /= onPage.length || 1;
+  const crop = cropLuma(luma, w, page);
 
   const checks: CheckResult[] = [
     checkResolution(px.width, px.height),
+    checkFrame(page),
     checkDark(mean),
     checkBright(mean),
-    checkInk(luma, sorted),
+    checkInk(onPage, sorted),
     checkContrast(sorted),
-    checkBlur(luma, w, h),
-    checkGlare(luma, w, h),
-    checkShadow(luma, w, h),
+    checkBlur(crop.luma, crop.w, crop.h),
+    checkGlare(crop.luma, crop.w, crop.h),
+    checkShadow(luma, w, page),
   ];
   const first = checks.find((c) => !c.ok);
   return { ok: !first, reason: first ? first.reason : "", checks };

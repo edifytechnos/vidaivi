@@ -1290,10 +1290,10 @@ mistakes: a blurred or dark page costs a credit and produces a wrong draft.
 So the uploader refuses a bad capture **before any bytes leave the phone**,
 for free, and tells the student the one thing to change.
 
-- **No model, no dependency.** Eight pass/fail checks in plain pixel maths
+- **No model, no dependency.** Nine pass/fail checks in plain pixel maths
   over an ~800px copy of the canvas `downscaleToCanvas` already built, so
   there is no second decode: **resolution** (the source is too small),
-  **dark** / **bright** (mean luma), **ink** (an adaptive dark-pixel ratio —
+  **frame** (the page is too small in it), **dark** / **bright** (mean luma), **ink** (an adaptive dark-pixel ratio —
   the page is blank), **contrast** (the darkest ink sits too close to the
   paper — faint pencil), **blur** (variance of the Laplacian), **glare** (the
   largest *cluster* of saturated blocks, because good light has specks and a
@@ -1311,13 +1311,24 @@ for free, and tells the student the one thing to change.
   ones never had one.
 - **`bright` is high (248) on purpose.** A page is mostly paper and a well-lit
   sheet already sits near 240; only writing washed into the paper goes past it.
-- **A shadow is a step, not a spread.** The first real photo the gate met, a
-  good one, was refused for a shadow: the page was lit from a window and
-  darkened smoothly across its width. `checkShadow` measures the largest
-  difference in paper brightness between two *neighbouring* regions, so a
-  gradient spreads its darkening over every step and passes, while a hand or
-  a lamp casting a real shadow puts the whole drop in one. The suite holds
-  both pages.
+- **The checks judge the page, not the desk.** The first real photo the gate
+  met, a good sheet on a black cloth beside a keyboard, was refused for a
+  "shadow across the page" that was the cloth. Every check was reading the
+  whole frame. `findPage` now cuts the frame into blocks, marks each as paper
+  by its own brightness against the frame's paper level (`pageLevel`, 0.55 —
+  low enough that a shadowed part of the sheet is still sheet), takes the
+  largest connected patch as the page, and **erodes it by one block**: an
+  edge block is part paper and part desk, its paper level lands in between,
+  and that is exactly a step to the block beside it. Brightness, ink and
+  contrast read the page's pixels only; blur and glare read its bounding box;
+  shadow reads steps between neighbouring page blocks. A page under
+  `minPageShare` of the frame is its own refusal: *"Move closer so the page
+  fills the photo"*. The suite holds that desk, and a far-away sheet on it.
+- **A shadow is a step, not a spread.** A page lit from a window darkens
+  smoothly across its width and reads perfectly well. `checkShadow` measures
+  the largest difference in paper brightness between two *neighbouring* page
+  blocks, so a gradient spreads its darkening over every step and passes,
+  while a hand or a lamp casting a real shadow puts the whole drop in one.
 - **A refusal shows the photo, not just a sentence.** `showRefusal` in
   `answerphotos.ts` is a dialog with the capture the student just took, the
   reason in amber, and **Retake**, which reopens the camera from inside its
