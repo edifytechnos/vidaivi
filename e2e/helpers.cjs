@@ -1156,6 +1156,127 @@ async function studentRemoveCascadeChecks() {
  * handlers issue and checks the set, and the fake table refuses to answer a
  * query that names no PartitionKey at all, the way a well-keyed table should.
  */
+
+// --- A photo sent past the capture-quality gate is flagged for the teacher ---
+//
+// The client refuses a blurred or dark capture before any bytes leave the
+// phone; after three refusals of one question it offers "Upload anyway" and
+// sends the gate's own reason as `lowQuality`. That flag has to reach the
+// teacher on the grading row, survive the photos beside it, and leave with the
+// photo it names — otherwise a clear retake would still read as low quality.
+async function lowQualityFlagChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, { ...(rows.get(k) || {}), ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const want = pkOf(opts && opts.queryOptions && opts.queryOptions.filter);
+      if (want === null) throw new Error(`${name}: a query with no PartitionKey`);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+  const blobs = new Set();
+  const fakeContainer = () => ({
+    getBlockBlobClient: (name) => ({
+      uploadData: async () => { blobs.add(name); },
+      exists: async () => blobs.has(name),
+      deleteIfExists: async () => ({ succeeded: blobs.delete(name) }),
+    }),
+  });
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    .replace("async function answerContainer() {", "async function answerContainer() { return __fakeContainer(); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, STUDENT_TOKEN_TTL_MS };";
+  new Function("module", "exports", "require", "__fakeTable", "__fakeContainer", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable, fakeContainer
+  );
+  const t = mod.exports.__t;
+
+  const user = "blurrykid3";
+  rows.set(key("students", "student", user), {
+    partitionKey: "student", rowKey: user, teacherSub: "adm~e2e-admin", name: "Blurry Kid", tokenEpoch: 0,
+  });
+  const cookie = t.signSession("vst", user, t.STUDENT_TOKEN_TTL_MS, { ep: 0 });
+  // The smallest thing `sniffImage` accepts as a JPEG.
+  const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 0, 0, 0]).toString("base64");
+  const post = async (body) => {
+    const c = { res: null };
+    await t.handlers.answerimage(c, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      query: {},
+      body: { testId: "t1", questionId: "q7", questionIndex: 6, maxMarks: 5, testTitle: "Matrices", ...body },
+    });
+    return { status: c.res.status, body: c.res.body || {} };
+  };
+  const row = () => rows.get(key("grading", `stu~${user}`, "t1~q7")) || {};
+  const flagsOf = () => { try { return JSON.parse(row().lowQuality || "{}"); } catch { return {}; } };
+
+  const first = await post({ image: jpeg, lowQuality: "Too blurry, hold the phone steady" });
+  check(first.status === 201, `a flagged upload is accepted (${first.status})`);
+  check(
+    flagsOf()[first.body.blob] === "Too blurry, hold the phone steady",
+    "and the row records the reason against that photo"
+  );
+
+  const second = await post({ image: jpeg });
+  check(second.status === 201 && Object.keys(flagsOf()).length === 1, "a clean photo beside it adds no flag");
+  check(flagsOf()[first.body.blob] !== undefined, "and does not clear the first one");
+
+  const noisy = await post({ image: jpeg, lowQuality: "x".repeat(500) });
+  check((flagsOf()[noisy.body.blob] || "").length === 80, "a reason is cut at 80 characters, never stored whole");
+
+  // The teacher's listing carries it, parsed, as `lowQuality: {blob: reason}`.
+  const g = { res: null };
+  await t.handlers.grading(g, {
+    method: "GET",
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+    query: { testId: "t1" },
+    body: {},
+  });
+  const listed = ((g.res.body || {}).answers || [])[0] || {};
+  check(
+    listed.lowQuality && listed.lowQuality[first.body.blob] === "Too blurry, hold the phone steady",
+    "the grading listing carries the flag, blob by blob"
+  );
+  check(Array.isArray(listed.images) && listed.images.length === 3, "beside the photos themselves");
+
+  // Removing the flagged photo removes its flag — a clear retake must not
+  // inherit "low quality" from a photo that is no longer there.
+  const gone = await post({ action: "remove", blob: first.body.blob });
+  check(gone.status === 200 && !(first.body.blob in flagsOf()), "removing the flagged photo removes its flag");
+  check(flagsOf()[noisy.body.blob] !== undefined, "and leaves the other photo's flag alone");
+}
+
 async function partitionChecks() {
   const rows = new Map();
   const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
@@ -2874,6 +2995,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   })
   .then(() => assessCapChecks())
   .then(() => studentRemoveCascadeChecks())
+  .then(() => lowQualityFlagChecks())
   .then(() => partitionChecks())
   .then(() => roleChoiceChecks())
   .then(() => reportStatusChecks())

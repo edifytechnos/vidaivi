@@ -4765,3 +4765,42 @@ body.drawer-open {
     max-height: min(46vh, 420px);
   }
 }
+
+/* --- The capture-quality gate on the answer-photo uploader --- */
+/* "Upload anyway", offered only after three refusals of one question. */
+.ap-override {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 10px;
+}
+/* An author `display` outranks the UA's `[hidden]` — the showWhen lesson. */
+.ap-override[hidden] {
+  display: none;
+}
+.ap-override .hint {
+  margin: 0;
+}
+/* The teacher is told a photo was sent past the gate before they squint at it. */
+.mk-flag {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 4px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--amber-bg);
+  color: var(--amber);
+  font-size: 13px;
+}
+.mk-flag .icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+.status-flag {
+  background: var(--amber-bg);
+  color: var(--amber);
+}

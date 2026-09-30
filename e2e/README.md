@@ -8,6 +8,7 @@ npm run build                       # build dist/ (set VITE_GOOGLE_CLIENT_ID to 
 node e2e/serve.cjs &                # serves dist/ on :4400, proxies /api/* to production
 node e2e/regression.cjs             # runs the Playwright regression
 node e2e/editor.cjs                 # drives the authoring editor (needs admin creds)
+node e2e/capturequality.cjs         # the photo-quality gate against synthetic pages (no network, no session)
 node e2e/tour.cjs                   # the first-run tour and the /help handover (needs admin creds)
 node e2e/newsubject.cjs             # the four-step New subject flow (needs admin creds)
 ```

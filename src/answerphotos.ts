@@ -7,15 +7,23 @@
 // longest edge keeps handwriting legible at roughly 250KB.
 
 import { answerImageUrl, removeAnswerImage, uploadAnswerImage } from "./auth";
+import { assessCapture, pixelsOf } from "./capturequality";
 import { escapeHtml, ICONS } from "./dom";
 import { bindPhotoViewer } from "./photoviewer";
 
 const MAX_EDGE = 1600;
 const JPEG_QUALITY = 0.72;
 export const MAX_PHOTOS = 3;
+/**
+ * How many refused captures of one question before "Upload anyway" is offered.
+ * The gate's thresholds are first guesses, and a student whose phone or light
+ * it keeps refusing must still be able to hand something in — flagged, so the
+ * teacher knows it was sent against advice.
+ */
+export const OVERRIDE_AFTER = 3;
 
-/** File → base64 JPEG (no data: prefix), downscaled. */
-export async function downscale(file: File): Promise<string> {
+/** File → the downscaled canvas, white under the drawing. */
+export async function downscaleToCanvas(file: File): Promise<HTMLCanvasElement> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
   const w = Math.max(1, Math.round(bitmap.width * scale));
@@ -30,9 +38,25 @@ export async function downscale(file: File): Promise<string> {
   ctx.fillRect(0, 0, w, h);
   ctx.drawImage(bitmap, 0, 0, w, h);
   bitmap.close?.();
+  return canvas;
+}
+
+/** Canvas → base64 JPEG (no data: prefix). */
+export function encodeJpeg(canvas: HTMLCanvasElement): string {
   const url = canvas.toDataURL("image/jpeg", JPEG_QUALITY);
   return url.slice(url.indexOf(",") + 1);
 }
+
+/** File → base64 JPEG (no data: prefix), downscaled. */
+export async function downscale(file: File): Promise<string> {
+  return encodeJpeg(await downscaleToCanvas(file));
+}
+
+// Refused captures per question, for the session. Keyed by question rather
+// than by uploader instance because the student navigates away and back —
+// the uploader is re-mounted on every visit, and "three tries" must mean
+// three tries at this question, not three since the last repaint.
+const refusals = new Map<string, number>();
 
 export interface UploaderOpts {
   testId: string;
@@ -61,13 +85,25 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
       <button type="button" class="btn btn-primary" id="ap-add">Add photo</button>
       <input id="ap-file" class="visually-hidden" type="file" accept="image/*" capture="environment" multiple />
     </div>
-    <p class="login-error" id="ap-error" hidden></p>`;
+    <p class="login-error" id="ap-error" hidden></p>
+    <div class="ap-override" id="ap-override" hidden>
+      <p class="hint">Still not working? You can send it as it is. Your teacher will see
+        that the photo was flagged, so add a clearer one if you can.</p>
+      <button type="button" class="btn btn-ghost" id="ap-anyway">Upload anyway</button>
+    </div>`;
 
   const shots = host.querySelector<HTMLElement>("#ap-shots")!;
   const drop = host.querySelector<HTMLElement>("#ap-drop")!;
   const input = host.querySelector<HTMLInputElement>("#ap-file")!;
   const addBtn = host.querySelector<HTMLButtonElement>("#ap-add")!;
   const error = host.querySelector<HTMLElement>("#ap-error")!;
+  const override = host.querySelector<HTMLElement>("#ap-override")!;
+  const anywayBtn = host.querySelector<HTMLButtonElement>("#ap-anyway")!;
+
+  const refusalKey = `${opts.testId}~${opts.questionId}`;
+  // The last capture the gate refused, held so "Upload anyway" can send it
+  // without asking the student to take it again.
+  let rejected: { image: string; reason: string } | null = null;
 
   function fail(message: string) {
     error.textContent = message;
@@ -76,6 +112,7 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
 
   function paint() {
     error.hidden = true;
+    override.hidden = true;
     drop.hidden = images.length >= MAX_PHOTOS;
     shots.innerHTML = images
       .map(
@@ -106,25 +143,66 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
     const original = addBtn.textContent;
     for (const file of files) {
       if (images.length >= MAX_PHOTOS) break;
-      addBtn.textContent = "Uploading…";
+      addBtn.textContent = "Checking…";
       try {
-        const image = await downscale(file);
-        const res = await uploadAnswerImage({
-          testId: opts.testId,
-          testTitle: opts.testTitle,
-          questionId: opts.questionId,
-          questionIndex: opts.questionIndex,
-          maxMarks: opts.maxMarks,
-          image,
-        });
-        images = res.images;
-        paint();
+        const canvas = await downscaleToCanvas(file);
+        // The gate runs on the pixels that would be uploaded, before any
+        // bytes leave the phone: a refused photo costs nothing but the retake.
+        const verdict = assessCapture(pixelsOf(canvas));
+        if (!verdict.ok) {
+          const image = encodeJpeg(canvas);
+          const tries = (refusals.get(refusalKey) ?? 0) + 1;
+          refusals.set(refusalKey, tries);
+          rejected = { image, reason: verdict.reason };
+          fail(verdict.reason);
+          override.hidden = tries < OVERRIDE_AFTER;
+          break;
+        }
+        addBtn.textContent = "Uploading…";
+        await send(encodeJpeg(canvas));
       } catch (e) {
         fail(e instanceof Error ? e.message : "Could not upload that photo");
         break;
       }
     }
     addBtn.textContent = original;
+    addBtn.disabled = false;
+    busy = false;
+  });
+
+  async function send(image: string, lowQuality?: string) {
+    const res = await uploadAnswerImage({
+      testId: opts.testId,
+      testTitle: opts.testTitle,
+      questionId: opts.questionId,
+      questionIndex: opts.questionIndex,
+      maxMarks: opts.maxMarks,
+      image,
+      ...(lowQuality ? { lowQuality } : {}),
+    });
+    images = res.images;
+    rejected = null;
+    paint();
+  }
+
+  // After OVERRIDE_AFTER refusals the student may send the last refused
+  // capture anyway. It goes up flagged with the reason it was refused, so the
+  // teacher reads it knowing the student was told, and a clearer retake is
+  // still welcome beside it.
+  anywayBtn.addEventListener("click", async () => {
+    if (!rejected || busy || images.length >= MAX_PHOTOS) return;
+    busy = true;
+    addBtn.disabled = true;
+    anywayBtn.disabled = true;
+    const original = anywayBtn.textContent;
+    anywayBtn.textContent = "Uploading…";
+    try {
+      await send(rejected.image, rejected.reason);
+    } catch (e) {
+      fail(e instanceof Error ? e.message : "Could not upload that photo");
+    }
+    anywayBtn.textContent = original;
+    anywayBtn.disabled = false;
     addBtn.disabled = false;
     busy = false;
   });

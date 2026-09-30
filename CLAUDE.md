@@ -1282,6 +1282,64 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   disaster: that a second student's rows and photos are untouched, so the
   cascade never becomes a table scan.
 
+### A photograph is checked on the phone before it is uploaded (`src/capturequality.ts`)
+
+Answer photos go to `/api/assess` for the AI's first-draft mark, and most of
+the AI's errors on handwritten maths are **transcription** failures, not rubric
+mistakes: a blurred or dark page costs a credit and produces a wrong draft.
+So the uploader refuses a bad capture **before any bytes leave the phone**,
+for free, and tells the student the one thing to change.
+
+- **No model, no dependency.** Eight pass/fail checks in plain pixel maths
+  over an ~800px copy of the canvas `downscaleToCanvas` already built, so
+  there is no second decode: **resolution** (the source is too small),
+  **dark** / **bright** (mean luma), **ink** (an adaptive dark-pixel ratio —
+  the page is blank), **contrast** (the darkest ink sits too close to the
+  paper — faint pencil), **blur** (variance of the Laplacian), **glare** (the
+  largest *cluster* of saturated blocks, because good light has specks and a
+  reflected window has a patch) and **shadow** (spread of each region's paper
+  brightness, taken at the 75th percentile so dense writing is not a shadow).
+  Passport-booth model: every check must pass and a failure names the fix
+  (`REASONS`: "Too blurry, hold the phone steady"). No single quality score,
+  which nobody can act on.
+- **The order of the checks is the order a student can act on them.** A blank
+  page has no edges and no ink depth, so it would read as blurred or faint if
+  `ink` did not run before `blur` and `contrast`.
+- **Contrast is ink depth (p90 − p1), not a standard deviation.** The
+  deviation was the first idea and collapses under blur too, so a shaky photo
+  was sent off to find better light. Blurred strokes keep a dark core; faint
+  ones never had one.
+- **`bright` is high (248) on purpose.** A page is mostly paper and a well-lit
+  sheet already sits near 240; only writing washed into the paper goes past it.
+- **Every threshold is a first guess.** Real tuning needs about a hundred
+  real captures from cheap and good phones, labelled readable or not, and the
+  numbers moved until the two sets separate. Until then
+  `node e2e/capturequality.cjs` holds one synthetic page per check — sharp
+  text, the same text blurred, in the dark, blown out, faint, a reflected
+  window, a shadow over half, a tiny frame, a blank sheet — and asserts each
+  check fails its own image *and* that the student is told that check's
+  sentence. It was verified to fail with the blur threshold set to zero: a
+  retuned number that switches a check off fails the suite, not a class.
+- **After three refusals of one question, "Upload anyway."** A gate this
+  rough must never be the thing that stops a student handing in. The count is
+  per question for the session (`refusals` in `answerphotos.ts`, keyed by test
+  and question, because the uploader is re-mounted on every visit), and the
+  last refused capture is held so the student need not take it again.
+  `.ap-override[hidden] { display: none }` is load-bearing — the box is a
+  flex column, and an author `display` outranks the UA's `[hidden]`, the same
+  bug `showWhen` had.
+- **The override is flagged, and the flag follows the photo.** The upload
+  carries `lowQuality` — the gate's own sentence, cut at 80 characters, shown
+  and never parsed — and `/api/answerimage` stores it on the grading row as
+  `lowQuality: {blob: reason}`. It is in `GRADING_SELECT`, so the queue card
+  reads **low quality** and the marking panel says which photo and why before
+  the teacher squints. Removing the photo removes its flag, so a clear retake
+  never inherits "low quality" from a photo that is no longer there.
+  `e2e/helpers.cjs` drives all of that through the real handler.
+- **Not built, deliberately:** the OpenCV-style page-corner and tilt checks.
+  `permissions-policy: camera=(self)` is untouched — the gate runs on what the
+  camera hands over and changes nothing about how it is opened.
+
 ### A photograph has to be readable, so it opens full screen
 
 The strip renders a 132–160px thumbnail. That is enough to see a page **was**

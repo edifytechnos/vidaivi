@@ -799,6 +799,11 @@ export interface GradedAnswer {
   maxMarks: number;
   images: string[];
   /**
+   * Photos the student sent past the capture-quality gate, blob → the reason
+   * the gate gave. Empty for an answer whose photos all passed.
+   */
+  lowQuality: Record<string, string>;
+  /**
    * A short answer the grader could not settle — what the student typed. The
    * same row and the same queue a photograph lands in; only the evidence is
    * different.
@@ -831,6 +836,12 @@ export async function uploadAnswerImage(payload: {
   questionIndex: number;
   maxMarks: number;
   image: string;
+  /**
+   * Set when the student pressed "Upload anyway" past the capture-quality
+   * gate: the reason it was refused. Stored on the grading row so the teacher
+   * reads the photo knowing it was sent against advice.
+   */
+  lowQuality?: string;
 }): Promise<UploadedAnswerImage> {
   const res = await apiFetch("/api/answerimage", {
     method: "POST",
