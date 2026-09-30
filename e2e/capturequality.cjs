@@ -120,6 +120,17 @@ const IMAGES = {
     ctx.fillRect(0, 0, W / 2, H);
     return c;
   },
+  // A page lit from a window: smoothly darker towards one edge, still readable.
+  gradient: () => {
+    const c = write(sheet());
+    const ctx = c.getContext("2d");
+    const g = ctx.createLinearGradient(0, 0, W, 0);
+    g.addColorStop(0, "rgba(0,0,0,0.5)");
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    return c;
+  },
   tiny: () => write(sheet(300, 225)),
   blank: () => sheet(),
 };
@@ -230,6 +241,11 @@ function serve() {
   // --- 1. each check catches its own image ----------------------------------
   const good = await assess("good");
   check(good.ok, `a sharp, well-lit page of working passes every check (${fmt(good)})`);
+  // The first real photo the gate met was refused for a shadow it did not
+  // have: a page lit from a window darkens smoothly across its width. A
+  // gradient is not a shadow; an edge is.
+  const gradient = await assess("gradient");
+  check(gradient.ok, `a page lit from one side passes — a gradient is not a shadow (${fmt(gradient)})`);
 
   // [image, the check that must fail it, whether it must be the FIRST failure]
   const cases = [
@@ -267,21 +283,48 @@ function serve() {
     page.evaluate(() => window.__calls.filter((c) => c.method === "POST").map((c) => c.body));
 
   for (let n = 1; n <= OVERRIDE_AFTER; n++) {
-    // The error stays up between refusals, so hide it first: the wait below
-    // then means "this refusal", not the last one.
-    await page.evaluate(() => { document.getElementById("ap-error").hidden = true; });
     await page.setInputFiles("#ap-file", { name: `shot${n}.png`, mimeType: "image/png", buffer: blurred });
-    await page.waitForSelector("#ap-error:not([hidden])");
+    await page.waitForSelector(".ap-refused");
     check(
-      (await page.locator("#ap-error").textContent()) === REASONS.blur,
-      `refusal ${n}: the reason is shown in #ap-error`
+      (await page.locator("#ap-refused-reason").textContent()) === REASONS.blur,
+      `refusal ${n}: the popup names the reason`
+    );
+    const src = await page.locator("#ap-refused-img").getAttribute("src");
+    check(
+      src && src.startsWith("data:image/jpeg;base64,") && src.length > 1000,
+      `refusal ${n}: and shows the photo that was just taken`
+    );
+    check(
+      await page.evaluate(() => document.activeElement && document.activeElement.id === "ap-retake"),
+      `refusal ${n}: Retake has the focus`
     );
     check((await posts()).length === 0, `refusal ${n}: nothing was uploaded`);
-    const offered = await page.locator("#ap-override").isVisible();
+    const offered = (await page.locator("#ap-anyway").count()) > 0;
     check(
       offered === (n >= OVERRIDE_AFTER),
       `refusal ${n}: "Upload anyway" is ${n >= OVERRIDE_AFTER ? "offered" : "not offered yet"}`
     );
+    if (n === 1) {
+      // Retake reopens the camera — the file chooser — from the popup itself.
+      const [chooser] = await Promise.all([
+        page.waitForEvent("filechooser"),
+        page.locator("#ap-retake").click(),
+      ]);
+      check(!!chooser, "Retake opens the camera again");
+      check((await page.locator(".ap-refused").count()) === 0, "and the popup is gone");
+      check(
+        /not clear enough to mark/.test(await page.locator("#ap-error").textContent()),
+        "the uploader keeps a one-line note of what happened"
+      );
+    } else if (n < OVERRIDE_AFTER) {
+      await page.keyboard.press("Escape");
+      await page.waitForTimeout(50);
+      check((await page.locator(".ap-refused").count()) === 0, `refusal ${n}: Escape closes the popup`);
+      check(
+        !(await page.evaluate(() => document.body.classList.contains("modal-open"))),
+        `refusal ${n}: and unlocks the page`
+      );
+    }
   }
 
   await page.locator("#ap-anyway").click();
@@ -293,8 +336,8 @@ function serve() {
     `and flags it with the reason (${sent[0] && sent[0].lowQuality})`
   );
   check(sent[0] && typeof sent[0].image === "string" && sent[0].image.length > 1000, "with the image itself");
-  check(await page.locator("#ap-override").isHidden(), "the offer goes away once something is up");
-  check(await page.locator("#ap-error").isHidden(), "and so does the error");
+  check((await page.locator(".ap-refused").count()) === 0, "the popup closes once something is up");
+  check(await page.locator("#ap-error").isHidden(), "and so does the note");
 
   // A good photo after that goes up unflagged and without a word.
   await page.setInputFiles("#ap-file", { name: "shot-ok.png", mimeType: "image/png", buffer: sharp });

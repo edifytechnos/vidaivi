@@ -4767,20 +4767,33 @@ body.drawer-open {
 }
 
 /* --- The capture-quality gate on the answer-photo uploader --- */
-/* "Upload anyway", offered only after three refusals of one question. */
-.ap-override {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  margin-top: 10px;
+/* The refusal: the photo the student just took, beside the one thing wrong
+   with it. The image is the point, so it takes the width of the card. */
+.ap-refused-img {
+  display: block;
+  width: 100%;
+  max-height: 46vh;
+  object-fit: contain;
+  margin-top: 14px;
+  border-radius: var(--radius-sm);
+  background: #111;
 }
-/* An author `display` outranks the UA's `[hidden]` — the showWhen lesson. */
-.ap-override[hidden] {
-  display: none;
+.ap-refused-reason {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--amber-bg);
+  color: var(--amber);
+  font-weight: 700;
 }
-.ap-override .hint {
-  margin: 0;
+.ap-refused-hint {
+  margin: 8px 0 12px;
+}
+#ap-retake .icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: -3px;
 }
 /* The teacher is told a photo was sent past the gate before they squint at it. */
 .mk-flag {

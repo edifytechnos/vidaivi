@@ -1311,6 +1311,22 @@ for free, and tells the student the one thing to change.
   ones never had one.
 - **`bright` is high (248) on purpose.** A page is mostly paper and a well-lit
   sheet already sits near 240; only writing washed into the paper goes past it.
+- **A shadow is a step, not a spread.** The first real photo the gate met, a
+  good one, was refused for a shadow: the page was lit from a window and
+  darkened smoothly across its width. `checkShadow` measures the largest
+  difference in paper brightness between two *neighbouring* regions, so a
+  gradient spreads its darkening over every step and passes, while a hand or
+  a lamp casting a real shadow puts the whole drop in one. The suite holds
+  both pages.
+- **A refusal shows the photo, not just a sentence.** `showRefusal` in
+  `answerphotos.ts` is a dialog with the capture the student just took, the
+  reason in amber, and **Retake**, which reopens the camera from inside its
+  own click (a file input needs that gesture — closing first would lose it).
+  It borrows the modal's manners rather than `openModal`, which is a form of
+  fields. The native camera stays: a live check over `getUserMedia` would
+  trade the phone's own autofocus and HDR for a preview stream, and on a
+  cheap Android that is the wrong trade. The uploader also keeps a one-line
+  note under the drop zone, so the refusal survives closing the dialog.
 - **Every threshold is a first guess.** Real tuning needs about a hundred
   real captures from cheap and good phones, labelled readable or not, and the
   numbers moved until the two sets separate. Until then
@@ -1320,14 +1336,12 @@ for free, and tells the student the one thing to change.
   check fails its own image *and* that the student is told that check's
   sentence. It was verified to fail with the blur threshold set to zero: a
   retuned number that switches a check off fails the suite, not a class.
-- **After three refusals of one question, "Upload anyway."** A gate this
-  rough must never be the thing that stops a student handing in. The count is
-  per question for the session (`refusals` in `answerphotos.ts`, keyed by test
-  and question, because the uploader is re-mounted on every visit), and the
-  last refused capture is held so the student need not take it again.
-  `.ap-override[hidden] { display: none }` is load-bearing — the box is a
-  flex column, and an author `display` outranks the UA's `[hidden]`, the same
-  bug `showWhen` had.
+- **After three refusals of one question, "Upload anyway"** appears in that
+  dialog. A gate this rough must never be the thing that stops a student
+  handing in. The count is per question for the session (`refusals` in
+  `answerphotos.ts`, keyed by test and question, because the uploader is
+  re-mounted on every visit), and it sends the capture on screen, so the
+  student need not take it again.
 - **The override is flagged, and the flag follows the photo.** The upload
   carries `lowQuality` — the gate's own sentence, cut at 80 characters, shown
   and never parsed — and `/api/answerimage` stores it on the grading row as

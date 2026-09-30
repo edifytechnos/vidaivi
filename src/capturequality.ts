@@ -97,8 +97,14 @@ export const THRESHOLDS = {
   glareBlockFill: 0.9,
   /** Fail when the largest cluster of saturated blocks is this share of all. */
   maxGlareCluster: 0.02,
-  /** Spread of paper brightness between the brightest and darkest region. */
-  maxShadowSpread: 90,
+  /**
+   * The largest step in paper brightness between two NEIGHBOURING regions.
+   * A step, not the spread across the whole page: a page lit from a window
+   * darkens smoothly from one edge to the other and reads perfectly well,
+   * and the first real photo the gate met was refused for exactly that. A
+   * shadow that hurts marking has an edge, and an edge is a step.
+   */
+  maxShadowStep: 60,
   /** Working size for the pixel checks — the long edge the luma is sampled at. */
   workEdge: 800,
   /** Block size (in working pixels) for the glare grid. */
@@ -293,16 +299,16 @@ export function checkGlare(luma: Float32Array, w: number, h: number): CheckResul
 }
 
 /**
- * A shadow is one part of the page being lit differently from another. The
- * page is cut into a grid of regions and each region's *paper* brightness is
- * taken as its 75th percentile — so a region dense with writing does not read
- * as a shadow — and the spread between the brightest and darkest region is
- * what fails.
+ * A shadow is a hard edge in the light across the page. The page is cut into
+ * a grid of regions and each region's *paper* brightness is taken as its 75th
+ * percentile — so a region dense with writing does not read as a shadow — and
+ * what fails is the largest step between two neighbouring regions. A smooth
+ * gradient from a window spreads its darkening over every step and passes;
+ * a hand, a phone or a lamp casting a shadow puts the whole drop in one.
  */
 export function checkShadow(luma: Float32Array, w: number, h: number): CheckResult {
   const G = THRESHOLDS.shadowGrid;
-  let lo = Infinity;
-  let hi = -Infinity;
+  const paper = new Float32Array(G * G);
   for (let gy = 0; gy < G; gy++) {
     const y0 = Math.floor((gy * h) / G);
     const y1 = Math.floor(((gy + 1) * h) / G);
@@ -315,13 +321,18 @@ export function checkShadow(luma: Float32Array, w: number, h: number): CheckResu
       let k = 0;
       for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) region[k++] = luma[y * w + x];
       region.sort();
-      const paper = percentile(region, 0.75);
-      if (paper < lo) lo = paper;
-      if (paper > hi) hi = paper;
+      paper[gy * G + gx] = percentile(region, 0.75);
     }
   }
-  const value = hi === -Infinity ? 0 : hi - lo;
-  const ok = value <= THRESHOLDS.maxShadowSpread;
+  let value = 0;
+  for (let gy = 0; gy < G; gy++) {
+    for (let gx = 0; gx < G; gx++) {
+      const i = gy * G + gx;
+      if (gx < G - 1) value = Math.max(value, Math.abs(paper[i] - paper[i + 1]));
+      if (gy < G - 1) value = Math.max(value, Math.abs(paper[i] - paper[i + G]));
+    }
+  }
+  const ok = value <= THRESHOLDS.maxShadowStep;
   return { id: "shadow", ok, value, reason: ok ? "" : REASONS.shadow };
 }
 

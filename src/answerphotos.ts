@@ -85,25 +85,15 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
       <button type="button" class="btn btn-primary" id="ap-add">Add photo</button>
       <input id="ap-file" class="visually-hidden" type="file" accept="image/*" capture="environment" multiple />
     </div>
-    <p class="login-error" id="ap-error" hidden></p>
-    <div class="ap-override" id="ap-override" hidden>
-      <p class="hint">Still not working? You can send it as it is. Your teacher will see
-        that the photo was flagged, so add a clearer one if you can.</p>
-      <button type="button" class="btn btn-ghost" id="ap-anyway">Upload anyway</button>
-    </div>`;
+    <p class="login-error" id="ap-error" hidden></p>`;
 
   const shots = host.querySelector<HTMLElement>("#ap-shots")!;
   const drop = host.querySelector<HTMLElement>("#ap-drop")!;
   const input = host.querySelector<HTMLInputElement>("#ap-file")!;
   const addBtn = host.querySelector<HTMLButtonElement>("#ap-add")!;
   const error = host.querySelector<HTMLElement>("#ap-error")!;
-  const override = host.querySelector<HTMLElement>("#ap-override")!;
-  const anywayBtn = host.querySelector<HTMLButtonElement>("#ap-anyway")!;
 
   const refusalKey = `${opts.testId}~${opts.questionId}`;
-  // The last capture the gate refused, held so "Upload anyway" can send it
-  // without asking the student to take it again.
-  let rejected: { image: string; reason: string } | null = null;
 
   function fail(message: string) {
     error.textContent = message;
@@ -112,7 +102,6 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
 
   function paint() {
     error.hidden = true;
-    override.hidden = true;
     drop.hidden = images.length >= MAX_PHOTOS;
     shots.innerHTML = images
       .map(
@@ -153,9 +142,16 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
           const image = encodeJpeg(canvas);
           const tries = (refusals.get(refusalKey) ?? 0) + 1;
           refusals.set(refusalKey, tries);
-          rejected = { image, reason: verdict.reason };
-          fail(verdict.reason);
-          override.hidden = tries < OVERRIDE_AFTER;
+          // The student sees the photo they took beside the reason, so the
+          // refusal is about something on the screen and not a bare sentence.
+          showRefusal({
+            image,
+            reason: verdict.reason,
+            allowAnyway: tries >= OVERRIDE_AFTER,
+            onRetake: () => input.click(),
+            onAnyway: () => void sendAnyway(image, verdict.reason),
+          });
+          fail(`Photo not clear enough to mark — ${verdict.reason.toLowerCase()}. Tap Add photo to take it again.`);
           break;
         }
         addBtn.textContent = "Uploading…";
@@ -181,31 +177,28 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
       ...(lowQuality ? { lowQuality } : {}),
     });
     images = res.images;
-    rejected = null;
     paint();
   }
 
-  // After OVERRIDE_AFTER refusals the student may send the last refused
-  // capture anyway. It goes up flagged with the reason it was refused, so the
-  // teacher reads it knowing the student was told, and a clearer retake is
-  // still welcome beside it.
-  anywayBtn.addEventListener("click", async () => {
-    if (!rejected || busy || images.length >= MAX_PHOTOS) return;
+  // After OVERRIDE_AFTER refusals the student may send the refused capture
+  // anyway. It goes up flagged with the reason it was refused, so the teacher
+  // reads it knowing the student was told, and a clearer retake is still
+  // welcome beside it.
+  async function sendAnyway(image: string, reason: string) {
+    if (busy || images.length >= MAX_PHOTOS) return;
     busy = true;
     addBtn.disabled = true;
-    anywayBtn.disabled = true;
-    const original = anywayBtn.textContent;
-    anywayBtn.textContent = "Uploading…";
+    const original = addBtn.textContent;
+    addBtn.textContent = "Uploading…";
     try {
-      await send(rejected.image, rejected.reason);
+      await send(image, reason);
     } catch (e) {
       fail(e instanceof Error ? e.message : "Could not upload that photo");
     }
-    anywayBtn.textContent = original;
-    anywayBtn.disabled = false;
+    addBtn.textContent = original;
     addBtn.disabled = false;
     busy = false;
-  });
+  }
 
   shots.addEventListener("click", async (e) => {
     const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-remove]");
@@ -263,4 +256,102 @@ export function photoStrip(images: string[], label: string): string {
       )
       .join("")}
   </div>`;
+}
+
+interface RefusalOpts {
+  /** The refused capture, base64 JPEG without the data: prefix. */
+  image: string;
+  reason: string;
+  allowAnyway: boolean;
+  onRetake: () => void;
+  onAnyway: () => void;
+}
+
+/**
+ * The capture-quality gate's refusal: the photo the student just took, the
+ * one thing wrong with it, and Retake. After `OVERRIDE_AFTER` refusals of the
+ * same question, Upload anyway as well.
+ *
+ * It is not `openModal` — that is a form of fields — and not the photo
+ * viewer, whose whole job is a black surface as large as the screen. What it
+ * borrows is the modal's manners: the scrim, Escape, a focus trap, the body
+ * locked behind `modal-open`, and the action row that ends at the right with
+ * the primary on top on a phone.
+ */
+export function showRefusal(o: RefusalOpts): void {
+  const opener = document.activeElement as HTMLElement | null;
+  const root = document.createElement("div");
+  root.className = "modal-scrim ap-refused";
+  root.innerHTML = `
+    <div class="modal ap-refused-card" role="dialog" aria-modal="true" aria-labelledby="ap-refused-title">
+      <div class="modal-head">
+        <h2 class="modal-title" id="ap-refused-title">This photo may be hard to mark</h2>
+        <button type="button" class="modal-x" id="ap-refused-close" aria-label="Close">✕</button>
+      </div>
+      <img class="ap-refused-img" id="ap-refused-img" alt="The photo you just took"
+           src="data:image/jpeg;base64,${o.image}" />
+      <p class="ap-refused-reason" id="ap-refused-reason">${escapeHtml(o.reason)}</p>
+      <p class="hint ap-refused-hint">${
+        o.allowAnyway
+          ? "Still not working? You can send it as it is. Your teacher will see that the photo was flagged, so add a clearer one if you can."
+          : "Fix that and take the photo again — it has not been uploaded."
+      }</p>
+      <div class="modal-actions">
+        ${o.allowAnyway ? `<button type="button" class="btn btn-ghost" id="ap-anyway">Upload anyway</button>` : ""}
+        <span class="modal-actions-gap"></span>
+        <button type="button" class="btn btn-ghost" id="ap-refused-cancel">Cancel</button>
+        <button type="button" class="btn btn-primary modal-submit" id="ap-retake">${ICONS.camera} Retake</button>
+      </div>
+    </div>`;
+  document.body.appendChild(root);
+  document.body.classList.add("modal-open");
+
+  const $ = <T extends HTMLElement>(id: string) => root.querySelector<T>(`#${id}`)!;
+  const focusables = () =>
+    Array.from(root.querySelectorAll<HTMLElement>("button:not([disabled])"));
+
+  function close(): void {
+    document.removeEventListener("keydown", onKey);
+    root.remove();
+    document.body.classList.remove("modal-open");
+    opener?.focus?.();
+  }
+  function onKey(e: KeyboardEvent): void {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      close();
+      return;
+    }
+    if (e.key !== "Tab") return;
+    const items = focusables();
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+  document.addEventListener("keydown", onKey);
+  root.addEventListener("click", (e) => {
+    if (e.target === root) close();
+  });
+  $("ap-refused-close").addEventListener("click", close);
+  $("ap-refused-cancel").addEventListener("click", close);
+  // Retake reopens the camera from inside this click, which is the user
+  // gesture a file input needs; closing first would lose it.
+  $("ap-retake").addEventListener("click", () => {
+    close();
+    o.onRetake();
+  });
+  if (o.allowAnyway) {
+    $("ap-anyway").addEventListener("click", () => {
+      close();
+      o.onAnyway();
+    });
+  }
+  $("ap-retake").focus();
 }
