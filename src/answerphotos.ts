@@ -147,6 +147,9 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
           showRefusal({
             image,
             reason: verdict.reason,
+            // What the gate measured, for tuning the thresholds on real
+            // phones: a refusal in the field then names its own number.
+            detail: verdict.checks.map((c) => `${c.id} ${c.ok ? "" : "✗"}${Number(c.value.toFixed(2))}`).join(" · "),
             allowAnyway: tries >= OVERRIDE_AFTER,
             onRetake: () => input.click(),
             onAnyway: () => void sendAnyway(image, verdict.reason),
@@ -262,6 +265,8 @@ interface RefusalOpts {
   /** The refused capture, base64 JPEG without the data: prefix. */
   image: string;
   reason: string;
+  /** The measured values, shown small: how a refusal reports its own numbers. */
+  detail?: string;
   allowAnyway: boolean;
   onRetake: () => void;
   onAnyway: () => void;
@@ -291,6 +296,7 @@ export function showRefusal(o: RefusalOpts): void {
       <img class="ap-refused-img" id="ap-refused-img" alt="The photo you just took"
            src="data:image/jpeg;base64,${o.image}" />
       <p class="ap-refused-reason" id="ap-refused-reason">${escapeHtml(o.reason)}</p>
+      ${o.detail ? `<p class="ap-refused-detail" id="ap-refused-detail">${escapeHtml(o.detail)}</p>` : ""}
       <p class="hint ap-refused-hint">${
         o.allowAnyway
           ? "Still not working? You can send it as it is. Your teacher will see that the photo was flagged, so add a clearer one if you can."
