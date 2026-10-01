@@ -4543,11 +4543,31 @@ const GRADING_SELECT = [
   // A short answer the grader could not settle arrives as text rather than as
   // photographs. Same row, same queue, same marking action.
   "answerText",
+  // Photos sent past the client's capture-quality gate, blob → reason. The
+  // teacher is told before they squint, and never has to guess whether the
+  // student was.
+  "lowQuality",
   "comment", "markedAt", "markedBy",
   // The AI's proposal. Deliberately separate from `awarded`: a suggestion is
   // not a mark, and only the teacher's own mark action writes that one.
   "aiAwarded", "aiComment", "aiReasoning", "aiAt", "aiModel",
 ];
+
+/** `{blob: reason}` for the photos flagged low quality; never throws. */
+function parseLowQuality(raw) {
+  if (!raw) return {};
+  try {
+    const v = JSON.parse(raw);
+    if (!v || typeof v !== "object" || Array.isArray(v)) return {};
+    const out = {};
+    for (const [k, r] of Object.entries(v)) {
+      if (typeof r === "string" && r) out[k] = r;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
 
 function gradingOut(e) {
   const images = parseImages(e.images);
@@ -4561,6 +4581,7 @@ function gradingOut(e) {
     questionIndex: typeof e.questionIndex === "number" ? e.questionIndex : 0,
     maxMarks: typeof e.maxMarks === "number" ? e.maxMarks : 0,
     images,
+    lowQuality: parseLowQuality(e.lowQuality),
     answerText: e.answerText || "",
     status: e.status || "submitted",
     submittedAt: e.submittedAt || "",
@@ -4690,8 +4711,15 @@ handlers.answerimage = async (context, req) => {
       await container.getBlockBlobClient(blobName).deleteIfExists();
     } catch {}
     const left = images.filter((n) => n !== blobName);
+    const flags = parseLowQuality(existing && existing.lowQuality);
+    delete flags[blobName];
     await grading.upsertEntity(
-      { partitionKey: who.id, rowKey, images: JSON.stringify(left) },
+      {
+        partitionKey: who.id,
+        rowKey,
+        images: JSON.stringify(left),
+        lowQuality: JSON.stringify(flags),
+      },
       "Merge"
     );
     return json(context, 200, { ok: true, images: left });
@@ -4737,6 +4765,12 @@ handlers.answerimage = async (context, req) => {
   });
 
   const next = images.concat(blobName);
+  // The client's capture-quality gate refused this photo and the student sent
+  // it anyway. The reason is the gate's own sentence, kept short: it is shown
+  // to the teacher, never parsed.
+  const flags = parseLowQuality(existing && existing.lowQuality);
+  const lowQuality = typeof body.lowQuality === "string" ? body.lowQuality.trim().slice(0, 80) : "";
+  if (lowQuality) flags[blobName] = lowQuality;
   const maxMarks = Math.max(0, Math.min(100, Number(body.maxMarks) || 0));
   const questionIndex = Math.max(0, Math.min(200, Number(body.questionIndex) || 0));
   await grading.upsertEntity(
@@ -4749,6 +4783,7 @@ handlers.answerimage = async (context, req) => {
       questionIndex,
       maxMarks,
       images: JSON.stringify(next),
+      lowQuality: JSON.stringify(flags),
       status: "submitted",
       submittedAt: new Date().toISOString(),
       teacherId: who.teacherSub || "",

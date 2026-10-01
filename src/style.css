@@ -4765,3 +4765,62 @@ body.drawer-open {
     max-height: min(46vh, 420px);
   }
 }
+
+/* --- The capture-quality gate on the answer-photo uploader --- */
+/* The refusal: the photo the student just took, beside the one thing wrong
+   with it. The image is the point, so it takes the width of the card. */
+.ap-refused-img {
+  display: block;
+  width: 100%;
+  max-height: 46vh;
+  object-fit: contain;
+  margin-top: 14px;
+  border-radius: var(--radius-sm);
+  background: #111;
+}
+.ap-refused-reason {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--amber-bg);
+  color: var(--amber);
+  font-weight: 700;
+}
+.ap-refused-hint {
+  margin: 8px 0 12px;
+}
+/* The gate's own numbers, for tuning on real phones. Quiet, and wraps. */
+.ap-refused-detail {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--faint);
+  word-break: break-word;
+}
+#ap-retake .icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: -3px;
+}
+/* The teacher is told a photo was sent past the gate before they squint at it. */
+.mk-flag {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 4px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--amber-bg);
+  color: var(--amber);
+  font-size: 13px;
+}
+.mk-flag .icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+.status-flag {
+  background: var(--amber-bg);
+  color: var(--amber);
+}

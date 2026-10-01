@@ -368,8 +368,17 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
   }
   const marked = row.status === "marked" && typeof row.awarded === "number";
   const ai = typeof row.aiAwarded === "number" ? row.aiAwarded : null;
+  const flagged = Object.entries(row.lowQuality ?? {}).filter(([blob]) => row.images.includes(blob));
   return `
     <div class="mk">
+      ${
+        flagged.length
+          ? `<p class="mk-flag">${ICONS.camera} <span><strong>Sent as low quality.</strong>
+               The photo check refused ${flagged.length === 1 ? "this photo" : `${flagged.length} of these photos`}
+               (${escapeHtml([...new Set(flagged.map(([, r]) => r))].join("; "))}) and
+               ${escapeHtml(row.studentName || row.username)} chose to send anyway.</span></p>`
+          : ""
+      }
       ${
         row.answerText
           ? `<div class="mk-typed">

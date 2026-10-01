@@ -116,6 +116,8 @@ interface QueueGroup {
   testId: string;
   testTitle: string;
   questionIds: string[];
+  /** Answers on this paper carrying a photo sent past the quality gate. */
+  flagged: number;
 }
 
 function groupQueue(rows: GradedAnswer[]): QueueGroup[] {
@@ -128,8 +130,10 @@ function groupQueue(rows: GradedAnswer[]): QueueGroup[] {
       testId: r.testId,
       testTitle: r.testTitle || r.testId,
       questionIds: [],
+      flagged: 0,
     };
     g.questionIds.push(r.questionId);
+    if (Object.keys(r.lowQuality ?? {}).some((b) => r.images.includes(b))) g.flagged++;
     groups.set(key, g);
   }
   return [...groups.values()].sort(
@@ -185,6 +189,7 @@ export async function showMarking(): Promise<void> {
                <div class="test-card-title">${escapeHtml(g.name)}</div>
                <div class="test-card-sub">${escapeHtml(g.testTitle)}</div>
              </div>
+             ${g.flagged ? `<span class="status-chip status-flag" title="A photo was sent past the quality check">low quality</span>` : ""}
              <span class="status-chip status-progress">${g.questionIds.length} to mark</span>
            </button>`
            )
