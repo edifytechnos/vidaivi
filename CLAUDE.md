@@ -417,8 +417,9 @@ Tagged today, with an evidence file per shelf under `docs/`:
 | Tamil Nadu Class 12 Chemistry | 42 of 225 | every chapter; TN HSE Mar 2023–25 |
 | Tamil Nadu Class 12 Physics | 37 of 165 | 10 of 11 chapters; TN HSE Mar 2023–25 |
 | Tamil Nadu Class 12 Physics (Tamil medium) | 37 of 165 | the board's own Tamil, read off the page |
+| Tamil Nadu Class 12 Chemistry (Tamil medium) | 42 of 225 | the board's own Tamil, read off the page |
 
-**381 of 3000 questions are evidenced.** The only original shelf with nothing is **NEET**,
+**419 of 3210 questions are evidenced.** The only original shelf with nothing is **NEET**,
 because no public archive exists; nothing there will carry a year until one does.
 
 **Cambridge publishes past papers openly** at
