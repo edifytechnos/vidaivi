@@ -1,0 +1,227 @@
+{
+  "id": "lib-tn12m-vec",
+  "title": "Applications of Vector Algebra",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12m-vec-24q6",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Scalar triple product",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If a vector $\\vec\\alpha$ lies in the plane of $\\vec\\beta$ and $\\vec\\gamma$, then :",
+      "options": [
+        "$[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=0$",
+        "$[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=1$",
+        "$[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=2$",
+        "$[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=-1$"
+      ],
+      "answer": 0,
+      "solution": "Three coplanar vectors have scalar triple product $0$: $[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=0$."
+    },
+    {
+      "id": "tn12m-vec-24q14",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Angle between a line and a plane",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The angle between the line $\\vec r=(\\hat i+2\\hat j-3\\hat k)+t(2\\hat i+\\hat j-2\\hat k)$ and the plane $\\vec r\\cdot(\\hat i+\\hat j)+4=0$ is :",
+      "options": [
+        "$45^\\circ$",
+        "$0^\\circ$",
+        "$90^\\circ$",
+        "$30^\\circ$"
+      ],
+      "answer": 0,
+      "solution": "$\\sin\\theta=\\dfrac{|\\vec b\\cdot\\vec n|}{|\\vec b||\\vec n|}=\\dfrac{|2+1+0|}{3\\sqrt2}=\\dfrac{1}{\\sqrt2}$, so $\\theta=45^\\circ$."
+    },
+    {
+      "id": "tn12m-vec-23q2",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Distance from a plane",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Distance from the origin to the plane $3x-6y+2z+7=0$ is :",
+      "options": [
+        "2",
+        "0",
+        "3",
+        "1"
+      ],
+      "answer": 3,
+      "solution": "$d=\\dfrac{|7|}{\\sqrt{9+36+4}}=\\dfrac77=1$."
+    },
+    {
+      "id": "tn12m-vec-23q6",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Scalar triple product",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\vec a$ and $\\vec b$ are parallel vectors then $[\\vec a,\\vec c,\\vec b]$ is equal to :",
+      "options": [
+        "1",
+        "2",
+        "0",
+        "$-1$"
+      ],
+      "answer": 2,
+      "solution": "$\\vec a\\parallel\\vec b$ makes $\\vec a,\\vec c,\\vec b$ coplanar, so $[\\vec a,\\vec c,\\vec b]=0$."
+    },
+    {
+      "id": "tn12m-vec-25q14",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Angle between lines",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The angle between the lines $\\dfrac{x-2}{3}=\\dfrac{y+1}{-2}$, $z=2$ and $\\dfrac{x-1}{1}=\\dfrac{2y+3}{3}=\\dfrac{z+5}{2}$ is :",
+      "options": [
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{\\pi}{6}$",
+        "$\\dfrac{\\pi}{2}$",
+        "$\\dfrac{\\pi}{4}$"
+      ],
+      "answer": 2,
+      "solution": "Directions $(3,-2,0)$ and $(1,\\tfrac32,2)\\propto(2,3,4)$. Dot product $6-6+0=0$, so the angle is $\\dfrac{\\pi}{2}$."
+    },
+    {
+      "id": "tn12m-vec-25q19",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Scalar triple product",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The volume of the parallelepiped with its edges represented by the vectors $\\hat i+\\hat j$, $\\hat i+2\\hat j$, $\\hat i+\\hat j+\\pi\\hat k$ is :",
+      "options": [
+        "$\\pi$",
+        "$\\dfrac{\\pi}{2}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$\\dfrac{\\pi}{3}$"
+      ],
+      "answer": 0,
+      "solution": "$\\begin{vmatrix}1&1&0\\\\1&2&0\\\\1&1&\\pi\\end{vmatrix}=\\pi(2-1)=\\pi$."
+    },
+    {
+      "id": "tn12m-vec-01",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Scalar triple product",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of $[\\hat i,\\hat j,\\hat k]$ is :",
+      "options": [
+        "0",
+        "1",
+        "$-1$",
+        "3"
+      ],
+      "answer": 1,
+      "solution": "$[\\hat i,\\hat j,\\hat k]=\\hat i\\cdot(\\hat j\\times\\hat k)=\\hat i\\cdot\\hat i=1$."
+    },
+    {
+      "id": "tn12m-vec-02",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Scalar triple product",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of $[\\hat i+\\hat j,\\ \\hat j+\\hat k,\\ \\hat k+\\hat i]$ is :",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "$-2$"
+      ],
+      "answer": 2,
+      "solution": "$\\begin{vmatrix}1&1&0\\\\0&1&1\\\\1&0&1\\end{vmatrix}=1(1)-1(0-1)+0=2$."
+    },
+    {
+      "id": "tn12m-vec-03",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Distance between planes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The distance between the parallel planes $x+2y+2z=3$ and $x+2y+2z=9$ is :",
+      "options": [
+        "6",
+        "3",
+        "2",
+        "1"
+      ],
+      "answer": 2,
+      "solution": "$d=\\dfrac{|9-3|}{\\sqrt{1+4+4}}=\\dfrac63=2$."
+    },
+    {
+      "id": "tn12m-vec-04",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Scalar triple product",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the volume of the parallelepiped whose edges are $2\\hat i-3\\hat j+4\\hat k$, $\\hat i+2\\hat j-\\hat k$ and $3\\hat i-\\hat j+2\\hat k$.",
+      "answer": 7,
+      "tolerance": 0,
+      "solution": "$\\begin{vmatrix}2&-3&4\\\\1&2&-1\\\\3&-1&2\\end{vmatrix}=2(4-1)+3(2+3)+4(-1-6)=6+15-28=-7$.\n\nVolume $=|-7|=7$ cubic units."
+    },
+    {
+      "id": "tn12m-vec-05",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Coplanar vectors",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find $\\lambda$ if $\\hat i+\\hat j+\\hat k$, $2\\hat i+\\lambda\\hat j+3\\hat k$ and $\\hat i+2\\hat j+3\\hat k$ are coplanar.",
+      "answer": 2.5,
+      "tolerance": 0,
+      "solution": "Coplanar means the scalar triple product is $0$:\n\n$\\begin{vmatrix}1&1&1\\\\2&\\lambda&3\\\\1&2&3\\end{vmatrix}=(3\\lambda-6)-(6-3)+(4-\\lambda)=2\\lambda-5=0$, so $\\lambda=\\dfrac52$.",
+      "accept": [
+        "5/2"
+      ]
+    },
+    {
+      "id": "tn12m-vec-06",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Distance from a plane",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the distance of the point $(1,2,3)$ from the plane $2x-y+2z+3=0$.",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "$d=\\dfrac{|2(1)-2+2(3)+3|}{\\sqrt{4+1+4}}=\\dfrac{9}{3}=3$."
+    },
+    {
+      "id": "tn12m-vec-07",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Angle between planes",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find, in degrees, the angle between the planes $x+y=4$ and $x+z=7$.",
+      "answer": 60,
+      "tolerance": 0,
+      "solution": "Normals $(1,1,0)$ and $(1,0,1)$.\n\n$\\cos\\theta=\\dfrac{1}{\\sqrt2\\sqrt2}=\\dfrac12$, so $\\theta=60^\\circ$."
+    },
+    {
+      "id": "tn12m-vec-08",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Shortest distance",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the shortest distance between the skew lines $\\vec r=(6\\hat i+2\\hat j+2\\hat k)+t(\\hat i-2\\hat j+2\\hat k)$ and $\\vec r=(-4\\hat i-\\hat k)+s(3\\hat i-2\\hat j-2\\hat k)$.",
+      "answer": 9,
+      "tolerance": 0,
+      "solution": "$\\vec b_1\\times\\vec b_2=(1,-2,2)\\times(3,-2,-2)=(8,8,4)$, with magnitude $12$.\n\n$\\vec a_2-\\vec a_1=(-10,-2,-3)$, and $(\\vec a_2-\\vec a_1)\\cdot(\\vec b_1\\times\\vec b_2)=-80-16-12=-108$.\n\n$d=\\dfrac{108}{12}=9$."
+    },
+    {
+      "id": "tn12m-vec-09",
+      "chapter": "Applications of Vector Algebra",
+      "topic": "Equation of a plane",
+      "type": "long",
+      "marks": 5,
+      "q": "Find the vector and Cartesian equations of the plane passing through the points $(1,2,3)$, $(2,3,1)$ and $(3,1,2)$.",
+      "solution": "Let $A(1,2,3)$, $B(2,3,1)$, $C(3,1,2)$. Then $\\vec{AB}=(1,1,-2)$ and $\\vec{AC}=(2,-1,-1)$.\n\nNormal $\\vec n=\\vec{AB}\\times\\vec{AC}=\\begin{vmatrix}\\hat i&\\hat j&\\hat k\\\\1&1&-2\\\\2&-1&-1\\end{vmatrix}=-3\\hat i-3\\hat j-3\\hat k$, parallel to $\\hat i+\\hat j+\\hat k$.\n\n**Vector form:** $\\vec r\\cdot(\\hat i+\\hat j+\\hat k)=(\\hat i+2\\hat j+3\\hat k)\\cdot(\\hat i+\\hat j+\\hat k)=6$.\n\n**Cartesian form:** $x+y+z=6$.\n\nCheck: $2+3+1=6$ and $3+1+2=6$."
+    }
+  ]
+}
