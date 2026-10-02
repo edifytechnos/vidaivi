@@ -92,7 +92,9 @@ export function setSubject(subjectId: string | null): void {
 
 /** The tests page. `subjectId` null means the built-in (bundled) tests. */
 export function showHome(subjectId: string | null = activeSubject) {
-  setUrl();
+  // A student's My results is a screen of its own beside Your subjects; the
+  // guest demo is the root, which is the link that was shared.
+  setUrl(isLoggedIn() ? { view: "results" } : {});
   activeSubject = subjectId;
   track("home_open", subjectId ? { subject: subjectId } : {});
   const host = mount(

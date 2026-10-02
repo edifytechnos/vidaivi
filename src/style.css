@@ -3784,6 +3784,16 @@ body.drawer-open {
 .ed-tool.primary:hover { background: var(--primary-hover); color: #fff; }
 .ed-tool:disabled { opacity: 0.55; cursor: default; }
 
+/* The action that changes what students see is a word, not a glyph. */
+.ed-tool-text {
+  width: auto;
+  gap: 6px;
+  padding: 0 12px 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 @media (max-width: 600px) {
   .shellbar-select { width: 120px; }
 }

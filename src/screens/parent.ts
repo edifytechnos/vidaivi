@@ -38,7 +38,7 @@ import type { Attempt } from "../types";
 
 /** The children screen. One child goes straight through to their results. */
 export async function showChildren(force = false): Promise<void> {
-  setUrl();
+  setUrl({ view: "children" });
   track("parent_children_open");
   mount(
     `
@@ -199,8 +199,19 @@ function showNewLogin(name: string, username: string, password: string): void {
 }
 
 /** One child's tests, with the score they actually got. */
+/**
+ * One child's results from a username alone — what Back and a reload hold,
+ * since `?child=<username>` is all the address bar carries. One fetch of the
+ * list the children screen already makes; an unknown name lands on that list.
+ */
+export async function openChildResults(username: string): Promise<void> {
+  const child = ((await fetchChildren()) ?? []).find((c) => c.username === username);
+  if (child) await showChildResults(child);
+  else await showChildren(true);
+}
+
 export async function showChildResults(child: Child): Promise<void> {
-  setUrl();
+  setUrl({ child: child.username });
   track("parent_child_open");
   mount(
     `

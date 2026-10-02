@@ -160,10 +160,67 @@ export function topbar(showHome: boolean): string {
  * calls this as it renders, so a parameter left by an earlier screen (the
  * editor's ?edit=, a ?test= that did not resolve) cannot ride along and
  * reopen that screen on the next refresh.
+ *
+ * It is also the whole of the app's history. There is no central navigate():
+ * screens call each other directly from a hundred places, so the one point
+ * every move passes through is this URL write. A write that CHANGES the
+ * address pushes a history entry, which is what makes the browser's Back
+ * button land on the previous screen rather than outside the app. A write
+ * that leaves it as it was (a re-render) pushes nothing, so an autosave or a
+ * ticked answer never piles up entries.
+ *
+ * The exception is a restore — the boot route and every popstate. There the
+ * URL is already where it should be and the screen is only being rebuilt
+ * under it, so its own writes (a stripped ?q=, a normalised test id) replace
+ * the entry instead of pushing on top of it: pushing would put the screen
+ * Back just left on top of itself and make Back a loop. A restore ends the
+ * moment the person does something — a click or a key — because from then
+ * on a URL change is a move they made. See `installHistory`.
  */
+let restoring = true;
+
 export function setUrl(params?: Record<string, string>): void {
   const q = new URLSearchParams(params ?? {}).toString();
-  history.replaceState(null, "", q ? `./?${q}` : "./");
+  const url = q ? `./?${q}` : "./";
+  const same = sameQuery(q, location.search);
+  if (same && history.state?.vidai) return;
+  if (same || restoring) history.replaceState({ vidai: 1 }, "", url);
+  else history.pushState({ vidai: 1 }, "", url);
+}
+
+/** Two query strings naming the same parameters in any order. */
+function sameQuery(a: string, b: string): boolean {
+  const norm = (s: string) => {
+    const p = new URLSearchParams(s);
+    p.sort();
+    return p.toString();
+  };
+  return norm(a) === norm(b);
+}
+
+/**
+ * Bind the browser's Back and Forward to the app. `route` reads the address
+ * bar and paints the screen it names — the same function the boot uses, so a
+ * popstate is a reload without the network round trip. An open dialog is
+ * closed first by way of the Escape it already listens for: every dialog in
+ * the app owns its own teardown, and asking each the way the keyboard does
+ * keeps one closer rather than five.
+ */
+export function installHistory(route: () => void): void {
+  window.addEventListener("popstate", () => {
+    // The synthetic Escape is a keydown, and a keydown ends a restore — so it
+    // goes out BEFORE the restore begins, never after.
+    if (document.body.classList.contains("modal-open")) {
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    }
+    restoring = true;
+    route();
+  });
+  const done = () => {
+    restoring = false;
+  };
+  document.addEventListener("pointerdown", done, true);
+  document.addEventListener("keydown", done, true);
 }
 
 export function gotoTest(testId: string): void {

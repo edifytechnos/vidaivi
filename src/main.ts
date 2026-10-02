@@ -18,10 +18,12 @@ import { showWelcome } from "./screens/auth";
 import { showLanding } from "./screens/test";
 import { showMarking } from "./screens/marking";
 import { showEditor } from "./screens/editor";
+import { showStudentReport } from "./screens/console";
 import { showSubjects } from "./screens/subjects";
 import { isStudentViewer, showStudentSubject } from "./screens/student";
-import { showChildren } from "./screens/parent";
-import { installShell } from "./screens/menu";
+import { openChildResults, showChildren } from "./screens/parent";
+import { installShell, openRail } from "./screens/menu";
+import { installHistory } from "./dom";
 import { mount, skeleton } from "./shell";
 import { showTourOnFirstRun } from "./tour";
 
@@ -50,58 +52,82 @@ function showEntry(): void {
   else showHome(null);
 }
 
-// A teacher refreshing mid-edit lands back on the same question.
-const editId = (new URLSearchParams(location.search).get("edit") ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
-if (editId && authEnabled && isLoggedIn()) {
-  const questionId = new URLSearchParams(location.search).get("q");
-  void showEditor(editId, questionId, () => void showSubjects());
+/**
+ * Paint the screen the address bar names. Run once at boot and again on
+ * every popstate, so the browser's Back and Forward move through the app
+ * instead of out of it — `setUrl` in `src/dom.ts` is what pushes the entries
+ * they walk. A parameter it does not know lands on the entry screen.
+ */
+function route(): void {
+  const params = new URLSearchParams(location.search);
+  const clean = (v: string | null) => (v ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
+  const signedIn = authEnabled && isLoggedIn();
+
+  // A teacher refreshing mid-edit lands back on the same question.
+  const editId = clean(params.get("edit"));
+  if (editId && signedIn) {
+    void showEditor(editId, params.get("q"), () => void showSubjects());
+    return;
+  }
+
+  // A student refreshing inside a subject stays in that subject's tests tree.
+  const subjectId = clean(params.get("subject"));
+
+  // A teacher refreshing inside Browse stays there: ?browse with no value is the
+  // shelf list, ?browse=<id> is one shelf. Old ?library=<id> links land the same
+  // place, which is where reading a built-in lives now.
+  const browsing = params.has("browse") || params.has("library");
+  const browseId = clean(params.get("browse") || params.get("library"));
+
+  // A teacher refreshing the marking queue stays on it.
+  const markMode = params.get("mark") === "1";
+
+  // The console screens, a student's report and a parent's child each name
+  // themselves, so Back can find its way back to them.
+  const view = params.get("view") ?? "";
+  const report = clean(params.get("report"));
+  const child = clean(params.get("child"));
+
+  // Tolerate links mangled by messaging apps (trailing "?", "/", punctuation).
+  const rawTestId = params.get("test") ?? "";
+  const testId = clean(rawTestId);
+  const test = TESTS.find((t) => t.id === testId);
+  if (subjectId && !rawTestId && signedIn && isStudentViewer()) {
+    void showStudentSubject(subjectId);
+  } else if (browsing && signedIn) {
+    void import("./screens/browse").then((m) =>
+      browseId ? m.showShelf(browseId) : m.showBrowse()
+    );
+  } else if (markMode && signedIn) {
+    void showMarking();
+  } else if (report && signedIn) {
+    showStudentReport(report);
+  } else if (child && signedIn) {
+    void openChildResults(child);
+  } else if (view && signedIn && openRail(view)) {
+    // painted by openRail
+  } else if (test) {
+    track("test_open", { test: test.id });
+    showLanding(test);
+  } else if (testId && signedIn) {
+    // Not in the bundle — could be a DB-backed test shared by a teacher. Paint
+    // the shell and a placeholder card now so the reload never shows a blank.
+    mount(skeleton.card(4), { title: "Test", active: "subjects", width: "narrow" });
+    void fetchServerTest(testId).then((serverTest) => {
+      if (serverTest) {
+        track("test_open", { test: serverTest.id });
+        showLanding(serverTest);
+      } else {
+        showEntry();
+      }
+    });
+  } else {
+    showEntry();
+  }
 }
 
-// A student refreshing inside a subject stays in that subject's tests tree.
-const subjectId = (new URLSearchParams(location.search).get("subject") ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
-
-// A teacher refreshing inside Browse stays there: ?browse with no value is the
-// shelf list, ?browse=<id> is one shelf. Old ?library=<id> links land the same
-// place, which is where reading a built-in lives now.
-const params = new URLSearchParams(location.search);
-const browsing = params.has("browse") || params.has("library");
-const browseId = ((params.get("browse") || params.get("library")) ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
-
-// A teacher refreshing the marking queue stays on it.
-const markMode = new URLSearchParams(location.search).get("mark") === "1";
-
-// Tolerate links mangled by messaging apps (trailing "?", "/", punctuation).
-const rawTestId = new URLSearchParams(location.search).get("test") ?? "";
-const testId = rawTestId.replace(/[^A-Za-z0-9-]+$/g, "");
-const test = TESTS.find((t) => t.id === testId);
-if (editId) {
-  // handled above
-} else if (subjectId && !rawTestId && authEnabled && isLoggedIn() && isStudentViewer()) {
-  void showStudentSubject(subjectId);
-} else if (browsing && authEnabled && isLoggedIn()) {
-  void import("./screens/browse").then((m) =>
-    browseId ? m.showShelf(browseId) : m.showBrowse()
-  );
-} else if (markMode && authEnabled && isLoggedIn()) {
-  void showMarking();
-} else if (test) {
-  track("test_open", { test: test.id });
-  showLanding(test);
-} else if (testId && authEnabled && isLoggedIn()) {
-  // Not in the bundle — could be a DB-backed test shared by a teacher. Paint
-  // the shell and a placeholder card now so the reload never shows a blank.
-  mount(skeleton.card(4), { title: "Test", active: "subjects", width: "narrow" });
-  void fetchServerTest(testId).then((serverTest) => {
-    if (serverTest) {
-      track("test_open", { test: serverTest.id });
-      showLanding(serverTest);
-    } else {
-      showEntry();
-    }
-  });
-} else {
-  showEntry();
-}
+installHistory(route);
+route();
 
 // Somebody's first sign-in gets the five-card tour. It waits for the screen to
 // paint and stands down if a dialog is already open, because the role choice

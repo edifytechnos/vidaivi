@@ -11,6 +11,7 @@ node e2e/editor.cjs                 # drives the authoring editor (needs admin c
 node e2e/capturequality.cjs         # the photo-quality gate against synthetic pages (no network, no session)
 node e2e/tour.cjs                   # the first-run tour and the /help handover (needs admin creds)
 node e2e/newsubject.cjs             # the four-step New subject flow (needs admin creds)
+node e2e/history.cjs                # the browser's Back button: setUrl + the popstate router (no network, no session)
 ```
 
 - `helpers.cjs` covers the pure helpers in `api/shared/core.js`: the question

@@ -80,7 +80,7 @@ function bindConsoleNav(): void {
 // ---------- Teacher: my tests (DB-backed) ----------
 
 export function showMyTests() {
-  setUrl();
+  setUrl({ view: "mytests" });
   track("mytests_open");
   consoleShell(
     "tests",
@@ -272,7 +272,7 @@ export function showMyTests() {
  * free is the one wrong answer this screen could give.
  */
 export function showAiUsage(month?: string) {
-  setUrl();
+  setUrl({ view: "aiusage" });
   track("aiusage_open");
   const shown = month || new Date().toISOString().slice(0, 7);
   consoleShell(
@@ -369,7 +369,7 @@ export function showAiUsage(month?: string) {
 /** Every price and limit, and who is on which plan. The numbers here are the
  *  live ones: nothing in the code duplicates them. */
 export function showPlans() {
-  setUrl();
+  setUrl({ view: "plans" });
   track("plans_open");
   const FIELDS: { key: string; label: string; money?: boolean; hint?: string }[] = [
     { key: "trialDays", label: "Trial length (days)" },
@@ -548,7 +548,7 @@ export function showPlans() {
 }
 
 export function showAdmin() {
-  setUrl();
+  setUrl({ view: "admin" });
   track("admin_open");
   consoleShell(
     "admin",
@@ -715,7 +715,7 @@ export function showAdmin() {
 // ---------- Teacher: student progress report ----------
 
 export function showStudentReport(username: string) {
-  setUrl();
+  setUrl({ report: username });
   track("report_open", { student: username });
   consoleShell("report", `${skeleton.card(2)}${skeleton.table(3, 4)}`);
   bindConsoleNav();
@@ -941,7 +941,7 @@ function inviteMessage(s: { name: string; code: string }): string {
 }
 
 export function showTeacher() {
-  setUrl();
+  setUrl({ view: "students" });
   track("teacher_open");
   consoleShell(
     "students",
@@ -1163,7 +1163,7 @@ export function showTeacher() {
 // the moment it is confirmed or refused.
 
 export function showPayments(): void {
-  setUrl();
+  setUrl({ view: "payments" });
   track("payments_open");
   consoleShell(
     "payments",

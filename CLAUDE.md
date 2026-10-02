@@ -543,11 +543,16 @@ the tests, and reused on every render. Switching calls `showEditorForSubject`.
 picker out from under an open dropdown. Below 1100px the audience note drops and
 below 600px the title does: the crumb row already carries the test's name.
 
-**Every action is one icon row** (`.ed-toolbar`, `toolbarMarkup`) in the **Test
+**Every action is one row** (`.ed-toolbar`, `toolbarMarkup`) in the **Test
 details panel's own header**, right-aligned — Who sees this (`#ed-audience`),
 Preview (`#ov-preview`), Quick edit (`#ov-quick`, drafts only) and Publish
-(`#ov-publish`) / Move back to draft (`#ed-unpublish-bar`). It belongs to that
-panel, not to a bar floating above it. On a library master viewed by a teacher
+(`#ov-publish`) / Unpublish (`#ed-unpublish-bar`). It belongs to that
+panel, not to a bar floating above it. **The three that only open something
+are icons; the one that changes what students see says "Publish" in words**
+(`.ed-tool-text`). It was a paper-plane icon with a tooltip, and was read as
+anything but Publish — and a phone has no hover to read the tooltip with. The
+word is "Publish" everywhere a test is published (here and in My tests), never
+"Publish to students", "Send" or "Share". On a library master viewed by a teacher
 the row collapses to **Preview alone** — publishing, the audience picker and
 quick edit would all 403. There is no
 PUBLISHING card and no duplicate set in the app bar; the bar keeps identity and
@@ -1057,9 +1062,40 @@ the function did not exist.
 - `authattempts` rows are never swept. They are tiny and point-keyed, so this is
   untidy rather than costly.
 
+## The browser's Back button stays inside the app (`setUrl`, `route`)
+
+Every screen used to call `history.replaceState`, so the app held exactly one
+history entry and **Back always left the site**. There is no central
+navigate() — screens call each other from a hundred places — so the one point
+every move passes through is the URL write, and that is where the history is.
+
+- **`setUrl` in `src/dom.ts` pushes an entry when the address changes** and
+  does nothing when it does not, so a re-render (an autosave, a ticked answer)
+  never piles up entries. Entries it wrote carry `history.state.vidai`.
+- **`route()` in `src/main.ts` is the boot routing as a function**, run again
+  on every `popstate` (`installHistory`). A popstate is a reload without the
+  network round trip, so anything a reload restores, Back restores.
+- **During a restore, `setUrl` replaces instead of pushing.** The boot and
+  every popstate land on a URL that is already right, and the screen rebuilt
+  under it rewrites it on the way (showLanding strips `?q=`, a mangled test id
+  is cleaned); pushing those would put the screen Back just left on top of
+  itself and turn Back into a loop. A restore ends at the next `pointerdown`
+  or `keydown` on the document — from then on a URL change is a move the
+  person made. The synthetic Escape that closes an open dialog on popstate is
+  a keydown, so it is dispatched **before** the restore flag is set.
+- **A screen Back should reach has to name itself in the address bar.** The
+  console screens carry `?view=<rail key>` (`openRail` in `src/screens/menu.ts`
+  is the one table, shared by the rail and the router), a student's report
+  `?report=<username>`, a parent's child `?child=<username>`, a student's
+  results `?view=results`. Two screens at the same URL are one entry: Back
+  cannot tell them apart. `?view=children` opens the **list** (`showChildren(true)`),
+  because the list auto-forwards a one-child parent to that child, and Back
+  from the child would otherwise bounce straight back into it.
+- The guest demo stays at `./` — that is the link that was shared.
+
 ## Source layout (`src/`)
 
-- `main.ts` — boot only: analytics init, URL → screen routing. No screen code here.
+- `main.ts` — boot only: analytics init, `route()` (URL → screen). No screen code here.
 - `types.ts` — Question/Test/Attempt interfaces (mirror the JSON schema below).
 - `data.ts` — TESTS registry (`import.meta.glob` over `src/tests/*.json`), `totalMarks`, `testTitle`.
 - `dom.ts` — `app` root, `escapeHtml`/`formatText`/`renderMath`, ICONS, topbar/brand, `copyText`, `pct`.
@@ -1102,7 +1138,11 @@ stylesheet and drives it at 390px: what the fixed bottom bar covers, and whether
 the page holds still behind the open question list.
 `node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
 the full-screen photo viewer in a real browser against two fake pages — no
-network, no session, no row written. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+network, no session, no row written. `node e2e/history.cjs` does the same for
+`setUrl` and `installHistory` in `src/dom.ts`: a stub `route()` stands in for
+`main.ts`, and it asserts what the address bar and the history do on a boot, a
+move, a re-render, Back, Forward and Back over an open dialog. It fails four
+ways against a replace-only `setUrl`. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the
