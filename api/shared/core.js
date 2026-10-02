@@ -5743,6 +5743,353 @@ handlers.assess = async (context, req) => {
   });
 };
 
+// ---------- Seyari AI: questions written, or read off a paper, with a teacher ----------
+//
+// `POST /api/generate` is the model behind the Seyari AI panel in the authoring
+// editor. A teacher types what they want ("ten MCQs on quadratic equations,
+// board level"), or attaches photographs or the pages of a paper, and the
+// model answers with QUESTIONS in the app's own JSON shape plus a sentence to
+// the teacher. Nothing is written anywhere by this handler: the panel shows
+// each question as a card and the teacher ACCEPTS the ones they want into
+// their draft — the same line CLAUDE.md draws for marking, "the AI proposes,
+// the teacher awards", drawn here as "the AI drafts, the teacher accepts".
+//
+// It spends from the same wallet as marking, one credit per message, and
+// sits behind the same two gates in the same order: the daily cap, then the
+// credits, then — and only then — the body is parsed and the model called.
+// The expensive work is exactly what an abuser wants, so it is behind the
+// gates rather than in front of them, exactly as `handlers.assess`.
+//
+// The images reach the model as base64 `data:` URIs at `detail: "high"`, as
+// the answer photographs do: a question in pencil on a photocopied paper needs
+// the full page, not a 512px thumbnail. Nothing uploaded is stored — the
+// photo is read once and dropped with the request.
+const GEN_MAX_IMAGES = 10;
+const GEN_MAX_PROMPT = 4000;
+const GEN_MAX_HISTORY = 12;
+const GEN_MAX_TURN = 12000;
+// Longer than an assessment: fifteen questions with worked solutions are a
+// few thousand output tokens. Still under the platform's own request ceiling.
+const GEN_TIMEOUT_MS = 40000;
+
+/**
+ * The shape the model must answer in. Strict, so every property is required
+ * and nothing else may appear — see AI_SCHEMA for why. A union would be the
+ * natural type for `answer`, so there are two fields instead: `answerIndex`
+ * for an MCQ, `answer` (text) for a short answer, and the mapping below picks
+ * the one the type needs.
+ */
+const GEN_SCHEMA = {
+  type: "object",
+  properties: {
+    reply: { type: "string" },
+    title: { type: "string" },
+    chapter: { type: "string" },
+    questions: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          type: { type: "string", enum: ["mcq", "numeric", "long"] },
+          topic: { type: "string" },
+          source: { type: "string" },
+          marks: { type: "integer" },
+          q: { type: "string" },
+          options: { type: "array", items: { type: "string" } },
+          answerIndex: { type: "integer" },
+          answer: { type: "string" },
+          accept: { type: "array", items: { type: "string" } },
+          tolerance: { type: "number" },
+          solution: { type: "string" },
+        },
+        required: [
+          "type",
+          "topic",
+          "source",
+          "marks",
+          "q",
+          "options",
+          "answerIndex",
+          "answer",
+          "accept",
+          "tolerance",
+          "solution",
+        ],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["reply", "title", "chapter", "questions"],
+  additionalProperties: false,
+};
+
+/**
+ * What the model is told once, before the conversation. The formatting rules
+ * are the ones `formatText` and KaTeX actually honour — CLAUDE.md records
+ * four ways content has rendered wrong in front of students (a markdown
+ * table, a literal backslash-n, single-asterisk italics, bare Tamil inside
+ * maths), and every one of them is forbidden here by name.
+ */
+function genSystemPrompt(ctx) {
+  const where = [
+    ctx.subject ? `Subject: ${ctx.subject}.` : "",
+    ctx.title ? `The test is called "${ctx.title}"${ctx.chapter ? ` (${ctx.chapter})` : ""}.` : "",
+    ctx.existing > 0 ? `It already holds ${ctx.existing} question${ctx.existing === 1 ? "" : "s"}.` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  return [
+    "You are Seyari AI, a question-writing assistant inside Vidai, a practice-test app used by Indian school teachers (CBSE, state boards, Cambridge, NEET/JEE).",
+    "The teacher is building a test. Answer with questions in the exact JSON shape asked for, plus a short `reply` to the teacher (one or two sentences).",
+    where,
+    "",
+    "WHAT TO DO:",
+    "- If the teacher asks for questions, write original questions at the level and in the style they ask for. Default to the board exam pattern: MCQ = 1 mark, short answer = 2 or 3 marks, long answer = 5 marks.",
+    "- If photographs or pages of a paper are attached, READ them and transcribe the questions faithfully, each exactly once, keeping the marks shown. Do not invent questions that are not on the page unless asked. Say in `reply` if a page was unreadable.",
+    "- If the teacher asks you to change earlier questions, answer with the changed questions only.",
+    "- At most 15 questions per reply. If more were asked for, write 15 and say so in `reply`.",
+    "",
+    "QUESTION FIELDS:",
+    "- `type`: \"mcq\" (one correct option), \"numeric\" (a short answer: a number OR a short symbol like \"√3/2\", \"π/4\", \"x = 2\"), or \"long\" (worked answer, marked by the teacher).",
+    "- `topic`: a short sub-topic (under 40 characters). `source`: the paper it was read from if the teacher named one (e.g. \"CBSE 2024\"), otherwise \"Seyari AI\" for a question you wrote.",
+    "- `options`: exactly four for an MCQ, empty for anything else. `answerIndex`: the 0-based correct option for an MCQ, -1 otherwise.",
+    "- `answer`: the short answer as text for \"numeric\" (empty for other types). `accept`: other correct ways to write it (up to 4). `tolerance`: for a numeric answer, how far off still counts (0 for exact).",
+    "- `solution`: a worked solution a student can learn from, for every question. For a long answer, the full model answer.",
+    "- `title` and `chapter`: a sensible test title and chapter name for these questions (used only if the teacher has not named the test).",
+    "",
+    "FORMATTING, strictly (the app renders nothing else):",
+    "- Maths in KaTeX: inline `$...$`, display `$$...$$`. Matrices as \\begin{pmatrix}...\\end{pmatrix}, fractions as \\frac{a}{b}, square roots as \\sqrt{..}.",
+    "- Emphasis is `**bold**` only. NEVER use *single asterisks*, headings, bullet markers, numbered lists, HTML, or markdown tables. For a table write one line per row, with the header in **bold**.",
+    "- Paragraph breaks are a blank line. Use real newlines, never the two characters backslash-n.",
+    "- Inside maths, any non-Latin text (Tamil, Hindi) goes in \\text{...}.",
+    "- Do not number the questions in `q`; the app numbers them.",
+  ]
+    .filter((line) => line !== null)
+    .join("\n");
+}
+
+/** The model's reply, mapped into the app's own question shape and cleaned by the one validator. */
+function genQuestions(raw, chapter) {
+  const list = Array.isArray(raw) ? raw.slice(0, 15) : [];
+  const mapped = list.map((g, i) => {
+    const type = ["mcq", "numeric", "long"].includes(g.type) ? g.type : "mcq";
+    const q = {
+      // A placeholder: the client stamps a real id (`newQuestionId`) on the
+      // ones the teacher accepts, so an accepted question is born the same way
+      // a typed one is. It is only here because the validator requires one.
+      id: `gen-${i + 1}`,
+      chapter: String(chapter || "").slice(0, 60),
+      topic: String(g.topic || ""),
+      type,
+      q: String(g.q || ""),
+      solution: String(g.solution || ""),
+      marks: Number(g.marks) || (type === "mcq" ? 1 : type === "numeric" ? 2 : 5),
+      source: String(g.source || ""),
+    };
+    if (type === "mcq") {
+      q.options = (Array.isArray(g.options) ? g.options : []).map((o) => String(o));
+      q.answer = Number.isInteger(g.answerIndex) ? g.answerIndex : -1;
+    } else if (type === "numeric") {
+      const text = String(g.answer || "").trim();
+      const n = Number(text);
+      q.answer = text !== "" && Number.isFinite(n) ? n : text;
+      q.accept = Array.isArray(g.accept) ? g.accept : [];
+      q.tolerance = Number(g.tolerance) || 0;
+    }
+    return q;
+  });
+  const checked = validateQuestions(mapped, { strict: false });
+  if (checked.error) return { questions: [], problems: checked.problems || [] };
+  const problems = checked.problems || [];
+  // The placeholder id goes; what each card needs to know is whether the
+  // question is complete as written, so the teacher can see what needs work.
+  const questions = checked.questions.map((q) => {
+    const needs = problems.filter((p) => p.questionId === q.id).map((p) => p.reason);
+    const { id: _id, ...rest } = q;
+    return needs.length ? { ...rest, needs } : rest;
+  });
+  return { questions, problems };
+}
+
+async function askGenerator(system, history, text, images) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GEN_TIMEOUT_MS);
+  let res;
+  try {
+    res = await fetch(`${AZURE_AI_ENDPOINT}/openai/v1/chat/completions`, {
+      method: "POST",
+      signal: controller.signal,
+      headers: { "Content-Type": "application/json", "api-key": AZURE_AI_KEY },
+      body: JSON.stringify({
+        model: AZURE_AI_DEPLOYMENT,
+        messages: [
+          { role: "system", content: system },
+          // Earlier turns ride along as text only. The questions the model
+          // wrote are in its own earlier replies, so "make the third one
+          // harder" works without resending the photographs that produced
+          // them — which would be most of the bill, every turn.
+          ...history.map((h) => ({ role: h.role, content: h.text })),
+          { role: "user", content: [{ type: "text", text }, ...images] },
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: { name: "vidai_generate", strict: true, schema: GEN_SCHEMA },
+        },
+      }),
+    });
+  } catch (e) {
+    throw new Error(
+      e && e.name === "AbortError" ? "Seyari AI took too long — ask for fewer questions at a time" : "Could not reach the model"
+    );
+  } finally {
+    clearTimeout(timer);
+  }
+  const body = await res.text();
+  if (!res.ok) {
+    let why = "";
+    try {
+      const parsed = JSON.parse(body);
+      why = String((parsed.error && parsed.error.message) || "").slice(0, 200);
+    } catch {}
+    const tried =
+      res.status === 404
+        ? ` (tried deployment "${AZURE_AI_DEPLOYMENT}" at ${AZURE_AI_ENDPOINT}/openai/v1/chat/completions)`
+        : "";
+    throw new Error(`The model refused the request (${res.status})${why ? `: ${why}` : ""}${tried}`);
+  }
+  let payload;
+  try {
+    payload = JSON.parse(body);
+  } catch {
+    throw new Error("The model sent something that was not JSON");
+  }
+  const message = (payload.choices && payload.choices[0] && payload.choices[0].message) || {};
+  if (message.refusal) throw new Error("The model declined this request");
+  let out;
+  try {
+    out = JSON.parse(message.content || "");
+  } catch {
+    throw new Error("The model did not answer in the shape asked for");
+  }
+  const usage = payload.usage || {};
+  return {
+    out,
+    promptTokens: Math.max(0, Math.round(Number(usage.prompt_tokens) || 0)),
+    completionTokens: Math.max(0, Math.round(Number(usage.completion_tokens) || 0)),
+  };
+}
+
+handlers.generate = async (context, req) => {
+  if (misconfigured(context)) return;
+  if (req.method !== "POST") return json(context, 405, { error: "Method not allowed" });
+  const who = await identify(req, context);
+  if (!who.kind) return json(context, 401, { error: "Invalid token", reason: who.reason });
+  if (!isAuthor(who)) return json(context, 403, { error: "Not available for this account" });
+  if (!aiConfigured()) {
+    return json(context, 501, { error: "Seyari AI is not switched on for this site" });
+  }
+
+  // Gates first, body second, model last — the same order as `handlers.assess`
+  // and for the same reason. A generation shares the daily cap with marking:
+  // it is the same key and the same money.
+  const gate = await attemptsTable();
+  const used = await assessUsage(gate, who.id);
+  if (used >= ASSESS_DAILY_CAP) {
+    return json(context, 429, {
+      error: `That is ${ASSESS_DAILY_CAP} AI requests today, which is the daily limit. Try again tomorrow.`,
+    });
+  }
+  const wallet = await walletOf(who);
+  const ledger = await aiusageTable();
+  const credit = await creditsFor(ledger, wallet);
+  if (creditsLeft(credit) <= 0) {
+    return json(context, 429, {
+      error: wallet.lifetime
+        ? `You have used all ${credit.granted} of your AI credits. Top up to keep going.`
+        : `You have used all ${credit.granted} AI credits this month.`,
+      credits: { used: credit.used, granted: credit.granted, left: 0, lifetime: wallet.lifetime },
+    });
+  }
+
+  const body = getBody(req) || {};
+  const prompt = String(body.prompt || "").trim().slice(0, GEN_MAX_PROMPT);
+  const rawImages = Array.isArray(body.images) ? body.images : [];
+  if (!prompt && !rawImages.length) {
+    return json(context, 400, { error: "Say what you want, or attach a paper" });
+  }
+  if (rawImages.length > GEN_MAX_IMAGES) {
+    return json(context, 400, { error: `At most ${GEN_MAX_IMAGES} pages or photos in one message` });
+  }
+  const images = [];
+  for (const raw of rawImages) {
+    const b64 = String(raw || "").replace(/^data:[^,]*,/, "");
+    const buf = Buffer.from(b64, "base64");
+    if (!buf.length) continue;
+    if (buf.length > MAX_IMAGE_BYTES) {
+      return json(context, 413, { error: "One of the images is too large (1.5 MB after resizing)" });
+    }
+    const mime = sniffImage(buf);
+    if (!mime) return json(context, 400, { error: "Only JPEG and PNG images are accepted" });
+    images.push({
+      type: "image_url",
+      image_url: { url: `data:${mime};base64,${buf.toString("base64")}`, detail: "high" },
+    });
+  }
+  const history = (Array.isArray(body.history) ? body.history : [])
+    .slice(-GEN_MAX_HISTORY)
+    .map((h) => ({
+      role: h && h.role === "assistant" ? "assistant" : "user",
+      text: String((h && h.text) || "").slice(0, GEN_MAX_TURN),
+    }))
+    .filter((h) => h.text);
+  const ctxIn = body.context && typeof body.context === "object" ? body.context : {};
+  const ctx = {
+    subject: String(ctxIn.subject || "").slice(0, 120),
+    title: String(ctxIn.title || "").slice(0, 120),
+    chapter: String(ctxIn.chapter || "").slice(0, 120),
+    existing: Math.max(0, Math.min(60, Math.round(Number(ctxIn.existing) || 0))),
+  };
+
+  let result;
+  try {
+    result = await askGenerator(
+      genSystemPrompt(ctx),
+      history,
+      prompt || "Read the attached pages and transcribe every question on them.",
+      images
+    );
+  } catch (e) {
+    return json(context, 502, { error: (e && e.message) || "Seyari AI could not answer" });
+  }
+
+  // Counted only once the model has actually answered — a failed call costs
+  // nothing at Azure and so costs the teacher nothing here.
+  await noteAssess(gate, who.id, used);
+  await noteCredit(ledger, who, wallet, {
+    promptTokens: result.promptTokens,
+    completionTokens: result.completionTokens,
+    costMicroUsd: costMicroUsd(result.promptTokens, result.completionTokens),
+  });
+
+  const out = result.out || {};
+  const chapter = String(out.chapter || ctx.chapter || "").slice(0, 60);
+  const { questions } = genQuestions(out.questions, chapter);
+  return json(context, 200, {
+    reply: String(out.reply || "").slice(0, 1000),
+    title: String(out.title || "").slice(0, 120),
+    chapter,
+    questions,
+    model: AZURE_AI_DEPLOYMENT,
+    credits: {
+      used: credit.used + 1,
+      granted: credit.granted,
+      left: Math.max(0, credit.granted - credit.used - 1),
+      low: creditsAreLow(credit.used + 1, credit.granted),
+      lifetime: wallet.lifetime,
+    },
+  });
+};
+
 /**
  * The AI usage report, and a teacher's own balance.
  *
@@ -5780,6 +6127,10 @@ handlers.aiusage = async (context, req) => {
         granted: mine.granted,
         left: creditsLeft(mine),
         low: creditsAreLow(mine.used, mine.granted),
+        // Whether there is a model behind the credits at all. Seyari AI reads
+        // it when its panel opens, so a site with no key shows "not switched
+        // on" instead of a composer that fails on its first message.
+        on: aiConfigured(),
       });
     }
 

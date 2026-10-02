@@ -650,6 +650,8 @@ export async function fetchMyCredits(): Promise<{
   low: boolean;
   /** True for a parent: a balance that is bought, not a monthly allowance. */
   lifetime?: boolean;
+  /** Whether a model is configured behind the credits at all. */
+  on?: boolean;
 } | null> {
   try {
     const res = await apiFetch("/api/aiusage?me=1", { headers: authHeader() });

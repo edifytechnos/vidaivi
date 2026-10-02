@@ -605,6 +605,83 @@ and the explanation, each with a live "Student sees" preview.
   as their own editable drafts, once ever (`teacherstate` table, `seedSamples`).
 - `?edit=<testId>&q=<questionId>` restores a teacher's place across a refresh.
 
+## Seyari AI: questions written, or read off a paper, with the teacher (`/api/generate`)
+
+A chat panel in the authoring editor — **Seyari AI** in the app bar, beside the
+status chip — where a teacher asks for questions in plain words or attaches a
+paper (a PDF, photographs, a picture taken now) and gets back **question cards**
+in the app's own JSON shape. **Nothing reaches the draft until the teacher
+presses Add on a card.** That is the marking rule, *the AI proposes, the
+teacher awards*, drawn here as *the AI drafts, the teacher accepts*, and for the
+same reason: a question the teacher has to choose gets read; one already in the
+test gets published.
+
+- **Server: `POST /api/generate`** (`handlers.generate`, not an `admin…` route).
+  Teachers, admins and parents (`isAuthor`). It sits behind **the same two
+  gates as marking, in the same order** — the daily cap (`assessUsage`, the
+  same key), then the credits (`creditsFor` on `walletFor(who)`) — and only
+  then parses the body and calls the model. One message spends **one credit**
+  from the same wallet, stamped with its token cost through `noteCredit`, and
+  only once the model has answered: a failed or refused call costs nothing.
+- **Same deployment as marking** (`gpt-4.1-mini`, `AZURE_AI_*`), same `fetch`,
+  no new secret. Strict structured output (`GEN_SCHEMA`): `answerIndex` for an
+  MCQ and `answer` text for a short answer, because a strict schema has no
+  union, and `genQuestions` maps the reply into the app's shape and runs it
+  through **`validateQuestions`, the one validator**, non-strict. Each card
+  carries `needs` — what the validator said is missing — so a teacher sees "no
+  correct option marked" on the card, not at publish time. No id is sent back:
+  **the client stamps `newQuestionId` on accept**, so an accepted question is
+  born exactly as a typed one is.
+- **Images go as base64 `data:` URIs at `detail: "high"`**, at most ten per
+  message, JPEG/PNG by magic bytes, ≤ 1.5 MB each — the answer-photo rules.
+  **Nothing uploaded is stored anywhere**; `e2e/helpers.cjs` asserts no table
+  row holds a byte of it. The model is told the subject and the test's name,
+  never who the teacher is.
+- **Earlier turns go back as text**, the model's own questions included, so
+  "make the third one harder" works without resending the pages that produced
+  them — which would be most of the bill, every turn. The conversation is held
+  in the page for the session and nowhere else.
+- **The system prompt forbids by name every way content has rendered wrong**
+  (`genSystemPrompt`): markdown tables, single-asterisk italics, a literal
+  backslash-n, bare Tamil inside maths. The four guards in
+  `scripts/check-content.cjs` are the same list.
+- **A PDF is rendered to page images in the browser** (`src/pdfpages.ts`,
+  `pdfjs-dist`) and sent as the same JPEGs a photograph is — reading a page as
+  an image is what recovers the notation text extraction drops. It is the
+  repo's second dependency, taken deliberately: the model takes images, not
+  documents, and rendering on the Function would need a canvas there. It is
+  imported **dynamically**, so it is its own chunk and a phone pays for it only
+  when a PDF is chosen; its worker is a same-origin Vite asset (`?url`), so the
+  strict `script-src 'self'` holds untouched. pdf.js 5 uses no `eval`.
+- **Client: `src/screens/editor/seyari.ts`.** Shaped like the chat side panels
+  people already know: docked to the right edge under the app bar, slim header
+  with a close button, the transcript, and a rounded composer at the foot with
+  **+** (upload a PDF or photos / take a photo) on the left, the credit line in
+  the middle and send on the right. Below 900px it is a sheet from the bottom.
+  **It lives outside `#app`**, appended to the body: the editor repaints `#app`
+  on every question click and a panel inside it would lose the conversation
+  each time. A `MutationObserver` closes it when `[data-authoring]` — the
+  attribute on the authoring editor's root, and only that root — leaves the
+  screen; the editor's ghost loader (`.editor.sk-wrap`) keeps it, since opening
+  another test paints one. The ✕ only hides it; the conversation survives.
+- **The button is in the app bar, not the pane's action row**, because it opens
+  a surface rather than acting on the test — the same category as the tree
+  toggle. It is absent on a read-only test (published, or a master viewed by a
+  teacher), where nothing could be added. The empty subject shell has it too,
+  plus **Ask Seyari AI** beside *Create the first test*: there, Add on a card
+  becomes **Create test with this**, through `mutateTest("create")` with the
+  questions and the model's suggested title.
+- **The balance is read when the panel opens** (`fetchMyCredits`, now carrying
+  `on: aiConfigured()`), so a site with no key says *Not switched on* under the
+  composer before a message is sent, rather than failing on the first one. A
+  failed balance fetch says nothing, as everywhere else.
+- Enter sends on a keyboard; on a touch screen Enter is a new line and the send
+  button sends, because there is no Shift to hold.
+- `node e2e/seyari.cjs` drives it in a real browser at 1280px and 390px with a
+  stubbed `fetch` and a host that records what it is handed; `e2e/helpers.cjs`
+  drives the handler with a stubbed model and asserts the gates, the mapping,
+  the ledger and that nothing uploaded is written.
+
 ## Performance, scale and cost — the rules that hold everywhere
 
 This is a free-tier product with paying customers coming. Money is not the
@@ -1142,7 +1219,9 @@ network, no session, no row written. `node e2e/history.cjs` does the same for
 `setUrl` and `installHistory` in `src/dom.ts`: a stub `route()` stands in for
 `main.ts`, and it asserts what the address bar and the history do on a boot, a
 move, a re-render, Back, Forward and Back over an open dialog. It fails four
-ways against a replace-only `setUrl`. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+ways against a replace-only `setUrl`. `node e2e/seyari.cjs` drives the Seyari
+AI panel the same way, against a stubbed `fetch` and a host object that records
+what it is handed. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the

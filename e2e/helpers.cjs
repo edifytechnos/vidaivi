@@ -2987,6 +2987,222 @@ async function parentCreditChecks() {
   );
 }
 
+
+// --- Seyari AI: questions drafted for a teacher, through the real handler ---
+//
+// The panel's whole contract lives on the server: the gates run before the
+// model is called, the model's reply is mapped into the app's own question
+// shape and cleaned by the one validator, and a credit is spent only when the
+// model actually answered. The model itself is a stub here, so what is proved
+// is everything around it — including that nothing uploaded is written anywhere.
+async function generateChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e, etag: "W/\"1\"" });
+    },
+    updateEntity: async (e, _mode, opts) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      const cur = rows.get(k);
+      if (opts && opts.etag && cur && cur.etag !== opts.etag) {
+        const err = new Error("stale"); err.statusCode = 412; throw err;
+      }
+      const version = Number(String((cur && cur.etag) || "W/\"0\"").replace(/\D/g, "")) + 1;
+      rows.set(k, { ...(cur || {}), ...e, etag: `W/"${version}"` });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: ({ queryOptions } = {}) => ({
+      [Symbol.asyncIterator]: async function* () {
+        const filter = (queryOptions && queryOptions.filter) || "";
+        const want = /PartitionKey eq '([^']*)'/.exec(filter);
+        for (const [k, row] of rows) {
+          if (!k.startsWith(`${name}/`)) continue;
+          if (want && row.partitionKey !== want[1]) continue;
+          yield { ...row };
+        }
+      },
+    }),
+  });
+
+  process.env.AZURE_AI_ENDPOINT = "https://not-a-real-resource.openai.azure.com";
+  process.env.AZURE_AI_KEY = "not-a-real-key";
+  process.env.ASSESS_DAILY_CAP = "5";
+  process.env.ADMIN_USERNAME = "e2e-admin";
+  process.env.ADMIN_PASSWORD = "e2e-password";
+
+  // The model, stubbed. Records what it was sent; answers what it is told to.
+  const sent = [];
+  let answer = null;
+  const realFetch = global.fetch;
+  global.fetch = async (_url, opts) => {
+    const body = JSON.parse(opts.body);
+    sent.push(body);
+    if (!answer) throw new Error("network is not available in this test");
+    return {
+      ok: true,
+      status: 200,
+      text: async () =>
+        JSON.stringify({
+          choices: [{ message: typeof answer === "string" ? { refusal: answer } : { content: JSON.stringify(answer) } }],
+          usage: { prompt_tokens: 1200, completion_tokens: 300 },
+        }),
+    };
+  };
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, ADMIN_TOKEN_TTL_MS, adminEpoch, aiusageTable, creditsFor, walletFor, usageMonth };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+  const session = t.signSession("vad", "e2e-admin", t.ADMIN_TOKEN_TTL_MS, { ep: await t.adminEpoch() });
+  const call = async (body, method = "POST") => {
+    const c = { res: null };
+    await t.handlers.generate(c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+      body: body || {},
+    });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+  const who = { id: "adm~e2e-admin", role: "admin" };
+  const wallet = t.walletFor(who);
+  const ledger = await t.aiusageTable();
+
+  // A 1x1 JPEG and a 1x1 PNG, by their magic bytes — what the sniffer reads.
+  const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0, 0x10, 0x4a, 0x46, 0x49, 0x46, 0, 1]).toString("base64");
+  const png = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 0x0d]).toString("base64");
+
+  // --- Nothing is sent to the model without something to send ---
+  let r = await call({ prompt: "", images: [] });
+  check(r.status === 400, `an empty message is refused before the model (${r.status})`);
+  check(sent.length === 0, "and nothing was sent");
+
+  r = await call({ prompt: "x", images: ["bm90IGFuIGltYWdl"] });
+  check(r.status === 400 && /JPEG|PNG/.test(r.data.error || ""), `a file that is not an image is refused (${r.status})`);
+  r = await call({ prompt: "x", images: Array(11).fill(jpeg) });
+  check(r.status === 400 && /10/.test(r.data.error || ""), `eleven pages is one too many (${r.status})`);
+  check(sent.length === 0, "neither reached the model");
+
+  // --- A model failure costs nothing ---
+  r = await call({ prompt: "Ten MCQs on quadratic equations", images: [] });
+  check(r.status === 502, `an unreachable model is a 502 (${r.status})`);
+  let bal = await t.creditsFor(ledger, wallet);
+  check(bal.used === 0, `and spends no credit (used ${bal.used})`);
+
+  answer = "I will not do that";
+  r = await call({ prompt: "Ten MCQs on quadratic equations", images: [] });
+  check(r.status === 502 && /declined/.test(r.data.error || ""), `a refusal is reported, not shown as questions (${r.status})`);
+  bal = await t.creditsFor(ledger, wallet);
+  check(bal.used === 0, "and spends no credit either");
+
+  // --- The reply is mapped into the app's own shape ---
+  answer = {
+    reply: "Here are three.",
+    title: "Quadratic equations — test 1",
+    chapter: "Quadratic Equations",
+    questions: [
+      { type: "mcq", topic: "Roots", source: "Seyari AI", marks: 1, q: "The roots of $x^2-5x+6=0$ are", options: ["2, 3", "-2, -3", "1, 6", "0, 5"], answerIndex: 0, answer: "", accept: [], tolerance: 0, solution: "$(x-2)(x-3)=0$" },
+      { type: "numeric", topic: "Discriminant", source: "", marks: 2, q: "Find the discriminant of $2x^2+3x-1=0$.", options: [], answerIndex: -1, answer: "17", accept: ["seventeen"], tolerance: 0, solution: "$b^2-4ac = 9+8 = 17$" },
+      { type: "numeric", topic: "Symbols", source: "", marks: 2, q: "Write $\\sin 60^\\circ$.", options: [], answerIndex: -1, answer: "√3/2", accept: ["root 3 / 2"], tolerance: 0, solution: "Standard value." },
+      { type: "long", topic: "Word problem", source: "", marks: 5, q: "A train...", options: [], answerIndex: -1, answer: "", accept: [], tolerance: 0, solution: "" },
+      { type: "mcq", topic: "Unfinished", source: "", marks: 1, q: "Pick one", options: ["a", "b", "c", "d"], answerIndex: -1, answer: "", accept: [], tolerance: 0, solution: "none" },
+    ],
+  };
+  sent.length = 0;
+  r = await call({
+    prompt: "Three questions please",
+    images: [jpeg, png],
+    history: [{ role: "user", text: "earlier" }, { role: "assistant", text: "earlier reply" }],
+    context: { subject: "CBSE Class 10 Maths", title: "", chapter: "", existing: 0 },
+  });
+  check(r.status === 200, `a good reply is a 200 (${r.status}: ${r.data.error || "ok"})`);
+  const qs = r.data.questions || [];
+  check(qs.length === 5, `every question comes back (${qs.length})`);
+  check(qs[0].type === "mcq" && qs[0].answer === 0 && qs[0].options.length === 4, "an MCQ's answerIndex becomes `answer`");
+  check(qs[1].answer === 17 && qs[1].accept[0] === "seventeen", "a numeric short answer is stored as a number");
+  check(qs[2].answer === "√3/2", "a symbol stays text");
+  check(qs[3].type === "long" && !("options" in qs[3]) && !("answer" in qs[3]), "a long answer carries no options or answer");
+  check(qs.every((q) => !("id" in q)), "no question carries an id — the client stamps one on accept");
+  check(qs.every((q) => q.chapter === "Quadratic Equations"), "the chapter the model named is on every question");
+  check(qs[0].source === "Seyari AI" && !("source" in qs[1]), "`source` is carried when given and absent when not");
+  check(Array.isArray(qs[4].needs) && /correct option/i.test(qs[4].needs.join(" ")), `an unfinished question says what it needs (${JSON.stringify(qs[4].needs)})`);
+  check(Array.isArray(qs[3].needs) && /explanation/i.test(qs[3].needs.join(" ")), "a long answer with no solution says so");
+  check(r.data.title === "Quadratic equations — test 1" && r.data.reply === "Here are three.", "the title and the reply ride along");
+
+  // What the model was sent: the system prompt, the history as text, the
+  // message with its two images at high detail — and nothing about who asked.
+  const req = sent[0];
+  check(req.messages[0].role === "system" && /CBSE Class 10 Maths/.test(req.messages[0].content), "the system prompt names the subject");
+  check(req.messages[1].content === "earlier" && req.messages[2].content === "earlier reply", "earlier turns ride along as text");
+  const last = req.messages[req.messages.length - 1].content;
+  check(last[0].type === "text" && last.length === 3 && last[1].type === "image_url" && last[2].image_url.detail === "high", "the message carries its two images at high detail");
+  check(/^data:image\/jpeg;base64,/.test(last[1].image_url.url) && /^data:image\/png;base64,/.test(last[2].image_url.url), "each as a data URI with its sniffed type");
+  check(req.response_format && req.response_format.json_schema.strict === true, "the reply is bound by the strict schema");
+  check(!JSON.stringify(req).includes("e2e-admin"), "the model is never told who the teacher is");
+
+  // --- A credit is spent, with its cost, once the model answered ---
+  bal = await t.creditsFor(ledger, wallet);
+  check(bal.used === 1, `one credit spent (${bal.used})`);
+  check(r.data.credits && r.data.credits.left === bal.granted - 1, "and the balance rides on the response");
+  const row = rows.get(key("aiusage", wallet.pk, wallet.rk)) || {};
+  check(row.promptTokens === 1200 && row.completionTokens === 300 && row.costMicroUsd > 0, "the tokens and the cost are stamped on the ledger");
+  // The image never landed anywhere.
+  const stored = JSON.stringify([...rows.values()]);
+  check(!stored.includes(jpeg.slice(0, 12)), "nothing uploaded is written to a table");
+
+  // --- Out of credits, the model is not reached ---
+  await ledger.upsertEntity({ partitionKey: wallet.pk, rowKey: wallet.rk, used: bal.granted, granted: bal.granted }, "Merge");
+  sent.length = 0;
+  r = await call({ prompt: "more", images: [] });
+  check(r.status === 429 && /credit/i.test(r.data.error || ""), `out of credits it refuses (${r.status})`);
+  check(sent.length === 0, "and the model is not called");
+
+  // --- Switched off ---
+  delete process.env.AZURE_AI_ENDPOINT;
+  const off = { exports: {} };
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    off, off.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const c = { res: null };
+  await off.exports.__t.handlers.generate(c, {
+    method: "POST",
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+    body: { prompt: "x", images: [] },
+  });
+  check(c.res.status === 501, `with no model configured it answers 501 (${c.res.status})`);
+  const me = { res: null };
+  await off.exports.__t.handlers.aiusage(me, {
+    method: "GET",
+    query: { me: "1" },
+    headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+  });
+  check(me.res.body && me.res.body.on === false, "and the balance says the model is off, so the panel can say so before a message is sent");
+  process.env.AZURE_AI_ENDPOINT = "https://not-a-real-resource.openai.azure.com";
+
+  global.fetch = realFetch;
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
@@ -3001,6 +3217,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => reportStatusChecks())
   .then(() => purchaseChecks())
   .then(() => parentCreditChecks())
+  .then(() => generateChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
     process.exit(failures ? 1 : 0);

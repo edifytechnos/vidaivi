@@ -24,6 +24,8 @@ import { mount, setShellbar, skeleton } from "../../shell";
 import { openModal } from "../../modal";
 import { openAssign } from "../assign";
 import type { Subject } from "../../api";
+import { openSeyari, seyariOpen, toggleSeyari } from "./seyari";
+import type { SeyariHost } from "./seyari";
 import type { Test } from "../../types";
 import {
   clearTest,
@@ -199,7 +201,7 @@ function renderEmptyShell(): void {
   setUrl();
   mount(
     `
-    <div class="editor" data-pane="question">
+    <div class="editor" data-pane="question" data-authoring="1">
       <div class="ed-cols overview">
         <aside class="ed-tree" id="ed-tree">
           <div class="ed-tree-head">
@@ -215,8 +217,12 @@ function renderEmptyShell(): void {
           <div class="ed-body">
             <section class="ed-panel">
               <div class="ed-panel-head"><span class="ed-panel-label">No tests in this subject yet</span></div>
-              <p class="ed-hint">Create your first test and its questions appear here, beneath it in the tree.</p>
-              <div class="actions"><button class="btn btn-primary" id="ed-empty-create">Create the first test</button></div>
+              <p class="ed-hint">Create your first test and its questions appear here, beneath it in the tree.
+              Or ask <strong>Seyari AI</strong> to write one, or to read the questions off a paper you have.</p>
+              <div class="actions">
+                <button class="btn btn-primary" id="ed-empty-create">Create the first test</button>
+                <button class="btn btn-ghost" id="ed-empty-seyari">${ICONS.spark} Ask Seyari AI</button>
+              </div>
             </section>
           </div>
         </div>
@@ -228,6 +234,7 @@ function renderEmptyShell(): void {
       active: "subjects",
       full: true,
       lead: subjectLead(),
+      actions: canAddHere() ? seyariButton() : "",
     }
   );
 
@@ -236,7 +243,63 @@ function renderEmptyShell(): void {
   document.getElementById("ed-empty-create")?.addEventListener("click", create);
   document.getElementById("ed-exit")!.addEventListener("click", () => onExit());
   bindSubjectPicker();
+  bindSeyari();
+  document.getElementById("ed-empty-seyari")?.addEventListener("click", () => openSeyari(seyariHost));
 }
+
+/**
+ * The Seyari AI toggle, in the app bar beside the status chip. It opens a
+ * SURFACE rather than acting on the test, which is why it sits with the tree
+ * toggle in the bar and not in the pane's action row: the bar holds the
+ * things that say where you are and what is open, and this is one of them.
+ */
+function seyariButton(): string {
+  return `<button class="sy-toggle" id="ed-seyari" aria-pressed="${seyariOpen() ? "true" : "false"}" title="Write questions with Seyari AI">${ICONS.spark}<span>Seyari AI</span></button>`;
+}
+
+function bindSeyari(): void {
+  document.getElementById("ed-seyari")?.addEventListener("click", () => toggleSeyari(seyariHost));
+}
+
+/** What the panel needs from the editor: where it is, and what to do with an accepted card. */
+const seyariHost: SeyariHost = {
+  context() {
+    const test = currentTest();
+    return {
+      subject: subjectTitle(),
+      title: test?.title ?? "",
+      chapter: test?.chapter ?? "",
+      existing: test?.questions.length ?? 0,
+      hasTest: !!test && !readOnly(),
+    };
+  },
+  accept(questions) {
+    const test = currentTest();
+    if (!test || readOnly() || !questions.length) return;
+    edit(() => test.questions.push(...questions));
+    track("seyari_accept", { test: test.id, count: String(questions.length) });
+    refreshTree();
+    // The overview's question table is drawn from the document; on a question
+    // page the tree alone shows the new rows, and the page stays put.
+    if (selectedIndex < 0) renderBody();
+  },
+  async create(questions, title, chapter) {
+    const result = await mutateTest("create", {
+      title: title || "Untitled test",
+      chapter: chapter || "",
+      teacher: "",
+      access: "login",
+      questions,
+      subjectId: currentSubject() ?? undefined,
+    } as never);
+    if (!result.ok) {
+      alert(result.message);
+      return;
+    }
+    track("seyari_create", { test: result.test.id, count: String(questions.length) });
+    await showEditor(result.test.id, null, onExit);
+  },
+};
 
 /** Only an admin may add to the built-in library. */
 function canAddHere(): boolean {
@@ -315,7 +378,7 @@ function render(): void {
   const q = selectedIndex >= 0 ? test.questions[selectedIndex] : null;
   mount(
     `
-    <div class="editor" data-pane="${pane}">
+    <div class="editor" data-pane="${pane}" data-authoring="1">
       <div class="ed-cols${selectedIndex < 0 ? " overview" : ""}">
         <aside class="ed-tree" id="ed-tree">${treeMarkup(test)}</aside>
         <div class="ed-center">
@@ -385,6 +448,7 @@ function editorActions(test: Test): string {
   // teacher is not choosing between two buttons that do the same thing.
   return `
       <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.menu}</button>
+      ${readOnly() ? "" : seyariButton()}
       <span class="status-chip ${statusClass(test.status ?? "draft")}" title="${escapeHtml(audienceNote(test))}">${statusLabel(test)}</span>`;
 }
 
@@ -1006,6 +1070,7 @@ function bindSubjectPicker(): void {
 
 function bindChrome(): void {
   bindTree();
+  bindSeyari();
   document.getElementById("ed-exit")?.addEventListener("click", () => {
     void save().then(onExit);
   });
