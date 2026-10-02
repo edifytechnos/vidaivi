@@ -1,0 +1,224 @@
+{
+  "id": "lib-tn12z-abt",
+  "title": "Applications of Biotechnology",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-abt-24q8",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Gene therapy",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Adenosine deaminase deficiency causes :",
+      "options": [
+        "SCID",
+        "Haemophilia",
+        "Hepatitis",
+        "AIDS"
+      ],
+      "answer": 0,
+      "solution": "Lack of the enzyme **adenosine deaminase (ADA)** destroys T lymphocytes and causes **severe combined immunodeficiency (SCID)**.\n\nIt was the first disease treated by gene therapy (1990), by introducing a functional ADA gene into the patient's lymphocytes."
+    },
+    {
+      "id": "tn12z-abt-25q1",
+      "chapter": "Applications of Biotechnology",
+      "topic": "PCR",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "PCR proceeds in three distinct steps governed by temperature, they are in order of :",
+      "options": [
+        "Primer Annealing, Synthesis, Denaturation",
+        "Denaturation, Primer Annealing, Synthesis",
+        "Denaturation, Synthesis, Primer Annealing",
+        "Synthesis, Primer Annealing, Denaturation"
+      ],
+      "answer": 1,
+      "solution": "Each PCR cycle runs in this order:\n\n1. **Denaturation** (about 94 °C): the double-stranded DNA separates.\n2. **Primer annealing** (about 40-60 °C): primers bind to the single strands.\n3. **Synthesis / extension** (about 72 °C): Taq polymerase extends the primers."
+    },
+    {
+      "id": "tn12z-abt-01",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Transgenic animals",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Rosie, the first transgenic cow, produced milk enriched with:",
+      "options": [
+        "Human insulin",
+        "Human alpha-lactalbumin",
+        "Human growth hormone",
+        "Interferon"
+      ],
+      "answer": 1,
+      "solution": "Rosie (1997) produced milk containing the human protein **alpha-lactalbumin**.\n\nThis milk is nutritionally more balanced for human babies than ordinary cow's milk."
+    },
+    {
+      "id": "tn12z-abt-02",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Recombinant insulin",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The first recombinant human insulin, Humulin, was produced in 1982 by:",
+      "options": [
+        "Eli Lilly",
+        "Genentech alone in 1972",
+        "Roslin Institute",
+        "Biocon"
+      ],
+      "answer": 0,
+      "solution": "**Eli Lilly** marketed Humulin in 1982, using genes for the A and B chains (based on Genentech's work) expressed in E. coli.\n\nThe Roslin Institute is where Dolly was cloned."
+    },
+    {
+      "id": "tn12z-abt-03",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Cloning",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Dolly, the first cloned mammal, was a:",
+      "options": [
+        "Cow",
+        "Goat",
+        "Sheep",
+        "Mouse"
+      ],
+      "answer": 2,
+      "solution": "Dolly was a **sheep**, cloned in 1996 by Ian Wilmut and colleagues at the Roslin Institute by **somatic cell nuclear transfer**.\n\nThe nucleus of an udder cell was placed into an enucleated egg cell."
+    },
+    {
+      "id": "tn12z-abt-04",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Stem cells",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is totipotent?",
+      "options": [
+        "Zygote",
+        "Bone marrow stem cell",
+        "Lymphoid stem cell",
+        "Skin cell"
+      ],
+      "answer": 0,
+      "solution": "A **totipotent** cell can give rise to every cell type of the body and the extra-embryonic tissues. The **zygote** and the very early blastomeres are totipotent.\n\nBone marrow stem cells are multipotent; lymphoid stem cells are oligopotent."
+    },
+    {
+      "id": "tn12z-abt-05",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Vaccines",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The recombinant hepatitis B vaccine is produced using:",
+      "options": [
+        "Yeast",
+        "Tobacco plant",
+        "E. coli phage",
+        "Cow"
+      ],
+      "answer": 0,
+      "solution": "The gene for the hepatitis B **surface antigen** is expressed in **yeast**. The purified antigen is the vaccine.\n\nIt is a subunit vaccine: it cannot cause the disease because it holds no virus."
+    },
+    {
+      "id": "tn12z-abt-06",
+      "chapter": "Applications of Biotechnology",
+      "topic": "DNA fingerprinting",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The technique of DNA fingerprinting was developed by:",
+      "options": [
+        "Kary Mullis",
+        "Alec Jeffreys",
+        "Ian Wilmut",
+        "Paul Berg"
+      ],
+      "answer": 1,
+      "solution": "**Alec Jeffreys** (1985) developed DNA fingerprinting, using VNTR (minisatellite) sequences that differ between individuals.\n\nKary Mullis invented PCR; Ian Wilmut cloned Dolly."
+    },
+    {
+      "id": "tn12z-abt-07",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Recombinant insulin",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In insulin, the A and B chains are held together by:",
+      "options": [
+        "Hydrogen bonds",
+        "Disulphide bonds",
+        "Peptide bonds",
+        "Ionic bonds"
+      ],
+      "answer": 1,
+      "solution": "The A and B chains of insulin are linked by **disulphide bridges** between cysteine residues.\n\nIn recombinant production the two chains are made separately and joined by forming these bonds."
+    },
+    {
+      "id": "tn12z-abt-08",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Recombinant insulin",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many amino acids are there in the A chain of human insulin?",
+      "answer": 21,
+      "tolerance": 0,
+      "solution": "Human insulin has 51 amino acids: the **A chain has 21** and the B chain has 30."
+    },
+    {
+      "id": "tn12z-abt-09",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Recombinant insulin",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many amino acids are there in the B chain of human insulin?",
+      "answer": 30,
+      "tolerance": 0,
+      "solution": "The **B chain has 30** amino acids; with the 21 of the A chain that makes $21 + 30 = 51$."
+    },
+    {
+      "id": "tn12z-abt-10",
+      "chapter": "Applications of Biotechnology",
+      "topic": "PCR",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the heat-stable DNA polymerase used in PCR.",
+      "answer": "Taq polymerase",
+      "tolerance": 0,
+      "accept": [
+        "taq",
+        "taq dna polymerase"
+      ],
+      "solution": "**Taq polymerase** comes from the hot-spring bacterium Thermus aquaticus. It survives the 94 °C denaturation step, so it need not be added afresh each cycle."
+    },
+    {
+      "id": "tn12z-abt-11",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Cloning",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In which year was Dolly the sheep born?",
+      "answer": 1996,
+      "tolerance": 0,
+      "solution": "Dolly was born on 5 July **1996** at the Roslin Institute, Scotland, and announced in 1997."
+    },
+    {
+      "id": "tn12z-abt-12",
+      "chapter": "Applications of Biotechnology",
+      "topic": "Recombinant insulin",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many disulphide bonds are present in a molecule of human insulin?",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "Insulin has **two interchain** disulphide bonds joining A and B, and **one intrachain** bond within the A chain.\n\n$2 + 1 = 3$."
+    },
+    {
+      "id": "tn12z-abt-13",
+      "chapter": "Applications of Biotechnology",
+      "topic": "DNA fingerprinting",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the steps involved in DNA fingerprinting and mention its applications.",
+      "solution": "**Principle.** About 99.9% of human DNA is the same in everyone. The difference lies in repetitive sequences such as **VNTRs** (variable number tandem repeats), whose number of repeats differs from person to person. The pattern of these is unique to an individual, except identical twins.\n\n**Steps**\n\n1. **Isolation** of DNA from blood, hair roots, semen or other tissue; amplified by PCR if the sample is small.\n2. **Digestion** of the DNA with **restriction endonucleases** into fragments.\n3. **Separation** of fragments by size through **agarose gel electrophoresis**.\n4. **Southern blotting**: the separated DNA is denatured and transferred to a nylon or nitrocellulose membrane.\n5. **Hybridisation** with a labelled (radioactive) **VNTR probe**, which binds its complementary sequences.\n6. **Autoradiography**: exposure to X-ray film shows the bands as a pattern of dark bands, the DNA fingerprint.\n\n**Applications**\n\n1. Forensic science: identifying criminals from samples left at a crime scene.\n2. Settling disputes of **paternity** and maternity.\n3. Identifying victims of disasters.\n4. Studying genetic diversity and evolution of populations."
+    }
+  ]
+}

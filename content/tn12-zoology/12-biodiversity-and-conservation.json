@@ -1,0 +1,232 @@
+{
+  "id": "lib-tn12z-bdv",
+  "title": "Biodiversity and its Conservation",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 12,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-bdv-23q7",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Loss of biodiversity",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The animals that are at high risk of extinction due to habitat destruction is :",
+      "options": [
+        "Amphibians",
+        "Mammals",
+        "Echinoderms",
+        "Birds"
+      ],
+      "answer": 0,
+      "solution": "**Amphibians** depend on both water and land, have permeable skin and need specific breeding sites, so destruction of habitat hits them hardest.\n\nThey are among the most threatened groups of animals."
+    },
+    {
+      "id": "tn12z-bdv-24q7",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Conservation",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Project Tiger was launched in the Jim Corbett National Park in the State of _________ in 1973.",
+      "options": [
+        "Assam",
+        "Uttarakhand",
+        "Kerala",
+        "Gujarat"
+      ],
+      "answer": 1,
+      "solution": "**Project Tiger** was launched in 1973 at **Jim Corbett National Park**, which is in **Uttarakhand**.\n\nIt was India's first national park, established in 1936 as Hailey National Park."
+    },
+    {
+      "id": "tn12z-bdv-01",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Biodiversity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The term biodiversity was popularised by:",
+      "options": [
+        "Edward Wilson",
+        "Paul Ehrlich",
+        "Charles Darwin",
+        "Norman Myers"
+      ],
+      "answer": 0,
+      "solution": "The sociobiologist **Edward Wilson** popularised the term biodiversity to describe the combined diversity at all levels of biological organisation.\n\nNorman Myers developed the concept of biodiversity hotspots."
+    },
+    {
+      "id": "tn12z-bdv-02",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Biodiversity in India",
+      "type": "mcq",
+      "marks": 1,
+      "q": "How many biodiversity hotspots are there in India?",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 2,
+      "solution": "India has **4** hotspots: the **Western Ghats and Sri Lanka**, the **Himalaya**, **Indo-Burma**, and **Sundaland** (including the Nicobar Islands)."
+    },
+    {
+      "id": "tn12z-bdv-03",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Conservation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Red Data Book of threatened species is maintained by:",
+      "options": [
+        "WWF",
+        "IUCN",
+        "UNEP",
+        "WHO"
+      ],
+      "answer": 1,
+      "solution": "The **IUCN** (International Union for Conservation of Nature) maintains the Red Data Book / Red List, classifying species as extinct, critically endangered, endangered, vulnerable and so on."
+    },
+    {
+      "id": "tn12z-bdv-04",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Conservation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Sacred groves are an example of:",
+      "options": [
+        "Ex-situ conservation",
+        "In-situ conservation",
+        "Cryopreservation",
+        "Botanical gardens"
+      ],
+      "answer": 1,
+      "solution": "Sacred groves are patches of forest protected by local communities for religious reasons, in the species' **natural habitat**. That makes them **in-situ** conservation.\n\nZoos, botanical gardens and seed banks are ex-situ."
+    },
+    {
+      "id": "tn12z-bdv-05",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Biodiversity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The most species-rich group of animals is:",
+      "options": [
+        "Fishes",
+        "Insects",
+        "Molluscs",
+        "Birds"
+      ],
+      "answer": 1,
+      "solution": "**Insects** make up more than half of all recorded animal species (and about 70% of all animal species), far more than any other group."
+    },
+    {
+      "id": "tn12z-bdv-06",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Loss of biodiversity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which flightless bird of Mauritius became extinct due to human activity?",
+      "options": [
+        "Kiwi",
+        "Emu",
+        "Dodo",
+        "Penguin"
+      ],
+      "answer": 2,
+      "solution": "The **dodo** of Mauritius was hunted and its eggs eaten by introduced animals; it was extinct by the late 1600s.\n\nKiwi, emu and penguin are flightless birds that still survive."
+    },
+    {
+      "id": "tn12z-bdv-07",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Loss of biodiversity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is NOT a cause of biodiversity loss?",
+      "options": [
+        "Habitat loss and fragmentation",
+        "Over-exploitation",
+        "Invasion of alien species",
+        "Afforestation"
+      ],
+      "answer": 3,
+      "solution": "Habitat loss, over-exploitation, alien species invasion and co-extinction are the 'evil quartet' that drive biodiversity loss.\n\n**Afforestation** (planting forests) restores habitat, so it helps rather than harms."
+    },
+    {
+      "id": "tn12z-bdv-08",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Biodiversity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many countries in the world are recognised as mega-diverse countries?",
+      "answer": 17,
+      "tolerance": 0,
+      "solution": "**17** countries, India among them, are recognised as mega-diverse. Together they hold the majority of the Earth's species."
+    },
+    {
+      "id": "tn12z-bdv-09",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Biodiversity in India",
+      "type": "numeric",
+      "marks": 2,
+      "q": "India has about what percentage of the world's land area? (give the number)",
+      "answer": 2.4,
+      "tolerance": 0.1,
+      "solution": "India occupies only about **2.4%** of the world's land area, yet holds about 8.1% of the world's species diversity."
+    },
+    {
+      "id": "tn12z-bdv-10",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Species-area relationship",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In Humboldt's equation $\\log S = \\log C + Z \\log A$, which letter stands for the slope of the line (regression coefficient)?",
+      "answer": "Z",
+      "tolerance": 0,
+      "accept": [
+        "z"
+      ],
+      "solution": "On a log-log plot, $\\log S = \\log C + Z \\log A$ is a straight line whose **slope is Z**, the regression coefficient. $S$ is species richness, $A$ is area and $C$ is the Y-intercept.\n\nZ usually lies between 0.1 and 0.2; for very large areas such as continents it is steeper, 0.6 to 1.2."
+    },
+    {
+      "id": "tn12z-bdv-11",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Conservation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What is the term for preserving seeds, gametes or embryos at about $-196\\,^\\circ\\text{C}$ in liquid nitrogen?",
+      "answer": "Cryopreservation",
+      "tolerance": 0,
+      "accept": [
+        "cryopreservation",
+        "cryo-preservation"
+      ],
+      "solution": "**Cryopreservation** stores living material in liquid nitrogen at $-196\\,^\\circ\\text{C}$, where metabolism stops and the material stays viable for long periods.\n\nIt is a method of ex-situ conservation used in seed banks and gene banks."
+    },
+    {
+      "id": "tn12z-bdv-12",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Importance of biodiversity",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Who proposed the 'rivet popper hypothesis' to explain the importance of species diversity? (surname)",
+      "answer": "Ehrlich",
+      "tolerance": 0,
+      "accept": [
+        "paul ehrlich",
+        "p. ehrlich"
+      ],
+      "solution": "**Paul Ehrlich** compared an ecosystem to an aeroplane and species to its rivets. Losing a few rivets may not matter, but as more are removed the plane, like the ecosystem, becomes dangerously weak.\n\nLosing a key species (a rivet in the wing) is especially serious."
+    },
+    {
+      "id": "tn12z-bdv-23q21b",
+      "chapter": "Biodiversity and its Conservation",
+      "topic": "Loss of biodiversity",
+      "source": "TN HSE Mar 2023",
+      "type": "long",
+      "marks": 5,
+      "q": "List out the human activities causing biodiversity loss.",
+      "solution": "Human activities causing biodiversity loss:\n\n1. **Habitat loss and fragmentation**: clearing forests for agriculture, urbanisation, roads, mining and dams destroys or breaks habitats into isolated patches. It is the main cause.\n2. **Over-exploitation**: excessive hunting, fishing, poaching and harvesting of plants (e.g. Steller's sea cow, passenger pigeon).\n3. **Introduction of alien (invasive) species**: e.g. Nile perch in Lake Victoria wiped out cichlid fishes; Parthenium, Lantana and water hyacinth crowd out native species.\n4. **Co-extinction**: when a host species is lost, the parasites or pollinators bound to it are lost too.\n5. **Pollution** of air, water and soil, including pesticides and plastics.\n6. **Climate change and global warming** driven by human emissions.\n7. **Shifting cultivation, overgrazing, forest fires** and illegal wildlife trade."
+    }
+  ]
+}
