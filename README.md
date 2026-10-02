@@ -1,3 +1,3 @@
 # vidai
 
-CBSE Class 12 Maths practice test demo (Vite + TypeScript + KaTeX).
+Practice tests for schools — teachers set them, students sit them, parents see the result (Vite + TypeScript + KaTeX).
