@@ -15,6 +15,7 @@ node e2e/history.cjs                # the browser's Back button: setUrl + the po
 node e2e/seyari.cjs                 # the Seyari AI panel against a stubbed model (no network, no session)
 node e2e/select.cjs                 # the app's own dropdown and combobox over native controls (no network, no session)
 node e2e/dialog.cjs                 # the app's own confirm and notice (no network, no session)
+node e2e/stale.cjs                  # a tab open across a deploy reloads once and never loops (needs dist/; no network, no session)
 ```
 
 - `helpers.cjs` covers the pure helpers in `api/shared/core.js`: the question

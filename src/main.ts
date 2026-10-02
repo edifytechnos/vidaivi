@@ -27,6 +27,7 @@ import { openChildResults, showChildren } from "./screens/parent";
 import { installShell, openRail } from "./screens/menu";
 import { installHistory } from "./dom";
 import { installSelects } from "./select";
+import { installStaleBuildRecovery } from "./staleload";
 import { mount, skeleton } from "./shell";
 import { showTourOnFirstRun } from "./tour";
 
@@ -34,6 +35,9 @@ import { showTourOnFirstRun } from "./tour";
 // rename, or every signed-in student is silently signed out.
 migrateStorage();
 
+// A tab open across a deploy reloads once when a chunk it needs is gone,
+// instead of leaving a button that does nothing.
+installStaleBuildRecovery();
 initAnalytics();
 initClarity();
 // A returning visitor's session is tagged from the stored profile; a fresh
