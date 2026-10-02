@@ -1,0 +1,231 @@
+{
+  "id": "lib-tn12z-imm",
+  "title": "Immunology",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-imm-23q3",
+      "chapter": "Immunology",
+      "topic": "Antibodies",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Colostrum is rich in :",
+      "options": [
+        "IgD",
+        "IgE",
+        "IgM",
+        "IgA"
+      ],
+      "answer": 3,
+      "solution": "Colostrum, the first milk secreted in the first few days after childbirth, is rich in **IgA** antibodies.\n\nThese antibodies protect the newborn's gut until its own immune system matures. This is an example of **natural passive immunity**."
+    },
+    {
+      "id": "tn12z-imm-23q4",
+      "chapter": "Immunology",
+      "topic": "Innate immunity",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Interferons are :",
+      "options": [
+        "anti-biotics",
+        "anti-bacterial substances",
+        "anti-fungal substances",
+        "anti-viral substances"
+      ],
+      "answer": 3,
+      "solution": "Interferons are proteins released by **virus-infected cells**. They make neighbouring uninfected cells resistant to further viral infection.\n\nSo interferons are **anti-viral substances**, part of the cytokine barrier of innate immunity."
+    },
+    {
+      "id": "tn12z-imm-01",
+      "chapter": "Immunology",
+      "topic": "Antibodies",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which immunoglobulin exists as a pentamer and is the largest antibody?",
+      "options": [
+        "IgG",
+        "IgA",
+        "IgM",
+        "IgE"
+      ],
+      "answer": 2,
+      "solution": "**IgM** is a pentamer: five monomer units joined by a J chain. It is the largest immunoglobulin and the first antibody produced in a primary immune response.\n\nIgA occurs as a dimer in secretions; IgG and IgE are monomers."
+    },
+    {
+      "id": "tn12z-imm-02",
+      "chapter": "Immunology",
+      "topic": "Antibodies",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which antibody can cross the placenta and protect the foetus?",
+      "options": [
+        "IgA",
+        "IgG",
+        "IgM",
+        "IgD"
+      ],
+      "answer": 1,
+      "solution": "**IgG** is the only immunoglobulin that crosses the placenta. It gives the foetus natural passive immunity.\n\nIt is also the most abundant antibody in the serum."
+    },
+    {
+      "id": "tn12z-imm-03",
+      "chapter": "Immunology",
+      "topic": "Hypersensitivity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Allergic reactions are mainly mediated by:",
+      "options": [
+        "IgE",
+        "IgG",
+        "IgD",
+        "IgA"
+      ],
+      "answer": 0,
+      "solution": "**IgE** binds to mast cells and basophils. When an allergen cross-links it, these cells release **histamine** and other mediators, producing allergy symptoms.\n\nThis is immediate (type I) hypersensitivity."
+    },
+    {
+      "id": "tn12z-imm-04",
+      "chapter": "Immunology",
+      "topic": "Lymphoid organs",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The primary lymphoid organs are:",
+      "options": [
+        "Spleen and lymph nodes",
+        "Bone marrow and thymus",
+        "Tonsils and Peyer's patches",
+        "Spleen and thymus"
+      ],
+      "answer": 1,
+      "solution": "Lymphocytes are produced and mature in the **primary lymphoid organs**: the **bone marrow** (B cells) and the **thymus** (T cells).\n\nSpleen, lymph nodes, tonsils and Peyer's patches are **secondary** lymphoid organs, where lymphocytes meet antigens."
+    },
+    {
+      "id": "tn12z-imm-05",
+      "chapter": "Immunology",
+      "topic": "AIDS",
+      "type": "mcq",
+      "marks": 1,
+      "q": "HIV mainly attacks:",
+      "options": [
+        "B lymphocytes",
+        "Helper T lymphocytes",
+        "Red blood cells",
+        "Platelets"
+      ],
+      "answer": 1,
+      "solution": "HIV binds the **CD4** receptor on **helper T cells** (and macrophages), multiplies inside them and destroys them.\n\nAs helper T cells fall, both antibody and cell-mediated responses fail, leading to AIDS."
+    },
+    {
+      "id": "tn12z-imm-06",
+      "chapter": "Immunology",
+      "topic": "Vaccines",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The first vaccine, against smallpox, was developed by:",
+      "options": [
+        "Louis Pasteur",
+        "Edward Jenner",
+        "Robert Koch",
+        "Alexander Fleming"
+      ],
+      "answer": 1,
+      "solution": "**Edward Jenner** (1796) inoculated a boy with material from cowpox sores and showed he became immune to smallpox.\n\nThe word vaccine comes from vacca, Latin for cow."
+    },
+    {
+      "id": "tn12z-imm-07",
+      "chapter": "Immunology",
+      "topic": "Acquired immunity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Antibodies are secreted by:",
+      "options": [
+        "Plasma cells",
+        "Helper T cells",
+        "Macrophages",
+        "Neutrophils"
+      ],
+      "answer": 0,
+      "solution": "Activated B cells divide and differentiate into **plasma cells**, which secrete large amounts of antibody. Some become memory B cells.\n\nT cells, macrophages and neutrophils do not secrete antibodies."
+    },
+    {
+      "id": "tn12z-imm-08",
+      "chapter": "Immunology",
+      "topic": "Antibody structure",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many polypeptide chains make up one immunoglobulin monomer?",
+      "answer": 4,
+      "tolerance": 0,
+      "solution": "An immunoglobulin monomer is a Y-shaped molecule of **two heavy chains** and **two light chains**, held by disulphide bonds.\n\n$2 + 2 = 4$ polypeptide chains."
+    },
+    {
+      "id": "tn12z-imm-09",
+      "chapter": "Immunology",
+      "topic": "Antibody structure",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many antigen-binding sites does one IgG molecule have?",
+      "answer": 2,
+      "tolerance": 0,
+      "solution": "Each arm of the Y (the Fab region) carries one antigen-binding site at the tip, formed by the variable regions of one heavy and one light chain.\n\nAn IgG monomer has two arms, so **2** binding sites: it is bivalent."
+    },
+    {
+      "id": "tn12z-imm-10",
+      "chapter": "Immunology",
+      "topic": "Antigens",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the name of the specific part of an antigen that an antibody recognises and binds?",
+      "answer": "Epitope",
+      "tolerance": 0,
+      "accept": [
+        "epitope",
+        "epitopes",
+        "antigenic determinant"
+      ],
+      "solution": "The **epitope** (antigenic determinant) is the small region of an antigen that fits the antibody's binding site (the paratope).\n\nOne antigen may carry several different epitopes."
+    },
+    {
+      "id": "tn12z-imm-11",
+      "chapter": "Immunology",
+      "topic": "AIDS",
+      "type": "numeric",
+      "marks": 3,
+      "q": "After a positive ELISA, which test is used to confirm HIV infection?",
+      "answer": "Western blot",
+      "tolerance": 0,
+      "accept": [
+        "western blot",
+        "western blotting",
+        "western blot test"
+      ],
+      "solution": "**ELISA** is the screening test for HIV antibodies. Because it can give false positives, a positive result is confirmed by the **Western blot**, which detects antibodies against specific viral proteins separated by electrophoresis.\n\nOnly a positive Western blot confirms the infection."
+    },
+    {
+      "id": "tn12z-imm-12",
+      "chapter": "Immunology",
+      "topic": "Antibody structure",
+      "type": "numeric",
+      "marks": 3,
+      "q": "IgM is a pentamer. How many antigen-binding sites does one IgM molecule have in all?",
+      "answer": 10,
+      "tolerance": 0,
+      "solution": "Each monomer unit has **2** antigen-binding sites. IgM has **5** such units joined by a J chain.\n\n$5 \\times 2 = 10$ binding sites, which makes IgM very effective at agglutinating antigens."
+    },
+    {
+      "id": "tn12z-imm-25q20b",
+      "chapter": "Immunology",
+      "topic": "Acquired immunity",
+      "source": "TN HSE Mar 2025",
+      "type": "long",
+      "marks": 5,
+      "q": "Differentiate active immunity from passive immunity.",
+      "solution": "**Active immunity**\n\n1. Produced by the body's own cells in response to an antigen (infection or vaccine).\n2. The body itself makes antibodies and activated lymphocytes.\n3. Takes time to develop (days to weeks) after exposure.\n4. Long lasting, often lifelong, because memory cells are formed.\n5. Has no side effects of foreign serum.\n6. Examples: immunity after recovering from measles; immunity after polio or BCG vaccination.\n\n**Passive immunity**\n\n1. Ready-made antibodies are received from outside.\n2. The body does not make the antibodies itself.\n3. Gives immediate protection.\n4. Short lived (a few weeks or months), since no memory cells are formed.\n5. Foreign serum (e.g. horse antiserum) may cause reactions such as serum sickness.\n6. Examples: antibodies (IgG) passing through the placenta, IgA in colostrum, injection of anti-tetanus serum or anti-venom."
+    }
+  ]
+}
