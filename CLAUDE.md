@@ -543,11 +543,16 @@ the tests, and reused on every render. Switching calls `showEditorForSubject`.
 picker out from under an open dropdown. Below 1100px the audience note drops and
 below 600px the title does: the crumb row already carries the test's name.
 
-**Every action is one icon row** (`.ed-toolbar`, `toolbarMarkup`) in the **Test
+**Every action is one row** (`.ed-toolbar`, `toolbarMarkup`) in the **Test
 details panel's own header**, right-aligned — Who sees this (`#ed-audience`),
 Preview (`#ov-preview`), Quick edit (`#ov-quick`, drafts only) and Publish
-(`#ov-publish`) / Move back to draft (`#ed-unpublish-bar`). It belongs to that
-panel, not to a bar floating above it. On a library master viewed by a teacher
+(`#ov-publish`) / Unpublish (`#ed-unpublish-bar`). It belongs to that
+panel, not to a bar floating above it. **The three that only open something
+are icons; the one that changes what students see says "Publish" in words**
+(`.ed-tool-text`). It was a paper-plane icon with a tooltip, and was read as
+anything but Publish — and a phone has no hover to read the tooltip with. The
+word is "Publish" everywhere a test is published (here and in My tests), never
+"Publish to students", "Send" or "Share". On a library master viewed by a teacher
 the row collapses to **Preview alone** — publishing, the audience picker and
 quick edit would all 403. There is no
 PUBLISHING card and no duplicate set in the app bar; the bar keeps identity and
@@ -599,6 +604,133 @@ and the explanation, each with a live "Student sees" preview.
 - **Starter samples**: a teacher with no tests gets the bundled tests copied in
   as their own editable drafts, once ever (`teacherstate` table, `seedSamples`).
 - `?edit=<testId>&q=<questionId>` restores a teacher's place across a refresh.
+
+## Seyari AI: questions written, or read off a paper, with the teacher (`/api/generate`)
+
+A chat panel in the authoring editor — **Seyari AI** in the app bar, beside the
+status chip — where a teacher asks for questions in plain words or attaches a
+paper (a PDF, photographs, a picture taken now) and gets back **question cards**
+in the app's own JSON shape. **Nothing reaches the draft until the teacher
+presses Add on a card.** That is the marking rule, *the AI proposes, the
+teacher awards*, drawn here as *the AI drafts, the teacher accepts*, and for the
+same reason: a question the teacher has to choose gets read; one already in the
+test gets published.
+
+- **Server: `POST /api/generate`** (`handlers.generate`, not an `admin…` route).
+  Teachers, admins and parents (`isAuthor`). It sits behind **the same two
+  gates as marking, in the same order** — the daily cap (`assessUsage`, the
+  same key), then the credits (`creditsFor` on `walletFor(who)`) — and only
+  then parses the body and calls the model. One message spends **one credit**
+  from the same wallet, stamped with its token cost through `noteCredit`, and
+  only once the model has answered: a failed or refused call costs nothing.
+- **Same deployment as marking** (`gpt-4.1-mini`, `AZURE_AI_*`), same `fetch`,
+  no new secret. Strict structured output (`GEN_SCHEMA`): `answerIndex` for an
+  MCQ and `answer` text for a short answer, because a strict schema has no
+  union, and `genQuestions` maps the reply into the app's shape and runs it
+  through **`validateQuestions`, the one validator**, non-strict. Each card
+  carries `needs` — what the validator said is missing — so a teacher sees "no
+  correct option marked" on the card, not at publish time. No id is sent back:
+  **the client stamps `newQuestionId` on accept**, so an accepted question is
+  born exactly as a typed one is.
+- **Images go as base64 `data:` URIs at `detail: "high"`**, at most ten per
+  message, JPEG/PNG by magic bytes, ≤ 1.5 MB each — the answer-photo rules.
+  **Nothing uploaded is stored anywhere**; `e2e/helpers.cjs` asserts no table
+  row holds a byte of it. The model is told the subject and the test's name,
+  never who the teacher is.
+- **Earlier turns go back as text**, the model's own questions included, so
+  "make the third one harder" works without resending the pages that produced
+  them — which would be most of the bill, every turn. The conversation is held
+  in the page for the session and nowhere else.
+- **The system prompt forbids by name every way content has rendered wrong**
+  (`genSystemPrompt`): markdown tables, single-asterisk italics, a literal
+  backslash-n, bare Tamil inside maths. The four guards in
+  `scripts/check-content.cjs` are the same list.
+- **A PDF is rendered to page images in the browser** (`src/pdfpages.ts`,
+  `pdfjs-dist`) and sent as the same JPEGs a photograph is — reading a page as
+  an image is what recovers the notation text extraction drops. It is the
+  repo's second dependency, taken deliberately: the model takes images, not
+  documents, and rendering on the Function would need a canvas there. It is
+  imported **dynamically**, so it is its own chunk and a phone pays for it only
+  when a PDF is chosen; its worker is a same-origin Vite asset (`?url`), so the
+  strict `script-src 'self'` holds untouched. pdf.js 5 uses no `eval`.
+- **Client: `src/screens/editor/seyari.ts`.** Shaped like the chat side panels
+  people already know: docked to the right edge under the app bar, slim header
+  with a close button, the transcript, and a rounded composer at the foot with
+  **+** (upload a PDF or photos / take a photo) on the left, the credit line in
+  the middle and send on the right. Below 900px it is a sheet from the bottom.
+  **It lives outside `#app`**, appended to the body: the editor repaints `#app`
+  on every question click and a panel inside it would lose the conversation
+  each time. A `MutationObserver` closes it when `[data-authoring]` — the
+  attribute on the authoring editor's root, and only that root — leaves the
+  screen; the editor's ghost loader (`.editor.sk-wrap`) keeps it, since opening
+  another test paints one. The ✕ only hides it; the conversation survives.
+- **The button is in the app bar, not the pane's action row**, because it opens
+  a surface rather than acting on the test — the same category as the tree
+  toggle. It is absent on a read-only test (published, or a master viewed by a
+  teacher), where nothing could be added. The empty subject shell has it too,
+  plus **Ask Seyari AI** beside *Create the first test*: there, Add on a card
+  becomes **Create test with this**, through `mutateTest("create")` with the
+  questions and the model's suggested title.
+- **The balance is read when the panel opens** (`fetchMyCredits`, now carrying
+  `on: aiConfigured()`), so a site with no key says *Not switched on* under the
+  composer before a message is sent, rather than failing on the first one. A
+  failed balance fetch says nothing, as everywhere else.
+- Enter sends on a keyboard; on a touch screen Enter is a new line and the send
+  button sends, because there is no Shift to hold.
+- `node e2e/seyari.cjs` drives it in a real browser at 1280px and 390px with a
+  stubbed `fetch` and a host that records what it is handed; `e2e/helpers.cjs`
+  drives the handler with a stubbed model and asserts the gates, the mapping,
+  the ledger and that nothing uploaded is written.
+
+## The app's own dropdown, and the other controls the OS still draws (`src/select.ts`)
+
+A native `<select>` can be styled, but **its options list is drawn by the
+operating system**: a grey sheet on a Mac, a full-screen wheel on Android, a
+Windows list, each in its own font and colour. The box was ours and the list
+never was — the chevron sat hard against the border and the list looked like
+nothing else on the page. `src/select.ts` replaces the list and leaves the
+native control in place.
+
+- **`enhanceSelect` keeps the native `<select>` in the tree**, visually hidden
+  (`.vs-native`: 1px, `opacity: 0`, `aria-hidden`, `tabindex=-1`) but still
+  holding the value and still firing `change`. So every `select.value` read,
+  every `change` listener and every `page.selectOption` in the suites works
+  untouched, and the existing `.ed-select` / `.ed-input` / `.shellbar-select` /
+  `.numeric-input` sizing rules still apply, because **the button wears the
+  select's own classes**. It is deliberately not `display: none`: Playwright's
+  `selectOption` needs a box to act on.
+- **`installSelects()` runs once at boot** and a `MutationObserver` upgrades
+  every `<select>` a screen paints from then on. One call, no screen has to
+  remember — the same reason the CSRF guard wraps every handler at export
+  time rather than handler by handler.
+- The button is a `combobox`, the list a `listbox` with
+  `aria-activedescendant`; arrows move, Enter or Space picks, Escape and Tab
+  close, a typed letter jumps. The list flips upward near the floor, opens one
+  at a time, closes on a click elsewhere, and its rows are 44px on a phone.
+  A `<label for>` that pointed at the select is re-pointed at the button.
+  `disabled` is mirrored both ways (the editor's `readOnly()` pass disables
+  selects after bind). `node e2e/select.cjs` proves all of it, no network, no
+  session.
+
+**The audit that found it**, and what was done about each of the other
+controls the operating system used to draw. All seven are the app's own now;
+`node e2e/dialog.cjs` and `node e2e/select.cjs` prove the ones with behaviour.
+
+| Control | Where | Was | Now |
+|---|---|---|---|
+| `alert()` / `confirm()` | 20 call sites: delete draft, remove student, hand in with unanswered questions, top up, every error | OS dialog, froze the page, read like a crash on Android | **`src/dialog.ts`**: `confirmDialog()` is the shared modal with no fields (`onClose` and `danger` were added to `ModalOpts` for it; focus lands on the answer so Enter confirms); `notice()` is a toast that never blocks |
+| `title=` tooltips | 15, mostly icon-only buttons | The browser's tooltip, never shown on a phone | **`data-tip`**, drawn by the page on hover and keyboard focus, hidden on a touch screen (`@media (hover: none)`), hung from the right against the right edge and to the side in the rail. `aria-label` still carries the name |
+| `<input type="number">` | marks, tolerance, plan prices | Spinner arrows that differ per browser; iOS showed a full keyboard | Spinners gone in CSS; `inputmode="numeric"` / `"decimal"` brings the right keyboard up |
+| checkbox / radio | the modal's fields, the MCQ answer radios, New subject's ticks | Blue on a Mac, green on Android | `appearance: none`, drawn in CSS in the app's colour, with a focus ring. The native control stays; only its paint is replaced |
+| `<datalist>` | the modal's `options` suggestions | Safari and Android barely show it | **`enhanceCombobox`** in `src/select.ts`: the dropdown's own list under the text field, filtered as you type, still never a closed set. `-1` is a real state there — nothing highlighted, Enter keeps what was typed |
+| `<details>` | the worked solution on a Seyari card | A marker that differs per browser | A CSS chevron on `summary`, turning when open |
+| `<input type="file">` | 3, all behind our own buttons | Already ours | Nothing |
+
+**A confirmation names the consequence and the verb.** "Delete this draft?" over
+"It is deleted permanently, questions and all" with a red **Delete**, never a
+grey "OK". Cancel may say what staying means — the hand-in dialog's reads
+**Keep going**. A notice is for what has already happened and needs no answer:
+an error, or "4 marked and shown to Priya" after the parent's one click.
 
 ## Performance, scale and cost — the rules that hold everywhere
 
@@ -1057,9 +1189,40 @@ the function did not exist.
 - `authattempts` rows are never swept. They are tiny and point-keyed, so this is
   untidy rather than costly.
 
+## The browser's Back button stays inside the app (`setUrl`, `route`)
+
+Every screen used to call `history.replaceState`, so the app held exactly one
+history entry and **Back always left the site**. There is no central
+navigate() — screens call each other from a hundred places — so the one point
+every move passes through is the URL write, and that is where the history is.
+
+- **`setUrl` in `src/dom.ts` pushes an entry when the address changes** and
+  does nothing when it does not, so a re-render (an autosave, a ticked answer)
+  never piles up entries. Entries it wrote carry `history.state.vidai`.
+- **`route()` in `src/main.ts` is the boot routing as a function**, run again
+  on every `popstate` (`installHistory`). A popstate is a reload without the
+  network round trip, so anything a reload restores, Back restores.
+- **During a restore, `setUrl` replaces instead of pushing.** The boot and
+  every popstate land on a URL that is already right, and the screen rebuilt
+  under it rewrites it on the way (showLanding strips `?q=`, a mangled test id
+  is cleaned); pushing those would put the screen Back just left on top of
+  itself and turn Back into a loop. A restore ends at the next `pointerdown`
+  or `keydown` on the document — from then on a URL change is a move the
+  person made. The synthetic Escape that closes an open dialog on popstate is
+  a keydown, so it is dispatched **before** the restore flag is set.
+- **A screen Back should reach has to name itself in the address bar.** The
+  console screens carry `?view=<rail key>` (`openRail` in `src/screens/menu.ts`
+  is the one table, shared by the rail and the router), a student's report
+  `?report=<username>`, a parent's child `?child=<username>`, a student's
+  results `?view=results`. Two screens at the same URL are one entry: Back
+  cannot tell them apart. `?view=children` opens the **list** (`showChildren(true)`),
+  because the list auto-forwards a one-child parent to that child, and Back
+  from the child would otherwise bounce straight back into it.
+- The guest demo stays at `./` — that is the link that was shared.
+
 ## Source layout (`src/`)
 
-- `main.ts` — boot only: analytics init, URL → screen routing. No screen code here.
+- `main.ts` — boot only: analytics init, `route()` (URL → screen). No screen code here.
 - `types.ts` — Question/Test/Attempt interfaces (mirror the JSON schema below).
 - `data.ts` — TESTS registry (`import.meta.glob` over `src/tests/*.json`), `totalMarks`, `testTitle`.
 - `dom.ts` — `app` root, `escapeHtml`/`formatText`/`renderMath`, ICONS, topbar/brand, `copyText`, `pct`.
@@ -1102,7 +1265,14 @@ stylesheet and drives it at 390px: what the fixed bottom bar covers, and whether
 the page holds still behind the open question list.
 `node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
 the full-screen photo viewer in a real browser against two fake pages — no
-network, no session, no row written. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+network, no session, no row written. `node e2e/history.cjs` does the same for
+`setUrl` and `installHistory` in `src/dom.ts`: a stub `route()` stands in for
+`main.ts`, and it asserts what the address bar and the history do on a boot, a
+move, a re-render, Back, Forward and Back over an open dialog. It fails four
+ways against a replace-only `setUrl`. `node e2e/seyari.cjs` drives the Seyari
+AI panel the same way, against a stubbed `fetch` and a host object that records
+what it is handed, and `node e2e/select.cjs` the app's own dropdown and combobox over native
+controls; `node e2e/dialog.cjs` the app's own confirm and notice. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the

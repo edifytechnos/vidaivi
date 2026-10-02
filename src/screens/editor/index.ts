@@ -23,7 +23,11 @@ import { ICONS, escapeHtml, setUrl, testLabelMarkup } from "../../dom";
 import { mount, setShellbar, skeleton } from "../../shell";
 import { openModal } from "../../modal";
 import { openAssign } from "../assign";
-import type { Test } from "../../types";
+import type { Subject } from "../../api";
+import { notice } from "../../dialog";
+import { openSeyari, seyariOpen, toggleSeyari } from "./seyari";
+import type { SeyariHost } from "./seyari";
+import type { Question, Test } from "../../types";
 import {
   clearTest,
   currentSaveState,
@@ -65,8 +69,17 @@ let publishError = "";
 // render.
 let publishBlockers: InProgressHolder[] = [];
 
-/** Open the authoring screen on a test, optionally focused on one question. */
-export async function showEditor(testId: string, questionId: string | null, back: () => void) {
+/**
+ * Open the authoring screen on a test, optionally focused on one question.
+ * `subjects` is the subject list when the caller has already fetched it
+ * (`showEditorForSubject` does), so one open never asks the API for it twice.
+ */
+export async function showEditor(
+  testId: string,
+  questionId: string | null,
+  back: () => void,
+  subjects?: Subject[] | null
+) {
   onExit = back;
   treeSubject = currentSubject();
   track("editor_open", { test: testId });
@@ -77,7 +90,7 @@ export async function showEditor(testId: string, questionId: string | null, back
   const [loaded, list, subjectList] = await Promise.all([
     fetchServerTest(testId),
     fetchTestList(treeSubject ?? undefined),
-    fetchSubjects(),
+    subjects === undefined ? fetchSubjects() : Promise.resolve(subjects),
   ]);
   if (!loaded) {
     mount(
@@ -89,16 +102,7 @@ export async function showEditor(testId: string, questionId: string | null, back
     document.getElementById("ed-back")!.addEventListener("click", back);
     return;
   }
-  // Built-in shelves are offered here alongside a teacher's own subjects. They
-  // open read-only unless you are an admin — see readOnly(). This must be set
-  // BEFORE viewingShelf() is asked anything, since that is what it reads.
-  shelfIds = new Set((subjectList ?? []).filter((x) => x.platform).map((x) => x.id));
-  shelfTitles = new Map((subjectList ?? []).filter((x) => x.platform).map((x) => [x.id, x.title]));
-  // The picker lists what you own. Built-in shelves are read from Browse and
-  // picked when creating a subject or a test; they do not crowd this control.
-  ownSubjects = (subjectList ?? [])
-    .filter((x) => !x.platform)
-    .map((x) => ({ id: x.id, title: x.title, platform: !!x.platform }));
+  takeSubjects(subjectList);
   // A shelf's tree holds its masters; an ordinary subject's holds the teacher's
   // own tests. Never both, or a teacher's tree fills up with library copies.
   const shelf = viewingShelf();
@@ -125,6 +129,30 @@ export async function showEditor(testId: string, questionId: string | null, back
 }
 
 /**
+ * Remember what the subject list said. Built-in shelves are offered here
+ * alongside a teacher's own subjects and open read-only unless you are an
+ * admin — see readOnly(). This must run BEFORE viewingShelf() is asked
+ * anything, since that is what it reads.
+ */
+function takeSubjects(subjectList: Subject[] | null): void {
+  shelfIds = new Set((subjectList ?? []).filter((x) => x.platform).map((x) => x.id));
+  shelfTitles = new Map((subjectList ?? []).filter((x) => x.platform).map((x) => [x.id, x.title]));
+  // The picker lists what you own. Built-in shelves are read from Browse and
+  // picked when creating a subject or a test; they do not crowd this control.
+  ownSubjects = (subjectList ?? [])
+    .filter((x) => !x.platform)
+    .map((x) => ({ id: x.id, title: x.title, platform: !!x.platform }));
+}
+
+/** The name of the subject the tree is in, for the app bar. */
+function subjectTitle(): string {
+  const here = treeSubject ?? "";
+  if (!here) return "All subjects";
+  if (viewingShelf()) return shelfTitle(here);
+  return ownSubjects.find((x) => x.id === here)?.title || "Subject";
+}
+
+/**
  * Open the authoring shell on a subject: its first test, or — when the subject
  * holds none — the same shell with an empty tree. A subject always opens the
  * same screen, whether or not there is anything in it yet.
@@ -139,7 +167,14 @@ export async function showEditorForSubject(
   track("editor_subject_open", { subject: subjectId ?? "" });
   mount(skeleton.editor({ add: true }), { title: "Loading…", active: "subjects", full: true });
 
-  const list = await fetchTestList(subjectId ?? undefined);
+  // The subject list rides along so the app bar can name the subject even
+  // when it holds no test yet — the empty shell used to read "New subject"
+  // whatever the teacher had just called it.
+  const [list, subjectList] = await Promise.all([
+    fetchTestList(subjectId ?? undefined),
+    fetchSubjects(),
+  ]);
+  takeSubjects(subjectList);
   // Scoped to one subject, the tests returned all belong to it, so platform-ness
   // follows the subject. With no subject, keep library masters out.
   const mine = subjectId
@@ -155,7 +190,7 @@ export async function showEditorForSubject(
   }
   // A draft is the one you can actually edit, so prefer it over a published one.
   const first = mine.find((t) => t.status === "draft") ?? mine[0];
-  await showEditor(first.id, null, back);
+  await showEditor(first.id, null, back, subjectList);
 }
 
 /**
@@ -167,12 +202,12 @@ function renderEmptyShell(): void {
   setUrl();
   mount(
     `
-    <div class="editor" data-pane="question">
+    <div class="editor" data-pane="question" data-authoring="1">
       <div class="ed-cols overview">
         <aside class="ed-tree" id="ed-tree">
           <div class="ed-tree-head">
             <span class="ed-tree-title">Tests &amp; questions</span>
-            ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" title="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
+            ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" data-tip="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
           </div>
           <p class="ed-empty ed-tree-empty">No tests yet.</p>
         </aside>
@@ -183,21 +218,101 @@ function renderEmptyShell(): void {
           <div class="ed-body">
             <section class="ed-panel">
               <div class="ed-panel-head"><span class="ed-panel-label">No tests in this subject yet</span></div>
-              <p class="ed-hint">Create your first test and its questions appear here, beneath it in the tree.</p>
-              <div class="actions"><button class="btn btn-primary" id="ed-empty-create">Create the first test</button></div>
+              <p class="ed-hint">Create your first test and its questions appear here, beneath it in the tree.
+              Or ask <strong>Seyari AI</strong> to write one, or to read the questions off a paper you have.</p>
+              <div class="actions">
+                <button class="btn btn-primary" id="ed-empty-create">Create the first test</button>
+                <button class="btn btn-ghost" id="ed-empty-seyari">${ICONS.spark} Ask Seyari AI</button>
+              </div>
             </section>
           </div>
         </div>
       </div>
     </div>`,
-    { title: "New subject", sub: "No tests yet", active: "subjects", full: true }
+    {
+      title: subjectTitle(),
+      sub: "No tests yet",
+      active: "subjects",
+      full: true,
+      lead: subjectLead(),
+      actions: canAddHere() ? seyariButton() : "",
+    }
   );
 
   const create = () => void newTestHere(onExit);
   document.getElementById("ed-new-test")?.addEventListener("click", create);
   document.getElementById("ed-empty-create")?.addEventListener("click", create);
   document.getElementById("ed-exit")!.addEventListener("click", () => onExit());
+  bindSubjectPicker();
+  bindSeyari();
+  document.getElementById("ed-empty-seyari")?.addEventListener("click", () => openSeyari(seyariHost));
 }
+
+/**
+ * The Seyari AI toggle, in the app bar beside the status chip. It opens a
+ * SURFACE rather than acting on the test, which is why it sits with the tree
+ * toggle in the bar and not in the pane's action row: the bar holds the
+ * things that say where you are and what is open, and this is one of them.
+ */
+function seyariButton(): string {
+  return `<button class="sy-toggle" id="ed-seyari" aria-pressed="${seyariOpen() ? "true" : "false"}" data-tip="Write questions with Seyari AI">${ICONS.spark}<span>Seyari AI</span></button>`;
+}
+
+function bindSeyari(): void {
+  document.getElementById("ed-seyari")?.addEventListener("click", () => toggleSeyari(seyariHost));
+}
+
+/** A question nobody has typed into yet: no text, no topic, no solution, no option. */
+function untouched(q: Question): boolean {
+  return !q.q.trim() && !q.topic.trim() && !q.solution.trim() && !(q.options ?? []).some((o) => o.trim());
+}
+
+/** What the panel needs from the editor: where it is, and what to do with an accepted card. */
+const seyariHost: SeyariHost = {
+  context() {
+    const test = currentTest();
+    return {
+      subject: subjectTitle(),
+      title: test?.title ?? "",
+      chapter: test?.chapter ?? "",
+      existing: test?.questions.length ?? 0,
+      hasTest: !!test && !readOnly(),
+    };
+  },
+  accept(questions) {
+    const test = currentTest();
+    if (!test || readOnly() || !questions.length) return;
+    // A test that holds only untouched blanks — the + under an empty test is
+    // always on show, and "Question 1" with nothing in it is what pressing it
+    // leaves — is filled, not appended to. Otherwise the first thing a teacher
+    // sees after Add is an empty question above the ones they asked for.
+    edit(() => {
+      if (test.questions.every(untouched)) test.questions.length = 0;
+      test.questions.push(...questions);
+    });
+    track("seyari_accept", { test: test.id, count: String(questions.length) });
+    refreshTree();
+    // The overview's question table is drawn from the document; on a question
+    // page the tree alone shows the new rows, and the page stays put.
+    if (selectedIndex < 0) renderBody();
+  },
+  async create(questions, title, chapter) {
+    const result = await mutateTest("create", {
+      title: title || "Untitled test",
+      chapter: chapter || "",
+      teacher: "",
+      access: "login",
+      questions,
+      subjectId: currentSubject() ?? undefined,
+    } as never);
+    if (!result.ok) {
+      notice(result.message);
+      return;
+    }
+    track("seyari_create", { test: result.test.id, count: String(questions.length) });
+    await showEditor(result.test.id, null, onExit);
+  },
+};
 
 /** Only an admin may add to the built-in library. */
 function canAddHere(): boolean {
@@ -276,7 +391,7 @@ function render(): void {
   const q = selectedIndex >= 0 ? test.questions[selectedIndex] : null;
   mount(
     `
-    <div class="editor" data-pane="${pane}">
+    <div class="editor" data-pane="${pane}" data-authoring="1">
       <div class="ed-cols${selectedIndex < 0 ? " overview" : ""}">
         <aside class="ed-tree" id="ed-tree">${treeMarkup(test)}</aside>
         <div class="ed-center">
@@ -346,17 +461,24 @@ function editorActions(test: Test): string {
   // teacher is not choosing between two buttons that do the same thing.
   return `
       <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.menu}</button>
-      <span class="status-chip ${statusClass(test.status ?? "draft")}" title="${escapeHtml(audienceNote(test))}">${statusLabel(test)}</span>`;
+      ${readOnly() ? "" : seyariButton()}
+      <span class="status-chip ${statusClass(test.status ?? "draft")}" data-tip="${escapeHtml(audienceNote(test))}" tabindex="0">${statusLabel(test)}</span>`;
 }
 
 /**
- * The one row of actions, at the top right of the pane. Icons with tooltips:
- * the labels said the same thing twice over, once here and once in the app bar.
+ * The one row of actions, at the top right of the pane. The three that only
+ * open something are icons with tooltips: the labels said the same thing
+ * twice over, once here and once in the app bar. The one that CHANGES what
+ * students can see says so in words — a paper-plane icon alone was being
+ * read as "send", "share", anything but Publish, and a teacher hovering for a
+ * tooltip on a phone has no hover.
  */
 function toolbarMarkup(test: Test): string {
   const draft = test.status === "draft";
   const btn = (id: string, icon: string, label: string, cls = "") =>
-    `<button class="ed-tool${cls ? " " + cls : ""}" id="${id}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${icon}</button>`;
+    `<button class="ed-tool${cls ? " " + cls : ""}" id="${id}" data-tip="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${icon}</button>`;
+  const word = (id: string, icon: string, text: string, title: string, cls = "") =>
+    `<button class="ed-tool ed-tool-text${cls ? " " + cls : ""}" id="${id}" data-tip="${escapeHtml(title)}">${icon}<span>${escapeHtml(text)}</span></button>`;
 
   // A teacher reading a library master can only look at it. Publishing, the
   // audience picker and quick edit would all fail at the server, so they are
@@ -372,8 +494,8 @@ function toolbarMarkup(test: Test): string {
       ${draft ? btn("ov-quick", ICONS.pencil, "Quick edit (card view)") : ""}
       ${
         draft
-          ? btn("ov-publish", ICONS.send, "Publish to students", "primary")
-          : btn("ed-unpublish-bar", ICONS.undo, "Move back to draft")
+          ? word("ov-publish", ICONS.send, "Publish", "Publish to students", "primary")
+          : word("ed-unpublish-bar", ICONS.undo, "Unpublish", "Move back to draft")
       }
     </div>`;
 }
@@ -434,7 +556,7 @@ function treeMarkup(test: Test): string {
   return `
     <div class="ed-tree-head">
       <span class="ed-tree-title">Tests &amp; questions</span>
-      ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" title="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
+      ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" data-tip="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
     </div>
     <div class="ed-tree-body">
       ${rows.map((row) => testNode(row, test)).join("")}
@@ -471,7 +593,7 @@ function currentQuestionRows(test: Test): string {
       ? ""
       : `<div class="ed-insert" data-at="${at}">
            <span class="ed-insert-line"></span>
-           <button class="ed-insert-btn" data-at="${at}" title="Insert a question here" aria-label="Insert a question here">
+           <button class="ed-insert-btn" data-at="${at}" aria-label="Insert a question here">
              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
            </button>
          </div>`;
@@ -495,7 +617,7 @@ function currentQuestionRows(test: Test): string {
           ${
             readOnly()
               ? ""
-              : `<button class="ed-row-menu" data-i="${i}" title="More" aria-label="More actions for this question">
+              : `<button class="ed-row-menu" data-i="${i}" data-tip="More" aria-label="More actions for this question">
                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
                  </button>`
           }
@@ -719,11 +841,13 @@ async function publish(): Promise<void> {
   const test = currentTest();
   const btn = document.getElementById("ov-publish") as HTMLButtonElement | null;
   if (!test || !btn) return;
-  // An icon button: it says "publishing" by going dim, not by changing its label.
+  const word = btn.querySelector("span");
   btn.disabled = true;
+  if (word) word.textContent = "Publishing…";
   await save(); // publish validates what is stored, so flush pending edits first
   const result = await setTestStatus(test.id, "publish");
   btn.disabled = false;
+  if (word) word.textContent = "Publish";
   if (!result.ok) {
     // Held in state: renderBody() rebuilds the overview, so a message written
     // straight into the DOM would be wiped by the very next render.
@@ -946,11 +1070,8 @@ function bindTree(): void {
   });
 }
 
-function bindChrome(): void {
-  bindTree();
-  document.getElementById("ed-exit")?.addEventListener("click", () => {
-    void save().then(onExit);
-  });
+/** The subject picker in the app bar — on the editor and on the empty shell alike. */
+function bindSubjectPicker(): void {
   const subjectSel = document.getElementById("ed-subject") as HTMLSelectElement | null;
   subjectSel?.addEventListener("change", () => {
     const id = subjectSel.value;
@@ -958,6 +1079,15 @@ function bindChrome(): void {
     setSubject(id);
     void save().then(() => showEditorForSubject(id, onExit));
   });
+}
+
+function bindChrome(): void {
+  bindTree();
+  bindSeyari();
+  document.getElementById("ed-exit")?.addEventListener("click", () => {
+    void save().then(onExit);
+  });
+  bindSubjectPicker();
   document.getElementById("ed-crumb-overview")?.addEventListener("click", () => {
     selectedIndex = -1;
     render();
@@ -1122,7 +1252,7 @@ export async function createTestAndEdit(back: () => void): Promise<void> {
     subjectId: currentSubject() ?? undefined,
   } as never);
   if (!result.ok) {
-    alert(result.message);
+    notice(result.message);
     return;
   }
   await showEditor(result.test.id, null, back);

@@ -3784,6 +3784,16 @@ body.drawer-open {
 .ed-tool.primary:hover { background: var(--primary-hover); color: #fff; }
 .ed-tool:disabled { opacity: 0.55; cursor: default; }
 
+/* The action that changes what students see is a word, not a glyph. */
+.ed-tool-text {
+  width: auto;
+  gap: 6px;
+  padding: 0 12px 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 @media (max-width: 600px) {
   .shellbar-select { width: 120px; }
 }
@@ -4847,3 +4857,529 @@ body.drawer-open {
   background: var(--amber-bg);
   color: var(--amber);
 }
+
+/* ---------- Seyari AI: the chat panel a teacher writes a test with ---------- */
+/* Docked to the right edge, full height under the app bar, shaped like the chat
+   side panels people already know: slim header, transcript, rounded composer at
+   the foot. It floats over the editor rather than pushing it, and lives outside
+   #app so an editor repaint cannot take the conversation with it. Every colour
+   maps onto :root — one palette, not two. */
+
+.sy-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 12px 0 10px;
+  flex: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.sy-toggle .icon { width: 16px; height: 16px; }
+.sy-toggle:hover, .sy-toggle[aria-pressed="true"] { background: var(--primary); color: #fff; border-color: transparent; }
+@media (max-width: 600px) { .sy-toggle span { display: none; } .sy-toggle { padding: 0 10px; } }
+
+.sy-panel {
+  position: fixed;
+  top: 57px;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgba(15, 23, 42, 0.08);
+  z-index: 60;
+}
+.sy-panel[hidden] { display: none; }
+
+.sy-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 10px 0 16px;
+  border-bottom: 1px solid var(--border);
+  flex: none;
+}
+.sy-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+.sy-brand .icon { width: 18px; height: 18px; color: var(--primary); }
+
+.sy-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  flex: none;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.sy-icon .icon { width: 18px; height: 18px; }
+.sy-icon:hover { color: var(--text); background: var(--bg); }
+
+.sy-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overscroll-behavior: contain;
+}
+
+/* The empty state: a mark in the middle, like a chat that has not started. */
+.sy-empty {
+  margin: auto 0;
+  text-align: center;
+  padding: 24px 8px;
+}
+.sy-empty-mark { display: inline-flex; color: var(--primary); opacity: 0.85; }
+.sy-empty-mark .icon { width: 52px; height: 52px; }
+.sy-empty-title { margin: 14px 0 6px; font-size: 17px; font-weight: 700; color: var(--text); }
+.sy-empty-hint { margin: 0 auto; max-width: 34ch; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.sy-starters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
+.sy-starter {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+.sy-starter:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-soft); }
+
+.sy-turn { display: flex; flex-direction: column; gap: 10px; }
+.sy-me { align-items: flex-end; }
+.sy-ai { align-items: stretch; }
+.sy-bubble {
+  max-width: 92%;
+  padding: 10px 13px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.sy-bubble p { margin: 0 0 8px; }
+.sy-bubble p:last-child { margin-bottom: 0; }
+.sy-me .sy-bubble { background: var(--primary-soft); color: var(--text); border-bottom-right-radius: 6px; }
+.sy-ai .sy-bubble { background: var(--bg); color: var(--text); border-bottom-left-radius: 6px; align-self: flex-start; }
+.sy-error { background: var(--red-bg); color: var(--red); }
+.sy-error .btn-link { margin-left: 8px; font-weight: 600; }
+
+.sy-thinking { display: inline-flex; gap: 5px; align-items: center; padding: 14px 16px; }
+.sy-thinking span {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--faint);
+  animation: sy-blink 1.2s infinite ease-in-out;
+}
+.sy-thinking span:nth-child(2) { animation-delay: 0.2s; }
+.sy-thinking span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes sy-blink { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+
+.sy-sent-files { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.sy-sent-file {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-secondary);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 4px 8px 4px 4px;
+}
+.sy-sent-file img { width: 28px; height: 28px; object-fit: cover; border-radius: 6px; }
+
+/* A drafted question. Chip row, the question as the student would see it,
+   options with the correct one marked, the worked solution folded away. */
+.sy-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 12px 13px;
+  box-shadow: var(--shadow);
+}
+.sy-card-added { border-color: var(--green); background: #f6fdf9; }
+.sy-card-dropped { opacity: 0.55; }
+.sy-card-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; font-size: 11.5px; }
+.sy-type {
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 10.5px;
+  color: var(--primary); background: var(--primary-soft); border-radius: 999px; padding: 3px 8px;
+}
+.sy-marks { font-weight: 600; color: var(--text-secondary); }
+.sy-topic { color: var(--muted); }
+.sy-q { font-size: 14.5px; line-height: 1.5; }
+.sy-q p { margin: 0 0 8px; }
+.sy-q p:last-child { margin: 0; }
+.sy-opts { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 5px; }
+.sy-opts li {
+  display: flex; gap: 8px; align-items: flex-start;
+  font-size: 13.5px; line-height: 1.45; padding: 6px 9px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.sy-opts li p { margin: 0; }
+.sy-opt-letter { flex: none; font-weight: 700; color: var(--muted); }
+.sy-opts li.sy-correct { border-color: var(--green); background: var(--green-bg); }
+.sy-opts li.sy-correct .sy-opt-letter { color: var(--green); }
+.sy-ans { margin-top: 10px; font-size: 13.5px; }
+.sy-accept { color: var(--muted); }
+.sy-sol { margin-top: 10px; font-size: 13.5px; }
+.sy-sol summary { cursor: pointer; color: var(--text-secondary); font-weight: 600; font-size: 12.5px; }
+.sy-sol div { margin-top: 8px; padding: 8px 10px; background: var(--bg); border-radius: var(--radius-sm); line-height: 1.5; }
+.sy-sol div p { margin: 0 0 8px; }
+.sy-sol div p:last-child { margin: 0; }
+.sy-needs { margin-top: 10px; font-size: 12.5px; color: var(--amber); background: var(--amber-bg); border-radius: var(--radius-sm); padding: 6px 9px; }
+.sy-card-actions { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.sy-card-actions .btn { flex: none; min-width: 0; padding: 7px 12px; font-size: 13px; }
+.sy-added { display: inline-flex; align-items: center; gap: 6px; color: var(--green); font-weight: 600; font-size: 13px; }
+.sy-added .icon { width: 16px; height: 16px; }
+.sy-dropped { color: var(--muted); font-size: 13px; }
+.sy-all { display: flex; justify-content: flex-end; }
+.sy-all .btn { flex: none; min-width: 0; }
+
+/* The composer: one rounded card at the foot, textarea above a bar with "+"
+   on the left, the credits line in the middle and send at the right. */
+.sy-composer {
+  flex: none;
+  margin: 0 12px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 10px 10px 8px;
+}
+.sy-composer:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.sy-input {
+  display: block;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  resize: none;
+  font: inherit;
+  font-size: 14.5px;
+  line-height: 1.45;
+  padding: 4px 6px;
+  background: transparent;
+  color: var(--text);
+  max-height: 160px;
+}
+.sy-input::placeholder { color: var(--faint); }
+.sy-bar { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.sy-plus-wrap { position: relative; }
+.sy-plus { border-color: var(--border); }
+.sy-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 6px);
+  min-width: 220px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  z-index: 2;
+}
+.sy-menu button {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  font: inherit; font-size: 13.5px; color: var(--text);
+  background: transparent; border: 0; border-radius: var(--radius-sm);
+  padding: 9px 10px; cursor: pointer; text-align: left;
+}
+.sy-menu button .icon { width: 17px; height: 17px; color: var(--muted); }
+.sy-menu button:hover { background: var(--bg); }
+.sy-credits { margin-left: auto; font-size: 11.5px; color: var(--faint); white-space: nowrap; }
+.sy-credits-low { color: var(--amber); font-weight: 600; }
+.sy-credits-off { color: var(--red); font-weight: 600; }
+.sy-send {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; padding: 0; flex: none;
+  color: #fff; background: var(--primary); border: 0; border-radius: 50%;
+  cursor: pointer;
+}
+.sy-send .icon { width: 17px; height: 17px; }
+.sy-send:hover:not(:disabled) { background: var(--primary-hover); }
+.sy-send:disabled { opacity: 0.45; cursor: default; }
+
+.sy-attachments { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 2px 8px; }
+.sy-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  max-width: 100%;
+  font-size: 12px; color: var(--text-secondary);
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  padding: 4px 4px 4px 4px;
+}
+.sy-chip img { width: 30px; height: 30px; object-fit: cover; border-radius: 6px; flex: none; }
+.sy-chip-ic { display: inline-flex; width: 30px; height: 30px; align-items: center; justify-content: center; color: var(--muted); flex: none; }
+.sy-chip-ic .icon { width: 16px; height: 16px; }
+.sy-chip-text { display: flex; flex-direction: column; min-width: 0; }
+.sy-chip-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+.sy-chip-note { font-size: 11px; color: var(--muted); }
+.sy-chip-bad { border-color: var(--red); }
+.sy-chip-bad .sy-chip-note { color: var(--red); }
+.sy-chip-wait { color: var(--muted); padding: 6px 10px; }
+.sy-chip-x {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; padding: 0; flex: none;
+  color: var(--muted); background: transparent; border: 0; border-radius: 50%; cursor: pointer;
+}
+.sy-chip-x .icon { width: 14px; height: 14px; }
+.sy-chip-x:hover { color: var(--text); background: var(--border); }
+
+/* On a phone and a tablet it is a sheet from the bottom instead of a column
+   on the right: a 420px column is the whole screen there. */
+@media (max-width: 899px) {
+  .sy-panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: min(82dvh, 720px);
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.12);
+  }
+  .sy-composer { margin-bottom: calc(10px + env(safe-area-inset-bottom)); }
+}
+
+/* ---------- The app's own dropdown (src/select.ts) ---------- */
+/* A native <select> draws its list with the operating system. This draws it
+   with the page: the button wears the select's own classes so its sizing rules
+   still apply, and the list beneath is ours on every browser and phone. */
+
+.vs { position: relative; display: inline-block; max-width: 100%; vertical-align: middle; }
+.ed-field > .vs, .field > .vs, .vs:has(> .ed-input), .vs:has(> .numeric-input) { display: block; width: 100%; }
+.vs:has(> .ed-input) .vs-btn, .vs:has(> .numeric-input) .vs-btn { width: 100%; }
+
+/* Still in the tree for its value and its events; never seen, never focused.
+   Not display:none — a test's selectOption needs a box to act on. */
+.vs-native {
+  position: absolute !important;
+  inset: 0 auto auto 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.vs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+  max-width: 100%;
+}
+.vs-btn .vs-label { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vs-btn > .icon { width: 14px; height: 14px; flex: none; color: var(--muted); transform: rotate(90deg); transition: transform 0.15s; }
+.vs-open .vs-btn > .icon { transform: rotate(-90deg); }
+.vs-btn:hover:not(:disabled) { border-color: var(--muted); }
+.vs-btn:disabled { opacity: 0.6; cursor: default; }
+.vs-btn:focus-visible { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12); }
+
+.vs-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  z-index: 110;
+  overscroll-behavior: contain;
+}
+.vs-list[hidden] { display: none; }
+.vs-up .vs-list { top: auto; bottom: calc(100% + 4px); }
+/* The app bar's picker opens under a bar that is 57px tall; keep the list on screen. */
+.shellbar .vs-list { left: 0; min-width: 260px; }
+
+.vs-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.vs-opt > .icon { width: 15px; height: 15px; flex: none; color: var(--primary); }
+.vs-opt:not([aria-selected="true"]) { padding-left: 31px; }
+.vs-opt[aria-selected="true"] { color: var(--primary); font-weight: 600; }
+.vs-opt.vs-active { background: var(--primary-soft); }
+.vs-opt.vs-disabled { color: var(--faint); cursor: default; }
+
+@media (max-width: 899px) {
+  .vs-opt { padding-top: 11px; padding-bottom: 11px; font-size: 14.5px; }
+}
+
+/* ---------- Tooltips the page draws (data-tip) ---------- */
+/* `title` is the browser's tooltip: slow, unstyled, and on a phone never shown
+   at all. `data-tip` is ours, on hover and on keyboard focus; on a touch
+   screen it stays out of the way (a tap acts, it does not hover). */
+[data-tip] { position: relative; }
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-2px);
+  padding: 5px 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--text);
+  border-radius: 6px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s, transform 0.12s;
+  z-index: 130;
+}
+[data-tip]:hover::after, [data-tip]:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* Against the right edge, hang the tip from the right; in the rail, to the side. */
+.shellbar-actions [data-tip]::after, .ed-toolbar [data-tip]::after { left: auto; right: 0; transform: translateY(-2px); }
+.shellbar-actions [data-tip]:hover::after, .shellbar-actions [data-tip]:focus-visible::after,
+.ed-toolbar [data-tip]:hover::after, .ed-toolbar [data-tip]:focus-visible::after { transform: translateY(0); }
+.rail [data-tip]::after { top: 50%; left: calc(100% + 10px); transform: translateY(-50%) translateX(-2px); }
+.rail [data-tip]:hover::after, .rail [data-tip]:focus-visible::after { transform: translateY(-50%) translateX(0); }
+.shell.rail-open .rail [data-tip]::after { display: none; }
+@media (hover: none) { [data-tip]::after { display: none; } }
+
+/* ---------- Notices (src/dialog.ts) ---------- */
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(480px, calc(100vw - 28px));
+  z-index: 140;
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 10px 11px 14px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--muted);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: toast-in 0.18s ease-out;
+}
+.toast-error { border-left-color: var(--red); }
+.toast-success { border-left-color: var(--green); }
+.toast-info { border-left-color: var(--primary); }
+.toast-text { flex: 1 1 auto; white-space: pre-line; }
+.toast-x {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; padding: 0; flex: none; margin: -3px -2px -3px 0;
+  color: var(--muted); background: transparent; border: 0; border-radius: 50%; cursor: pointer;
+}
+.toast-x .icon { width: 15px; height: 15px; }
+.toast-x:hover { background: var(--bg); color: var(--text); }
+.toast-out { opacity: 0; transform: translateY(6px); transition: opacity 0.18s, transform 0.18s; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (max-width: 899px) { .shell-full .toasts { bottom: calc(90px + env(safe-area-inset-bottom)); } }
+
+/* ---------- Checkboxes and radios the page draws ---------- */
+/* Blue on a Mac, green on Android, a square on Windows. Drawn here instead,
+   in the app's own colour, the same everywhere. The native control stays:
+   only its paint is replaced. */
+input[type="checkbox"], input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex: none;
+  display: inline-grid;
+  place-content: center;
+  vertical-align: middle;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+input[type="checkbox"] { border-radius: 5px; }
+input[type="radio"] { border-radius: 50%; }
+input[type="checkbox"]::before, input[type="radio"]::before {
+  content: "";
+  display: block;
+  transform: scale(0);
+  transition: transform 0.1s;
+}
+input[type="checkbox"]::before {
+  width: 10px; height: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12.5l5 5L20 7'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+input[type="radio"]::before { width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+input[type="checkbox"]:checked, input[type="radio"]:checked { background: var(--primary); border-color: var(--primary); }
+input[type="checkbox"]:checked::before, input[type="radio"]:checked::before { transform: scale(1); }
+input[type="checkbox"]:hover:not(:disabled), input[type="radio"]:hover:not(:disabled) { border-color: var(--primary); }
+input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.18); }
+input[type="checkbox"]:disabled, input[type="radio"]:disabled { opacity: 0.5; cursor: default; }
+
+/* ---------- Number fields without the browser's spinner ---------- */
+/* The up/down arrows differ on every browser and are too small for a thumb.
+   `inputmode` brings the right keyboard up on a phone; the arrows go. */
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---------- Disclosure marker ---------- */
+details > summary { list-style: none; display: flex; align-items: center; gap: 7px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: "";
+  width: 7px; height: 7px; flex: none;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg) translate(-1px, 1px);
+  transition: transform 0.12s;
+}
+details[open] > summary::before { transform: rotate(45deg) translate(-2px, -2px); }
+
+/* ---------- Combobox (the dropdown's list under a text field) ---------- */
+.vs-combo { display: block; width: 100%; }
+.vs-combo > input { width: 100%; }

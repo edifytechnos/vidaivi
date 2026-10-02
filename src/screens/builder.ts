@@ -220,7 +220,7 @@ function questionCard(q: DraftQuestion, i: number, total: number): string {
       </div>
       <div>
         <label class="field-label">Marks</label>
-        <input class="numeric-input bq-marks" type="number" min="1" max="20" value="${q.marks}" />
+        <input class="numeric-input bq-marks" type="number" inputmode="numeric" min="1" max="20" value="${q.marks}" />
       </div>
     </div>
     <label class="field-label">Question</label>
@@ -274,7 +274,7 @@ function typedFields(q: DraftQuestion): string {
         </div>
         <div>
           <label class="field-label">Tolerance (± accepted)</label>
-          <input class="numeric-input bq-tolerance" type="number" step="any" min="0"
+          <input class="numeric-input bq-tolerance" type="number" inputmode="decimal" step="any" min="0"
                  value="${q.tolerance ?? 0}" />
         </div>
       </div>

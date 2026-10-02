@@ -30,6 +30,7 @@ import {
 import { openBuyCredits } from "./buy";
 import { paymentsAvailable } from "../payments";
 import { copyText, escapeHtml, setUrl } from "../dom";
+import { confirmDialog, notice } from "../dialog";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { showHome } from "./home";
@@ -38,7 +39,7 @@ import type { Attempt } from "../types";
 
 /** The children screen. One child goes straight through to their results. */
 export async function showChildren(force = false): Promise<void> {
-  setUrl();
+  setUrl({ view: "children" });
   track("parent_children_open");
   mount(
     `
@@ -199,8 +200,19 @@ function showNewLogin(name: string, username: string, password: string): void {
 }
 
 /** One child's tests, with the score they actually got. */
+/**
+ * One child's results from a username alone — what Back and a reload hold,
+ * since `?child=<username>` is all the address bar carries. One fetch of the
+ * list the children screen already makes; an unknown name lands on that list.
+ */
+export async function openChildResults(username: string): Promise<void> {
+  const child = ((await fetchChildren()) ?? []).find((c) => c.username === username);
+  if (child) await showChildResults(child);
+  else await showChildren(true);
+}
+
 export async function showChildResults(child: Child): Promise<void> {
-  setUrl();
+  setUrl({ child: child.username });
   track("parent_child_open");
   mount(
     `
@@ -328,10 +340,13 @@ function renderCredits(
 async function markWholePaper(child: Child, btn: HTMLButtonElement): Promise<void> {
   const todo = Number(btn.dataset.todo) || 0;
   if (
-    !confirm(
-      `Mark ${todo} answer${todo === 1 ? "" : "s"} with AI and show ${child.name} the result?\n\n` +
-        `This uses ${todo} credit${todo === 1 ? "" : "s"}. You can change any mark afterwards.`
-    )
+    !(await confirmDialog({
+      title: `Mark ${todo} answer${todo === 1 ? "" : "s"} with AI?`,
+      message: `${child.name} is shown the result straight away. This uses ${todo} credit${
+        todo === 1 ? "" : "s"
+      }, and you can change any mark afterwards.`,
+      confirmLabel: `Mark ${todo} & release`,
+    }))
   ) {
     return;
   }
@@ -345,17 +360,26 @@ async function markWholePaper(child: Child, btn: HTMLButtonElement): Promise<voi
     // Out of credits is a decision, not a failure: it names the shortfall and
     // opens the way to fix it.
     if (res.short && paymentsAvailable()) {
-      if (confirm(`${res.message}\n\nTop up now?`)) openBuyCredits(() => void showChildResults(child));
+      if (
+        await confirmDialog({
+          title: "Not enough credits",
+          message: res.message || "You do not have enough credits to mark this paper.",
+          confirmLabel: "Top up",
+        })
+      ) {
+        openBuyCredits(() => void showChildResults(child));
+      }
       return;
     }
-    alert(res.message || "Could not mark this paper");
+    notice(res.message || "Could not mark this paper");
     return;
   }
   track("parent_marked_paper", { assessed: String(res.assessed ?? 0) });
   if (res.failed) {
-    alert(
+    notice(
       `${res.assessed} marked and shown to ${child.name}. ${res.failed} could not be read — ` +
-        `open the paper to mark those yourself.`
+        `open the paper to mark those yourself.`,
+      "info"
     );
   }
   void showChildResults(child);
@@ -373,7 +397,7 @@ async function openChildReview(child: Child, testId: string): Promise<void> {
   // paper, and the card for one is not clickable in the first place.
   const done = remote.attempt;
   if (!test || !done?.answers) {
-    alert("That attempt could not be opened.");
+    notice("That attempt could not be opened.");
     return;
   }
   const attempt: Attempt = {

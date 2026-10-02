@@ -21,6 +21,7 @@ import { fetchServerTest, fetchTestList } from "../api";
 import { loadAttempt, newAttempt, saveAttempt } from "../attempts";
 import { gradeAnswer, gradeShort, TESTS, totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
+import { confirmDialog, notice } from "../dialog";
 import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
 import type { Attempt, Question, Test } from "../types";
 import { canHandIn } from "./test";
@@ -366,7 +367,7 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
           })}
           <div class="ed-center">
             <div class="ed-crumbrow">
-              <button class="ed-crumb-back" id="st-back" aria-label="Back to ${escapeHtml(subjectTitle)}" title="Back to ${escapeHtml(subjectTitle)}">${ICONS.back}</button>
+              <button class="ed-crumb-back" id="st-back" aria-label="Back to ${escapeHtml(subjectTitle)}" data-tip="Back to ${escapeHtml(subjectTitle)}">${ICONS.back}</button>
               ${drawerToggleMarkup()}
               <span class="ed-spacer"></span>
               <button id="st-submit" class="btn btn-primary st-handin">Hand in<span class="st-long"> test</span></button>
@@ -432,7 +433,7 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
     document.getElementById("st-next")!.addEventListener("click", () => {
       if (index < test.questions.length - 1) { index += 1; render(); }
     });
-    document.getElementById("st-submit")!.addEventListener("click", () => handIn(test, attempt));
+    document.getElementById("st-submit")!.addEventListener("click", () => void handIn(test, attempt));
 
     renderMath(app);
   };
@@ -587,7 +588,7 @@ function renderAnswer(
       (message) => {
         if (refusedTestId === test.id) return;
         refusedTestId = test.id;
-        alert(message);
+        notice(message);
         void showStudentSubject(subjectId);
       }
     );
@@ -716,9 +717,17 @@ function renderAnswer(
 }
 
 /** Hand the paper in: the score screen, and the marks the teacher still owes. */
-function handIn(test: Test, attempt: Attempt): void {
+async function handIn(test: Test, attempt: Attempt): Promise<void> {
   const missing = test.questions.length - answeredCount(test, attempt);
-  if (missing && !confirm(`${missing} question${missing > 1 ? "s are" : " is"} still unanswered. Hand in anyway?`)) {
+  if (
+    missing &&
+    !(await confirmDialog({
+      title: "Hand in with unanswered questions?",
+      message: `${missing} question${missing > 1 ? "s are" : " is"} still unanswered. Once handed in, the paper cannot be changed.`,
+      confirmLabel: "Hand in",
+      cancelLabel: "Keep going",
+    }))
+  ) {
     return;
   }
   recomputeScore(test, attempt);

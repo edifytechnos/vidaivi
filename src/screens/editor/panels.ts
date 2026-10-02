@@ -42,7 +42,7 @@ export function answerPanel(q: Question): string {
         </select>
         <div class="ed-spacer"></div>
         <span class="ed-panel-label">Marks</span>
-        <input class="ed-marks" id="ed-marks" type="number" min="1" max="20" value="${q.marks || ""}" />
+        <input class="ed-marks" id="ed-marks" type="number" inputmode="numeric" min="1" max="20" value="${q.marks || ""}" />
       </div>
       <div id="ed-answer-fields">${answerFields(q)}</div>
     </section>`;
@@ -98,7 +98,7 @@ function answerFields(q: Question): string {
         </label>
         <label class="ed-field">
           <span class="ed-panel-label">Tolerance (± accepted)</span>
-          <input class="ed-input" id="ed-tolerance" type="number" step="any" min="0" value="${q.tolerance ?? 0}" />
+          <input class="ed-input" id="ed-tolerance" type="number" inputmode="decimal" step="any" min="0" value="${q.tolerance ?? 0}" />
         </label>
         <label class="ed-field ed-field-wide">
           <span class="ed-panel-label">Also accept</span>

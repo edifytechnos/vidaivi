@@ -3,7 +3,7 @@
 // merge in alongside them for logged-in users.
 
 import { authHeader, isLoggedIn, apiFetch } from "./auth";
-import type { Test } from "./types";
+import type { Question, Test } from "./types";
 
 /** New question ids carry a random suffix: positional ids collide when a
  *  question is deleted and another added (the new one is handed an index that
@@ -434,5 +434,57 @@ export async function discardAttempt(
     return { ok: true };
   } catch {
     return { ok: false, message: "Network error" };
+  }
+}
+
+// ---------- Seyari AI ----------
+
+/**
+ * A question the model drafted. It is a `Question` without an id — the id is
+ * stamped by `newQuestionId` on the one the teacher accepts, so an accepted
+ * question is born exactly as a typed one is — plus `needs`, the validator's
+ * own list of what is still missing, so a card can say "no correct option
+ * marked" before it is ever added.
+ */
+export type Proposed = Omit<Question, "id"> & { needs?: string[] };
+
+export interface GenerateTurn {
+  role: "user" | "assistant";
+  text: string;
+}
+
+export interface GenerateResult {
+  reply: string;
+  title: string;
+  chapter: string;
+  questions: Proposed[];
+  credits?: { used: number; granted: number; left: number; low: boolean; lifetime?: boolean };
+}
+
+/**
+ * One message to Seyari AI. `images` are base64 JPEG/PNG (no `data:` prefix),
+ * photographs or rendered PDF pages, at most ten. `history` is the earlier
+ * turns as text, so "make the third one harder" works without resending the
+ * pages that produced it. Costs one credit when the model answers.
+ */
+export async function generateQuestions(payload: {
+  prompt: string;
+  images: string[];
+  history: GenerateTurn[];
+  context: { subject: string; title: string; chapter: string; existing: number };
+}): Promise<{ ok: true; result: GenerateResult } | { ok: false; status: number; message: string }> {
+  try {
+    const res = await apiFetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return { ok: false, status: res.status, message: String(data.error || "Seyari AI could not answer") };
+    }
+    return { ok: true, result: data as GenerateResult };
+  } catch {
+    return { ok: false, status: 0, message: "Could not reach Vidai — check the connection and try again" };
   }
 }

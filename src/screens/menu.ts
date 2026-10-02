@@ -54,21 +54,9 @@ export function installShell(): void {
 
     const item = target.closest<HTMLElement>("[data-rail]");
     if (!item) return;
-    const to = item.dataset.rail;
-    track("rail_nav", { to: to ?? "" });
-    if (to === "tour") showTour();
-    else if (to === "subjects") void showSubjects();
-    else if (to === "browse") void import("./browse").then((x) => x.showBrowse());
-    else if (to === "children") void showChildren();
-    else if (to === "results") showHome();
-    else if (to === "mark") void showMarking();
-    else if (to === "students") showTeacher();
-    else if (to === "mytests") showMyTests();
-    else if (to === "admin") showAdmin();
-    else if (to === "aiusage") showAiUsage();
-    else if (to === "plans") showPlans();
-    else if (to === "payments") showPayments();
-    else if (to === "signout" || to === "signout-all") {
+    const to = item.dataset.rail ?? "";
+    track("rail_nav", { to });
+    if (to === "signout" || to === "signout-all") {
       const everywhere = to === "signout-all";
       // "Everywhere" ends the session on every device by moving the account's
       // token epoch. Await it — a person doing this has lost a phone and needs
@@ -84,6 +72,33 @@ export function installShell(): void {
       void endSession();
       setGuest(false);
       showWelcome();
+      return;
     }
+    openRail(to);
   });
+}
+
+/**
+ * Open the screen a rail item names. Shared with the router in `main.ts`,
+ * which reads the same key back out of `?view=` when Back or a reload lands
+ * on one of these screens — one table of keys, not two that drift.
+ * Returns false for a key it does not know.
+ */
+export function openRail(to: string): boolean {
+  if (to === "tour") showTour();
+  else if (to === "subjects") void showSubjects();
+  else if (to === "browse") void import("./browse").then((x) => x.showBrowse());
+  // The list, not the one child it would otherwise skip straight through to:
+  // Back from a child's results has to land on something else.
+  else if (to === "children") void showChildren(true);
+  else if (to === "results") showHome();
+  else if (to === "mark") void showMarking();
+  else if (to === "students") showTeacher();
+  else if (to === "mytests") showMyTests();
+  else if (to === "admin") showAdmin();
+  else if (to === "aiusage") showAiUsage();
+  else if (to === "plans") showPlans();
+  else if (to === "payments") showPayments();
+  else return false;
+  return true;
 }

@@ -62,6 +62,27 @@ lists, no HTML**. A markdown table reaches the student as a wall of pipe
 characters. For a frequency table, write one line per row with the header in
 bold.
 
+## Seyari AI
+
+The **Seyari AI** button in the top bar opens a chat panel on the right. Ask it
+for questions in plain words — *"ten board-level MCQs on quadratic equations"*,
+*"a 20-mark short test on this chapter"* — or press **+** and attach a paper:
+a PDF, photographs, or a picture you take now. It reads the questions off the
+page, notation and all.
+
+Every question comes back as a **card**: the question as a student will see it,
+the correct option marked, the worked solution folded underneath. **Nothing goes
+into your test until you press Add** on a card, or **Add all** under the reply.
+A card that is not finished says what it still needs. Discard the ones you do
+not want, or reply — *"make the third one harder"* — and it will rewrite them.
+
+If no test is open yet, **Add** becomes **Create test with this** and makes one
+for you, named after what you asked for.
+
+Each message costs **one AI credit**, the same credits that mark long answers.
+The balance is shown under the composer, and nothing you attach is kept once
+the reply is back. Up to ten pages or photos fit in one message.
+
 ## Publishing
 
 A draft reaches nobody, however it is assigned. Publishing is the act of sharing.

@@ -108,6 +108,10 @@ export const ICONS = {
   pencil: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>`,
   send: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>`,
   undo: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M3.5 13a9 9 0 1 0 2.1-5.7L3 10"/></svg>`,
+  spark: `<svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8z"/><path d="M19 15c.3 2 1.5 3.2 3.5 3.5-2 .3-3.2 1.5-3.5 3.5-.3-2-1.5-3.2-3.5-3.5 2-.3 3.2-1.5 3.5-3.5z" opacity=".7"/></svg>`,
+  close: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`,
+  arrowUp: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>`,
+  upload: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>`,
 };
 
 export function brand(): string {
@@ -160,10 +164,67 @@ export function topbar(showHome: boolean): string {
  * calls this as it renders, so a parameter left by an earlier screen (the
  * editor's ?edit=, a ?test= that did not resolve) cannot ride along and
  * reopen that screen on the next refresh.
+ *
+ * It is also the whole of the app's history. There is no central navigate():
+ * screens call each other directly from a hundred places, so the one point
+ * every move passes through is this URL write. A write that CHANGES the
+ * address pushes a history entry, which is what makes the browser's Back
+ * button land on the previous screen rather than outside the app. A write
+ * that leaves it as it was (a re-render) pushes nothing, so an autosave or a
+ * ticked answer never piles up entries.
+ *
+ * The exception is a restore — the boot route and every popstate. There the
+ * URL is already where it should be and the screen is only being rebuilt
+ * under it, so its own writes (a stripped ?q=, a normalised test id) replace
+ * the entry instead of pushing on top of it: pushing would put the screen
+ * Back just left on top of itself and make Back a loop. A restore ends the
+ * moment the person does something — a click or a key — because from then
+ * on a URL change is a move they made. See `installHistory`.
  */
+let restoring = true;
+
 export function setUrl(params?: Record<string, string>): void {
   const q = new URLSearchParams(params ?? {}).toString();
-  history.replaceState(null, "", q ? `./?${q}` : "./");
+  const url = q ? `./?${q}` : "./";
+  const same = sameQuery(q, location.search);
+  if (same && history.state?.vidai) return;
+  if (same || restoring) history.replaceState({ vidai: 1 }, "", url);
+  else history.pushState({ vidai: 1 }, "", url);
+}
+
+/** Two query strings naming the same parameters in any order. */
+function sameQuery(a: string, b: string): boolean {
+  const norm = (s: string) => {
+    const p = new URLSearchParams(s);
+    p.sort();
+    return p.toString();
+  };
+  return norm(a) === norm(b);
+}
+
+/**
+ * Bind the browser's Back and Forward to the app. `route` reads the address
+ * bar and paints the screen it names — the same function the boot uses, so a
+ * popstate is a reload without the network round trip. An open dialog is
+ * closed first by way of the Escape it already listens for: every dialog in
+ * the app owns its own teardown, and asking each the way the keyboard does
+ * keeps one closer rather than five.
+ */
+export function installHistory(route: () => void): void {
+  window.addEventListener("popstate", () => {
+    // The synthetic Escape is a keydown, and a keydown ends a restore — so it
+    // goes out BEFORE the restore begins, never after.
+    if (document.body.classList.contains("modal-open")) {
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    }
+    restoring = true;
+    route();
+  });
+  const done = () => {
+    restoring = false;
+  };
+  document.addEventListener("pointerdown", done, true);
+  document.addEventListener("keydown", done, true);
 }
 
 export function gotoTest(testId: string): void {
