@@ -1,0 +1,219 @@
+{
+  "id": "lib-tn12z-evo",
+  "title": "Evolution",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-evo-01",
+      "chapter": "Evolution",
+      "topic": "Origin of life",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In Miller and Urey's experiment, the gases used to simulate the primitive atmosphere were :",
+      "options": [
+        "Methane, ammonia, hydrogen and water vapour",
+        "Oxygen, nitrogen and carbon dioxide",
+        "Oxygen, methane and ammonia",
+        "Nitrogen, ozone and water vapour"
+      ],
+      "answer": 0,
+      "solution": "Miller and Urey (1953) passed electric sparks through a mixture of **methane, ammonia, hydrogen and water vapour** in a closed apparatus at about $800°\\text{C}$, imitating the reducing primitive atmosphere with lightning.\n\nAfter a week, amino acids such as glycine and alanine had formed, supporting the Oparin–Haldane idea of chemical evolution. Free oxygen was absent from that atmosphere."
+    },
+    {
+      "id": "tn12z-evo-02",
+      "chapter": "Evolution",
+      "topic": "Evidences of evolution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The forelimbs of man, the wings of a bat and the flippers of a whale are examples of :",
+      "options": [
+        "Analogous organs",
+        "Homologous organs",
+        "Vestigial organs",
+        "Convergent evolution"
+      ],
+      "answer": 1,
+      "solution": "These limbs have the **same basic structure and origin** — humerus, radius–ulna, carpals, metacarpals and phalanges — but perform different functions. They are **homologous organs** and show **divergent evolution** from a common ancestor.\n\nAnalogous organs (wing of a bird and of an insect) do the same job but have different structure and origin, the result of convergent evolution."
+    },
+    {
+      "id": "tn12z-evo-03",
+      "chapter": "Evolution",
+      "topic": "Evidences of evolution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Archaeopteryx is considered a connecting link between :",
+      "options": [
+        "Fishes and amphibians",
+        "Amphibians and reptiles",
+        "Reptiles and birds",
+        "Reptiles and mammals"
+      ],
+      "answer": 2,
+      "solution": "The fossil Archaeopteryx (Jurassic period) had **bird characters** — feathers, wings and a beak-like jaw — together with **reptilian characters** — teeth in the jaws, a long bony tail and clawed fingers.\n\nSo it links **reptiles and birds**, evidence that birds evolved from reptiles."
+    },
+    {
+      "id": "tn12z-evo-04",
+      "chapter": "Evolution",
+      "topic": "Theories of evolution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "'Use and disuse of organs' and 'inheritance of acquired characters' are the principles of :",
+      "options": [
+        "Darwin",
+        "Lamarck",
+        "Hugo de Vries",
+        "Weismann"
+      ],
+      "answer": 1,
+      "solution": "**Lamarck** (Philosophie Zoologique, 1809) proposed that organs used constantly grow stronger while unused ones degenerate, and that such **acquired characters are inherited** — e.g. the long neck of the giraffe.\n\n**Weismann** disproved inheritance of acquired characters by cutting off the tails of mice for many generations; tails never shortened. He proposed the germplasm theory."
+    },
+    {
+      "id": "tn12z-evo-05",
+      "chapter": "Evolution",
+      "topic": "Theories of evolution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Hugo de Vries proposed the mutation theory from his studies on :",
+      "options": [
+        "Pisum sativum",
+        "Oenothera lamarckiana",
+        "Mirabilis jalapa",
+        "Drosophila"
+      ],
+      "answer": 1,
+      "solution": "Hugo de Vries observed sudden, large, heritable changes in the evening primrose **Oenothera lamarckiana**, and called them **mutations**.\n\nHe proposed that new species arise by such sudden jumps (saltation) rather than by the slow accumulation of small variations that Darwin described."
+    },
+    {
+      "id": "tn12z-evo-06",
+      "chapter": "Evolution",
+      "topic": "Natural selection",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Industrial melanism in the peppered moth, Biston betularia, is an example of :",
+      "options": [
+        "Natural selection",
+        "Genetic drift",
+        "Inheritance of acquired characters",
+        "Artificial selection"
+      ],
+      "answer": 0,
+      "solution": "Before industrialisation in England, light-coloured moths were camouflaged on pale lichen-covered tree trunks. Soot killed the lichens and blackened the bark, so **light moths were picked off by birds** while dark (melanic) ones survived and became common.\n\nThe environment selected the better-camouflaged form — **natural selection** (directional) observed within decades."
+    },
+    {
+      "id": "tn12z-evo-07",
+      "chapter": "Evolution",
+      "topic": "Evidences of evolution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The wings of a butterfly and the wings of a bird are :",
+      "options": [
+        "Homologous organs",
+        "Analogous organs",
+        "Vestigial organs",
+        "Atavistic organs"
+      ],
+      "answer": 1,
+      "solution": "Both wings serve for **flight**, but an insect wing is a fold of the body wall while a bird's wing is a modified forelimb with bones and feathers. Same function, different structure and origin: **analogous organs**.\n\nThey arise by **convergent evolution**, when unrelated animals adapt to similar ways of life."
+    },
+    {
+      "id": "tn12z-evo-08",
+      "chapter": "Evolution",
+      "topic": "Geological time scale",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Mesozoic era is known as the :",
+      "options": [
+        "Age of fishes",
+        "Age of reptiles",
+        "Age of mammals",
+        "Age of invertebrates"
+      ],
+      "answer": 1,
+      "solution": "The **Mesozoic era** (Triassic, Jurassic, Cretaceous) was dominated by dinosaurs and other reptiles, so it is the **age of reptiles**. The first birds and mammals also appeared in it.\n\nThe Palaeozoic includes the age of fishes (Devonian), and the Cenozoic is the age of mammals."
+    },
+    {
+      "id": "tn12z-evo-09",
+      "chapter": "Evolution",
+      "topic": "Population genetics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A random change in allele frequency in a small population, due to chance alone, is called :",
+      "options": [
+        "Gene flow",
+        "Genetic drift",
+        "Natural selection",
+        "Mutation"
+      ],
+      "answer": 1,
+      "solution": "**Genetic drift** is the change in allele frequencies by **chance** events, and its effect is greatest in small populations. A gene may even be lost or fixed.\n\nSpecial cases are the **founder effect** (a few individuals start a new population) and the **bottleneck effect** (a population is drastically reduced). Gene flow is the movement of alleles between populations by migration."
+    },
+    {
+      "id": "tn12z-evo-10",
+      "chapter": "Evolution",
+      "topic": "Hardy–Weinberg principle",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In a population in Hardy–Weinberg equilibrium, the frequency of the recessive homozygote ($q^2$) is 0.16. What is the frequency of the recessive allele $q$ ?",
+      "answer": 0.4,
+      "tolerance": 0.005,
+      "solution": "$q^2 = 0.16$\n\n$q = \\sqrt{0.16} = \\mathbf{0.4}$"
+    },
+    {
+      "id": "tn12z-evo-11",
+      "chapter": "Evolution",
+      "topic": "Hardy–Weinberg principle",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In the same population, if $q = 0.4$, what is the frequency $p$ of the dominant allele ?",
+      "answer": 0.6,
+      "tolerance": 0.005,
+      "solution": "For a gene with two alleles, $p + q = 1$.\n\n$p = 1 - 0.4 = \\mathbf{0.6}$"
+    },
+    {
+      "id": "tn12z-evo-12",
+      "chapter": "Evolution",
+      "topic": "Fossil dating",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the half-life of carbon-14, in years, used in radiocarbon dating of fossils ?",
+      "answer": 5730,
+      "tolerance": 30,
+      "solution": "$^{14}\\text{C}$ decays to $^{14}\\text{N}$ with a **half-life of about 5730 years**: in that time half of the $^{14}\\text{C}$ in a dead organism decays.\n\nComparing the remaining $^{14}\\text{C}$ : $^{12}\\text{C}$ ratio with that of living tissue gives the age of fossils up to about 50,000 years old."
+    },
+    {
+      "id": "tn12z-evo-13",
+      "chapter": "Evolution",
+      "topic": "Hardy–Weinberg principle",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In a population in Hardy–Weinberg equilibrium, $p = 0.6$ and $q = 0.4$. What is the frequency of heterozygotes ($2pq$) ?",
+      "answer": 0.48,
+      "tolerance": 0.005,
+      "solution": "The genotype frequencies are given by $p^2 + 2pq + q^2 = 1$.\n\n$2pq = 2 \\times 0.6 \\times 0.4 = \\mathbf{0.48}$\n\nCheck: $p^2 = 0.36$, $q^2 = 0.16$; $0.36 + 0.48 + 0.16 = 1$."
+    },
+    {
+      "id": "tn12z-evo-14",
+      "chapter": "Evolution",
+      "topic": "Fossil dating",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A fossil bone retains 25% of the carbon-14 found in living bone. Taking the half-life of $^{14}\\text{C}$ as 5730 years, how old is the fossil, in years ?",
+      "answer": 11460,
+      "tolerance": 10,
+      "solution": "100% → 50% takes one half-life; 50% → 25% takes another. So **2 half-lives** have passed.\n\nAge $= 2 \\times 5730 = \\mathbf{11460}$ years."
+    },
+    {
+      "id": "tn12z-evo-24q20b",
+      "chapter": "Evolution",
+      "topic": "Hardy–Weinberg principle",
+      "type": "long",
+      "marks": 5,
+      "q": "What are Hardy-Weinberg's assumptions on evolution ? Explain them.",
+      "source": "TN HSE Mar 2024",
+      "solution": "The **Hardy–Weinberg principle** states that allele and genotype frequencies in a population remain **constant from generation to generation** unless disturbing factors act; such a population is in genetic equilibrium and is **not evolving**. For two alleles with frequencies $p$ and $q$: $p + q = 1$ and $p^2 + 2pq + q^2 = 1$.\n\nThe equilibrium holds only under five assumptions. Each one, when broken, is a force of evolution.\n\n**1. No mutation** — no new alleles arise and existing ones are not changed. Mutation introduces new alleles and alters frequencies.\n\n**2. No gene flow (migration)** — no individuals, and so no alleles, enter or leave the population. Migration adds or removes alleles.\n\n**3. Large population size** — the population is very large, so chance has no effect. In a small population **genetic drift** changes allele frequencies at random (founder and bottleneck effects).\n\n**4. Random mating** — every individual has an equal chance of mating with any other. Non-random (assortative) mating or inbreeding changes genotype frequencies.\n\n**5. No natural selection** — all genotypes survive and reproduce equally. Selection makes favoured alleles more frequent.\n\nSince natural populations rarely meet all five, their gene frequencies change: a departure from Hardy–Weinberg equilibrium is the measure of **evolution**."
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "id": "lib-tn12z-hhd",
+  "title": "Human Health and Diseases",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-hhd-23q6",
+      "chapter": "Human Health and Diseases",
+      "topic": "Fungal diseases",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Athlete’s foot disease in human is caused by :",
+      "source": "TN HSE Mar 2023",
+      "options": [
+        "Protozoa",
+        "Virus",
+        "Fungi",
+        "Bacteria"
+      ],
+      "answer": 2,
+      "solution": "**Athlete's foot** (tinea pedis) is a **fungal** infection of the skin between the toes, caused by dermatophytes such as Trichophyton. Warm, moist skin — sweaty feet in closed shoes — favours it.\n\nRingworm, also fungal, is caused by Microsporum, Trichophyton and Epidermophyton."
+    },
+    {
+      "id": "tn12z-hhd-24q5",
+      "chapter": "Human Health and Diseases",
+      "topic": "Malaria",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Exo-erythrocytic schizogony of Plasmodium takes place in :",
+      "source": "TN HSE Mar 2024",
+      "options": [
+        "Stomach",
+        "RBC",
+        "Liver",
+        "Leucocytes"
+      ],
+      "answer": 2,
+      "solution": "Sporozoites injected by the female Anopheles mosquito first reach the **liver**. In the liver cells they multiply asexually — **exo-erythrocytic schizogony** — releasing merozoites.\n\nThe merozoites then invade red blood cells, where erythrocytic schizogony takes place; the bursting of RBCs releases haemozoin, which causes the chill and high fever."
+    },
+    {
+      "id": "tn12z-hhd-01",
+      "chapter": "Human Health and Diseases",
+      "topic": "Bacterial diseases",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Typhoid fever in humans is caused by :",
+      "options": [
+        "Shigella dysenteriae",
+        "Salmonella typhi",
+        "Vibrio cholerae",
+        "Streptococcus pneumoniae"
+      ],
+      "answer": 1,
+      "solution": "**Typhoid** is caused by the bacterium **Salmonella typhi**, spread through contaminated food and water. It infects the small intestine and spreads through the blood; sustained high fever, weakness, stomach pain and loss of appetite follow, and intestinal perforation can be fatal.\n\nIt is confirmed by the **Widal test**. Shigella causes bacillary dysentery, Vibrio cholerae causes cholera and Streptococcus pneumoniae causes pneumonia."
+    },
+    {
+      "id": "tn12z-hhd-02",
+      "chapter": "Human Health and Diseases",
+      "topic": "Protozoan diseases",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Amoebic dysentery (amoebiasis) is caused by :",
+      "options": [
+        "Entamoeba histolytica",
+        "Entamoeba gingivalis",
+        "Trypanosoma gambiense",
+        "Leishmania donovani"
+      ],
+      "answer": 0,
+      "solution": "**Entamoeba histolytica** lives in the large intestine. Its cysts reach food and water through faecal contamination, often carried by **houseflies**. The trophozoites invade the intestinal wall, causing ulcers, abdominal pain and stools with mucus and blood.\n\nTrypanosoma causes sleeping sickness and Leishmania donovani causes kala-azar."
+    },
+    {
+      "id": "tn12z-hhd-03",
+      "chapter": "Human Health and Diseases",
+      "topic": "Helminth diseases",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Filariasis (elephantiasis) is caused by Wuchereria bancrofti and is transmitted by :",
+      "options": [
+        "Female Anopheles",
+        "Female Culex",
+        "Aedes aegypti",
+        "Housefly"
+      ],
+      "answer": 1,
+      "solution": "The filarial worm **Wuchereria bancrofti** lives in the lymphatic vessels. It is transmitted by the bite of the **female Culex mosquito**, which carries the larvae (microfilariae).\n\nThe adult worms block lymph flow, causing chronic inflammation and swelling of the legs and genital organs — elephantiasis. Anopheles transmits malaria; Aedes transmits dengue and chikungunya."
+    },
+    {
+      "id": "tn12z-hhd-04",
+      "chapter": "Human Health and Diseases",
+      "topic": "Viral diseases",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Dengue fever is transmitted by :",
+      "options": [
+        "Aedes aegypti",
+        "Culex",
+        "Anopheles",
+        "Sand fly"
+      ],
+      "answer": 0,
+      "solution": "Dengue is a viral disease (flavivirus) spread by the **Aedes aegypti** mosquito, which breeds in clean stagnant water in containers and bites during the day.\n\nSymptoms are high fever, severe headache, pain behind the eyes, muscle and joint pain and rashes; a fall in blood platelets can lead to haemorrhage."
+    },
+    {
+      "id": "tn12z-hhd-05",
+      "chapter": "Human Health and Diseases",
+      "topic": "Drug abuse",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Cocaine is obtained from the plant :",
+      "options": [
+        "Papaver somniferum",
+        "Erythroxylum coca",
+        "Cannabis sativa",
+        "Atropa belladonna"
+      ],
+      "answer": 1,
+      "solution": "**Cocaine** is an alkaloid from the coca plant, **Erythroxylum coca**, native to South America. It is a **stimulant**: it interferes with the transport of the neurotransmitter dopamine, producing euphoria and increased energy; excess causes hallucinations.\n\nPapaver somniferum (poppy) gives opium, morphine and heroin; Cannabis sativa gives marijuana, hashish and ganja."
+    },
+    {
+      "id": "tn12z-hhd-06",
+      "chapter": "Human Health and Diseases",
+      "topic": "Cancer",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A malignant tumour differs from a benign tumour in that its cells :",
+      "options": [
+        "Remain confined to their place of origin",
+        "Spread to distant parts of the body (metastasis)",
+        "Stop dividing",
+        "Are surrounded by a capsule"
+      ],
+      "answer": 1,
+      "solution": "A **benign** tumour stays confined to its place of origin, often within a capsule, and does little harm. A **malignant** tumour grows rapidly, invades neighbouring tissues, and its cells break away and travel through blood and lymph to form new tumours elsewhere — **metastasis**.\n\nMetastasis is the most feared property of malignant tumours, because it spreads cancer beyond the reach of surgery."
+    },
+    {
+      "id": "tn12z-hhd-07",
+      "chapter": "Human Health and Diseases",
+      "topic": "Fungal diseases",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Ringworm in humans is caused by :",
+      "options": [
+        "Ascaris",
+        "Microsporum",
+        "Wuchereria",
+        "Rhinovirus"
+      ],
+      "answer": 1,
+      "solution": "**Ringworm** is a fungal disease caused by **Microsporum**, Trichophyton and Epidermophyton. It forms dry, scaly, ring-shaped itching lesions on the skin, nails and scalp, and spreads by contact with infected persons, towels or combs.\n\nDespite its name it has nothing to do with worms: Ascaris and Wuchereria are helminths, and rhinoviruses cause the common cold."
+    },
+    {
+      "id": "tn12z-hhd-08",
+      "chapter": "Human Health and Diseases",
+      "topic": "Malaria",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many species of Plasmodium cause malaria in humans (as listed in the textbook) ?",
+      "answer": 4,
+      "tolerance": 0,
+      "accept": [
+        "four"
+      ],
+      "solution": "The four species are **Plasmodium vivax, P. malariae, P. falciparum and P. ovale**.\n\nP. falciparum causes the most severe, often fatal, cerebral (malignant tertian) malaria."
+    },
+    {
+      "id": "tn12z-hhd-09",
+      "chapter": "Human Health and Diseases",
+      "topic": "Malaria",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In malaria caused by Plasmodium vivax (benign tertian malaria), the chill and fever recur every how many hours ?",
+      "answer": 48,
+      "tolerance": 0,
+      "accept": [
+        "48 hours"
+      ],
+      "solution": "In P. vivax the erythrocytic cycle takes **48 hours**. At the end of each cycle infected RBCs burst together, releasing merozoites and haemozoin, so the fever comes every third day counting the first — hence 'tertian'.\n\nIn P. malariae the cycle is 72 hours (quartan malaria)."
+    },
+    {
+      "id": "tn12z-hhd-10",
+      "chapter": "Human Health and Diseases",
+      "topic": "Bacterial diseases",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the test used to confirm typhoid fever.",
+      "answer": "Widal",
+      "tolerance": 0,
+      "accept": [
+        "Widal test",
+        "Widal's test"
+      ],
+      "solution": "Typhoid is confirmed by the **Widal test**, which detects antibodies against the antigens of Salmonella typhi in the patient's serum by agglutination."
+    },
+    {
+      "id": "tn12z-hhd-11",
+      "chapter": "Human Health and Diseases",
+      "topic": "Cancer",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What is the term for the spread of cancer cells from the original tumour to distant parts of the body through blood or lymph ?",
+      "answer": "Metastasis",
+      "tolerance": 0,
+      "accept": [
+        "metastasis",
+        "metastasize",
+        "metastasise"
+      ],
+      "solution": "**Metastasis** is the property of malignant tumours by which cells break away from the primary tumour, travel through blood or lymph and start secondary tumours in other organs.\n\nBenign tumours do not metastasise; that is the key difference between the two."
+    },
+    {
+      "id": "tn12z-hhd-12",
+      "chapter": "Human Health and Diseases",
+      "topic": "Drug abuse",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Name the opioid, chemically diacetylmorphine, obtained by acetylation of morphine.",
+      "answer": "Heroin",
+      "tolerance": 0,
+      "accept": [
+        "heroin",
+        "smack",
+        "diacetylmorphine"
+      ],
+      "solution": "**Heroin** (smack) is diacetylmorphine, a white, odourless, bitter crystalline compound made by acetylating morphine from the latex of the poppy, Papaver somniferum.\n\nIt is a **depressant** that slows down body functions; it binds opioid receptors in the central nervous system and the gastrointestinal tract and is highly addictive."
+    },
+    {
+      "id": "tn12z-hhd-24q21a",
+      "chapter": "Human Health and Diseases",
+      "topic": "Drug abuse",
+      "type": "long",
+      "marks": 5,
+      "q": "Classify the drugs on the basis of their effects.",
+      "source": "TN HSE Mar 2024",
+      "solution": "Drugs that are commonly abused are classified, on the basis of their effects on the body and mind, into the following groups.\n\n**1. Stimulants** — speed up the activity of the central nervous system, increase alertness and energy, and reduce fatigue. Examples: **caffeine, nicotine, cocaine, amphetamines**. Overuse causes sleeplessness, anxiety and addiction.\n\n**2. Sedatives and tranquillisers** — depress brain activity, relieve tension and induce calmness and sleep. Examples: **barbiturates and benzodiazepines**. They are prescribed for insomnia and anxiety but are habit-forming.\n\n**3. Opioid narcotics (analgesics)** — suppress the brain, relieve pain and give a feeling of well-being. Examples: **opium, morphine, heroin (smack), codeine and pethidine**, from the poppy Papaver somniferum. They bind opioid receptors and are highly addictive.\n\n**4. Hallucinogens** — alter thoughts, feelings and perceptions, producing hallucinations. Examples: **LSD (lysergic acid diethylamide)** from the ergot fungus Claviceps purpurea, **mescaline**, **psilocybin**, and the **cannabinoids** (marijuana, hashish, charas, ganja) from Cannabis sativa, which affect the cardiovascular system.\n\n**Effects of abuse**: physical and psychological dependence, withdrawal symptoms on stopping, damage to the liver, nervous system and heart, risk of HIV and hepatitis from shared needles, and social and economic harm to the family."
+    }
+  ]
+}
