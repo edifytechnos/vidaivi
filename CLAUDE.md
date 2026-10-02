@@ -146,6 +146,19 @@ unlike the `vidai.seyali.app` entry above which is done.
   `VITE_APPINSIGHTS_CONNECTION_STRING`); without it `src/analytics.ts` no-ops.
   Events: test_open, test_start, test_resume, question_answered, test_complete,
   review_open, test_retake, home_open.
+- Heatmaps, recordings and user flows: Microsoft Clarity (`src/clarity.ts`).
+  Its snippet is an inline `<script>` and this app ships none, so the same
+  bootstrap is a module loaded at boot; the CSP names `www.clarity.ms` and
+  `scripts.clarity.ms` under `script-src` and `*.clarity.ms` (+ `c.bing.com`)
+  under `connect-src` / `img-src`. The project id is in the code — it is
+  public in every page that uses Clarity. It runs only on the hosts in
+  `RECORDED_HOSTS` (production and QA), never on localhost, so the suite and
+  `npm run dev` send nothing. The signed-in **role** is set as a custom tag
+  on sign-in (`tagRole`) and is the only thing sent about the person. Answer
+  photos carry `data-clarity-mask` (the strips and the full-screen viewer), so
+  a child's handwriting is never in a recording; set the project's masking
+  to **Strict** in the Clarity dashboard too, since the app shows minors'
+  names.
 
 ## Auth & data (Google login + SWA managed Functions)
 

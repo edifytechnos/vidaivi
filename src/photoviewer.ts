@@ -53,6 +53,8 @@ export function openPhotoViewer(photos: ViewerPhoto[], index: number, label: str
 
   const root = document.createElement("div");
   root.className = "pv";
+  // A child's handwriting is never in a session recording.
+  root.setAttribute("data-clarity-mask", "true");
   root.setAttribute("role", "dialog");
   root.setAttribute("aria-modal", "true");
   root.setAttribute("aria-label", `${label} — full screen`);
