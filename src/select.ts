@@ -219,3 +219,118 @@ export function installSelects(): void {
     if (openList && !(e.target as HTMLElement).closest(".vs")) openList();
   });
 }
+
+// ---------- A text field with suggestions: the combobox ----------
+//
+// A <datalist> is the native way to suggest values under a free-text field,
+// and Safari and Android barely show it. This is the same list the dropdown
+// draws, filtered as you type, under an input that stays free text — a
+// suggestion, never a closed set, which is what the modal's `options` has
+// always meant.
+
+export function enhanceCombobox(input: HTMLInputElement, options: string[]): void {
+  if (input.dataset.vs || !options.length) return;
+  input.dataset.vs = "1";
+  const wrap = document.createElement("div");
+  wrap.className = "vs vs-combo";
+  input.parentNode?.insertBefore(wrap, input);
+  wrap.appendChild(input);
+  input.setAttribute("role", "combobox");
+  input.setAttribute("aria-autocomplete", "list");
+  input.setAttribute("aria-expanded", "false");
+  input.autocomplete = "off";
+
+  const list = document.createElement("ul");
+  list.className = "vs-list";
+  list.setAttribute("role", "listbox");
+  list.hidden = true;
+  wrap.appendChild(list);
+  const base = input.id || input.name || `vc${Math.random().toString(36).slice(2, 8)}`;
+  let shown: string[] = [];
+  let active = -1;
+
+  const close = () => {
+    if (list.hidden) return;
+    list.hidden = true;
+    wrap.classList.remove("vs-open");
+    input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
+    if (openList === close) openList = null;
+  };
+  const setActive = (i: number) => {
+    const items = Array.from(list.children) as HTMLElement[];
+    // -1 is a real state here: nothing highlighted, Enter keeps what was typed.
+    active = !items.length || i < 0 ? -1 : Math.min(items.length - 1, i);
+    items.forEach((el, k) => el.classList.toggle("vs-active", k === active));
+    if (active >= 0) {
+      input.setAttribute("aria-activedescendant", items[active].id);
+      items[active].scrollIntoView({ block: "nearest" });
+    } else input.removeAttribute("aria-activedescendant");
+  };
+  const show = () => {
+    const q = input.value.trim().toLowerCase();
+    shown = options.filter((o) => !q || o.toLowerCase().includes(q));
+    if (!shown.length) {
+      close();
+      return;
+    }
+    list.innerHTML = shown
+      .map(
+        (o, i) =>
+          `<li id="${base}-c${i}" role="option" class="vs-opt" aria-selected="false" data-i="${i}"><span>${o
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")}</span></li>`
+      )
+      .join("");
+    if (list.hidden) {
+      openList?.();
+      list.hidden = false;
+      wrap.classList.add("vs-open");
+      input.setAttribute("aria-expanded", "true");
+      openList = close;
+    }
+    setActive(-1);
+  };
+  const pick = (i: number) => {
+    const o = shown[i];
+    if (o === undefined) return;
+    input.value = o;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+    close();
+  };
+
+  input.addEventListener("focus", show);
+  input.addEventListener("input", show);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (list.hidden) show();
+      else setActive(active + 1);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!list.hidden) setActive(active - 1);
+    } else if (e.key === "Enter") {
+      if (!list.hidden && active >= 0) {
+        e.preventDefault();
+        pick(active);
+      } else close();
+    } else if (e.key === "Escape") {
+      if (!list.hidden) {
+        e.preventDefault();
+        e.stopPropagation(); // the dialog around it stays open
+        close();
+      }
+    } else if (e.key === "Tab") close();
+  });
+  list.addEventListener("mousedown", (e) => e.preventDefault());
+  list.addEventListener("click", (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");
+    if (li) pick(Number(li.dataset.i));
+  });
+  list.addEventListener("mousemove", (e) => {
+    const li = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");
+    if (li && Number(li.dataset.i) !== active) setActive(Number(li.dataset.i));
+  });
+  input.addEventListener("blur", () => setTimeout(close, 0));
+}

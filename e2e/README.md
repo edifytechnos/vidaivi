@@ -13,7 +13,8 @@ node e2e/tour.cjs                   # the first-run tour and the /help handover 
 node e2e/newsubject.cjs             # the four-step New subject flow (needs admin creds)
 node e2e/history.cjs                # the browser's Back button: setUrl + the popstate router (no network, no session)
 node e2e/seyari.cjs                 # the Seyari AI panel against a stubbed model (no network, no session)
-node e2e/select.cjs                 # the app's own dropdown over a native <select> (no network, no session)
+node e2e/select.cjs                 # the app's own dropdown and combobox over native controls (no network, no session)
+node e2e/dialog.cjs                 # the app's own confirm and notice (no network, no session)
 ```
 
 - `helpers.cjs` covers the pure helpers in `api/shared/core.js`: the question

@@ -24,6 +24,7 @@ import { mount, setShellbar, skeleton } from "../../shell";
 import { openModal } from "../../modal";
 import { openAssign } from "../assign";
 import type { Subject } from "../../api";
+import { notice } from "../../dialog";
 import { openSeyari, seyariOpen, toggleSeyari } from "./seyari";
 import type { SeyariHost } from "./seyari";
 import type { Question, Test } from "../../types";
@@ -206,7 +207,7 @@ function renderEmptyShell(): void {
         <aside class="ed-tree" id="ed-tree">
           <div class="ed-tree-head">
             <span class="ed-tree-title">Tests &amp; questions</span>
-            ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" title="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
+            ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" data-tip="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
           </div>
           <p class="ed-empty ed-tree-empty">No tests yet.</p>
         </aside>
@@ -254,7 +255,7 @@ function renderEmptyShell(): void {
  * things that say where you are and what is open, and this is one of them.
  */
 function seyariButton(): string {
-  return `<button class="sy-toggle" id="ed-seyari" aria-pressed="${seyariOpen() ? "true" : "false"}" title="Write questions with Seyari AI">${ICONS.spark}<span>Seyari AI</span></button>`;
+  return `<button class="sy-toggle" id="ed-seyari" aria-pressed="${seyariOpen() ? "true" : "false"}" data-tip="Write questions with Seyari AI">${ICONS.spark}<span>Seyari AI</span></button>`;
 }
 
 function bindSeyari(): void {
@@ -305,7 +306,7 @@ const seyariHost: SeyariHost = {
       subjectId: currentSubject() ?? undefined,
     } as never);
     if (!result.ok) {
-      alert(result.message);
+      notice(result.message);
       return;
     }
     track("seyari_create", { test: result.test.id, count: String(questions.length) });
@@ -461,7 +462,7 @@ function editorActions(test: Test): string {
   return `
       <button class="ed-icon-btn ed-tree-toggle" id="ed-tree-toggle" aria-label="Show tests and questions">${ICONS.menu}</button>
       ${readOnly() ? "" : seyariButton()}
-      <span class="status-chip ${statusClass(test.status ?? "draft")}" title="${escapeHtml(audienceNote(test))}">${statusLabel(test)}</span>`;
+      <span class="status-chip ${statusClass(test.status ?? "draft")}" data-tip="${escapeHtml(audienceNote(test))}" tabindex="0">${statusLabel(test)}</span>`;
 }
 
 /**
@@ -475,9 +476,9 @@ function editorActions(test: Test): string {
 function toolbarMarkup(test: Test): string {
   const draft = test.status === "draft";
   const btn = (id: string, icon: string, label: string, cls = "") =>
-    `<button class="ed-tool${cls ? " " + cls : ""}" id="${id}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${icon}</button>`;
+    `<button class="ed-tool${cls ? " " + cls : ""}" id="${id}" data-tip="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${icon}</button>`;
   const word = (id: string, icon: string, text: string, title: string, cls = "") =>
-    `<button class="ed-tool ed-tool-text${cls ? " " + cls : ""}" id="${id}" title="${escapeHtml(title)}">${icon}<span>${escapeHtml(text)}</span></button>`;
+    `<button class="ed-tool ed-tool-text${cls ? " " + cls : ""}" id="${id}" data-tip="${escapeHtml(title)}">${icon}<span>${escapeHtml(text)}</span></button>`;
 
   // A teacher reading a library master can only look at it. Publishing, the
   // audience picker and quick edit would all fail at the server, so they are
@@ -555,7 +556,7 @@ function treeMarkup(test: Test): string {
   return `
     <div class="ed-tree-head">
       <span class="ed-tree-title">Tests &amp; questions</span>
-      ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" title="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
+      ${canAddHere() ? `<button class="ed-tree-add" id="ed-new-test" data-tip="Add a test" aria-label="Add a test">${ICONS.plus}</button>` : ""}
     </div>
     <div class="ed-tree-body">
       ${rows.map((row) => testNode(row, test)).join("")}
@@ -592,7 +593,7 @@ function currentQuestionRows(test: Test): string {
       ? ""
       : `<div class="ed-insert" data-at="${at}">
            <span class="ed-insert-line"></span>
-           <button class="ed-insert-btn" data-at="${at}" title="Insert a question here" aria-label="Insert a question here">
+           <button class="ed-insert-btn" data-at="${at}" aria-label="Insert a question here">
              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
            </button>
          </div>`;
@@ -616,7 +617,7 @@ function currentQuestionRows(test: Test): string {
           ${
             readOnly()
               ? ""
-              : `<button class="ed-row-menu" data-i="${i}" title="More" aria-label="More actions for this question">
+              : `<button class="ed-row-menu" data-i="${i}" data-tip="More" aria-label="More actions for this question">
                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
                  </button>`
           }
@@ -1251,7 +1252,7 @@ export async function createTestAndEdit(back: () => void): Promise<void> {
     subjectId: currentSubject() ?? undefined,
   } as never);
   if (!result.ok) {
-    alert(result.message);
+    notice(result.message);
     return;
   }
   await showEditor(result.test.id, null, back);

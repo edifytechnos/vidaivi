@@ -13,6 +13,7 @@ import {
 import { canAuthor } from "../auth";
 import { TESTS } from "../data";
 import { escapeHtml, ICONS, setUrl } from "../dom";
+import { confirmDialog, notice } from "../dialog";
 import { mount, skeleton } from "../shell";
 import { showWelcome } from "./auth";
 import { showEditorForSubject } from "./editor";
@@ -83,9 +84,18 @@ async function refresh(): Promise<void> {
   grid.querySelectorAll<HTMLButtonElement>(".subject-del").forEach((el) =>
     el.addEventListener("click", async (e) => {
       e.stopPropagation();
-      if (!confirm("Remove this subject? Its tests must be moved or deleted first.")) return;
+      if (
+        !(await confirmDialog({
+          title: "Remove this subject?",
+          message: "Its tests must be moved or deleted first; an empty subject is removed for good.",
+          confirmLabel: "Remove",
+          danger: true,
+        }))
+      ) {
+        return;
+      }
       const result = await mutateSubject("delete", { id: el.dataset.subject! });
-      if (!result.ok) alert(result.message);
+      if (!result.ok) notice(result.message);
       void refresh();
     })
   );

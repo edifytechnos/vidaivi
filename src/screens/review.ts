@@ -514,7 +514,7 @@ export async function showReview(
             <div class="ed-crumbrow">
               ${
                 opts.back
-                  ? `<button class="ed-crumb-back" id="review-back" aria-label="Back" title="Back">${ICONS.back}</button>`
+                  ? `<button class="ed-crumb-back" id="review-back" aria-label="Back" data-tip="Back">${ICONS.back}</button>`
                   : ""
               }
               ${drawerToggleMarkup()}

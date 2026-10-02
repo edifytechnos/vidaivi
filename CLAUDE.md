@@ -712,21 +712,25 @@ native control in place.
   selects after bind). `node e2e/select.cjs` proves all of it, no network, no
   session.
 
-**The audit that found it.** Everything else the operating system still draws
-in this app, with what to do about each — ranked by how often a teacher or a
-student meets it:
+**The audit that found it**, and what was done about each of the other
+controls the operating system used to draw. All seven are the app's own now;
+`node e2e/dialog.cjs` and `node e2e/select.cjs` prove the ones with behaviour.
 
-| Control | Where | Today | Do |
+| Control | Where | Was | Now |
 |---|---|---|---|
-| `alert()` / `confirm()` | 20 call sites: delete draft, remove student, hand in with unanswered questions, top up, errors | OS dialog, blocks the page, looks like a crash on Android | Confirmations through `openModal`; errors as an inline note on the screen that failed |
-| `title=` tooltips | 15, mostly icon-only buttons | No hover on a phone, so the label never shows | Visible labels where it matters (Publish already is); a small tooltip only where an icon is the right thing |
-| `<input type="number">` | marks, tolerance, plan prices | Spinner arrows differ per browser; iOS shows a full keyboard | `inputmode="numeric"`, hide the spinners, a stepper only if one is wanted |
-| checkbox / radio | the modal's checklist and radio fields | Blue on a Mac, green on Android | `appearance: none` and draw them in CSS: no JS, one afternoon |
-| `<datalist>` | the modal's `options` suggestions | Safari and Android barely show it | Reuse this dropdown as a combobox: type to filter, same list |
-| `<details>` | the worked solution on a Seyari card | The marker differs per browser | CSS on `summary::marker` |
+| `alert()` / `confirm()` | 20 call sites: delete draft, remove student, hand in with unanswered questions, top up, every error | OS dialog, froze the page, read like a crash on Android | **`src/dialog.ts`**: `confirmDialog()` is the shared modal with no fields (`onClose` and `danger` were added to `ModalOpts` for it; focus lands on the answer so Enter confirms); `notice()` is a toast that never blocks |
+| `title=` tooltips | 15, mostly icon-only buttons | The browser's tooltip, never shown on a phone | **`data-tip`**, drawn by the page on hover and keyboard focus, hidden on a touch screen (`@media (hover: none)`), hung from the right against the right edge and to the side in the rail. `aria-label` still carries the name |
+| `<input type="number">` | marks, tolerance, plan prices | Spinner arrows that differ per browser; iOS showed a full keyboard | Spinners gone in CSS; `inputmode="numeric"` / `"decimal"` brings the right keyboard up |
+| checkbox / radio | the modal's fields, the MCQ answer radios, New subject's ticks | Blue on a Mac, green on Android | `appearance: none`, drawn in CSS in the app's colour, with a focus ring. The native control stays; only its paint is replaced |
+| `<datalist>` | the modal's `options` suggestions | Safari and Android barely show it | **`enhanceCombobox`** in `src/select.ts`: the dropdown's own list under the text field, filtered as you type, still never a closed set. `-1` is a real state there — nothing highlighted, Enter keeps what was typed |
+| `<details>` | the worked solution on a Seyari card | A marker that differs per browser | A CSS chevron on `summary`, turning when open |
 | `<input type="file">` | 3, all behind our own buttons | Already ours | Nothing |
 
-The first two rows are the ones a class meets; the rest are polish.
+**A confirmation names the consequence and the verb.** "Delete this draft?" over
+"It is deleted permanently, questions and all" with a red **Delete**, never a
+grey "OK". Cancel may say what staying means — the hand-in dialog's reads
+**Keep going**. A notice is for what has already happened and needs no answer:
+an error, or "4 marked and shown to Priya" after the parent's one click.
 
 ## Performance, scale and cost — the rules that hold everywhere
 
@@ -1267,8 +1271,8 @@ network, no session, no row written. `node e2e/history.cjs` does the same for
 move, a re-render, Back, Forward and Back over an open dialog. It fails four
 ways against a replace-only `setUrl`. `node e2e/seyari.cjs` drives the Seyari
 AI panel the same way, against a stubbed `fetch` and a host object that records
-what it is handed, and `node e2e/select.cjs` the app's own dropdown over three
-native selects. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+what it is handed, and `node e2e/select.cjs` the app's own dropdown and combobox over native
+controls; `node e2e/dialog.cjs` the app's own confirm and notice. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the

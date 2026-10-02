@@ -75,7 +75,7 @@ export function setRailExpanded(open: boolean): void {
 function railMarkup(): string {
   const items = RAIL_ITEMS.filter((i) => i.show())
     .map(
-      (i) => `<button class="rail-item" data-rail="${i.key}" title="${i.label}" aria-label="${i.label}">
+      (i) => `<button class="rail-item" data-rail="${i.key}" data-tip="${i.label}" aria-label="${i.label}">
         ${i.icon}<span class="rail-label">${i.label}</span></button>`
     )
     .join("");
@@ -187,7 +187,7 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
     app.innerHTML = `
       <div class="shell${railExpanded() ? " rail-open" : ""}">
         <header class="shellbar">
-          <button class="shellbar-brand" id="shellbar-home" title="Your subjects" aria-label="Your subjects"><span class="brand-mark">V</span><span class="brand-word">Vidai</span></button>
+          <button class="shellbar-brand" id="shellbar-home" data-tip="Your subjects" aria-label="Your subjects"><span class="brand-mark">V</span><span class="brand-word">Vidai</span></button>
           <span class="shellbar-div"></span>
           <span class="shellbar-lead" id="shellbar-lead"></span>
           <span class="shellbar-title" id="shellbar-title"></span>

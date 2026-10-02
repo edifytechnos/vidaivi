@@ -30,6 +30,7 @@ import {
 import { openBuyCredits } from "./buy";
 import { paymentsAvailable } from "../payments";
 import { copyText, escapeHtml, setUrl } from "../dom";
+import { confirmDialog, notice } from "../dialog";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { showHome } from "./home";
@@ -339,10 +340,13 @@ function renderCredits(
 async function markWholePaper(child: Child, btn: HTMLButtonElement): Promise<void> {
   const todo = Number(btn.dataset.todo) || 0;
   if (
-    !confirm(
-      `Mark ${todo} answer${todo === 1 ? "" : "s"} with AI and show ${child.name} the result?\n\n` +
-        `This uses ${todo} credit${todo === 1 ? "" : "s"}. You can change any mark afterwards.`
-    )
+    !(await confirmDialog({
+      title: `Mark ${todo} answer${todo === 1 ? "" : "s"} with AI?`,
+      message: `${child.name} is shown the result straight away. This uses ${todo} credit${
+        todo === 1 ? "" : "s"
+      }, and you can change any mark afterwards.`,
+      confirmLabel: `Mark ${todo} & release`,
+    }))
   ) {
     return;
   }
@@ -356,17 +360,26 @@ async function markWholePaper(child: Child, btn: HTMLButtonElement): Promise<voi
     // Out of credits is a decision, not a failure: it names the shortfall and
     // opens the way to fix it.
     if (res.short && paymentsAvailable()) {
-      if (confirm(`${res.message}\n\nTop up now?`)) openBuyCredits(() => void showChildResults(child));
+      if (
+        await confirmDialog({
+          title: "Not enough credits",
+          message: res.message || "You do not have enough credits to mark this paper.",
+          confirmLabel: "Top up",
+        })
+      ) {
+        openBuyCredits(() => void showChildResults(child));
+      }
       return;
     }
-    alert(res.message || "Could not mark this paper");
+    notice(res.message || "Could not mark this paper");
     return;
   }
   track("parent_marked_paper", { assessed: String(res.assessed ?? 0) });
   if (res.failed) {
-    alert(
+    notice(
       `${res.assessed} marked and shown to ${child.name}. ${res.failed} could not be read — ` +
-        `open the paper to mark those yourself.`
+        `open the paper to mark those yourself.`,
+      "info"
     );
   }
   void showChildResults(child);
@@ -384,7 +397,7 @@ async function openChildReview(child: Child, testId: string): Promise<void> {
   // paper, and the card for one is not clickable in the first place.
   const done = remote.attempt;
   if (!test || !done?.answers) {
-    alert("That attempt could not be opened.");
+    notice("That attempt could not be opened.");
     return;
   }
   const attempt: Attempt = {

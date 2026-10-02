@@ -32,8 +32,9 @@ function check(pass, name) {
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "vidai-select-"));
 
 const HARNESS = `
-import { installSelects } from "${path.join(ROOT, "src/select.ts")}";
+import { installSelects, enhanceCombobox } from "${path.join(ROOT, "src/select.ts")}";
 const w = window as any;
+w.enhanceCombobox = enhanceCombobox;
 w.changes = [];
 document.addEventListener("change", (e) => w.changes.push((e.target as HTMLSelectElement).id + "=" + (e.target as HTMLSelectElement).value));
 installSelects();
@@ -75,6 +76,7 @@ function build() {
     <option value="open">Anyone with the link</option>
   </select>
   <div id="late"></div>
+  <input id="board" class="modal-input" placeholder="Board">
 </div>
 <script src="harness.js"></script></body></html>`
   );
@@ -185,6 +187,25 @@ function serve() {
   await btn.click();
   check(await page.evaluate(() => document.querySelector("#type").closest(".vs").classList.contains("vs-up")), "with no room below, the list opens upward");
   await btn.press("Escape");
+
+  // ---------- The combobox: suggestions under a free-text field ----------
+  await page.evaluate(() => window.enhanceCombobox(document.getElementById("board"), ["CBSE", "ICSE", "IGCSE", "State Board"]));
+  const combo = page.locator("#board");
+  check((await combo.getAttribute("role")) === "combobox", "a text field with options becomes a combobox");
+  await page.evaluate(() => { document.getElementById("app").style.paddingTop = "20px"; });
+  await combo.focus();
+  const clist = combo.locator("..").locator(".vs-list");
+  check(await clist.isVisible() && (await clist.locator(".vs-opt").count()) === 4, "focus shows every suggestion in our list");
+  await combo.type("cs");
+  check((await clist.locator(".vs-opt").count()) === 2, "typing filters it (ICSE, IGCSE for \"cs\")");
+  await combo.press("ArrowDown");
+  await combo.press("Enter");
+  check((await page.inputValue("#board")) === "ICSE", "ArrowDown then Enter fills the field with the suggestion");
+  check(await clist.isHidden(), "and closes the list");
+  await combo.fill("Kerala");
+  check(await clist.isHidden() && (await page.inputValue("#board")) === "Kerala", "a value not on the list is kept: it is a suggestion, not a closed set");
+  await combo.press("Enter");
+  check((await page.inputValue("#board")) === "Kerala", "Enter with nothing highlighted changes nothing");
 
   check(errors.length === 0, `no page errors (${errors.join("; ")})`);
 

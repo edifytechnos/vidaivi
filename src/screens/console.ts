@@ -31,6 +31,7 @@ import {
 import { setGuest } from "../attempts";
 import { TESTS, testTitle } from "../data";
 import { copyText, escapeHtml, pct, setUrl, whenLabel } from "../dom";
+import { confirmDialog, notice } from "../dialog";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
@@ -226,10 +227,20 @@ export function showMyTests() {
     listEl.querySelectorAll<HTMLButtonElement>(".mt-act").forEach((btn) =>
       btn.addEventListener("click", async () => {
         const act = btn.dataset.act as "publish" | "unpublish" | "archive" | "delete";
-        if (act === "delete" && !confirm("Delete this draft permanently?")) return;
+        if (
+          act === "delete" &&
+          !(await confirmDialog({
+            title: "Delete this draft?",
+            message: "It is deleted permanently, questions and all. This cannot be undone.",
+            confirmLabel: "Delete",
+            danger: true,
+          }))
+        ) {
+          return;
+        }
         btn.textContent = "…";
         const result = await setTestStatus(btn.dataset.id!, act);
-        if (!result.ok) alert(result.message || "Action failed");
+        if (!result.ok) notice(result.message || "Action failed");
         void refresh();
       })
     );
@@ -432,7 +443,7 @@ export function showPlans() {
             <div class="roster-name">${escapeHtml(f.label)}${f.money ? " (₹)" : ""}</div>
             ${f.hint ? `<div class="hint">${escapeHtml(f.hint)}</div>` : ""}
           </div>
-          <input class="modal-input plan-num" style="max-width:120px" type="number" min="0"
+          <input class="modal-input plan-num" style="max-width:120px" type="number" inputmode="numeric" min="0"
                  data-key="${escapeHtml(f.key)}" data-money="${f.money ? "1" : ""}"
                  value="${shown}" />
         </div>`;
@@ -1052,7 +1063,7 @@ export function showTeacher() {
         const result = await createParentInvite(btn.dataset.user!);
         btn.textContent = "Invite parent";
         if (!result.ok) {
-          alert(result.message);
+          notice(result.message);
           return;
         }
         // A code is a key to this child's results — it is shown once, here,
@@ -1092,10 +1103,13 @@ export function showTeacher() {
       btn.addEventListener("click", async () => {
         const name = btn.dataset.name!;
         if (
-          !confirm(
-            `Remove ${name} permanently?\n\nTheir login stops working and their ` +
-              `test history is deleted. This cannot be undone.`
-          )
+          !(await confirmDialog({
+            title: `Remove ${name}?`,
+            message:
+              "Their login stops working and their test history, answers and photographs are deleted. This cannot be undone.",
+            confirmLabel: "Remove",
+            danger: true,
+          }))
         ) {
           return;
         }
@@ -1103,7 +1117,7 @@ export function showTeacher() {
         const result = await removeStudent(btn.dataset.user!);
         if (!result.ok) {
           btn.textContent = "Remove";
-          alert(result.message || "Could not remove this student.");
+          notice(result.message || "Could not remove this student.");
           return;
         }
         track("student_removed");
@@ -1228,7 +1242,7 @@ export function showPayments(): void {
           const res = await confirmPayment(btn.dataset.sub!, btn.dataset.ref!);
           if (!res.ok) {
             btn.disabled = false;
-            alert(res.message || "Could not confirm");
+            notice(res.message || "Could not confirm");
             return;
           }
           void refresh();
@@ -1238,7 +1252,16 @@ export function showPayments(): void {
         btn.addEventListener("click", async () => {
           // Destructive in the way that matters: it tells somebody their money
           // was not seen. So it asks.
-          if (!confirm("Mark this payment as not received?")) return;
+          if (
+            !(await confirmDialog({
+              title: "Payment not received?",
+              message: "The buyer is told their payment was not seen and the order is closed.",
+              confirmLabel: "Not received",
+              danger: true,
+            }))
+          ) {
+            return;
+          }
           btn.disabled = true;
           await rejectPayment(btn.dataset.sub!, btn.dataset.ref!);
           void refresh();

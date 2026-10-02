@@ -9,6 +9,7 @@
 // actually empty and puts the cursor in it.
 
 import { escapeHtml } from "./dom";
+import { enhanceCombobox } from "./select";
 
 export interface ModalChoice {
   value: string;
@@ -103,6 +104,11 @@ export interface ModalOpts {
   /** What the dismiss button says. "Cancel" is wrong on a dialog nobody is
    *  filling in — the tour's is "Skip". */
   cancelLabel?: string;
+  /** The primary does something that cannot be undone: it is drawn red. */
+  danger?: boolean;
+  /** Called once when the dialog closes, however it closed — submit, Cancel,
+   *  ✕, Escape or the scrim. `confirmDialog` in `src/dialog.ts` resolves on it. */
+  onClose?: () => void;
 }
 
 /** Select all / Clear, and a live count of what is ticked. */
@@ -196,17 +202,10 @@ function fieldMarkup(f: ModalField): string {
              type="${f.type ?? "text"}"
              ${f.readonly ? "readonly" : ""}
              ${f.inputmode ? `inputmode="${escapeHtml(f.inputmode)}"` : ""}
-             ${f.options?.length ? `list="modal-list-${escapeHtml(f.name)}"` : ""}
+             ${f.options?.length ? `data-options="${escapeHtml(JSON.stringify(f.options))}"` : ""}
              ${f.type === "email" ? 'autocapitalize="none" spellcheck="false"' : ""}
              placeholder="${escapeHtml(f.placeholder ?? "")}"
              value="${escapeHtml(f.value ?? "")}" />`
-      }
-      ${
-        f.options?.length
-          ? `<datalist id="modal-list-${escapeHtml(f.name)}">${f.options
-              .map((o) => `<option value="${escapeHtml(o)}"></option>`)
-              .join("")}</datalist>`
-          : ""
       }
       ${f.hint ? `<span class="modal-hint">${escapeHtml(f.hint)}</span>` : ""}
     </label>`;
@@ -255,12 +254,19 @@ export function openModal(opts: ModalOpts): void {
           <button type="button" class="btn btn-ghost modal-back" hidden>Back</button>
           <span class="modal-actions-gap"></span>
           ${opts.mandatory ? "" : `<button type="button" class="btn btn-ghost" data-close>${escapeHtml(opts.cancelLabel ?? "Cancel")}</button>`}
-          <button type="submit" class="btn btn-primary modal-submit"></button>
+          <button type="submit" class="btn ${opts.danger ? "btn-danger" : "btn-primary"} modal-submit"></button>
         </div>
       </form>
     </div>`;
   document.body.appendChild(host);
   document.body.classList.add("modal-open");
+  // Free-text suggestions are drawn by the app's own list, not a <datalist>,
+  // which Safari and Android barely show. Still never a closed set.
+  host.querySelectorAll<HTMLInputElement>("input[data-options]").forEach((input) => {
+    try {
+      enhanceCombobox(input, JSON.parse(input.dataset.options || "[]"));
+    } catch {}
+  });
 
   const form = host.querySelector("form")!;
   const error = host.querySelector<HTMLElement>(".modal-error")!;
@@ -329,6 +335,7 @@ export function openModal(opts: ModalOpts): void {
     document.body.classList.remove("modal-open");
     document.removeEventListener("keydown", onKey);
     restoreFocusTo?.focus?.();
+    opts.onClose?.();
   }
 
   function onKey(e: KeyboardEvent): void {

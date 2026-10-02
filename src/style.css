@@ -5242,3 +5242,144 @@ body.drawer-open {
 @media (max-width: 899px) {
   .vs-opt { padding-top: 11px; padding-bottom: 11px; font-size: 14.5px; }
 }
+
+/* ---------- Tooltips the page draws (data-tip) ---------- */
+/* `title` is the browser's tooltip: slow, unstyled, and on a phone never shown
+   at all. `data-tip` is ours, on hover and on keyboard focus; on a touch
+   screen it stays out of the way (a tap acts, it does not hover). */
+[data-tip] { position: relative; }
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-2px);
+  padding: 5px 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--text);
+  border-radius: 6px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s, transform 0.12s;
+  z-index: 130;
+}
+[data-tip]:hover::after, [data-tip]:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* Against the right edge, hang the tip from the right; in the rail, to the side. */
+.shellbar-actions [data-tip]::after, .ed-toolbar [data-tip]::after { left: auto; right: 0; transform: translateY(-2px); }
+.shellbar-actions [data-tip]:hover::after, .shellbar-actions [data-tip]:focus-visible::after,
+.ed-toolbar [data-tip]:hover::after, .ed-toolbar [data-tip]:focus-visible::after { transform: translateY(0); }
+.rail [data-tip]::after { top: 50%; left: calc(100% + 10px); transform: translateY(-50%) translateX(-2px); }
+.rail [data-tip]:hover::after, .rail [data-tip]:focus-visible::after { transform: translateY(-50%) translateX(0); }
+.shell.rail-open .rail [data-tip]::after { display: none; }
+@media (hover: none) { [data-tip]::after { display: none; } }
+
+/* ---------- Notices (src/dialog.ts) ---------- */
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(480px, calc(100vw - 28px));
+  z-index: 140;
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 10px 11px 14px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--muted);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: toast-in 0.18s ease-out;
+}
+.toast-error { border-left-color: var(--red); }
+.toast-success { border-left-color: var(--green); }
+.toast-info { border-left-color: var(--primary); }
+.toast-text { flex: 1 1 auto; white-space: pre-line; }
+.toast-x {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; padding: 0; flex: none; margin: -3px -2px -3px 0;
+  color: var(--muted); background: transparent; border: 0; border-radius: 50%; cursor: pointer;
+}
+.toast-x .icon { width: 15px; height: 15px; }
+.toast-x:hover { background: var(--bg); color: var(--text); }
+.toast-out { opacity: 0; transform: translateY(6px); transition: opacity 0.18s, transform 0.18s; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (max-width: 899px) { .shell-full .toasts { bottom: calc(90px + env(safe-area-inset-bottom)); } }
+
+/* ---------- Checkboxes and radios the page draws ---------- */
+/* Blue on a Mac, green on Android, a square on Windows. Drawn here instead,
+   in the app's own colour, the same everywhere. The native control stays:
+   only its paint is replaced. */
+input[type="checkbox"], input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex: none;
+  display: inline-grid;
+  place-content: center;
+  vertical-align: middle;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+input[type="checkbox"] { border-radius: 5px; }
+input[type="radio"] { border-radius: 50%; }
+input[type="checkbox"]::before, input[type="radio"]::before {
+  content: "";
+  display: block;
+  transform: scale(0);
+  transition: transform 0.1s;
+}
+input[type="checkbox"]::before {
+  width: 10px; height: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12.5l5 5L20 7'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+input[type="radio"]::before { width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+input[type="checkbox"]:checked, input[type="radio"]:checked { background: var(--primary); border-color: var(--primary); }
+input[type="checkbox"]:checked::before, input[type="radio"]:checked::before { transform: scale(1); }
+input[type="checkbox"]:hover:not(:disabled), input[type="radio"]:hover:not(:disabled) { border-color: var(--primary); }
+input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.18); }
+input[type="checkbox"]:disabled, input[type="radio"]:disabled { opacity: 0.5; cursor: default; }
+
+/* ---------- Number fields without the browser's spinner ---------- */
+/* The up/down arrows differ on every browser and are too small for a thumb.
+   `inputmode` brings the right keyboard up on a phone; the arrows go. */
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---------- Disclosure marker ---------- */
+details > summary { list-style: none; display: flex; align-items: center; gap: 7px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before {
+  content: "";
+  width: 7px; height: 7px; flex: none;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg) translate(-1px, 1px);
+  transition: transform 0.12s;
+}
+details[open] > summary::before { transform: rotate(45deg) translate(-2px, -2px); }
+
+/* ---------- Combobox (the dropdown's list under a text field) ---------- */
+.vs-combo { display: block; width: 100%; }
+.vs-combo > input { width: 100%; }

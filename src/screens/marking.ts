@@ -189,7 +189,7 @@ export async function showMarking(): Promise<void> {
                <div class="test-card-title">${escapeHtml(g.name)}</div>
                <div class="test-card-sub">${escapeHtml(g.testTitle)}</div>
              </div>
-             ${g.flagged ? `<span class="status-chip status-flag" title="A photo was sent past the quality check">low quality</span>` : ""}
+             ${g.flagged ? `<span class="status-chip status-flag" data-tip="A photo was sent past the quality check" tabindex="0">low quality</span>` : ""}
              <span class="status-chip status-progress">${g.questionIds.length} to mark</span>
            </button>`
            )

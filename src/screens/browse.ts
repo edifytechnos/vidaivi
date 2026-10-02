@@ -30,6 +30,7 @@ import {
 } from "../api";
 import { isAdmin } from "../auth";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
+import { notice } from "../dialog";
 import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
 import type { Test } from "../types";
 import { showEditor } from "./editor";
@@ -146,7 +147,7 @@ async function useTest(id: string, btn: HTMLButtonElement): Promise<void> {
       openBuyShelf({ shelfId: result.payment.shelfId, title: shelfTitle });
       return;
     }
-    alert(result.message || "Could not copy this test");
+    notice(result.message || "Could not copy this test");
     return;
   }
   track("test_adopted", { test: id });
@@ -319,7 +320,7 @@ function renderTest(test: Test, index: number): void {
 async function openTest(id: string): Promise<void> {
   const test = await fetchServerTest(id);
   if (!test) {
-    alert("Could not open this test — refresh to retry.");
+    notice("Could not open this test — refresh to retry.");
     return;
   }
   renderTest(test, 0);
