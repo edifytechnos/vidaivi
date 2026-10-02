@@ -1,0 +1,230 @@
+{
+  "id": "lib-tn12b-esys",
+  "title": "Ecosystem",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-esys-24q5",
+      "chapter": "Ecosystem",
+      "topic": "Productivity",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The wavelength of photosynthetically active radiation lies between the range of :",
+      "options": [
+        "200 - 700 nm",
+        "300 - 700 nm",
+        "500 - 700 nm",
+        "400 - 700 nm"
+      ],
+      "answer": 3,
+      "solution": "Photosynthetically active radiation (PAR) is the band of **400 – 700 nm**, the visible light that chlorophyll and the accessory pigments absorb.\n\nLight below 400 nm (ultraviolet) and above 700 nm (infrared) is not used for photosynthesis."
+    },
+    {
+      "id": "tn12b-esys-25q2",
+      "chapter": "Ecosystem",
+      "topic": "Energy flow",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Solar energy used by green plants for photosynthesis is only :",
+      "options": [
+        "3 - 10%",
+        "2 - 8%",
+        "2 - 9%",
+        "2 - 10%"
+      ],
+      "answer": 3,
+      "solution": "Green plants use only about **2 – 10%** of the solar energy reaching them for photosynthesis; the rest is reflected, transmitted or lost as heat.\n\nThis small fraction is all the energy that then flows through every other trophic level of the ecosystem."
+    },
+    {
+      "id": "tn12b-esys-01",
+      "chapter": "Ecosystem",
+      "topic": "Ecosystem concept",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The term 'ecosystem' was coined by:",
+      "options": [
+        "A.G. Tansley",
+        "E.P. Odum",
+        "R. Lindeman",
+        "R. Misra"
+      ],
+      "answer": 0,
+      "solution": "**A.G. Tansley** coined the term **ecosystem** in 1935 for the living community together with its non-living environment.\n\nLindeman gave the ten percent law of energy transfer; Odum is known for his textbook of ecology."
+    },
+    {
+      "id": "tn12b-esys-02",
+      "chapter": "Ecosystem",
+      "topic": "Energy flow",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The flow of energy in an ecosystem is:",
+      "options": [
+        "Cyclic",
+        "Bidirectional",
+        "Unidirectional",
+        "Random"
+      ],
+      "answer": 2,
+      "solution": "Energy flows **one way**: sun → producers → herbivores → carnivores, with heat lost at each step.\n\nEnergy that has gone as heat cannot be returned to the producers, unlike nutrients, which are cycled."
+    },
+    {
+      "id": "tn12b-esys-03",
+      "chapter": "Ecosystem",
+      "topic": "Ecological pyramids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The pyramid of biomass in a pond ecosystem is:",
+      "options": [
+        "Upright",
+        "Inverted",
+        "Spindle-shaped",
+        "Always linear"
+      ],
+      "answer": 1,
+      "solution": "In a pond the producers are phytoplankton: tiny, fast-reproducing, with a small standing biomass at any moment. The fish above them weigh far more.\n\nSo the pyramid of biomass is **inverted**. The pyramid of energy, however, is always upright."
+    },
+    {
+      "id": "tn12b-esys-04",
+      "chapter": "Ecosystem",
+      "topic": "Energy flow",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ten percent law of energy transfer was proposed by:",
+      "options": [
+        "Tansley",
+        "Lindeman",
+        "Haeckel",
+        "Clements"
+      ],
+      "answer": 1,
+      "solution": "**Lindeman** (1942) proposed that only about **10%** of the energy at one trophic level is passed to the next; the rest is used in respiration or lost as heat.\n\nThis is why food chains rarely have more than four or five links."
+    },
+    {
+      "id": "tn12b-esys-05",
+      "chapter": "Ecosystem",
+      "topic": "Ecological succession",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The pioneer community on a bare rock in a xerosere is:",
+      "options": [
+        "Mosses",
+        "Crustose lichens",
+        "Herbs",
+        "Shrubs"
+      ],
+      "answer": 1,
+      "solution": "**Crustose lichens** are the pioneers on bare rock. Their acids corrode the rock surface and begin forming soil.\n\nThey are followed by foliose lichens, mosses, herbs, shrubs and finally the climax forest."
+    },
+    {
+      "id": "tn12b-esys-06",
+      "chapter": "Ecosystem",
+      "topic": "Food chains",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A detritus food chain begins with:",
+      "options": [
+        "Green plants",
+        "Herbivores",
+        "Dead organic matter",
+        "Carnivores"
+      ],
+      "answer": 2,
+      "solution": "A **detritus food chain** starts from **dead organic matter** (fallen leaves, dead animals), eaten by detritivores and decomposers such as earthworms, bacteria and fungi.\n\nThe grazing food chain, by contrast, starts with living green plants."
+    },
+    {
+      "id": "tn12b-esys-07",
+      "chapter": "Ecosystem",
+      "topic": "Biogeochemical cycles",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is a sedimentary cycle?",
+      "options": [
+        "Carbon cycle",
+        "Nitrogen cycle",
+        "Oxygen cycle",
+        "Phosphorus cycle"
+      ],
+      "answer": 3,
+      "solution": "The **phosphorus cycle** is a **sedimentary cycle**: its reservoir is phosphate rock, and it has no significant gaseous phase.\n\nCarbon, nitrogen and oxygen cycles are gaseous cycles, with the atmosphere as their main reservoir."
+    },
+    {
+      "id": "tn12b-esys-08",
+      "chapter": "Ecosystem",
+      "topic": "Ten percent law",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Producers in a food chain fix 10,000 J of energy. Using the ten percent law, how many joules reach the tertiary consumers?",
+      "answer": 10,
+      "tolerance": 0,
+      "solution": "Each transfer passes on 10%:\n\nproducers 10,000 J → primary consumers 1,000 J → secondary consumers 100 J → tertiary consumers **10 J**."
+    },
+    {
+      "id": "tn12b-esys-09",
+      "chapter": "Ecosystem",
+      "topic": "Productivity",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Gross primary productivity of a grassland is 2000 kcal/m²/yr and producers use 600 kcal/m²/yr in respiration. What is the net primary productivity in kcal/m²/yr?",
+      "answer": 1400,
+      "tolerance": 0,
+      "solution": "NPP = GPP − respiration = 2000 − 600 = **1400 kcal/m²/yr**.\n\nNPP is the energy actually stored as plant biomass and available to herbivores."
+    },
+    {
+      "id": "tn12b-esys-10",
+      "chapter": "Ecosystem",
+      "topic": "Standing crop",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the amount of living material present in a trophic level at a given time called?",
+      "answer": "standing crop",
+      "tolerance": 0,
+      "accept": [
+        "standing biomass",
+        "standing state"
+      ],
+      "solution": "It is the **standing crop**, expressed as the number of organisms or as biomass per unit area.\n\nIt is a snapshot at one moment, which is why a fast-growing pond phytoplankton can have a small standing crop yet a high productivity."
+    },
+    {
+      "id": "tn12b-esys-11",
+      "chapter": "Ecosystem",
+      "topic": "Ten percent law",
+      "type": "numeric",
+      "marks": 3,
+      "q": "If producers fix 25,000 kcal of energy, how many kcal are available to the secondary consumers according to the ten percent law?",
+      "answer": 250,
+      "tolerance": 0,
+      "solution": "Two transfers lie between producers and secondary consumers.\n\n25,000 × 0.1 = 2,500 kcal (primary consumers); 2,500 × 0.1 = **250 kcal** (secondary consumers).\n\nThe other 90% at each step is spent in respiration and lost as heat."
+    },
+    {
+      "id": "tn12b-esys-12",
+      "chapter": "Ecosystem",
+      "topic": "Ecological succession",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What is the stable, final community of an ecological succession, in equilibrium with the climate, called?",
+      "answer": "climax community",
+      "tolerance": 0,
+      "accept": [
+        "climax",
+        "climax stage",
+        "climax vegetation"
+      ],
+      "solution": "It is the **climax community**. Each earlier stage (a seral community) changes the habitat so that the next can establish.\n\nThe climax persists because it is in balance with the climate and soil of the area; a forest is the usual climax in moist regions."
+    },
+    {
+      "id": "tn12b-esys-25q21b",
+      "chapter": "Ecosystem",
+      "topic": "Food web",
+      "source": "TN HSE Mar 2025",
+      "type": "long",
+      "marks": 5,
+      "q": "(i) Define food web.\n(ii) Write the significance of food web.",
+      "solution": "Model answer:\n\n**(i) Food web:** a network of interconnected food chains in an ecosystem, in which an organism may feed on, and be eaten by, more than one kind of organism. Example: in a grassland, grass is eaten by grasshoppers, rabbits and mice; mice are eaten by snakes and hawks; snakes by hawks.\n\n**(ii) Significance of food web:**\n\n1. It maintains the **stability** of the ecosystem: if one food source declines, consumers switch to another.\n\n2. It shows the **flow of energy and nutrients** through many alternative pathways.\n\n3. It controls **population sizes** naturally and keeps the ecological balance.\n\n4. It increases the chance of **survival** of species and shows the interdependence of organisms; more complex webs make more stable ecosystems."
+    }
+  ]
+}

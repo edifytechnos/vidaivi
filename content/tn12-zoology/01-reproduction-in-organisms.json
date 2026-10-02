@@ -1,0 +1,230 @@
+{
+  "id": "lib-tn12z-rorg",
+  "title": "Reproduction in Organisms",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-rorg-23q2",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Budding",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If Buds are formed on the outer surface of the parent body, it is called as :",
+      "source": "TN HSE Mar 2023",
+      "options": [
+        "Gemmules",
+        "Endogenous budding",
+        "Fragmentation",
+        "Exogenous budding"
+      ],
+      "answer": 3,
+      "solution": "When buds arise on the **outer surface** of the parent body, it is **exogenous budding**, as in Hydra. The bud grows, develops a mouth and tentacles, and detaches as a new individual.\n\nBuds formed **inside** the parent are endogenous budding, as in the gemmules of Spongilla (freshwater sponge). Fragmentation is the breaking of the body into pieces, each of which grows into a new individual."
+    },
+    {
+      "id": "tn12z-rorg-24q3",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Parthenogenesis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Paedogenetic parthenogenesis occurs in :",
+      "source": "TN HSE Mar 2024",
+      "options": [
+        "Solenobia",
+        "Aphis",
+        "Gall fly",
+        "Honey bees"
+      ],
+      "answer": 2,
+      "solution": "In **paedogenetic parthenogenesis** (paedogenesis) the **larvae** themselves produce eggs that develop parthenogenetically into a new generation of larvae. It occurs in the **gall fly**.\n\nSolenobia shows thelytoky (only females), Aphis shows amphitoky (both sexes), and honey bees show arrhenotoky (unfertilised eggs give drones)."
+    },
+    {
+      "id": "tn12z-rorg-25q2",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Sexual reproduction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In which mode of reproduction, variations are seen ?",
+      "source": "TN HSE Mar 2025",
+      "options": [
+        "Asexual",
+        "Parthenogenesis",
+        "Sexual",
+        "Both (a) and (b)"
+      ],
+      "answer": 2,
+      "solution": "Variations arise in **sexual reproduction** because two gametes from two parents fuse, and meiosis brings crossing over and independent assortment of chromosomes.\n\nAsexual reproduction and parthenogenesis involve a single parent, so the offspring are genetically almost identical to it (clones)."
+    },
+    {
+      "id": "tn12z-rorg-01",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Binary fission",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In Euglena, binary fission takes place along which plane ?",
+      "options": [
+        "Transverse",
+        "Longitudinal",
+        "Oblique",
+        "Simple (no definite plane)"
+      ],
+      "answer": 1,
+      "solution": "Euglena divides by **longitudinal binary fission**: the plane of division runs along the long axis of the body, from the anterior end backwards.\n\nParamecium shows transverse fission, Ceratium shows oblique fission, and Amoeba shows simple binary fission with no fixed plane."
+    },
+    {
+      "id": "tn12z-rorg-02",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Multiple fission",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Plasmotomy, the division of a multinucleate parent into many multinucleate daughters without nuclear division, is seen in :",
+      "options": [
+        "Opalina",
+        "Hydra",
+        "Euglena",
+        "Planaria"
+      ],
+      "answer": 0,
+      "solution": "In **plasmotomy** the cytoplasm of a multinucleate protozoan divides into several multinucleate daughters; the nuclei are simply shared out, they do not divide. It occurs in **Opalina** and Pelomyxa.\n\nHydra reproduces by budding, Euglena by longitudinal fission and Planaria by fragmentation and regeneration."
+    },
+    {
+      "id": "tn12z-rorg-03",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Regeneration",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Regeneration in which a lost part is restored by reorganising the remaining tissue, without much cell proliferation, as in Hydra, is called :",
+      "options": [
+        "Epimorphosis",
+        "Morphallaxis",
+        "Strobilation",
+        "Fragmentation"
+      ],
+      "answer": 1,
+      "solution": "**Morphallaxis** rebuilds the whole body from a small fragment by reorganising existing cells, as when a piece of Hydra regenerates a complete Hydra.\n\n**Epimorphosis** is the replacement of a lost part by proliferation of new cells at the wound, as in the regrowth of a lizard's tail (reparative) or the healing of skin (restorative)."
+    },
+    {
+      "id": "tn12z-rorg-04",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Syngamy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Fusion of two gametes derived from the same parent cell, as in Actinophrys, is called :",
+      "options": [
+        "Exogamy",
+        "Hologamy",
+        "Autogamy",
+        "Merogamy"
+      ],
+      "answer": 2,
+      "solution": "In **autogamy** the male and female gametes come from the **same** cell and fuse, as in Actinophrys and Paramecium.\n\nExogamy is fusion of gametes from two different parents; hologamy is fusion of whole mature individuals acting as gametes (Trichonympha); merogamy is fusion of small, morphologically different gametes."
+    },
+    {
+      "id": "tn12z-rorg-05",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Asexual reproduction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Strobilation, the formation of a series of transverse segments that separate as young individuals (ephyrae), occurs in :",
+      "options": [
+        "Aurelia",
+        "Amoeba",
+        "Spongilla",
+        "Paramecium"
+      ],
+      "answer": 0,
+      "solution": "**Strobilation** is seen in the jellyfish **Aurelia**. The polyp stage (scyphistoma) develops a stack of transverse constrictions; each segment breaks off as a free-swimming ephyra larva that grows into a medusa.\n\nAmoeba divides by binary fission, Spongilla forms internal gemmules and Paramecium reproduces by transverse fission and conjugation."
+    },
+    {
+      "id": "tn12z-rorg-06",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Oviparity and viviparity",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Animals in which the fertilised egg is retained and develops inside the mother's body, but obtains nourishment from the yolk rather than from the mother, are called :",
+      "options": [
+        "Oviparous",
+        "Viviparous",
+        "Ovoviviparous",
+        "Parthenogenetic"
+      ],
+      "answer": 2,
+      "solution": "In **ovoviviparous** animals the egg stays inside the mother until it hatches, but the embryo feeds on its own yolk; there is no placental connection. Sharks and some snakes are examples.\n\nOviparous animals lay eggs that develop outside (birds, most reptiles); viviparous animals nourish the embryo through a placenta and give birth to young ones (most mammals)."
+    },
+    {
+      "id": "tn12z-rorg-07",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Conjugation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "After conjugation in Paramecium, how many daughter Paramecia does each exconjugant finally produce ?",
+      "answer": 4,
+      "tolerance": 0,
+      "accept": [
+        "four"
+      ],
+      "solution": "After the two conjugants separate, the nucleus of each **exconjugant** divides and the cell undergoes two successive fissions.\n\nSo each exconjugant gives rise to **4** daughter Paramecia, and one conjugating pair yields 8 in all."
+    },
+    {
+      "id": "tn12z-rorg-08",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Parthenogenesis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A honey bee queen has $2n = 32$ chromosomes. How many chromosomes are present in the body cells of a drone ?",
+      "answer": 16,
+      "tolerance": 0,
+      "solution": "Drones develop from **unfertilised** eggs by parthenogenesis (arrhenotoky), so they are **haploid**.\n\n$n = \\dfrac{32}{2} = \\mathbf{16}$\n\nQueens and workers develop from fertilised eggs and are diploid ($2n = 32$)."
+    },
+    {
+      "id": "tn12z-rorg-09",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Binary fission",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A single Amoeba undergoes five successive rounds of binary fission, and every daughter divides each time. How many Amoebae are formed ?",
+      "answer": 32,
+      "tolerance": 0,
+      "solution": "Each binary fission doubles the number of individuals: 1 → 2 → 4 → 8 → 16 → 32.\n\nNumber after $k$ rounds $= 2^k$, so $2^5 = \\mathbf{32}$."
+    },
+    {
+      "id": "tn12z-rorg-10",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Multiple fission",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In multiple fission, the nucleus of a protozoan divides three times in succession before the cytoplasm divides around each nucleus. How many daughter individuals are released ?",
+      "answer": 8,
+      "tolerance": 0,
+      "solution": "Three successive nuclear divisions give $2^3 = 8$ nuclei.\n\nThe cytoplasm then gathers around each nucleus, and the parent splits into **8** daughter individuals at once. This is how Plasmodium (schizogony) and Amoeba (under unfavourable conditions) multiply."
+    },
+    {
+      "id": "tn12z-rorg-11",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Parthenogenesis",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Name the type of natural parthenogenesis in which unfertilised eggs develop only into females, as in Solenobia.",
+      "answer": "Thelytoky",
+      "tolerance": 0,
+      "accept": [
+        "thelytoky",
+        "thelytokous",
+        "thelytoky parthenogenesis"
+      ],
+      "solution": "**Thelytoky**: parthenogenetic eggs give rise to **females only**, as in Solenobia.\n\nThe other two kinds are **arrhenotoky**, where only males arise (drones of honey bees), and **amphitoky**, where both males and females arise (Aphis)."
+    },
+    {
+      "id": "tn12z-rorg-24q21b",
+      "chapter": "Reproduction in Organisms",
+      "topic": "Syngamy",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the different kinds of syngamy in living organisms.",
+      "source": "TN HSE Mar 2024",
+      "solution": "**Syngamy** is the fusion of two haploid gametes to form a diploid zygote. Depending on the origin, size and structure of the fusing gametes, it is of the following kinds.\n\n**1. Autogamy** — the male and female gametes come from the **same** cell or organism and fuse, e.g. Actinophrys.\n\n**2. Exogamy** — the gametes come from **different** parents (cross-fertilisation), e.g. most animals; the gametes may be alike or unlike.\n\n**3. Hologamy** — mature individuals of a species do not form separate gametes but **act as gametes themselves** and fuse whole, e.g. Trichonympha.\n\n**4. Paedogamy** — union of two **young** individuals produced by the division of one parent cell.\n\n**5. Merogamy** — fusion of **small, morphologically different** gametes (merogametes) formed by division of the parent.\n\n**6. Isogamy** — fusion of two gametes **similar** in size and structure (isogametes), e.g. Monocystis.\n\n**7. Anisogamy** — fusion of two gametes **dissimilar** in size and structure (anisogametes), e.g. a small motile sperm with a large egg in higher animals, and Plasmodium.\n\n**8. Conjugation** — a temporary union of two individuals of the same species with exchange of nuclear material, e.g. Paramecium; the partners then separate (strictly this is not fusion of gametes but is sexual in effect)."
+    }
+  ]
+}

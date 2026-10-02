@@ -1,0 +1,238 @@
+{
+  "id": "lib-tn12b-eco",
+  "title": "Principles of Ecology",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-eco-23q3",
+      "chapter": "Principles of Ecology",
+      "topic": "Edaphic factors",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ideal soil for Cultivation is :",
+      "options": [
+        "Loamy soil",
+        "Clayey soil",
+        "Sandy soil",
+        "Silt soil"
+      ],
+      "answer": 0,
+      "solution": "**Loamy soil** is the ideal soil for cultivation. It is a mixture of sand, silt and clay with humus.\n\nSand keeps it aerated and well drained, while clay and humus hold water and nutrients, so roots get both air and moisture.\n\nPure clay is waterlogged and poorly aerated; pure sand drains too fast and holds few nutrients."
+    },
+    {
+      "id": "tn12b-eco-25q7",
+      "chapter": "Principles of Ecology",
+      "topic": "Soil formation",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Pedogenesis refers to :",
+      "options": [
+        "Population",
+        "Fossil",
+        "Soil",
+        "Water"
+      ],
+      "answer": 2,
+      "solution": "**Pedogenesis** is the process of **soil formation**.\n\nParent rock is broken down by weathering (physical, chemical and biological), and organic matter from organisms is added, gradually forming soil horizons.\n\nThe study of soil itself is called pedology."
+    },
+    {
+      "id": "tn12b-eco-01",
+      "chapter": "Principles of Ecology",
+      "topic": "Ecology in India",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Father of Indian Ecology is:",
+      "options": [
+        "Birbal Sahni",
+        "R. Misra",
+        "M.S. Swaminathan",
+        "P. Maheshwari"
+      ],
+      "answer": 1,
+      "solution": "**Ramdeo Misra** is regarded as the **Father of Indian Ecology**. He built ecology teaching and research at Banaras Hindu University.\n\nBirbal Sahni is known for palaeobotany, M.S. Swaminathan for the Green Revolution and P. Maheshwari for plant embryology."
+    },
+    {
+      "id": "tn12b-eco-02",
+      "chapter": "Principles of Ecology",
+      "topic": "Light as a factor",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Plants that grow well in shade are called:",
+      "options": [
+        "Heliophytes",
+        "Sciophytes",
+        "Halophytes",
+        "Xerophytes"
+      ],
+      "answer": 1,
+      "solution": "**Sciophytes** are shade-loving plants, such as many ferns and plants of the forest floor.\n\n**Heliophytes** need bright sunlight. Halophytes grow in saline soil and xerophytes in dry habitats; those names describe soil and water, not light."
+    },
+    {
+      "id": "tn12b-eco-03",
+      "chapter": "Principles of Ecology",
+      "topic": "Hydrophytes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is a rooted floating hydrophyte?",
+      "options": [
+        "Hydrilla",
+        "Nymphaea",
+        "Wolffia",
+        "Typha"
+      ],
+      "answer": 1,
+      "solution": "**Nymphaea** (water lily) is rooted in the mud while its leaves float on the surface: a **rooted floating** hydrophyte.\n\nHydrilla is rooted submerged, Wolffia is free floating, and Typha is amphibious (emergent)."
+    },
+    {
+      "id": "tn12b-eco-04",
+      "chapter": "Principles of Ecology",
+      "topic": "Halophytes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Vivipary is a characteristic feature of:",
+      "options": [
+        "Hydrophytes",
+        "Mesophytes",
+        "Halophytes (mangroves)",
+        "Epiphytes"
+      ],
+      "answer": 2,
+      "solution": "In **vivipary** the seed germinates while the fruit is still attached to the parent plant. It is typical of **mangrove halophytes** such as Rhizophora.\n\nThe seedling drops into the soft saline mud already developed, which helps it establish quickly where ordinary seeds would fail."
+    },
+    {
+      "id": "tn12b-eco-05",
+      "chapter": "Principles of Ecology",
+      "topic": "Population interactions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An interaction in which one species benefits and the other is neither harmed nor benefited is:",
+      "options": [
+        "Mutualism",
+        "Commensalism",
+        "Parasitism",
+        "Amensalism"
+      ],
+      "answer": 1,
+      "solution": "**Commensalism** is a (+, 0) interaction, e.g. epiphytic orchids on a tree: the orchid gains support and light, the tree is unaffected.\n\nMutualism is (+, +), parasitism (+, −) and amensalism (−, 0)."
+    },
+    {
+      "id": "tn12b-eco-06",
+      "chapter": "Principles of Ecology",
+      "topic": "Epiphytes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Velamen tissue, which absorbs moisture from the air, is found in the aerial roots of:",
+      "options": [
+        "Cuscuta",
+        "Vanda",
+        "Rhizophora",
+        "Opuntia"
+      ],
+      "answer": 1,
+      "solution": "Epiphytic orchids such as **Vanda** have aerial roots covered by **velamen**, a spongy tissue of dead cells that soaks up rain and atmospheric moisture.\n\nCuscuta has haustoria, Rhizophora has pneumatophores, and Opuntia has phylloclades."
+    },
+    {
+      "id": "tn12b-eco-07",
+      "chapter": "Principles of Ecology",
+      "topic": "Parasitism",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Cuscuta is a:",
+      "options": [
+        "Partial root parasite",
+        "Total stem parasite",
+        "Partial stem parasite",
+        "Total root parasite"
+      ],
+      "answer": 1,
+      "solution": "**Cuscuta** (dodder) is a **total stem parasite**: it has no chlorophyll and twines around the host stem, drawing water and food through haustoria.\n\nViscum and Loranthus are partial stem parasites, Striga a partial root parasite, and Orobanche a total root parasite."
+    },
+    {
+      "id": "tn12b-eco-08",
+      "chapter": "Principles of Ecology",
+      "topic": "Soil profile",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A soil profile is described with horizons named O, A, B, C and R. How many horizons is that?",
+      "answer": 5,
+      "tolerance": 0,
+      "solution": "**5** horizons: **O** (organic litter and humus), **A** (topsoil), **B** (subsoil), **C** (weathered parent material) and **R** (bedrock).\n\nThe vertical section showing these layers is the soil profile."
+    },
+    {
+      "id": "tn12b-eco-09",
+      "chapter": "Principles of Ecology",
+      "topic": "Seed dispersal",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the term for dispersal of seeds and fruits by wind?",
+      "answer": "anemochory",
+      "tolerance": 0,
+      "accept": [
+        "anemocory",
+        "anemochore",
+        "wind dispersal"
+      ],
+      "solution": "Dispersal by wind is **anemochory**. Such seeds are light, winged (Moringa), plumed (Calotropis) or tiny like dust (orchids).\n\nDispersal by water is hydrochory and by animals zoochory."
+    },
+    {
+      "id": "tn12b-eco-10",
+      "chapter": "Principles of Ecology",
+      "topic": "Allelopathy",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the term for the inhibition of one plant by chemicals released from another plant?",
+      "answer": "allelopathy",
+      "tolerance": 0,
+      "accept": [
+        "allelopathic effect"
+      ],
+      "solution": "This is **allelopathy**. The chemicals (allelochemicals) leach from leaves or roots and stop nearby plants germinating or growing.\n\nExample: Parthenium and Eucalyptus release substances that suppress plants growing around them."
+    },
+    {
+      "id": "tn12b-eco-11",
+      "chapter": "Principles of Ecology",
+      "topic": "Parasitism",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What are the special absorbing roots by which Cuscuta draws food and water from its host called?",
+      "answer": "haustoria",
+      "tolerance": 0,
+      "accept": [
+        "haustorium",
+        "haustorial roots"
+      ],
+      "solution": "They are **haustoria**. They penetrate the host stem and connect with its xylem and phloem.\n\nThrough them Cuscuta, which has no chlorophyll, takes water and minerals from xylem and prepared food from phloem, which is why it is a total stem parasite."
+    },
+    {
+      "id": "tn12b-eco-12",
+      "chapter": "Principles of Ecology",
+      "topic": "Halophytes",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What are the negatively geotropic breathing roots of mangroves such as Avicennia called?",
+      "answer": "pneumatophores",
+      "tolerance": 0,
+      "accept": [
+        "pneumatophore",
+        "breathing roots",
+        "respiratory roots"
+      ],
+      "solution": "They are **pneumatophores**. Mangrove mud is waterlogged and has almost no oxygen, so these roots grow upward out of the mud.\n\nThey carry tiny pores called **pneumathodes** (lenticels) through which air enters to supply the buried roots."
+    },
+    {
+      "id": "tn12b-eco-23q21a",
+      "chapter": "Principles of Ecology",
+      "topic": "Xerophytes",
+      "source": "TN HSE Mar 2023",
+      "type": "long",
+      "marks": 5,
+      "q": "Enumerate the anatomical adaptations of Xerophytes.",
+      "solution": "Model answer — anatomical adaptations of xerophytes:\n\n**1. Multiple epidermis** with a **thick cuticle** (e.g. Nerium) reduces water loss.\n\n**2. Sunken stomata** placed in pits lined with hairs (stomatal crypts in Nerium), limiting transpiration.\n\n**3. Well developed mechanical tissue** — hypodermis of sclerenchyma gives rigidity so the plant does not wilt.\n\n**4. Well developed vascular tissue**, especially xylem, for efficient water conduction.\n\n**5. Water storage tissue** (parenchyma with mucilage) in succulents such as Opuntia and Aloe.\n\n**6. Palisade in many layers** and compact mesophyll with little intercellular space; sometimes scattered stomata only on the lower surface or rolled leaves (grasses with hinge/bulliform cells)."
+    }
+  ]
+}
