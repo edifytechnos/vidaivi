@@ -1077,6 +1077,12 @@ serves both — **never narrow it again**.
   this is the trade that buys a strict `script-src`.
 - `font-src` allows `data:` because Vite inlines one small KaTeX `woff` under
   its 4KB limit. A `data:` font cannot execute.
+- `connect-src` names `js.monitor.azure.com` as well as `script-src`: the
+  App Insights SDK **fetches** `ai.config.1.cfg.json` from the same host it
+  was loaded from. Blocked, it fell back to defaults and still sent events,
+  so nothing looked broken — it was found by recording policy violations on
+  the live site while checking Clarity, not by the suite, which runs with no
+  connection string and so never loads the SDK.
 - `permissions-policy` keeps `camera=(self)`: answer photos use
   `<input type="file" capture>`, and locking the camera off risks the hand-in
   flow on Android for no gain.
