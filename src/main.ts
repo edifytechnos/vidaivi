@@ -24,6 +24,7 @@ import { isStudentViewer, showStudentSubject } from "./screens/student";
 import { openChildResults, showChildren } from "./screens/parent";
 import { installShell, openRail } from "./screens/menu";
 import { installHistory } from "./dom";
+import { installSelects } from "./select";
 import { mount, skeleton } from "./shell";
 import { showTourOnFirstRun } from "./tour";
 
@@ -33,6 +34,9 @@ migrateStorage();
 
 initAnalytics();
 installShell();
+// Every <select> gets the app's own dropdown, now and on every screen painted
+// from here on — the options list is ours, not the operating system's.
+installSelects();
 
 // A 401 anywhere means the session is over — land on the welcome screen, which
 // explains it, rather than leaving screens to render "no data".

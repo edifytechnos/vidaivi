@@ -5157,3 +5157,88 @@ body.drawer-open {
   }
   .sy-composer { margin-bottom: calc(10px + env(safe-area-inset-bottom)); }
 }
+
+/* ---------- The app's own dropdown (src/select.ts) ---------- */
+/* A native <select> draws its list with the operating system. This draws it
+   with the page: the button wears the select's own classes so its sizing rules
+   still apply, and the list beneath is ours on every browser and phone. */
+
+.vs { position: relative; display: inline-block; max-width: 100%; vertical-align: middle; }
+.ed-field > .vs, .field > .vs, .vs:has(> .ed-input), .vs:has(> .numeric-input) { display: block; width: 100%; }
+.vs:has(> .ed-input) .vs-btn, .vs:has(> .numeric-input) .vs-btn { width: 100%; }
+
+/* Still in the tree for its value and its events; never seen, never focused.
+   Not display:none — a test's selectOption needs a box to act on. */
+.vs-native {
+  position: absolute !important;
+  inset: 0 auto auto 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.vs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+  max-width: 100%;
+}
+.vs-btn .vs-label { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vs-btn > .icon { width: 14px; height: 14px; flex: none; color: var(--muted); transform: rotate(90deg); transition: transform 0.15s; }
+.vs-open .vs-btn > .icon { transform: rotate(-90deg); }
+.vs-btn:hover:not(:disabled) { border-color: var(--muted); }
+.vs-btn:disabled { opacity: 0.6; cursor: default; }
+.vs-btn:focus-visible { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12); }
+
+.vs-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  z-index: 110;
+  overscroll-behavior: contain;
+}
+.vs-list[hidden] { display: none; }
+.vs-up .vs-list { top: auto; bottom: calc(100% + 4px); }
+/* The app bar's picker opens under a bar that is 57px tall; keep the list on screen. */
+.shellbar .vs-list { left: 0; min-width: 260px; }
+
+.vs-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.vs-opt > .icon { width: 15px; height: 15px; flex: none; color: var(--primary); }
+.vs-opt:not([aria-selected="true"]) { padding-left: 31px; }
+.vs-opt[aria-selected="true"] { color: var(--primary); font-weight: 600; }
+.vs-opt.vs-active { background: var(--primary-soft); }
+.vs-opt.vs-disabled { color: var(--faint); cursor: default; }
+
+@media (max-width: 899px) {
+  .vs-opt { padding-top: 11px; padding-bottom: 11px; font-size: 14.5px; }
+}

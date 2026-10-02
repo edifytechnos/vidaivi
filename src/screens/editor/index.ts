@@ -26,7 +26,7 @@ import { openAssign } from "../assign";
 import type { Subject } from "../../api";
 import { openSeyari, seyariOpen, toggleSeyari } from "./seyari";
 import type { SeyariHost } from "./seyari";
-import type { Test } from "../../types";
+import type { Question, Test } from "../../types";
 import {
   clearTest,
   currentSaveState,
@@ -261,6 +261,11 @@ function bindSeyari(): void {
   document.getElementById("ed-seyari")?.addEventListener("click", () => toggleSeyari(seyariHost));
 }
 
+/** A question nobody has typed into yet: no text, no topic, no solution, no option. */
+function untouched(q: Question): boolean {
+  return !q.q.trim() && !q.topic.trim() && !q.solution.trim() && !(q.options ?? []).some((o) => o.trim());
+}
+
 /** What the panel needs from the editor: where it is, and what to do with an accepted card. */
 const seyariHost: SeyariHost = {
   context() {
@@ -276,7 +281,14 @@ const seyariHost: SeyariHost = {
   accept(questions) {
     const test = currentTest();
     if (!test || readOnly() || !questions.length) return;
-    edit(() => test.questions.push(...questions));
+    // A test that holds only untouched blanks — the + under an empty test is
+    // always on show, and "Question 1" with nothing in it is what pressing it
+    // leaves — is filled, not appended to. Otherwise the first thing a teacher
+    // sees after Add is an empty question above the ones they asked for.
+    edit(() => {
+      if (test.questions.every(untouched)) test.questions.length = 0;
+      test.questions.push(...questions);
+    });
     track("seyari_accept", { test: test.id, count: String(questions.length) });
     refreshTree();
     // The overview's question table is drawn from the document; on a question

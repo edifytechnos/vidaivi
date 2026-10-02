@@ -682,6 +682,52 @@ test gets published.
   drives the handler with a stubbed model and asserts the gates, the mapping,
   the ledger and that nothing uploaded is written.
 
+## The app's own dropdown, and the other controls the OS still draws (`src/select.ts`)
+
+A native `<select>` can be styled, but **its options list is drawn by the
+operating system**: a grey sheet on a Mac, a full-screen wheel on Android, a
+Windows list, each in its own font and colour. The box was ours and the list
+never was — the chevron sat hard against the border and the list looked like
+nothing else on the page. `src/select.ts` replaces the list and leaves the
+native control in place.
+
+- **`enhanceSelect` keeps the native `<select>` in the tree**, visually hidden
+  (`.vs-native`: 1px, `opacity: 0`, `aria-hidden`, `tabindex=-1`) but still
+  holding the value and still firing `change`. So every `select.value` read,
+  every `change` listener and every `page.selectOption` in the suites works
+  untouched, and the existing `.ed-select` / `.ed-input` / `.shellbar-select` /
+  `.numeric-input` sizing rules still apply, because **the button wears the
+  select's own classes**. It is deliberately not `display: none`: Playwright's
+  `selectOption` needs a box to act on.
+- **`installSelects()` runs once at boot** and a `MutationObserver` upgrades
+  every `<select>` a screen paints from then on. One call, no screen has to
+  remember — the same reason the CSRF guard wraps every handler at export
+  time rather than handler by handler.
+- The button is a `combobox`, the list a `listbox` with
+  `aria-activedescendant`; arrows move, Enter or Space picks, Escape and Tab
+  close, a typed letter jumps. The list flips upward near the floor, opens one
+  at a time, closes on a click elsewhere, and its rows are 44px on a phone.
+  A `<label for>` that pointed at the select is re-pointed at the button.
+  `disabled` is mirrored both ways (the editor's `readOnly()` pass disables
+  selects after bind). `node e2e/select.cjs` proves all of it, no network, no
+  session.
+
+**The audit that found it.** Everything else the operating system still draws
+in this app, with what to do about each — ranked by how often a teacher or a
+student meets it:
+
+| Control | Where | Today | Do |
+|---|---|---|---|
+| `alert()` / `confirm()` | 20 call sites: delete draft, remove student, hand in with unanswered questions, top up, errors | OS dialog, blocks the page, looks like a crash on Android | Confirmations through `openModal`; errors as an inline note on the screen that failed |
+| `title=` tooltips | 15, mostly icon-only buttons | No hover on a phone, so the label never shows | Visible labels where it matters (Publish already is); a small tooltip only where an icon is the right thing |
+| `<input type="number">` | marks, tolerance, plan prices | Spinner arrows differ per browser; iOS shows a full keyboard | `inputmode="numeric"`, hide the spinners, a stepper only if one is wanted |
+| checkbox / radio | the modal's checklist and radio fields | Blue on a Mac, green on Android | `appearance: none` and draw them in CSS: no JS, one afternoon |
+| `<datalist>` | the modal's `options` suggestions | Safari and Android barely show it | Reuse this dropdown as a combobox: type to filter, same list |
+| `<details>` | the worked solution on a Seyari card | The marker differs per browser | CSS on `summary::marker` |
+| `<input type="file">` | 3, all behind our own buttons | Already ours | Nothing |
+
+The first two rows are the ones a class meets; the rest are polish.
+
 ## Performance, scale and cost — the rules that hold everywhere
 
 This is a free-tier product with paying customers coming. Money is not the
@@ -1221,7 +1267,8 @@ network, no session, no row written. `node e2e/history.cjs` does the same for
 move, a re-render, Back, Forward and Back over an open dialog. It fails four
 ways against a replace-only `setUrl`. `node e2e/seyari.cjs` drives the Seyari
 AI panel the same way, against a stubbed `fetch` and a host object that records
-what it is handed. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+what it is handed, and `node e2e/select.cjs` the app's own dropdown over three
+native selects. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the
