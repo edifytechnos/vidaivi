@@ -28,6 +28,10 @@ export function initAnalytics(): void {
         connectionString,
         disableFetchTracking: true,
         disableAjaxTracking: true,
+        // A failed dynamic import is a promise rejection, not a thrown error,
+        // and the SDK ignores those by default — which is why a teacher's
+        // "crash" after a deploy left nothing in the exceptions table.
+        enableUnhandledPromiseRejectionTracking: true,
       },
     }) as AppInsights;
     ai.loadAppInsights();
