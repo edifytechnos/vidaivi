@@ -13,6 +13,7 @@
 // signing in lasts until someone signs out rather than until Google's token
 // expires an hour later.
 
+import { tagRole } from "./clarity";
 import type { StoredAnswer } from "./types";
 
 export interface Profile {
@@ -124,6 +125,9 @@ function saveAuth(state: AuthState): void {
   try {
     localStorage.setItem(AUTH_KEY, JSON.stringify(state));
   } catch {}
+  // The role, and only the role, reaches Clarity — so a flow can be read per
+  // audience without a name or an id ever leaving the page.
+  tagRole(state.profile?.role);
 }
 
 const EXPIRED_KEY = "vidai:sessionExpired";

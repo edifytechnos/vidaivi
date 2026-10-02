@@ -3,12 +3,14 @@
 
 import "./style.css";
 import { initAnalytics, track } from "./analytics";
+import { initClarity, tagRole } from "./clarity";
 import { fetchServerTest } from "./api";
 import {
   authEnabled,
   flushPendingAttempts,
   handleSessionExpiry,
   isLoggedIn,
+  getProfile,
   isParent,
 } from "./auth";
 import { isGuest, migrateStorage } from "./attempts";
@@ -33,6 +35,10 @@ import { showTourOnFirstRun } from "./tour";
 migrateStorage();
 
 initAnalytics();
+initClarity();
+// A returning visitor's session is tagged from the stored profile; a fresh
+// sign-in tags itself in saveAuth. Either way the role is all that is sent.
+tagRole(getProfile()?.role);
 installShell();
 // Every <select> gets the app's own dropdown, now and on every screen painted
 // from here on — the options list is ours, not the operating system's.

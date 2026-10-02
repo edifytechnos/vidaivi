@@ -77,7 +77,7 @@ export function mountUploader(host: HTMLElement, opts: UploaderOpts): () => stri
   let busy = false;
 
   host.innerHTML = `
-    <div class="shots" id="ap-shots"></div>
+    <div class="shots" id="ap-shots" data-clarity-mask="true"></div>
     <div class="drop" id="ap-drop">
       ${ICONS.camera}
       <span class="drop-title">Take a photo of your working</span>
@@ -248,7 +248,7 @@ export async function hydrateThumbs(root: HTMLElement): Promise<void> {
  */
 export function photoStrip(images: string[], label: string): string {
   if (!images.length) return "";
-  return `<div class="shots shots-read">
+  return `<div class="shots shots-read" data-clarity-mask="true">
     ${images
       .map(
         (blob, i) => `<figure class="shot" data-blob="${escapeHtml(blob)}">
