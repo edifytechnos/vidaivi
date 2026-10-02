@@ -1,0 +1,229 @@
+{
+  "id": "lib-tn12m-dif",
+  "title": "Applications of Differential Calculus",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 7,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12m-dif-24q8",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Asymptotes",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The horizontal asymptote of $f(x)=\\dfrac{1}{x}$ is :",
+      "options": [
+        "$x=c$",
+        "$y=0$",
+        "$y=c$",
+        "$x=0$"
+      ],
+      "answer": 1,
+      "solution": "As $x\\to\\pm\\infty$, $\\dfrac1x\\to0$, so the horizontal asymptote is $y=0$."
+    },
+    {
+      "id": "tn12m-dif-24q11",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Rolle's theorem",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number given by the Rolle's theorem for the function $x^3-3x^2$, $x\\in[0,3]$ is :",
+      "options": [
+        "$\\dfrac{3}{2}$",
+        "1",
+        "2",
+        "$\\sqrt2$"
+      ],
+      "answer": 2,
+      "solution": "$f(0)=f(3)=0$. $f'(x)=3x^2-6x=3x(x-2)=0$ gives $c=2\\in(0,3)$."
+    },
+    {
+      "id": "tn12m-dif-23q9",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Extrema",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The maximum value of the function $x^2e^{-2x}$, $x>0$ is :",
+      "options": [
+        "$\\dfrac{1}{e^2}$",
+        "$\\dfrac1e$",
+        "$\\dfrac{4}{e^4}$",
+        "$\\dfrac{1}{2e}$"
+      ],
+      "answer": 0,
+      "solution": "$f'(x)=2xe^{-2x}(1-x)=0$ at $x=1$, a maximum. $f(1)=e^{-2}=\\dfrac{1}{e^2}$."
+    },
+    {
+      "id": "tn12m-dif-23q12",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Angle between curves",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Angle between the curves $y^2=x$ and $x^2=y$ at the origin is :",
+      "options": [
+        "$\\dfrac{\\pi}{2}$",
+        "$\\tan^{-1}\\left(\\dfrac34\\right)$",
+        "$\\dfrac{\\pi}{4}$",
+        "$\\tan^{-1}\\left(\\dfrac43\\right)$"
+      ],
+      "answer": 0,
+      "solution": "At the origin $y^2=x$ has tangent $x=0$ and $x^2=y$ has tangent $y=0$. They are perpendicular: $\\dfrac{\\pi}{2}$."
+    },
+    {
+      "id": "tn12m-dif-23q16",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Tangents and normals",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The abscissa of the point on the curve $f(x)=\\sqrt{8-2x}$ at which the slope of the tangent is $-0.25$ ?",
+      "options": [
+        "$-2$",
+        "$-8$",
+        "0",
+        "$-4$"
+      ],
+      "answer": 3,
+      "solution": "$f'(x)=\\dfrac{-1}{\\sqrt{8-2x}}=-\\dfrac14\\Rightarrow\\sqrt{8-2x}=4\\Rightarrow8-2x=16\\Rightarrow x=-4$."
+    },
+    {
+      "id": "tn12m-dif-23q20",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Optimisation",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Area of the greatest rectangle inscribed in the ellipse $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1$ is :",
+      "options": [
+        "$\\sqrt{ab}$",
+        "$2ab$",
+        "$\\dfrac ab$",
+        "$ab$"
+      ],
+      "answer": 1,
+      "solution": "A vertex at $(a\\cos\\theta,b\\sin\\theta)$ gives area $4ab\\sin\\theta\\cos\\theta=2ab\\sin2\\theta$, largest $2ab$."
+    },
+    {
+      "id": "tn12m-dif-25q4",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Rate of change",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A stone is thrown up vertically. The height it reaches at time $t$ seconds is given by $x=80t-16t^2$. The stone reaches the maximum height in time $t$ seconds is given by :",
+      "options": [
+        "3",
+        "2",
+        "3.5",
+        "2.5"
+      ],
+      "answer": 3,
+      "solution": "$\\dfrac{dx}{dt}=80-32t=0\\Rightarrow t=2.5$ s."
+    },
+    {
+      "id": "tn12m-dif-25q15",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Concavity and inflection",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The point of inflection of the curve $y=(x-1)^3$ is :",
+      "options": [
+        "$(1,0)$",
+        "$(0,0)$",
+        "$(1,1)$",
+        "$(0,1)$"
+      ],
+      "answer": 0,
+      "solution": "$y''=6(x-1)$ changes sign at $x=1$; $y(1)=0$. Point of inflection $(1,0)$."
+    },
+    {
+      "id": "tn12m-dif-01",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Mean value theorem",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The value of $c$ given by Lagrange's mean value theorem for $f(x)=x^2$ on $[1,3]$ is :",
+      "options": [
+        "1",
+        "2",
+        "2.5",
+        "3"
+      ],
+      "answer": 1,
+      "solution": "$f'(c)=\\dfrac{f(3)-f(1)}{3-1}=\\dfrac{9-1}{2}=4$, and $2c=4$ gives $c=2$."
+    },
+    {
+      "id": "tn12m-dif-02",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Tangents and normals",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the slope of the tangent to $y=x^3-3x$ at $x=2$.",
+      "answer": 9,
+      "tolerance": 0,
+      "solution": "$\\dfrac{dy}{dx}=3x^2-3=12-3=9$ at $x=2$."
+    },
+    {
+      "id": "tn12m-dif-03",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "L'Hôpital's rule",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Evaluate $\\displaystyle\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}$.",
+      "answer": 0.5,
+      "tolerance": 0,
+      "solution": "The limit is of the form $\\dfrac00$. By L'Hôpital's rule, $\\lim\\dfrac{\\sin x}{2x}$, still $\\dfrac00$; again, $\\lim\\dfrac{\\cos x}{2}=\\dfrac12$.",
+      "accept": [
+        "1/2"
+      ]
+    },
+    {
+      "id": "tn12m-dif-04",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Extrema",
+      "type": "numeric",
+      "marks": 2,
+      "q": "At what value of $x$ does $f(x)=x^3-6x^2+9x+1$ have a local minimum?",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "$f'(x)=3x^2-12x+9=3(x-1)(x-3)$, zero at $x=1,3$.\n\n$f''(x)=6x-12$: $f''(3)=6>0$, so the local minimum is at $x=3$."
+    },
+    {
+      "id": "tn12m-dif-05",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Rate of change",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The radius of a circular plate increases at $2$ cm/s. At what rate (in cm²/s, as a multiple of $\\pi$) does its area increase when the radius is $5$ cm? Give the multiple of $\\pi$.",
+      "answer": 20,
+      "tolerance": 0,
+      "solution": "$A=\\pi r^2$, so $\\dfrac{dA}{dt}=2\\pi r\\dfrac{dr}{dt}=2\\pi(5)(2)=20\\pi$ cm²/s.\n\nThe multiple of $\\pi$ is $20$."
+    },
+    {
+      "id": "tn12m-dif-06",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Absolute extrema",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the absolute maximum value of $f(x)=2x^3-3x^2-12x+1$ on $[-2,\\,2.5]$.",
+      "answer": 8,
+      "tolerance": 0,
+      "solution": "$f'(x)=6x^2-6x-12=6(x-2)(x+1)$, critical points $x=-1,2$.\n\n$f(-2)=-3$, $f(-1)=8$, $f(2)=-19$, $f(2.5)=-16.5$.\n\nAbsolute maximum $=8$ at $x=-1$."
+    },
+    {
+      "id": "tn12m-dif-07",
+      "chapter": "Applications of Differential Calculus",
+      "topic": "Monotonicity and extrema",
+      "type": "long",
+      "marks": 5,
+      "q": "Find the intervals in which $f(x)=x^3-3x^2-9x+5$ is increasing or decreasing, and find its local extrema.",
+      "solution": "$f'(x)=3x^2-6x-9=3(x-3)(x+1)$, zero at $x=-1$ and $x=3$.\n\n**Sign of $f'$:** positive on $(-\\infty,-1)$, negative on $(-1,3)$, positive on $(3,\\infty)$.\n\nSo $f$ is **increasing** on $(-\\infty,-1)\\cup(3,\\infty)$ and **decreasing** on $(-1,3)$.\n\n**Local maximum** at $x=-1$: $f(-1)=-1-3+9+5=10$.\n\n**Local minimum** at $x=3$: $f(3)=27-27-27+5=-22$."
+    }
+  ]
+}

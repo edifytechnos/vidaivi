@@ -50,7 +50,7 @@ const LATEX_N_COMMANDS = new Set([
   "nu", "nabla", "ne", "neq", "not", "notin", "ni", "nmid", "ncong",
   "nparallel", "nsubseteq", "nsupseteq", "nearrow", "nwarrow", "natural",
   "negthinspace", "negmedspace", "negthickspace", "newline", "nonumber",
-  "nolimits", "noalign", "normalsize",
+  "nolimits", "noalign", "normalsize", "neg",
 ]);
 
 const ids = new Map();

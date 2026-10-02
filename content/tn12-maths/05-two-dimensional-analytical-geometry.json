@@ -1,0 +1,228 @@
+{
+  "id": "lib-tn12m-con",
+  "title": "Two Dimensional Analytical Geometry II",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12m-con-24q3",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Ellipse",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $P(x,y)$ be any point on $16x^2+25y^2=400$ with foci $F_1(3,0)$ and $F_2(-3,0)$, then $PF_1+PF_2$ is :",
+      "options": [
+        "10",
+        "8",
+        "12",
+        "6"
+      ],
+      "answer": 0,
+      "solution": "$\\dfrac{x^2}{25}+\\dfrac{y^2}{16}=1$, so $a=5$. For any point on an ellipse $PF_1+PF_2=2a=10$."
+    },
+    {
+      "id": "tn12m-con-24q12",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Identifying conics",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The type of conic section for $x^2-3=5x+3y$ is :",
+      "options": [
+        "hyperbola",
+        "ellipse",
+        "circle",
+        "parabola"
+      ],
+      "answer": 3,
+      "solution": "Only $x^2$ appears (no $y^2$, no $xy$): $x^2=5x+3y+3$ is a **parabola**."
+    },
+    {
+      "id": "tn12m-con-23q5",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Parabola",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of normals that can be drawn from a point to the parabola $y^2=4ax$ is :",
+      "options": [
+        "3",
+        "2",
+        "0",
+        "1"
+      ],
+      "answer": 0,
+      "solution": "The normal at $(at^2,2at)$ is $y+tx=2at+at^3$ — a cubic in $t$, so at most **3** normals pass through a point."
+    },
+    {
+      "id": "tn12m-con-25q18",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Ellipse",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An ellipse has $OB$ as semi minor axes, $F$ and $F'$ its foci and the angle $FBF'$ is a right angle. Then the eccentricity of the ellipse is :",
+      "options": [
+        "$\\dfrac14$",
+        "$\\dfrac{1}{\\sqrt2}$",
+        "$\\dfrac{1}{\\sqrt3}$",
+        "$\\dfrac12$"
+      ],
+      "answer": 1,
+      "solution": "$\\angle FBF'=90^\\circ$ makes $\\angle OBF=45^\\circ$, so $OF=OB$: $ae=b$. Then $a^2e^2=a^2(1-e^2)$, $e^2=\\dfrac12$, $e=\\dfrac{1}{\\sqrt2}$."
+    },
+    {
+      "id": "tn12m-con-01",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Hyperbola",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The eccentricity of the hyperbola $\\dfrac{x^2}{16}-\\dfrac{y^2}{9}=1$ is :",
+      "options": [
+        "$\\dfrac54$",
+        "$\\dfrac45$",
+        "$\\dfrac53$",
+        "$\\dfrac{\\sqrt7}{4}$"
+      ],
+      "answer": 0,
+      "solution": "$e=\\sqrt{1+\\dfrac{b^2}{a^2}}=\\sqrt{1+\\dfrac{9}{16}}=\\dfrac54$."
+    },
+    {
+      "id": "tn12m-con-02",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Parabola",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The length of the latus rectum of $y^2=12x$ is :",
+      "options": [
+        "3",
+        "6",
+        "12",
+        "24"
+      ],
+      "answer": 2,
+      "solution": "$4a=12$, so the latus rectum is $12$."
+    },
+    {
+      "id": "tn12m-con-03",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Circle",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The centre of the circle $x^2+y^2-6x+4y-3=0$ is :",
+      "options": [
+        "$(3,-2)$",
+        "$(-3,2)$",
+        "$(6,-4)$",
+        "$(-6,4)$"
+      ],
+      "answer": 0,
+      "solution": "Centre $=(-g,-f)$ with $2g=-6$, $2f=4$: $(3,-2)$."
+    },
+    {
+      "id": "tn12m-con-04",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Parabola",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The equation of the directrix of $x^2=-8y$ is :",
+      "options": [
+        "$y=2$",
+        "$y=-2$",
+        "$x=2$",
+        "$x=-2$"
+      ],
+      "answer": 0,
+      "solution": "$x^2=-4ay$ with $a=2$ opens downward; its directrix is $y=a=2$."
+    },
+    {
+      "id": "tn12m-con-05",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Circle",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The radius of the circle $x^2+y^2-4x-6y-12=0$ is :",
+      "options": [
+        "5",
+        "25",
+        "$\\sqrt{12}$",
+        "$\\sqrt{13}$"
+      ],
+      "answer": 0,
+      "solution": "$r=\\sqrt{g^2+f^2-c}=\\sqrt{4+9+12}=5$."
+    },
+    {
+      "id": "tn12m-con-06",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Ellipse",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the eccentricity of the ellipse $\\dfrac{x^2}{25}+\\dfrac{y^2}{9}=1$.",
+      "answer": 0.8,
+      "tolerance": 0,
+      "solution": "$e=\\sqrt{1-\\dfrac{b^2}{a^2}}=\\sqrt{1-\\dfrac{9}{25}}=\\dfrac45$.",
+      "accept": [
+        "4/5"
+      ]
+    },
+    {
+      "id": "tn12m-con-07",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Circle",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the radius of the circle $x^2+y^2-2x+4y-4=0$.",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "$g=-1$, $f=2$, $c=-4$: $r=\\sqrt{1+4+4}=3$."
+    },
+    {
+      "id": "tn12m-con-08",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Parabola",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Find the $x$-coordinate of the focus of the parabola $y^2=16x$.",
+      "answer": 4,
+      "tolerance": 0,
+      "solution": "$4a=16$, so $a=4$ and the focus is $(4,0)$."
+    },
+    {
+      "id": "tn12m-con-09",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Ellipse",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find the length of the latus rectum of the ellipse $\\dfrac{x^2}{16}+\\dfrac{y^2}{9}=1$.",
+      "answer": 4.5,
+      "tolerance": 0,
+      "solution": "Latus rectum $=\\dfrac{2b^2}{a}=\\dfrac{2\\cdot9}{4}=\\dfrac92=4.5$.",
+      "accept": [
+        "9/2"
+      ]
+    },
+    {
+      "id": "tn12m-con-10",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Tangents",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Find $c$ if the line $y=2x+c$ is a tangent to the parabola $y^2=8x$.",
+      "answer": 1,
+      "tolerance": 0,
+      "solution": "$y^2=4ax$ with $a=2$. The line $y=mx+c$ touches it when $c=\\dfrac{a}{m}$.\n\n$c=\\dfrac22=1$."
+    },
+    {
+      "id": "tn12m-con-11",
+      "chapter": "Two Dimensional Analytical Geometry II",
+      "topic": "Parabola",
+      "type": "long",
+      "marks": 5,
+      "q": "Find the vertex, focus, equation of the directrix and length of the latus rectum of the parabola $y^2-4y-8x+12=0$.",
+      "solution": "Complete the square: $y^2-4y+4=8x-8$, i.e. $(y-2)^2=8(x-1)$.\n\nThis is $Y^2=4aX$ with $X=x-1$, $Y=y-2$ and $4a=8$, so $a=2$.\n\n**Vertex** $(1,2)$.\n\n**Focus** $(1+a,2)=(3,2)$.\n\n**Directrix** $x=1-a$, i.e. $x=-1$.\n\n**Latus rectum** $4a=8$."
+    }
+  ]
+}
