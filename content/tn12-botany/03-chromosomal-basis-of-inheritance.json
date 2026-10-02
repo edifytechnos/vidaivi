@@ -1,0 +1,243 @@
+{
+  "id": "lib-tn12b-chr",
+  "title": "Chromosomal Basis of Inheritance",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-chr-25q1",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Linkage",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Linkage groups in Sweet pea :",
+      "options": [
+        "7",
+        "2",
+        "10",
+        "4"
+      ],
+      "answer": 0,
+      "solution": "The number of linkage groups equals the **haploid chromosome number**, since all genes on one chromosome tend to be inherited together. Sweet pea (Lathyrus odoratus) has 2n = 14, so n = 7.\n\nSo sweet pea has **7** linkage groups.",
+      "source": "TN HSE Mar 2025"
+    },
+    {
+      "id": "tn12b-chr-01",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Chromosome theory",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The chromosomal theory of inheritance was proposed by:",
+      "options": [
+        "Sutton and Boveri",
+        "Bateson and Punnett",
+        "Watson and Crick",
+        "Morgan and Sturtevant"
+      ],
+      "answer": 0,
+      "solution": "**Walter Sutton and Theodor Boveri** (1902–1903) noted that chromosomes behave in meiosis exactly as Mendel's factors do: in pairs, segregating and assorting independently. They proposed that genes are carried on chromosomes.\n\nMorgan later confirmed it experimentally in Drosophila."
+    },
+    {
+      "id": "tn12b-chr-02",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Linkage",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Linkage was first observed in sweet pea by:",
+      "options": [
+        "Sutton and Boveri",
+        "Bateson and Punnett",
+        "Morgan and Bridges",
+        "Correns and de Vries"
+      ],
+      "answer": 1,
+      "solution": "**Bateson and Punnett** (1906) crossed sweet pea plants differing in flower colour and pollen shape and found far more parental combinations in the test cross than the 1:1:1:1 expected. They called it coupling and repulsion.\n\nMorgan explained it as linkage of genes on one chromosome."
+    },
+    {
+      "id": "tn12b-chr-03",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Gene mapping",
+      "type": "mcq",
+      "marks": 1,
+      "q": "One per cent recombination between two genes corresponds to one:",
+      "options": [
+        "centiMorgan",
+        "nanometre",
+        "Angstrom",
+        "Svedberg unit"
+      ],
+      "answer": 0,
+      "solution": "Sturtevant used recombination frequency as a measure of distance: **1% recombination = 1 map unit = 1 centiMorgan (cM)**, named after T.H. Morgan.\n\nThe farther apart two genes lie, the more often crossing over separates them."
+    },
+    {
+      "id": "tn12b-chr-04",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Crossing over",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Crossing over takes place during which substage of prophase I?",
+      "options": [
+        "Leptotene",
+        "Zygotene",
+        "Pachytene",
+        "Diakinesis"
+      ],
+      "answer": 2,
+      "solution": "Homologous chromosomes pair (synapsis) in zygotene. In **pachytene** non-sister chromatids exchange segments: this is crossing over, helped by the enzyme recombinase.\n\nThe points of exchange become visible as chiasmata in diplotene."
+    },
+    {
+      "id": "tn12b-chr-05",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Sex determination",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In honey bees, the drones (males) develop from:",
+      "options": [
+        "Fertilised eggs",
+        "Unfertilised eggs",
+        "Eggs fed on royal jelly",
+        "Diploid larvae"
+      ],
+      "answer": 1,
+      "solution": "Honey bees show **haplodiploidy**: drones develop parthenogenetically from **unfertilised eggs**, so they are haploid (n = 16).\n\nFertilised eggs give diploid females (2n = 32); those fed royal jelly become queens, the rest workers."
+    },
+    {
+      "id": "tn12b-chr-06",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Aneuploidy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Monosomy is represented as:",
+      "options": [
+        "2n + 1",
+        "2n − 1",
+        "2n − 2",
+        "2n + 2"
+      ],
+      "answer": 1,
+      "solution": "In **monosomy** one chromosome of a pair is missing, so the number is **2n − 1**.\n\nTrisomy is 2n + 1, nullisomy 2n − 2 (a whole pair lost) and tetrasomy 2n + 2."
+    },
+    {
+      "id": "tn12b-chr-07",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Polyploidy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is a man-made allopolyploid?",
+      "options": [
+        "Triticale",
+        "Seedless banana",
+        "Seedless watermelon",
+        "Potato"
+      ],
+      "answer": 0,
+      "solution": "**Triticale** is produced by crossing wheat (Triticum) with rye (Secale) and doubling the chromosomes of the hybrid, so it carries genomes from two different species: an **allopolyploid**.\n\nSeedless banana and watermelon are triploid autopolyploids, having more sets of one species' own genome."
+    },
+    {
+      "id": "tn12b-chr-08",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Mutation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A point mutation in which a purine is replaced by another purine is called:",
+      "options": [
+        "Transversion",
+        "Transition",
+        "Frameshift",
+        "Deletion"
+      ],
+      "answer": 1,
+      "solution": "A **transition** replaces a purine with a purine (A ↔ G) or a pyrimidine with a pyrimidine (C ↔ T).\n\nA transversion swaps a purine for a pyrimidine or the reverse; frameshifts come from inserting or deleting bases."
+    },
+    {
+      "id": "tn12b-chr-09",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Aneuploidy",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A plant has 2n = 14. How many chromosomes will its trisomic carry?",
+      "answer": 15,
+      "tolerance": 0,
+      "accept": [
+        "15",
+        "fifteen"
+      ],
+      "solution": "A trisomic has one extra copy of one chromosome: **2n + 1**.\n\n$14 + 1 = 15$."
+    },
+    {
+      "id": "tn12b-chr-10",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Linkage",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Maize has 2n = 20. How many linkage groups does it have?",
+      "answer": 10,
+      "tolerance": 0,
+      "accept": [
+        "10",
+        "ten"
+      ],
+      "solution": "The number of linkage groups equals the haploid number. For maize n = 20 / 2 = **10**.\n\nEach chromosome with all the genes on it forms one linkage group."
+    },
+    {
+      "id": "tn12b-chr-11",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Gene mapping",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Two linked genes show 12% recombinant offspring in a test cross. What is the map distance between them, in centiMorgans?",
+      "answer": 12,
+      "tolerance": 0,
+      "accept": [
+        "12",
+        "12 cm",
+        "12 cM",
+        "12 map units"
+      ],
+      "solution": "1% recombination is one map unit (1 cM).\n\nSo 12% recombination means the genes are **12 cM** apart."
+    },
+    {
+      "id": "tn12b-chr-12",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Polyploidy",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The basic chromosome number (x) of banana is 11. How many chromosomes does a triploid banana carry?",
+      "answer": 33,
+      "tolerance": 0,
+      "accept": [
+        "33",
+        "thirty three",
+        "thirty-three"
+      ],
+      "solution": "A triploid has three sets of the basic genome: **3x**.\n\n$3 \\times 11 = 33$. Being triploid, it cannot form balanced gametes, which is why cultivated banana is seedless."
+    },
+    {
+      "id": "tn12b-chr-13",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Chromosomal aberrations",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Name the structural change in which a segment of a chromosome is transferred to a non-homologous chromosome.",
+      "answer": "Translocation",
+      "tolerance": 0,
+      "accept": [
+        "translocation",
+        "translocations",
+        "reciprocal translocation"
+      ],
+      "solution": "Movement of a chromosome segment to a **non-homologous** chromosome is **translocation**. When two non-homologous chromosomes exchange segments it is reciprocal translocation.\n\nDeletion loses a segment, duplication repeats one, and inversion turns one through 180°."
+    },
+    {
+      "id": "tn12b-chr-14",
+      "chapter": "Chromosomal Basis of Inheritance",
+      "topic": "Crossing over",
+      "type": "long",
+      "marks": 5,
+      "q": "What is crossing over? Describe its mechanism and give its significance.",
+      "solution": "**Crossing over** is the exchange of segments between **non-sister chromatids of homologous chromosomes** during meiosis, producing new combinations of linked genes.\n\n**Mechanism** (prophase I):\n1. **Synapsis**: in zygotene homologous chromosomes pair closely, held by the synaptonemal complex, forming bivalents.\n2. **Tetrad formation**: each bivalent now has four chromatids.\n3. **Crossing over**: in pachytene, non-sister chromatids break at corresponding points (endonuclease) and the broken segments rejoin crosswise (ligase), aided by recombinase.\n4. **Terminalisation**: in diplotene the chromatids separate except at the crossover points, the **chiasmata**, which move towards the ends by diakinesis.\n\n**Significance**:\n1. Produces new gene combinations (recombinants), a source of variation.\n2. Recombination frequency is used to build genetic (linkage) maps.\n3. Proves that genes lie in a linear order on chromosomes.\n4. Helps plant breeders bring desirable linked traits together."
+    }
+  ]
+}

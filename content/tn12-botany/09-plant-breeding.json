@@ -1,0 +1,244 @@
+{
+  "id": "lib-tn12b-brd",
+  "title": "Plant Breeding",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-brd-23q5",
+      "chapter": "Plant Breeding",
+      "topic": "Green Revolution",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "______ is called as “Father of Indian Green Revolution”.",
+      "options": [
+        "M.S. Swaminathan",
+        "P. Maheswari",
+        "Mendel",
+        "Nel Jayaraman"
+      ],
+      "answer": 0,
+      "solution": "**M.S. Swaminathan** is called the Father of the Indian Green Revolution. He introduced high-yielding semi-dwarf wheat and rice varieties in the 1960s.\n\nP. Maheshwari was an embryologist, Mendel the father of genetics, and Nel Jayaraman a Tamil Nadu conserver of traditional rice varieties."
+    },
+    {
+      "id": "tn12b-brd-23q6",
+      "chapter": "Plant Breeding",
+      "topic": "Green manure",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Tephrosia purpurea is a ______.",
+      "options": [
+        "Bio-herbicide",
+        "Bio-fertilizer",
+        "Green manure",
+        "Bio-pesticide"
+      ],
+      "answer": 2,
+      "solution": "**Tephrosia purpurea** (kolinji) is a **green manure** crop: a legume grown and ploughed into the soil to add organic matter and nitrogen.\n\nOther green manures named in the textbook include Crotalaria juncea (sunn hemp) and Sesbania."
+    },
+    {
+      "id": "tn12b-brd-24q4",
+      "chapter": "Plant Breeding",
+      "topic": "Mutation breeding",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Assertion (A) : Gamma rays are generally used to induce mutation in wheat varieties.\nReason (R) : Because they carry lower energy to non-ionize electrons from atom.",
+      "options": [
+        "(A) is wrong, (R) is correct",
+        "(A) and (R) are correct",
+        "(A) and (R) are wrong",
+        "(A) is correct, (R) is wrong"
+      ],
+      "answer": 3,
+      "solution": "The **assertion is correct**: gamma rays are widely used to induce mutations in crops such as wheat.\n\nThe **reason is wrong**: gamma rays are **high-energy, ionising** radiation that knock electrons out of atoms; that is exactly why they cause mutations."
+    },
+    {
+      "id": "tn12b-brd-24q6",
+      "chapter": "Plant Breeding",
+      "topic": "Improved varieties",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Match the following :\nColumn - I | Column - II\n(1) Cowpea | (i) Pusa Sadabahar\n(2) Wheat | (ii) Pusa Swarnim\n(3) Chilli | (iii) Himgiri\n(4) Brassica | (iv) Pusa Komal",
+      "options": [
+        "(1)-(iv), (2)-(i), (3)-(ii), (4)-(iii)",
+        "(1)-(ii), (2)-(iv), (3)-(i), (4)-(iii)",
+        "(1)-(ii), (2)-(i), (3)-(iv), (4)-(iii)",
+        "(1)-(iv), (2)-(iii), (3)-(i), (4)-(ii)"
+      ],
+      "answer": 3,
+      "solution": "Correct matches:\n\nCowpea — **Pusa Komal** (bacterial blight resistant)\nWheat — **Himgiri** (resistant to leaf and stripe rust, hill bunt)\nChilli — **Pusa Sadabahar** (resistant to chilly mosaic virus, leaf curl)\nBrassica — **Pusa Swarnim** (white rust resistant)\n\nSo (1)-(iv), (2)-(iii), (3)-(i), (4)-(ii)."
+    },
+    {
+      "id": "tn12b-brd-01",
+      "chapter": "Plant Breeding",
+      "topic": "Heterosis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The superiority of an F₁ hybrid over both its parents is called:",
+      "options": [
+        "Inbreeding depression",
+        "Heterosis",
+        "Mutation",
+        "Polyploidy"
+      ],
+      "answer": 1,
+      "solution": "**Heterosis** (hybrid vigour) is the superiority of the F₁ in yield, size or vigour over its parents. The term was coined by Shull.\n\nInbreeding depression is the opposite: loss of vigour after repeated self-pollination."
+    },
+    {
+      "id": "tn12b-brd-02",
+      "chapter": "Plant Breeding",
+      "topic": "Biofertilizers",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Azolla is used as a biofertilizer in paddy fields because it harbours the nitrogen-fixing cyanobacterium:",
+      "options": [
+        "Nostoc",
+        "Anabaena azollae",
+        "Rhizobium",
+        "Azotobacter"
+      ],
+      "answer": 1,
+      "solution": "The water fern **Azolla** carries **Anabaena azollae** in its leaf cavities; the cyanobacterium fixes atmospheric nitrogen that enriches the paddy field.\n\nRhizobium lives in legume root nodules and Azotobacter is free-living in soil."
+    },
+    {
+      "id": "tn12b-brd-03",
+      "chapter": "Plant Breeding",
+      "topic": "Green Revolution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Sonalika and Kalyan Sona are high-yielding varieties of:",
+      "options": [
+        "Rice",
+        "Wheat",
+        "Maize",
+        "Sugarcane"
+      ],
+      "answer": 1,
+      "solution": "**Sonalika** and **Kalyan Sona** are semi-dwarf, high-yielding, disease-resistant **wheat** varieties developed from Mexican wheat during the Green Revolution.\n\nThe rice counterparts were IR-8, Jaya and Padma."
+    },
+    {
+      "id": "tn12b-brd-04",
+      "chapter": "Plant Breeding",
+      "topic": "Selection",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Clonal selection is used in crops that are:",
+      "options": [
+        "Self-pollinated",
+        "Cross-pollinated",
+        "Vegetatively propagated",
+        "Apomictic only through seeds"
+      ],
+      "answer": 2,
+      "solution": "**Clonal selection** picks the best plants from a mixed population of a **vegetatively propagated** crop (banana, potato, sugarcane) and multiplies them as clones.\n\nThe clone is genetically identical to its parent, so the selected quality is kept."
+    },
+    {
+      "id": "tn12b-brd-05",
+      "chapter": "Plant Breeding",
+      "topic": "Biofortification",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Atlas 66, used as a donor for improving wheat, is rich in:",
+      "options": [
+        "Vitamin A",
+        "Iron",
+        "Protein",
+        "Calcium"
+      ],
+      "answer": 2,
+      "solution": "**Atlas 66**, a wheat variety with high **protein** content, was used as the donor to breed protein-rich cultivated wheat: an example of biofortification.\n\nBiofortification breeds crops for higher vitamins, minerals, protein or healthier oils."
+    },
+    {
+      "id": "tn12b-brd-06",
+      "chapter": "Plant Breeding",
+      "topic": "Hybridization",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In a double cross, (A × B) × (C × D), how many inbred parents are involved?",
+      "answer": 4,
+      "tolerance": 0,
+      "solution": "**4** parents: two single crosses, A × B and C × D, are made first and their F₁s are then crossed with each other.\n\nDouble crosses were used in maize to produce hybrid seed economically."
+    },
+    {
+      "id": "tn12b-brd-07",
+      "chapter": "Plant Breeding",
+      "topic": "Mutation breeding",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the radioactive isotope commonly used as a source of gamma rays in mutation breeding.",
+      "answer": "Cobalt-60",
+      "tolerance": 0,
+      "accept": [
+        "Cobalt 60",
+        "Co-60",
+        "Co60",
+        "60Co",
+        "cobalt"
+      ],
+      "solution": "**Cobalt-60** ($^{60}\\mathrm{Co}$) is the usual gamma source; caesium-137 is also used.\n\nSeeds or plant parts are exposed in a gamma garden or gamma cell, and the useful mutants are selected from the following generations."
+    },
+    {
+      "id": "tn12b-brd-08",
+      "chapter": "Plant Breeding",
+      "topic": "Selection",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the progeny of a single self-pollinated homozygous plant called?",
+      "answer": "pure line",
+      "tolerance": 0,
+      "accept": [
+        "pureline",
+        "pure-line",
+        "pure lines"
+      ],
+      "solution": "It is a **pure line**. All its plants are homozygous and genetically alike, so it breeds true.\n\nPure line selection, based on Johannsen's work, is used to improve self-pollinated crops such as wheat and rice."
+    },
+    {
+      "id": "tn12b-brd-09",
+      "chapter": "Plant Breeding",
+      "topic": "Green Revolution",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The rice variety IR-8 was developed at the International Rice Research Institute. In which country is that institute?",
+      "answer": "Philippines",
+      "tolerance": 0,
+      "accept": [
+        "the Philippines",
+        "Phillipines",
+        "Philipines"
+      ],
+      "solution": "IRRI is at Los Baños in the **Philippines**. IR-8, a semi-dwarf 'miracle rice', was released in 1966.\n\nIn India it was used with Taichung Native-1 from Taiwan to develop Jaya and Padma."
+    },
+    {
+      "id": "tn12b-brd-10",
+      "chapter": "Plant Breeding",
+      "topic": "Biofertilizers",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Name the bacterial genus that fixes nitrogen in the root nodules of leguminous plants.",
+      "answer": "Rhizobium",
+      "tolerance": 0,
+      "accept": [
+        "Rhizobia",
+        "Rhizobium sp."
+      ],
+      "solution": "**Rhizobium**. It infects legume roots, forms nodules and fixes atmospheric nitrogen into ammonia using the enzyme nitrogenase.\n\nRhizobium cultures are applied to legume seeds as a biofertilizer before sowing."
+    },
+    {
+      "id": "tn12b-brd-24q20a",
+      "chapter": "Plant Breeding",
+      "topic": "Single cell protein",
+      "source": "TN HSE Mar 2024",
+      "type": "long",
+      "marks": 5,
+      "q": "What is single cell protein ? Mention its applications.",
+      "solution": "Model answer:\n\n**Single cell protein (SCP)** is protein obtained from the dried cells of micro-organisms such as algae (Spirulina, Chlorella), yeast (Saccharomyces), fungi and bacteria, grown on cheap substrates and used as food or feed. Spirulina, for example, can be grown on waste water from potato processing, straw, molasses, animal manure and sewage.\n\n**Applications:**\n\n1. A rich source of **protein** (Spirulina has about 60–70%), with vitamins, minerals and essential amino acids; used against malnutrition.\n\n2. Used as **animal and poultry feed** and in fish farming.\n\n3. Used in **health foods** and as food supplements, including for astronauts.\n\n4. Micro-organisms grow very fast, need little land and water, and can be grown on **waste materials**, which also reduces environmental pollution.\n\n5. Used in cosmetics and as a source of pigments and natural colours."
+    }
+  ]
+}

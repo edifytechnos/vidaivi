@@ -1,0 +1,237 @@
+{
+  "id": "lib-tn12z-env",
+  "title": "Environmental Issues",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 13,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-env-01",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ozone layer is found in the:",
+      "options": [
+        "Troposphere",
+        "Stratosphere",
+        "Mesosphere",
+        "Thermosphere"
+      ],
+      "answer": 1,
+      "solution": "The 'good' ozone layer lies in the **stratosphere** and absorbs harmful UV-B radiation from the sun.\n\nOzone in the troposphere is a 'bad' pollutant that harms plants and animals."
+    },
+    {
+      "id": "tn12z-env-02",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The chief cause of ozone depletion is:",
+      "options": [
+        "Carbon monoxide",
+        "Chlorofluorocarbons",
+        "Sulphur dioxide",
+        "Methane"
+      ],
+      "answer": 1,
+      "solution": "**CFCs** from refrigerants and aerosols rise to the stratosphere, where UV light releases chlorine atoms. Each Cl atom acts as a catalyst and destroys many ozone molecules.\n\nThe Montreal Protocol (1987) was signed to phase them out."
+    },
+    {
+      "id": "tn12z-env-03",
+      "chapter": "Environmental Issues",
+      "topic": "Water pollution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Minamata disease is caused by poisoning with:",
+      "options": [
+        "Lead",
+        "Mercury",
+        "Cadmium",
+        "Arsenic"
+      ],
+      "answer": 1,
+      "solution": "Minamata disease (Japan, 1950s) was caused by eating fish contaminated with **methyl mercury** from industrial effluent.\n\nCadmium causes itai-itai disease."
+    },
+    {
+      "id": "tn12z-env-04",
+      "chapter": "Environmental Issues",
+      "topic": "Water pollution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Blue baby syndrome (methaemoglobinaemia) is caused by excess of which in drinking water?",
+      "options": [
+        "Fluoride",
+        "Nitrate",
+        "Chloride",
+        "Sulphate"
+      ],
+      "answer": 1,
+      "solution": "Excess **nitrate**, often from fertiliser run-off, is converted to nitrite, which turns haemoglobin into methaemoglobin that cannot carry oxygen. Infants turn bluish.\n\nExcess fluoride causes fluorosis."
+    },
+    {
+      "id": "tn12z-env-05",
+      "chapter": "Environmental Issues",
+      "topic": "Water pollution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Eutrophication of a lake results in:",
+      "options": [
+        "Increase in dissolved oxygen",
+        "Decrease in dissolved oxygen and death of fish",
+        "Decrease in algae",
+        "Lower nutrient level"
+      ],
+      "answer": 1,
+      "solution": "Nutrients (nitrates, phosphates) from sewage and fertilisers cause **algal blooms**. When the algae die, their decomposition uses up the **dissolved oxygen**, and fish die.\n\nThe lake gradually ages and fills in."
+    },
+    {
+      "id": "tn12z-env-06",
+      "chapter": "Environmental Issues",
+      "topic": "Global warming",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which gas makes the largest contribution to the enhanced greenhouse effect?",
+      "options": [
+        "Methane",
+        "Carbon dioxide",
+        "Nitrous oxide",
+        "CFCs"
+      ],
+      "answer": 1,
+      "solution": "**Carbon dioxide**, released mainly by burning fossil fuels and deforestation, contributes the largest share (about 60%) of global warming.\n\nMethane, CFCs and nitrous oxide contribute smaller shares."
+    },
+    {
+      "id": "tn12z-env-07",
+      "chapter": "Environmental Issues",
+      "topic": "Air pollution control",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An electrostatic precipitator removes which pollutant from industrial exhaust?",
+      "options": [
+        "Sulphur dioxide",
+        "Particulate matter",
+        "Carbon monoxide",
+        "Nitrogen oxides"
+      ],
+      "answer": 1,
+      "solution": "In an electrostatic precipitator, electrodes charge the dust particles, which are then attracted to collecting plates. It removes over 99% of **particulate matter**.\n\nGases such as SO2 are removed by a scrubber."
+    },
+    {
+      "id": "tn12z-env-08",
+      "chapter": "Environmental Issues",
+      "topic": "Noise pollution",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The loudness of sound is measured in:",
+      "options": [
+        "Hertz",
+        "Decibel",
+        "Dobson",
+        "Joule"
+      ],
+      "answer": 1,
+      "solution": "Sound intensity is measured in **decibels (dB)**. Prolonged exposure above about 80 dB can damage hearing.\n\nHertz measures frequency; Dobson measures ozone thickness."
+    },
+    {
+      "id": "tn12z-env-09",
+      "chapter": "Environmental Issues",
+      "topic": "Conservation movements",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Chipko movement was started to protect:",
+      "options": [
+        "Rivers",
+        "Trees",
+        "Tigers",
+        "Wetlands"
+      ],
+      "answer": 1,
+      "solution": "In the Chipko movement (1973, Garhwal Himalaya) village women **hugged trees** to stop them being felled by contractors.\n\n'Chipko' means 'to cling' or 'to hug'."
+    },
+    {
+      "id": "tn12z-env-10",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the unit in which the thickness of the ozone layer is measured.",
+      "answer": "Dobson",
+      "tolerance": 0,
+      "accept": [
+        "dobson unit",
+        "dobson units",
+        "du"
+      ],
+      "solution": "The thickness of the ozone column is measured in **Dobson units (DU)**. A value below about 220 DU marks an ozone hole."
+    },
+    {
+      "id": "tn12z-env-11",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many oxygen atoms are there in one molecule of ozone?",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "Ozone is $\\text{O}_3$: **3** oxygen atoms. It forms in the stratosphere when UV light splits $\\text{O}_2$ and the free O atoms combine with $\\text{O}_2$."
+    },
+    {
+      "id": "tn12z-env-12",
+      "chapter": "Environmental Issues",
+      "topic": "Water pollution",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the disease caused by excess fluoride in drinking water.",
+      "answer": "Fluorosis",
+      "tolerance": 0,
+      "accept": [
+        "fluorosis",
+        "dental fluorosis",
+        "skeletal fluorosis"
+      ],
+      "solution": "Excess fluoride causes **fluorosis**: mottling of the teeth, and in severe cases stiff, deformed bones and joints (skeletal fluorosis)."
+    },
+    {
+      "id": "tn12z-env-13",
+      "chapter": "Environmental Issues",
+      "topic": "Air pollution control",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A catalytic converter in a vehicle changes carbon monoxide into which gas?",
+      "answer": "Carbon dioxide",
+      "tolerance": 0,
+      "accept": [
+        "co2",
+        "carbon dioxide gas"
+      ],
+      "solution": "A catalytic converter uses platinum, palladium and rhodium as catalysts. It oxidises **carbon monoxide** and unburnt hydrocarbons to **carbon dioxide** and water, and reduces nitric oxide to nitrogen.\n\nIt needs unleaded petrol, because lead poisons the catalyst."
+    },
+    {
+      "id": "tn12z-env-14",
+      "chapter": "Environmental Issues",
+      "topic": "Water pollution",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What is the term for the increase in concentration of a toxic substance (e.g. DDT) at successive trophic levels?",
+      "answer": "Biomagnification",
+      "tolerance": 0,
+      "accept": [
+        "biological magnification",
+        "bio-magnification"
+      ],
+      "solution": "**Biomagnification**: a toxin that cannot be metabolised or excreted accumulates in each organism and passes up the food chain, so its concentration rises at every trophic level.\n\nHigh DDT in fish-eating birds thins their egg shells, causing breeding failure."
+    },
+    {
+      "id": "tn12z-env-25q21b",
+      "chapter": "Environmental Issues",
+      "topic": "Solid waste management",
+      "source": "TN HSE Mar 2025",
+      "type": "long",
+      "marks": 5,
+      "q": "List all the wastes that you generate, at home, school or during your trip to other places. Could you very easily reduce the generation of these wastes ? Which would be difficult or rather impossible to reduce ?",
+      "solution": "**Wastes generated**\n\n1. **At home**: kitchen waste (vegetable peels, leftover food), paper, plastic bags and bottles, packaging, glass, old clothes, batteries, broken electronics (e-waste), medicines.\n2. **At school**: paper, pencil shavings, pens and refills, plastic wrappers and bottles, food waste, chalk dust.\n3. **On a trip**: plastic bottles and cups, food wrappers, cans, paper plates, tissues, leftover food.\n\n**Wastes that are easy to reduce** (by Reduce, Reuse, Recycle)\n\n1. Plastic bags: carry cloth or jute bags.\n2. Plastic bottles and cups: carry a reusable water bottle and steel tumbler.\n3. Paper: write on both sides, reuse, recycle.\n4. Food and kitchen waste: cook and serve in measured amounts; compost the rest (biodegradable).\n5. Packaging: buy in bulk, avoid over-packed goods.\n\n**Wastes that are difficult or nearly impossible to reduce**\n\n1. **E-waste** (old phones, batteries, chargers): needs special recycling for metals; can only be reduced by using devices longer.\n2. **Medical waste** (syringes, medicine strips, sanitary waste): needed for health and hygiene.\n3. Some essential packaging (milk sachets, medicine packs) and broken glass.\n\nThese should be segregated and sent to authorised recyclers or incinerated safely rather than dumped."
+    }
+  ]
+}

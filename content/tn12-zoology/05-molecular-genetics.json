@@ -1,0 +1,232 @@
+{
+  "id": "lib-tn12z-mol",
+  "title": "Molecular Genetics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-mol-25q6",
+      "chapter": "Molecular Genetics",
+      "topic": "DNA replication",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Meselson and Stahl’s experiment proved _________.",
+      "source": "TN HSE Mar 2025",
+      "options": [
+        "DNA is the genetic material",
+        "Transduction",
+        "Semi conservative nature of DNA replication",
+        "Transformation"
+      ],
+      "answer": 2,
+      "solution": "Meselson and Stahl grew E. coli in heavy nitrogen ($^{15}\\text{N}$), then shifted it to light $^{14}\\text{N}$ and separated the DNA by density gradient (CsCl) centrifugation.\n\nAfter one generation all DNA was of **intermediate (hybrid)** density; after two generations it was half hybrid and half light. This proved that DNA replicates **semi-conservatively**: each daughter molecule keeps one old strand and builds one new one."
+    },
+    {
+      "id": "tn12z-mol-01",
+      "chapter": "Molecular Genetics",
+      "topic": "Genetic material",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Griffith's transformation experiment was performed on :",
+      "options": [
+        "Escherichia coli",
+        "Streptococcus pneumoniae",
+        "Bacteriophage T2",
+        "Neurospora"
+      ],
+      "answer": 1,
+      "solution": "Griffith (1928) used **Streptococcus pneumoniae** in mice. Heat-killed virulent S (smooth) cells mixed with live harmless R (rough) cells killed the mice, and live S cells were recovered.\n\nSome 'transforming principle' from the dead S cells had converted R into S. Avery, MacLeod and McCarty later showed it to be DNA."
+    },
+    {
+      "id": "tn12z-mol-02",
+      "chapter": "Molecular Genetics",
+      "topic": "Genetic material",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the Hershey–Chase experiment, the protein coat of the bacteriophage was labelled with :",
+      "options": [
+        "$^{32}\\text{P}$",
+        "$^{35}\\text{S}$",
+        "$^{15}\\text{N}$",
+        "$^{14}\\text{C}$"
+      ],
+      "answer": 1,
+      "solution": "Proteins contain sulphur but no phosphorus, and DNA contains phosphorus but no sulphur. So the phage **protein coat was labelled with $^{35}\\text{S}$** and the DNA with $^{32}\\text{P}$.\n\nAfter infection and blending, $^{32}\\text{P}$ was found inside the bacteria while $^{35}\\text{S}$ stayed outside, proving that **DNA** is the genetic material that enters the host."
+    },
+    {
+      "id": "tn12z-mol-03",
+      "chapter": "Molecular Genetics",
+      "topic": "DNA replication",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Okazaki fragments are formed during replication on the :",
+      "options": [
+        "Leading strand",
+        "Lagging strand",
+        "Template of transcription",
+        "mRNA"
+      ],
+      "answer": 1,
+      "solution": "DNA polymerase can add nucleotides only in the $5' \\rightarrow 3'$ direction. On the **lagging strand**, whose template runs $5' \\rightarrow 3'$ towards the fork, the new DNA is made discontinuously as short **Okazaki fragments**, later joined by **DNA ligase**.\n\nThe leading strand is synthesised continuously."
+    },
+    {
+      "id": "tn12z-mol-04",
+      "chapter": "Molecular Genetics",
+      "topic": "Genetic code",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The initiation codon AUG codes for the amino acid :",
+      "options": [
+        "Methionine",
+        "Valine",
+        "Glycine",
+        "Tryptophan"
+      ],
+      "answer": 0,
+      "solution": "**AUG** is the start codon. It has a dual function: it begins translation and codes for **methionine** (formyl-methionine in prokaryotes).\n\nGUG also occasionally acts as a start codon, coding for valine. UAA, UAG and UGA are the stop codons."
+    },
+    {
+      "id": "tn12z-mol-05",
+      "chapter": "Molecular Genetics",
+      "topic": "Gene regulation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In the lac operon of E. coli, the inducer that switches the operon on is :",
+      "options": [
+        "Glucose",
+        "Lactose (allolactose)",
+        "The repressor protein",
+        "RNA polymerase"
+      ],
+      "answer": 1,
+      "solution": "The regulator gene (i) makes a **repressor** that binds the operator and blocks transcription. When **lactose** is present, its isomer allolactose binds the repressor and changes its shape, so it leaves the operator.\n\nRNA polymerase can then transcribe the structural genes z, y and a (β-galactosidase, permease, transacetylase). Lactose is therefore the **inducer**, and the lac operon is an inducible system."
+    },
+    {
+      "id": "tn12z-mol-06",
+      "chapter": "Molecular Genetics",
+      "topic": "DNA fingerprinting",
+      "type": "mcq",
+      "marks": 1,
+      "q": "DNA fingerprinting is based on the polymorphism of :",
+      "options": [
+        "Exons",
+        "VNTRs (variable number tandem repeats)",
+        "Histone proteins",
+        "rRNA genes"
+      ],
+      "answer": 1,
+      "solution": "DNA fingerprinting, developed by **Alec Jeffreys**, uses **VNTRs** — short sequences repeated in tandem, whose number of repeats differs from person to person. They are part of satellite (repetitive) DNA.\n\nThe pattern of VNTR bands is unique to each individual (except identical twins) and half of it comes from each parent, so it is used in forensics and parentage disputes."
+    },
+    {
+      "id": "tn12z-mol-07",
+      "chapter": "Molecular Genetics",
+      "topic": "Transcription",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In prokaryotes, the factor that enables RNA polymerase to recognise the promoter and initiate transcription is the :",
+      "options": [
+        "Rho (ρ) factor",
+        "Sigma (σ) factor",
+        "DNA ligase",
+        "Primase"
+      ],
+      "answer": 1,
+      "solution": "The bacterial RNA polymerase holoenzyme is the core enzyme plus the **sigma (σ) factor**, which recognises the promoter and starts **initiation**.\n\nThe **rho (ρ) factor** is associated with **termination**. DNA ligase and primase work in DNA replication, not transcription."
+    },
+    {
+      "id": "tn12z-mol-08",
+      "chapter": "Molecular Genetics",
+      "topic": "Packaging of DNA",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The nucleosome core consists of DNA wound around :",
+      "options": [
+        "A histone octamer",
+        "Four non-histone proteins",
+        "A single H1 histone",
+        "RNA molecules"
+      ],
+      "answer": 0,
+      "solution": "Positively charged **histones** H2A, H2B, H3 and H4, two of each, form a **histone octamer**. Negatively charged DNA (about 200 bp) wraps around it to form a **nucleosome**.\n\nHistone H1 binds the linker DNA between nucleosomes, giving the 'beads-on-string' chromatin fibre."
+    },
+    {
+      "id": "tn12z-mol-09",
+      "chapter": "Molecular Genetics",
+      "topic": "Genetic code",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many codons in total make up the genetic code ?",
+      "answer": 64,
+      "tolerance": 0,
+      "solution": "Each codon is a **triplet** of bases chosen from four (A, U, G, C).\n\nNumber of codons $= 4^3 = \\mathbf{64}$: 61 code for the 20 amino acids and 3 are stop codons."
+    },
+    {
+      "id": "tn12z-mol-10",
+      "chapter": "Molecular Genetics",
+      "topic": "Genetic code",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many stop (non-sense) codons are there in the genetic code ?",
+      "answer": 3,
+      "tolerance": 0,
+      "accept": [
+        "three"
+      ],
+      "solution": "**UAA, UAG and UGA** code for no amino acid. When a ribosome reaches one, a release factor binds and the polypeptide is released.\n\nSo there are **3** non-sense codons."
+    },
+    {
+      "id": "tn12z-mol-11",
+      "chapter": "Molecular Genetics",
+      "topic": "Structure of DNA",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In the Watson–Crick (B-form) model of DNA, how many base pairs are present in one complete turn of the helix ?",
+      "answer": 10,
+      "tolerance": 0,
+      "accept": [
+        "ten"
+      ],
+      "solution": "One turn of the B-DNA double helix is **3.4 nm** long, and successive base pairs are **0.34 nm** apart.\n\nBase pairs per turn $= \\dfrac{3.4}{0.34} = \\mathbf{10}$."
+    },
+    {
+      "id": "tn12z-mol-12",
+      "chapter": "Molecular Genetics",
+      "topic": "Chargaff's rule",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A double-stranded DNA sample contains 20% adenine. What is the percentage of cytosine in it ?",
+      "answer": 30,
+      "tolerance": 0,
+      "accept": [
+        "30%"
+      ],
+      "solution": "By **Chargaff's rule**, A = T and G = C in double-stranded DNA.\n\nA = 20%, so T = 20%; A + T = 40%. Then G + C = 100 − 40 = 60%, and since G = C, cytosine $= 60 \\div 2 = \\mathbf{30\\%}$."
+    },
+    {
+      "id": "tn12z-mol-13",
+      "chapter": "Molecular Genetics",
+      "topic": "Packaging of DNA",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many histone protein molecules make up the core (octamer) of one nucleosome ?",
+      "answer": 8,
+      "tolerance": 0,
+      "accept": [
+        "eight"
+      ],
+      "solution": "The core is a **histone octamer**: two molecules each of H2A, H2B, H3 and H4.\n\n$4 \\text{ types} \\times 2 = \\mathbf{8}$ molecules. H1 is not part of the core; it sits on the linker DNA."
+    },
+    {
+      "id": "tn12z-mol-23q21a",
+      "chapter": "Molecular Genetics",
+      "topic": "Transfer RNA",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the structure of RNA which plays a vital role in protein synthesis by transferring amino acids with diagram.",
+      "source": "TN HSE Mar 2023",
+      "solution": "The RNA that transfers amino acids to the ribosome during protein synthesis is **transfer RNA (tRNA)**, also called soluble RNA or the adapter molecule. It is the smallest RNA, about 70–80 nucleotides long.\n\n**Clover-leaf model (Robert Holley)**: the single strand folds back on itself by complementary base pairing, giving four arms and three loops.\n\n**1. Acceptor (amino acid) arm** — the $3'$ end always ends in **CCA**; the amino acid is attached to the terminal adenosine here. The $5'$ end usually carries G.\n\n**2. DHU (dihydrouridine) arm and loop** — binds the aminoacyl-tRNA synthetase enzyme that loads the correct amino acid.\n\n**3. Anticodon arm and loop** — carries the **anticodon**, three bases complementary to the codon on mRNA; this is how the tRNA reads the code.\n\n**4. TΨC arm and loop** — contains thymine, pseudouridine and cytosine; it binds the tRNA to the ribosome.\n\n**5. Variable (extra) arm** — between the anticodon and TΨC arms; its size varies between tRNAs.\n\n**Function**: each tRNA picks up a specific amino acid, carries it to the ribosome and places it in the order dictated by the codons of mRNA, so it is the adapter between nucleic acid and protein language. In three dimensions the molecule folds into an inverted L shape.\n\n**Diagram labels**: amino acid attachment site (CCA end), acceptor arm, DHU loop, anticodon loop with anticodon, variable arm, TΨC loop."
+    }
+  ]
+}

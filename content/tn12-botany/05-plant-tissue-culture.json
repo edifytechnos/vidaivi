@@ -1,0 +1,237 @@
+{
+  "id": "lib-tn12b-ptc",
+  "title": "Plant Tissue Culture",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 5,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-ptc-23q4",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Meristem culture",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Virus free plants are developed from :",
+      "options": [
+        "Meristem culture",
+        "Cell suspension culture",
+        "Protoplast culture",
+        "Organ culture"
+      ],
+      "answer": 0,
+      "solution": "The apical meristem (shoot tip) of an infected plant is usually **free of virus**: it has no vascular tissue for the virus to travel in, and its cells divide faster than the virus multiplies.\n\nCulturing this meristem therefore yields **virus-free plants**, as done for banana, potato and sugarcane.",
+      "source": "TN HSE Mar 2023"
+    },
+    {
+      "id": "tn12b-ptc-01",
+      "chapter": "Plant Tissue Culture",
+      "topic": "History",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Who is regarded as the father of plant tissue culture?",
+      "options": [
+        "Gottlieb Haberlandt",
+        "F.C. Steward",
+        "Murashige",
+        "P.R. White"
+      ],
+      "answer": 0,
+      "solution": "**Gottlieb Haberlandt** (1902) first tried to culture isolated plant cells and put forward the idea of totipotency.\n\nSteward later raised whole carrot plants from single cells, and Murashige and Skoog devised the MS medium (1962)."
+    },
+    {
+      "id": "tn12b-ptc-02",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Totipotency",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ability of a single plant cell to develop into a complete plant is called:",
+      "options": [
+        "Differentiation",
+        "Totipotency",
+        "Dedifferentiation",
+        "Organogenesis"
+      ],
+      "answer": 1,
+      "solution": "**Totipotency** is the inherent capacity of a living plant cell to give rise to a whole plant, because each cell carries the full genetic information.\n\nIt is the basic principle on which plant tissue culture rests."
+    },
+    {
+      "id": "tn12b-ptc-03",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Culture medium",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The most widely used nutrient medium in plant tissue culture is:",
+      "options": [
+        "MS medium",
+        "Nutrient agar",
+        "Hoagland solution",
+        "Czapek medium"
+      ],
+      "answer": 0,
+      "solution": "**MS medium**, devised by Murashige and Skoog (1962), supplies macro- and micronutrients, vitamins, sucrose as the carbon source and growth regulators. It is the most widely used plant tissue culture medium.\n\nNutrient agar and Czapek medium are for microbes; Hoagland solution is for hydroponics."
+    },
+    {
+      "id": "tn12b-ptc-04",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Sterilisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Culture media are sterilised by:",
+      "options": [
+        "Autoclaving",
+        "Treating with mercuric chloride",
+        "Flame sterilisation",
+        "Treating with ethanol"
+      ],
+      "answer": 0,
+      "solution": "Media are sterilised in an **autoclave** at 121 °C and 15 lbs/sq inch pressure for 15–20 minutes.\n\nMercuric chloride and ethanol are used for explants (surface sterilisation), and flaming for instruments."
+    },
+    {
+      "id": "tn12b-ptc-05",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Growth regulators",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A high cytokinin to auxin ratio in the medium promotes the formation of:",
+      "options": [
+        "Roots",
+        "Shoots",
+        "Callus only",
+        "Embryoids only"
+      ],
+      "answer": 1,
+      "solution": "Skoog and Miller showed that organ formation depends on the balance of hormones: a **high cytokinin : auxin** ratio favours **shoots**, a high auxin : cytokinin ratio favours roots, and a balance keeps the callus growing.\n\nThis is used to regenerate whole plants from callus."
+    },
+    {
+      "id": "tn12b-ptc-06",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Culture medium",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The gelling agent commonly added to make a solid culture medium is:",
+      "options": [
+        "Sucrose",
+        "Agar",
+        "Gelatin",
+        "Starch"
+      ],
+      "answer": 1,
+      "solution": "**Agar**, a polysaccharide from red algae, solidifies the medium (about 0.8%). It is not digested by plant tissues and stays firm at culture temperatures.\n\nSucrose is the carbon source, not a gelling agent."
+    },
+    {
+      "id": "tn12b-ptc-07",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Protoplast fusion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The chemical commonly used as a fusogen in protoplast fusion is:",
+      "options": [
+        "Polyethylene glycol (PEG)",
+        "Pectinase",
+        "Cellulase",
+        "Colchicine"
+      ],
+      "answer": 0,
+      "solution": "Protoplasts are released by digesting cell walls with **cellulase and pectinase**, then fused with **polyethylene glycol (PEG)** or an electric pulse (electrofusion) to give somatic hybrids such as Pomato.\n\nColchicine doubles chromosomes; it does not fuse cells."
+    },
+    {
+      "id": "tn12b-ptc-08",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Artificial seeds",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Somatic embryos are encapsulated to make artificial seeds using:",
+      "options": [
+        "Sodium alginate",
+        "Sodium chloride",
+        "Agar-agar only",
+        "Mercuric chloride"
+      ],
+      "answer": 0,
+      "solution": "**Artificial (synthetic) seeds** are somatic embryos coated in a gel of **sodium alginate**, which hardens into beads when dropped into calcium chloride solution.\n\nThe bead protects the embryo and supplies nutrients, so it can be stored, transported and sown like a seed."
+    },
+    {
+      "id": "tn12b-ptc-09",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Sterilisation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "At what temperature, in °C, is a culture medium autoclaved?",
+      "answer": 121,
+      "tolerance": 0,
+      "accept": [
+        "121"
+      ],
+      "solution": "Media are autoclaved at **121 °C** under 15 lbs/sq inch pressure for 15–20 minutes.\n\nAt this pressure steam reaches 121 °C, high enough to kill bacterial and fungal spores."
+    },
+    {
+      "id": "tn12b-ptc-10",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Cryopreservation",
+      "type": "numeric",
+      "marks": 2,
+      "q": "At what temperature, in °C, is plant material stored in liquid nitrogen during cryopreservation?",
+      "answer": -196,
+      "tolerance": 0,
+      "accept": [
+        "-196",
+        "−196"
+      ],
+      "solution": "Cryopreservation stores cells, embryos or meristems in **liquid nitrogen at −196 °C**, where metabolism virtually stops.\n\nCryoprotectants such as DMSO or glycerol are added first to prevent damage from ice crystals."
+    },
+    {
+      "id": "tn12b-ptc-11",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Culture medium",
+      "type": "numeric",
+      "marks": 2,
+      "q": "To what pH is a plant tissue culture medium usually adjusted before autoclaving?",
+      "answer": 5.8,
+      "tolerance": 0.2,
+      "accept": [
+        "5.8"
+      ],
+      "solution": "The pH of the medium is adjusted to about **5.8** (the usual range is 5.6–5.8), slightly acidic, using dilute NaOH or HCl.\n\nAt this pH nutrients stay available and the agar sets properly."
+    },
+    {
+      "id": "tn12b-ptc-12",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Callus culture",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What is the undifferentiated, unorganised mass of cells formed from an explant on a medium with auxin called?",
+      "answer": "Callus",
+      "tolerance": 0,
+      "accept": [
+        "callus",
+        "calli",
+        "callus tissue"
+      ],
+      "solution": "The explant's cells dedifferentiate and divide repeatedly, forming an unorganised mass called **callus**.\n\nCallus can be subcultured, used for suspension cultures, or made to redifferentiate into shoots, roots or somatic embryos."
+    },
+    {
+      "id": "tn12b-ptc-13",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Sterilisation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What pressure, in lbs per square inch, is used when autoclaving culture media?",
+      "answer": 15,
+      "tolerance": 0,
+      "accept": [
+        "15"
+      ],
+      "solution": "Autoclaving is done at **15 lbs/sq inch** (about 1.06 kg/cm²), which raises steam to 121 °C, for 15–20 minutes.\n\nHeat-sensitive substances such as some vitamins and hormones are filter-sterilised instead and added afterwards."
+    },
+    {
+      "id": "tn12b-ptc-14",
+      "chapter": "Plant Tissue Culture",
+      "topic": "Tissue culture technique",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the basic steps involved in plant tissue culture.",
+      "solution": "Plant tissue culture grows plant cells, tissues or organs on a nutrient medium under aseptic, controlled conditions. It rests on **totipotency**.\n\n**1. Preparation of the medium**: MS medium with macro- and micronutrients, vitamins, sucrose, growth regulators (auxin, cytokinin) and agar; pH adjusted to about 5.8.\n\n**2. Sterilisation**: glassware and medium in an autoclave (121 °C, 15 lbs/sq inch, 15–20 min); explants surface-sterilised with 0.1% mercuric chloride or 70% ethanol; work done in a laminar airflow chamber.\n\n**3. Inoculation**: the sterilised explant (shoot tip, leaf, node, embryo) is transferred aseptically onto the medium.\n\n**4. Incubation**: cultures are kept at 25 ± 2 °C with a 16-hour light period and 50–60% relative humidity. The explant forms **callus**.\n\n**5. Regeneration**: by changing the auxin : cytokinin ratio the callus forms shoots and roots (organogenesis) or somatic embryos (embryogenesis).\n\n**6. Hardening**: plantlets are moved to pots in a greenhouse and gradually exposed to natural conditions before planting in the field."
+    }
+  ]
+}

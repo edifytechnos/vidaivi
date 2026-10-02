@@ -1,0 +1,238 @@
+{
+  "id": "lib-tn12z-rhlt",
+  "title": "Reproductive Health",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-rhlt-23q5",
+      "chapter": "Reproductive Health",
+      "topic": "Contraception",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Contraceptive pills contain :",
+      "source": "TN HSE Mar 2023",
+      "options": [
+        "Relaxin and prolactin",
+        "Progesterone and estrogen",
+        "Progesterone and relaxin",
+        "Estrogen and relaxin"
+      ],
+      "answer": 1,
+      "solution": "Oral contraceptive pills contain small doses of **progesterone alone or progesterone with estrogen**. They inhibit ovulation, alter the cervical mucus so that sperms cannot pass, and make the uterus unsuitable for implantation.\n\nRelaxin and prolactin are not used in contraceptive pills."
+    },
+    {
+      "id": "tn12z-rhlt-25q4",
+      "chapter": "Reproductive Health",
+      "topic": "Barrier methods",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Read the given Statements and select the correct option.\nStatement 1 : Diaphragms, cervical caps and vaults are made of rubber and are inserted into the female reproductive tract to cover the cervix before coitus.\nStatement 2 : They are chemical barriers of conception and are reusable.",
+      "source": "TN HSE Mar 2025",
+      "options": [
+        "Statement 1 is correct but Statement 2 is incorrect.",
+        "Both Statements 1 and 2 are correct and Statement 2 is the correct explanation of Statement 1.",
+        "Both Statements 1 and 2 are incorrect.",
+        "Both Statements 1 and 2 are correct but Statement 2 is not the correct explanation of Statement 1."
+      ],
+      "answer": 0,
+      "solution": "**Statement 1 is correct**: diaphragms, cervical caps and vaults are rubber devices inserted into the female reproductive tract to cover the cervix before coitus, so that sperms cannot enter the uterus.\n\n**Statement 2 is incorrect**: they are **physical (mechanical) barriers**, not chemical ones. They are reusable. Chemical barriers are spermicidal foams, creams and jellies."
+    },
+    {
+      "id": "tn12z-rhlt-01",
+      "chapter": "Reproductive Health",
+      "topic": "Contraception",
+      "type": "mcq",
+      "marks": 1,
+      "q": "'Saheli', the non-steroidal oral contraceptive pill, was developed by :",
+      "options": [
+        "CDRI, Lucknow",
+        "AIIMS, New Delhi",
+        "ICMR, Chennai",
+        "NIN, Hyderabad"
+      ],
+      "answer": 0,
+      "solution": "**Saheli** (centchroman) was developed by the **Central Drug Research Institute (CDRI), Lucknow**. It is a non-steroidal pill taken **once a week**, with few side effects and a high contraceptive value."
+    },
+    {
+      "id": "tn12z-rhlt-02",
+      "chapter": "Reproductive Health",
+      "topic": "Intra-uterine devices",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Copper-releasing IUDs such as Cu-T prevent conception mainly by :",
+      "options": [
+        "Inhibiting ovulation",
+        "Suppressing sperm motility and fertilising capacity",
+        "Blocking the vas deferens",
+        "Preventing menstruation"
+      ],
+      "answer": 1,
+      "solution": "Copper IUDs (Cu-T, Cu-7, Multiload 375) release **copper ions** into the uterus. These **suppress sperm motility and the fertilising capacity** of sperms; IUDs also increase phagocytosis of sperms within the uterus.\n\nHormone-releasing IUDs (Progestasert, LNG-20) additionally make the uterus unsuitable for implantation and the cervix hostile to sperms."
+    },
+    {
+      "id": "tn12z-rhlt-03",
+      "chapter": "Reproductive Health",
+      "topic": "Sterilisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In vasectomy, the part that is cut and tied is the :",
+      "options": [
+        "Fallopian tube",
+        "Urethra",
+        "Vas deferens",
+        "Epididymis"
+      ],
+      "answer": 2,
+      "solution": "**Vasectomy** is the surgical sterilisation of the male: a small part of each **vas deferens** is removed or tied through a small cut in the scrotum, so sperms cannot reach the semen.\n\nThe female counterpart is **tubectomy**, in which a small part of each fallopian tube is removed or tied."
+    },
+    {
+      "id": "tn12z-rhlt-04",
+      "chapter": "Reproductive Health",
+      "topic": "Sexually transmitted infections",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Syphilis is caused by :",
+      "options": [
+        "Neisseria gonorrhoeae",
+        "Treponema pallidum",
+        "Trichomonas vaginalis",
+        "Human papilloma virus"
+      ],
+      "answer": 1,
+      "solution": "**Syphilis** is a bacterial STI caused by the spirochaete **Treponema pallidum**. It begins as a painless sore (chancre) at the site of infection and, untreated, progresses through secondary and tertiary stages.\n\nNeisseria gonorrhoeae causes gonorrhoea, Trichomonas vaginalis causes trichomoniasis, and HPV causes genital warts and cervical cancer."
+    },
+    {
+      "id": "tn12z-rhlt-05",
+      "chapter": "Reproductive Health",
+      "topic": "Assisted reproductive technology",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Transfer of an ovum collected from a donor into the fallopian tube of another female who cannot produce ova, but can provide suitable conditions for fertilisation, is :",
+      "options": [
+        "ZIFT",
+        "IUT",
+        "GIFT",
+        "ICSI"
+      ],
+      "answer": 2,
+      "solution": "**GIFT — Gamete Intra-Fallopian Transfer**: the **ovum (gamete)** from a donor is placed in the fallopian tube, where fertilisation then takes place naturally.\n\nZIFT transfers a **zygote** or early embryo (up to 8 blastomeres) into the fallopian tube; IUT transfers an embryo with more than 8 blastomeres into the uterus; ICSI injects a sperm directly into the ovum in the laboratory."
+    },
+    {
+      "id": "tn12z-rhlt-06",
+      "chapter": "Reproductive Health",
+      "topic": "Prenatal diagnosis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Amniocentesis, the sampling of amniotic fluid, is legally banned in India when used for :",
+      "options": [
+        "Detecting chromosomal abnormalities",
+        "Determining the sex of the foetus",
+        "Detecting metabolic disorders",
+        "Checking foetal maturity"
+      ],
+      "answer": 1,
+      "solution": "Amniocentesis takes a sample of amniotic fluid containing foetal cells, which can reveal chromosomal disorders such as Down's syndrome and some metabolic disorders.\n\nIts misuse to **determine the sex of the foetus**, followed by female foeticide, is **banned** in India under the PCPNDT Act."
+    },
+    {
+      "id": "tn12z-rhlt-07",
+      "chapter": "Reproductive Health",
+      "topic": "Natural methods",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Lactational amenorrhoea as a natural method of contraception is based on :",
+      "options": [
+        "Absence of ovulation during intense breast-feeding",
+        "Withdrawal before ejaculation",
+        "Avoiding coitus from day 10 to 17",
+        "Use of spermicidal jelly"
+      ],
+      "answer": 0,
+      "solution": "After parturition, while the mother **breast-feeds the baby fully**, ovulation and therefore menstruation do not occur. This **lactational amenorrhoea** lowers the chance of conception, but only for up to about six months.\n\nWithdrawal is coitus interruptus; avoiding coitus from day 10 to 17 is the periodic abstinence (rhythm) method; spermicidal jelly is a chemical barrier."
+    },
+    {
+      "id": "tn12z-rhlt-08",
+      "chapter": "Reproductive Health",
+      "topic": "Medical termination of pregnancy",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Medical termination of pregnancy (MTP) is considered relatively safe up to how many weeks of pregnancy (the first trimester) ?",
+      "answer": 12,
+      "tolerance": 0,
+      "accept": [
+        "12 weeks"
+      ],
+      "solution": "MTP is relatively safe during the **first trimester, i.e. up to 12 weeks** of pregnancy.\n\nSecond-trimester abortions carry much higher risks to the mother. India legalised MTP in 1971, with conditions to prevent its misuse, such as female foeticide."
+    },
+    {
+      "id": "tn12z-rhlt-09",
+      "chapter": "Reproductive Health",
+      "topic": "Natural methods",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Lactational amenorrhoea is effective as a contraceptive method only up to a maximum of how many months after parturition ?",
+      "answer": 6,
+      "tolerance": 0,
+      "accept": [
+        "six",
+        "6 months"
+      ],
+      "solution": "While the mother breast-feeds fully, ovulation is suppressed. This protection holds only for about **six months** after parturition; after that ovulation may resume even during feeding, so another method is needed."
+    },
+    {
+      "id": "tn12z-rhlt-10",
+      "chapter": "Reproductive Health",
+      "topic": "Contraception",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many times a week is the pill 'Saheli' taken ?",
+      "answer": 1,
+      "tolerance": 0,
+      "accept": [
+        "once",
+        "one"
+      ],
+      "solution": "Saheli (centchroman), developed by CDRI Lucknow, is a non-steroidal pill taken **once a week** — **1** time.\n\nThis weekly schedule, with few side effects, is what distinguishes it from the steroidal pills taken daily for 21 days."
+    },
+    {
+      "id": "tn12z-rhlt-11",
+      "chapter": "Reproductive Health",
+      "topic": "Emergency contraception",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Emergency contraceptive pills are effective if taken within how many hours of unprotected coitus ?",
+      "answer": 72,
+      "tolerance": 0,
+      "accept": [
+        "72 hours",
+        "3 days"
+      ],
+      "solution": "Progestogens alone or progestogen–estrogen combinations, or an IUD, used **within 72 hours** of unprotected coitus or rape are very effective as **emergency contraceptives**.\n\nThey act by preventing ovulation or fertilisation, or by preventing implantation."
+    },
+    {
+      "id": "tn12z-rhlt-12",
+      "chapter": "Reproductive Health",
+      "topic": "Assisted reproductive technology",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In ZIFT, the embryo transferred into the fallopian tube may have up to how many blastomeres ?",
+      "answer": 8,
+      "tolerance": 0,
+      "accept": [
+        "eight"
+      ],
+      "solution": "In **ZIFT (Zygote Intra-Fallopian Transfer)** the zygote or early embryo with **up to 8 blastomeres** is transferred into the fallopian tube.\n\nEmbryos with **more than 8** blastomeres are transferred into the uterus instead — that is **IUT (Intra-Uterine Transfer)**. Both follow in-vitro fertilisation (test-tube baby programme)."
+    },
+    {
+      "id": "tn12z-rhlt-13",
+      "chapter": "Reproductive Health",
+      "topic": "Contraception",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the different methods of contraception with one example of each.",
+      "solution": "An ideal contraceptive is user-friendly, easily available, effective, reversible and has few side effects. The methods are:\n\n**1. Natural methods** — avoid the meeting of ovum and sperm. **Periodic abstinence (rhythm method)**: no coitus from day 10 to 17 of the cycle, when ovulation is expected. **Coitus interruptus**: withdrawal before ejaculation. **Lactational amenorrhoea**: no ovulation during full breast-feeding, up to six months after delivery.\n\n**2. Barrier methods** — stop sperm reaching the ovum. **Physical**: condoms for males and females; diaphragms, cervical caps and vaults that cover the cervix. **Chemical**: spermicidal foams, creams and jellies.\n\n**3. Intra-uterine devices (IUDs)** — inserted into the uterus by a doctor. Non-medicated (Lippes loop), copper-releasing (Cu-T, Cu-7, Multiload 375) which suppress sperm motility, and hormone-releasing (Progestasert, LNG-20) which make the uterus unsuitable for implantation.\n\n**4. Hormonal methods** — oral pills of progesterone or progesterone–estrogen taken for 21 days, which inhibit ovulation; Saheli (centchroman), taken once a week; injections and implants under the skin; emergency pills within 72 hours.\n\n**5. Surgical methods (sterilisation)** — terminal methods. **Vasectomy** in males (vas deferens cut and tied) and **tubectomy** in females (fallopian tube cut and tied). Highly effective but poorly reversible."
+    }
+  ]
+}

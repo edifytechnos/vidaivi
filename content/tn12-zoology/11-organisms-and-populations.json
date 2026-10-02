@@ -1,0 +1,229 @@
+{
+  "id": "lib-tn12z-pop",
+  "title": "Organisms and Populations",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 11,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-pop-24q2",
+      "chapter": "Organisms and Populations",
+      "topic": "Population interactions",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The relationship between sucker fish and shark is :",
+      "options": [
+        "Commensalism",
+        "Parasitism",
+        "Predation",
+        "Competition"
+      ],
+      "answer": 0,
+      "solution": "The sucker fish (remora) attaches to the shark and gets transport and food scraps; the shark is neither helped nor harmed.\n\nOne benefits and the other is unaffected: **commensalism** (+, 0)."
+    },
+    {
+      "id": "tn12z-pop-25q5",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The maximum reproductive capacity of an organism under optimum environmental conditions is called _________.",
+      "options": [
+        "Biotic potential",
+        "Carrying capacity",
+        "Capacitation",
+        "Environmental resistance"
+      ],
+      "answer": 0,
+      "solution": "**Biotic potential** is the maximum rate at which a population can reproduce when conditions are ideal and resources unlimited.\n\nCarrying capacity is the maximum population the environment can support; environmental resistance is what keeps a population below its biotic potential."
+    },
+    {
+      "id": "tn12z-pop-01",
+      "chapter": "Organisms and Populations",
+      "topic": "Population interactions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An interaction in which one species benefits and the other is harmed, without being killed at once, is:",
+      "options": [
+        "Mutualism",
+        "Commensalism",
+        "Parasitism",
+        "Amensalism"
+      ],
+      "answer": 2,
+      "solution": "In **parasitism** (+, -) the parasite lives on or in the host and draws nourishment, harming the host but usually not killing it quickly.\n\nExamples: tapeworm in humans, Cuscuta on plants."
+    },
+    {
+      "id": "tn12z-pop-02",
+      "chapter": "Organisms and Populations",
+      "topic": "Abiotic factors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Organisms that can tolerate a wide range of salinity are called:",
+      "options": [
+        "Stenohaline",
+        "Euryhaline",
+        "Eurythermal",
+        "Stenothermal"
+      ],
+      "answer": 1,
+      "solution": "**Euryhaline** organisms (e.g. salmon, which moves between sea and river) tolerate a wide range of salinity.\n\nStenohaline organisms tolerate only a narrow range; eury- and steno-thermal refer to temperature, not salt."
+    },
+    {
+      "id": "tn12z-pop-03",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A sigmoid (S-shaped) growth curve represents:",
+      "options": [
+        "Exponential growth",
+        "Logistic growth",
+        "Zero growth",
+        "Declining growth"
+      ],
+      "answer": 1,
+      "solution": "**Logistic growth** (Verhulst-Pearl) starts slowly, accelerates, then slows as resources run short and levels off at the **carrying capacity K**, giving an S-shaped curve.\n\nExponential growth with unlimited resources gives a J-shaped curve."
+    },
+    {
+      "id": "tn12z-pop-04",
+      "chapter": "Organisms and Populations",
+      "topic": "Population interactions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A lichen, an association between an alga and a fungus, is an example of:",
+      "options": [
+        "Parasitism",
+        "Mutualism",
+        "Predation",
+        "Competition"
+      ],
+      "answer": 1,
+      "solution": "In a lichen the alga photosynthesises and supplies food, while the fungus gives shelter, water and minerals. Both benefit: **mutualism** (+, +).\n\nMycorrhiza and pollination by insects are other examples."
+    },
+    {
+      "id": "tn12z-pop-05",
+      "chapter": "Organisms and Populations",
+      "topic": "Responses to abiotic factors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Organisms that maintain a constant internal environment by physiological means are called:",
+      "options": [
+        "Conformers",
+        "Regulators",
+        "Migrators",
+        "Partial regulators only"
+      ],
+      "answer": 1,
+      "solution": "**Regulators** (birds, mammals) keep body temperature and osmotic concentration constant through physiological processes, i.e. homeostasis.\n\n**Conformers** let their internal state change with the environment."
+    },
+    {
+      "id": "tn12z-pop-06",
+      "chapter": "Organisms and Populations",
+      "topic": "Population interactions",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Penicillium secreting penicillin that inhibits bacteria while being itself unaffected is an example of:",
+      "options": [
+        "Amensalism",
+        "Commensalism",
+        "Mutualism",
+        "Predation"
+      ],
+      "answer": 0,
+      "solution": "In **amensalism** (-, 0) one species is harmed and the other is unaffected. Penicillium is unaffected while the bacteria are inhibited."
+    },
+    {
+      "id": "tn12z-pop-07",
+      "chapter": "Organisms and Populations",
+      "topic": "Population attributes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An age pyramid with a broad base of pre-reproductive individuals indicates a population that is:",
+      "options": [
+        "Declining",
+        "Stable",
+        "Expanding",
+        "Extinct"
+      ],
+      "answer": 2,
+      "solution": "A **triangular** pyramid with a wide base means many young individuals who will soon reproduce, so the population is **expanding** (growing).\n\nA bell shape shows a stable population; an urn shape shows a declining one."
+    },
+    {
+      "id": "tn12z-pop-08",
+      "chapter": "Organisms and Populations",
+      "topic": "Population attributes",
+      "type": "numeric",
+      "marks": 2,
+      "q": "A pond has 80 frogs. In a year 8 new frogs are born. What is the birth rate per frog per year?",
+      "answer": 0.1,
+      "tolerance": 0.001,
+      "solution": "Birth rate per individual $= \\dfrac{\\text{births}}{\\text{population}} = \\dfrac{8}{80} = 0.1$ per frog per year."
+    },
+    {
+      "id": "tn12z-pop-09",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In the logistic equation $\\dfrac{dN}{dt} = rN\\left(\\dfrac{K-N}{K}\\right)$, what is the growth rate $\\dfrac{dN}{dt}$ when $N = K$?",
+      "answer": 0,
+      "tolerance": 0,
+      "solution": "When $N = K$, the factor $\\dfrac{K-N}{K} = 0$, so $\\dfrac{dN}{dt} = 0$.\n\nThe population has reached the carrying capacity and stops growing."
+    },
+    {
+      "id": "tn12z-pop-10",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the term for the maximum population size that an environment can sustain, represented by K?",
+      "answer": "Carrying capacity",
+      "tolerance": 0,
+      "accept": [
+        "carrying capacity k",
+        "k"
+      ],
+      "solution": "**Carrying capacity (K)** is the largest population that the resources of a habitat can support indefinitely.\n\nIn logistic growth the population levels off at K."
+    },
+    {
+      "id": "tn12z-pop-11",
+      "chapter": "Organisms and Populations",
+      "topic": "Population attributes",
+      "type": "numeric",
+      "marks": 3,
+      "q": "A population of 200 fruit flies loses 30 individuals in a week. What is the death rate per individual per week?",
+      "answer": 0.15,
+      "tolerance": 0.001,
+      "solution": "Death rate $= \\dfrac{\\text{deaths}}{\\text{population}} = \\dfrac{30}{200} = 0.15$ per individual per week."
+    },
+    {
+      "id": "tn12z-pop-12",
+      "chapter": "Organisms and Populations",
+      "topic": "Responses to abiotic factors",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What is the term for the 'summer sleep' by which some animals (e.g. snails, fish) escape heat and drought?",
+      "answer": "Aestivation",
+      "tolerance": 0,
+      "accept": [
+        "aestivation",
+        "estivation",
+        "summer sleep"
+      ],
+      "solution": "**Aestivation** is a state of dormancy in hot, dry periods. Snails and lungfish aestivate to avoid heat and desiccation.\n\nThe winter equivalent, in bears for example, is hibernation."
+    },
+    {
+      "id": "tn12z-pop-13",
+      "chapter": "Organisms and Populations",
+      "topic": "Population growth",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the exponential and logistic models of population growth with their equations and growth curves.",
+      "solution": "**1. Exponential growth**\n\nWhen resources are unlimited, every species can realise its full **biotic potential**. The population grows in proportion to its own size:\n\n$\\dfrac{dN}{dt} = rN$\n\nwhere $N$ is population size and $r$ is the **intrinsic rate of natural increase**. Integrated, $N_t = N_0 e^{rt}$.\n\nPlotting $N$ against time gives a **J-shaped curve**. Such growth cannot continue for long in nature.\n\n**2. Logistic growth**\n\nResources are in fact limited, so individuals compete and the fittest survive. The habitat can support only a maximum number, the **carrying capacity (K)**. Growth is described by the Verhulst-Pearl logistic equation:\n\n$\\dfrac{dN}{dt} = rN\\left(\\dfrac{K-N}{K}\\right)$\n\nGrowth passes through a **lag phase**, an **acceleration (log) phase**, a **deceleration phase** as environmental resistance rises, and an **asymptote** where $N = K$ and growth stops.\n\nPlotting $N$ against time gives a **sigmoid (S-shaped) curve**. This model is considered more realistic than the exponential one."
+    }
+  ]
+}

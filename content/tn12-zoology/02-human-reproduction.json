@@ -1,0 +1,228 @@
+{
+  "id": "lib-tn12z-hrep",
+  "title": "Human Reproduction",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-hrep-24q1",
+      "chapter": "Human Reproduction",
+      "topic": "Male reproductive system",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Androgen Binding Protein (ABP) is produced by :",
+      "source": "TN HSE Mar 2024",
+      "options": [
+        "Sertoli cells",
+        "Leydig cells",
+        "Pituitary gland",
+        "Hypothalamus"
+      ],
+      "answer": 0,
+      "solution": "**Sertoli cells** of the seminiferous tubules secrete the **androgen binding protein (ABP)** under the influence of FSH. ABP concentrates testosterone inside the tubules, where it is needed for spermatogenesis. Sertoli cells also nourish developing sperms and secrete inhibin.\n\nLeydig (interstitial) cells secrete testosterone; the pituitary secretes FSH and LH; the hypothalamus secretes GnRH."
+    },
+    {
+      "id": "tn12z-hrep-25q8",
+      "chapter": "Human Reproduction",
+      "topic": "Structure of sperm",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Assertion (A) : Head of the sperm consists of Acrosome and Mitochondria.\nReason (R) : Acrosome contains spiral rows of Mitochondria.",
+      "source": "TN HSE Mar 2025",
+      "options": [
+        "(A) is true. (R) is false.",
+        "(A) and (R) are true. (R) is the correct explanation of (A).",
+        "Both (A) and (R) are false.",
+        "(A) and (R) are true. (R) is not the correct explanation of (A)."
+      ],
+      "answer": 2,
+      "solution": "**Assertion is false**: the head of the sperm contains the **acrosome and the nucleus**, not mitochondria.\n\n**Reason is false**: the acrosome is a cap derived from the Golgi body and holds lytic enzymes (sperm lysins). The spirally arranged mitochondria lie in the **middle piece**, where they supply energy for the movement of the tail.\n\nSo both (A) and (R) are false."
+    },
+    {
+      "id": "tn12z-hrep-01",
+      "chapter": "Human Reproduction",
+      "topic": "Male reproductive system",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Testosterone is secreted by :",
+      "options": [
+        "Sertoli cells",
+        "Leydig cells",
+        "Spermatogonia",
+        "Corpus luteum"
+      ],
+      "answer": 1,
+      "solution": "The **Leydig (interstitial) cells**, lying in the spaces between the seminiferous tubules, secrete **testosterone** when stimulated by LH.\n\nTestosterone drives spermatogenesis and the male secondary sexual characters. Sertoli cells secrete ABP and inhibin; the corpus luteum is an ovarian structure that secretes progesterone."
+    },
+    {
+      "id": "tn12z-hrep-02",
+      "chapter": "Human Reproduction",
+      "topic": "Menstrual cycle",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Ovulation in the human menstrual cycle is triggered by a surge of :",
+      "options": [
+        "FSH",
+        "Progesterone",
+        "LH",
+        "Oxytocin"
+      ],
+      "answer": 2,
+      "solution": "Around the middle of the cycle (about day 14) the level of **LH** rises sharply — the **LH surge**. This causes the mature Graafian follicle to rupture and release the secondary oocyte: **ovulation**.\n\nLH then converts the ruptured follicle into the corpus luteum, which secretes progesterone."
+    },
+    {
+      "id": "tn12z-hrep-03",
+      "chapter": "Human Reproduction",
+      "topic": "Fertilisation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In humans, fertilisation normally takes place in the :",
+      "options": [
+        "Uterus",
+        "Ampullary region of the fallopian tube",
+        "Cervix",
+        "Ovary"
+      ],
+      "answer": 1,
+      "solution": "The released ovum is picked up by the fimbriae and moves into the **ampulla** of the fallopian tube, where it meets the sperm. Fertilisation occurs here.\n\nThe zygote then divides (cleavage) while moving down the tube and reaches the uterus as a blastocyst, which implants in the endometrium."
+    },
+    {
+      "id": "tn12z-hrep-04",
+      "chapter": "Human Reproduction",
+      "topic": "Implantation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The embryo gets implanted in the uterine wall at the :",
+      "options": [
+        "Zygote stage",
+        "Morula stage",
+        "Blastocyst stage",
+        "Gastrula stage"
+      ],
+      "answer": 2,
+      "solution": "About seven days after fertilisation the embryo, now a **blastocyst**, attaches to the endometrium. Its outer layer, the **trophoblast**, invades the uterine wall, and the inner cell mass becomes the embryo proper.\n\nThe morula is the earlier solid ball of 8–16 cells formed while still in the fallopian tube."
+    },
+    {
+      "id": "tn12z-hrep-05",
+      "chapter": "Human Reproduction",
+      "topic": "Gametogenesis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The transformation of spermatids into spermatozoa is called :",
+      "options": [
+        "Spermiation",
+        "Spermiogenesis",
+        "Spermatocytogenesis",
+        "Oogenesis"
+      ],
+      "answer": 1,
+      "solution": "**Spermiogenesis** is the differentiation of the round, non-motile spermatid into a motile sperm: the acrosome forms from the Golgi body, the nucleus condenses into the head, mitochondria gather in the middle piece and the tail grows.\n\n**Spermiation** is the later release of the sperms from the Sertoli cells into the lumen of the seminiferous tubule."
+    },
+    {
+      "id": "tn12z-hrep-06",
+      "chapter": "Human Reproduction",
+      "topic": "Pregnancy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The hormone used as the basis of pregnancy tests and secreted by the trophoblast/placenta is :",
+      "options": [
+        "hCG",
+        "FSH",
+        "Relaxin",
+        "Prolactin"
+      ],
+      "answer": 0,
+      "solution": "**Human chorionic gonadotropin (hCG)** is secreted by the trophoblast soon after implantation and later by the placenta. It keeps the corpus luteum active so that progesterone continues and menstruation stops.\n\nIt appears in the mother's urine, which is why pregnancy-test kits detect hCG."
+    },
+    {
+      "id": "tn12z-hrep-07",
+      "chapter": "Human Reproduction",
+      "topic": "Parturition",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The hormone that causes strong contractions of the uterine muscles during parturition is :",
+      "options": [
+        "Oxytocin",
+        "Progesterone",
+        "Inhibin",
+        "Testosterone"
+      ],
+      "answer": 0,
+      "solution": "Signals from the fully developed foetus and placenta set off the **foetal ejection reflex**, which releases **oxytocin** from the posterior pituitary.\n\nOxytocin makes the myometrium contract strongly; the contractions stimulate still more oxytocin, and the baby is expelled. Progesterone, by contrast, keeps the uterus quiet during pregnancy."
+    },
+    {
+      "id": "tn12z-hrep-08",
+      "chapter": "Human Reproduction",
+      "topic": "Spermatogenesis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many spermatozoa are formed from one primary spermatocyte ?",
+      "answer": 4,
+      "tolerance": 0,
+      "accept": [
+        "four"
+      ],
+      "solution": "The primary spermatocyte ($2n$) completes meiosis I to give **2** secondary spermatocytes ($n$), and meiosis II gives **4** spermatids.\n\nEach spermatid becomes one sperm by spermiogenesis, so the answer is **4**."
+    },
+    {
+      "id": "tn12z-hrep-09",
+      "chapter": "Human Reproduction",
+      "topic": "Gametogenesis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many chromosomes are present in a human secondary oocyte ?",
+      "answer": 23,
+      "tolerance": 0,
+      "solution": "The primary oocyte is diploid with **46** chromosomes. The first meiotic division halves the number, giving a secondary oocyte and the first polar body, each **haploid**.\n\nSo the secondary oocyte has $46 \\div 2 = \\mathbf{23}$ chromosomes."
+    },
+    {
+      "id": "tn12z-hrep-10",
+      "chapter": "Human Reproduction",
+      "topic": "Menstrual cycle",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In an average 28-day menstrual cycle, on which day does ovulation usually occur ?",
+      "answer": 14,
+      "tolerance": 0,
+      "accept": [
+        "day 14",
+        "14th day"
+      ],
+      "solution": "The cycle is counted from the first day of menstrual flow. The follicular (proliferative) phase lasts until mid-cycle, when the LH surge triggers ovulation on about **day 14**.\n\nThe luteal (secretory) phase then runs from day 15 to day 28."
+    },
+    {
+      "id": "tn12z-hrep-11",
+      "chapter": "Human Reproduction",
+      "topic": "Male reproductive system",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Each human testis is divided into about how many compartments called testicular lobules ?",
+      "answer": 250,
+      "tolerance": 0,
+      "solution": "Each testis is covered by the tunica albuginea, whose partitions divide it into about **250** compartments called **testicular lobules**.\n\nEach lobule contains one to three highly coiled **seminiferous tubules**, lined by spermatogonia and Sertoli cells, in which the sperms are produced."
+    },
+    {
+      "id": "tn12z-hrep-12",
+      "chapter": "Human Reproduction",
+      "topic": "Gametogenesis",
+      "type": "numeric",
+      "marks": 3,
+      "q": "25 primary spermatocytes and 25 primary oocytes complete meiosis. How many functional gametes (sperms + ova) are produced in all ?",
+      "answer": 125,
+      "tolerance": 0,
+      "solution": "Each primary spermatocyte gives **4** functional sperms: $25 \\times 4 = 100$.\n\nEach primary oocyte gives only **1** functional ovum; the other products are polar bodies that degenerate: $25 \\times 1 = 25$.\n\nTotal $= 100 + 25 = \\mathbf{125}$."
+    },
+    {
+      "id": "tn12z-hrep-23q20a",
+      "chapter": "Human Reproduction",
+      "topic": "Structure of sperm",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the structure of human sperm with a neat labelled diagram.",
+      "source": "TN HSE Mar 2023",
+      "solution": "The human sperm is a microscopic, motile, flagellated cell about 60 µm long. Its plasma membrane covers four parts: **head, neck, middle piece and tail**.\n\n**Head** — oval and flattened. It holds the **haploid nucleus** with tightly condensed chromatin. Over its front end lies the cap-like **acrosome**, formed from the Golgi body, containing hydrolytic enzymes (sperm lysins such as hyaluronidase) that dissolve the egg's coverings during fertilisation.\n\n**Neck** — very short; it contains the **proximal centriole**, which helps the first cleavage of the zygote, and the **distal centriole**, which gives rise to the axial filament of the tail.\n\n**Middle piece** — contains **mitochondria coiled spirally** around the axial filament (the mitochondrial spiral, nebenkern). They produce ATP, the energy for the movement of the sperm.\n\n**Tail** — the longest part, a slender flagellum formed by the axial filament surrounded by a thin layer of cytoplasm. Its whip-like beating propels the sperm towards the egg.\n\n**Diagram labels**: plasma membrane, acrosome, nucleus, head, proximal and distal centrioles, neck, mitochondrial spiral, middle piece, axial filament, tail, end piece."
+    }
+  ]
+}

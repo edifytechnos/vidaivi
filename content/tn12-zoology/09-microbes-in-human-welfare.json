@@ -1,0 +1,241 @@
+{
+  "id": "lib-tn12z-mic",
+  "title": "Microbes in Human Welfare",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 9,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-mic-23q8",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Industrial enzymes",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Enzyme used for removing oily stains from the clothes :",
+      "options": [
+        "Cellulase",
+        "Pectinase",
+        "Protease",
+        "Lipase"
+      ],
+      "answer": 3,
+      "solution": "**Lipases** digest fats and oils, so they are added to detergent formulations to remove **oily stains** from laundry.\n\nPectinase clears fruit juices, protease digests protein stains, and cellulase acts on cellulose."
+    },
+    {
+      "id": "tn12z-mic-25q7",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Industrial products",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following micro-organism is used for production of citric acid in industries ?",
+      "options": [
+        "Aspergillus niger",
+        "Lactobacillus bulgaricus",
+        "Rhizopus nigricans",
+        "Penicillium citrinum"
+      ],
+      "answer": 0,
+      "solution": "**Aspergillus niger**, a fungus, is used for the industrial production of **citric acid**.\n\nLactobacillus produces lactic acid, and Rhizopus is used for fumaric acid."
+    },
+    {
+      "id": "tn12z-mic-01",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Household products",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Milk is converted into curd by:",
+      "options": [
+        "Lactobacillus",
+        "Streptococcus",
+        "Saccharomyces",
+        "Aspergillus"
+      ],
+      "answer": 0,
+      "solution": "**Lactobacillus** (lactic acid bacteria) converts milk sugar into **lactic acid**, which coagulates and partially digests milk proteins to form curd.\n\nIt also raises the vitamin B12 content of curd."
+    },
+    {
+      "id": "tn12z-mic-02",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Household products",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Roquefort cheese is ripened by growing which fungus on it?",
+      "options": [
+        "Penicillium roqueforti",
+        "Penicillium notatum",
+        "Aspergillus niger",
+        "Rhizopus stolonifer"
+      ],
+      "answer": 0,
+      "solution": "Roquefort cheese is ripened by **Penicillium roqueforti**, which gives it its flavour and blue veins.\n\nPenicillium notatum is the source of penicillin."
+    },
+    {
+      "id": "tn12z-mic-03",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Antibiotics",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Penicillin was discovered by:",
+      "options": [
+        "Selman Waksman",
+        "Alexander Fleming",
+        "Louis Pasteur",
+        "Robert Koch"
+      ],
+      "answer": 1,
+      "solution": "**Alexander Fleming** (1928) noticed that a mould, Penicillium notatum, stopped the growth of Staphylococcus on his culture plate.\n\nChain and Florey later developed penicillin into a usable drug."
+    },
+    {
+      "id": "tn12z-mic-04",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Bioactive molecules",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Statins, used to lower blood cholesterol, are produced by the yeast:",
+      "options": [
+        "Trichoderma polysporum",
+        "Monascus purpureus",
+        "Saccharomyces cerevisiae",
+        "Streptococcus"
+      ],
+      "answer": 1,
+      "solution": "**Statins** come from the yeast **Monascus purpureus**. They competitively inhibit the enzyme of cholesterol synthesis.\n\nTrichoderma polysporum gives cyclosporin A, an immunosuppressant used in organ transplants."
+    },
+    {
+      "id": "tn12z-mic-05",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Biogas",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The main component of biogas is:",
+      "options": [
+        "Carbon dioxide",
+        "Hydrogen sulphide",
+        "Methane",
+        "Nitrogen"
+      ],
+      "answer": 2,
+      "solution": "Biogas is produced by **methanogens** (e.g. Methanobacterium) acting anaerobically on cattle dung and organic waste. It is mostly **methane**, with CO2, and traces of H2S and hydrogen.\n\nMethane is the combustible part used as fuel."
+    },
+    {
+      "id": "tn12z-mic-06",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Biocontrol",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The bacterium used as a biocontrol agent against caterpillars (Bt) is:",
+      "options": [
+        "Bacillus subtilis",
+        "Bacillus thuringiensis",
+        "Rhizobium",
+        "Azotobacter"
+      ],
+      "answer": 1,
+      "solution": "**Bacillus thuringiensis** produces a crystal (Cry) protein toxin. In the alkaline gut of the larva it becomes active and kills the insect.\n\nIts spores are sprayed on crops, and its gene is used in Bt cotton."
+    },
+    {
+      "id": "tn12z-mic-07",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Bioactive molecules",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Cyclosporin A, used as an immunosuppressive agent in organ transplant patients, is produced by:",
+      "options": [
+        "Trichoderma polysporum",
+        "Monascus purpureus",
+        "Penicillium notatum",
+        "Aspergillus niger"
+      ],
+      "answer": 0,
+      "solution": "**Cyclosporin A** is produced by the fungus **Trichoderma polysporum**. It suppresses the immune response so that a transplanted organ is not rejected.\n\nMonascus purpureus gives statins."
+    },
+    {
+      "id": "tn12z-mic-08",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Household products",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The large holes in Swiss cheese come from CO2 produced by which bacterium? (genus name)",
+      "answer": "Propionibacterium",
+      "tolerance": 0,
+      "accept": [
+        "propionibacterium shermanii",
+        "propionibacterium sharmanii",
+        "p. shermanii"
+      ],
+      "solution": "Swiss cheese is ripened by **Propionibacterium shermanii**, which releases large amounts of CO2 that form the holes ('eyes').\n\nThe genus name is enough here."
+    },
+    {
+      "id": "tn12z-mic-09",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Bioactive molecules",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the 'clot buster' enzyme obtained from Streptococcus.",
+      "answer": "Streptokinase",
+      "tolerance": 0,
+      "accept": [
+        "streptokinase"
+      ],
+      "solution": "**Streptokinase**, produced by Streptococcus and now modified by genetic engineering, dissolves blood clots in the vessels of patients after a heart attack.\n\nIt is therefore called a clot buster."
+    },
+    {
+      "id": "tn12z-mic-10",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Biofertilizers",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the free-living aerobic nitrogen-fixing bacterium used as a biofertilizer.",
+      "answer": "Azotobacter",
+      "tolerance": 0,
+      "accept": [
+        "azotobacter"
+      ],
+      "solution": "**Azotobacter** lives freely in the soil and fixes atmospheric nitrogen aerobically, enriching the soil.\n\nRhizobium, by contrast, fixes nitrogen symbiotically in root nodules of legumes; Clostridium is free-living but anaerobic."
+    },
+    {
+      "id": "tn12z-mic-11",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Industrial products",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Which genus of yeast is used for the commercial production of ethanol and in bread making?",
+      "answer": "Saccharomyces",
+      "tolerance": 0,
+      "accept": [
+        "saccharomyces cerevisiae",
+        "s. cerevisiae",
+        "yeast"
+      ],
+      "solution": "**Saccharomyces cerevisiae** (brewer's / baker's yeast) ferments sugars into ethanol and CO2.\n\nIn bread the CO2 makes the dough rise; in industry the ethanol is the product."
+    },
+    {
+      "id": "tn12z-mic-12",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Sewage treatment",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In which stage of sewage treatment (primary, secondary or tertiary) do aerobic microbes digest the organic matter?",
+      "answer": "Secondary",
+      "tolerance": 0,
+      "accept": [
+        "secondary treatment",
+        "secondary stage",
+        "biological treatment"
+      ],
+      "solution": "Primary treatment is physical: filtration and sedimentation remove solids. In **secondary (biological) treatment** the effluent is aerated and aerobic microbes form flocs that consume organic matter, lowering the BOD.\n\nThe sludge then goes to anaerobic digesters, which yield biogas."
+    },
+    {
+      "id": "tn12z-mic-13",
+      "chapter": "Microbes in Human Welfare",
+      "topic": "Sewage treatment",
+      "type": "long",
+      "marks": 5,
+      "q": "Describe the role of microbes in the treatment of sewage, explaining primary and secondary treatment.",
+      "solution": "**Sewage** is municipal waste water containing large amounts of organic matter and microbes. It is treated in sewage treatment plants before release.\n\n**Primary treatment (physical).** Floating debris is removed by sequential filtration; grit and soil are removed by sedimentation. The settled solids form the **primary sludge** and the liquid above is the **primary effluent**.\n\n**Secondary treatment (biological).** The primary effluent is passed into large **aeration tanks** and agitated mechanically while air is pumped in. Useful aerobic microbes grow vigorously as **flocs** (bacteria with fungal filaments). They consume the organic matter, so the **BOD** of the effluent falls sharply.\n\nWhen BOD has fallen enough, the effluent goes to a settling tank where the flocs settle as **activated sludge**. A part is returned to the aeration tank as inoculum; the rest goes to **anaerobic sludge digesters**, where anaerobic bacteria digest it and release **biogas** (methane, H2S, CO2).\n\nThe treated effluent is released into rivers and streams. Thus microbes purify water and also yield fuel."
+    }
+  ]
+}

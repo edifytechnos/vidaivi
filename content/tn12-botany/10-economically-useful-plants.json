@@ -1,0 +1,241 @@
+{
+  "id": "lib-tn12b-econ",
+  "title": "Economically Useful Plants and Entrepreneurial Botany",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 10,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-econ-23q2",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Spices",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Cardamom belongs to the family ______.",
+      "options": [
+        "Solanaceae",
+        "Piperaceae",
+        "Fabaceae",
+        "Zingiberaceae"
+      ],
+      "answer": 3,
+      "solution": "Cardamom, **Elettaria cardamomum**, belongs to **Zingiberaceae**, the ginger family, along with ginger and turmeric.\n\nBlack pepper is Piperaceae; chilli is Solanaceae."
+    },
+    {
+      "id": "tn12b-econ-24q7",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Oil seeds",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The native of groundnut is :",
+      "options": [
+        "North America",
+        "Philippines",
+        "Brazil",
+        "India"
+      ],
+      "answer": 2,
+      "solution": "Groundnut, **Arachis hypogaea** (Fabaceae), is a native of **Brazil** in South America.\n\nIt was brought to India by the Portuguese, and India is now among the largest producers; its seeds give edible oil and the oil cake is used as cattle feed and manure."
+    },
+    {
+      "id": "tn12b-econ-01",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Cereals",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The botanical name of rice is:",
+      "options": [
+        "Triticum aestivum",
+        "Oryza sativa",
+        "Zea mays",
+        "Eleusine coracana"
+      ],
+      "answer": 1,
+      "solution": "Rice is **Oryza sativa** of the family Poaceae.\n\nTriticum aestivum is wheat, Zea mays is maize and Eleusine coracana is finger millet (ragi)."
+    },
+    {
+      "id": "tn12b-econ-02",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Fibres",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Cotton fibre is obtained from the:",
+      "options": [
+        "Stem",
+        "Fruit wall",
+        "Epidermal hairs of the seed coat",
+        "Leaves"
+      ],
+      "answer": 2,
+      "solution": "Cotton (Gossypium) fibres are long **epidermal hairs of the seed coat**: surface fibres.\n\nJute is a stem (bast) fibre, coir comes from the fruit wall (mesocarp) of coconut, and sisal from leaves."
+    },
+    {
+      "id": "tn12b-econ-03",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Spices",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The yellow colour of turmeric is due to:",
+      "options": [
+        "Capsaicin",
+        "Curcumin",
+        "Piperine",
+        "Azadirachtin"
+      ],
+      "answer": 1,
+      "solution": "**Curcumin** in the rhizome of turmeric (Curcuma longa) gives the colour and much of its antiseptic, anti-inflammatory value.\n\nCapsaicin makes chilli pungent, piperine black pepper, and azadirachtin is from neem."
+    },
+    {
+      "id": "tn12b-econ-04",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Medicinal plants",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Azadirachtin, used as a natural pesticide, is obtained from:",
+      "options": [
+        "Neem",
+        "Tulsi",
+        "Aloe",
+        "Turmeric"
+      ],
+      "answer": 0,
+      "solution": "**Azadirachtin** is the active principle of **neem** (Azadirachta indica), concentrated in the seed kernel.\n\nIt repels insects and disrupts their feeding and moulting, so neem oil and neem cake are used as bio-pesticides."
+    },
+    {
+      "id": "tn12b-econ-05",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Timber",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Tectona grandis is economically important as a source of:",
+      "options": [
+        "Fibre",
+        "Timber",
+        "Rubber",
+        "Edible oil"
+      ],
+      "answer": 1,
+      "solution": "**Tectona grandis** is **teak**, one of the finest **timbers**: strong, durable and resistant to termites and decay because of its natural oils.\n\nIt is used for furniture, doors, ship building and construction."
+    },
+    {
+      "id": "tn12b-econ-06",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Entrepreneurial botany",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The oyster mushroom commonly grown on paddy straw in Tamil Nadu belongs to the genus:",
+      "options": [
+        "Agaricus",
+        "Pleurotus",
+        "Volvariella",
+        "Amanita"
+      ],
+      "answer": 1,
+      "solution": "The oyster mushroom is **Pleurotus** (e.g. Pleurotus sajor-caju), easily grown on chopped paddy straw in polythene bags: a low-cost enterprise.\n\nAgaricus is the button mushroom, Volvariella the paddy straw mushroom, and Amanita is poisonous."
+    },
+    {
+      "id": "tn12b-econ-07",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Beverages",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Caffeine is the alkaloid present in:",
+      "options": [
+        "Coffee and tea",
+        "Cotton",
+        "Groundnut",
+        "Rice"
+      ],
+      "answer": 0,
+      "solution": "**Caffeine** is the stimulating alkaloid of **coffee** (Coffea arabica) seeds and **tea** (Camellia sinensis) leaves.\n\nIn moderate amounts it stimulates the nervous system and reduces drowsiness."
+    },
+    {
+      "id": "tn12b-econ-08",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Oil seeds",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the dried endosperm of coconut, from which coconut oil is extracted, called?",
+      "answer": "copra",
+      "tolerance": 0,
+      "accept": [
+        "kopra"
+      ],
+      "solution": "It is **copra**. Coconut (Cocos nucifera) endosperm is dried in the sun or a kiln and pressed for oil.\n\nThe residue, coconut oil cake, is used as cattle feed."
+    },
+    {
+      "id": "tn12b-econ-09",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Rubber",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the genus of the tree whose latex is the main source of natural rubber.",
+      "answer": "Hevea",
+      "tolerance": 0,
+      "accept": [
+        "Hevea brasiliensis",
+        "Hevia"
+      ],
+      "solution": "**Hevea** (Hevea brasiliensis, Euphorbiaceae), the Pará rubber tree.\n\nThe bark is tapped to collect latex, which is coagulated with acid, rolled into sheets and dried."
+    },
+    {
+      "id": "tn12b-econ-10",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Medicinal plants",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the active principle of Phyllanthus amarus (keezhanelli), used for liver disorders.",
+      "answer": "phyllanthin",
+      "tolerance": 0,
+      "accept": [
+        "phylanthin",
+        "phyllanthine"
+      ],
+      "solution": "Its active principle is **phyllanthin** (with hypophyllanthin).\n\nThe whole plant is used in Siddha medicine for jaundice and other liver disorders."
+    },
+    {
+      "id": "tn12b-econ-11",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Timber",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Sandalwood oil is distilled from the heartwood of which species (scientific name)?",
+      "answer": "Santalum album",
+      "tolerance": 0,
+      "accept": [
+        "Santalum",
+        "Santallum album"
+      ],
+      "solution": "**Santalum album**, Indian sandalwood. The fragrant oil is concentrated in the heartwood and roots.\n\nIt is used in perfumes, soaps, cosmetics and incense; the wood is used for carving."
+    },
+    {
+      "id": "tn12b-econ-12",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Cereals",
+      "type": "numeric",
+      "marks": 3,
+      "q": "To which plant family do rice, wheat, maize and the millets all belong?",
+      "answer": "Poaceae",
+      "tolerance": 0,
+      "accept": [
+        "Gramineae",
+        "grass family",
+        "Poaceae family"
+      ],
+      "solution": "All cereals and millets belong to **Poaceae** (Gramineae), the grass family.\n\nTheir fruit is a **caryopsis**, in which the fruit wall is fused with the seed coat; the starchy endosperm is what feeds most of the world."
+    },
+    {
+      "id": "tn12b-econ-23q21b",
+      "chapter": "Economically Useful Plants and Entrepreneurial Botany",
+      "topic": "Medicinal plants",
+      "source": "TN HSE Mar 2023",
+      "type": "long",
+      "marks": 5,
+      "q": "Give an account of active principle and medicinal values of any two plants you have studied.",
+      "solution": "Model answer (any two):\n\n**1. Neem — Azadirachta indica (Meliaceae).** Active principle: **azadirachtin** (also nimbin). Medicinal value: antiseptic, antibacterial and antifungal; leaves are used for skin diseases and chickenpox, twigs as a toothbrush for oral health, neem oil for skin infections; it is also a natural insecticide.\n\n**2. Turmeric — Curcuma longa (Zingiberaceae).** Active principle: **curcumin**. Medicinal value: antiseptic and anti-inflammatory; applied to wounds and skin problems, taken for cough and cold, and used as a blood purifier.\n\n**3. Keezhanelli — Phyllanthus amarus (Phyllanthaceae).** Active principle: **phyllanthin** and hypophyllanthin. Medicinal value: used for jaundice and liver disorders; also diuretic.\n\n**4. Aloe — Aloe vera.** Active principle: **aloin**. Medicinal value: leaf gel heals burns and wounds, is used in skin care, and is a laxative.\n\n(Two plants, each with active principle and at least two uses, earn full marks.)"
+    }
+  ]
+}

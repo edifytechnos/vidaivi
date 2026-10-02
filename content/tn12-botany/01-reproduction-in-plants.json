@@ -1,0 +1,245 @@
+{
+  "id": "lib-tn12b-rep",
+  "title": "Asexual and Sexual Reproduction in Plants",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 1,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-rep-23q7",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Female gametophyte",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following represent Megagametophyte ?",
+      "options": [
+        "Nucellus",
+        "Ovule",
+        "Endosperm",
+        "Embryo sac"
+      ],
+      "answer": 3,
+      "solution": "The **embryo sac** is the female gametophyte, also called the **megagametophyte**. It develops from the functional megaspore inside the nucellus of the ovule.\n\nThe nucellus is the tissue around it, the ovule is the whole structure that becomes the seed, and the endosperm forms only after fertilization, so none of them is the gametophyte.",
+      "source": "TN HSE Mar 2023"
+    },
+    {
+      "id": "tn12b-rep-24q3",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Pollen grain",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Size of pollen grain in myosotis is ______ micrometer.",
+      "options": [
+        "10",
+        "2000",
+        "20",
+        "200"
+      ],
+      "answer": 0,
+      "solution": "Pollen grains vary greatly in size. In Myosotis they are among the smallest, about **10 micrometres**, while in Cucurbita they reach about 200 micrometres.\n\nSo the answer is 10.",
+      "source": "TN HSE Mar 2024"
+    },
+    {
+      "id": "tn12b-rep-25q3",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Parthenocarpy",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Parthenocarpic fruits lack :",
+      "options": [
+        "Mesocarp",
+        "Endocarp",
+        "Seed",
+        "Epicarp"
+      ],
+      "answer": 2,
+      "solution": "**Parthenocarpy** is the development of fruit without fertilization. Because no fertilization takes place, no seeds are formed, so parthenocarpic fruits are **seedless**, as in banana and grapes.\n\nThe pericarp layers (epicarp, mesocarp, endocarp) are still present.",
+      "source": "TN HSE Mar 2025"
+    },
+    {
+      "id": "tn12b-rep-01",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Vegetative propagation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Bryophyllum is propagated naturally by means of:",
+      "options": [
+        "Epiphyllous (leaf) buds",
+        "Root tubers",
+        "Bulbils",
+        "Runners"
+      ],
+      "answer": 0,
+      "solution": "Bryophyllum produces **adventitious buds on the notches of its leaf margins** (epiphyllous buds). Each grows into a new plant when the leaf touches moist soil.\n\nRunners are seen in Centella, bulbils in Dioscorea, and root tubers in sweet potato."
+    },
+    {
+      "id": "tn12b-rep-02",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Ovule types",
+      "type": "mcq",
+      "marks": 1,
+      "q": "An ovule in which the micropyle, chalaza and funiculus lie in one straight line is:",
+      "options": [
+        "Anatropous",
+        "Orthotropous",
+        "Campylotropous",
+        "Circinotropous"
+      ],
+      "answer": 1,
+      "solution": "In an **orthotropous** (straight) ovule the micropyle, chalaza and funiculus are in one vertical line, as in Piper and Polygonum.\n\nIn an anatropous ovule, the commonest type, the body is inverted so the micropyle lies close to the funiculus."
+    },
+    {
+      "id": "tn12b-rep-03",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Pollination agents",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Pollination by bats is called:",
+      "options": [
+        "Ornithophily",
+        "Chiropterophily",
+        "Entomophily",
+        "Malacophily"
+      ],
+      "answer": 1,
+      "solution": "**Chiropterophily** is pollination by bats, as in Kigelia (sausage tree) and Adansonia. Such flowers open at night, are large, dull-coloured and strongly scented.\n\nOrnithophily is by birds, entomophily by insects and malacophily by snails."
+    },
+    {
+      "id": "tn12b-rep-04",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Double fertilization",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Double fertilization in angiosperms was discovered by:",
+      "options": [
+        "Strasburger",
+        "S.G. Nawaschin",
+        "P. Maheshwari",
+        "G.B. Amici"
+      ],
+      "answer": 1,
+      "solution": "**S.G. Nawaschin** described double fertilization in 1898 in Lilium and Fritillaria.\n\nStrasburger described syngamy, and Amici first observed the pollen tube."
+    },
+    {
+      "id": "tn12b-rep-05",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Apomixis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The term apomixis was introduced by:",
+      "options": [
+        "Winkler",
+        "Hanstein",
+        "Haberlandt",
+        "Leeuwenhoek"
+      ],
+      "answer": 0,
+      "solution": "**Winkler** (1908) introduced the term apomixis for reproduction that replaces sexual reproduction without meiosis and syngamy.\n\nApomixis lets seeds form without fertilization, so the offspring are genetically identical to the parent."
+    },
+    {
+      "id": "tn12b-rep-06",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Tapetum",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The tapetum whose cells remain in their original position and secrete nutrients into the anther locule is:",
+      "options": [
+        "Secretory tapetum",
+        "Amoeboid tapetum",
+        "Periplasmodial tapetum",
+        "Invasive tapetum"
+      ],
+      "answer": 0,
+      "solution": "In the **secretory (glandular or parietal) tapetum** the cells stay in place and pass nutrients to the developing microspores by secretion.\n\nIn the amoeboid (periplasmodial or invasive) type the cell walls break down and the protoplasts move in among the microspores."
+    },
+    {
+      "id": "tn12b-rep-07",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Embryo sac",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many nuclei are present in a mature Polygonum-type embryo sac?",
+      "answer": 8,
+      "tolerance": 0,
+      "accept": [
+        "8",
+        "eight"
+      ],
+      "solution": "The functional megaspore nucleus divides mitotically **three times**, giving $2^3 = 8$ nuclei.\n\nThey are arranged as an egg apparatus (egg + 2 synergids), 3 antipodals and 2 polar nuclei: a 7-celled, 8-nucleate embryo sac."
+    },
+    {
+      "id": "tn12b-rep-08",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Endosperm",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many sets of chromosomes does the endosperm of a typical angiosperm carry? (its ploidy, as a number)",
+      "answer": 3,
+      "tolerance": 0,
+      "accept": [
+        "3",
+        "3n",
+        "triploid"
+      ],
+      "solution": "The endosperm forms by **triple fusion**: one male gamete (n) fuses with the two polar nuclei (n + n), or the secondary nucleus (2n).\n\nSo the primary endosperm nucleus is **triploid (3n)**, and the answer is 3."
+    },
+    {
+      "id": "tn12b-rep-09",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Microsporogenesis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many microspores are formed from one microspore mother cell?",
+      "answer": 4,
+      "tolerance": 0,
+      "accept": [
+        "4",
+        "four"
+      ],
+      "solution": "Each microspore mother cell (2n) undergoes **meiosis**, producing a tetrad of **four haploid microspores**.\n\nEach microspore then develops into a pollen grain."
+    },
+    {
+      "id": "tn12b-rep-10",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Double fertilization",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many fusions of nuclei take place inside the embryo sac during double fertilization?",
+      "answer": 2,
+      "tolerance": 0,
+      "accept": [
+        "2",
+        "two"
+      ],
+      "solution": "Two fusions occur: **syngamy** (male gamete + egg giving the 2n zygote) and **triple fusion** (second male gamete + secondary nucleus giving the 3n primary endosperm nucleus).\n\nBecause fertilization happens twice in one embryo sac, it is called double fertilization."
+    },
+    {
+      "id": "tn12b-rep-11",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Pollination agents",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Give the one-word term for pollination brought about by water, as in Vallisneria.",
+      "answer": "Hydrophily",
+      "tolerance": 0,
+      "accept": [
+        "hydrophily",
+        "hydrophilous",
+        "hydrophilous pollination",
+        "water pollination"
+      ],
+      "solution": "Pollination by water is **hydrophily**. In Vallisneria the male flowers break free and float to the female flowers on the water surface (epihydrophily); in Zostera it happens under water (hypohydrophily).\n\nHydrophilous pollen is often long and covered with mucilage, which protects it from wetting."
+    },
+    {
+      "id": "tn12b-rep-23q20a",
+      "chapter": "Asexual and Sexual Reproduction in Plants",
+      "topic": "Anemophily",
+      "type": "long",
+      "marks": 5,
+      "q": "Give the characteristic features of Anemophilous plants.",
+      "solution": "**Anemophilous (wind-pollinated) flowers** show these features:\n\n1. Flowers are small, inconspicuous, without colour, scent or nectar.\n2. Pollen is produced in very large quantities, as most is wasted.\n3. Pollen grains are small, light, dry and smooth, so the wind carries them far; in Pinus they have wings.\n4. Stamens are long and exserted, with versatile anthers that swing in the wind.\n5. Stigmas are large, protruding, often feathery or branched to trap pollen.\n6. Flowers are often unisexual and borne in catkins or above the foliage, often produced before the leaves.\n7. Each ovary usually holds a single ovule.\n\nExamples: grasses, maize, sugarcane, bamboo, Cocos.",
+      "source": "TN HSE Mar 2023"
+    }
+  ]
+}
