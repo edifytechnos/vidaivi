@@ -1,0 +1,243 @@
+{
+  "id": "lib-tn12b-biot",
+  "title": "Principles and Processes of Biotechnology",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-biot-23q8",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Vectors",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The bacteria responsible for causing Crown Gall :",
+      "options": [
+        "Escherichia coli",
+        "Bacillus subtilis",
+        "Bacillus thuringiensis",
+        "Agrobacterium tumefaciens"
+      ],
+      "answer": 3,
+      "solution": "**Crown gall** disease of dicot plants is caused by the soil bacterium **Agrobacterium tumefaciens**. Its Ti (tumour-inducing) plasmid transfers a T-DNA segment into the plant genome, causing a tumour.\n\nBecause it naturally transfers DNA into plants, the Ti plasmid is widely used as a vector in plant genetic engineering.",
+      "source": "TN HSE Mar 2023"
+    },
+    {
+      "id": "tn12b-biot-24q8",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Plasmids",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Plasmids are :",
+      "options": [
+        "tiny bacteria",
+        "circular protein molecules",
+        "confer resistance to antibiotics",
+        "required by bacteria"
+      ],
+      "answer": 2,
+      "solution": "**Plasmids** are small, circular, double-stranded **DNA** molecules in bacteria that replicate independently of the chromosome. They are not bacteria and not proteins, and the cell can survive without them.\n\nMany carry genes that **confer resistance to antibiotics** (such as ampicillin and tetracycline in pBR322), which is why they serve as selectable markers in cloning.",
+      "source": "TN HSE Mar 2024"
+    },
+    {
+      "id": "tn12b-biot-25q4",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Blotting techniques",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Southern blotting technique is used to separate ______.",
+      "options": [
+        "RNA",
+        "Protein",
+        "Lipid",
+        "DNA"
+      ],
+      "answer": 3,
+      "solution": "**Southern blotting**, devised by E.M. Southern (1975), transfers **DNA** fragments separated by gel electrophoresis onto a nitrocellulose or nylon membrane, where a labelled probe detects a particular sequence.\n\nNorthern blotting is for RNA and Western blotting for proteins.",
+      "source": "TN HSE Mar 2025"
+    },
+    {
+      "id": "tn12b-biot-01",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Restriction enzymes",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The recognition sequence of the restriction enzyme EcoRI is:",
+      "options": [
+        "GAATTC",
+        "GGATCC",
+        "AAGCTT",
+        "CCCGGG"
+      ],
+      "answer": 0,
+      "solution": "EcoRI, from Escherichia coli strain RY13, recognises the palindrome **5′-GAATTC-3′** and cuts between G and A, leaving sticky ends.\n\nGGATCC is BamHI, AAGCTT is HindIII and CCCGGG is SmaI."
+    },
+    {
+      "id": "tn12b-biot-02",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Enzymes in genetic engineering",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The enzyme that joins DNA fragments is:",
+      "options": [
+        "Restriction endonuclease",
+        "DNA ligase",
+        "Alkaline phosphatase",
+        "Exonuclease"
+      ],
+      "answer": 1,
+      "solution": "**DNA ligase** forms phosphodiester bonds between adjacent nucleotides, sealing the gene of interest into the vector. It is called the molecular glue.\n\nRestriction endonucleases are the molecular scissors that cut DNA."
+    },
+    {
+      "id": "tn12b-biot-03",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Gel electrophoresis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In agarose gel electrophoresis, DNA fragments move towards the:",
+      "options": [
+        "Cathode",
+        "Anode",
+        "Centre of the gel",
+        "Wells"
+      ],
+      "answer": 1,
+      "solution": "DNA is **negatively charged** because of its phosphate groups, so it moves towards the positive electrode, the **anode**.\n\nSmaller fragments move faster through the agarose mesh, so fragments separate by size."
+    },
+    {
+      "id": "tn12b-biot-04",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Transgenic plants",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Golden rice is rich in:",
+      "options": [
+        "Vitamin C",
+        "Beta-carotene (provitamin A)",
+        "Iron",
+        "Lysine"
+      ],
+      "answer": 1,
+      "solution": "Golden rice is a transgenic rice engineered to make **beta-carotene**, the precursor of vitamin A, in its grain, which gives it the golden colour.\n\nIt was developed to fight vitamin A deficiency, which causes night blindness."
+    },
+    {
+      "id": "tn12b-biot-05",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Bt crops",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The insecticidal protein of Bt crops is coded by the:",
+      "options": [
+        "nif gene",
+        "cry gene",
+        "lac gene",
+        "amp gene"
+      ],
+      "answer": 1,
+      "solution": "Bacillus thuringiensis carries **cry genes** coding for crystal (Cry) proteins. The protoxin becomes active in the alkaline gut of the insect larva and destroys its gut lining.\n\ncry genes such as cryIAc are inserted into cotton to make Bt cotton, resistant to bollworms."
+    },
+    {
+      "id": "tn12b-biot-06",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Gene transfer methods",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The gene gun method of direct gene transfer is also called:",
+      "options": [
+        "Electroporation",
+        "Biolistics (microprojectile bombardment)",
+        "Microinjection",
+        "Lipofection"
+      ],
+      "answer": 1,
+      "solution": "In **biolistics**, microscopic gold or tungsten particles coated with DNA are fired at high velocity into plant cells, where the DNA can integrate into the genome.\n\nIt is useful for cereals, which are hard to transform with Agrobacterium."
+    },
+    {
+      "id": "tn12b-biot-07",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Restriction enzymes",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many base pairs long is the recognition site of EcoRI?",
+      "answer": 6,
+      "tolerance": 0,
+      "accept": [
+        "6",
+        "six",
+        "6 bp"
+      ],
+      "solution": "EcoRI recognises **GAATTC**, which is 6 bases on each strand, so the site is **6 bp** long.\n\nIt is a palindrome: read 5′ to 3′, both strands give GAATTC."
+    },
+    {
+      "id": "tn12b-biot-08",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "PCR",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Starting from a single double-stranded DNA molecule, how many molecules are present after 3 cycles of PCR?",
+      "answer": 8,
+      "tolerance": 0,
+      "accept": [
+        "8",
+        "eight"
+      ],
+      "solution": "Each PCR cycle doubles the number of DNA molecules, so after n cycles there are $2^n$.\n\n$2^3 = 8$."
+    },
+    {
+      "id": "tn12b-biot-09",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Gel electrophoresis",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Name the dye used to stain DNA so that its bands glow orange under UV light after gel electrophoresis.",
+      "answer": "Ethidium bromide",
+      "tolerance": 0,
+      "accept": [
+        "ethidium bromide",
+        "EtBr",
+        "ethidium"
+      ],
+      "solution": "**Ethidium bromide** slips between the stacked bases of DNA and fluoresces orange under ultraviolet light, so the separated bands can be seen.\n\nThe bands are then cut out of the gel (elution) for use in cloning."
+    },
+    {
+      "id": "tn12b-biot-10",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "PCR",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many copies of a target DNA are obtained from one molecule after 10 cycles of PCR?",
+      "answer": 1024,
+      "tolerance": 0,
+      "accept": [
+        "1024"
+      ],
+      "solution": "Each cycle (denaturation, annealing of primers, extension by Taq polymerase) doubles the DNA.\n\nAfter 10 cycles: $2^{10} = 1024$ copies. This exponential growth is why PCR can amplify a trace of DNA to a usable amount."
+    },
+    {
+      "id": "tn12b-biot-11",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "PCR",
+      "type": "numeric",
+      "marks": 3,
+      "q": "At about what temperature (in °C) is the DNA denatured in the first step of each PCR cycle?",
+      "answer": 94,
+      "tolerance": 2,
+      "accept": [
+        "94",
+        "95"
+      ],
+      "solution": "In **denaturation** the reaction is heated to about **94 °C** so the hydrogen bonds break and the two strands separate.\n\nPrimers then anneal at about 50–60 °C, and Taq polymerase extends them at about 72 °C. Taq survives the 94 °C step because it comes from the hot-spring bacterium Thermus aquaticus."
+    },
+    {
+      "id": "tn12b-biot-25q20b",
+      "chapter": "Principles and Processes of Biotechnology",
+      "topic": "Bt crops",
+      "type": "long",
+      "marks": 5,
+      "q": "Write the advantages and disadvantages of Bt-Cotton.",
+      "solution": "**Bt cotton** carries cry genes (such as cryIAc and cryIIAb) from Bacillus thuringiensis, which make an insecticidal Cry protein toxic to bollworms.\n\n**Advantages**:\n1. Resistance to bollworms (Helicoverpa), the most damaging cotton pest.\n2. Far less chemical insecticide is sprayed, lowering cost and pollution.\n3. Higher yield and better quality fibre.\n4. Safer for farm workers and for non-target, beneficial insects.\n5. Reduced cost of cultivation and higher income for farmers.\n\n**Disadvantages**:\n1. Bollworms may evolve resistance to the Bt toxin over time.\n2. Seeds are costly and must be bought every season.\n3. It does not protect against sucking pests such as aphids and whiteflies, which may increase.\n4. Possible effects on soil micro-organisms and biodiversity, and gene flow to related plants.\n5. Yield falls under poor irrigation and drought; crop failure has caused farmer distress.",
+      "source": "TN HSE Mar 2025"
+    }
+  ]
+}

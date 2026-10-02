@@ -1,0 +1,233 @@
+{
+  "id": "lib-tn12z-inh",
+  "title": "Principles of Inheritance and Variation",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12z-inh-23q1",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Chromosomal disorders",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Patau’s Syndrome is also referred to as :",
+      "source": "TN HSE Mar 2023",
+      "options": [
+        "13 - Trisomy",
+        "18 - Trisomy",
+        "Turner’s Syndrome",
+        "21 - Trisomy"
+      ],
+      "answer": 0,
+      "solution": "**Patau's syndrome** is caused by an extra copy of chromosome 13 — **trisomy 13** ($47$ chromosomes). It produces multiple defects: cleft lip and palate, small eyes, polydactyly and severe mental retardation.\n\nTrisomy 18 is Edward's syndrome, trisomy 21 is Down's syndrome, and Turner's syndrome is a sex-chromosome monosomy ($45$, XO)."
+    },
+    {
+      "id": "tn12z-inh-24q4",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Chromosomal disorders",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Down's Syndrome is a genetic disorder which is caused by the presence of an extra chromosome number :",
+      "source": "TN HSE Mar 2024",
+      "options": [
+        "13",
+        "20",
+        "23",
+        "21"
+      ],
+      "answer": 3,
+      "solution": "**Down's syndrome** is **trisomy 21**: an extra copy of chromosome 21, usually from non-disjunction during gamete formation, giving 47 chromosomes.\n\nFeatures include short stature, a small round head, a furrowed tongue, a partially open mouth, a broad palm with a characteristic palm crease, and retarded physical, psychomotor and mental development."
+    },
+    {
+      "id": "tn12z-inh-25q3",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Dosage compensation",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following rule is used to calculate the number of Barr bodies in a cell ?",
+      "source": "TN HSE Mar 2025",
+      "options": [
+        "N − 1 Rule",
+        "Allen’s Rule",
+        "N + 1 Rule",
+        "Jordan’s Rule"
+      ],
+      "answer": 0,
+      "solution": "The number of **Barr bodies** (inactivated X chromosomes) in a cell follows the **N − 1 rule**, where N is the number of X chromosomes: all X chromosomes except one are inactivated (Lyon's hypothesis).\n\nSo a normal female (XX) has 1 Barr body, a normal male (XY) has 0, and an XXX female has 2. Allen's and Jordan's rules are ecological rules about body form."
+    },
+    {
+      "id": "tn12z-inh-01",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Sex determination",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In grasshoppers, sex is determined by the :",
+      "options": [
+        "XX–XY mechanism",
+        "XX–XO mechanism",
+        "ZW–ZZ mechanism",
+        "Haplodiploidy"
+      ],
+      "answer": 1,
+      "solution": "Grasshoppers (and many other insects) show the **XX–XO** mechanism: females are XX, and males have a single X with no Y (XO), so males have one chromosome fewer.\n\nHumans show XX–XY, birds show ZW–ZZ (female heterogametic), and honey bees show haplodiploidy."
+    },
+    {
+      "id": "tn12z-inh-02",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Sex determination",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In birds, the sex chromosomes of the female are :",
+      "options": [
+        "ZZ",
+        "XX",
+        "ZW",
+        "XO"
+      ],
+      "answer": 2,
+      "solution": "In birds (and some reptiles and moths) the **female is heterogametic, ZW**, and the male is homogametic, ZZ.\n\nSo it is the female's egg — carrying either Z or W — that decides the sex of the offspring, the reverse of the human situation."
+    },
+    {
+      "id": "tn12z-inh-03",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Chromosomal disorders",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The karyotype of a person with Klinefelter's syndrome is :",
+      "options": [
+        "44 + XO",
+        "44 + XXY",
+        "45 + XX",
+        "44 + XYY"
+      ],
+      "answer": 1,
+      "solution": "**Klinefelter's syndrome** is $44 + \\text{XXY}$ (47 chromosomes). The person is male but with small testes, sterility, gynaecomastia and often a tall stature; one Barr body is present.\n\n$44 + \\text{XO}$ (45) is Turner's syndrome, in a sterile female with rudimentary ovaries."
+    },
+    {
+      "id": "tn12z-inh-04",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Sex-linked inheritance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Haemophilia is inherited as a :",
+      "options": [
+        "Y-linked trait",
+        "X-linked recessive trait",
+        "Autosomal dominant trait",
+        "Autosomal recessive trait"
+      ],
+      "answer": 1,
+      "solution": "The gene for blood clotting factor lies on the **X chromosome**, and the defective allele is **recessive**. A male with one defective X is haemophilic; a female is usually a carrier ($X^hX$).\n\nSo the disease passes from a carrier mother to half her sons (criss-cross inheritance), and haemophilic females are rare."
+    },
+    {
+      "id": "tn12z-inh-05",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Rh factor",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Erythroblastosis foetalis can occur when :",
+      "options": [
+        "Mother is Rh+ and foetus is Rh−",
+        "Mother is Rh− and foetus is Rh+",
+        "Both are Rh−",
+        "Both are Rh+"
+      ],
+      "answer": 1,
+      "solution": "If an **Rh− mother** carries an **Rh+ foetus**, foetal Rh antigens can enter her blood at the first delivery and she makes anti-Rh antibodies.\n\nIn a **second** Rh+ pregnancy these antibodies cross the placenta and destroy the foetal RBCs, causing anaemia and jaundice. It is prevented by giving the mother anti-D (anti-Rh) antibodies soon after the first delivery."
+    },
+    {
+      "id": "tn12z-inh-06",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Multiple alleles",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A person with blood group O is called a universal donor because his red cells carry :",
+      "options": [
+        "Both antigens A and B",
+        "Neither antigen A nor antigen B",
+        "Only antigen A",
+        "Only antigen B"
+      ],
+      "answer": 1,
+      "solution": "Group O ($I^oI^o$) red cells carry **neither A nor B antigen**, so the antibodies in a recipient's plasma have nothing to agglutinate. Hence O can be given to all — the **universal donor**.\n\nGroup AB has both antigens and no antibodies in the plasma, so it can receive from all — the universal recipient."
+    },
+    {
+      "id": "tn12z-inh-07",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Multiple alleles",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The ABO blood group in humans is controlled by three alleles $I^A$, $I^B$ and $I^o$. How many different genotypes are possible ?",
+      "answer": 6,
+      "tolerance": 0,
+      "accept": [
+        "six"
+      ],
+      "solution": "With $n$ alleles the number of genotypes is $\\dfrac{n(n+1)}{2}$. For $n = 3$: $\\dfrac{3 \\times 4}{2} = \\mathbf{6}$.\n\nThey are $I^AI^A$, $I^AI^o$, $I^BI^B$, $I^BI^o$, $I^AI^B$ and $I^oI^o$."
+    },
+    {
+      "id": "tn12z-inh-08",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Multiple alleles",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many different phenotypes (blood groups) result from the ABO system ?",
+      "answer": 4,
+      "tolerance": 0,
+      "accept": [
+        "four"
+      ],
+      "solution": "$I^A$ and $I^B$ are **codominant**, and both are dominant over $I^o$. The six genotypes therefore give only **4** phenotypes: A ($I^AI^A$, $I^AI^o$), B ($I^BI^B$, $I^BI^o$), AB ($I^AI^B$) and O ($I^oI^o$)."
+    },
+    {
+      "id": "tn12z-inh-09",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Chromosomal disorders",
+      "type": "numeric",
+      "marks": 2,
+      "q": "What is the total number of chromosomes in a person with Turner's syndrome ?",
+      "answer": 45,
+      "tolerance": 0,
+      "solution": "Turner's syndrome is $44 + \\text{XO}$: 44 autosomes and a single X, with the second sex chromosome missing.\n\n$44 + 1 = \\mathbf{45}$. The person is a sterile female of short stature with rudimentary ovaries and no Barr body."
+    },
+    {
+      "id": "tn12z-inh-10",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Dosage compensation",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many Barr bodies are present in the somatic cells of a person with the sex chromosome constitution XXXY ?",
+      "answer": 2,
+      "tolerance": 0,
+      "accept": [
+        "two"
+      ],
+      "solution": "By the **N − 1 rule**, all X chromosomes except one are inactivated as Barr bodies; the Y chromosome is not counted.\n\nN (number of X) $= 3$, so Barr bodies $= 3 - 1 = \\mathbf{2}$."
+    },
+    {
+      "id": "tn12z-inh-11",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Polygenic inheritance",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Human skin colour is controlled by three pairs of genes (A, B, C) with additive effect. How many phenotypic classes appear in the offspring of two triple heterozygotes (AaBbCc × AaBbCc) ?",
+      "answer": 7,
+      "tolerance": 0,
+      "accept": [
+        "seven"
+      ],
+      "solution": "In polygenic inheritance each dominant allele adds the same amount of melanin, so the phenotype depends only on **how many** dominant alleles are present.\n\nWith 3 gene pairs a child can carry 0, 1, 2, 3, 4, 5 or 6 dominant alleles: $2n + 1 = 2 \\times 3 + 1 = \\mathbf{7}$ classes, in the ratio 1 : 6 : 15 : 20 : 15 : 6 : 1 out of 64."
+    },
+    {
+      "id": "tn12z-inh-12",
+      "chapter": "Principles of Inheritance and Variation",
+      "topic": "Multiple alleles",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the inheritance of ABO blood groups in humans as an example of multiple alleles.",
+      "solution": "**Multiple alleles** are three or more alternative forms of a gene occupying the same locus on homologous chromosomes. A diploid individual carries only two of them, but the population carries all.\n\n**The gene**: the ABO blood group is controlled by the gene **I** (isoagglutinogen) on chromosome 9, with three alleles $I^A$, $I^B$ and $I^o$. $I^A$ makes antigen A and $I^B$ makes antigen B on the surface of red cells; $I^o$ makes neither.\n\n**Dominance**: $I^A$ and $I^B$ are **codominant** — when together both antigens appear. Both are **dominant over $I^o$**, which is recessive.\n\n**Genotypes and phenotypes**: three alleles give **six genotypes** and **four phenotypes**.\n\n**Group A** — $I^AI^A$ or $I^AI^o$; antigen A; anti-B antibody in plasma.\n\n**Group B** — $I^BI^B$ or $I^BI^o$; antigen B; anti-A antibody.\n\n**Group AB** — $I^AI^B$; antigens A and B; no antibody (universal recipient).\n\n**Group O** — $I^oI^o$; no antigen; both anti-A and anti-B antibodies (universal donor).\n\n**Example cross**: parents $I^AI^o$ (A) × $I^BI^o$ (B) can have children of all four groups — AB, A, B and O — in the ratio 1 : 1 : 1 : 1. This is why blood groups are used in settling disputed parentage."
+    }
+  ]
+}

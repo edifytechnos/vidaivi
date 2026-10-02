@@ -1,0 +1,226 @@
+{
+  "id": "lib-tn12b-env",
+  "title": "Environmental Issues",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 8,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-env-23q1",
+      "chapter": "Environmental Issues",
+      "topic": "Deforestation",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Deforestation does not lead to ______.",
+      "options": [
+        "alteration of local weather conditions",
+        "quick nutrient cycling",
+        "destruction of natural habitat weather conditions",
+        "soil erosion"
+      ],
+      "answer": 1,
+      "solution": "Deforestation does **not** lead to quick nutrient cycling. Removing trees removes the litter and roots that recycle nutrients, so nutrients are washed away instead.\n\nIt does alter local weather (less rainfall, higher temperature), destroy natural habitats and cause soil erosion."
+    },
+    {
+      "id": "tn12b-env-24q1",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The unit for measuring ozone thickness is :",
+      "options": [
+        "Watt",
+        "Dobson",
+        "Kilo",
+        "Joule"
+      ],
+      "answer": 1,
+      "solution": "Ozone thickness is measured in **Dobson units (DU)**. One DU is a layer of pure ozone 0.01 mm thick at standard temperature and pressure.\n\nA column below about 220 DU is described as an ozone hole."
+    },
+    {
+      "id": "tn12b-env-25q6",
+      "chapter": "Environmental Issues",
+      "topic": "Conservation movements",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "People’s movement for the protection of environment in Sirsi of Karnataka is :",
+      "options": [
+        "Appiko movement",
+        "Chipko movement",
+        "Forest Man of India movement",
+        "Amirtha Devi Bishwas movement"
+      ],
+      "answer": 0,
+      "solution": "The **Appiko movement** (1983) began in Sirsi, Karnataka, led by Panduranga Hegde; villagers hugged trees ('appiko' means to hug in Kannada) to stop felling.\n\nThe Chipko movement was in the Himalaya (Uttarakhand), and the Bishnoi sacrifice led by Amrita Devi was in Rajasthan."
+    },
+    {
+      "id": "tn12b-env-01",
+      "chapter": "Environmental Issues",
+      "topic": "Conservation movements",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Chipko movement is associated with:",
+      "options": [
+        "Sunderlal Bahuguna",
+        "Jadav Payeng",
+        "Salim Ali",
+        "Medha Patkar"
+      ],
+      "answer": 0,
+      "solution": "**Sunderlal Bahuguna** (with Chandi Prasad Bhatt and Gaura Devi) led the **Chipko movement** in the 1970s in the Garhwal Himalaya, where people hugged trees to save them.\n\nJadav Payeng is the 'Forest Man of India'; Salim Ali was an ornithologist."
+    },
+    {
+      "id": "tn12b-env-02",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The ozone layer that protects life from UV radiation lies in the:",
+      "options": [
+        "Troposphere",
+        "Stratosphere",
+        "Mesosphere",
+        "Thermosphere"
+      ],
+      "answer": 1,
+      "solution": "The protective ozone layer is in the **stratosphere**, roughly 15–35 km above the Earth. It absorbs harmful ultraviolet-B radiation.\n\nOzone in the troposphere, near the ground, is a pollutant instead."
+    },
+    {
+      "id": "tn12b-env-03",
+      "chapter": "Environmental Issues",
+      "topic": "Greenhouse effect",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which greenhouse gas makes the largest contribution to global warming?",
+      "options": [
+        "Methane",
+        "Nitrous oxide",
+        "Carbon dioxide",
+        "CFCs"
+      ],
+      "answer": 2,
+      "solution": "**Carbon dioxide** contributes the most, about 60% of the enhanced greenhouse effect, because of the vast quantities released by burning fossil fuels and deforestation.\n\nMethane, nitrous oxide and CFCs trap more heat per molecule but are present in much smaller amounts."
+    },
+    {
+      "id": "tn12b-env-04",
+      "chapter": "Environmental Issues",
+      "topic": "Conservation movements",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Who is known as the 'Forest Man of India'?",
+      "options": [
+        "Sunderlal Bahuguna",
+        "Jadav Payeng",
+        "Panduranga Hegde",
+        "Saalumarada Thimmakka"
+      ],
+      "answer": 1,
+      "solution": "**Jadav Payeng** of Assam single-handedly planted a forest of over 500 hectares (Molai forest) on a sandbar of the Brahmaputra, earning the title 'Forest Man of India'.\n\nThimmakka is known for planting avenue banyan trees in Karnataka."
+    },
+    {
+      "id": "tn12b-env-05",
+      "chapter": "Environmental Issues",
+      "topic": "Invasive species",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which of the following is an invasive alien plant in Tamil Nadu?",
+      "options": [
+        "Azadirachta indica",
+        "Prosopis juliflora",
+        "Tectona grandis",
+        "Santalum album"
+      ],
+      "answer": 1,
+      "solution": "**Prosopis juliflora** (seemai karuvelam), native to the Americas, spreads aggressively, draws down groundwater and crowds out native vegetation.\n\nNeem, teak and sandalwood are native, useful trees."
+    },
+    {
+      "id": "tn12b-env-06",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The Montreal Protocol is an international agreement to:",
+      "options": [
+        "Reduce greenhouse gases",
+        "Phase out ozone-depleting substances",
+        "Protect wetlands",
+        "Control trade in endangered species"
+      ],
+      "answer": 1,
+      "solution": "The **Montreal Protocol** (1987) phases out **ozone-depleting substances** such as CFCs and halons.\n\nGreenhouse gases are covered by the Kyoto Protocol, wetlands by the Ramsar Convention and endangered species trade by CITES."
+    },
+    {
+      "id": "tn12b-env-07",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "numeric",
+      "marks": 2,
+      "q": "In which year was the Montreal Protocol on ozone-depleting substances signed?",
+      "answer": 1987,
+      "tolerance": 0,
+      "solution": "It was signed in **1987** and came into force in 1989.\n\nSeptember 16, the day it was signed, is observed as World Ozone Day."
+    },
+    {
+      "id": "tn12b-env-08",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "numeric",
+      "marks": 2,
+      "q": "One Dobson unit equals a layer of pure ozone how many millimetres thick at STP?",
+      "answer": 0.01,
+      "tolerance": 0,
+      "solution": "**1 DU = 0.01 mm** of pure ozone at standard temperature and pressure.\n\nSo a healthy column of about 300 DU would be only 3 mm thick if all the ozone were compressed at the surface."
+    },
+    {
+      "id": "tn12b-env-09",
+      "chapter": "Environmental Issues",
+      "topic": "Ozone depletion",
+      "type": "numeric",
+      "marks": 2,
+      "q": "Which atom, released from CFCs by ultraviolet light, breaks down ozone in the stratosphere?",
+      "answer": "chlorine",
+      "tolerance": 0,
+      "accept": [
+        "Cl",
+        "chlorine atom",
+        "chlorine radical"
+      ],
+      "solution": "**Chlorine**. UV light splits a chlorine atom off a CFC molecule; it reacts with ozone ($\\mathrm{Cl + O_3 \\rightarrow ClO + O_2}$) and is regenerated.\n\nBecause it is regenerated, a single chlorine atom can destroy thousands of ozone molecules."
+    },
+    {
+      "id": "tn12b-env-10",
+      "chapter": "Environmental Issues",
+      "topic": "Forest cover",
+      "type": "numeric",
+      "marks": 3,
+      "q": "What percentage of a country's geographical area should be under forest, as recommended by India's National Forest Policy?",
+      "answer": 33,
+      "tolerance": 0,
+      "solution": "The National Forest Policy (1988) recommends **33%** (one-third) of the geographical area under forest or tree cover, and 66% in hilly regions.\n\nIndia's actual cover is well below this, which is why afforestation and agroforestry are promoted."
+    },
+    {
+      "id": "tn12b-env-11",
+      "chapter": "Environmental Issues",
+      "topic": "Biodiversity hotspots",
+      "type": "numeric",
+      "marks": 3,
+      "q": "How many of the world's biodiversity hotspots lie wholly or partly in India?",
+      "answer": 4,
+      "tolerance": 0,
+      "solution": "**4**: the **Himalaya**, **Indo-Burma**, the **Western Ghats and Sri Lanka**, and **Sundaland** (the Nicobar Islands).\n\nA hotspot is a region rich in endemic species that has lost at least 70% of its original vegetation."
+    },
+    {
+      "id": "tn12b-env-12",
+      "chapter": "Environmental Issues",
+      "topic": "Greenhouse effect",
+      "type": "long",
+      "marks": 5,
+      "q": "What is the greenhouse effect? Name the greenhouse gases, and explain the effects of global warming and the measures to control it.",
+      "solution": "Model answer:\n\n**Greenhouse effect:** short-wave solar radiation passes through the atmosphere and warms the Earth; the Earth re-radiates long-wave infrared, part of which is trapped by atmospheric gases and re-emitted downward, keeping the surface warm (about 15 °C instead of −18 °C). An excess of these gases enhances the effect and causes **global warming**.\n\n**Greenhouse gases:** carbon dioxide, methane, nitrous oxide, chlorofluorocarbons (CFCs) and water vapour.\n\n**Effects of global warming:** melting of glaciers and polar ice, rise in sea level and flooding of coastal areas, changes in rainfall patterns, droughts and floods, fall in crop yield, spread of pests and diseases, coral bleaching and loss of biodiversity.\n\n**Control measures:** reduce use of fossil fuels and shift to renewable energy (solar, wind), improve energy efficiency, stop deforestation and plant trees (afforestation, agroforestry) as carbon sinks, reduce methane from paddy fields and livestock, phase out CFCs, and follow international agreements such as the Kyoto Protocol."
+    }
+  ]
+}

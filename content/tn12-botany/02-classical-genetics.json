@@ -1,0 +1,241 @@
+{
+  "id": "lib-tn12b-cgen",
+  "title": "Classical Genetics",
+  "chapter": "Chapter Test",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12b-cgen-24q2",
+      "chapter": "Classical Genetics",
+      "topic": "Epistasis",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Fruit colour in squash is an example of :",
+      "options": [
+        "Complementary genes",
+        "Recessive epistasis",
+        "Inhibitory genes",
+        "Dominant epistasis"
+      ],
+      "answer": 3,
+      "solution": "Fruit colour in summer squash is the classic case of **dominant epistasis**. The dominant allele W (white) masks the effect of the gene for yellow (Y) and green (yy).\n\nThe F2 ratio is **12 white : 3 yellow : 1 green**, a modification of 9:3:3:1.",
+      "source": "TN HSE Mar 2024"
+    },
+    {
+      "id": "tn12b-cgen-25q8",
+      "chapter": "Classical Genetics",
+      "topic": "Polygenic inheritance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Which one of the following is an example of polygenic inheritance ?",
+      "options": [
+        "Pod shape in garden pea",
+        "Flower colour in Mirabilis jalapa",
+        "Skin colour in humans",
+        "Production of male honey bee"
+      ],
+      "answer": 2,
+      "solution": "In **polygenic inheritance** a trait is controlled by several genes with additive effects, producing continuous variation. **Skin colour in humans** is controlled by about three gene pairs, giving many shades.\n\nPod shape in pea is a single-gene Mendelian trait, Mirabilis flower colour shows incomplete dominance, and male honey bees arise from unfertilised eggs.",
+      "source": "TN HSE Mar 2025"
+    },
+    {
+      "id": "tn12b-cgen-01",
+      "chapter": "Classical Genetics",
+      "topic": "Dihybrid cross",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The phenotypic ratio in the F2 generation of Mendel's dihybrid cross is:",
+      "options": [
+        "3:1",
+        "1:2:1",
+        "9:3:3:1",
+        "1:1:1:1"
+      ],
+      "answer": 2,
+      "solution": "Crossing round yellow (RRYY) with wrinkled green (rryy) gives round yellow F1 (RrYy). Selfing it gives **9 round yellow : 3 round green : 3 wrinkled yellow : 1 wrinkled green**.\n\n3:1 is the monohybrid phenotypic ratio, 1:2:1 its genotypic ratio, and 1:1:1:1 the dihybrid test-cross ratio."
+    },
+    {
+      "id": "tn12b-cgen-02",
+      "chapter": "Classical Genetics",
+      "topic": "Test cross",
+      "type": "mcq",
+      "marks": 1,
+      "q": "A test cross is a cross between the F1 hybrid and:",
+      "options": [
+        "the homozygous dominant parent",
+        "the homozygous recessive parent",
+        "another F1 hybrid",
+        "any F2 plant"
+      ],
+      "answer": 1,
+      "solution": "A **test cross** crosses an organism of unknown genotype, such as the F1, with the **homozygous recessive** parent. The recessive parent contributes only recessive alleles, so the offspring show directly which alleles the tested plant carries.\n\nFor a monohybrid F1 (Tt × tt) the result is 1:1."
+    },
+    {
+      "id": "tn12b-cgen-03",
+      "chapter": "Classical Genetics",
+      "topic": "Incomplete dominance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "In Mirabilis jalapa, the F2 phenotypic ratio for flower colour is:",
+      "options": [
+        "3:1",
+        "1:2:1",
+        "9:7",
+        "12:3:1"
+      ],
+      "answer": 1,
+      "solution": "Flower colour in Mirabilis jalapa shows **incomplete dominance**: RR red × rr white gives pink Rr in F1.\n\nThe F2 is **1 red : 2 pink : 1 white**, so the phenotypic and genotypic ratios are the same, 1:2:1."
+    },
+    {
+      "id": "tn12b-cgen-04",
+      "chapter": "Classical Genetics",
+      "topic": "Gene interaction",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The F2 ratio 9:7 is characteristic of:",
+      "options": [
+        "Complementary genes",
+        "Dominant epistasis",
+        "Recessive epistasis",
+        "Inhibitory genes"
+      ],
+      "answer": 0,
+      "solution": "**Complementary genes** (flower colour in Lathyrus odoratus, Bateson and Punnett) produce colour only when a dominant allele of both genes is present (C_P_). All other combinations are white.\n\nSo 9 coloured : 7 white. Dominant epistasis gives 12:3:1, recessive epistasis 9:3:4 and inhibitory genes 13:3."
+    },
+    {
+      "id": "tn12b-cgen-05",
+      "chapter": "Classical Genetics",
+      "topic": "Mendel's laws",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Mendel's law of independent assortment was formulated from the results of:",
+      "options": [
+        "A monohybrid cross",
+        "A dihybrid cross",
+        "A back cross",
+        "A reciprocal cross"
+      ],
+      "answer": 1,
+      "solution": "Only when two characters are followed together, in a **dihybrid cross**, can one see that the alleles of one gene sort into gametes independently of the other. The new combinations (round green, wrinkled yellow) in F2 show this.\n\nThe monohybrid cross gave the laws of dominance and segregation."
+    },
+    {
+      "id": "tn12b-cgen-06",
+      "chapter": "Classical Genetics",
+      "topic": "Extra-chromosomal inheritance",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Plastid (chloroplast) inheritance through leaf variegation in Mirabilis jalapa was first demonstrated by:",
+      "options": [
+        "Carl Correns",
+        "Hugo de Vries",
+        "Erich von Tschermak",
+        "William Bateson"
+      ],
+      "answer": 0,
+      "solution": "**Carl Correns** (1909) showed that the colour of seedlings in Mirabilis jalapa depends only on the branch that bore the **female** parent flower. Chloroplasts pass through the cytoplasm of the egg, so inheritance is maternal.\n\nCorrens was also one of the three rediscoverers of Mendel's work, with de Vries and Tschermak."
+    },
+    {
+      "id": "tn12b-cgen-07",
+      "chapter": "Classical Genetics",
+      "topic": "Rediscovery of Mendelism",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Mendel's work was rediscovered in the year:",
+      "options": [
+        "1865",
+        "1900",
+        "1910",
+        "1856"
+      ],
+      "answer": 1,
+      "solution": "Mendel published his results in 1865–1866, but they were ignored until **1900**, when **Hugo de Vries, Carl Correns and Erich von Tschermak** independently reached the same conclusions.\n\n1856 is when Mendel began his pea experiments."
+    },
+    {
+      "id": "tn12b-cgen-08",
+      "chapter": "Classical Genetics",
+      "topic": "Mendel's experiments",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many pairs of contrasting characters did Mendel study in the garden pea?",
+      "answer": 7,
+      "tolerance": 0,
+      "accept": [
+        "7",
+        "seven"
+      ],
+      "solution": "Mendel studied **seven** pairs: seed shape, seed colour, flower colour, pod shape, pod colour, flower position and stem length.\n\nPea suited him because it is self-pollinating, has a short life cycle and shows clear contrasting traits."
+    },
+    {
+      "id": "tn12b-cgen-09",
+      "chapter": "Classical Genetics",
+      "topic": "Dihybrid cross",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many different genotypes appear in the F2 of a dihybrid cross (RrYy × RrYy)?",
+      "answer": 9,
+      "tolerance": 0,
+      "accept": [
+        "9",
+        "nine"
+      ],
+      "solution": "Each gene gives three genotypes (RR, Rr, rr and YY, Yy, yy). Since they assort independently, the number of combinations is $3 \\times 3 = 9$.\n\nThe genotypic ratio is 1:2:1:2:4:2:1:2:1."
+    },
+    {
+      "id": "tn12b-cgen-10",
+      "chapter": "Classical Genetics",
+      "topic": "Incomplete dominance",
+      "type": "numeric",
+      "marks": 2,
+      "q": "How many phenotypic classes appear in the F2 of a monohybrid cross showing incomplete dominance?",
+      "answer": 3,
+      "tolerance": 0,
+      "accept": [
+        "3",
+        "three"
+      ],
+      "solution": "With incomplete dominance the heterozygote has its own intermediate phenotype, so each genotype is visible: red (RR), pink (Rr), white (rr).\n\nThat is **3** classes in a 1:2:1 ratio, against 2 classes under complete dominance."
+    },
+    {
+      "id": "tn12b-cgen-11",
+      "chapter": "Classical Genetics",
+      "topic": "Epistasis",
+      "type": "numeric",
+      "marks": 3,
+      "q": "In dominant epistasis for fruit colour in summer squash, how many of the 16 F2 combinations give white fruit?",
+      "answer": 12,
+      "tolerance": 0,
+      "accept": [
+        "12",
+        "twelve"
+      ],
+      "solution": "Any plant with at least one dominant W is white, whatever the other gene: W_Y_ (9) plus W_yy (3) gives **12**.\n\nThe remaining 3 (wwY_) are yellow and 1 (wwyy) green: 12:3:1."
+    },
+    {
+      "id": "tn12b-cgen-12",
+      "chapter": "Classical Genetics",
+      "topic": "Polygenic inheritance",
+      "type": "numeric",
+      "marks": 3,
+      "q": "Kernel colour in wheat is controlled by three gene pairs with additive effect. How many phenotypic classes appear in the F2?",
+      "answer": 7,
+      "tolerance": 0,
+      "accept": [
+        "7",
+        "seven"
+      ],
+      "solution": "With n gene pairs the number of phenotypic classes is $2n + 1$, since a plant may carry 0 to 2n dominant (colour) alleles.\n\nFor n = 3: $2(3) + 1 = 7$, distributed 1:6:15:20:15:6:1 out of 64 (Nilsson-Ehle)."
+    },
+    {
+      "id": "tn12b-cgen-23q20b",
+      "chapter": "Classical Genetics",
+      "topic": "Incomplete dominance",
+      "type": "long",
+      "marks": 5,
+      "q": "Explain the incomplete dominance with example.",
+      "solution": "**Incomplete dominance** is the condition in which neither allele is completely dominant over the other, so the heterozygote shows a phenotype **intermediate** between the two parents. It was described by Carl Correns.\n\n**Example: flower colour in Mirabilis jalapa (4 o'clock plant).** Red (RR) × white (rr): all F1 plants are **pink** (Rr). Selfing the F1 (Rr × Rr) gives F2 RR : Rr : rr = **1 red : 2 pink : 1 white**.\n\nPoints to note:\n1. The phenotypic and genotypic ratios are both 1:2:1.\n2. Parental phenotypes reappear in F2, so the genes did not blend; they segregated unchanged. This supports particulate inheritance.\n3. The red allele makes only enough pigment in a single dose to give pink.\n\nAnother example is Antirrhinum (snapdragon) flower colour.",
+      "source": "TN HSE Mar 2023"
+    }
+  ]
+}
