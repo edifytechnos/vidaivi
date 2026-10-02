@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-int-24q1",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Area",
+      "topic": "பரப்பு",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "$\\dfrac{4}{3}$"
       ],
       "answer": 0,
-      "solution": "Latus rectum of $y^2=4x$ is $x=1$. Area $=2\\displaystyle\\int_0^1 2\\sqrt x\\,dx=4\\cdot\\dfrac23=\\dfrac{8}{3}$.",
-      "_board": true
+      "solution": "$y^2=4x$ இன் செவ்வகலம் $x=1$. பரப்பு $=2\\displaystyle\\int_0^1 2\\sqrt x\\,dx=4\\cdot\\dfrac23=\\dfrac{8}{3}$."
     },
     {
       "id": "tn12mt-int-24q2",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Definite integrals",
+      "topic": "வரையறுத்த தொகைகள்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "$\\dfrac{3\\pi a^4}{16}$"
       ],
       "answer": 3,
-      "solution": "Put $x=a\\sin\\theta$: $\\displaystyle\\int_0^{\\pi/2}a^3\\cos^3\\theta\\cdot a\\cos\\theta\\,d\\theta=a^4\\int_0^{\\pi/2}\\cos^4\\theta\\,d\\theta=a^4\\cdot\\dfrac34\\cdot\\dfrac12\\cdot\\dfrac{\\pi}{2}=\\dfrac{3\\pi a^4}{16}$.",
-      "_board": true
+      "solution": "$x=a\\sin\\theta$ எனப் பிரதியிட: $\\displaystyle\\int_0^{\\pi/2}a^3\\cos^3\\theta\\cdot a\\cos\\theta\\,d\\theta=a^4\\int_0^{\\pi/2}\\cos^4\\theta\\,d\\theta=a^4\\cdot\\dfrac34\\cdot\\dfrac12\\cdot\\dfrac{\\pi}{2}=\\dfrac{3\\pi a^4}{16}$."
     },
     {
       "id": "tn12mt-int-23q17",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Definite integrals",
+      "topic": "வரையறுத்த தொகைகள்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -57,13 +55,12 @@
         "$\\log 3$"
       ],
       "answer": 1,
-      "solution": "$\\displaystyle\\int_0^{\\pi/3}\\tan x\\,dx=[-\\log\\cos x]_0^{\\pi/3}=-\\log\\dfrac12=\\log2$.",
-      "_board": true
+      "solution": "$\\displaystyle\\int_0^{\\pi/3}\\tan x\\,dx=[-\\log\\cos x]_0^{\\pi/3}=-\\log\\dfrac12=\\log2$."
     },
     {
       "id": "tn12mt-int-25q16",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Definite integrals",
+      "topic": "வரையறுத்த தொகைகள்",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -75,13 +72,12 @@
         "$\\dfrac{\\pi}{2}$"
       ],
       "answer": 1,
-      "solution": "$\\displaystyle\\int\\frac{dx}{\\sqrt{4-9x^2}}=\\frac13\\sin^{-1}\\frac{3x}{2}$. From $0$ to $\\dfrac23$: $\\dfrac13\\cdot\\dfrac{\\pi}{2}=\\dfrac{\\pi}{6}$.",
-      "_board": true
+      "solution": "$\\displaystyle\\int\\frac{dx}{\\sqrt{4-9x^2}}=\\frac13\\sin^{-1}\\frac{3x}{2}$. $0$ முதல் $\\dfrac23$ வரை: $\\dfrac13\\cdot\\dfrac{\\pi}{2}=\\dfrac{\\pi}{6}$."
     },
     {
       "id": "tn12mt-int-25q17",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Volume of revolution",
+      "topic": "சுழற்சியால் உருவாகும் கனஅளவு",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -93,16 +89,15 @@
         "$\\dfrac{\\pi a^3}{4}$"
       ],
       "answer": 2,
-      "solution": "$V=\\pi\\displaystyle\\int_0^a x(a-x)\\,dx=\\pi\\left(\\frac{a^3}{2}-\\frac{a^3}{3}\\right)=\\frac{\\pi a^3}{6}$.",
-      "_board": true
+      "solution": "$V=\\pi\\displaystyle\\int_0^a x(a-x)\\,dx=\\pi\\left(\\frac{a^3}{2}-\\frac{a^3}{3}\\right)=\\frac{\\pi a^3}{6}$."
     },
     {
       "id": "tn12mt-int-01",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Definite integrals",
+      "topic": "வரையறுத்த தொகைகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "The value of $\\displaystyle\\int_0^{\\pi/2}\\sin^2x\\,dx$ is :",
+      "q": "$\\displaystyle\\int_0^{\\pi/2}\\sin^2x\\,dx$ இன் மதிப்பு :",
       "options": [
         "$\\dfrac{\\pi}{2}$",
         "$\\dfrac{\\pi}{4}$",
@@ -115,10 +110,10 @@
     {
       "id": "tn12mt-int-02",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Properties of definite integrals",
+      "topic": "வரையறுத்த தொகைகளின் பண்புகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "The value of $\\displaystyle\\int_{-1}^{1}x^3\\,dx$ is :",
+      "q": "$\\displaystyle\\int_{-1}^{1}x^3\\,dx$ இன் மதிப்பு :",
       "options": [
         "0",
         "$\\dfrac12$",
@@ -126,15 +121,15 @@
         "1"
       ],
       "answer": 0,
-      "solution": "$x^3$ is odd, so its integral over $[-1,1]$ is $0$."
+      "solution": "$x^3$ ஒரு ஒற்றைச் சார்பு; எனவே $[-1,1]$ இல் அதன் தொகை $0$."
     },
     {
       "id": "tn12mt-int-03",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Reduction formulae",
+      "topic": "குறைப்புச் சூத்திரங்கள்",
       "type": "mcq",
       "marks": 1,
-      "q": "The value of $\\displaystyle\\int_0^{\\pi/2}\\sin^5x\\,dx$ is :",
+      "q": "$\\displaystyle\\int_0^{\\pi/2}\\sin^5x\\,dx$ இன் மதிப்பு :",
       "options": [
         "$\\dfrac{8}{15}$",
         "$\\dfrac{4}{15}$",
@@ -142,15 +137,15 @@
         "$\\dfrac{2}{3}$"
       ],
       "answer": 0,
-      "solution": "For odd $n$: $\\dfrac{4}{5}\\cdot\\dfrac{2}{3}=\\dfrac{8}{15}$."
+      "solution": "$n$ ஒற்றை எண் எனில்: $\\dfrac{4}{5}\\cdot\\dfrac{2}{3}=\\dfrac{8}{15}$."
     },
     {
       "id": "tn12mt-int-04",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Area",
+      "topic": "பரப்பு",
       "type": "mcq",
       "marks": 1,
-      "q": "The area bounded by $y=x^2$, the $x$-axis and the lines $x=0$, $x=3$ is :",
+      "q": "$y=x^2$, $x$-அச்சு மற்றும் $x=0$, $x=3$ என்ற கோடுகளால் அடைபடும் பரப்பு :",
       "options": [
         "9",
         "27",
@@ -163,10 +158,10 @@
     {
       "id": "tn12mt-int-05",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Definite integrals",
+      "topic": "வரையறுத்த தொகைகள்",
       "type": "numeric",
       "marks": 2,
-      "q": "Evaluate $\\displaystyle\\int_0^1(2x+1)\\,dx$.",
+      "q": "$\\displaystyle\\int_0^1(2x+1)\\,dx$ இன் மதிப்பைக் காண்க.",
       "answer": 2,
       "tolerance": 0,
       "solution": "$[x^2+x]_0^1=2$."
@@ -174,13 +169,13 @@
     {
       "id": "tn12mt-int-06",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Reduction formulae",
+      "topic": "குறைப்புச் சூத்திரங்கள்",
       "type": "numeric",
       "marks": 2,
-      "q": "Evaluate $\\displaystyle\\int_0^{\\pi/2}\\cos^3x\\,dx$, correct to three decimal places.",
+      "q": "$\\displaystyle\\int_0^{\\pi/2}\\cos^3x\\,dx$ இன் மதிப்பை மூன்று தசம இடங்களுக்குத் திருத்தமாகக் காண்க.",
       "answer": 0.667,
       "tolerance": 0.001,
-      "solution": "For odd $n$: $\\dfrac{2}{3}\\cdot1=\\dfrac23\\approx0.667$.",
+      "solution": "$n$ ஒற்றை எண் எனில்: $\\dfrac{2}{3}\\cdot1=\\dfrac23\\approx0.667$.",
       "accept": [
         "2/3"
       ]
@@ -188,13 +183,13 @@
     {
       "id": "tn12mt-int-07",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Area between curves",
+      "topic": "வளைவரைகளுக்கு இடையேயான பரப்பு",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the area enclosed between $y=x$ and $y=x^2$, correct to three decimal places.",
+      "q": "$y=x$ மற்றும் $y=x^2$ ஆகியவற்றுக்கு இடையே அடைபடும் பரப்பை மூன்று தசம இடங்களுக்குத் திருத்தமாகக் காண்க.",
       "answer": 0.167,
       "tolerance": 0.001,
-      "solution": "They meet at $x=0$ and $x=1$, with $x\\ge x^2$ between.\n\nArea $=\\displaystyle\\int_0^1(x-x^2)\\,dx=\\frac12-\\frac13=\\frac16\\approx0.167$.",
+      "solution": "இவை $x=0$, $x=1$ இல் சந்திக்கின்றன; இடையில் $x\\ge x^2$.\n\nபரப்பு $=\\displaystyle\\int_0^1(x-x^2)\\,dx=\\frac12-\\frac13=\\frac16\\approx0.167$.",
       "accept": [
         "1/6"
       ]
@@ -202,33 +197,33 @@
     {
       "id": "tn12mt-int-08",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Gamma integral",
+      "topic": "காமா தொகை",
       "type": "numeric",
       "marks": 3,
-      "q": "Evaluate $\\displaystyle\\int_0^\\infty x^3e^{-x}\\,dx$.",
+      "q": "$\\displaystyle\\int_0^\\infty x^3e^{-x}\\,dx$ இன் மதிப்பைக் காண்க.",
       "answer": 6,
       "tolerance": 0,
-      "solution": "$\\displaystyle\\int_0^\\infty x^ne^{-x}\\,dx=n!$, so the value is $3!=6$."
+      "solution": "$\\displaystyle\\int_0^\\infty x^ne^{-x}\\,dx=n!$, எனவே மதிப்பு $3!=6$."
     },
     {
       "id": "tn12mt-int-09",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Volume of revolution",
+      "topic": "சுழற்சியால் உருவாகும் கனஅளவு",
       "type": "numeric",
       "marks": 3,
-      "q": "The region under $y=\\sqrt x$ from $x=0$ to $x=4$ is rotated about the $x$-axis. Find the volume as a multiple of $\\pi$ (give the multiple).",
+      "q": "$x=0$ முதல் $x=4$ வரை $y=\\sqrt x$ இன் கீழுள்ள அரங்கம் $x$-அச்சைப் பொருத்துச் சுழற்றப்படுகிறது. கனஅளவை $\\pi$ இன் மடங்காகக் காண்க (அந்த மடங்கைத் தருக).",
       "answer": 8,
       "tolerance": 0,
-      "solution": "$V=\\pi\\displaystyle\\int_0^4(\\sqrt x)^2\\,dx=\\pi\\left[\\frac{x^2}{2}\\right]_0^4=8\\pi$.\n\nThe multiple of $\\pi$ is $8$."
+      "solution": "$V=\\pi\\displaystyle\\int_0^4(\\sqrt x)^2\\,dx=\\pi\\left[\\frac{x^2}{2}\\right]_0^4=8\\pi$.\n\n$\\pi$ இன் மடங்கு $8$."
     },
     {
       "id": "tn12mt-int-10",
       "chapter": "தொகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Area between curves",
+      "topic": "வளைவரைகளுக்கு இடையேயான பரப்பு",
       "type": "long",
       "marks": 5,
-      "q": "Find the area of the region bounded by the parabola $y^2=4x$ and the line $y=2x-4$.",
-      "solution": "Write both as $x$ in terms of $y$: $x=\\dfrac{y^2}{4}$ and $x=\\dfrac{y+4}{2}$.\n\nThey meet where $\\dfrac{y^2}{4}=\\dfrac{y+4}{2}$, i.e. $y^2-2y-8=0$, so $y=-2$ and $y=4$.\n\nBetween them the line lies to the right of the parabola, so\n\nArea $=\\displaystyle\\int_{-2}^{4}\\left(\\frac{y+4}{2}-\\frac{y^2}{4}\\right)dy=\\left[\\frac{y^2}{4}+2y-\\frac{y^3}{12}\\right]_{-2}^{4}$\n\n$=\\left(4+8-\\dfrac{16}{3}\\right)-\\left(1-4+\\dfrac23\\right)=\\dfrac{20}{3}+\\dfrac73=9$ square units."
+      "q": "$y^2=4x$ என்ற பரவளையம் மற்றும் $y=2x-4$ என்ற கோடு ஆகியவற்றால் அடைபடும் அரங்கத்தின் பரப்பைக் காண்க.",
+      "solution": "இரண்டையும் $y$ இன் சார்பாக $x$ ஆக எழுதுக: $x=\\dfrac{y^2}{4}$, $x=\\dfrac{y+4}{2}$.\n\n$\\dfrac{y^2}{4}=\\dfrac{y+4}{2}$, அதாவது $y^2-2y-8=0$ எனும்போது இவை சந்திக்கின்றன; எனவே $y=-2$, $y=4$.\n\nஇவற்றுக்கு இடையே கோடு பரவளையத்தின் வலப்புறம் உள்ளது; எனவே\n\nபரப்பு $=\\displaystyle\\int_{-2}^{4}\\left(\\frac{y+4}{2}-\\frac{y^2}{4}\\right)dy=\\left[\\frac{y^2}{4}+2y-\\frac{y^3}{12}\\right]_{-2}^{4}$\n\n$=\\left(4+8-\\dfrac{16}{3}\\right)-\\left(1-4+\\dfrac23\\right)=\\dfrac{20}{3}+\\dfrac73=9$ சதுர அலகுகள்."
     }
   ]
 }

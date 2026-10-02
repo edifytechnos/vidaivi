@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-ode-24q7",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Formation of differential equations",
+      "topic": "வகைக்கெழுச் சமன்பாடுகளை அமைத்தல்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "$\\dfrac{d^2y}{dx^2}-y=0$"
       ],
       "answer": 3,
-      "solution": "$y'=Ae^x-Be^{-x}$, $y''=Ae^x+Be^{-x}=y$. So $\\dfrac{d^2y}{dx^2}-y=0$.",
-      "_board": true
+      "solution": "$y'=Ae^x-Be^{-x}$, $y''=Ae^x+Be^{-x}=y$. எனவே $\\dfrac{d^2y}{dx^2}-y=0$."
     },
     {
       "id": "tn12mt-ode-23q4",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Variables separable",
+      "topic": "மாறிகளைப் பிரிக்கும் முறை",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "$y=k\\log x$"
       ],
       "answer": 0,
-      "solution": "$\\dfrac{dy}{y}=\\dfrac{dx}{x}\\Rightarrow\\log y=\\log x+\\log k\\Rightarrow y=kx$.",
-      "_board": true
+      "solution": "$\\dfrac{dy}{y}=\\dfrac{dx}{x}\\Rightarrow\\log y=\\log x+\\log k\\Rightarrow y=kx$."
     },
     {
       "id": "tn12mt-ode-25q5",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Order and degree",
+      "topic": "வரிசை மற்றும் படி",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -57,13 +55,12 @@
         "1, 1"
       ],
       "answer": 0,
-      "solution": "Highest derivative is $\\dfrac{dy}{dx}$: order 1. Removing the radical, $\\dfrac{dy}{dx}=\\left(4\\dfrac{dy}{dx}+7x\\right)^2$, degree 2.",
-      "_board": true
+      "solution": "உயர் வகைக்கெழு $\\dfrac{dy}{dx}$: வரிசை 1. மூலக்குறியை நீக்க, $\\dfrac{dy}{dx}=\\left(4\\dfrac{dy}{dx}+7x\\right)^2$, படி 2."
     },
     {
       "id": "tn12mt-ode-25q7",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Variables separable",
+      "topic": "மாறிகளைப் பிரிக்கும் முறை",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -75,16 +72,15 @@
         "$y=3x^2+4$"
       ],
       "answer": 1,
-      "solution": "$y=x^3+C$; at $(-1,1)$, $1=-1+C$, $C=2$. So $y=x^3+2$.",
-      "_board": true
+      "solution": "$y=x^3+C$; $(-1,1)$ இல், $1=-1+C$, $C=2$. எனவே $y=x^3+2$."
     },
     {
       "id": "tn12mt-ode-01",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Order and degree",
+      "topic": "வரிசை மற்றும் படி",
       "type": "mcq",
       "marks": 1,
-      "q": "The order and degree of $\\left(\\dfrac{d^2y}{dx^2}\\right)^3+\\left(\\dfrac{dy}{dx}\\right)^4+y=0$ are respectively :",
+      "q": "$\\left(\\dfrac{d^2y}{dx^2}\\right)^3+\\left(\\dfrac{dy}{dx}\\right)^4+y=0$ இன் வரிசை மற்றும் படி முறையே :",
       "options": [
         "2, 3",
         "3, 2",
@@ -92,15 +88,15 @@
         "4, 2"
       ],
       "answer": 0,
-      "solution": "The highest derivative is the second, so the order is 2; it is raised to the power 3, so the degree is 3."
+      "solution": "உயர் வகைக்கெழு இரண்டாம் வகைக்கெழு; எனவே வரிசை 2. அது அடுக்கு 3 க்கு உயர்த்தப்பட்டுள்ளது; எனவே படி 3."
     },
     {
       "id": "tn12mt-ode-02",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Linear equations",
+      "topic": "நேரியல் சமன்பாடுகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "The integrating factor of $\\dfrac{dy}{dx}+\\dfrac{y}{x}=x^2$ is :",
+      "q": "$\\dfrac{dy}{dx}+\\dfrac{y}{x}=x^2$ இன் தொகையீட்டுக் காரணி :",
       "options": [
         "$x$",
         "$\\dfrac1x$",
@@ -108,15 +104,15 @@
         "$\\log x$"
       ],
       "answer": 0,
-      "solution": "$P=\\dfrac1x$, so $e^{\\int P\\,dx}=e^{\\log x}=x$."
+      "solution": "$P=\\dfrac1x$, எனவே $e^{\\int P\\,dx}=e^{\\log x}=x$."
     },
     {
       "id": "tn12mt-ode-03",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Variables separable",
+      "topic": "மாறிகளைப் பிரிக்கும் முறை",
       "type": "mcq",
       "marks": 1,
-      "q": "The general solution of $\\dfrac{dy}{dx}=e^{x-y}$ is :",
+      "q": "$\\dfrac{dy}{dx}=e^{x-y}$ இன் பொதுத் தீர்வு :",
       "options": [
         "$e^y=e^x+C$",
         "$e^{-y}=e^x+C$",
@@ -124,31 +120,31 @@
         "$e^y=e^{-x}+C$"
       ],
       "answer": 0,
-      "solution": "$e^y\\,dy=e^x\\,dx$; integrating, $e^y=e^x+C$."
+      "solution": "$e^y\\,dy=e^x\\,dx$; தொகையிட, $e^y=e^x+C$."
     },
     {
       "id": "tn12mt-ode-04",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Formation of differential equations",
+      "topic": "வகைக்கெழுச் சமன்பாடுகளை அமைத்தல்",
       "type": "mcq",
       "marks": 1,
-      "q": "The differential equation of the family of lines $y=mx$ ($m$ arbitrary) is :",
+      "q": "$y=mx$ ($m$ ஏதேனும் ஒரு மாறிலி) என்ற கோட்டுத் தொகுதியின் வகைக்கெழுச் சமன்பாடு :",
       "options": [
         "$x\\dfrac{dy}{dx}=y$",
         "$\\dfrac{dy}{dx}=m$",
         "$y\\dfrac{dy}{dx}=x$",
-        "$\\dfrac{d^2y}{dx^2}=0$ only"
+        "$\\dfrac{d^2y}{dx^2}=0$ மட்டும்"
       ],
       "answer": 0,
-      "solution": "$\\dfrac{dy}{dx}=m=\\dfrac yx$, so $x\\dfrac{dy}{dx}=y$."
+      "solution": "$\\dfrac{dy}{dx}=m=\\dfrac yx$, எனவே $x\\dfrac{dy}{dx}=y$."
     },
     {
       "id": "tn12mt-ode-05",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Applications",
+      "topic": "பயன்பாடுகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "If a population grows at a rate proportional to its size, $\\dfrac{dP}{dt}=kP$, then :",
+      "q": "ஒரு மக்கள்தொகை அதன் அளவுக்கு விகிதசமமான வீதத்தில் வளர்ந்தால், $\\dfrac{dP}{dt}=kP$, எனில் :",
       "options": [
         "$P=P_0e^{kt}$",
         "$P=P_0+kt$",
@@ -156,40 +152,40 @@
         "$P=P_0e^{-t/k}$"
       ],
       "answer": 0,
-      "solution": "$\\dfrac{dP}{P}=k\\,dt$, so $\\log P=kt+C$ and $P=P_0e^{kt}$."
+      "solution": "$\\dfrac{dP}{P}=k\\,dt$, எனவே $\\log P=kt+C$, $P=P_0e^{kt}$."
     },
     {
       "id": "tn12mt-ode-06",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Particular solutions",
+      "topic": "சிறப்புத் தீர்வுகள்",
       "type": "numeric",
       "marks": 2,
-      "q": "The curve $y=Ce^{2x}$ passes through $(0,3)$. Find $C$.",
+      "q": "$y=Ce^{2x}$ என்ற வளைவரை $(0,3)$ வழியாகச் செல்கிறது. $C$ ஐக் காண்க.",
       "answer": 3,
       "tolerance": 0,
-      "solution": "At $x=0$, $y=C=3$."
+      "solution": "$x=0$ இல், $y=C=3$."
     },
     {
       "id": "tn12mt-ode-07",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Variables separable",
+      "topic": "மாறிகளைப் பிரிக்கும் முறை",
       "type": "numeric",
       "marks": 2,
-      "q": "Solve $\\dfrac{dy}{dx}=2x$ with $y(0)=1$, and find $y(3)$.",
+      "q": "$y(0)=1$ எனக் கொண்டு $\\dfrac{dy}{dx}=2x$ ஐத் தீர்த்து, $y(3)$ ஐக் காண்க.",
       "answer": 10,
       "tolerance": 0,
-      "solution": "$y=x^2+C$; $y(0)=1$ gives $C=1$. So $y(3)=9+1=10$."
+      "solution": "$y=x^2+C$; $y(0)=1$ இலிருந்து $C=1$. எனவே $y(3)=9+1=10$."
     },
     {
       "id": "tn12mt-ode-08",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Linear equations",
+      "topic": "நேரியல் சமன்பாடுகள்",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the integrating factor of $\\dfrac{dy}{dx}-\\dfrac{2}{x}y=x$ at $x=2$.",
+      "q": "$\\dfrac{dy}{dx}-\\dfrac{2}{x}y=x$ இன் தொகையீட்டுக் காரணியின் மதிப்பை $x=2$ இல் காண்க.",
       "answer": 0.25,
       "tolerance": 0,
-      "solution": "$P=-\\dfrac2x$, so $\\text{IF}=e^{-2\\log x}=x^{-2}$.\n\nAt $x=2$ it is $\\dfrac14=0.25$.",
+      "solution": "$P=-\\dfrac2x$, எனவே தொகையீட்டுக் காரணி $=e^{-2\\log x}=x^{-2}$.\n\n$x=2$ இல் இது $\\dfrac14=0.25$.",
       "accept": [
         "1/4"
       ]
@@ -197,24 +193,24 @@
     {
       "id": "tn12mt-ode-09",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Applications",
+      "topic": "பயன்பாடுகள்",
       "type": "numeric",
       "marks": 3,
-      "q": "A population growing at a rate proportional to its size doubles in 10 years. In how many years does it become four times its original size?",
+      "q": "அதன் அளவுக்கு விகிதசமமான வீதத்தில் வளரும் ஒரு மக்கள்தொகை 10 ஆண்டுகளில் இரட்டிப்பாகிறது. எத்தனை ஆண்டுகளில் அது தொடக்க அளவின் நான்கு மடங்காகும்?",
       "answer": 20,
       "tolerance": 0,
-      "solution": "$P=P_0e^{kt}$ with $e^{10k}=2$.\n\nFour times means $e^{kt}=4=(e^{10k})^2$, so $t=20$ years."
+      "solution": "$P=P_0e^{kt}$, இங்கு $e^{10k}=2$.\n\nநான்கு மடங்கு எனில் $e^{kt}=4=(e^{10k})^2$, எனவே $t=20$ ஆண்டுகள்."
     },
     {
       "id": "tn12mt-ode-10",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Linear equations",
+      "topic": "நேரியல் சமன்பாடுகள்",
       "type": "numeric",
       "marks": 3,
-      "q": "Solve $\\dfrac{dy}{dx}+y=1$ with $y(0)=0$, and find $y$ when $x=\\log 2$.",
+      "q": "$y(0)=0$ எனக் கொண்டு $\\dfrac{dy}{dx}+y=1$ ஐத் தீர்த்து, $x=\\log 2$ எனும்போது $y$ ஐக் காண்க.",
       "answer": 0.5,
       "tolerance": 0,
-      "solution": "$\\text{IF}=e^x$: $\\dfrac{d}{dx}(ye^x)=e^x$, so $ye^x=e^x+C$. $y(0)=0$ gives $C=-1$, so $y=1-e^{-x}$.\n\nAt $x=\\log2$, $y=1-\\dfrac12=\\dfrac12$.",
+      "solution": "தொகையீட்டுக் காரணி $=e^x$: $\\dfrac{d}{dx}(ye^x)=e^x$, எனவே $ye^x=e^x+C$. $y(0)=0$ இலிருந்து $C=-1$, எனவே $y=1-e^{-x}$.\n\n$x=\\log2$ இல், $y=1-\\dfrac12=\\dfrac12$.",
       "accept": [
         "1/2"
       ]
@@ -222,11 +218,11 @@
     {
       "id": "tn12mt-ode-11",
       "chapter": "சாதாரண வகைக்கெழுச் சமன்பாடுகள்",
-      "topic": "Linear equations",
+      "topic": "நேரியல் சமன்பாடுகள்",
       "type": "long",
       "marks": 5,
-      "q": "Solve $\\dfrac{dy}{dx}+y\\tan x=\\sin2x$, given $y=0$ when $x=0$.",
-      "solution": "This is linear with $P=\\tan x$, $Q=\\sin2x$.\n\n$\\text{IF}=e^{\\int\\tan x\\,dx}=e^{\\log\\sec x}=\\sec x$.\n\n$\\dfrac{d}{dx}(y\\sec x)=\\sin2x\\sec x=2\\sin x\\cos x\\cdot\\dfrac{1}{\\cos x}=2\\sin x$.\n\nIntegrating: $y\\sec x=-2\\cos x+C$, i.e. $y=-2\\cos^2x+C\\cos x$.\n\n$y(0)=0$: $0=-2+C$, so $C=2$.\n\n**Solution:** $y=2\\cos x-2\\cos^2x$."
+      "q": "$x=0$ எனும்போது $y=0$ எனக் கொடுக்கப்பட்டால், $\\dfrac{dy}{dx}+y\\tan x=\\sin2x$ ஐத் தீர்க்க.",
+      "solution": "இது $P=\\tan x$, $Q=\\sin2x$ கொண்ட நேரியல் சமன்பாடு.\n\nதொகையீட்டுக் காரணி $=e^{\\int\\tan x\\,dx}=e^{\\log\\sec x}=\\sec x$.\n\n$\\dfrac{d}{dx}(y\\sec x)=\\sin2x\\sec x=2\\sin x\\cos x\\cdot\\dfrac{1}{\\cos x}=2\\sin x$.\n\nதொகையிட: $y\\sec x=-2\\cos x+C$, அதாவது $y=-2\\cos^2x+C\\cos x$.\n\n$y(0)=0$: $0=-2+C$, எனவே $C=2$.\n\n**தீர்வு:** $y=2\\cos x-2\\cos^2x$."
     }
   ]
 }

@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-mat-24q13",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Inverse of a matrix",
+      "topic": "ஓர் அணியின் நேர்மாறு",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "$\\begin{bmatrix}5&3\\\\-2&-1\\end{bmatrix}$"
       ],
       "answer": 2,
-      "solution": "$(A^T)^{-1}=(A^{-1})^T=\\begin{bmatrix}5&-2\\\\3&-1\\end{bmatrix}$.",
-      "_board": true
+      "solution": "$(A^T)^{-1}=(A^{-1})^T=\\begin{bmatrix}5&-2\\\\3&-1\\end{bmatrix}$."
     },
     {
       "id": "tn12mt-mat-24q19",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Properties of inverse and adjoint",
+      "topic": "நேர்மாறு மற்றும் சேர்ப்பு அணியின் பண்புகள்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "$\\operatorname{adj}(AB)=(\\operatorname{adj}A)(\\operatorname{adj}B)$"
       ],
       "answer": 3,
-      "solution": "$\\operatorname{adj}(AB)=(\\operatorname{adj}B)(\\operatorname{adj}A)$ — the order reverses — so (d) is not true.",
-      "_board": true
+      "solution": "$\\operatorname{adj}(AB)=(\\operatorname{adj}B)(\\operatorname{adj}A)$ — வரிசை மாறுகிறது — எனவே (d) உண்மையல்ல."
     },
     {
       "id": "tn12mt-mat-23q1",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Rank of a matrix",
+      "topic": "அணியின் தரம்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -57,13 +55,12 @@
         "$\\rho(A)<n$"
       ],
       "answer": 1,
-      "solution": "$A^{-1}$ exists iff $|A|\\ne0$, i.e. iff $A$ has full rank: $\\rho(A)=n$.",
-      "_board": true
+      "solution": "$|A|\\ne0$ ஆக இருந்தால், இருந்தால் மட்டுமே $A^{-1}$ காண முடியும்; அதாவது $A$ முழுத் தரம் பெற்றிருக்க வேண்டும்: $\\rho(A)=n$."
     },
     {
       "id": "tn12mt-mat-23q13",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Properties of adjoint",
+      "topic": "சேர்ப்பு அணியின் பண்புகள்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -75,13 +72,12 @@
         "4"
       ],
       "answer": 2,
-      "solution": "$|\\operatorname{adj}(\\operatorname{adj}A)|=|A|^{(n-1)^2}=|A|^{16}$, so $n-1=4$, $n=5$.",
-      "_board": true
+      "solution": "$|\\operatorname{adj}(\\operatorname{adj}A)|=|A|^{(n-1)^2}=|A|^{16}$, எனவே $n-1=4$, $n=5$."
     },
     {
       "id": "tn12mt-mat-25q3",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Inverse of a matrix",
+      "topic": "ஓர் அணியின் நேர்மாறு",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -93,13 +89,12 @@
         "$\\dfrac15$"
       ],
       "answer": 3,
-      "solution": "$|A^{-1}|=\\dfrac{1}{|A|}=\\dfrac15$.",
-      "_board": true
+      "solution": "$|A^{-1}|=\\dfrac{1}{|A|}=\\dfrac15$."
     },
     {
       "id": "tn12mt-mat-25q6",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Inverse of a matrix",
+      "topic": "ஓர் அணியின் நேர்மாறு",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -111,16 +106,15 @@
         "14"
       ],
       "answer": 0,
-      "solution": "$\\lambda A^{-1}=A\\Rightarrow A^2=\\lambda I$. $A^2=\\begin{bmatrix}19&0\\\\0&19\\end{bmatrix}$, so $\\lambda=19$.",
-      "_board": true
+      "solution": "$\\lambda A^{-1}=A\\Rightarrow A^2=\\lambda I$. $A^2=\\begin{bmatrix}19&0\\\\0&19\\end{bmatrix}$, எனவே $\\lambda=19$."
     },
     {
       "id": "tn12mt-mat-01",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Rank of a matrix",
+      "topic": "அணியின் தரம்",
       "type": "mcq",
       "marks": 1,
-      "q": "The rank of the matrix $\\begin{bmatrix}1&2\\\\2&4\\end{bmatrix}$ is :",
+      "q": "$\\begin{bmatrix}1&2\\\\2&4\\end{bmatrix}$ என்ற அணியின் தரம் :",
       "options": [
         "0",
         "1",
@@ -128,15 +122,15 @@
         "3"
       ],
       "answer": 1,
-      "solution": "The second row is twice the first, and $\\begin{vmatrix}1&2\\\\2&4\\end{vmatrix}=0$, but the matrix is not zero. Rank $=1$."
+      "solution": "இரண்டாம் நிரை முதல் நிரையின் இருமடங்கு; $\\begin{vmatrix}1&2\\\\2&4\\end{vmatrix}=0$, ஆனால் அணி பூச்சிய அணி அல்ல. தரம் $=1$."
     },
     {
       "id": "tn12mt-mat-02",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Properties of adjoint",
+      "topic": "சேர்ப்பு அணியின் பண்புகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "If $A$ is a square matrix of order 3 with $|A|=2$, then $|\\operatorname{adj}A|$ is :",
+      "q": "$A$ என்பது $|A|=2$ கொண்ட வரிசை 3 உடைய சதுர அணி எனில், $|\\operatorname{adj}A|$ -ன் மதிப்பு :",
       "options": [
         "2",
         "4",
@@ -149,82 +143,82 @@
     {
       "id": "tn12mt-mat-03",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Consistency of linear equations",
+      "topic": "நேரியச் சமன்பாடுகளின் ஒருங்கமைவு",
       "type": "mcq",
       "marks": 1,
-      "q": "The system $x+y=2$, $2x+2y=5$ is :",
+      "q": "$x+y=2$, $2x+2y=5$ என்ற சமன்பாட்டுத் தொகுப்பு :",
       "options": [
-        "consistent with a unique solution",
-        "consistent with infinitely many solutions",
-        "inconsistent",
-        "satisfied only by $x=y=0$"
+        "ஒருங்கமைவுடையது, ஒரே ஒரு தீர்வு உண்டு",
+        "ஒருங்கமைவுடையது, எண்ணற்ற தீர்வுகள் உண்டு",
+        "ஒருங்கமைவற்றது",
+        "$x=y=0$ ஆல் மட்டுமே நிறைவு செய்யப்படும்"
       ],
       "answer": 2,
-      "solution": "Coefficient matrix has rank 1, augmented matrix $\\begin{bmatrix}1&1&2\\\\2&2&5\\end{bmatrix}$ has rank 2. The ranks differ, so the system is **inconsistent**."
+      "solution": "கெழு அணியின் தரம் 1; மிகுதிப்படுத்தப்பட்ட அணி $\\begin{bmatrix}1&1&2\\\\2&2&5\\end{bmatrix}$ -ன் தரம் 2. தரங்கள் வேறுபடுவதால் தொகுப்பு **ஒருங்கமைவற்றது**."
     },
     {
       "id": "tn12mt-mat-04",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Inverse of a matrix",
+      "topic": "ஓர் அணியின் நேர்மாறு",
       "type": "numeric",
       "marks": 2,
-      "q": "If $A=\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}$, find $|\\operatorname{adj}A|$.",
+      "q": "$A=\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}$ எனில், $|\\operatorname{adj}A|$ காண்க.",
       "answer": -2,
       "tolerance": 0,
-      "solution": "For a $2\\times2$ matrix $|\\operatorname{adj}A|=|A|^{2-1}=|A|=4-6=-2$."
+      "solution": "$2\\times2$ அணிக்கு $|\\operatorname{adj}A|=|A|^{2-1}=|A|=4-6=-2$."
     },
     {
       "id": "tn12mt-mat-05",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Rank of a matrix",
+      "topic": "அணியின் தரம்",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the rank of $\\begin{bmatrix}1&2&3\\\\2&4&6\\\\1&1&1\\end{bmatrix}$.",
+      "q": "$\\begin{bmatrix}1&2&3\\\\2&4&6\\\\1&1&1\\end{bmatrix}$ -ன் தரம் காண்க.",
       "answer": 2,
       "tolerance": 0,
-      "solution": "$R_2=2R_1$, so the determinant is $0$ and the rank is below 3. The minor $\\begin{vmatrix}1&2\\\\1&1\\end{vmatrix}=-1\\ne0$, so the rank is **2**."
+      "solution": "$R_2=2R_1$, எனவே அணிக்கோவை $0$; தரம் 3-ஐ விடக் குறைவு. சிற்றணிக்கோவை $\\begin{vmatrix}1&2\\\\1&1\\end{vmatrix}=-1\\ne0$, எனவே தரம் **2**."
     },
     {
       "id": "tn12mt-mat-06",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Cramer's rule",
+      "topic": "கிராமரின் விதி",
       "type": "numeric",
       "marks": 2,
-      "q": "Solve by Cramer's rule: $3x+2y=12$, $x-y=-1$. Give the value of $y$.",
+      "q": "கிராமரின் விதியைப் பயன்படுத்தித் தீர்க்க: $3x+2y=12$, $x-y=-1$. $y$ -ன் மதிப்பைத் தருக.",
       "answer": 3,
       "tolerance": 0,
-      "solution": "$\\Delta=\\begin{vmatrix}3&2\\\\1&-1\\end{vmatrix}=-5$, $\\Delta_y=\\begin{vmatrix}3&12\\\\1&-1\\end{vmatrix}=-15$.\n\n$y=\\dfrac{\\Delta_y}{\\Delta}=3$ (and $x=2$)."
+      "solution": "$\\Delta=\\begin{vmatrix}3&2\\\\1&-1\\end{vmatrix}=-5$, $\\Delta_y=\\begin{vmatrix}3&12\\\\1&-1\\end{vmatrix}=-15$.\n\n$y=\\dfrac{\\Delta_y}{\\Delta}=3$ (மேலும் $x=2$)."
     },
     {
       "id": "tn12mt-mat-07",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Inverse of a matrix",
+      "topic": "ஓர் அணியின் நேர்மாறு",
       "type": "numeric",
       "marks": 3,
-      "q": "If $A=\\begin{bmatrix}3&1\\\\2&1\\end{bmatrix}$, find the entry in row 1, column 2 of $A^{-1}$.",
+      "q": "$A=\\begin{bmatrix}3&1\\\\2&1\\end{bmatrix}$ எனில், $A^{-1}$ -ல் நிரை 1, நிரல் 2 -ல் உள்ள உறுப்பைக் காண்க.",
       "answer": -1,
       "tolerance": 0,
-      "solution": "$|A|=3-2=1$, so $A^{-1}=\\operatorname{adj}A=\\begin{bmatrix}1&-1\\\\-2&3\\end{bmatrix}$.\n\nThe (1, 2) entry is $-1$."
+      "solution": "$|A|=3-2=1$, எனவே $A^{-1}=\\operatorname{adj}A=\\begin{bmatrix}1&-1\\\\-2&3\\end{bmatrix}$.\n\n(1, 2) உறுப்பு $-1$."
     },
     {
       "id": "tn12mt-mat-08",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Gaussian elimination",
+      "topic": "காஸியன் நீக்கல் முறை",
       "type": "numeric",
       "marks": 3,
-      "q": "Solve by Gaussian elimination: $x+y+z=6$, $x+2y+3z=14$, $x+4y+9z=36$. Give the value of $z$.",
+      "q": "காஸியன் நீக்கல் முறையில் தீர்க்க: $x+y+z=6$, $x+2y+3z=14$, $x+4y+9z=36$. $z$ -ன் மதிப்பைத் தருக.",
       "answer": 3,
       "tolerance": 0,
-      "solution": "Subtract the first equation from the others: $y+2z=8$ and $3y+8z=30$.\n\nThen $3(8-2z)+8z=30$ gives $z=3$, so $y=2$ and $x=1$."
+      "solution": "முதல் சமன்பாட்டை மற்றவற்றிலிருந்து கழிக்க: $y+2z=8$ மற்றும் $3y+8z=30$.\n\nபின் $3(8-2z)+8z=30$ இலிருந்து $z=3$, எனவே $y=2$ மற்றும் $x=1$."
     },
     {
       "id": "tn12mt-mat-09",
       "chapter": "அணிகள் மற்றும் அணிக்கோவைகளின் பயன்பாடுகள்",
-      "topic": "Matrix inversion method",
+      "topic": "அணி நேர்மாறு காணல் முறை",
       "type": "long",
       "marks": 5,
-      "q": "Solve by the matrix inversion method: $x+y+z=6$, $2x-y+z=3$, $x+2y-z=2$.",
-      "solution": "Write $AX=B$ with $A=\\begin{bmatrix}1&1&1\\\\2&-1&1\\\\1&2&-1\\end{bmatrix}$, $B=\\begin{bmatrix}6\\\\3\\\\2\\end{bmatrix}$.\n\n$|A|=1(1-2)-1(-2-1)+1(4+1)=-1+3+5=7\\ne0$, so $A^{-1}$ exists.\n\nCofactors give $\\operatorname{adj}A=\\begin{bmatrix}-1&3&2\\\\3&-2&1\\\\5&-1&-3\\end{bmatrix}$.\n\n$X=A^{-1}B=\\dfrac17\\begin{bmatrix}-1&3&2\\\\3&-2&1\\\\5&-1&-3\\end{bmatrix}\\begin{bmatrix}6\\\\3\\\\2\\end{bmatrix}=\\dfrac17\\begin{bmatrix}7\\\\14\\\\21\\end{bmatrix}=\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}$.\n\nSo $x=1$, $y=2$, $z=3$. Check: $2-2+3=3$ and $1+4-3=2$."
+      "q": "அணி நேர்மாறு காணல் முறையில் தீர்க்க: $x+y+z=6$, $2x-y+z=3$, $x+2y-z=2$.",
+      "solution": "$AX=B$ என எழுதுக; இங்கு $A=\\begin{bmatrix}1&1&1\\\\2&-1&1\\\\1&2&-1\\end{bmatrix}$, $B=\\begin{bmatrix}6\\\\3\\\\2\\end{bmatrix}$.\n\n$|A|=1(1-2)-1(-2-1)+1(4+1)=-1+3+5=7\\ne0$, எனவே $A^{-1}$ காண முடியும்.\n\nஇணைக் காரணிகளிலிருந்து $\\operatorname{adj}A=\\begin{bmatrix}-1&3&2\\\\3&-2&1\\\\5&-1&-3\\end{bmatrix}$.\n\n$X=A^{-1}B=\\dfrac17\\begin{bmatrix}-1&3&2\\\\3&-2&1\\\\5&-1&-3\\end{bmatrix}\\begin{bmatrix}6\\\\3\\\\2\\end{bmatrix}=\\dfrac17\\begin{bmatrix}7\\\\14\\\\21\\end{bmatrix}=\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}$.\n\nஎனவே $x=1$, $y=2$, $z=3$. சரிபார்ப்பு: $2-2+3=3$ மற்றும் $1+4-3=2$."
     }
   ]
 }

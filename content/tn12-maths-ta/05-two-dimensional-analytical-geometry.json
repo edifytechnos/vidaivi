@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-con-24q3",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Ellipse",
+      "topic": "நீள்வட்டம்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "6"
       ],
       "answer": 0,
-      "solution": "$\\dfrac{x^2}{25}+\\dfrac{y^2}{16}=1$, so $a=5$. For any point on an ellipse $PF_1+PF_2=2a=10$.",
-      "_board": true
+      "solution": "$\\dfrac{x^2}{25}+\\dfrac{y^2}{16}=1$, எனவே $a=5$. நீள்வட்டத்தின் மீதுள்ள எந்தப் புள்ளிக்கும் $PF_1+PF_2=2a=10$."
     },
     {
       "id": "tn12mt-con-24q12",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Identifying conics",
+      "topic": "கூம்பு வளைவுகளை அடையாளம் காணல்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "பரவளையம்"
       ],
       "answer": 3,
-      "solution": "Only $x^2$ appears (no $y^2$, no $xy$): $x^2=5x+3y+3$ is a **parabola**.",
-      "_board": true
+      "solution": "$x^2$ மட்டுமே உள்ளது ($y^2$, $xy$ இல்லை): $x^2=5x+3y+3$ ஒரு **பரவளையம்**."
     },
     {
       "id": "tn12mt-con-23q5",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Parabola",
+      "topic": "பரவளையம்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -57,13 +55,12 @@
         "1"
       ],
       "answer": 0,
-      "solution": "The normal at $(at^2,2at)$ is $y+tx=2at+at^3$ — a cubic in $t$, so at most **3** normals pass through a point.",
-      "_board": true
+      "solution": "$(at^2,2at)$ இல் செங்கோடு $y+tx=2at+at^3$ — இது $t$ இல் ஒரு முப்படிச் சமன்பாடு, எனவே ஒரு புள்ளி வழியே அதிகபட்சம் **3** செங்கோடுகள் செல்லும்."
     },
     {
       "id": "tn12mt-con-25q18",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Ellipse",
+      "topic": "நீள்வட்டம்",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -75,16 +72,15 @@
         "$\\dfrac12$"
       ],
       "answer": 1,
-      "solution": "$\\angle FBF'=90^\\circ$ makes $\\angle OBF=45^\\circ$, so $OF=OB$: $ae=b$. Then $a^2e^2=a^2(1-e^2)$, $e^2=\\dfrac12$, $e=\\dfrac{1}{\\sqrt2}$.",
-      "_board": true
+      "solution": "$\\angle FBF'=90^\\circ$ எனவே $\\angle OBF=45^\\circ$, ஆகவே $OF=OB$: $ae=b$. பின் $a^2e^2=a^2(1-e^2)$, $e^2=\\dfrac12$, $e=\\dfrac{1}{\\sqrt2}$."
     },
     {
       "id": "tn12mt-con-01",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Hyperbola",
+      "topic": "அதிபரவளையம்",
       "type": "mcq",
       "marks": 1,
-      "q": "The eccentricity of the hyperbola $\\dfrac{x^2}{16}-\\dfrac{y^2}{9}=1$ is :",
+      "q": "$\\dfrac{x^2}{16}-\\dfrac{y^2}{9}=1$ என்ற அதிபரவளையத்தின் மையத்தொலைத்தகவு :",
       "options": [
         "$\\dfrac54$",
         "$\\dfrac45$",
@@ -97,10 +93,10 @@
     {
       "id": "tn12mt-con-02",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Parabola",
+      "topic": "பரவளையம்",
       "type": "mcq",
       "marks": 1,
-      "q": "The length of the latus rectum of $y^2=12x$ is :",
+      "q": "$y^2=12x$ இன் செவ்வகலத்தின் நீளம் :",
       "options": [
         "3",
         "6",
@@ -108,15 +104,15 @@
         "24"
       ],
       "answer": 2,
-      "solution": "$4a=12$, so the latus rectum is $12$."
+      "solution": "$4a=12$, எனவே செவ்வகலம் $12$."
     },
     {
       "id": "tn12mt-con-03",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Circle",
+      "topic": "வட்டம்",
       "type": "mcq",
       "marks": 1,
-      "q": "The centre of the circle $x^2+y^2-6x+4y-3=0$ is :",
+      "q": "$x^2+y^2-6x+4y-3=0$ என்ற வட்டத்தின் மையம் :",
       "options": [
         "$(3,-2)$",
         "$(-3,2)$",
@@ -124,15 +120,15 @@
         "$(-6,4)$"
       ],
       "answer": 0,
-      "solution": "Centre $=(-g,-f)$ with $2g=-6$, $2f=4$: $(3,-2)$."
+      "solution": "மையம் $=(-g,-f)$, இங்கு $2g=-6$, $2f=4$: $(3,-2)$."
     },
     {
       "id": "tn12mt-con-04",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Parabola",
+      "topic": "பரவளையம்",
       "type": "mcq",
       "marks": 1,
-      "q": "The equation of the directrix of $x^2=-8y$ is :",
+      "q": "$x^2=-8y$ இன் இயக்குவரையின் சமன்பாடு :",
       "options": [
         "$y=2$",
         "$y=-2$",
@@ -140,15 +136,15 @@
         "$x=-2$"
       ],
       "answer": 0,
-      "solution": "$x^2=-4ay$ with $a=2$ opens downward; its directrix is $y=a=2$."
+      "solution": "$x^2=-4ay$, $a=2$; இது கீழ்நோக்கித் திறக்கிறது; இயக்குவரை $y=a=2$."
     },
     {
       "id": "tn12mt-con-05",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Circle",
+      "topic": "வட்டம்",
       "type": "mcq",
       "marks": 1,
-      "q": "The radius of the circle $x^2+y^2-4x-6y-12=0$ is :",
+      "q": "$x^2+y^2-4x-6y-12=0$ என்ற வட்டத்தின் ஆரம் :",
       "options": [
         "5",
         "25",
@@ -161,10 +157,10 @@
     {
       "id": "tn12mt-con-06",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Ellipse",
+      "topic": "நீள்வட்டம்",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the eccentricity of the ellipse $\\dfrac{x^2}{25}+\\dfrac{y^2}{9}=1$.",
+      "q": "$\\dfrac{x^2}{25}+\\dfrac{y^2}{9}=1$ என்ற நீள்வட்டத்தின் மையத்தொலைத்தகவைக் காண்க.",
       "answer": 0.8,
       "tolerance": 0,
       "solution": "$e=\\sqrt{1-\\dfrac{b^2}{a^2}}=\\sqrt{1-\\dfrac{9}{25}}=\\dfrac45$.",
@@ -175,10 +171,10 @@
     {
       "id": "tn12mt-con-07",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Circle",
+      "topic": "வட்டம்",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the radius of the circle $x^2+y^2-2x+4y-4=0$.",
+      "q": "$x^2+y^2-2x+4y-4=0$ என்ற வட்டத்தின் ஆரத்தைக் காண்க.",
       "answer": 3,
       "tolerance": 0,
       "solution": "$g=-1$, $f=2$, $c=-4$: $r=\\sqrt{1+4+4}=3$."
@@ -186,24 +182,24 @@
     {
       "id": "tn12mt-con-08",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Parabola",
+      "topic": "பரவளையம்",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the $x$-coordinate of the focus of the parabola $y^2=16x$.",
+      "q": "$y^2=16x$ என்ற பரவளையத்தின் குவியத்தின் $x$-ஆயத்தொலைவைக் காண்க.",
       "answer": 4,
       "tolerance": 0,
-      "solution": "$4a=16$, so $a=4$ and the focus is $(4,0)$."
+      "solution": "$4a=16$, எனவே $a=4$; குவியம் $(4,0)$."
     },
     {
       "id": "tn12mt-con-09",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Ellipse",
+      "topic": "நீள்வட்டம்",
       "type": "numeric",
       "marks": 3,
-      "q": "Find the length of the latus rectum of the ellipse $\\dfrac{x^2}{16}+\\dfrac{y^2}{9}=1$.",
+      "q": "$\\dfrac{x^2}{16}+\\dfrac{y^2}{9}=1$ என்ற நீள்வட்டத்தின் செவ்வகலத்தின் நீளத்தைக் காண்க.",
       "answer": 4.5,
       "tolerance": 0,
-      "solution": "Latus rectum $=\\dfrac{2b^2}{a}=\\dfrac{2\\cdot9}{4}=\\dfrac92=4.5$.",
+      "solution": "செவ்வகலம் $=\\dfrac{2b^2}{a}=\\dfrac{2\\cdot9}{4}=\\dfrac92=4.5$.",
       "accept": [
         "9/2"
       ]
@@ -211,22 +207,22 @@
     {
       "id": "tn12mt-con-10",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Tangents",
+      "topic": "தொடுகோடுகள்",
       "type": "numeric",
       "marks": 3,
-      "q": "Find $c$ if the line $y=2x+c$ is a tangent to the parabola $y^2=8x$.",
+      "q": "$y=2x+c$ என்ற கோடு $y^2=8x$ என்ற பரவளையத்திற்குத் தொடுகோடு எனில் $c$ ஐக் காண்க.",
       "answer": 1,
       "tolerance": 0,
-      "solution": "$y^2=4ax$ with $a=2$. The line $y=mx+c$ touches it when $c=\\dfrac{a}{m}$.\n\n$c=\\dfrac22=1$."
+      "solution": "$y^2=4ax$, $a=2$. $y=mx+c$ என்ற கோடு $c=\\dfrac{a}{m}$ எனும்போது அதைத் தொடும்.\n\n$c=\\dfrac22=1$."
     },
     {
       "id": "tn12mt-con-11",
       "chapter": "இருபரிமாண பகுமுறை வடிவியல் – II",
-      "topic": "Parabola",
+      "topic": "பரவளையம்",
       "type": "long",
       "marks": 5,
-      "q": "Find the vertex, focus, equation of the directrix and length of the latus rectum of the parabola $y^2-4y-8x+12=0$.",
-      "solution": "Complete the square: $y^2-4y+4=8x-8$, i.e. $(y-2)^2=8(x-1)$.\n\nThis is $Y^2=4aX$ with $X=x-1$, $Y=y-2$ and $4a=8$, so $a=2$.\n\n**Vertex** $(1,2)$.\n\n**Focus** $(1+a,2)=(3,2)$.\n\n**Directrix** $x=1-a$, i.e. $x=-1$.\n\n**Latus rectum** $4a=8$."
+      "q": "$y^2-4y-8x+12=0$ என்ற பரவளையத்தின் முனை, குவியம், இயக்குவரையின் சமன்பாடு மற்றும் செவ்வகலத்தின் நீளம் ஆகியவற்றைக் காண்க.",
+      "solution": "வர்க்கப்படுத்துதலை நிறைவு செய்க: $y^2-4y+4=8x-8$, அதாவது $(y-2)^2=8(x-1)$.\n\nஇது $Y^2=4aX$, இங்கு $X=x-1$, $Y=y-2$, $4a=8$, எனவே $a=2$.\n\n**முனை** $(1,2)$.\n\n**குவியம்** $(1+a,2)=(3,2)$.\n\n**இயக்குவரை** $x=1-a$, அதாவது $x=-1$.\n\n**செவ்வகலம்** $4a=8$."
     }
   ]
 }

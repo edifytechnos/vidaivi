@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-eqn-24q16",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Vieta's formulae",
+      "topic": "வியட்டாவின் சூத்திரங்கள்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "$-\\dfrac{p}{r}$"
       ],
       "answer": 1,
-      "solution": "$\\sum\\dfrac1\\alpha=\\dfrac{\\alpha\\beta+\\beta\\gamma+\\gamma\\alpha}{\\alpha\\beta\\gamma}=\\dfrac{q}{-r}=-\\dfrac{q}{r}$.",
-      "_board": true
+      "solution": "$\\sum\\dfrac1\\alpha=\\dfrac{\\alpha\\beta+\\beta\\gamma+\\gamma\\alpha}{\\alpha\\beta\\gamma}=\\dfrac{q}{-r}=-\\dfrac{q}{r}$."
     },
     {
       "id": "tn12mt-eqn-24q20",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Roots of polynomial equations",
+      "topic": "பல்லுறுப்புக் கோவைச் சமன்பாடுகளின் மூலங்கள்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "4"
       ],
       "answer": 2,
-      "solution": "$x^3=-64$ has the real root $x=-4$.",
-      "_board": true
+      "solution": "$x^3=-64$ -க்கு $x=-4$ என்ற மெய் மூலம் உண்டு."
     },
     {
       "id": "tn12mt-eqn-23q18",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Descartes' rule",
+      "topic": "டெஸ்கார்டெஸ் விதி",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -57,16 +55,15 @@
         "$n$"
       ],
       "answer": 3,
-      "solution": "$\\sum{}^nC_r(-1)^rx^r=(1-x)^n$, whose only zero is $x=1$, repeated $n$ times: $n$ positive zeros.",
-      "_board": true
+      "solution": "$\\sum{}^nC_r(-1)^rx^r=(1-x)^n$; இதன் ஒரே பூச்சியமாக்கி $x=1$, அது $n$ முறை மீண்டும் வருகிறது: $n$ மிகையெண் பூச்சியமாக்கிகள்."
     },
     {
       "id": "tn12mt-eqn-01",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Complex roots",
+      "topic": "கலப்பெண் மூலங்கள்",
       "type": "mcq",
       "marks": 1,
-      "q": "If $2+3i$ is a root of a polynomial equation with real coefficients, then another root is :",
+      "q": "மெய்க் கெழுக்களைக் கொண்ட ஒரு பல்லுறுப்புக் கோவைச் சமன்பாட்டின் ஒரு மூலம் $2+3i$ எனில், மற்றொரு மூலம் :",
       "options": [
         "$-2+3i$",
         "$2-3i$",
@@ -74,15 +71,15 @@
         "$3+2i$"
       ],
       "answer": 1,
-      "solution": "Non-real roots of a real polynomial occur in conjugate pairs, so $2-3i$ is also a root."
+      "solution": "மெய்க் கெழுப் பல்லுறுப்புக் கோவையின் மெய்யல்லாத மூலங்கள் இணையிய ஜோடிகளாக வரும், எனவே $2-3i$ -ம் ஒரு மூலம்."
     },
     {
       "id": "tn12mt-eqn-02",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Vieta's formulae",
+      "topic": "வியட்டாவின் சூத்திரங்கள்",
       "type": "mcq",
       "marks": 1,
-      "q": "The sum of the roots of $2x^3-5x^2+x+3=0$ is :",
+      "q": "$2x^3-5x^2+x+3=0$ -ன் மூலங்களின் கூடுதல் :",
       "options": [
         "$\\dfrac52$",
         "$-\\dfrac52$",
@@ -90,15 +87,15 @@
         "$-\\dfrac32$"
       ],
       "answer": 0,
-      "solution": "Sum of roots $=-\\dfrac{b}{a}=-\\dfrac{-5}{2}=\\dfrac52$."
+      "solution": "மூலங்களின் கூடுதல் $=-\\dfrac{b}{a}=-\\dfrac{-5}{2}=\\dfrac52$."
     },
     {
       "id": "tn12mt-eqn-03",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Vieta's formulae",
+      "topic": "வியட்டாவின் சூத்திரங்கள்",
       "type": "mcq",
       "marks": 1,
-      "q": "The product of the roots of $x^3-6x^2+11x-6=0$ is :",
+      "q": "$x^3-6x^2+11x-6=0$ -ன் மூலங்களின் பெருக்கற்பலன் :",
       "options": [
         "$-6$",
         "6",
@@ -106,31 +103,31 @@
         "$-11$"
       ],
       "answer": 1,
-      "solution": "Product $=-\\dfrac{d}{a}=-\\dfrac{-6}{1}=6$ (the roots are $1,2,3$)."
+      "solution": "பெருக்கற்பலன் $=-\\dfrac{d}{a}=-\\dfrac{-6}{1}=6$ (மூலங்கள் $1,2,3$)."
     },
     {
       "id": "tn12mt-eqn-04",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Fundamental theorem of algebra",
+      "topic": "இயற்கணிதத்தின் அடிப்படைத் தேற்றம்",
       "type": "mcq",
       "marks": 1,
-      "q": "Counting multiplicity, a polynomial equation of degree 7 has exactly how many roots in $\\mathbb C$ ?",
+      "q": "மடங்கெண்ணிக்கையுடன் சேர்த்து எண்ணும்போது, படி 7 உடைய ஒரு பல்லுறுப்புக் கோவைச் சமன்பாட்டிற்கு $\\mathbb C$ -ல் சரியாக எத்தனை மூலங்கள் உண்டு ?",
       "options": [
         "6",
         "7",
         "8",
-        "at most 7 real ones only"
+        "அதிகபட்சம் 7 மெய் மூலங்கள் மட்டும்"
       ],
       "answer": 1,
-      "solution": "By the fundamental theorem of algebra a degree-$n$ polynomial has exactly $n$ complex roots counted with multiplicity."
+      "solution": "இயற்கணிதத்தின் அடிப்படைத் தேற்றப்படி, படி $n$ உடைய பல்லுறுப்புக் கோவைக்கு மடங்கெண்ணிக்கையுடன் சேர்த்து சரியாக $n$ கலப்பெண் மூலங்கள் உண்டு."
     },
     {
       "id": "tn12mt-eqn-05",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Vieta's formulae",
+      "topic": "வியட்டாவின் சூத்திரங்கள்",
       "type": "mcq",
       "marks": 1,
-      "q": "If $\\alpha,\\beta$ are the roots of $x^2-5x+6=0$, then $\\alpha^2+\\beta^2$ is :",
+      "q": "$x^2-5x+6=0$ -ன் மூலங்கள் $\\alpha,\\beta$ எனில், $\\alpha^2+\\beta^2$ -ன் மதிப்பு :",
       "options": [
         "13",
         "25",
@@ -143,10 +140,10 @@
     {
       "id": "tn12mt-eqn-06",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Descartes' rule",
+      "topic": "டெஸ்கார்டெஸ் விதி",
       "type": "mcq",
       "marks": 1,
-      "q": "The number of positive real roots of $x^3+2x^2+3x+4=0$ is :",
+      "q": "$x^3+2x^2+3x+4=0$ -ன் மிகை மெய் மூலங்களின் எண்ணிக்கை :",
       "options": [
         "0",
         "1",
@@ -154,37 +151,37 @@
         "3"
       ],
       "answer": 0,
-      "solution": "The coefficients $+,+,+,+$ have no sign change, so by Descartes' rule there are no positive roots."
+      "solution": "கெழுக்கள் $+,+,+,+$ -ல் குறி மாற்றம் எதுவும் இல்லை, எனவே டெஸ்கார்டெஸ் விதிப்படி மிகை மூலங்கள் இல்லை."
     },
     {
       "id": "tn12mt-eqn-07",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Roots in progression",
+      "topic": "தொடர்வரிசையில் அமையும் மூலங்கள்",
       "type": "numeric",
       "marks": 2,
-      "q": "The roots of $x^3-9x^2+23x-15=0$ are in arithmetic progression. Find the middle root.",
+      "q": "$x^3-9x^2+23x-15=0$ -ன் மூலங்கள் கூட்டுத் தொடர்வரிசையில் உள்ளன. நடு மூலத்தைக் காண்க.",
       "answer": 3,
       "tolerance": 0,
-      "solution": "Let the roots be $a-d,a,a+d$. Their sum $3a=9$ gives $a=3$.\n\n(The roots are $1,3,5$.)"
+      "solution": "மூலங்கள் $a-d,a,a+d$ என்க. அவற்றின் கூடுதல் $3a=9$ இலிருந்து $a=3$.\n\n(மூலங்கள் $1,3,5$.)"
     },
     {
       "id": "tn12mt-eqn-08",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Irrational roots",
+      "topic": "விகிதமுறா மூலங்கள்",
       "type": "numeric",
       "marks": 2,
-      "q": "If $1+\\sqrt2$ is a root of $x^2+px+q=0$ with rational $p,q$, find $q$.",
+      "q": "விகிதமுறு $p,q$ கொண்ட $x^2+px+q=0$ -ன் ஒரு மூலம் $1+\\sqrt2$ எனில், $q$ காண்க.",
       "answer": -1,
       "tolerance": 0,
-      "solution": "Irrational roots of a rational quadratic come in pairs, so $1-\\sqrt2$ is the other root. $q=(1+\\sqrt2)(1-\\sqrt2)=1-2=-1$."
+      "solution": "விகிதமுறு கெழுக்கள் கொண்ட இருபடிச் சமன்பாட்டின் விகிதமுறா மூலங்கள் ஜோடிகளாக வரும், எனவே மற்றொரு மூலம் $1-\\sqrt2$. $q=(1+\\sqrt2)(1-\\sqrt2)=1-2=-1$."
     },
     {
       "id": "tn12mt-eqn-09",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Vieta's formulae",
+      "topic": "வியட்டாவின் சூத்திரங்கள்",
       "type": "numeric",
       "marks": 2,
-      "q": "If $\\alpha,\\beta,\\gamma$ are the roots of $x^3-6x^2+11x-6=0$, find $\\alpha^2+\\beta^2+\\gamma^2$.",
+      "q": "$x^3-6x^2+11x-6=0$ -ன் மூலங்கள் $\\alpha,\\beta,\\gamma$ எனில், $\\alpha^2+\\beta^2+\\gamma^2$ காண்க.",
       "answer": 14,
       "tolerance": 0,
       "solution": "$\\sum\\alpha^2=(\\sum\\alpha)^2-2\\sum\\alpha\\beta=36-22=14$."
@@ -192,13 +189,13 @@
     {
       "id": "tn12mt-eqn-10",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Roots in progression",
+      "topic": "தொடர்வரிசையில் அமையும் மூலங்கள்",
       "type": "numeric",
       "marks": 3,
-      "q": "The roots of $8x^3-14x^2+7x-1=0$ are in geometric progression. Find the middle root.",
+      "q": "$8x^3-14x^2+7x-1=0$ -ன் மூலங்கள் பெருக்குத் தொடர்வரிசையில் உள்ளன. நடு மூலத்தைக் காண்க.",
       "answer": 0.5,
       "tolerance": 0,
-      "solution": "Let the roots be $\\dfrac ar,a,ar$. Their product is $a^3=-\\dfrac{-1}{8}=\\dfrac18$.\n\nSo $a=\\dfrac12$. (The roots are $\\dfrac14,\\dfrac12,1$.)",
+      "solution": "மூலங்கள் $\\dfrac ar,a,ar$ என்க. அவற்றின் பெருக்கற்பலன் $a^3=-\\dfrac{-1}{8}=\\dfrac18$.\n\nஎனவே $a=\\dfrac12$. (மூலங்கள் $\\dfrac14,\\dfrac12,1$.)",
       "accept": [
         "1/2"
       ]
@@ -206,22 +203,22 @@
     {
       "id": "tn12mt-eqn-11",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Vieta's formulae",
+      "topic": "வியட்டாவின் சூத்திரங்கள்",
       "type": "numeric",
       "marks": 3,
-      "q": "If $\\alpha,\\beta,\\gamma$ are the roots of $x^3+2x^2+3x+4=0$, find $(1+\\alpha)(1+\\beta)(1+\\gamma)$.",
+      "q": "$x^3+2x^2+3x+4=0$ -ன் மூலங்கள் $\\alpha,\\beta,\\gamma$ எனில், $(1+\\alpha)(1+\\beta)(1+\\gamma)$ காண்க.",
       "answer": -2,
       "tolerance": 0,
-      "solution": "$x^3+2x^2+3x+4=(x-\\alpha)(x-\\beta)(x-\\gamma)$.\n\nPut $x=-1$: $-1+2-3+4=(-1-\\alpha)(-1-\\beta)(-1-\\gamma)=-(1+\\alpha)(1+\\beta)(1+\\gamma)$.\n\nSo $(1+\\alpha)(1+\\beta)(1+\\gamma)=-2$."
+      "solution": "$x^3+2x^2+3x+4=(x-\\alpha)(x-\\beta)(x-\\gamma)$.\n\n$x=-1$ எனப் பிரதியிட: $-1+2-3+4=(-1-\\alpha)(-1-\\beta)(-1-\\gamma)=-(1+\\alpha)(1+\\beta)(1+\\gamma)$.\n\nஎனவே $(1+\\alpha)(1+\\beta)(1+\\gamma)=-2$."
     },
     {
       "id": "tn12mt-eqn-12",
       "chapter": "சமன்பாட்டியல்",
-      "topic": "Roots in progression",
+      "topic": "தொடர்வரிசையில் அமையும் மூலங்கள்",
       "type": "long",
       "marks": 5,
-      "q": "Solve $x^3-3x^2-6x+8=0$, given that its roots are in arithmetic progression.",
-      "solution": "Let the roots be $a-d,a,a+d$.\n\nSum: $3a=3$, so $a=1$.\n\nProduct: $(1-d)(1)(1+d)=-8$, so $1-d^2=-8$, $d^2=9$, $d=\\pm3$.\n\nThe roots are $-2,1,4$.\n\nCheck with the middle coefficient: $\\sum\\alpha\\beta=(-2)(1)+(1)(4)+(-2)(4)=-2+4-8=-6$, which matches."
+      "q": "$x^3-3x^2-6x+8=0$ -ன் மூலங்கள் கூட்டுத் தொடர்வரிசையில் உள்ளன எனக் கொடுக்கப்பட்டுள்ளது; சமன்பாட்டைத் தீர்க்க.",
+      "solution": "மூலங்கள் $a-d,a,a+d$ என்க.\n\nகூடுதல்: $3a=3$, எனவே $a=1$.\n\nபெருக்கற்பலன்: $(1-d)(1)(1+d)=-8$, எனவே $1-d^2=-8$, $d^2=9$, $d=\\pm3$.\n\nமூலங்கள் $-2,1,4$.\n\nநடுக் கெழுவுடன் சரிபார்க்க: $\\sum\\alpha\\beta=(-2)(1)+(1)(4)+(-2)(4)=-2+4-8=-6$, இது பொருந்துகிறது."
     }
   ]
 }

@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-prb-24q17",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Variance",
+      "topic": "பரவற்படி",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "9"
       ],
       "answer": 0,
-      "solution": "The variance of a constant is $0$.",
-      "_board": true
+      "solution": "ஒரு மாறிலியின் பரவற்படி $0$."
     },
     {
       "id": "tn12mt-prb-24q18",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Binomial distribution",
+      "topic": "ஈருறுப்புப் பரவல்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "4"
       ],
       "answer": 2,
-      "solution": "$\\sigma=\\sqrt{npq}=\\sqrt{25\\times0.8\\times0.2}=\\sqrt4=2$.",
-      "_board": true
+      "solution": "$\\sigma=\\sqrt{npq}=\\sqrt{25\\times0.8\\times0.2}=\\sqrt4=2$."
     },
     {
       "id": "tn12mt-prb-23q8",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Probability mass function",
+      "topic": "நிகழ்தகவு நிறைச் சார்பு",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -57,13 +55,12 @@
         "2"
       ],
       "answer": 3,
-      "solution": "$P(0)=\\dfrac17$, $P(1)=\\dfrac k7$, $P(2)=\\dfrac{k^2}{7}$. Sum $=1$: $1+k+k^2=7$, $k^2+k-6=0$, $k=2$ (probabilities are non-negative).",
-      "_board": true
+      "solution": "$P(0)=\\dfrac17$, $P(1)=\\dfrac k7$, $P(2)=\\dfrac{k^2}{7}$. கூடுதல் $=1$: $1+k+k^2=7$, $k^2+k-6=0$, $k=2$ (நிகழ்தகவுகள் குறையற்றவை)."
     },
     {
       "id": "tn12mt-prb-25q13",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Binomial distribution",
+      "topic": "ஈருறுப்புப் பரவல்",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -75,16 +72,15 @@
         "0.25"
       ],
       "answer": 3,
-      "solution": "$9\\cdot{}^6C_4p^4q^2={}^6C_2p^2q^4\\Rightarrow9p^2=q^2\\Rightarrow q=3p$. With $p+q=1$, $p=\\dfrac14=0.25$.",
-      "_board": true
+      "solution": "$9\\cdot{}^6C_4p^4q^2={}^6C_2p^2q^4\\Rightarrow9p^2=q^2\\Rightarrow q=3p$. $p+q=1$ எனவே $p=\\dfrac14=0.25$."
     },
     {
       "id": "tn12mt-prb-01",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Expectation",
+      "topic": "எதிர்பார்ப்பு மதிப்பு",
       "type": "mcq",
       "marks": 1,
-      "q": "The expected value of the number shown when a fair die is thrown is :",
+      "q": "ஒரு சீரான பகடை உருட்டப்படும்போது கிடைக்கும் எண்ணின் எதிர்பார்ப்பு மதிப்பு :",
       "options": [
         "3",
         "3.5",
@@ -97,10 +93,10 @@
     {
       "id": "tn12mt-prb-02",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Binomial distribution",
+      "topic": "ஈருறுப்புப் பரவல்",
       "type": "mcq",
       "marks": 1,
-      "q": "The mean of a binomial distribution with $n=10$ and $p=0.4$ is :",
+      "q": "$n=10$, $p=0.4$ கொண்ட ஈருறுப்புப் பரவலின் சராசரி :",
       "options": [
         "4",
         "2.4",
@@ -108,15 +104,15 @@
         "0.4"
       ],
       "answer": 0,
-      "solution": "Mean $=np=10\\times0.4=4$."
+      "solution": "சராசரி $=np=10\\times0.4=4$."
     },
     {
       "id": "tn12mt-prb-03",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Continuous random variables",
+      "topic": "தொடர் சமவாய்ப்பு மாறிகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "For a continuous random variable $X$, $P(X=a)$ for any particular value $a$ is :",
+      "q": "ஒரு தொடர் சமவாய்ப்பு மாறி $X$ க்கு, ஏதேனும் ஒரு குறிப்பிட்ட மதிப்பு $a$ க்கு $P(X=a)$ :",
       "options": [
         "0",
         "1",
@@ -129,10 +125,10 @@
     {
       "id": "tn12mt-prb-04",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Probability density function",
+      "topic": "நிகழ்தகவு அடர்த்திச் சார்பு",
       "type": "mcq",
       "marks": 1,
-      "q": "If $f(x)=kx$ for $0\\le x\\le2$ (and $0$ elsewhere) is a probability density function, then $k$ is :",
+      "q": "$0\\le x\\le2$ இல் $f(x)=kx$ (மற்ற இடங்களில் $0$) ஒரு நிகழ்தகவு அடர்த்திச் சார்பு எனில், $k$ :",
       "options": [
         "$\\dfrac12$",
         "2",
@@ -140,15 +136,15 @@
         "1"
       ],
       "answer": 0,
-      "solution": "$\\displaystyle\\int_0^2kx\\,dx=2k=1$, so $k=\\dfrac12$."
+      "solution": "$\\displaystyle\\int_0^2kx\\,dx=2k=1$, எனவே $k=\\dfrac12$."
     },
     {
       "id": "tn12mt-prb-05",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Variance",
+      "topic": "பரவற்படி",
       "type": "mcq",
       "marks": 1,
-      "q": "$\\mathrm{Var}(aX+b)$ is equal to :",
+      "q": "$\\mathrm{Var}(aX+b)$ க்குச் சமமானது :",
       "options": [
         "$a^2\\,\\mathrm{Var}(X)$",
         "$a\\,\\mathrm{Var}(X)+b$",
@@ -156,15 +152,15 @@
         "$a\\,\\mathrm{Var}(X)$"
       ],
       "answer": 0,
-      "solution": "Adding a constant does not change the spread, and scaling by $a$ scales the variance by $a^2$."
+      "solution": "ஒரு மாறிலியைக் கூட்டுவதால் பரவல் மாறாது; $a$ ஆல் பெருக்கினால் பரவற்படி $a^2$ மடங்காகும்."
     },
     {
       "id": "tn12mt-prb-06",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Expectation",
+      "topic": "எதிர்பார்ப்பு மதிப்பு",
       "type": "numeric",
       "marks": 2,
-      "q": "$X$ takes the values $1,2,3$ with probabilities $0.2,0.5,0.3$. Find $E(X)$.",
+      "q": "$X$ ஆனது $1,2,3$ ஆகிய மதிப்புகளை முறையே $0.2,0.5,0.3$ நிகழ்தகவுகளுடன் கொள்கிறது. $E(X)$ ஐக் காண்க.",
       "answer": 2.1,
       "tolerance": 0,
       "solution": "$E(X)=1(0.2)+2(0.5)+3(0.3)=0.2+1+0.9=2.1$."
@@ -172,10 +168,10 @@
     {
       "id": "tn12mt-prb-07",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Binomial distribution",
+      "topic": "ஈருறுப்புப் பரவல்",
       "type": "numeric",
       "marks": 2,
-      "q": "$X\\sim B\\left(4,\\dfrac12\\right)$. Find $P(X=2)$.",
+      "q": "$X\\sim B\\left(4,\\dfrac12\\right)$. $P(X=2)$ ஐக் காண்க.",
       "answer": 0.375,
       "tolerance": 0,
       "solution": "$P(X=2)={}^4C_2\\left(\\dfrac12\\right)^4=\\dfrac{6}{16}=0.375$.",
@@ -186,10 +182,10 @@
     {
       "id": "tn12mt-prb-08",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Variance",
+      "topic": "பரவற்படி",
       "type": "numeric",
       "marks": 2,
-      "q": "If $E(X)=2$ and $E(X^2)=8$, find $\\mathrm{Var}(X)$.",
+      "q": "$E(X)=2$, $E(X^2)=8$ எனில், $\\mathrm{Var}(X)$ ஐக் காண்க.",
       "answer": 4,
       "tolerance": 0,
       "solution": "$\\mathrm{Var}(X)=E(X^2)-[E(X)]^2=8-4=4$."
@@ -197,10 +193,10 @@
     {
       "id": "tn12mt-prb-09",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Probability density function",
+      "topic": "நிகழ்தகவு அடர்த்திச் சார்பு",
       "type": "numeric",
       "marks": 3,
-      "q": "$X$ has density $f(x)=3x^2$ for $0\\le x\\le1$. Find $P\\left(X\\le\\dfrac12\\right)$.",
+      "q": "$0\\le x\\le1$ இல் $X$ இன் அடர்த்திச் சார்பு $f(x)=3x^2$. $P\\left(X\\le\\dfrac12\\right)$ ஐக் காண்க.",
       "answer": 0.125,
       "tolerance": 0,
       "solution": "$\\displaystyle\\int_0^{1/2}3x^2\\,dx=\\left[x^3\\right]_0^{1/2}=\\frac18=0.125$.",
@@ -211,22 +207,22 @@
     {
       "id": "tn12mt-prb-10",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Binomial distribution",
+      "topic": "ஈருறுப்புப் பரவல்",
       "type": "numeric",
       "marks": 3,
-      "q": "A binomial distribution has mean $6$ and variance $2.4$. Find $n$.",
+      "q": "ஒரு ஈருறுப்புப் பரவலின் சராசரி $6$, பரவற்படி $2.4$. $n$ ஐக் காண்க.",
       "answer": 10,
       "tolerance": 0,
-      "solution": "$npq=2.4$ and $np=6$ give $q=0.4$, so $p=0.6$.\n\n$n=\\dfrac{6}{0.6}=10$."
+      "solution": "$npq=2.4$, $np=6$ இலிருந்து $q=0.4$, எனவே $p=0.6$.\n\n$n=\\dfrac{6}{0.6}=10$."
     },
     {
       "id": "tn12mt-prb-11",
       "chapter": "நிகழ்தகவுப் பரவல்கள்",
-      "topic": "Probability mass function",
+      "topic": "நிகழ்தகவு நிறைச் சார்பு",
       "type": "long",
       "marks": 5,
-      "q": "A random variable $X$ takes the values $0,1,2,3$ with $P(X=x)=k,2k,3k,4k$ respectively. Find $k$, the mean and the variance of $X$.",
-      "solution": "**Finding $k$:** $k+2k+3k+4k=10k=1$, so $k=0.1$.\n\nThe probabilities are $0.1,0.2,0.3,0.4$.\n\n**Mean:** $E(X)=0(0.1)+1(0.2)+2(0.3)+3(0.4)=0.2+0.6+1.2=2$.\n\n$E(X^2)=0+1(0.2)+4(0.3)+9(0.4)=0.2+1.2+3.6=5$.\n\n**Variance:** $\\mathrm{Var}(X)=E(X^2)-[E(X)]^2=5-4=1$."
+      "q": "ஒரு சமவாய்ப்பு மாறி $X$ ஆனது $0,1,2,3$ ஆகிய மதிப்புகளை முறையே $P(X=x)=k,2k,3k,4k$ என்றவாறு கொள்கிறது. $k$, $X$ இன் சராசரி மற்றும் பரவற்படி ஆகியவற்றைக் காண்க.",
+      "solution": "**$k$ ஐக் காணல்:** $k+2k+3k+4k=10k=1$, எனவே $k=0.1$.\n\nநிகழ்தகவுகள் $0.1,0.2,0.3,0.4$.\n\n**சராசரி:** $E(X)=0(0.1)+1(0.2)+2(0.3)+3(0.4)=0.2+0.6+1.2=2$.\n\n$E(X^2)=0+1(0.2)+4(0.3)+9(0.4)=0.2+1.2+3.6=5$.\n\n**பரவற்படி:** $\\mathrm{Var}(X)=E(X^2)-[E(X)]^2=5-4=1$."
     }
   ]
 }

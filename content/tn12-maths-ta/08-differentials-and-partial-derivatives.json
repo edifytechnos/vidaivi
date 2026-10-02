@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-pde-24q9",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Differentials",
+      "topic": "வகையீடுகள்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "$\\dfrac{1}{(x+1)^2}\\,dx$"
       ],
       "answer": 3,
-      "solution": "$f'(x)=\\dfrac{(x+1)-x}{(x+1)^2}=\\dfrac{1}{(x+1)^2}$, so $df=\\dfrac{1}{(x+1)^2}\\,dx$.",
-      "_board": true
+      "solution": "$f'(x)=\\dfrac{(x+1)-x}{(x+1)^2}=\\dfrac{1}{(x+1)^2}$, எனவே $df=\\dfrac{1}{(x+1)^2}\\,dx$."
     },
     {
       "id": "tn12mt-pde-25q9",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Partial derivatives",
+      "topic": "பகுதி வகைக்கெழுக்கள்",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "$2xu$"
       ],
       "answer": 3,
-      "solution": "$\\dfrac{\\partial u}{\\partial x}=2x\\,e^{x^2+y^2}=2xu$.",
-      "_board": true
+      "solution": "$\\dfrac{\\partial u}{\\partial x}=2x\\,e^{x^2+y^2}=2xu$."
     },
     {
       "id": "tn12mt-pde-25q20",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Differentials",
+      "topic": "வகையீடுகள்",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -57,16 +55,15 @@
         "$\\dfrac1x f(x)\\,dx$"
       ],
       "answer": 1,
-      "solution": "$dg=\\dfrac{f'(x)}{f(x)}\\,dx$.",
-      "_board": true
+      "solution": "$dg=\\dfrac{f'(x)}{f(x)}\\,dx$."
     },
     {
       "id": "tn12mt-pde-01",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Linear approximation",
+      "topic": "நேரியல் தோராயம்",
       "type": "mcq",
       "marks": 1,
-      "q": "Using linear approximation of $\\sqrt x$ at $x=9$, the value of $\\sqrt{9.1}$ is approximately :",
+      "q": "$x=9$ இல் $\\sqrt x$ இன் நேரியல் தோராயத்தைப் பயன்படுத்தினால் $\\sqrt{9.1}$ இன் தோராய மதிப்பு :",
       "options": [
         "3.0167",
         "3.0333",
@@ -74,15 +71,15 @@
         "3.0050"
       ],
       "answer": 0,
-      "solution": "$L(x)=3+\\dfrac{1}{2\\sqrt9}(x-9)$, so $\\sqrt{9.1}\\approx3+\\dfrac{0.1}{6}=3.0167$."
+      "solution": "$L(x)=3+\\dfrac{1}{2\\sqrt9}(x-9)$, எனவே $\\sqrt{9.1}\\approx3+\\dfrac{0.1}{6}=3.0167$."
     },
     {
       "id": "tn12mt-pde-02",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Partial derivatives",
+      "topic": "பகுதி வகைக்கெழுக்கள்",
       "type": "mcq",
       "marks": 1,
-      "q": "If $u=x^2y^3$, then $\\dfrac{\\partial^2u}{\\partial x\\,\\partial y}$ is :",
+      "q": "$u=x^2y^3$ எனில் $\\dfrac{\\partial^2u}{\\partial x\\,\\partial y}$ :",
       "options": [
         "$6xy^2$",
         "$2xy^3$",
@@ -90,15 +87,15 @@
         "$6x^2y$"
       ],
       "answer": 0,
-      "solution": "$u_y=3x^2y^2$, and then $\\dfrac{\\partial}{\\partial x}(3x^2y^2)=6xy^2$."
+      "solution": "$u_y=3x^2y^2$, பின் $\\dfrac{\\partial}{\\partial x}(3x^2y^2)=6xy^2$."
     },
     {
       "id": "tn12mt-pde-03",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Euler's theorem",
+      "topic": "ஆய்லரின் தேற்றம்",
       "type": "mcq",
       "marks": 1,
-      "q": "If $u(x,y)$ is homogeneous of degree $n$, then $x\\dfrac{\\partial u}{\\partial x}+y\\dfrac{\\partial u}{\\partial y}$ equals :",
+      "q": "$u(x,y)$ ஆனது $n$ படியுள்ள சமபடித்தான சார்பு எனில் $x\\dfrac{\\partial u}{\\partial x}+y\\dfrac{\\partial u}{\\partial y}$ இன் மதிப்பு :",
       "options": [
         "$nu$",
         "$u$",
@@ -106,15 +103,15 @@
         "0"
       ],
       "answer": 0,
-      "solution": "That is Euler's theorem for homogeneous functions."
+      "solution": "இது சமபடித்தான சார்புகளுக்கான ஆய்லரின் தேற்றம்."
     },
     {
       "id": "tn12mt-pde-04",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Homogeneous functions",
+      "topic": "சமபடித்தான சார்புகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "The degree of the homogeneous function $f(x,y)=\\dfrac{x^3+y^3}{x+y}$ is :",
+      "q": "$f(x,y)=\\dfrac{x^3+y^3}{x+y}$ என்ற சமபடித்தான சார்பின் படி :",
       "options": [
         "1",
         "2",
@@ -122,15 +119,15 @@
         "0"
       ],
       "answer": 1,
-      "solution": "$f(tx,ty)=\\dfrac{t^3(x^3+y^3)}{t(x+y)}=t^2f(x,y)$: degree $2$."
+      "solution": "$f(tx,ty)=\\dfrac{t^3(x^3+y^3)}{t(x+y)}=t^2f(x,y)$: படி $2$."
     },
     {
       "id": "tn12mt-pde-05",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Chain rule",
+      "topic": "சங்கிலி விதி",
       "type": "mcq",
       "marks": 1,
-      "q": "If $w=x^2+y^2$ with $x=\\cos t$, $y=\\sin t$, then $\\dfrac{dw}{dt}$ is :",
+      "q": "$w=x^2+y^2$, $x=\\cos t$, $y=\\sin t$ எனில் $\\dfrac{dw}{dt}$ :",
       "options": [
         "0",
         "1",
@@ -138,15 +135,15 @@
         "$2t$"
       ],
       "answer": 0,
-      "solution": "$w=\\cos^2t+\\sin^2t=1$, a constant, so $\\dfrac{dw}{dt}=0$."
+      "solution": "$w=\\cos^2t+\\sin^2t=1$, ஒரு மாறிலி, எனவே $\\dfrac{dw}{dt}=0$."
     },
     {
       "id": "tn12mt-pde-06",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Differentials",
+      "topic": "வகையீடுகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "If $y=x^3$, then $dy$ is :",
+      "q": "$y=x^3$ எனில் $dy$ :",
       "options": [
         "$3x^2\\,dx$",
         "$x^3\\,dx$",
@@ -159,10 +156,10 @@
     {
       "id": "tn12mt-pde-07",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Linear approximation",
+      "topic": "நேரியல் தோராயம்",
       "type": "numeric",
       "marks": 2,
-      "q": "Use linear approximation at $x=36$ to estimate $\\sqrt{36.1}$, correct to four decimal places.",
+      "q": "$x=36$ இல் நேரியல் தோராயத்தைப் பயன்படுத்தி $\\sqrt{36.1}$ ஐ நான்கு தசம இடங்களுக்குச் சரியாக மதிப்பிடுக.",
       "answer": 6.0083,
       "tolerance": 0.0001,
       "solution": "$\\sqrt{36.1}\\approx6+\\dfrac{1}{2\\cdot6}(0.1)=6+0.00833=6.0083$."
@@ -170,10 +167,10 @@
     {
       "id": "tn12mt-pde-08",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Partial derivatives",
+      "topic": "பகுதி வகைக்கெழுக்கள்",
       "type": "numeric",
       "marks": 2,
-      "q": "If $u=x^3+3xy^2+y^3$, find $\\dfrac{\\partial u}{\\partial x}$ at $(1,2)$.",
+      "q": "$u=x^3+3xy^2+y^3$ எனில் $(1,2)$ இல் $\\dfrac{\\partial u}{\\partial x}$ ஐக் காண்க.",
       "answer": 15,
       "tolerance": 0,
       "solution": "$u_x=3x^2+3y^2=3+12=15$."
@@ -181,10 +178,10 @@
     {
       "id": "tn12mt-pde-09",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Differentials",
+      "topic": "வகையீடுகள்",
       "type": "numeric",
       "marks": 2,
-      "q": "Find $dy$ for $y=x^2+x$ when $x=2$ and $dx=0.1$.",
+      "q": "$x=2$, $dx=0.1$ எனும்போது $y=x^2+x$ க்கு $dy$ ஐக் காண்க.",
       "answer": 0.5,
       "tolerance": 0,
       "solution": "$dy=(2x+1)\\,dx=5\\times0.1=0.5$."
@@ -192,33 +189,33 @@
     {
       "id": "tn12mt-pde-10",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Errors and approximations",
+      "topic": "பிழைகளும் தோராயங்களும்",
       "type": "numeric",
       "marks": 3,
-      "q": "The radius of a sphere is measured as $10$ cm with a possible error of $0.02$ cm. Find the percentage error in its volume.",
+      "q": "ஒரு கோளத்தின் ஆரம் $0.02$ செ.மீ சாத்தியமான பிழையுடன் $10$ செ.மீ என அளக்கப்படுகிறது. அதன் கனஅளவில் ஏற்படும் சதவீதப் பிழையைக் காண்க.",
       "answer": 0.6,
       "tolerance": 0,
-      "solution": "$V=\\dfrac43\\pi r^3$, so $\\dfrac{dV}{V}=3\\dfrac{dr}{r}=3\\times\\dfrac{0.02}{10}=0.006$.\n\nPercentage error $=0.6\\%$."
+      "solution": "$V=\\dfrac43\\pi r^3$, எனவே $\\dfrac{dV}{V}=3\\dfrac{dr}{r}=3\\times\\dfrac{0.02}{10}=0.006$.\n\nசதவீதப் பிழை $=0.6\\%$."
     },
     {
       "id": "tn12mt-pde-11",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Partial derivatives",
+      "topic": "பகுதி வகைக்கெழுக்கள்",
       "type": "numeric",
       "marks": 3,
-      "q": "If $u=x^2y+y^2z+z^2x$, find $\\dfrac{\\partial u}{\\partial x}+\\dfrac{\\partial u}{\\partial y}+\\dfrac{\\partial u}{\\partial z}$ at $(1,1,1)$.",
+      "q": "$u=x^2y+y^2z+z^2x$ எனில் $(1,1,1)$ இல் $\\dfrac{\\partial u}{\\partial x}+\\dfrac{\\partial u}{\\partial y}+\\dfrac{\\partial u}{\\partial z}$ ஐக் காண்க.",
       "answer": 9,
       "tolerance": 0,
-      "solution": "$u_x=2xy+z^2$, $u_y=x^2+2yz$, $u_z=y^2+2zx$.\n\nAt $(1,1,1)$ each is $3$, so the sum is $9$."
+      "solution": "$u_x=2xy+z^2$, $u_y=x^2+2yz$, $u_z=y^2+2zx$.\n\n$(1,1,1)$ இல் ஒவ்வொன்றும் $3$, எனவே கூடுதல் $9$."
     },
     {
       "id": "tn12mt-pde-12",
       "chapter": "வகையீடுகள் மற்றும் பகுதி வகைக்கெழுக்கள்",
-      "topic": "Euler's theorem",
+      "topic": "ஆய்லரின் தேற்றம்",
       "type": "long",
       "marks": 5,
-      "q": "For $u=x^3+3x^2y-y^3$, verify that $\\dfrac{\\partial^2u}{\\partial x\\,\\partial y}=\\dfrac{\\partial^2u}{\\partial y\\,\\partial x}$, and verify Euler's theorem.",
-      "solution": "$u_x=3x^2+6xy$ and $u_y=3x^2-3y^2$.\n\n$u_{xy}=\\dfrac{\\partial}{\\partial y}(3x^2+6xy)=6x$ and $u_{yx}=\\dfrac{\\partial}{\\partial x}(3x^2-3y^2)=6x$. They are equal.\n\n$u$ is homogeneous of degree $3$, so Euler's theorem predicts $xu_x+yu_y=3u$.\n\n$xu_x+yu_y=3x^3+6x^2y+3x^2y-3y^3=3x^3+9x^2y-3y^3=3(x^3+3x^2y-y^3)=3u$. Verified."
+      "q": "$u=x^3+3x^2y-y^3$ க்கு $\\dfrac{\\partial^2u}{\\partial x\\,\\partial y}=\\dfrac{\\partial^2u}{\\partial y\\,\\partial x}$ எனச் சரிபார்க்க; மேலும் ஆய்லரின் தேற்றத்தைச் சரிபார்க்க.",
+      "solution": "$u_x=3x^2+6xy$, $u_y=3x^2-3y^2$.\n\n$u_{xy}=\\dfrac{\\partial}{\\partial y}(3x^2+6xy)=6x$, $u_{yx}=\\dfrac{\\partial}{\\partial x}(3x^2-3y^2)=6x$. இவை சமம்.\n\n$u$ ஆனது $3$ படியுள்ள சமபடித்தான சார்பு, எனவே ஆய்லரின் தேற்றப்படி $xu_x+yu_y=3u$.\n\n$xu_x+yu_y=3x^3+6x^2y+3x^2y-3y^3=3x^3+9x^2y-3y^3=3(x^3+3x^2y-y^3)=3u$. சரிபார்க்கப்பட்டது."
     }
   ]
 }

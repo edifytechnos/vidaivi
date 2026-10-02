@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-dif-24q8",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Asymptotes",
+      "topic": "தொலைத்தொடுகோடுகள்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "$x=0$"
       ],
       "answer": 1,
-      "solution": "As $x\\to\\pm\\infty$, $\\dfrac1x\\to0$, so the horizontal asymptote is $y=0$.",
-      "_board": true
+      "solution": "$x\\to\\pm\\infty$ எனும்போது $\\dfrac1x\\to0$, எனவே கிடைமட்டத் தொலைத்தொடுகோடு $y=0$."
     },
     {
       "id": "tn12mt-dif-24q11",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Rolle's theorem",
+      "topic": "ரோலின் தேற்றம்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "$\\sqrt2$"
       ],
       "answer": 2,
-      "solution": "$f(0)=f(3)=0$. $f'(x)=3x^2-6x=3x(x-2)=0$ gives $c=2\\in(0,3)$.",
-      "_board": true
+      "solution": "$f(0)=f(3)=0$. $f'(x)=3x^2-6x=3x(x-2)=0$ இலிருந்து $c=2\\in(0,3)$."
     },
     {
       "id": "tn12mt-dif-23q9",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Extrema",
+      "topic": "அறுதி மதிப்புகள்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -57,13 +55,12 @@
         "$\\dfrac{1}{2e}$"
       ],
       "answer": 0,
-      "solution": "$f'(x)=2xe^{-2x}(1-x)=0$ at $x=1$, a maximum. $f(1)=e^{-2}=\\dfrac{1}{e^2}$.",
-      "_board": true
+      "solution": "$f'(x)=2xe^{-2x}(1-x)=0$ ஆனது $x=1$ இல்; அது பெருமம். $f(1)=e^{-2}=\\dfrac{1}{e^2}$."
     },
     {
       "id": "tn12mt-dif-23q12",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Angle between curves",
+      "topic": "வளைவரைகளுக்கு இடையேயான கோணம்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -75,13 +72,12 @@
         "$\\tan^{-1}\\left(\\dfrac43\\right)$"
       ],
       "answer": 0,
-      "solution": "At the origin $y^2=x$ has tangent $x=0$ and $x^2=y$ has tangent $y=0$. They are perpendicular: $\\dfrac{\\pi}{2}$.",
-      "_board": true
+      "solution": "ஆதியில் $y^2=x$ இன் தொடுகோடு $x=0$, $x^2=y$ இன் தொடுகோடு $y=0$. இவை செங்குத்தானவை: $\\dfrac{\\pi}{2}$."
     },
     {
       "id": "tn12mt-dif-23q16",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Tangents and normals",
+      "topic": "தொடுகோடுகளும் செங்கோடுகளும்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -93,13 +89,12 @@
         "$-4$"
       ],
       "answer": 3,
-      "solution": "$f'(x)=\\dfrac{-1}{\\sqrt{8-2x}}=-\\dfrac14\\Rightarrow\\sqrt{8-2x}=4\\Rightarrow8-2x=16\\Rightarrow x=-4$.",
-      "_board": true
+      "solution": "$f'(x)=\\dfrac{-1}{\\sqrt{8-2x}}=-\\dfrac14\\Rightarrow\\sqrt{8-2x}=4\\Rightarrow8-2x=16\\Rightarrow x=-4$."
     },
     {
       "id": "tn12mt-dif-23q20",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Optimisation",
+      "topic": "உகமமாக்கல்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -111,13 +106,12 @@
         "$ab$"
       ],
       "answer": 1,
-      "solution": "A vertex at $(a\\cos\\theta,b\\sin\\theta)$ gives area $4ab\\sin\\theta\\cos\\theta=2ab\\sin2\\theta$, largest $2ab$.",
-      "_board": true
+      "solution": "$(a\\cos\\theta,b\\sin\\theta)$ இல் ஒரு முனை எனில் பரப்பு $4ab\\sin\\theta\\cos\\theta=2ab\\sin2\\theta$; இதன் பெரும மதிப்பு $2ab$."
     },
     {
       "id": "tn12mt-dif-25q4",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Rate of change",
+      "topic": "மாறுவீதம்",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -129,13 +123,12 @@
         "2.5"
       ],
       "answer": 3,
-      "solution": "$\\dfrac{dx}{dt}=80-32t=0\\Rightarrow t=2.5$ s.",
-      "_board": true
+      "solution": "$\\dfrac{dx}{dt}=80-32t=0\\Rightarrow t=2.5$ வினாடி."
     },
     {
       "id": "tn12mt-dif-25q15",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Concavity and inflection",
+      "topic": "குழிவு மற்றும் வளைவு மாற்றம்",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -147,16 +140,15 @@
         "$(0,1)$"
       ],
       "answer": 0,
-      "solution": "$y''=6(x-1)$ changes sign at $x=1$; $y(1)=0$. Point of inflection $(1,0)$.",
-      "_board": true
+      "solution": "$y''=6(x-1)$ ஆனது $x=1$ இல் குறி மாறுகிறது; $y(1)=0$. வளைவு மாற்றப் புள்ளி $(1,0)$."
     },
     {
       "id": "tn12mt-dif-01",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Mean value theorem",
+      "topic": "இடைமதிப்புத் தேற்றம்",
       "type": "mcq",
       "marks": 1,
-      "q": "The value of $c$ given by Lagrange's mean value theorem for $f(x)=x^2$ on $[1,3]$ is :",
+      "q": "$[1,3]$ இல் $f(x)=x^2$ க்கு லாக்ராஞ்சியின் இடைமதிப்புத் தேற்றம் தரும் $c$ இன் மதிப்பு :",
       "options": [
         "1",
         "2",
@@ -164,29 +156,29 @@
         "3"
       ],
       "answer": 1,
-      "solution": "$f'(c)=\\dfrac{f(3)-f(1)}{3-1}=\\dfrac{9-1}{2}=4$, and $2c=4$ gives $c=2$."
+      "solution": "$f'(c)=\\dfrac{f(3)-f(1)}{3-1}=\\dfrac{9-1}{2}=4$, மேலும் $2c=4$ இலிருந்து $c=2$."
     },
     {
       "id": "tn12mt-dif-02",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Tangents and normals",
+      "topic": "தொடுகோடுகளும் செங்கோடுகளும்",
       "type": "numeric",
       "marks": 2,
-      "q": "Find the slope of the tangent to $y=x^3-3x$ at $x=2$.",
+      "q": "$x=2$ இல் $y=x^3-3x$ க்கு வரையப்படும் தொடுகோட்டின் சாய்வைக் காண்க.",
       "answer": 9,
       "tolerance": 0,
-      "solution": "$\\dfrac{dy}{dx}=3x^2-3=12-3=9$ at $x=2$."
+      "solution": "$x=2$ இல் $\\dfrac{dy}{dx}=3x^2-3=12-3=9$."
     },
     {
       "id": "tn12mt-dif-03",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "L'Hôpital's rule",
+      "topic": "லோபிதாலின் விதி",
       "type": "numeric",
       "marks": 2,
-      "q": "Evaluate $\\displaystyle\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}$.",
+      "q": "$\\displaystyle\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}$ ஐ மதிப்பிடுக.",
       "answer": 0.5,
       "tolerance": 0,
-      "solution": "The limit is of the form $\\dfrac00$. By L'Hôpital's rule, $\\lim\\dfrac{\\sin x}{2x}$, still $\\dfrac00$; again, $\\lim\\dfrac{\\cos x}{2}=\\dfrac12$.",
+      "solution": "எல்லை $\\dfrac00$ வடிவில் உள்ளது. லோபிதாலின் விதிப்படி $\\lim\\dfrac{\\sin x}{2x}$, இதுவும் $\\dfrac00$; மீண்டும் பயன்படுத்த, $\\lim\\dfrac{\\cos x}{2}=\\dfrac12$.",
       "accept": [
         "1/2"
       ]
@@ -194,44 +186,44 @@
     {
       "id": "tn12mt-dif-04",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Extrema",
+      "topic": "அறுதி மதிப்புகள்",
       "type": "numeric",
       "marks": 2,
-      "q": "At what value of $x$ does $f(x)=x^3-6x^2+9x+1$ have a local minimum?",
+      "q": "$f(x)=x^3-6x^2+9x+1$ க்கு $x$ இன் எந்த மதிப்பில் இடஞ்சார்ந்த சிறுமம் உள்ளது?",
       "answer": 3,
       "tolerance": 0,
-      "solution": "$f'(x)=3x^2-12x+9=3(x-1)(x-3)$, zero at $x=1,3$.\n\n$f''(x)=6x-12$: $f''(3)=6>0$, so the local minimum is at $x=3$."
+      "solution": "$f'(x)=3x^2-12x+9=3(x-1)(x-3)$, இது $x=1,3$ இல் பூச்சியம்.\n\n$f''(x)=6x-12$: $f''(3)=6>0$, எனவே இடஞ்சார்ந்த சிறுமம் $x=3$ இல்."
     },
     {
       "id": "tn12mt-dif-05",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Rate of change",
+      "topic": "மாறுவீதம்",
       "type": "numeric",
       "marks": 3,
-      "q": "The radius of a circular plate increases at $2$ cm/s. At what rate (in cm²/s, as a multiple of $\\pi$) does its area increase when the radius is $5$ cm? Give the multiple of $\\pi$.",
+      "q": "ஒரு வட்டத் தகட்டின் ஆரம் வினாடிக்கு $2$ செ.மீ வீதம் அதிகரிக்கிறது. ஆரம் $5$ செ.மீ ஆக இருக்கும்போது அதன் பரப்பு எந்த வீதத்தில் (செ.மீ²/வினாடி, $\\pi$ இன் மடங்காக) அதிகரிக்கிறது? $\\pi$ இன் மடங்கைத் தருக.",
       "answer": 20,
       "tolerance": 0,
-      "solution": "$A=\\pi r^2$, so $\\dfrac{dA}{dt}=2\\pi r\\dfrac{dr}{dt}=2\\pi(5)(2)=20\\pi$ cm²/s.\n\nThe multiple of $\\pi$ is $20$."
+      "solution": "$A=\\pi r^2$, எனவே $\\dfrac{dA}{dt}=2\\pi r\\dfrac{dr}{dt}=2\\pi(5)(2)=20\\pi$ செ.மீ²/வினாடி.\n\n$\\pi$ இன் மடங்கு $20$."
     },
     {
       "id": "tn12mt-dif-06",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Absolute extrema",
+      "topic": "முழுமையான அறுதி மதிப்புகள்",
       "type": "numeric",
       "marks": 3,
-      "q": "Find the absolute maximum value of $f(x)=2x^3-3x^2-12x+1$ on $[-2,\\,2.5]$.",
+      "q": "$[-2,\\,2.5]$ இல் $f(x)=2x^3-3x^2-12x+1$ இன் முழுமையான பெரும மதிப்பைக் காண்க.",
       "answer": 8,
       "tolerance": 0,
-      "solution": "$f'(x)=6x^2-6x-12=6(x-2)(x+1)$, critical points $x=-1,2$.\n\n$f(-2)=-3$, $f(-1)=8$, $f(2)=-19$, $f(2.5)=-16.5$.\n\nAbsolute maximum $=8$ at $x=-1$."
+      "solution": "$f'(x)=6x^2-6x-12=6(x-2)(x+1)$, மாறுநிலைப் புள்ளிகள் $x=-1,2$.\n\n$f(-2)=-3$, $f(-1)=8$, $f(2)=-19$, $f(2.5)=-16.5$.\n\nமுழுமையான பெருமம் $=8$, $x=-1$ இல்."
     },
     {
       "id": "tn12mt-dif-07",
       "chapter": "வகை நுண்கணிதத்தின் பயன்பாடுகள்",
-      "topic": "Monotonicity and extrema",
+      "topic": "ஓரியல்பு மற்றும் அறுதி மதிப்புகள்",
       "type": "long",
       "marks": 5,
-      "q": "Find the intervals in which $f(x)=x^3-3x^2-9x+5$ is increasing or decreasing, and find its local extrema.",
-      "solution": "$f'(x)=3x^2-6x-9=3(x-3)(x+1)$, zero at $x=-1$ and $x=3$.\n\n**Sign of $f'$:** positive on $(-\\infty,-1)$, negative on $(-1,3)$, positive on $(3,\\infty)$.\n\nSo $f$ is **increasing** on $(-\\infty,-1)\\cup(3,\\infty)$ and **decreasing** on $(-1,3)$.\n\n**Local maximum** at $x=-1$: $f(-1)=-1-3+9+5=10$.\n\n**Local minimum** at $x=3$: $f(3)=27-27-27+5=-22$."
+      "q": "$f(x)=x^3-3x^2-9x+5$ கூடும் மற்றும் குறையும் இடைவெளிகளைக் கண்டு, அதன் இடஞ்சார்ந்த அறுதி மதிப்புகளைக் காண்க.",
+      "solution": "$f'(x)=3x^2-6x-9=3(x-3)(x+1)$, இது $x=-1$, $x=3$ இல் பூச்சியம்.\n\n**$f'$ இன் குறி:** $(-\\infty,-1)$ இல் மிகை, $(-1,3)$ இல் குறை, $(3,\\infty)$ இல் மிகை.\n\nஎனவே $f$ ஆனது $(-\\infty,-1)\\cup(3,\\infty)$ இல் **கூடும்**, $(-1,3)$ இல் **குறையும்**.\n\n**இடஞ்சார்ந்த பெருமம்** $x=-1$ இல்: $f(-1)=-1-3+9+5=10$.\n\n**இடஞ்சார்ந்த சிறுமம்** $x=3$ இல்: $f(3)=27-27-27+5=-22$."
     }
   ]
 }

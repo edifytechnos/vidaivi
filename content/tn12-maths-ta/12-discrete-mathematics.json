@@ -9,7 +9,7 @@
     {
       "id": "tn12mt-dis-24q5",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Mathematical logic",
+      "topic": "கணித தர்க்கவியல்",
       "source": "TN HSE Mar 2024",
       "type": "mcq",
       "marks": 1,
@@ -21,13 +21,12 @@
         "8"
       ],
       "answer": 3,
-      "solution": "Three statements $p,q,r$ give $2^3=8$ rows.",
-      "_board": true
+      "solution": "$p,q,r$ என்ற மூன்று கூற்றுகளுக்கு $2^3=8$ நிரைகள்."
     },
     {
       "id": "tn12mt-dis-23q10",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Binary operations",
+      "topic": "ஈருறுப்புச் செயலிகள்",
       "source": "TN HSE Mar 2023",
       "type": "mcq",
       "marks": 1,
@@ -39,13 +38,12 @@
         "$\\mathbb Z$"
       ],
       "answer": 3,
-      "solution": "On $\\mathbb Z$, $1*1=\\dfrac17\\notin\\mathbb Z$, so $*$ is not a binary operation on $\\mathbb Z$.",
-      "_board": true
+      "solution": "$\\mathbb Z$ இல், $1*1=\\dfrac17\\notin\\mathbb Z$; எனவே $*$ ஆனது $\\mathbb Z$ இன் மீது ஈருறுப்புச் செயலி ஆகாது."
     },
     {
       "id": "tn12mt-dis-25q1",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Binary operations",
+      "topic": "ஈருறுப்புச் செயலிகள்",
       "source": "TN HSE Mar 2025",
       "type": "mcq",
       "marks": 1,
@@ -57,16 +55,15 @@
         "$\\mathbb Z$"
       ],
       "answer": 0,
-      "solution": "$1-2=-1\\notin\\mathbb N$, so subtraction is not a binary operation on $\\mathbb N$.",
-      "_board": true
+      "solution": "$1-2=-1\\notin\\mathbb N$; எனவே கழித்தல் $\\mathbb N$ இன் மீது ஈருறுப்புச் செயலி ஆகாது."
     },
     {
       "id": "tn12mt-dis-01",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Binary operations",
+      "topic": "ஈருறுப்புச் செயலிகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "The number of binary operations that can be defined on a set with 2 elements is :",
+      "q": "2 உறுப்புகள் கொண்ட ஒரு கணத்தின் மீது வரையறுக்கக்கூடிய ஈருறுப்புச் செயலிகளின் எண்ணிக்கை :",
       "options": [
         "4",
         "8",
@@ -74,31 +71,31 @@
         "2"
       ],
       "answer": 2,
-      "solution": "A binary operation assigns one of 2 values to each of the $2\\times2=4$ ordered pairs: $2^4=16$."
+      "solution": "ஒரு ஈருறுப்புச் செயலி $2\\times2=4$ வரிசைச் சோடிகள் ஒவ்வொன்றுக்கும் 2 மதிப்புகளில் ஒன்றை வழங்குகிறது: $2^4=16$."
     },
     {
       "id": "tn12mt-dis-02",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Identity element",
+      "topic": "சமனி உறுப்பு",
       "type": "mcq",
       "marks": 1,
-      "q": "The identity element for multiplication on $\\mathbb R$ is :",
+      "q": "$\\mathbb R$ இல் பெருக்கலுக்கான சமனி உறுப்பு :",
       "options": [
         "0",
         "1",
         "$-1$",
-        "no identity exists"
+        "சமனி உறுப்பு இல்லை"
       ],
       "answer": 1,
-      "solution": "$a\\times1=1\\times a=a$ for every real $a$."
+      "solution": "ஒவ்வொரு மெய்யெண் $a$ க்கும் $a\\times1=1\\times a=a$."
     },
     {
       "id": "tn12mt-dis-03",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Mathematical logic",
+      "topic": "கணித தர்க்கவியல்",
       "type": "mcq",
       "marks": 1,
-      "q": "$\\neg(p\\wedge q)$ is equivalent to :",
+      "q": "$\\neg(p\\wedge q)$ க்குச் சமானமானது :",
       "options": [
         "$\\neg p\\vee\\neg q$",
         "$\\neg p\\wedge\\neg q$",
@@ -106,31 +103,31 @@
         "$\\neg p\\wedge q$"
       ],
       "answer": 0,
-      "solution": "This is De Morgan's law."
+      "solution": "இது டி மார்கன் விதி."
     },
     {
       "id": "tn12mt-dis-04",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Mathematical logic",
+      "topic": "கணித தர்க்கவியல்",
       "type": "mcq",
       "marks": 1,
-      "q": "The conditional $p\\to q$ is false only when :",
+      "q": "$p\\to q$ என்ற நிபந்தனைக் கூற்று பொய்யாவது எப்போது மட்டும் எனில் :",
       "options": [
-        "$p$ is true and $q$ is false",
-        "$p$ is false and $q$ is true",
-        "both are false",
-        "both are true"
+        "$p$ மெய், $q$ பொய்",
+        "$p$ பொய், $q$ மெய்",
+        "இரண்டும் பொய்",
+        "இரண்டும் மெய்"
       ],
       "answer": 0,
-      "solution": "A conditional fails only when a true hypothesis leads to a false conclusion."
+      "solution": "மெய்யான முற்கோள் பொய்யான முடிவுக்கு இட்டுச் செல்லும்போது மட்டுமே நிபந்தனைக் கூற்று பொய்யாகிறது."
     },
     {
       "id": "tn12mt-dis-05",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Tautologies",
+      "topic": "மெய்மைகள்",
       "type": "mcq",
       "marks": 1,
-      "q": "Which of the following is a tautology ?",
+      "q": "பின்வருவனவற்றுள் எது மெய்மை ?",
       "options": [
         "$p\\vee\\neg p$",
         "$p\\wedge\\neg p$",
@@ -138,15 +135,15 @@
         "$\\neg p$"
       ],
       "answer": 0,
-      "solution": "$p\\vee\\neg p$ is true whatever the truth value of $p$."
+      "solution": "$p$ இன் மெய் மதிப்பு எதுவாயினும் $p\\vee\\neg p$ மெய்யாகும்."
     },
     {
       "id": "tn12mt-dis-06",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Modular arithmetic",
+      "topic": "மட்டு எண்கணிதம்",
       "type": "mcq",
       "marks": 1,
-      "q": "In $(\\mathbb Z_5,\\times_5)$, the inverse of $[2]$ is :",
+      "q": "$(\\mathbb Z_5,\\times_5)$ இல், $[2]$ இன் நேர்மாறு :",
       "options": [
         "$[2]$",
         "$[3]$",
@@ -154,15 +151,15 @@
         "$[1]$"
       ],
       "answer": 1,
-      "solution": "$2\\times3=6\\equiv1\\pmod5$, so the inverse of $[2]$ is $[3]$."
+      "solution": "$2\\times3=6\\equiv1\\pmod5$, எனவே $[2]$ இன் நேர்மாறு $[3]$."
     },
     {
       "id": "tn12mt-dis-07",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Mathematical logic",
+      "topic": "கணித தர்க்கவியல்",
       "type": "numeric",
       "marks": 2,
-      "q": "How many rows are there in the truth table of a statement with 4 simple statements?",
+      "q": "4 எளிய கூற்றுகள் கொண்ட ஒரு கூற்றின் மெய் அட்டவணையில் எத்தனை நிரைகள் உள்ளன?",
       "answer": 16,
       "tolerance": 0,
       "solution": "$2^4=16$."
@@ -170,35 +167,35 @@
     {
       "id": "tn12mt-dis-08",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Modular arithmetic",
+      "topic": "மட்டு எண்கணிதம்",
       "type": "numeric",
       "marks": 2,
-      "q": "In $(\\mathbb Z_7,+_7)$, find the inverse of $[3]$ (give the representative between $0$ and $6$).",
+      "q": "$(\\mathbb Z_7,+_7)$ இல், $[3]$ இன் நேர்மாறைக் காண்க ($0$ முதல் $6$ வரையிலான பிரதிநிதியைத் தருக).",
       "answer": 4,
       "tolerance": 0,
-      "solution": "$3+4=7\\equiv0\\pmod7$, so the inverse of $[3]$ is $[4]$."
+      "solution": "$3+4=7\\equiv0\\pmod7$, எனவே $[3]$ இன் நேர்மாறு $[4]$."
     },
     {
       "id": "tn12mt-dis-09",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Identity element",
+      "topic": "சமனி உறுப்பு",
       "type": "numeric",
       "marks": 2,
-      "q": "On $\\mathbb Z$, define $a*b=a+b-3$. Find the identity element.",
+      "q": "$\\mathbb Z$ இல், $a*b=a+b-3$ என வரையறுக்கப்படுகிறது. சமனி உறுப்பைக் காண்க.",
       "answer": 3,
       "tolerance": 0,
-      "solution": "$a*e=a+e-3=a$ gives $e=3$. Check: $3*a=a$ too."
+      "solution": "$a*e=a+e-3=a$ இலிருந்து $e=3$. சரிபார்ப்பு: $3*a=a$ உம் ஆகும்."
     },
     {
       "id": "tn12mt-dis-10",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Inverse element",
+      "topic": "நேர்மாறு உறுப்பு",
       "type": "numeric",
       "marks": 3,
-      "q": "On $\\mathbb Q\\setminus\\{-1\\}$, define $a*b=a+b+ab$. Find the inverse of $2$, correct to three decimal places.",
+      "q": "$\\mathbb Q\\setminus\\{-1\\}$ இல், $a*b=a+b+ab$ என வரையறுக்கப்படுகிறது. $2$ இன் நேர்மாறை மூன்று தசம இடங்களுக்குத் திருத்தமாகக் காண்க.",
       "answer": -0.667,
       "tolerance": 0.001,
-      "solution": "The identity is $e=0$ (since $a*0=a$).\n\n$2*b=2+b+2b=0$ gives $b=-\\dfrac23\\approx-0.667$.",
+      "solution": "சமனி உறுப்பு $e=0$ ($a*0=a$ என்பதால்).\n\n$2*b=2+b+2b=0$ இலிருந்து $b=-\\dfrac23\\approx-0.667$.",
       "accept": [
         "-2/3"
       ]
@@ -206,22 +203,22 @@
     {
       "id": "tn12mt-dis-11",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Binary operations",
+      "topic": "ஈருறுப்புச் செயலிகள்",
       "type": "numeric",
       "marks": 3,
-      "q": "How many commutative binary operations can be defined on a set with 2 elements?",
+      "q": "2 உறுப்புகள் கொண்ட ஒரு கணத்தின் மீது எத்தனை பரிமாற்று ஈருறுப்புச் செயலிகளை வரையறுக்கலாம்?",
       "answer": 8,
       "tolerance": 0,
-      "solution": "A commutative operation is fixed by its values on the unordered pairs $\\{a,a\\}$, $\\{a,b\\}$, $\\{b,b\\}$: $3$ of them.\n\nEach takes one of $2$ values: $2^3=8$."
+      "solution": "ஒரு பரிமாற்றுச் செயலி, வரிசையற்ற சோடிகள் $\\{a,a\\}$, $\\{a,b\\}$, $\\{b,b\\}$ இல் அதன் மதிப்புகளால் தீர்மானிக்கப்படுகிறது: இவை $3$.\n\nஒவ்வொன்றும் $2$ மதிப்புகளில் ஒன்றைப் பெறும்: $2^3=8$."
     },
     {
       "id": "tn12mt-dis-12",
       "chapter": "தனிநிலைக் கணிதம்",
-      "topic": "Mathematical logic",
+      "topic": "கணித தர்க்கவியல்",
       "type": "long",
       "marks": 5,
-      "q": "Using truth tables, show that $p\\to q\\equiv\\neg p\\vee q$, and that $(p\\wedge q)\\to p$ is a tautology.",
-      "solution": "**Part 1.** Columns: $p$, $q$, $p\\to q$, $\\neg p$, $\\neg p\\vee q$.\n\n**Row 1:** T, T — $p\\to q$ = T; $\\neg p\\vee q$ = F ∨ T = T\n\n**Row 2:** T, F — $p\\to q$ = F; $\\neg p\\vee q$ = F ∨ F = F\n\n**Row 3:** F, T — $p\\to q$ = T; $\\neg p\\vee q$ = T ∨ T = T\n\n**Row 4:** F, F — $p\\to q$ = T; $\\neg p\\vee q$ = T ∨ F = T\n\nThe last two columns agree in every row, so $p\\to q\\equiv\\neg p\\vee q$.\n\n**Part 2.** Columns: $p$, $q$, $p\\wedge q$, $(p\\wedge q)\\to p$.\n\n**Row 1:** T, T — $p\\wedge q$ = T; T → T = T\n\n**Row 2:** T, F — $p\\wedge q$ = F; F → T = T\n\n**Row 3:** F, T — $p\\wedge q$ = F; F → F = T\n\n**Row 4:** F, F — $p\\wedge q$ = F; F → F = T\n\nEvery entry of the last column is T, so $(p\\wedge q)\\to p$ is a tautology."
+      "q": "மெய் அட்டவணைகளைப் பயன்படுத்தி $p\\to q\\equiv\\neg p\\vee q$ எனவும், $(p\\wedge q)\\to p$ ஒரு மெய்மை எனவும் காட்டுக.",
+      "solution": "மெ = மெய், பொ = பொய்.\n\n**பகுதி 1.** நிரல்கள்: $p$, $q$, $p\\to q$, $\\neg p$, $\\neg p\\vee q$.\n\n**நிரை 1:** மெ, மெ — $p\\to q$ = மெ; $\\neg p\\vee q$ = பொ ∨ மெ = மெ\n\n**நிரை 2:** மெ, பொ — $p\\to q$ = பொ; $\\neg p\\vee q$ = பொ ∨ பொ = பொ\n\n**நிரை 3:** பொ, மெ — $p\\to q$ = மெ; $\\neg p\\vee q$ = மெ ∨ மெ = மெ\n\n**நிரை 4:** பொ, பொ — $p\\to q$ = மெ; $\\neg p\\vee q$ = மெ ∨ பொ = மெ\n\nகடைசி இரு நிரல்களும் ஒவ்வொரு நிரையிலும் ஒத்துப்போகின்றன; எனவே $p\\to q\\equiv\\neg p\\vee q$.\n\n**பகுதி 2.** நிரல்கள்: $p$, $q$, $p\\wedge q$, $(p\\wedge q)\\to p$.\n\n**நிரை 1:** மெ, மெ — $p\\wedge q$ = மெ; மெ → மெ = மெ\n\n**நிரை 2:** மெ, பொ — $p\\wedge q$ = பொ; பொ → மெ = மெ\n\n**நிரை 3:** பொ, மெ — $p\\wedge q$ = பொ; பொ → பொ = மெ\n\n**நிரை 4:** பொ, பொ — $p\\wedge q$ = பொ; பொ → பொ = மெ\n\nகடைசி நிரலின் ஒவ்வொரு உறுப்பும் மெ; எனவே $(p\\wedge q)\\to p$ ஒரு மெய்மை."
     }
   ]
 }
