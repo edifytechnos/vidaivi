@@ -1,0 +1,227 @@
+{
+  "id": "lib-tn12mt-vec",
+  "title": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+  "chapter": "பாடத் தேர்வு",
+  "teacher": null,
+  "order": 6,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12mt-vec-24q6",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "திசையிலி முப்பெருக்கல்",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\vec\\beta$ மற்றும் $\\vec\\gamma$ ஆகியவை அமைக்கும் தளத்தில் $\\vec\\alpha$ அமைந்துள்ளது எனில்,",
+      "options": [
+        "$[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=0$",
+        "$[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=1$",
+        "$[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=2$",
+        "$[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=-1$"
+      ],
+      "answer": 0,
+      "solution": "ஒரு தள மூன்று வெக்டர்களின் திசையிலி முப்பெருக்கல் $0$: $[\\vec\\alpha,\\vec\\beta,\\vec\\gamma]=0$."
+    },
+    {
+      "id": "tn12mt-vec-24q14",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "கோட்டிற்கும் தளத்திற்கும் இடையேயான கோணம்",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\vec r=(\\hat i+2\\hat j-3\\hat k)+t(2\\hat i+\\hat j-2\\hat k)$ என்ற கோட்டிற்கும் $\\vec r\\cdot(\\hat i+\\hat j)+4=0$ என்ற தளத்திற்கும் இடைப்பட்ட கோணம் :",
+      "options": [
+        "$45^\\circ$",
+        "$0^\\circ$",
+        "$90^\\circ$",
+        "$30^\\circ$"
+      ],
+      "answer": 0,
+      "solution": "$\\sin\\theta=\\dfrac{|\\vec b\\cdot\\vec n|}{|\\vec b||\\vec n|}=\\dfrac{|2+1+0|}{3\\sqrt2}=\\dfrac{1}{\\sqrt2}$, எனவே $\\theta=45^\\circ$."
+    },
+    {
+      "id": "tn12mt-vec-23q2",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "தளத்திலிருந்து தொலைவு",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "ஆதிப்புள்ளியிலிருந்து $3x-6y+2z+7=0$ என்ற தளத்திற்கு உள்ள தொலைவு :",
+      "options": [
+        "2",
+        "0",
+        "3",
+        "1"
+      ],
+      "answer": 3,
+      "solution": "$d=\\dfrac{|7|}{\\sqrt{9+36+4}}=\\dfrac77=1$."
+    },
+    {
+      "id": "tn12mt-vec-23q6",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "திசையிலி முப்பெருக்கல்",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\vec a$ மற்றும் $\\vec b$ என்பன இணை வெக்டர்கள் எனில் $[\\vec a,\\vec c,\\vec b]$ -ன் மதிப்பு :",
+      "options": [
+        "1",
+        "2",
+        "0",
+        "$-1$"
+      ],
+      "answer": 2,
+      "solution": "$\\vec a\\parallel\\vec b$ எனவே $\\vec a,\\vec c,\\vec b$ ஒரு தள வெக்டர்கள்; ஆகவே $[\\vec a,\\vec c,\\vec b]=0$."
+    },
+    {
+      "id": "tn12mt-vec-25q14",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "கோடுகளுக்கு இடையேயான கோணம்",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\dfrac{x-2}{3}=\\dfrac{y+1}{-2}$, $z=2$ மற்றும் $\\dfrac{x-1}{1}=\\dfrac{2y+3}{3}=\\dfrac{z+5}{2}$ என்ற கோடுகளுக்கு இடைப்பட்ட கோணம் :",
+      "options": [
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{\\pi}{6}$",
+        "$\\dfrac{\\pi}{2}$",
+        "$\\dfrac{\\pi}{4}$"
+      ],
+      "answer": 2,
+      "solution": "திசைகள் $(3,-2,0)$ மற்றும் $(1,\\tfrac32,2)\\propto(2,3,4)$. புள்ளிப் பெருக்கல் $6-6+0=0$, எனவே கோணம் $\\dfrac{\\pi}{2}$."
+    },
+    {
+      "id": "tn12mt-vec-25q19",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "திசையிலி முப்பெருக்கல்",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\hat i+\\hat j$, $\\hat i+2\\hat j$, $\\hat i+\\hat j+\\pi\\hat k$ என்ற வெக்டர்களை ஒரு புள்ளியில் சந்திக்கும் விளிம்புகளாகக் கொண்ட இணைகரத் திண்மத்தின் கனஅளவு :",
+      "options": [
+        "$\\pi$",
+        "$\\dfrac{\\pi}{2}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$\\dfrac{\\pi}{3}$"
+      ],
+      "answer": 0,
+      "solution": "$\\begin{vmatrix}1&1&0\\\\1&2&0\\\\1&1&\\pi\\end{vmatrix}=\\pi(2-1)=\\pi$."
+    },
+    {
+      "id": "tn12mt-vec-01",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "திசையிலி முப்பெருக்கல்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$[\\hat i,\\hat j,\\hat k]$ இன் மதிப்பு :",
+      "options": [
+        "0",
+        "1",
+        "$-1$",
+        "3"
+      ],
+      "answer": 1,
+      "solution": "$[\\hat i,\\hat j,\\hat k]=\\hat i\\cdot(\\hat j\\times\\hat k)=\\hat i\\cdot\\hat i=1$."
+    },
+    {
+      "id": "tn12mt-vec-02",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "திசையிலி முப்பெருக்கல்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$[\\hat i+\\hat j,\\ \\hat j+\\hat k,\\ \\hat k+\\hat i]$ இன் மதிப்பு :",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "$-2$"
+      ],
+      "answer": 2,
+      "solution": "$\\begin{vmatrix}1&1&0\\\\0&1&1\\\\1&0&1\\end{vmatrix}=1(1)-1(0-1)+0=2$."
+    },
+    {
+      "id": "tn12mt-vec-03",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "தளங்களுக்கு இடையேயான தொலைவு",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$x+2y+2z=3$ மற்றும் $x+2y+2z=9$ என்ற இணைத் தளங்களுக்கு இடையேயான தொலைவு :",
+      "options": [
+        "6",
+        "3",
+        "2",
+        "1"
+      ],
+      "answer": 2,
+      "solution": "$d=\\dfrac{|9-3|}{\\sqrt{1+4+4}}=\\dfrac63=2$."
+    },
+    {
+      "id": "tn12mt-vec-04",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "திசையிலி முப்பெருக்கல்",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$2\\hat i-3\\hat j+4\\hat k$, $\\hat i+2\\hat j-\\hat k$ மற்றும் $3\\hat i-\\hat j+2\\hat k$ ஆகியவற்றை விளிம்புகளாகக் கொண்ட இணைகரத் திண்மத்தின் கனஅளவைக் காண்க.",
+      "answer": 7,
+      "tolerance": 0,
+      "solution": "$\\begin{vmatrix}2&-3&4\\\\1&2&-1\\\\3&-1&2\\end{vmatrix}=2(4-1)+3(2+3)+4(-1-6)=6+15-28=-7$.\n\nகனஅளவு $=|-7|=7$ கன அலகுகள்."
+    },
+    {
+      "id": "tn12mt-vec-05",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "ஒரு தள வெக்டர்கள்",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$\\hat i+\\hat j+\\hat k$, $2\\hat i+\\lambda\\hat j+3\\hat k$ மற்றும் $\\hat i+2\\hat j+3\\hat k$ ஆகியவை ஒரு தள வெக்டர்கள் எனில் $\\lambda$ ஐக் காண்க.",
+      "answer": 2.5,
+      "tolerance": 0,
+      "solution": "ஒரு தள வெக்டர்கள் எனில் திசையிலி முப்பெருக்கல் $0$:\n\n$\\begin{vmatrix}1&1&1\\\\2&\\lambda&3\\\\1&2&3\\end{vmatrix}=(3\\lambda-6)-(6-3)+(4-\\lambda)=2\\lambda-5=0$, எனவே $\\lambda=\\dfrac52$.",
+      "accept": [
+        "5/2"
+      ]
+    },
+    {
+      "id": "tn12mt-vec-06",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "தளத்திலிருந்து தொலைவு",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$(1,2,3)$ என்ற புள்ளியிலிருந்து $2x-y+2z+3=0$ என்ற தளத்திற்கு உள்ள தொலைவைக் காண்க.",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "$d=\\dfrac{|2(1)-2+2(3)+3|}{\\sqrt{4+1+4}}=\\dfrac{9}{3}=3$."
+    },
+    {
+      "id": "tn12mt-vec-07",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "தளங்களுக்கு இடையேயான கோணம்",
+      "type": "numeric",
+      "marks": 3,
+      "q": "$x+y=4$ மற்றும் $x+z=7$ என்ற தளங்களுக்கு இடையேயான கோணத்தைப் பாகைகளில் காண்க.",
+      "answer": 60,
+      "tolerance": 0,
+      "solution": "செங்குத்து வெக்டர்கள் $(1,1,0)$ மற்றும் $(1,0,1)$.\n\n$\\cos\\theta=\\dfrac{1}{\\sqrt2\\sqrt2}=\\dfrac12$, எனவே $\\theta=60^\\circ$."
+    },
+    {
+      "id": "tn12mt-vec-08",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "மிகக்குறைந்த தொலைவு",
+      "type": "numeric",
+      "marks": 3,
+      "q": "$\\vec r=(6\\hat i+2\\hat j+2\\hat k)+t(\\hat i-2\\hat j+2\\hat k)$ மற்றும் $\\vec r=(-4\\hat i-\\hat k)+s(3\\hat i-2\\hat j-2\\hat k)$ என்ற ஒருதளம் அமையாக் கோடுகளுக்கு இடையேயான மிகக்குறைந்த தொலைவைக் காண்க.",
+      "answer": 9,
+      "tolerance": 0,
+      "solution": "$\\vec b_1\\times\\vec b_2=(1,-2,2)\\times(3,-2,-2)=(8,8,4)$, இதன் எண்ணளவு $12$.\n\n$\\vec a_2-\\vec a_1=(-10,-2,-3)$, மேலும் $(\\vec a_2-\\vec a_1)\\cdot(\\vec b_1\\times\\vec b_2)=-80-16-12=-108$.\n\n$d=\\dfrac{108}{12}=9$."
+    },
+    {
+      "id": "tn12mt-vec-09",
+      "chapter": "வெக்டர் இயற்கணிதத்தின் பயன்பாடுகள்",
+      "topic": "தளத்தின் சமன்பாடு",
+      "type": "long",
+      "marks": 5,
+      "q": "$(1,2,3)$, $(2,3,1)$ மற்றும் $(3,1,2)$ ஆகிய புள்ளிகள் வழியே செல்லும் தளத்தின் வெக்டர் மற்றும் கார்டீசியன் சமன்பாடுகளைக் காண்க.",
+      "solution": "$A(1,2,3)$, $B(2,3,1)$, $C(3,1,2)$ என்க. பின் $\\vec{AB}=(1,1,-2)$, $\\vec{AC}=(2,-1,-1)$.\n\nசெங்குத்து வெக்டர் $\\vec n=\\vec{AB}\\times\\vec{AC}=\\begin{vmatrix}\\hat i&\\hat j&\\hat k\\\\1&1&-2\\\\2&-1&-1\\end{vmatrix}=-3\\hat i-3\\hat j-3\\hat k$, இது $\\hat i+\\hat j+\\hat k$ க்கு இணை.\n\n**வெக்டர் வடிவம்:** $\\vec r\\cdot(\\hat i+\\hat j+\\hat k)=(\\hat i+2\\hat j+3\\hat k)\\cdot(\\hat i+\\hat j+\\hat k)=6$.\n\n**கார்டீசியன் வடிவம்:** $x+y+z=6$.\n\nசரிபார்ப்பு: $2+3+1=6$ மற்றும் $3+1+2=6$."
+    }
+  ]
+}

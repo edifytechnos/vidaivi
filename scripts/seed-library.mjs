@@ -82,6 +82,7 @@ const SHELVES = {
   "tn12-chemistry": { board: "Tamil Nadu", klass: "12", subject: "Chemistry (English Medium)" },
   "tn12-chemistry-ta": { board: "Tamil Nadu", klass: "12", subject: "Chemistry (Tamil Medium)" },
   "tn12-maths": { board: "Tamil Nadu", klass: "12", subject: "Maths (English Medium)" },
+  "tn12-maths-ta": { board: "Tamil Nadu", klass: "12", subject: "Maths (Tamil Medium)" },
 };
 
 if (!USER || !PASS) {

@@ -419,8 +419,9 @@ Tagged today, with an evidence file per shelf under `docs/`:
 | Tamil Nadu Class 12 Physics (Tamil medium) | 37 of 165 | the board's own Tamil, read off the page |
 | Tamil Nadu Class 12 Chemistry (Tamil medium) | 42 of 225 | the board's own Tamil, read off the page |
 | Tamil Nadu Class 12 Maths | 56 of 180 | every chapter; TN HSE Mar 2023–25, read as page images |
+| Tamil Nadu Class 12 Maths (Tamil medium) | 56 of 180 | the board's own Tamil, read off the page |
 
-**475 of 3390 questions are evidenced.** The only original shelf with nothing is **NEET**,
+**531 of 3570 questions are evidenced.** The only original shelf with nothing is **NEET**,
 because no public archive exists; nothing there will carry a year until one does.
 
 **Cambridge publishes past papers openly** at

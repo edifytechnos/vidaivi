@@ -1,0 +1,234 @@
+{
+  "id": "lib-tn12mt-itr",
+  "title": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+  "chapter": "பாடத் தேர்வு",
+  "teacher": null,
+  "order": 4,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12mt-itr-24q15",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "நேர்மாறு சார்புகளின் பண்புகள்",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\sin^{-1}x+\\cot^{-1}\\left(\\dfrac12\\right)=\\dfrac{\\pi}{2}$ எனில் $x$ -ன் மதிப்பு :",
+      "options": [
+        "$\\dfrac{2}{\\sqrt5}$",
+        "$\\dfrac12$",
+        "$\\dfrac{\\sqrt3}{2}$",
+        "$\\dfrac{1}{\\sqrt5}$"
+      ],
+      "answer": 3,
+      "solution": "$\\sin^{-1}x=\\dfrac{\\pi}{2}-\\cot^{-1}\\dfrac12=\\tan^{-1}\\dfrac12$. $\\tan\\theta=\\dfrac12$ எனும் கோணத்திற்கு $\\sin\\theta=\\dfrac{1}{\\sqrt5}$, எனவே $x=\\dfrac{1}{\\sqrt5}$."
+    },
+    {
+      "id": "tn12mt-itr-23q3",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "நேர்மாறு சார்புகளின் பண்புகள்",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$3\\cos^{-1}x=\\cos^{-1}(4x^3-3x)$ எனில் :",
+      "options": [
+        "$x\\in\\left(\\dfrac12,1\\right)$",
+        "$x\\in\\left[\\dfrac12,1\\right]$",
+        "$x\\in(-\\infty,1]$",
+        "$x\\in\\left[\\dfrac12,\\infty\\right)$"
+      ],
+      "answer": 1,
+      "solution": "$\\cos3\\theta=4\\cos^3\\theta-3\\cos\\theta$ இலிருந்து $3\\cos^{-1}x=\\cos^{-1}(4x^3-3x)$ என்பது $3\\theta\\in[0,\\pi]$ ஆக இருக்கும்போது மட்டுமே உண்மை, அதாவது $\\theta\\in\\left[0,\\dfrac{\\pi}{3}\\right]$, அதாவது $x\\in\\left[\\dfrac12,1\\right]$."
+    },
+    {
+      "id": "tn12mt-itr-23q19",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "முதன்மை மதிப்புகள்",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\sin^{-1}\\left(\\dfrac{-1}{2}\\right)$ -ன் முதன்மை மதிப்பு :",
+      "options": [
+        "$\\dfrac{-\\pi}{6}$",
+        "0",
+        "$\\dfrac{-\\pi}{2}$",
+        "$\\dfrac{\\pi}{2}$"
+      ],
+      "answer": 0,
+      "solution": "$\\sin^{-1}$ -ன் முதன்மை வீச்சகம் $\\left[-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right]$, மேலும் $\\sin\\left(-\\dfrac{\\pi}{6}\\right)=-\\dfrac12$."
+    },
+    {
+      "id": "tn12mt-itr-25q8",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "சார்பகம் மற்றும் வீச்சகம்",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$f(x)=\\sin^{-1}\\sqrt{x-1}$ என வரையறுக்கப்படும் சார்பின் சார்பகம் :",
+      "options": [
+        "$[0,1]$",
+        "$[1,2]$",
+        "$[-1,0]$",
+        "$[-1,1]$"
+      ],
+      "answer": 1,
+      "solution": "$0\\le x-1$ மற்றும் $\\sqrt{x-1}\\le1$ ஆக இருக்க வேண்டும்: $1\\le x\\le2$, அதாவது $[1,2]$."
+    },
+    {
+      "id": "tn12mt-itr-01",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "முதன்மை மதிப்புகள்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\cos^{-1}\\left(-\\dfrac12\\right)$ -ன் முதன்மை மதிப்பு :",
+      "options": [
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{2\\pi}{3}$",
+        "$-\\dfrac{\\pi}{3}$",
+        "$\\dfrac{4\\pi}{3}$"
+      ],
+      "answer": 1,
+      "solution": "$\\cos^{-1}$ -ன் வீச்சகம் $[0,\\pi]$, மேலும் $\\cos\\dfrac{2\\pi}{3}=-\\dfrac12$."
+    },
+    {
+      "id": "tn12mt-itr-02",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "நேர்மாறு சார்புகளின் பண்புகள்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\tan^{-1}1+\\tan^{-1}2+\\tan^{-1}3$ -ன் மதிப்பு :",
+      "options": [
+        "$\\dfrac{\\pi}{2}$",
+        "$\\pi$",
+        "$\\dfrac{3\\pi}{4}$",
+        "$0$"
+      ],
+      "answer": 1,
+      "solution": "$\\tan^{-1}2+\\tan^{-1}3=\\pi+\\tan^{-1}\\dfrac{5}{1-6}=\\pi-\\dfrac{\\pi}{4}=\\dfrac{3\\pi}{4}$ ($2\\cdot3>1$ என்பதால்). இதனுடன் $\\tan^{-1}1=\\dfrac{\\pi}{4}$ ஐக் கூட்ட $\\pi$ கிடைக்கும்."
+    },
+    {
+      "id": "tn12mt-itr-03",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "சார்பகம் மற்றும் வீச்சகம்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\cos^{-1}(2x-1)$ -ன் சார்பகம் :",
+      "options": [
+        "$[0,1]$",
+        "$[-1,1]$",
+        "$[-1,0]$",
+        "$[0,2]$"
+      ],
+      "answer": 0,
+      "solution": "$-1\\le2x-1\\le1$ ஆக இருக்க வேண்டும், அதாவது $0\\le x\\le1$."
+    },
+    {
+      "id": "tn12mt-itr-04",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "முதன்மை மதிப்புகள்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\sin^{-1}\\left(\\sin\\dfrac{5\\pi}{6}\\right)$ -ன் மதிப்பு :",
+      "options": [
+        "$\\dfrac{5\\pi}{6}$",
+        "$\\dfrac{\\pi}{6}$",
+        "$-\\dfrac{\\pi}{6}$",
+        "$\\dfrac{\\pi}{3}$"
+      ],
+      "answer": 1,
+      "solution": "$\\sin\\dfrac{5\\pi}{6}=\\dfrac12$, மேலும் $\\sin^{-1}\\dfrac12$ -ன் முதன்மை மதிப்பு $\\dfrac{\\pi}{6}$ (விடை $\\left[-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right]$ -ல் அமைய வேண்டும்)."
+    },
+    {
+      "id": "tn12mt-itr-05",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "முதன்மை மதிப்புகள்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\sec^{-1}2$ -ன் முதன்மை மதிப்பு :",
+      "options": [
+        "$\\dfrac{\\pi}{6}$",
+        "$\\dfrac{\\pi}{3}$",
+        "$\\dfrac{2\\pi}{3}$",
+        "$\\dfrac{\\pi}{4}$"
+      ],
+      "answer": 1,
+      "solution": "$\\sec\\dfrac{\\pi}{3}=2$ மற்றும் $\\dfrac{\\pi}{3}\\in[0,\\pi]$."
+    },
+    {
+      "id": "tn12mt-itr-06",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "முதன்மை மதிப்புகள்",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$\\tan^{-1}\\sqrt3-\\sec^{-1}(-2)$ -ன் மதிப்பைப் பாகைகளில் காண்க.",
+      "answer": -60,
+      "tolerance": 0,
+      "solution": "$\\tan^{-1}\\sqrt3=60^\\circ$ மற்றும் $\\sec^{-1}(-2)=120^\\circ$ (வீச்சகம் $[0,\\pi]$). வேறுபாடு $-60^\\circ$."
+    },
+    {
+      "id": "tn12mt-itr-07",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "நேர்மாறு சார்புகளின் பண்புகள்",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$\\cos\\left(\\sin^{-1}\\dfrac35\\right)$ காண்க.",
+      "answer": 0.8,
+      "tolerance": 0,
+      "solution": "$\\theta\\in\\left[-\\dfrac{\\pi}{2},\\dfrac{\\pi}{2}\\right]$ உடன் $\\sin\\theta=\\dfrac35$ எனில், $\\cos\\theta=\\sqrt{1-\\dfrac{9}{25}}=\\dfrac45$.",
+      "accept": [
+        "4/5"
+      ]
+    },
+    {
+      "id": "tn12mt-itr-08",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "நேர்மாறு சார்புகளின் பண்புகள்",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$\\tan\\left(\\cos^{-1}\\dfrac{5}{13}\\right)$ காண்க.",
+      "answer": 2.4,
+      "tolerance": 0,
+      "solution": "$\\cos\\theta=\\dfrac{5}{13}$, $\\theta\\in[0,\\pi]$ எனில், $\\sin\\theta=\\dfrac{12}{13}$ மற்றும் $\\tan\\theta=\\dfrac{12}{5}=2.4$.",
+      "accept": [
+        "12/5"
+      ]
+    },
+    {
+      "id": "tn12mt-itr-09",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "சமன்பாடுகளைத் தீர்த்தல்",
+      "type": "numeric",
+      "marks": 3,
+      "q": "$\\tan^{-1}2x+\\tan^{-1}3x=\\dfrac{\\pi}{4}$ ஐத் தீர்க்க. ஏற்கத்தக்க $x$ -ன் மதிப்பை மூன்று தசம இடங்களுக்குத் திருத்தமாகத் தருக.",
+      "answer": 0.167,
+      "tolerance": 0.001,
+      "solution": "$\\dfrac{5x}{1-6x^2}=1$, எனவே $6x^2+5x-1=0$; இதிலிருந்து $x=\\dfrac16$ அல்லது $x=-1$.\n\n$x=-1$ எனில் இரு உறுப்புகளும் குறை எண்கள், அவற்றின் கூடுதல் $\\dfrac{\\pi}{4}$ ஆக இருக்க முடியாது, எனவே $x=\\dfrac16\\approx0.167$.",
+      "accept": [
+        "1/6"
+      ]
+    },
+    {
+      "id": "tn12mt-itr-10",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "நேர்மாறு சார்புகளின் பண்புகள்",
+      "type": "numeric",
+      "marks": 3,
+      "q": "$\\cot\\left(\\tan^{-1}2+\\cot^{-1}3\\right)$ -ன் மதிப்பை மூன்று தசம இடங்களுக்குத் திருத்தமாகக் காண்க.",
+      "answer": 0.143,
+      "tolerance": 0.001,
+      "solution": "$\\cot^{-1}3=\\tan^{-1}\\dfrac13$, மேலும் $\\tan^{-1}2+\\tan^{-1}\\dfrac13=\\tan^{-1}\\dfrac{2+\\frac13}{1-\\frac23}=\\tan^{-1}7$.\n\nஎனவே மதிப்பு $\\cot(\\tan^{-1}7)=\\dfrac17\\approx0.143$.",
+      "accept": [
+        "1/7"
+      ]
+    },
+    {
+      "id": "tn12mt-itr-11",
+      "chapter": "நேர்மாறு முக்கோணவியல் சார்புகள்",
+      "topic": "நேர்மாறு சார்புகளின் பண்புகள்",
+      "type": "long",
+      "marks": 5,
+      "q": "$2\\tan^{-1}\\dfrac12+\\tan^{-1}\\dfrac17=\\tan^{-1}\\dfrac{31}{17}$ என நிறுவுக.",
+      "solution": "$|x|<1$ எனில் $2\\tan^{-1}x=\\tan^{-1}\\dfrac{2x}{1-x^2}$, எனவே\n\n$2\\tan^{-1}\\dfrac12=\\tan^{-1}\\dfrac{1}{1-\\frac14}=\\tan^{-1}\\dfrac43$.\n\nபின், $\\dfrac43\\cdot\\dfrac17<1$ என்பதால்,\n\n$\\tan^{-1}\\dfrac43+\\tan^{-1}\\dfrac17=\\tan^{-1}\\dfrac{\\frac43+\\frac17}{1-\\frac{4}{21}}=\\tan^{-1}\\dfrac{\\frac{31}{21}}{\\frac{17}{21}}=\\tan^{-1}\\dfrac{31}{17}$.\n\nஎனவே நிறுவப்பட்டது."
+    }
+  ]
+}

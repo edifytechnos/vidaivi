@@ -46,3 +46,10 @@ Tamil text for the Tamil-medium shelf.
 
 Every untagged question is original and carries no `source`. All answers were
 recomputed independently (sympy, 40 checks, 0 mismatches).
+
+## The Tamil-medium shelf (`content/tn12-maths-ta`)
+
+The same 180 questions, slot for slot (`tn12mt-` ids). The 56 tagged questions
+carry the **board's own Tamil wording**, read off the same rendered pages,
+since every paper prints both languages side by side. Everything else is a
+translation of the English shelf.

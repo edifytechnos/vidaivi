@@ -1,0 +1,227 @@
+{
+  "id": "lib-tn12mt-cpx",
+  "title": "கலப்பு எண்கள்",
+  "chapter": "பாடத் தேர்வு",
+  "teacher": null,
+  "order": 2,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12mt-cpx-24q4",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "கலப்பு எண்ணின் மட்டு",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$|z_1|=1$, $|z_2|=2$, $|z_3|=3$ மற்றும் $|9z_1z_2+4z_1z_3+z_2z_3|=12$ எனில், $|z_1+z_2+z_3|$ -ன் மதிப்பு :",
+      "options": [
+        "3",
+        "1",
+        "4",
+        "2"
+      ],
+      "answer": 3,
+      "solution": "$|z_k|^2=z_k\\bar z_k$ என்பதால்: $9z_1z_2+4z_1z_3+z_2z_3=z_1z_2z_3\\left(\\dfrac{9}{z_3}+\\dfrac{4}{z_2}+\\dfrac{1}{z_1}\\right)=z_1z_2z_3(\\bar z_3+\\bar z_2+\\bar z_1)$.\n\nமட்டுகளை எடுக்க: $12=1\\cdot2\\cdot3\\cdot|z_1+z_2+z_3|$, எனவே $|z_1+z_2+z_3|=2$."
+    },
+    {
+      "id": "tn12mt-cpx-24q10",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "கலப்பு எண்ணின் மட்டு",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$(1+i)(1+2i)(1+3i)\\cdots(1+ni)=x+iy$ எனில், $2\\cdot5\\cdot10\\cdots(1+n^2)$ -ன் மதிப்பு :",
+      "options": [
+        "$x^2+y^2$",
+        "1",
+        "$1+n^2$",
+        "$i$"
+      ],
+      "answer": 0,
+      "solution": "மட்டுகளின் வர்க்கம் எடுக்க: $|1+ki|^2=1+k^2$, எனவே $2\\cdot5\\cdot10\\cdots(1+n^2)=|x+iy|^2=x^2+y^2$."
+    },
+    {
+      "id": "tn12mt-cpx-23q14",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "டி மாய்வரின் தேற்றம்",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\left(\\dfrac{1+i}{\\sqrt2}\\right)^8+\\left(\\dfrac{1-i}{\\sqrt2}\\right)^8$ -ன் மதிப்பு :",
+      "options": [
+        "8",
+        "4",
+        "2",
+        "6"
+      ],
+      "answer": 2,
+      "solution": "$\\dfrac{1\\pm i}{\\sqrt2}=e^{\\pm i\\pi/4}$, எனவே ஒவ்வொரு எட்டாம் அடுக்கும் $e^{\\pm2\\pi i}=1$. கூடுதல் $=2$."
+    },
+    {
+      "id": "tn12mt-cpx-23q15",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "கலப்பு எண்ணின் இணையியம்",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$|z|=1$ எனில் $\\dfrac{1+z}{1+\\bar z}$ -ன் மதிப்பு :",
+      "options": [
+        "$\\dfrac1z$",
+        "$z$",
+        "1",
+        "$\\bar z$"
+      ],
+      "answer": 1,
+      "solution": "$|z|=1\\Rightarrow\\bar z=\\dfrac1z$. $\\dfrac{1+z}{1+\\frac1z}=\\dfrac{z(1+z)}{z+1}=z$."
+    },
+    {
+      "id": "tn12mt-cpx-25q11",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "வர்க்க மூலங்கள்",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$i$ -ன் வர்க்க மூலங்கள் :",
+      "options": [
+        "$\\pm\\dfrac12(1+i)$",
+        "$\\pm\\dfrac{1}{\\sqrt2}(1+i)$",
+        "$\\pm\\dfrac12(1-i)$",
+        "$\\pm\\dfrac{1}{\\sqrt2}(1-i)$"
+      ],
+      "answer": 1,
+      "solution": "$\\left(\\dfrac{1+i}{\\sqrt2}\\right)^2=\\dfrac{2i}{2}=i$, எனவே $\\sqrt i=\\pm\\dfrac{1}{\\sqrt2}(1+i)$."
+    },
+    {
+      "id": "tn12mt-cpx-25q12",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "$i$ -ன் அடுக்குகள்",
+      "source": "TN HSE Mar 2025",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\displaystyle\\sum_{n=1}^{13}\\left(i^n+i^{n-1}\\right)$ -ன் மதிப்பு :",
+      "options": [
+        "1",
+        "$1+i$",
+        "0",
+        "$i$"
+      ],
+      "answer": 1,
+      "solution": "$\\sum_{n=1}^{13}i^n=i$ (12 உறுப்புகள் நான்கு நான்காக நீங்கி $i^{13}=i$ மட்டும் மீதமிருக்கும்) மற்றும் $\\sum_{n=1}^{13}i^{n-1}=\\sum_{k=0}^{12}i^k=1$. மொத்தம் $1+i$."
+    },
+    {
+      "id": "tn12mt-cpx-01",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "$i$ -ன் அடுக்குகள்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$i^{2025}$ -ன் மதிப்பு :",
+      "options": [
+        "1",
+        "$-1$",
+        "$i$",
+        "$-i$"
+      ],
+      "answer": 2,
+      "solution": "$2025=4\\cdot506+1$, எனவே $i^{2025}=i^1=i$."
+    },
+    {
+      "id": "tn12mt-cpx-02",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "கலப்பு எண்ணின் மட்டு",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\dfrac{3+4i}{5-12i}$ -ன் மட்டு :",
+      "options": [
+        "$\\dfrac{5}{13}$",
+        "$\\dfrac{13}{5}$",
+        "1",
+        "$\\dfrac{7}{17}$"
+      ],
+      "answer": 0,
+      "solution": "$\\left|\\dfrac{z_1}{z_2}\\right|=\\dfrac{|z_1|}{|z_2|}=\\dfrac{5}{13}$."
+    },
+    {
+      "id": "tn12mt-cpx-03",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "துருவ வடிவம்",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$-1-i$ -ன் முதன்மை வீச்சு :",
+      "options": [
+        "$\\dfrac{3\\pi}{4}$",
+        "$-\\dfrac{3\\pi}{4}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$-\\dfrac{\\pi}{4}$"
+      ],
+      "answer": 1,
+      "solution": "$-1-i$ மூன்றாம் கால்பகுதியில் உள்ளது; அதன் குறிப்புக் கோணம் $\\dfrac{\\pi}{4}$, எனவே $\\arg=-\\pi+\\dfrac{\\pi}{4}=-\\dfrac{3\\pi}{4}$."
+    },
+    {
+      "id": "tn12mt-cpx-04",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "கலப்பு எண்ணின் மட்டு",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$|(1+i)(2+i)(3+i)|$ காண்க.",
+      "answer": 10,
+      "tolerance": 0,
+      "solution": "$|1+i||2+i||3+i|=\\sqrt2\\cdot\\sqrt5\\cdot\\sqrt{10}=\\sqrt{100}=10$."
+    },
+    {
+      "id": "tn12mt-cpx-05",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "கலப்பு எண்ணின் அடுக்குகள்",
+      "type": "numeric",
+      "marks": 2,
+      "q": "$(1+i)^4$ -ன் மெய்ப்பகுதியைக் காண்க.",
+      "answer": -4,
+      "tolerance": 0,
+      "solution": "$(1+i)^2=2i$, எனவே $(1+i)^4=(2i)^2=-4$. மெய்ப்பகுதி $-4$."
+    },
+    {
+      "id": "tn12mt-cpx-06",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "ஒன்றின் மூலங்கள்",
+      "type": "numeric",
+      "marks": 2,
+      "q": "ஒன்றின் நான்காம் படி மூலங்கள் அனைத்தின் கூடுதலைக் காண்க.",
+      "answer": 0,
+      "tolerance": 0,
+      "solution": "ஒன்றின் நான்காம் படி மூலங்கள் $1,i,-1,-i$; அவற்றின் கூடுதல் $0$. ($n>1$ எனில் ஒன்றின் $n$ -ஆம் படி மூலங்களின் கூடுதல் எப்போதும் $0$.)"
+    },
+    {
+      "id": "tn12mt-cpx-07",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "கலப்பு எண்களின் இயற்கணிதம்",
+      "type": "numeric",
+      "marks": 3,
+      "q": "$(1+i)z=4$ எனில், $|z|^2$ காண்க.",
+      "answer": 8,
+      "tolerance": 0,
+      "solution": "$z=\\dfrac{4}{1+i}=\\dfrac{4(1-i)}{2}=2-2i$.\n\n$|z|^2=4+4=8$."
+    },
+    {
+      "id": "tn12mt-cpx-08",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "டி மாய்வரின் தேற்றம்",
+      "type": "numeric",
+      "marks": 3,
+      "q": "$\\left(\\cos\\dfrac{\\pi}{12}+i\\sin\\dfrac{\\pi}{12}\\right)^8$ -ன் மெய்ப்பகுதியைக் காண்க.",
+      "answer": -0.5,
+      "tolerance": 0,
+      "solution": "டி மாய்வரின் தேற்றப்படி இந்த அடுக்கு $\\cos\\dfrac{8\\pi}{12}+i\\sin\\dfrac{8\\pi}{12}=\\cos\\dfrac{2\\pi}{3}+i\\sin\\dfrac{2\\pi}{3}$.\n\nமெய்ப்பகுதி $=\\cos\\dfrac{2\\pi}{3}=-\\dfrac12$.",
+      "accept": [
+        "-1/2"
+      ]
+    },
+    {
+      "id": "tn12mt-cpx-09",
+      "chapter": "கலப்பு எண்கள்",
+      "topic": "கலப்பு எண்ணின் மூலங்கள்",
+      "type": "long",
+      "marks": 5,
+      "q": "$z^3+8i=0$ -ன் அனைத்து மூலங்களையும் கண்டு, அவற்றை ஆர்கண்ட் தளத்தில் குறிக்கவும்.",
+      "solution": "$z^3=-8i=8\\left(\\cos\\left(-\\dfrac{\\pi}{2}\\right)+i\\sin\\left(-\\dfrac{\\pi}{2}\\right)\\right)$.\n\n$z=2\\left(\\cos\\dfrac{-\\frac{\\pi}{2}+2k\\pi}{3}+i\\sin\\dfrac{-\\frac{\\pi}{2}+2k\\pi}{3}\\right)$, $k=0,1,2$.\n\n$k=0$: $2\\left(\\cos\\left(-\\dfrac{\\pi}{6}\\right)+i\\sin\\left(-\\dfrac{\\pi}{6}\\right)\\right)=\\sqrt3-i$\n\n$k=1$: $2\\left(\\cos\\dfrac{\\pi}{2}+i\\sin\\dfrac{\\pi}{2}\\right)=2i$\n\n$k=2$: $2\\left(\\cos\\dfrac{7\\pi}{6}+i\\sin\\dfrac{7\\pi}{6}\\right)=-\\sqrt3-i$\n\nமூன்று மூலங்களும் $|z|=2$ என்ற வட்டத்தின் மீது $120^\\circ$ இடைவெளியில் அமைகின்றன — ஒரு சமபக்க முக்கோணத்தின் உச்சிகள்."
+    }
+  ]
+}
