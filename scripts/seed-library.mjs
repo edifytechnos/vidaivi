@@ -83,6 +83,10 @@ const SHELVES = {
   "tn12-chemistry-ta": { board: "Tamil Nadu", klass: "12", subject: "Chemistry (Tamil Medium)" },
   "tn12-maths": { board: "Tamil Nadu", klass: "12", subject: "Maths (English Medium)" },
   "tn12-maths-ta": { board: "Tamil Nadu", klass: "12", subject: "Maths (Tamil Medium)" },
+  "tn12-botany": { board: "Tamil Nadu", klass: "12", subject: "Bio-Botany (English Medium)" },
+  "tn12-botany-ta": { board: "Tamil Nadu", klass: "12", subject: "Bio-Botany (Tamil Medium)" },
+  "tn12-zoology": { board: "Tamil Nadu", klass: "12", subject: "Bio-Zoology (English Medium)" },
+  "tn12-zoology-ta": { board: "Tamil Nadu", klass: "12", subject: "Bio-Zoology (Tamil Medium)" },
 };
 
 if (!USER || !PASS) {
