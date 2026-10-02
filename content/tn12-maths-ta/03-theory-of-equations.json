@@ -1,0 +1,227 @@
+{
+  "id": "lib-tn12mt-eqn",
+  "title": "சமன்பாட்டியல்",
+  "chapter": "பாடத் தேர்வு",
+  "teacher": null,
+  "order": 3,
+  "access": "login",
+  "questions": [
+    {
+      "id": "tn12mt-eqn-24q16",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Vieta's formulae",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$x^3+px^2+qx+r$ -க்கு $\\alpha$, $\\beta$ மற்றும் $\\gamma$ என்பவை பூச்சியமாக்கிகள் எனில், $\\sum\\dfrac{1}{\\alpha}$ -ன் மதிப்பு :",
+      "options": [
+        "$\\dfrac{q}{r}$",
+        "$-\\dfrac{q}{r}$",
+        "$-\\dfrac{q}{p}$",
+        "$-\\dfrac{p}{r}$"
+      ],
+      "answer": 1,
+      "solution": "$\\sum\\dfrac1\\alpha=\\dfrac{\\alpha\\beta+\\beta\\gamma+\\gamma\\alpha}{\\alpha\\beta\\gamma}=\\dfrac{q}{-r}=-\\dfrac{q}{r}$.",
+      "_board": true
+    },
+    {
+      "id": "tn12mt-eqn-24q20",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Roots of polynomial equations",
+      "source": "TN HSE Mar 2024",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$x^3+64$ -ன் ஒரு பூச்சியமாக்கி :",
+      "options": [
+        "$4i$",
+        "0",
+        "$-4$",
+        "4"
+      ],
+      "answer": 2,
+      "solution": "$x^3=-64$ has the real root $x=-4$.",
+      "_board": true
+    },
+    {
+      "id": "tn12mt-eqn-23q18",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Descartes' rule",
+      "source": "TN HSE Mar 2023",
+      "type": "mcq",
+      "marks": 1,
+      "q": "$\\displaystyle\\sum_{r=0}^{n}{}^nC_r(-1)^rx^r$ எனும் பல்லுறுப்புக் கோவையின் மிகையெண் பூச்சியமாக்கிகளின் எண்ணிக்கை :",
+      "options": [
+        "$<n$",
+        "0",
+        "$r$",
+        "$n$"
+      ],
+      "answer": 3,
+      "solution": "$\\sum{}^nC_r(-1)^rx^r=(1-x)^n$, whose only zero is $x=1$, repeated $n$ times: $n$ positive zeros.",
+      "_board": true
+    },
+    {
+      "id": "tn12mt-eqn-01",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Complex roots",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $2+3i$ is a root of a polynomial equation with real coefficients, then another root is :",
+      "options": [
+        "$-2+3i$",
+        "$2-3i$",
+        "$-2-3i$",
+        "$3+2i$"
+      ],
+      "answer": 1,
+      "solution": "Non-real roots of a real polynomial occur in conjugate pairs, so $2-3i$ is also a root."
+    },
+    {
+      "id": "tn12mt-eqn-02",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Vieta's formulae",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The sum of the roots of $2x^3-5x^2+x+3=0$ is :",
+      "options": [
+        "$\\dfrac52$",
+        "$-\\dfrac52$",
+        "$\\dfrac32$",
+        "$-\\dfrac32$"
+      ],
+      "answer": 0,
+      "solution": "Sum of roots $=-\\dfrac{b}{a}=-\\dfrac{-5}{2}=\\dfrac52$."
+    },
+    {
+      "id": "tn12mt-eqn-03",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Vieta's formulae",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The product of the roots of $x^3-6x^2+11x-6=0$ is :",
+      "options": [
+        "$-6$",
+        "6",
+        "11",
+        "$-11$"
+      ],
+      "answer": 1,
+      "solution": "Product $=-\\dfrac{d}{a}=-\\dfrac{-6}{1}=6$ (the roots are $1,2,3$)."
+    },
+    {
+      "id": "tn12mt-eqn-04",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Fundamental theorem of algebra",
+      "type": "mcq",
+      "marks": 1,
+      "q": "Counting multiplicity, a polynomial equation of degree 7 has exactly how many roots in $\\mathbb C$ ?",
+      "options": [
+        "6",
+        "7",
+        "8",
+        "at most 7 real ones only"
+      ],
+      "answer": 1,
+      "solution": "By the fundamental theorem of algebra a degree-$n$ polynomial has exactly $n$ complex roots counted with multiplicity."
+    },
+    {
+      "id": "tn12mt-eqn-05",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Vieta's formulae",
+      "type": "mcq",
+      "marks": 1,
+      "q": "If $\\alpha,\\beta$ are the roots of $x^2-5x+6=0$, then $\\alpha^2+\\beta^2$ is :",
+      "options": [
+        "13",
+        "25",
+        "19",
+        "11"
+      ],
+      "answer": 0,
+      "solution": "$\\alpha^2+\\beta^2=(\\alpha+\\beta)^2-2\\alpha\\beta=25-12=13$."
+    },
+    {
+      "id": "tn12mt-eqn-06",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Descartes' rule",
+      "type": "mcq",
+      "marks": 1,
+      "q": "The number of positive real roots of $x^3+2x^2+3x+4=0$ is :",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "answer": 0,
+      "solution": "The coefficients $+,+,+,+$ have no sign change, so by Descartes' rule there are no positive roots."
+    },
+    {
+      "id": "tn12mt-eqn-07",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Roots in progression",
+      "type": "numeric",
+      "marks": 2,
+      "q": "The roots of $x^3-9x^2+23x-15=0$ are in arithmetic progression. Find the middle root.",
+      "answer": 3,
+      "tolerance": 0,
+      "solution": "Let the roots be $a-d,a,a+d$. Their sum $3a=9$ gives $a=3$.\n\n(The roots are $1,3,5$.)"
+    },
+    {
+      "id": "tn12mt-eqn-08",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Irrational roots",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If $1+\\sqrt2$ is a root of $x^2+px+q=0$ with rational $p,q$, find $q$.",
+      "answer": -1,
+      "tolerance": 0,
+      "solution": "Irrational roots of a rational quadratic come in pairs, so $1-\\sqrt2$ is the other root. $q=(1+\\sqrt2)(1-\\sqrt2)=1-2=-1$."
+    },
+    {
+      "id": "tn12mt-eqn-09",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Vieta's formulae",
+      "type": "numeric",
+      "marks": 2,
+      "q": "If $\\alpha,\\beta,\\gamma$ are the roots of $x^3-6x^2+11x-6=0$, find $\\alpha^2+\\beta^2+\\gamma^2$.",
+      "answer": 14,
+      "tolerance": 0,
+      "solution": "$\\sum\\alpha^2=(\\sum\\alpha)^2-2\\sum\\alpha\\beta=36-22=14$."
+    },
+    {
+      "id": "tn12mt-eqn-10",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Roots in progression",
+      "type": "numeric",
+      "marks": 3,
+      "q": "The roots of $8x^3-14x^2+7x-1=0$ are in geometric progression. Find the middle root.",
+      "answer": 0.5,
+      "tolerance": 0,
+      "solution": "Let the roots be $\\dfrac ar,a,ar$. Their product is $a^3=-\\dfrac{-1}{8}=\\dfrac18$.\n\nSo $a=\\dfrac12$. (The roots are $\\dfrac14,\\dfrac12,1$.)",
+      "accept": [
+        "1/2"
+      ]
+    },
+    {
+      "id": "tn12mt-eqn-11",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Vieta's formulae",
+      "type": "numeric",
+      "marks": 3,
+      "q": "If $\\alpha,\\beta,\\gamma$ are the roots of $x^3+2x^2+3x+4=0$, find $(1+\\alpha)(1+\\beta)(1+\\gamma)$.",
+      "answer": -2,
+      "tolerance": 0,
+      "solution": "$x^3+2x^2+3x+4=(x-\\alpha)(x-\\beta)(x-\\gamma)$.\n\nPut $x=-1$: $-1+2-3+4=(-1-\\alpha)(-1-\\beta)(-1-\\gamma)=-(1+\\alpha)(1+\\beta)(1+\\gamma)$.\n\nSo $(1+\\alpha)(1+\\beta)(1+\\gamma)=-2$."
+    },
+    {
+      "id": "tn12mt-eqn-12",
+      "chapter": "சமன்பாட்டியல்",
+      "topic": "Roots in progression",
+      "type": "long",
+      "marks": 5,
+      "q": "Solve $x^3-3x^2-6x+8=0$, given that its roots are in arithmetic progression.",
+      "solution": "Let the roots be $a-d,a,a+d$.\n\nSum: $3a=3$, so $a=1$.\n\nProduct: $(1-d)(1)(1+d)=-8$, so $1-d^2=-8$, $d^2=9$, $d=\\pm3$.\n\nThe roots are $-2,1,4$.\n\nCheck with the middle coefficient: $\\sum\\alpha\\beta=(-2)(1)+(1)(4)+(-2)(4)=-2+4-8=-6$, which matches."
+    }
+  ]
+}
