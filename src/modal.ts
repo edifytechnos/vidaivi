@@ -102,7 +102,8 @@ export interface ModalOpts {
    */
   mandatory?: boolean;
   /** What the dismiss button says. "Cancel" is wrong on a dialog nobody is
-   *  filling in — the tour's is "Skip". */
+   *  filling in — the tour's is "Skip". An empty string drops the button, for
+   *  a dialog with one answer; the ✕ and Escape still close it. */
   cancelLabel?: string;
   /** The primary does something that cannot be undone: it is drawn red. */
   danger?: boolean;
@@ -233,7 +234,7 @@ export function openModal(opts: ModalOpts): void {
       <div class="modal-head">
         <h2 class="modal-title" id="modal-title">${escapeHtml(opts.title)}</h2>
         ${multi ? `<span class="modal-count" id="modal-count"></span>` : ""}
-        ${opts.mandatory ? "" : `<button class="modal-x" data-close aria-label="Close">✕</button>`}
+        ${opts.mandatory || opts.cancelLabel === "" ? "" : `<button class="modal-x" data-close aria-label="Close">✕</button>`}
       </div>
       <p class="hint modal-desc" id="modal-desc"${opts.description ? "" : " hidden"}>${escapeHtml(opts.description ?? "")}</p>
       <form class="modal-body" novalidate>
@@ -253,7 +254,7 @@ export function openModal(opts: ModalOpts): void {
         <div class="modal-actions">
           <button type="button" class="btn btn-ghost modal-back" hidden>Back</button>
           <span class="modal-actions-gap"></span>
-          ${opts.mandatory ? "" : `<button type="button" class="btn btn-ghost" data-close>${escapeHtml(opts.cancelLabel ?? "Cancel")}</button>`}
+          ${opts.mandatory || opts.cancelLabel === "" ? "" : `<button type="button" class="btn btn-ghost" data-close>${escapeHtml(opts.cancelLabel ?? "Cancel")}</button>`}
           <button type="submit" class="btn ${opts.danger ? "btn-danger" : "btn-primary"} modal-submit"></button>
         </div>
       </form>

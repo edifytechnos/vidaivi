@@ -183,7 +183,8 @@ unlike the `vidai.seyali.app` entry above which is done.
   `APPINSIGHTS_CONNECTION_STRING` repo secret is set (passed to the build as
   `VITE_APPINSIGHTS_CONNECTION_STRING`); without it `src/analytics.ts` no-ops.
   Events: test_open, test_start, test_resume, question_answered, test_complete,
-  review_open, test_retake, home_open.
+  review_open, test_retake, home_open, and for the installed app
+  install_prompt (with its outcome), app_installed, app_open_installed.
 - Heatmaps, recordings and user flows: Microsoft Clarity (`src/clarity.ts`).
   Its snippet is an inline `<script>` and this app ships none, so the same
   bootstrap is a module loaded at boot; the CSP names `www.clarity.ms` and
@@ -1319,6 +1320,7 @@ every move passes through is the URL write, and that is where the history is.
 - `screens/marking.ts` — the marking queue (a list) and `openStudentPaper`, the one way into marking a paper.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 - `photoviewer.ts` — the full-screen zoomable viewer a photo strip opens into.
+- `install.ts` — the service worker registration and the "Install the app" button.
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
 its listeners; cross-screen imports are function-only (safe with ES-module cycles).
@@ -3191,6 +3193,63 @@ the tour**, beside **Help**.
   fires ~700ms after a *signed-in* boot, and a reload mid-suite is a signed-in
   boot — without the stamp its scrim swallows the next click and the failure
   reads as a missing button. That is exactly how it was found.
+
+## Installable from the browser (`src/install.ts`, `public/sw.js`)
+
+Vidai installs like an app — its own icon, full screen, no address bar —
+from Chrome on Android and desktop, and through Share → Add to Home Screen on
+an iPhone. No dependency: a manifest, five icons, a fifty-line worker.
+
+- **`public/manifest.webmanifest`**: `start_url` and `scope` `/`,
+  `standalone`, `theme_color` white because the app bar is white (a purple
+  status bar sits over it like a stripe). Icons in `public/icons/`: 192 and
+  512 `any` (rounded square), 192 and 512 `maskable` (full bleed, the V inside
+  the safe zone, or Android shrinks the icon onto a white disc), and a 180
+  `apple-touch-icon`. They were drawn as one SVG (`public/favicon.svg`) and
+  rendered by Chromium; redraw them the same way, never hand-edit one size.
+- **The worker does as little as possible, and that is the design.** It
+  answers **navigations only**, network first, and falls back to
+  `public/offline.html` — the one thing it caches — when there is no network
+  at all. It **never caches `index.html`**: a cached shell pins a tab to an
+  old build, which is exactly what `staleload.ts` and `carry-assets.sh` exist
+  to undo. It **never touches `/assets/`** (already `immutable` in the HTTP
+  cache) **or `/api/`** (a cached answer is a wrong answer). Navigation
+  preload is on, so having a worker costs a navigation nothing on a slow
+  phone. Offline-first is a different product and would need all three of
+  those rules re-argued.
+- `offline.html` has **no script, no font and no image file** — the logo is
+  inline SVG — because the worker caches that one page and nothing it links.
+- **`/sw.js` is `no-cache`** in `staticwebapp.config.json`, so a fixed worker
+  reaches every phone on its next visit. Never rename it: a worker is keyed by
+  its URL, and the old one would stay installed alongside. `mimeTypes` gives
+  `.webmanifest` its own type.
+- **The CSP needed nothing.** `manifest-src` falls back to `default-src
+  'self'`, and `worker-src` falls back through `script-src`, which has
+  `'self'`. Registration is from the module, not an inline script.
+- **Install the app** is on the welcome screen and in the profile menu,
+  painted with `installButtonAttrs()` and served by one delegated listener.
+  It shows only when the browser has fired `beforeinstallprompt` (stashed,
+  **not** `preventDefault`ed, so Chrome's own install bar still appears) or
+  on an iPhone, which never fires it — there the button explains Share → Add
+  to Home Screen in a one-answer dialog (`cancelLabel: ""` drops a modal's
+  Cancel). Running installed, it never shows.
+- **An iPhone's Home Screen app keeps its own storage and cookies**, separate
+  from Safari's, so the student signs in once more the first time. Android
+  shares Chrome's. The help pages say so (`help/student/04-…`,
+  `help/parent/06-…`).
+- Not registered under `npm run dev` — a worker outliving a hot-reload
+  session only confuses. To unregister one by hand: DevTools → Application →
+  Service workers.
+- `node e2e/pwa.cjs` proves it in Chromium (build with any
+  `VITE_GOOGLE_CLIENT_ID` first so a guest boots to the welcome screen): every
+  icon is the size it claims, Chromium reports **no installability errors**
+  (in a persistent profile — Chrome never installs from incognito, which is
+  what Playwright's ordinary contexts are), the worker caches only the
+  offline page, an online navigation still reaches the server, offline shows
+  the offline page and *Try again* comes back, the button waits for the
+  browser and replays its prompt once, explains itself on an iPhone, stays
+  away when installed, and nothing trips the CSP. Verified to fail with the
+  manifest link removed and with the worker caching `/`.
 
 ## Working style
 

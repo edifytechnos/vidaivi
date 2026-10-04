@@ -4,8 +4,12 @@
     "exclude": [
       "/help/*",
       "/assets/*",
+      "/icons/*",
       "/*.{png,jpg,svg,ico,webmanifest,txt,xml}"
     ]
+  },
+  "mimeTypes": {
+    ".webmanifest": "application/manifest+json"
   },
   "platform": {
     "apiRuntime": "node:20"
@@ -45,6 +49,24 @@
       "route": "/assets/*",
       "headers": {
         "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/sw.js",
+      "headers": {
+        "cache-control": "no-cache"
+      }
+    },
+    {
+      "route": "/manifest.webmanifest",
+      "headers": {
+        "cache-control": "public, max-age=3600"
+      }
+    },
+    {
+      "route": "/icons/*",
+      "headers": {
+        "cache-control": "public, max-age=86400"
       }
     },
     {
