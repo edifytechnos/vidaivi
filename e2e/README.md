@@ -16,6 +16,7 @@ node e2e/seyari.cjs                 # the Seyari AI panel against a stubbed mode
 node e2e/select.cjs                 # the app's own dropdown and combobox over native controls (no network, no session)
 node e2e/dialog.cjs                 # the app's own confirm and notice (no network, no session)
 node e2e/stale.cjs                  # a tab open across a deploy reloads once and never loops (needs dist/; no network, no session)
+node e2e/carry.cjs                  # scripts/carry-assets.sh against a stubbed gh: the last builds' chunks ride into this one (no network)
 ```
 
 - `helpers.cjs` covers the pure helpers in `api/shared/core.js`: the question
