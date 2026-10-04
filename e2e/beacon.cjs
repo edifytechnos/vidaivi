@@ -114,6 +114,17 @@ const deploy = (build) => (live.body = JSON.stringify({ build }));
 
   async function fresh() {
     const context = await browser.newContext();
+    // Clarity loads only on the live hosts, so a recorder stands in for it.
+    // Its calls are kept in sessionStorage, which survives the reload, so the
+    // event sent the moment before it can still be read after.
+    await context.addInitScript(() => {
+      window.clarity = (...a) => {
+        const k = "clarityCalls";
+        const all = JSON.parse(sessionStorage.getItem(k) || "[]");
+        all.push(a.join(":"));
+        sessionStorage.setItem(k, JSON.stringify(all));
+      };
+    });
     const page = await context.newPage();
     page.on("pageerror", (e) => errors.push(e.message));
     deploy("build-a");
@@ -157,6 +168,10 @@ const deploy = (build) => (live.body = JSON.stringify({ build }));
     await page.waitForSelector(".notice, .toast, [role=status]", { timeout: 3000 }).catch(() => {});
     const toast = await page.evaluate(() => document.body.innerText);
     check(/Vidai has been updated/.test(toast), "and the new page says so in one line");
+    const calls = await page.evaluate(() => JSON.parse(sessionStorage.getItem("clarityCalls") || "[]"));
+    const order = ["event:update_armed", "event:update_applied", "event:update_landed"].map((e) => calls.indexOf(e));
+    check(order.every((i) => i >= 0) && order[0] < order[1] && order[1] < order[2], `Clarity hears the update armed, applied and landed, in that order (${calls.join(", ")})`);
+    check(calls.includes("set:build:build-a"), "and every session is tagged with the build it runs");
 
     // ---------- A stale edge: reloaded, still not on the new build ----------
     const m2 = await loadedAt(page);

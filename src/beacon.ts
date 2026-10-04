@@ -27,6 +27,7 @@
 // shipping, instead of whenever they next happen to reload.
 
 import { track } from "./analytics";
+import { clarityEvent, tagBuild } from "./clarity";
 import { notice } from "./dialog";
 import { onNavigate } from "./dom";
 
@@ -100,7 +101,10 @@ export async function checkVersion(): Promise<void> {
     const { build } = (await res.json()) as { build?: unknown };
     if (typeof build !== "string" || !build || build === BUILD) return;
     if (alreadyTried(build)) return;
-    if (latest !== build) track("update_armed", { from: BUILD, to: build });
+    if (latest !== build) {
+      track("update_armed", { from: BUILD, to: build });
+      clarityEvent("update_armed");
+    }
     latest = build;
   } catch {
     // Offline, or the file is not there: nothing to learn this time.
@@ -133,6 +137,7 @@ function reloadNow(): void {
     return;
   }
   track("update_applied", { from: BUILD, to: latest ?? "" });
+  clarityEvent("update_applied");
   location.reload();
 }
 
@@ -170,9 +175,15 @@ function atMove(): void {
 
 /** Boot: say so if this load was an update, and start listening. */
 export function installBeacon(): void {
+  // Every Clarity session carries the build it ran, so recordings either side
+  // of a deploy can be told apart.
+  tagBuild(BUILD);
   try {
     if (sessionStorage.getItem(NOTICE_KEY)) {
       sessionStorage.removeItem(NOTICE_KEY);
+      // The new page's half of the move: a Clarity recording that starts with
+      // this is one the beacon reloaded, not one somebody opened.
+      clarityEvent("update_landed");
       // After the first paint, so the notice is not painted over by the boot.
       setTimeout(() => notice("Vidai has been updated to the latest version.", "info"), 600);
     }
