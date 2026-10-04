@@ -14,6 +14,7 @@
 // expires an hour later.
 
 import { tagRole } from "./clarity";
+import { trackWrite } from "./beacon";
 import type { StoredAnswer } from "./types";
 
 export interface Profile {
@@ -168,7 +169,10 @@ export function sessionJustExpired(): boolean {
  * session look exactly like a teacher whose students had all been deleted.
  */
 export async function apiFetch(path: string, init?: RequestInit): Promise<Response> {
-  const res = await fetch(path, init);
+  // A write in flight holds the version beacon's reload until it lands.
+  const method = (init?.method ?? "GET").toUpperCase();
+  const request = fetch(path, init);
+  const res = await (method === "GET" || method === "HEAD" ? request : trackWrite(request));
   const signIn = SIGN_IN_ENDPOINTS.some((p) => path.startsWith(p));
   if (res.status === 401 && !signIn && getAuth()) expireSession();
   return res;
@@ -1143,11 +1147,11 @@ export function saveProgress(
   onRefused?: (message: string) => void
 ): void {
   if (!authEnabled || !isLoggedIn()) return;
-  void fetch("/api/attempts", {
+  void trackWrite(fetch("/api/attempts", {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeader() },
     body: JSON.stringify({ action: "progress", ...a }),
-  })
+  }))
     .then(async (res) => {
       if (res.status !== 402 || !onRefused) return;
       const data = await res.json().catch(() => ({}) as { error?: string });

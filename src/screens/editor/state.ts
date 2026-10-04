@@ -5,6 +5,7 @@
 // edit is held until it returns, so two writes can never race each other.
 
 import { mutateTest } from "../../api";
+import { holdUpdatesWhile } from "../../beacon";
 import { optionIndex } from "../../data";
 import type { Question, Test } from "../../types";
 
@@ -18,6 +19,10 @@ let timer: ReturnType<typeof setTimeout> | null = null;
 let inFlight = false;
 let pending = false;
 let listeners: (() => void)[] = [];
+
+// A version-beacon reload would drop an edit still waiting to be saved, or one
+// that failed to save. "saved" and "clean" are safe to reload over.
+holdUpdatesWhile(() => saveState === "dirty" || saveState === "saving" || saveState === "error");
 
 export function loadTest(loaded: Test): void {
   test = loaded;

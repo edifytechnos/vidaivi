@@ -52,6 +52,12 @@
       }
     },
     {
+      "route": "/version.json",
+      "headers": {
+        "cache-control": "no-store"
+      }
+    },
+    {
       "route": "/sw.js",
       "headers": {
         "cache-control": "no-cache"
