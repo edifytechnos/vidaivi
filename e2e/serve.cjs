@@ -20,6 +20,7 @@ const MIME = {
   ".json": "application/json",
   ".png": "image/png",
   ".svg": "image/svg+xml",
+  ".webmanifest": "application/manifest+json",
 };
 
 // Apply the deployed globalHeaders locally, so the CSP is exercised by the

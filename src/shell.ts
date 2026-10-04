@@ -11,6 +11,7 @@ import { getProfile, isAdmin, isLoggedIn, isParent, isTeacher, sessionIsExpired 
 import type { Profile } from "./auth";
 import { app, escapeHtml, ICONS } from "./dom";
 import { helpUrl, tourRole } from "./tour";
+import { installButtonAttrs } from "./install";
 
 export type RailKey =
   | "subjects"
@@ -127,6 +128,7 @@ function profileMarkup(): string {
         </div>
         <a class="pm-item" href="${helpUrl(tourRole() ?? undefined)}" target="_blank" rel="noopener" role="menuitem">${ICONS.book}Help</a>
         <button class="pm-item" data-rail="tour" role="menuitem">${ICONS.eye}Take the tour</button>
+        <button class="pm-item" ${installButtonAttrs()} role="menuitem">${ICONS.download}Install the app</button>
         <div class="pm-rule"></div>
         <button class="pm-item" data-rail="signout" role="menuitem">${ICONS.logout}Sign out</button>
         <button class="pm-item pm-quiet" data-rail="signout-all" role="menuitem">${ICONS.logout}Sign out everywhere</button>

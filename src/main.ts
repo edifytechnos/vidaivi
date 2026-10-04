@@ -28,6 +28,7 @@ import { installShell, openRail } from "./screens/menu";
 import { installHistory } from "./dom";
 import { installSelects } from "./select";
 import { installStaleBuildRecovery } from "./staleload";
+import { installPwa } from "./install";
 import { mount, skeleton } from "./shell";
 import { showTourOnFirstRun } from "./tour";
 
@@ -44,6 +45,9 @@ initClarity();
 // sign-in tags itself in saveAuth. Either way the role is all that is sent.
 tagRole(getProfile()?.role);
 installShell();
+// Installable from the browser: the service worker, and the install button's
+// one listener.
+installPwa();
 // Every <select> gets the app's own dropdown, now and on every screen painted
 // from here on — the options list is ours, not the operating system's.
 installSelects();

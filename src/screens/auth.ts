@@ -15,7 +15,8 @@ import {
 } from "../auth";
 import { setGuest } from "../attempts";
 import { openModal } from "../modal";
-import { paintPlain, app, escapeHtml, setUrl, topbar } from "../dom";
+import { paintPlain, app, escapeHtml, ICONS, setUrl, topbar } from "../dom";
+import { installButtonAttrs } from "../install";
 import { showHome } from "./home";
 import { showSubjects } from "./subjects";
 import { showChildren } from "./parent";
@@ -60,6 +61,7 @@ export function showWelcome(next?: () => void) {
       <button id="guest-btn" class="btn btn-ghost">Continue as guest</button>
       <p class="hint welcome-note">Guests can take the free demo test. Scores
       stay on this device only.</p>
+      <button class="btn-link welcome-install" ${installButtonAttrs()}>${ICONS.download}Install the app</button>
       <p class="admin-link-row"><button id="admin-link" class="btn-link">Admin</button></p>
     </main>`);
   document.getElementById("admin-link")!.addEventListener("click", () => {
