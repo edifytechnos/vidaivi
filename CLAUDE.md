@@ -226,7 +226,15 @@ unlike the `vidai.seyali.app` entry above which is done.
   under `connect-src` / `img-src`. The project id is in the code — it is
   public in every page that uses Clarity. It runs only on the hosts in
   `RECORDED_HOSTS` (production and QA), never on localhost, so the suite and
-  `npm run dev` send nothing. The signed-in **role** is set as a custom tag
+  `npm run dev` send nothing — and **never in a browser driven by
+  automation** (`navigator.webdriver`, `shouldRecord`), so a verification run
+  against QA or production is not a student in the heatmaps. That rule came
+  after a night of checks that *were* recorded; Clarity cannot delete
+  individual sessions, so those few (HeadlessChrome on Linux, 390px wide,
+  4 Oct 2026 ~21:30–22:10 IST) can only be filtered out. A check that needs
+  Clarity's **real** tag to load must say so on purpose — override
+  `navigator.webdriver` to `false` in an init script — and accepts that the
+  session is then recorded. `node e2e/clarity.cjs` asserts the rule. The signed-in **role** is set as a custom tag
   on sign-in (`tagRole`) and is the only thing sent about the person.
   Every session is also tagged **`display`** — `installed` when opened from
   the home-screen icon, `browser` in a tab (`tagDisplay`, from

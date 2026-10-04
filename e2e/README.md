@@ -18,6 +18,7 @@ node e2e/dialog.cjs                 # the app's own confirm and notice (no netwo
 node e2e/stale.cjs                  # a tab open across a deploy reloads once and never loops (needs dist/; no network, no session)
 node e2e/pwa.cjs                    # installable: manifest, icons, the worker, offline, the install button (needs dist/ built with a VITE_GOOGLE_CLIENT_ID; no network)
 node e2e/beacon.cjs                 # the version beacon: armed by a new build, applied at the next move, refused while work would be lost (no network, no session)
+node e2e/clarity.cjs                # who Clarity records: the live hosts, never localhost, never an automated browser (no browser, no network)
 node e2e/carry.cjs                  # scripts/carry-assets.sh against a stubbed gh: the last builds' chunks ride into this one (no network)
 ```
 

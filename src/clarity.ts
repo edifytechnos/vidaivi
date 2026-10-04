@@ -30,8 +30,20 @@ function clarity(): ClarityFn | null {
   return ((window as any).clarity as ClarityFn | undefined) ?? null;
 }
 
+/**
+ * Whether this page should be recorded at all. Only on the live hosts, and
+ * never in a browser driven by automation: `navigator.webdriver` is true in
+ * Playwright, Selenium and every headless check, and false in a real
+ * person's browser. Without this, every verification run against QA or
+ * production — and every bot that admits to being one — lands in the
+ * heatmaps and the recordings as if it were a student.
+ */
+export function shouldRecord(host: string, automated: boolean): boolean {
+  return RECORDED_HOSTS.includes(host) && !automated;
+}
+
 function wanted(): boolean {
-  return RECORDED_HOSTS.includes(location.hostname);
+  return shouldRecord(location.hostname, navigator.webdriver === true);
 }
 
 /** Load the tag. Call once at boot; a no-op anywhere Clarity is not wanted. */
