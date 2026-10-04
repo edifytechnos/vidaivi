@@ -80,6 +80,14 @@ function pngSize(file) {
   return `${b.readUInt32BE(16)}x${b.readUInt32BE(20)}`;
 }
 
+// Clarity loads only on the live hosts, so a recorder stands in for it: what
+// src/install.ts hands `window.clarity` is what the real tag would receive.
+const CLARITY_RECORDER = () => {
+  window.__clarity = [];
+  window.clarity = (...args) => window.__clarity.push(args);
+};
+const clarityCalls = (p) => p.evaluate(() => window.__clarity.map((a) => a.join(":")));
+
 (async () => {
   // ---------- The manifest, on disk ----------
   const manifest = JSON.parse(fs.readFileSync(path.join(DIST, "manifest.webmanifest"), "utf8"));
@@ -164,6 +172,7 @@ function pngSize(file) {
   // the button wait for the browser, and then answer it.
   const plain = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const pl = await plain.newPage();
+  await pl.addInitScript(CLARITY_RECORDER);
   await pl.goto(BASE + "/");
   await pl.waitForSelector(".welcome");
   check(await pl.locator(button).isHidden(), "Install the app is hidden while the browser has not offered to install");
@@ -180,6 +189,12 @@ function pngSize(file) {
   await pl.click(button);
   await pl.waitForFunction(() => window.__prompted === 1);
   check(true, "pressing it replays the browser's own install prompt");
+  await pl.waitForFunction(() => window.__clarity.some((a) => a[1] === "install_prompt_accepted"));
+  const plCalls = await clarityCalls(pl);
+  check(plCalls.includes("set:display:browser"), `Clarity tags a browser-tab session display=browser (${plCalls.join(", ")})`);
+  check(plCalls.includes("event:install_prompt_accepted"), "and records the install prompt's answer as a Clarity event");
+  await pl.evaluate(() => window.dispatchEvent(new Event("appinstalled")));
+  check((await clarityCalls(pl)).includes("event:app_installed"), "and the install itself");
   check(await pl.locator(button).isHidden(), "and it goes away: a prompt can be shown only once");
   await plain.close();
 
@@ -202,6 +217,7 @@ function pngSize(file) {
   // Once installed, there is nothing to offer.
   const installed = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const ins = await installed.newPage();
+  await ins.addInitScript(CLARITY_RECORDER);
   await ins.addInitScript(() => {
     const real = window.matchMedia.bind(window);
     window.matchMedia = (q) => (q === "(display-mode: standalone)" ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} } : real(q));
@@ -215,6 +231,8 @@ function pngSize(file) {
     window.dispatchEvent(e);
   });
   check(await ins.locator(button).isHidden(), "running as the installed app, the button never shows");
+  const insCalls = await clarityCalls(ins);
+  check(insCalls.includes("set:display:installed") && !insCalls.includes("set:display:browser"), `an open from the installed app is tagged display=installed in Clarity (${insCalls.join(", ")})`);
   await installed.close();
 
   check(violations.length === 0, `no Content-Security-Policy violations (${violations.join(" | ")})`);
