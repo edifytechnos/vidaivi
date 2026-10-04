@@ -117,6 +117,13 @@ unsaved Seyari conversation. Above that floor, in the order worth doing them:
    `dom.ts` against a server that plays the deploy; it was verified to fail
    with the guards removed, the loop guard removed, and writes aborted.
    Analytics events `update_armed` and `update_applied` carry both build ids.
+   **A guest never triggers it, and needs nothing from it**: the guest home
+   and player make no in-app moves (`?test=` from the home is a full page
+   load through `gotoTest`, which fetches the newest build by itself), so it
+   is signed-in screens — the student workspace, the editor, the console —
+   that the beacon moves. Verified on QA by faking a newer `version.json` and
+   pressing Back: armed, reloaded onto the screen Back went to, notice shown,
+   and a second move on the same stale build did not reload again.
    With 2 in place this is a nicety, not a fix: it moves everyone onto the
    current build within one move of it shipping.
 
