@@ -28,6 +28,12 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     name: Build and deploy
+    # `gh run list` / `gh run download` read other runs' artifacts; without
+    # `actions: read` they 403 and the carry-forward step quietly carries
+    # nothing.
+    permissions:
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
 
@@ -43,6 +49,26 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      # A deploy replaces the whole site, and the previous build's hashed
+      # chunks go with it — a tab open across the deploy then 404s on the next
+      # lazy part it asks for. So every build keeps its own assets as an
+      # artifact (BEFORE anything is carried in, or the artifact would snowball
+      # build on build), and the next deploy copies the last three builds'
+      # assets in beside its own. Hashed names never collide and are cached
+      # immutable; a tab from any of the last few builds keeps working.
+      - name: Keep this build's chunks for the next deploy
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-assets
+          path: dist/assets
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Carry forward the previous builds' chunks
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/carry-assets.sh production-assets dist/assets main
 
       - name: Deploy
         uses: Azure/static-web-apps-deploy@v1
@@ -83,6 +109,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
+      actions: read
     # One QA build at a time, newest wins: two sessions pushing together would
     # otherwise race to upload and the loser's integration would be the one left
     # standing.
@@ -165,6 +192,22 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      # The same carry-forward as production, with QA's own artifact: a QA
+      # tab open across one of the many pushes a day keeps working too. No
+      # branch filter — QA runs come from every branch.
+      - name: Keep this build's chunks for the next deploy
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-assets
+          path: dist/assets
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Carry forward the previous builds' chunks
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/carry-assets.sh qa-assets dist/assets
 
       - name: Deploy
         uses: Azure/static-web-apps-deploy@v1

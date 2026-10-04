@@ -75,14 +75,22 @@ unsaved Seyari conversation. Above that floor, in the order worth doing them:
    school hours are roughly 8 AM to 4 PM IST; merge after that, or before, and
    nobody's tab reloads under them. A hotfix is the exception, and should be
    the only one.
-2. **Keep the previous builds' chunks in the deploy.** The only way a stale
-   tab needs no reload at all is for its chunks to still exist. SWA uploads
-   whatever is in `dist/`, so the workflow can carry forward the last two or
-   three builds' `assets/` — save each deploy's `dist/assets` as a workflow
-   artifact, and copy the previous ones into the new `dist/assets` before
-   the deploy step. Hashed names never collide, `immutable` caching makes
-   the copies harmless, and a tab from any of the last few builds keeps
-   working untouched. Not built yet; it is a workflow change, not an app one.
+2. **The previous builds' chunks ride in the deploy** — done, in
+   `scripts/carry-assets.sh`. Every deploy uploads its own `dist/assets` as a
+   workflow artifact (`production-assets`, `qa-assets`; **before** anything
+   is carried in, or the artifact would snowball build on build), and the
+   next deploy downloads the last **three** successful runs' artifacts and
+   copies them in beside its own with `cp -n`, so this build's file always
+   wins. Hashed names never collide, `immutable` caching makes the copies
+   harmless, and a tab from any of the last three builds keeps working
+   untouched — the self-reload above is only for a tab older than that.
+   **Nothing in it may fail a deploy**: a `gh` that cannot list or download
+   is reported in the job summary and the build ships as it is, exactly as
+   before. The jobs carry `actions: read` for `gh run download`; without it
+   the step 403s and quietly carries nothing. `node e2e/carry.cjs` drives
+   the script against a stubbed `gh`. The first deploy after this change has
+   nothing to carry and says so in its summary; from the second on, the
+   summary lists each run and how many files came from it.
 3. **The API stays one release backward-compatible**, which is already the
    rule here (`X-Vidai-Auth` fallbacks, dual-read partitions): an old tab
    calling the new API must get the answer it expects. A storage-shape change
@@ -1021,9 +1029,10 @@ removing the PartitionKey from `pkFilter`.
   refused, so a genuinely broken build cannot spin a tab. `node e2e/stale.cjs`
   proves both halves against a server that makes the chunks vanish under an
   open page. App Insights now has `enableUnhandledPromiseRejectionTracking`
-  on, because this class of failure was invisible to it. **Merging during
-  school hours still costs every open tab one reload** — see *Zero-impact
-  deploys* below for what removes even that.
+  on, because this class of failure was invisible to it. The reload is now
+  the fallback, not the rule: the deploy carries the last three builds'
+  chunks forward (`scripts/carry-assets.sh`), so only a tab older than that
+  ever reloads — see *Zero-impact deploys* above.
 - **KaTeX is bundled, not CDN-loaded**, and imported dynamically from
   `renderMath` in `src/dom.ts`, so it sits in its own chunk and loads only when
   maths appears. Same origin means no extra DNS + TLS handshake on a phone, and
