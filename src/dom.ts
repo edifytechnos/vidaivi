@@ -184,13 +184,35 @@ export function topbar(showHome: boolean): string {
  */
 let restoring = true;
 
+/**
+ * Listeners told when the person moves from one screen to another: a URL
+ * write that pushes, or Back and Forward. A re-render and the boot's own
+ * restore are not moves. The version beacon (`src/beacon.ts`) applies an
+ * update here, because the screen is changing anyway. Called after the
+ * current paint, never in the middle of it.
+ */
+const moveListeners: (() => void)[] = [];
+
+export function onNavigate(fn: () => void): void {
+  moveListeners.push(fn);
+}
+
+function moved(): void {
+  setTimeout(() => {
+    for (const fn of moveListeners) fn();
+  }, 0);
+}
+
 export function setUrl(params?: Record<string, string>): void {
   const q = new URLSearchParams(params ?? {}).toString();
   const url = q ? `./?${q}` : "./";
   const same = sameQuery(q, location.search);
   if (same && history.state?.vidai) return;
   if (same || restoring) history.replaceState({ vidai: 1 }, "", url);
-  else history.pushState({ vidai: 1 }, "", url);
+  else {
+    history.pushState({ vidai: 1 }, "", url);
+    moved();
+  }
 }
 
 /** Two query strings naming the same parameters in any order. */
@@ -220,6 +242,7 @@ export function installHistory(route: () => void): void {
     }
     restoring = true;
     route();
+    moved();
   });
   const done = () => {
     restoring = false;

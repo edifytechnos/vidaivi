@@ -23,6 +23,7 @@
 // and are never stored by anyone.
 
 import { downscale } from "../../answerphotos";
+import { holdUpdatesWhile } from "../../beacon";
 import { fetchMyCredits } from "../../auth";
 import { generateQuestions, newQuestionId } from "../../api";
 import type { GenerateTurn, Proposed } from "../../api";
@@ -68,6 +69,10 @@ let pending: Attachment[] = [];
 let busy = false;
 let preparing = 0;
 let credits: { left: number; low: boolean; on: boolean } | null = null;
+
+// The conversation lives in this page and nowhere else, so a version-beacon
+// reload waits for as long as there is one — or a message being prepared.
+holdUpdatesWhile(() => transcript.length > 0 || pending.length > 0 || busy || preparing > 0);
 
 /** Open the panel, or bring it back if it was hidden. */
 export function openSeyari(h: SeyariHost): void {

@@ -29,6 +29,7 @@ import { installHistory } from "./dom";
 import { installSelects } from "./select";
 import { installStaleBuildRecovery } from "./staleload";
 import { installPwa } from "./install";
+import { installBeacon } from "./beacon";
 import { mount, skeleton } from "./shell";
 import { showTourOnFirstRun } from "./tour";
 
@@ -48,6 +49,9 @@ installShell();
 // Installable from the browser: the service worker, and the install button's
 // one listener.
 installPwa();
+// An open tab learns of a new build and moves onto it at the next screen
+// change, never mid-answer — see src/beacon.ts.
+installBeacon();
 // Every <select> gets the app's own dropdown, now and on every screen painted
 // from here on — the options list is ours, not the operating system's.
 installSelects();

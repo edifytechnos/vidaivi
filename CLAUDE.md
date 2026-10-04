@@ -95,10 +95,30 @@ unsaved Seyari conversation. Above that floor, in the order worth doing them:
    rule here (`X-Vidai-Auth` fallbacks, dual-read partitions): an old tab
    calling the new API must get the answer it expects. A storage-shape change
    is the one thing that cannot be made safe this way — see the QA note below.
-4. **Later, a version beacon.** The client learns a new build is live (an
-   etag on `index.html`, polled every few minutes) and reloads **at an idle
-   moment** — between questions, never mid-answer — with a one-line notice.
-   With 2 in place this is a nicety, not a fix.
+4. **A version beacon** — done, in `src/beacon.ts`. Every build stamps one
+   id into the bundle (`__VIDAI_BUILD__`, defined in `vite.config.ts`) and
+   writes the same id to `/version.json` (`no-store`). A tab asks for that
+   file every five minutes while visible, and again when it comes back into
+   view; a different id only **arms** the update. The reload happens at the
+   person's **next move between screens** — a `setUrl` push or Back, told to
+   it through `onNavigate` in `src/dom.ts` — because the screen is changing
+   anyway and the address bar already names where they are going. It is
+   **refused** while a dialog is open, a text field has focus, or a screen
+   holds unsaved work (`holdUpdatesWhile`: the editor while a save is dirty,
+   in flight or failed; Seyari while a conversation exists), and a **write
+   in flight is waited out, never aborted** — `apiFetch` counts every
+   non-GET through `trackWrite`, as does the fire-and-forget progress save —
+   for up to five seconds, unless the person starts working again. Refused
+   is not lost: the next move tries again. After the reload one line says
+   *"Vidai has been updated to the latest version."* A reload that lands on
+   a build that still is not the new one (a stale edge) is **not repeated**
+   for that build for 30 minutes, so nothing can loop a tab. Not under
+   `npm run dev`. `node e2e/beacon.cjs` drives the real `beacon.ts` and
+   `dom.ts` against a server that plays the deploy; it was verified to fail
+   with the guards removed, the loop guard removed, and writes aborted.
+   Analytics events `update_armed` and `update_applied` carry both build ids.
+   With 2 in place this is a nicety, not a fix: it moves everyone onto the
+   current build within one move of it shipping.
 
 ### QA is one fixed URL, not a URL per PR
 
@@ -184,7 +204,8 @@ unlike the `vidai.seyali.app` entry above which is done.
   `VITE_APPINSIGHTS_CONNECTION_STRING`); without it `src/analytics.ts` no-ops.
   Events: test_open, test_start, test_resume, question_answered, test_complete,
   review_open, test_retake, home_open, and for the installed app
-  install_prompt (with its outcome), app_installed, app_open_installed.
+  install_prompt (with its outcome), app_installed, app_open_installed, and
+  for the version beacon update_armed and update_applied.
 - Heatmaps, recordings and user flows: Microsoft Clarity (`src/clarity.ts`).
   Its snippet is an inline `<script>` and this app ships none, so the same
   bootstrap is a module loaded at boot; the CSP names `www.clarity.ms` and
@@ -1327,6 +1348,7 @@ every move passes through is the URL write, and that is where the history is.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 - `photoviewer.ts` — the full-screen zoomable viewer a photo strip opens into.
 - `install.ts` — the service worker registration and the "Install the app" button.
+- `beacon.ts` — the version beacon: learns a new build is live, reloads onto it at the next move.
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
 its listeners; cross-screen imports are function-only (safe with ES-module cycles).
