@@ -13,6 +13,7 @@
 // iOS the button explains those two taps instead.
 
 import { track } from "./analytics";
+import { clarityEvent, tagDisplay } from "./clarity";
 import { confirmDialog } from "./dialog";
 
 interface InstallPromptEvent extends Event {
@@ -69,10 +70,12 @@ export async function installApp(): Promise<void> {
     await event.prompt();
     const { outcome } = await event.userChoice;
     track("install_prompt", { outcome });
+    clarityEvent(`install_prompt_${outcome}`);
     return;
   }
   if (isIos()) {
     track("install_prompt", { outcome: "ios_help" });
+    clarityEvent("install_prompt_ios_help");
     await confirmDialog({
       title: "Add Vidai to your Home Screen",
       message:
@@ -93,6 +96,7 @@ export function installPwa(): void {
     deferred = null;
     refreshButtons();
     track("app_installed");
+    clarityEvent("app_installed");
   });
   // Delegated, so nothing has to re-bind: a screen paints the button with
   // installButtonAttrs() and this one listener serves every copy of it.
@@ -100,7 +104,12 @@ export function installPwa(): void {
     if ((e.target as HTMLElement | null)?.closest("[data-install]")) void installApp();
   });
 
-  if (isStandalone()) track("app_open_installed");
+  // Both analytics hear how the app was opened. Clarity's tag is on every
+  // session either way, so an installed open is a filter there, not an
+  // absence; initClarity() has already run, so its queue is waiting.
+  const installed = isStandalone();
+  if (installed) track("app_open_installed");
+  tagDisplay(installed ? "installed" : "browser");
 
   // Not under `npm run dev`: a worker outliving a hot-reload session only
   // confuses. Localhost is still a secure context, so the built site served

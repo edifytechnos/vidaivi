@@ -58,3 +58,18 @@ export function tagRole(role: string | undefined): void {
   if (!c || !role) return;
   c("set", "role", role);
 }
+
+/**
+ * Tag the session with how Vidai was opened — `installed` from its own icon,
+ * `browser` in a tab — so recordings, heatmaps and flows can be split by it.
+ * Every session carries one or the other, so "installed" is a filter, not a
+ * guess from the absence of something. Only the mode is sent.
+ */
+export function tagDisplay(mode: "installed" | "browser"): void {
+  clarity()?.("set", "display", mode);
+}
+
+/** A named moment in Clarity's own timeline — a smart event to filter on. */
+export function clarityEvent(name: string): void {
+  clarity()?.("event", name);
+}

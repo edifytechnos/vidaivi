@@ -193,7 +193,13 @@ unlike the `vidai.seyali.app` entry above which is done.
   public in every page that uses Clarity. It runs only on the hosts in
   `RECORDED_HOSTS` (production and QA), never on localhost, so the suite and
   `npm run dev` send nothing. The signed-in **role** is set as a custom tag
-  on sign-in (`tagRole`) and is the only thing sent about the person. Answer
+  on sign-in (`tagRole`) and is the only thing sent about the person.
+  Every session is also tagged **`display`** — `installed` when opened from
+  the home-screen icon, `browser` in a tab (`tagDisplay`, from
+  `src/install.ts`) — so the installed app is a filter in Clarity rather
+  than something read from an absence; and the install prompt's answer and
+  the install itself are Clarity events (`install_prompt_accepted` /
+  `_dismissed` / `_ios_help`, `app_installed`). Answer
   photos carry `data-clarity-mask` (the strips and the full-screen viewer), so
   a child's handwriting is never in a recording; set the project's masking
   to **Strict** in the Clarity dashboard too, since the app shows minors'
