@@ -69,6 +69,15 @@ export function tagDisplay(mode: "installed" | "browser"): void {
   clarity()?.("set", "display", mode);
 }
 
+/**
+ * Tag the session with the build it is running, so a recording can be read
+ * against the code that was live at the time — and the sessions on either
+ * side of a deploy told apart. A build id names code, never a person.
+ */
+export function tagBuild(build: string): void {
+  clarity()?.("set", "build", build);
+}
+
 /** A named moment in Clarity's own timeline — a smart event to filter on. */
 export function clarityEvent(name: string): void {
   clarity()?.("event", name);

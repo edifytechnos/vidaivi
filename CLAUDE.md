@@ -117,6 +117,12 @@ unsaved Seyari conversation. Above that floor, in the order worth doing them:
    `dom.ts` against a server that plays the deploy; it was verified to fail
    with the guards removed, the loop guard removed, and writes aborted.
    Analytics events `update_armed` and `update_applied` carry both build ids.
+   Clarity hears the same two as events, plus `update_landed` on the page the
+   reload arrives at — so a recording that opens with it is one the beacon
+   reloaded, not one somebody opened — and every session is tagged **`build`**
+   with the id it runs (`tagBuild`), so recordings either side of a deploy can
+   be told apart. `update_applied` leaves just before the reload: App
+   Insights flushes its queue on unload, which was checked on production.
    **A guest never triggers it, and needs nothing from it**: the guest home
    and player make no in-app moves (`?test=` from the home is a full page
    load through `gotoTest`, which fetches the newest build by itself), so it
@@ -227,7 +233,9 @@ unlike the `vidai.seyali.app` entry above which is done.
   `src/install.ts`) — so the installed app is a filter in Clarity rather
   than something read from an absence; and the install prompt's answer and
   the install itself are Clarity events (`install_prompt_accepted` /
-  `_dismissed` / `_ios_help`, `app_installed`). Answer
+  `_dismissed` / `_ios_help`, `app_installed`). The version beacon adds a
+  **`build`** tag on every session and the events `update_armed`,
+  `update_applied` and `update_landed` — see *Zero-impact deploys*. Answer
   photos carry `data-clarity-mask` (the strips and the full-screen viewer), so
   a child's handwriting is never in a recording; set the project's masking
   to **Strict** in the Clarity dashboard too, since the app shows minors'
