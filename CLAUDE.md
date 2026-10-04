@@ -62,6 +62,36 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   the ref is `main`, `qa` when it is not — and a third job, `close_environment`,
   runs on `pull_request: [closed]` and never deploys.
 
+### Zero-impact deploys: what a merge during school hours costs, and how to make it cost nothing
+
+Azure swaps a deploy atomically, so there is no downtime. What a deploy does
+is **invalidate every tab that is already open**: the old build's hashed
+chunks are deleted, so the next lazy part that tab asks for is a 404. The
+floor is `src/staleload.ts` — the tab reloads itself once and lands where it
+was — which turns a dead button into a half-second refresh and loses only an
+unsaved Seyari conversation. Above that floor, in the order worth doing them:
+
+1. **Choose the hour.** Merging is a manual "merge it", so it can wait. Indian
+   school hours are roughly 8 AM to 4 PM IST; merge after that, or before, and
+   nobody's tab reloads under them. A hotfix is the exception, and should be
+   the only one.
+2. **Keep the previous builds' chunks in the deploy.** The only way a stale
+   tab needs no reload at all is for its chunks to still exist. SWA uploads
+   whatever is in `dist/`, so the workflow can carry forward the last two or
+   three builds' `assets/` — save each deploy's `dist/assets` as a workflow
+   artifact, and copy the previous ones into the new `dist/assets` before
+   the deploy step. Hashed names never collide, `immutable` caching makes
+   the copies harmless, and a tab from any of the last few builds keeps
+   working untouched. Not built yet; it is a workflow change, not an app one.
+3. **The API stays one release backward-compatible**, which is already the
+   rule here (`X-Vidai-Auth` fallbacks, dual-read partitions): an old tab
+   calling the new API must get the answer it expects. A storage-shape change
+   is the one thing that cannot be made safe this way — see the QA note below.
+4. **Later, a version beacon.** The client learns a new build is live (an
+   etag on `index.html`, polled every few minutes) and reloads **at an idle
+   moment** — between questions, never mid-answer — with a one-line notice.
+   With 2 in place this is a nicety, not a fix.
+
 ### QA is one fixed URL, not a URL per PR
 
 **https://ambitious-plant-03e9c0f00-qa.eastasia.5.azurestaticapps.net** — every
@@ -980,6 +1010,20 @@ removing the PartitionKey from `pkFilter`.
   safe) as `immutable` for a year, `index.html` and `/` as `no-cache`, and
   `/api/*` as `no-store`. **A new asset gets a new hash; never hand-edit a file
   under `/assets/` in place.**
+- **A deploy deletes the previous build's hashed files, and a tab open across
+  it is running a build that no longer exists.** The first lazy chunk that tab
+  asks for — KaTeX on a question with maths, Browse tests, the PDF reader —
+  is a 404, an unhandled rejection, and a button that does nothing. Five
+  releases landed in one afternoon and a teacher reported the app as crashed.
+  `src/staleload.ts` listens for Vite's `vite:preloadError` and **reloads the
+  page once**: `index.html` is `no-cache`, so the reload is the new build, and
+  the address bar carries the place. A reload within 30s of the last is
+  refused, so a genuinely broken build cannot spin a tab. `node e2e/stale.cjs`
+  proves both halves against a server that makes the chunks vanish under an
+  open page. App Insights now has `enableUnhandledPromiseRejectionTracking`
+  on, because this class of failure was invisible to it. **Merging during
+  school hours still costs every open tab one reload** — see *Zero-impact
+  deploys* below for what removes even that.
 - **KaTeX is bundled, not CDN-loaded**, and imported dynamically from
   `renderMath` in `src/dom.ts`, so it sits in its own chunk and loads only when
   maths appears. Same origin means no extra DNS + TLS handshake on a phone, and
