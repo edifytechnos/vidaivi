@@ -158,7 +158,7 @@ const onQuestion = (page, text) =>
   const browser = await chromium.launch({ executablePath: EXE });
   const errors = [];
 
-  const page = await browser.newPage({ viewport: { width: 390, height: 760 }, hasTouch: true, isMobile: true });
+  const page = await browser.newPage({ viewport: { width: 390, height: 760 }, hasTouch: true, isMobile: true, deviceScaleFactor: 3 });
   page.on("pageerror", (e) => errors.push(e.message));
   await page.addInitScript(STUB);
   await page.goto(`http://localhost:${PORT}/?test=t-mark&review=q1`);
@@ -204,23 +204,34 @@ const onQuestion = (page, text) =>
       bg: cs.backgroundImage,
       color: cs.color,
       ring: cs.borderTopColor,
-      anim: cs.animationName,
+      ringWidth: cs.borderTopWidth,
+      height: el.getBoundingClientRect().height,
+      anim: getComputedStyle(el.querySelector(".mk-head")).animationName,
       width: el.getBoundingClientRect().width,
       row: el.parentElement.getBoundingClientRect().width,
     };
   });
   check(/radial-gradient/.test(look.bg) && /linear-gradient/.test(look.bg), "it is a filled violet pill with a glow at its foot");
   check(look.color === "rgb(255, 255, 255)", `with a white label (${look.color})`);
-  check(/^rgba\(255, 255, 255/.test(look.ring), `and a white ring inside the edge (${look.ring})`);
-  check(look.anim === "mk-glow", `and its halo breathes (${look.anim})`);
+  check(look.ring !== "rgb(255, 255, 255)" && parseFloat(look.ringWidth) <= 2, `a thin pale line inside the edge, not pure white (${look.ringWidth} ${look.ring})`);
+  check(Math.round(look.height) === 44, `the button is 44px tall, which the trace's radius assumes (${look.height})`);
+  check(look.anim === "mk-head", `and a streak of light runs round it (${look.anim})`);
+  // The streak travels: two moments a second apart put the head in two places.
+  const headAt = () => page.evaluate(() => getComputedStyle(document.querySelector("#mk-assess .mk-head")).strokeDashoffset);
+  const a1 = await headAt();
+  await page.waitForTimeout(700);
+  check(a1 !== (await headAt()), `the streak moves (${a1} → ${await headAt()})`);
   if (process.env.SHOT_DIR) {
     await btn.scrollIntoViewIfNeeded();
     // Wider than the button, so the halo and the ring are in the picture.
     const b = await btn.boundingBox();
-    await page.screenshot({
-      path: path.join(process.env.SHOT_DIR, "assess-button.png"),
-      clip: { x: Math.max(0, b.x - 16), y: b.y - 16, width: b.width + 32, height: b.height + 32 },
-    });
+    const clip = { x: Math.max(0, b.x - 16), y: b.y - 16, width: b.width + 32, height: b.height + 32 };
+    await page.screenshot({ path: path.join(process.env.SHOT_DIR, "assess-button.png"), clip });
+    // A filmstrip of the streak going round: one frame every 350ms.
+    for (let f = 0; f < 10; f++) {
+      await page.screenshot({ path: path.join(process.env.SHOT_DIR, `assess-frame-${f}.png`), clip });
+      await page.waitForTimeout(350);
+    }
   }
   check(look.width < look.row, `the button is its own size, not the row's (${Math.round(look.width)} of ${Math.round(look.row)})`);
 
@@ -251,8 +262,8 @@ const onQuestion = (page, text) =>
   // ---------- reduced motion ----------
   await page.emulateMedia({ reducedMotion: "reduce" });
   check(
-    (await page.locator("#mk-assess").evaluate((el) => getComputedStyle(el).animationName)) === "none",
-    "with reduced motion the halo holds still"
+    (await page.locator("#mk-assess .mk-trace").evaluate((el) => getComputedStyle(el).display)) === "none",
+    "with reduced motion the streak is gone"
   );
   check(
     /radial-gradient/.test(await page.locator("#mk-assess").evaluate((el) => getComputedStyle(el).backgroundImage)),

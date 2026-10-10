@@ -2903,15 +2903,25 @@ Two things a teacher reported while marking on a phone, both proven by
   repaint of the same question — the AI's proposal arriving, a mark saved, the
   subject arriving late — keeps the place. The suite fails at 5904px with the
   call removed.
-- **Assess with AI is the AI's own button**: a filled violet pill with a soft
-  pink glow rising from its foot, a thin white ring inside the edge, a purple
-  halo that breathes slowly, and the white sparkle (`ASSESS_LABEL`,
-  `.mk-assess`, `@keyframes mk-glow`). It is the one button on the paper that
-  spends a credit, and as a grey ghost button it was missed. The app's own
-  purples only: a rainbow border was tried first and read as loud rather than
-  as the product. It stays bright while reading (the breathing quickens; the
-  disabled fade would say the opposite), keeps its icon through the failure
-  reset, and holds still under `prefers-reduced-motion`.
+- **Assess with AI is the AI's own button**, after a reference video J sent:
+  a vivid violet pill with a pink-lilac glow rising from its foot, a thin pale
+  lavender line inside the edge (**not** pure white), a soft deep-violet band
+  outside it, the white sparkle (`ASSESS_LABEL` / `assessInner`,
+  `.mk-assess`), and **a short streak of light that runs round the line**,
+  clockwise from the bottom right, then rests. It is the one button on the
+  paper that spends a credit, and as a grey ghost button it was missed. App
+  purples only: a rainbow border was tried first and read as loud.
+  - **The streak is an SVG outline drawn as dashes** (`.mk-trace`, two rects
+    with `pathLength="100"`: a dim tail and a bright head), so it moves at
+    one even speed all the way round. A rotating conic gradient was tried and
+    does not: on a wide pill an angle crawls along the long edges and whips
+    round the ends.
+  - The rect sits on the centre of the 1.5px border, so its radius is fixed
+    (`rx="21.25"`), which is why the button is a fixed **44px** tall — also
+    the touch-target size. Change one and change the other.
+  - While it reads, the streak runs faster and without the rest (the disabled
+    fade would say the opposite of "working"); it keeps its icon through the
+    failure reset; under `prefers-reduced-motion` the streak is not drawn.
 
 ### On a phone the bar covers nothing, and the drawer holds the page
 

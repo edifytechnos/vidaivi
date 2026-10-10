@@ -280,7 +280,7 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
   const assess = document.getElementById("mk-assess") as HTMLButtonElement | null;
   assess?.addEventListener("click", async () => {
     assess.disabled = true;
-    assess.innerHTML = `${ICONS.spark}<span>${row.images.length ? "Reading the working…" : "Reading the answer…"}</span>`;
+    assess.innerHTML = assessInner(row.images.length ? "Reading the working…" : "Reading the answer…");
     const result = await assessAnswer({
       username: row.username,
       testId: row.testId,
@@ -314,7 +314,13 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
 let rows = new Map<string, GradedAnswer>();
 /** The one button that spends a credit, marked as the AI's by its icon and its
  *  border (`.mk-assess` in style.css), so a teacher can find it on the paper. */
-const ASSESS_LABEL = `${ICONS.spark}<span>Assess with AI</span>`;
+const assessInner = (label: string): string =>
+  // The light that runs round the edge (`.mk-trace` in style.css). The radius
+  // is half the button's fixed 44px, less the border it is centred on.
+  `<svg class="mk-trace" aria-hidden="true"><rect class="mk-tail" width="100%" height="100%" rx="21.25" pathLength="100"/>` +
+  `<rect class="mk-head" width="100%" height="100%" rx="21.25" pathLength="100"/></svg>` +
+  `${ICONS.spark}<span>${label}</span>`;
+const ASSESS_LABEL = assessInner("Assess with AI");
 /** Whether this site has AI marking switched on. Unknown until first asked. */
 let aiOff = false;
 /** The balance after the last assessment, shown once so it is not a surprise
