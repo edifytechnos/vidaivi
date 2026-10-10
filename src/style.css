@@ -608,6 +608,11 @@ body {
   color: var(--red);
 }
 
+.status-partial {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
 /* ---------- Landing ---------- */
 
 .landing-title {
@@ -2954,6 +2959,12 @@ a.pm-item {
 .rv-pending {
   background: var(--amber);
 }
+/* Some marks, not all: orange, between the green of full marks and the red of
+   none. It keeps the tick — the answer earned something — and the brown "…"
+   of an answer still waiting to be marked stays its own, darker colour. */
+.rv-partial {
+  background: #ea580c;
+}
 /* Before the teacher releases a paper there is no right and wrong to colour:
    a dot says the question was answered, an empty ring says it was not. */
 .rv-given {
@@ -4158,7 +4169,110 @@ body.drawer-open {
   gap: 12px;
 }
 .mk-none { margin: 14px 0 0; }
+/* Assess with AI: the one button on the paper that spends a credit, and it
+   was being missed — a grey ghost button among grey ghost buttons. It is the
+   AI's own button now, built to the reference video J sent, detail by detail:
+
+   - A vivid violet pill, a pink-lilac glow rising from its foot, the sparkle
+     and the label in white.
+   - The edge is two lines, like light on a bevelled glass rim: a white
+     hairline (the border) sitting one step ABOVE a blue line. So the blue
+     shows outside the white along the bottom (`0 1.5px 0` outer shadow) and
+     inside it along the top (`inset 0 1.5px 0`). Not a plain white outline —
+     that read flat.
+   - A soft deep-violet band and glow outside it.
+   - A streak of light runs round the edge, clockwise from the bottom right:
+     brightest at its tip, dissolving to nothing behind it, its tip softened
+     too (the layers are built in `TRACE`, review.ts). It eases along its lap,
+     fades in and out at either end of it, rests, and goes again.
+
+   The streak is an SVG outline drawn with dashes on `pathLength="100"`, so it
+   moves at one even speed all the way round — a rotating conic gradient was
+   tried and crawls along a wide pill's long edges, then whips round the ends.
+   The rect sits on the centre of the 1.5px border with a fixed radius, which
+   is why the button is a fixed 44px tall (also the touch-target size): change
+   one and change the other. */
+.ai-go {
+  position: relative;
+  font: inherit;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 26px;
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  background:
+    radial-gradient(ellipse 70% 95% at 50% 130%, rgba(216, 180, 254, 0.95), transparent 70%),
+    linear-gradient(180deg, #6631f6, #5420e8);
+  box-shadow:
+    inset 0 1.5px 0 #3b6cf6,
+    0 1.5px 0 #3b6cf6,
+    0 0 0 4px rgba(99, 52, 246, 0.2),
+    0 8px 22px -4px rgba(84, 32, 232, 0.45),
+    0 0 26px rgba(124, 58, 237, 0.18);
+}
+.mk-trace {
+  position: absolute;
+  inset: -0.75px;
+  width: calc(100% + 1.5px);
+  height: calc(100% + 1.5px);
+  overflow: visible;
+  pointer-events: none;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-opacity: 0.1;
+  /* Round ends let each layer's step blend into the next, so the fade reads
+     as one gradient rather than bands. */
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.85)) drop-shadow(0 0 5px rgba(199, 210, 254, 0.45));
+  animation:
+    mk-lap 4.2s infinite,
+    mk-fade 4.2s linear infinite;
+}
+.ai-go .icon { width: 18px; height: 18px; color: #fff; }
+/* In the marking panel it sits at the start of a column. */
 .mk-assess { align-self: flex-start; }
+.ai-go:hover:not(:disabled) {
+  color: #fff;
+  background:
+    radial-gradient(ellipse 75% 100% at 50% 125%, rgba(233, 213, 255, 1), transparent 72%),
+    linear-gradient(180deg, #7442f7, #6230f0);
+}
+.ai-go:focus-visible { outline: 2px solid var(--primary); outline-offset: 8px; }
+/* While it reads, it stays bright and the light keeps running, faster and
+   without the rest: that is the "working" signal, so the usual disabled fade
+   would say the opposite. */
+.ai-go:disabled { opacity: 1; cursor: progress; }
+.ai-go:disabled .mk-trace { animation: mk-run 1.4s linear infinite; opacity: 1; }
+/* One lap in the first 72% of the cycle, eased in and out like a hand
+   drawing it, then a rest. The streak fades in as it sets off and out as it
+   arrives, rather than appearing and vanishing. */
+@keyframes mk-lap {
+  0% { stroke-dashoffset: -50; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  72%, 100% { stroke-dashoffset: -150; }
+}
+@keyframes mk-fade {
+  0% { opacity: 0; }
+  9%, 60% { opacity: 1; }
+  72%, 100% { opacity: 0; }
+}
+@keyframes mk-run {
+  from { stroke-dashoffset: -50; }
+  to { stroke-dashoffset: -150; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-trace { display: none; }
+}
 
 /* What the student typed, when a short answer came here instead of being
    graded. Neutral on purpose: it is evidence, not a verdict. */
@@ -4181,6 +4295,7 @@ body.drawer-open {
 /* The AI's proposal. Amber, not green: it is a suggestion awaiting a teacher,
    and it must never read like a mark that has been given. */
 .mk-ai {
+  position: relative;
   border: 1px solid var(--amber);
   border-radius: var(--radius-sm);
   background: var(--amber-bg);
@@ -4189,7 +4304,101 @@ body.drawer-open {
   flex-direction: column;
   gap: 6px;
 }
-.mk-ai-head { display: flex; align-items: center; gap: 8px; }
+/* The AI's proposal carries the same light as the button that asked for it,
+   round its 1px border. On a pale card a white streak alone vanishes — light
+   on a light surface is a smudge — so it is drawn as a hot filament: a
+   white core inside a saturated orange glow, which is what carries it.
+   Slower than the button's and with a longer rest — this is a card somebody
+   is reading, and the light should catch the eye, not keep pulling it. */
+.mk-trace-card {
+  inset: -0.5px;
+  width: calc(100% + 1px);
+  height: calc(100% + 1px);
+  stroke-width: 3;
+  filter:
+    drop-shadow(0 0 1px #ea580c)
+    drop-shadow(0 0 3px rgba(249, 115, 22, 0.9))
+    drop-shadow(0 0 8px rgba(251, 146, 60, 0.55));
+  animation:
+    mk-card-lap 7s infinite,
+    mk-card-fade 7s linear infinite;
+}
+@keyframes mk-card-lap {
+  0% { stroke-dashoffset: 0; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  55%, 100% { stroke-dashoffset: -100; }
+}
+@keyframes mk-card-fade {
+  0% { opacity: 0; }
+  6%, 47% { opacity: 1; }
+  55%, 100% { opacity: 0; }
+}
+/* Use this mark: the action the card leads to, so it is a button and not a
+   link. A white pill with violet text and tick — the reverse of Assess with
+   AI, which reads as "the AI's" where this reads as "yours to take" — and
+   the same light, in violet: a white streak would vanish on white.
+   Its motion is a handoff, not a third thing competing with the card: when
+   the card's light finishes its lap round the card, a violet streak runs one
+   lap round this button, leading the eye from the AI's reasoning to the
+   action. Both run on the card's 7s cycle from the same paint, so they stay
+   in step (the card's lap ends at 55%; this one runs from 56% to 72%).
+   The trace's radius assumes the fixed 34px height. */
+.ai-take {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 34px;
+  padding: 0 13px 0 10px;
+  border: 1px solid #ddd6fe;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: #5420e8;
+  cursor: pointer;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(84, 32, 232, 0.1),
+    0 4px 12px -4px rgba(84, 32, 232, 0.3);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+.ai-take .icon { width: 15px; height: 15px; color: #5420e8; }
+.ai-take:hover {
+  background: #faf8ff;
+  box-shadow:
+    0 1px 2px rgba(84, 32, 232, 0.12),
+    0 6px 16px -4px rgba(84, 32, 232, 0.4);
+  transform: translateY(-1px);
+}
+.ai-take:active { transform: translateY(0); }
+.ai-take:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+.ai-take-trace {
+  inset: -0.5px;
+  width: calc(100% + 1px);
+  height: calc(100% + 1px);
+  stroke: #6d35f5;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 1.5px rgba(109, 53, 245, 0.8)) drop-shadow(0 0 5px rgba(139, 92, 246, 0.45));
+  animation:
+    ai-take-lap 7s infinite,
+    ai-take-fade 7s linear infinite;
+}
+@keyframes ai-take-lap {
+  0%, 56% { stroke-dashoffset: -50; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  72%, 100% { stroke-dashoffset: -150; }
+}
+@keyframes ai-take-fade {
+  0%, 55% { opacity: 0; }
+  58%, 68% { opacity: 1; }
+  72%, 100% { opacity: 0; }
+}
+/* The score stays on one line; if the row is too narrow for it and the
+   button, the button drops to its own line, still at the right, rather than
+   squeezing "suggests 2 / 2" onto two. */
+.mk-ai-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; row-gap: 8px; }
+.mk-ai-head .ai-take { margin-left: auto; }
 .mk-ai-badge {
   font-size: 0.68rem;
   font-weight: 800;
@@ -4199,7 +4408,7 @@ body.drawer-open {
   background: var(--amber);
   color: #fff;
 }
-.mk-ai-mark { font-size: 0.95rem; font-weight: 700; color: var(--amber); }
+.mk-ai-mark { font-size: 0.95rem; font-weight: 700; color: var(--amber); white-space: nowrap; }
 .mk-ai-why, .mk-ai-say { margin: 0; font-size: 0.88rem; line-height: 1.5; color: var(--amber); }
 .mk-ai-say { font-style: italic; }
 .mk-ai-foot { margin: 0; font-size: 0.78rem; color: var(--amber); opacity: 0.85; }
@@ -4886,25 +5095,40 @@ body.drawer-open {
    #app so an editor repaint cannot take the conversation with it. Every colour
    maps onto :root — one palette, not two. */
 
+/* Seyari AI in the app bar opens the AI, so it wears the filled AI look —
+   but no running light: it sits in the chrome for the whole time a teacher
+   writes, and light that never stops circling wears on somebody. The light
+   is for moments (a suggestion arriving, a paper to mark), not fixtures. */
 .sy-toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   height: 38px;
-  padding: 0 12px 0 10px;
+  padding: 0 13px 0 11px;
   flex: none;
   font: inherit;
   font-size: 13px;
   font-weight: 600;
-  color: var(--primary);
-  background: var(--primary-soft);
-  border: 1px solid var(--primary-border);
-  border-radius: var(--radius-sm);
+  color: #fff;
+  background:
+    radial-gradient(ellipse 70% 95% at 50% 130%, rgba(216, 180, 254, 0.8), transparent 70%),
+    linear-gradient(180deg, #6631f6, #5420e8);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 #3b6cf6,
+    0 1px 0 #3b6cf6,
+    0 4px 12px -3px rgba(84, 32, 232, 0.45);
   cursor: pointer;
   white-space: nowrap;
 }
-.sy-toggle .icon { width: 16px; height: 16px; }
-.sy-toggle:hover, .sy-toggle[aria-pressed="true"] { background: var(--primary); color: #fff; border-color: transparent; }
+.sy-toggle .icon { width: 16px; height: 16px; color: #fff; }
+.sy-toggle:hover { filter: brightness(1.08); }
+.sy-toggle[aria-pressed="true"] {
+  background: linear-gradient(180deg, #5420e8, #4318c4);
+  box-shadow: inset 0 2px 4px rgba(30, 10, 90, 0.35), 0 1px 0 #3b6cf6;
+}
+.sy-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 @media (max-width: 600px) { .sy-toggle span { display: none; } .sy-toggle { padding: 0 10px; } }
 
 .sy-panel {
@@ -5068,11 +5292,14 @@ body.drawer-open {
 .sy-needs { margin-top: 10px; font-size: 12.5px; color: var(--amber); background: var(--amber-bg); border-radius: var(--radius-sm); padding: 6px 9px; }
 .sy-card-actions { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
 .sy-card-actions .btn { flex: none; min-width: 0; padding: 7px 12px; font-size: 13px; }
+/* Discard sits beside the white Add pill, so it is the same height and shape,
+   quieter: the pair reads as one set rather than two kinds of button. */
+.sy-card-actions .sy-drop { height: 34px; padding: 0 14px; border-radius: 999px; }
 .sy-added { display: inline-flex; align-items: center; gap: 6px; color: var(--green); font-weight: 600; font-size: 13px; }
 .sy-added .icon { width: 16px; height: 16px; }
 .sy-dropped { color: var(--muted); font-size: 13px; }
 .sy-all { display: flex; justify-content: flex-end; }
-.sy-all .btn { flex: none; min-width: 0; }
+.sy-all .ai-take { flex: none; }
 
 /* The composer: one rounded card at the foot, textarea above a bar with "+"
    on the left, the credits line in the middle and send at the right. */

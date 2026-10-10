@@ -22,7 +22,7 @@ import { loadAttempt, newAttempt, saveAttempt } from "../attempts";
 import { gradeAnswer, gradeShort, TESTS, totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
 import { confirmDialog, notice } from "../dialog";
-import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton } from "../shell";
+import { bindTreeDrawer, drawerToggleMarkup, mount, skeleton, toTop } from "../shell";
 import type { Attempt, Question, Test } from "../types";
 import { canHandIn } from "./test";
 import { showReview } from "./review";
@@ -349,6 +349,10 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
     ];
   }
 
+  // The question last painted: a move to another starts at the top, while the
+  // late subject repaint below keeps the student exactly where they were.
+  let shown = "";
+
   const render = (): void => {
     const q = test.questions[index];
     const a = attempt.answers[q.id];
@@ -416,6 +420,9 @@ export function showAttempt(test: Test, attempt: Attempt, at?: number): void {
       // that says what is open.
       { title: test.title, sub: test.chapter || "", active: "subjects", full: true, scroll: "page" }
     );
+
+    if (q.id !== shown) toTop();
+    shown = q.id;
 
     renderAnswer(test, attempt, q, index, render);
 

@@ -234,6 +234,20 @@ export function mount(content: string, opts: ShellOpts): HTMLElement {
   return opts.full ? main : main.querySelector<HTMLElement>(".page")!;
 }
 
+/**
+ * Start a newly shown question at the top of the page.
+ *
+ * Under `.shell-scroll` the document is the scroller, so `main.scrollTop = 0`
+ * in `mount` reaches nothing: a teacher who had scrolled down to the marks row
+ * and pressed Next got the next question painted with the window still at the
+ * bottom of it. Called only when the question CHANGES — a repaint of the same
+ * one (a mark saved, the subject arriving late) keeps its place.
+ * `instant`, because a smooth scroll would be a visible slide on every Next.
+ */
+export function toTop(): void {
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+}
+
 /** Update only the top bar — the editor does this as its status changes. */
 export function setShellbar(opts: Pick<ShellOpts, "title" | "sub" | "actions" | "lead">): void {
   const title = document.getElementById("shellbar-title");

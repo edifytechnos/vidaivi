@@ -28,6 +28,7 @@ import { fetchMyCredits } from "../../auth";
 import { generateQuestions, newQuestionId } from "../../api";
 import type { GenerateTurn, Proposed } from "../../api";
 import { ICONS, escapeHtml, formatText, renderMath } from "../../dom";
+import { aiTakeInner } from "../../ailight";
 import { pdfPagesToJpeg } from "../../pdfpages";
 import type { Question } from "../../types";
 
@@ -518,9 +519,9 @@ function turnMarkup(t: Turn, index: number, hasTest: boolean): string {
       ${t.cards.map((c, j) => cardMarkup(c, index, j, hasTest)).join("")}
       ${
         left > 1
-          ? `<div class="sy-all"><button class="btn btn-primary" data-act="add-all" data-turn="${index}">${
+          ? `<div class="sy-all"><button class="ai-take" data-act="add-all" data-turn="${index}">${aiTakeInner(
               hasTest ? `Add all ${left} to the test` : `Create a test with all ${left}`
-            }</button></div>`
+            )}</button></div>`
           : ""
       }
     </div>`;
@@ -551,7 +552,7 @@ function cardMarkup(c: Card, turn: number, j: number, hasTest: boolean): string 
       ? `<span class="sy-added">${ICONS.check}<span>${hasTest ? "Added to the test" : "In the new test"}</span></span>`
       : c.state === "dropped"
         ? `<span class="sy-dropped">Discarded</span>`
-        : `<button class="btn btn-primary sy-add" data-act="add" data-turn="${turn}" data-card="${j}">${hasTest ? "Add to test" : "Create test with this"}</button>
+        : `<button class="ai-take sy-add" data-act="add" data-turn="${turn}" data-card="${j}">${aiTakeInner(hasTest ? "Add to test" : "Create test with this")}</button>
            <button class="btn btn-ghost sy-drop" data-act="drop" data-turn="${turn}" data-card="${j}">Discard</button>`;
   return `
     <article class="sy-card sy-card-${c.state}">

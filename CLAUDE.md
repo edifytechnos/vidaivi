@@ -1367,6 +1367,7 @@ every move passes through is the URL write, and that is where the history is.
 - `screens/student.ts` — the student's workspace: subject → tests tree → one question.
 - `screens/assign.ts` — "Who sees this test": the audience picker, shared by the editor and My tests.
 - `screens/review.ts` — read-only review, one question per page.
+- `ailight.ts` — the two AI buttons (`.ai-go` calls the AI, `.ai-take` takes its work) and the light round them.
 - `screens/marking.ts` — the marking queue (a list) and `openStudentPaper`, the one way into marking a paper.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 - `photoviewer.ts` — the full-screen zoomable viewer a photo strip opens into.
@@ -1388,7 +1389,7 @@ header used to let one tab hold three identities at once, so the suite has
 `asStudent` to run a second identity from Node. `node e2e/regression.cjs` runs
 the Playwright suite (guest flows always;
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
-hardcode credentials). `node e2e/paperlayout.cjs` builds the paper's own shell markup against the real
+hardcode credentials). `node e2e/marking.cjs` drives the real marking paper at 390px: a new question at the top, and the Assess with AI button. `node e2e/paperlayout.cjs` builds the paper's own shell markup against the real
 stylesheet and drives it at 390px: what the fixed bottom bar covers, and whether
 the page holds still behind the open question list.
 `node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
@@ -2887,6 +2888,113 @@ whole feedback.
 merge `hydrateMarks` makes on load — and **recomputes** `attempt.score` from
 the answers rather than adding the difference, so re-marking the same answer
 cannot double it.
+
+### A new question starts at the top; Assess with AI can be found
+
+Two things a teacher reported while marking on a phone, both proven by
+`node e2e/marking.cjs`, which bundles the real `showReview` and drives it at
+390px against a stubbed `fetch` (no session, no row written):
+
+- **Next, Previous or a pick from the list lands at the top.** Under
+  `.shell-scroll` the document is the scroller, so `main.scrollTop = 0` in
+  `mount` reaches nothing, and the next question was painted with the window
+  still at the bottom of the last one. `toTop()` in `src/shell.ts` scrolls the
+  window, `instant` rather than smooth. `review.ts` and `student.ts` call it
+  only when the question **changes** (`shown` holds the last one painted): a
+  repaint of the same question — the AI's proposal arriving, a mark saved, the
+  subject arriving late — keeps the place. The suite fails at 5904px with the
+  call removed.
+- **Assess with AI is the AI's own button**, built detail by detail to a
+  reference video J sent (`ASSESS_LABEL` / `assessInner` / `TRACE` in
+  `review.ts`, `.mk-assess` / `.mk-trace` in `style.css`). It is the one
+  button on the paper that spends a credit, and as a grey ghost button it was
+  missed. App purples only — a rainbow border was tried first and read loud.
+  - **The edge is two lines, like light on a bevelled glass rim**: a white
+    hairline (the border) one step above a blue line — the blue shows outside
+    the white along the bottom and inside it along the top (`0 1.5px 0` and
+    `inset 0 1.5px 0`). A plain white outline read flat.
+  - **A streak of light runs round it, and its ends are soft** — that is what
+    makes it look expensive rather than like a progress bar. A stroke cannot
+    carry a gradient along its length, so the streak is **48 faint layers**
+    of the same outline, each one dash, sized so their overlap is a drawn
+    gradient: eased away to nothing behind the peak (`(1 - d/tail)^1.6`),
+    ramped up over a few pixels ahead of it, round-capped so no step shows.
+    It eases along its lap, fades in and out at either end of it, rests, and
+    goes again; one animation on the svg's `stroke-dashoffset`, inherited by
+    every layer.
+  - **Never give a layer a zero-length dash.** With round caps it still draws
+    a dot, and 48 stacked made a bright speck on the outline away from the
+    streak. The pattern is laid out with the peak at 0 and the dash wrapping
+    round it; `e2e/marking.cjs` asserts no dash is zero.
+  - Dashes on `pathLength="100"`, not a rotating conic gradient: an angle
+    crawls along a wide pill's long edges and whips round the ends.
+  - The rect sits on the centre of the 1.5px border with a fixed radius
+    (`rx="21.25"`), so the button is a fixed **44px** tall — also the
+    touch-target size. Change one and change the other.
+  - While it reads, the light runs faster and without the rest (the disabled
+    fade would say the opposite of "working"); it keeps its icon through the
+    failure reset; under `prefers-reduced-motion` the streak is not drawn.
+  - `SHOT_DIR=… node e2e/marking.cjs` writes one whole cycle as frames, with
+    the animations paused and stepped by hand, for a design review clip.
+
+### The AI's proposal carries the same light, and a partial mark is not green
+
+- **The card holding the AI's proposal (`.mk-ai`) has the streak too** —
+  `lightTrace()` in `review.ts` is now one helper for both (`TRACE` for the
+  button, `CARD_TRACE` for the card), with the radius, tail and tip each
+  needs: the card's perimeter is several times the button's, so its tail is
+  a smaller share of it to come out about the same length on screen.
+  **On a pale card a white streak alone is a smudge** — light on a light
+  surface does not read — so the card's is drawn as a hot filament: a white
+  core inside a saturated orange glow (`.mk-trace-card`). Slower than the
+  button's and with a longer rest, because it runs round text somebody is
+  reading: it should catch the eye, not keep pulling at it.
+- **Use this mark is a button, and the light hands off to it.** It was a text
+  link, and it is the action the whole card leads to: now the white "take"
+  pill (`.ai-take`, see *Every AI button is one of two buttons*). Its motion
+  is a **handoff**: when the card's light finishes its lap, a violet streak
+  runs one lap round the button, leading the eye from the AI's reasoning to
+  the action. Both run on the card's 7s
+  cycle from the same paint, so they stay in step — retime one and retime
+  the other. The score (`suggests 2 / 2`) never wraps; on a narrow phone the
+  button drops to its own line at the right instead of crushing it, and
+  `e2e/marking.cjs` asserts the score stays on one line.
+- **Full marks are green; partial marks are orange; none are red**, in the
+  question list (`.rv-partial`) and the mark chip (`.status-partial`).
+  `isPartial` is `correct && earned < marks`. A 1/3 used to wear the same
+  green tick as a 3/3, which told a teacher scanning the list that a question
+  was done when two of its marks were not earned. Orange keeps the tick —
+  something was earned — and stays apart from the brown "…" of an answer
+  still waiting to be marked. `e2e/marking.cjs` asserts all three colours.
+
+### Every AI button is one of two buttons (`src/ailight.ts`)
+
+J's rule, and it holds everywhere: **a button that calls the AI is filled; a
+button that acts on what the AI produced is white.**
+
+| | Looks | Light | Where |
+|---|---|---|---|
+| **`.ai-go`** — calls the AI, usually spends a credit | violet pill, white label and sparkle, bevelled glass rim | white, round the edge | Assess with AI, Mark N & release (parent), Ask Seyari AI |
+| **`.ai-take`** — takes the AI's work | white pill, violet label and tick | violet (white would vanish on white) | Use this mark, Add to test / Create test with this, Add all N |
+
+- **`src/ailight.ts` is the one implementation**: `lightTrace()` (the
+  layered soft-ended streak), and `aiGoInner(label)` / `aiTakeInner(label)`,
+  the inside of each button. **Anything that relabels one while it works
+  ("Reading…", "Marking…") must go through these**, or the light and the icon
+  are wiped with the old text — `markWholePaper` used `textContent` and would
+  have done exactly that.
+- Each trace's radius is tied to its button's fixed height (44px go, 34px
+  take). Change one and change the other.
+- **`.ai-take`'s light runs on the AI card's 7s cycle** — a lap from 56% to
+  72%, just after the card's own light finishes (the handoff). Standalone,
+  as on a Seyari card, that is simply a lap every seven seconds.
+- **Seyari AI in the app bar is filled but carries no light.** It sits in the
+  chrome for the whole time a teacher writes; light that never stops circling
+  wears on somebody. The light is for moments, not fixtures. Seyari's send
+  arrow was already a filled violet circle and stays one.
+- Discard on a Seyari card is the same 34px pill shape as Add beside it, quieter.
+- `e2e/seyari.cjs` asserts Add and Add all are the white take button with
+  the light; `e2e/marking.cjs` covers Assess and Use this mark.
 
 ### On a phone the bar covers nothing, and the drawer holds the page
 

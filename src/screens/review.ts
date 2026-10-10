@@ -29,7 +29,8 @@ import {
 import { clearAttempt, newAttempt } from "../attempts";
 import { totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
-import { bindTreeDrawer, drawerToggleMarkup, mount } from "../shell";
+import { bindTreeDrawer, drawerToggleMarkup, mount, toTop } from "../shell";
+import { aiGoInner, aiTakeInner, lightTrace } from "../ailight";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { hydrateMarks, startTest } from "./test";
 
@@ -107,7 +108,17 @@ function marksChip(q: Question, a: StoredAnswer | undefined, open: boolean): str
     return `<span class="status-chip status-progress">Awaiting review</span>`;
   }
   const ok = a?.correct ?? false;
-  return `<span class="status-chip ${ok ? "status-done" : "status-wrong"}">${ok ? `✓ ${a?.earned ?? 0}` : "✗ 0"}/${q.marks}</span>`;
+  const cls = ok ? (isPartial(q, a) ? "status-partial" : "status-done") : "status-wrong";
+  return `<span class="status-chip ${cls}">${ok ? `✓ ${a?.earned ?? 0}` : "✗ 0"}/${q.marks}</span>`;
+}
+
+/**
+ * Some marks, not all of them. Green is kept for full marks: a 1/3 that wore
+ * the same green tick as a 3/3 told a teacher scanning the list that the
+ * question was done, when two marks of it were not earned.
+ */
+function isPartial(q: Question, a: StoredAnswer | undefined): boolean {
+  return !!a?.correct && a.earned < q.marks;
 }
 
 function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolean): string {
@@ -116,7 +127,9 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolea
       const a = attempt.answers[q.id];
       const pending = a?.review === "pending";
       const ok = a?.correct ?? false;
-      const state = !open ? (a ? "given" : "blank") : pending ? "pending" : ok ? "done" : "wrong";
+      const state = !open
+        ? a ? "given" : "blank"
+        : pending ? "pending" : ok ? (isPartial(q, a) ? "partial" : "done") : "wrong";
       const dot = !open ? (a ? "•" : "") : pending ? "…" : ok ? "✓" : "✗";
       return `
         <div class="ed-tree-row">
@@ -280,7 +293,7 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
   const assess = document.getElementById("mk-assess") as HTMLButtonElement | null;
   assess?.addEventListener("click", async () => {
     assess.disabled = true;
-    assess.textContent = row.images.length ? "Reading the working…" : "Reading the answer…";
+    assess.innerHTML = assessInner(row.images.length ? "Reading the working…" : "Reading the answer…");
     const result = await assessAnswer({
       username: row.username,
       testId: row.testId,
@@ -304,7 +317,7 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
     // than letting a teacher press a button that cannot work.
     if (result.off) aiOff = true;
     assess.disabled = false;
-    assess.textContent = "Assess with AI";
+    assess.innerHTML = ASSESS_LABEL;
     if (state) state.textContent = result.message || "The assessment failed.";
     if (result.off) rerender();
   });
@@ -312,6 +325,14 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
 
 /** The grading rows for the paper being marked, by question id. */
 let rows = new Map<string, GradedAnswer>();
+/** The one button that spends a credit, marked as the AI's by its icon and its
+ *  border (`.mk-assess` in style.css), so a teacher can find it on the paper. */
+/** The card's light: its corners are `--radius-sm` (8px) less half its 1px
+ *  border, and its perimeter is several times a button's, so the tail and
+ *  tip are a smaller share of it to come out about the same length on screen. */
+const CARD_TRACE = lightTrace({ rx: 7.5, tail: 12, tip: 1, cls: "mk-trace-card" });
+const assessInner = aiGoInner;
+const ASSESS_LABEL = assessInner("Assess with AI");
 /** Whether this site has AI marking switched on. Unknown until first asked. */
 let aiOff = false;
 /** The balance after the last assessment, shown once so it is not a surprise
@@ -399,11 +420,12 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
       ${
         ai !== null
           ? `<div class="mk-ai">
+               ${CARD_TRACE}
                <div class="mk-ai-head">
                  <span class="mk-ai-badge">AI</span>
                  <span class="mk-ai-mark">suggests ${ai} / ${row.maxMarks}</span>
                  <span class="ed-spacer"></span>
-                 <button class="btn-link" id="mk-use">Use this mark</button>
+                 <button class="ai-take mk-use" id="mk-use">${aiTakeInner("Use this mark")}</button>
                </div>
                ${row.aiReasoning ? `<p class="mk-ai-why">${escapeHtml(row.aiReasoning)}</p>` : ""}
                ${row.aiComment ? `<p class="mk-ai-say">For the student: “${escapeHtml(row.aiComment)}”</p>` : ""}
@@ -412,7 +434,7 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
              </div>`
           : aiOff || !(row.images.length || row.answerText)
             ? ""
-            : `<button class="btn btn-ghost mk-assess" id="mk-assess">Assess with AI</button>`
+            : `<button class="ai-go mk-assess" id="mk-assess">${ASSESS_LABEL}</button>`
       }
       <div class="mk-award">
         <div class="section-label">Award marks</div>
@@ -499,6 +521,10 @@ export async function showReview(
 
   const wanted = new URLSearchParams(location.search).get("review");
   let index = Math.max(0, test.questions.findIndex((q) => q.id === wanted));
+
+  // The question last painted, so a move to another one starts at the top
+  // and a repaint of the same one (a mark saved) keeps the teacher's place.
+  let shown = "";
 
   const render = (): void => {
     const q = test.questions[index];
@@ -594,6 +620,8 @@ export async function showReview(
       </div>`,
       { title: test.title, sub: test.chapter || "", active: "results", full: true, scroll: "page" }
     );
+    if (q.id !== shown) toTop();
+    shown = q.id;
 
     document.getElementById("rv-tree")!.addEventListener("click", (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");
