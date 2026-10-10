@@ -4158,7 +4158,50 @@ body.drawer-open {
   gap: 12px;
 }
 .mk-none { margin: 14px 0 0; }
-.mk-assess { align-self: flex-start; }
+/* Assess with AI: the one button on the paper that spends a credit, and it
+   was being missed — a grey ghost button among grey ghost buttons. It carries
+   the sparkle the AI wears everywhere and a gradient border that turns slowly,
+   drawn as two backgrounds: the surface clipped to the padding box over a
+   conic gradient clipped to the border box, so the border IS the gradient and
+   the label stays on plain white. `--mk-angle` is registered so it animates;
+   a browser without @property shows the same gradient, still. */
+@property --mk-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.mk-assess {
+  align-self: flex-start;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  color: var(--primary);
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    conic-gradient(from var(--mk-angle), #6d28d9, #db2777, #f59e0b, #06b6d4, #6d28d9) border-box;
+  box-shadow: 0 2px 10px rgba(109, 40, 217, 0.18);
+  animation: mk-turn 3s linear infinite;
+}
+.mk-assess .icon { width: 18px; height: 18px; color: #db2777; }
+.mk-assess:hover:not(:disabled) {
+  color: var(--primary-hover);
+  background:
+    linear-gradient(var(--primary-soft), var(--primary-soft)) padding-box,
+    conic-gradient(from var(--mk-angle), #6d28d9, #db2777, #f59e0b, #06b6d4, #6d28d9) border-box;
+  box-shadow: 0 4px 16px rgba(109, 40, 217, 0.26);
+}
+.mk-assess:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+/* While it reads, it stays bright and keeps turning: the turning is the
+   "working" signal, so the usual disabled fade would say the opposite. */
+.mk-assess:disabled { opacity: 1; cursor: progress; animation-duration: 1.2s; }
+@keyframes mk-turn { to { --mk-angle: 360deg; } }
+@media (prefers-reduced-motion: reduce) {
+  .mk-assess, .mk-assess:disabled { animation: none; }
+}
 
 /* What the student typed, when a short answer came here instead of being
    graded. Neutral on purpose: it is evidence, not a verdict. */

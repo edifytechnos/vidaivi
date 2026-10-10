@@ -29,7 +29,7 @@ import {
 import { clearAttempt, newAttempt } from "../attempts";
 import { totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
-import { bindTreeDrawer, drawerToggleMarkup, mount } from "../shell";
+import { bindTreeDrawer, drawerToggleMarkup, mount, toTop } from "../shell";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { hydrateMarks, startTest } from "./test";
 
@@ -280,7 +280,7 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
   const assess = document.getElementById("mk-assess") as HTMLButtonElement | null;
   assess?.addEventListener("click", async () => {
     assess.disabled = true;
-    assess.textContent = row.images.length ? "Reading the working…" : "Reading the answer…";
+    assess.innerHTML = `${ICONS.spark}<span>${row.images.length ? "Reading the working…" : "Reading the answer…"}</span>`;
     const result = await assessAnswer({
       username: row.username,
       testId: row.testId,
@@ -304,7 +304,7 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
     // than letting a teacher press a button that cannot work.
     if (result.off) aiOff = true;
     assess.disabled = false;
-    assess.textContent = "Assess with AI";
+    assess.innerHTML = ASSESS_LABEL;
     if (state) state.textContent = result.message || "The assessment failed.";
     if (result.off) rerender();
   });
@@ -312,6 +312,9 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
 
 /** The grading rows for the paper being marked, by question id. */
 let rows = new Map<string, GradedAnswer>();
+/** The one button that spends a credit, marked as the AI's by its icon and its
+ *  border (`.mk-assess` in style.css), so a teacher can find it on the paper. */
+const ASSESS_LABEL = `${ICONS.spark}<span>Assess with AI</span>`;
 /** Whether this site has AI marking switched on. Unknown until first asked. */
 let aiOff = false;
 /** The balance after the last assessment, shown once so it is not a surprise
@@ -412,7 +415,7 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
              </div>`
           : aiOff || !(row.images.length || row.answerText)
             ? ""
-            : `<button class="btn btn-ghost mk-assess" id="mk-assess">Assess with AI</button>`
+            : `<button class="btn btn-ghost mk-assess" id="mk-assess">${ASSESS_LABEL}</button>`
       }
       <div class="mk-award">
         <div class="section-label">Award marks</div>
@@ -499,6 +502,10 @@ export async function showReview(
 
   const wanted = new URLSearchParams(location.search).get("review");
   let index = Math.max(0, test.questions.findIndex((q) => q.id === wanted));
+
+  // The question last painted, so a move to another one starts at the top
+  // and a repaint of the same one (a mark saved) keeps the teacher's place.
+  let shown = "";
 
   const render = (): void => {
     const q = test.questions[index];
@@ -594,6 +601,8 @@ export async function showReview(
       </div>`,
       { title: test.title, sub: test.chapter || "", active: "results", full: true, scroll: "page" }
     );
+    if (q.id !== shown) toTop();
+    shown = q.id;
 
     document.getElementById("rv-tree")!.addEventListener("click", (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");

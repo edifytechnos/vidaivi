@@ -1388,7 +1388,7 @@ header used to let one tab hold three identities at once, so the suite has
 `asStudent` to run a second identity from Node. `node e2e/regression.cjs` runs
 the Playwright suite (guest flows always;
 admin flows only when `E2E_ADMIN_USER`/`E2E_ADMIN_PASS` env vars are set — never
-hardcode credentials). `node e2e/paperlayout.cjs` builds the paper's own shell markup against the real
+hardcode credentials). `node e2e/marking.cjs` drives the real marking paper at 390px: a new question at the top, and the Assess with AI button. `node e2e/paperlayout.cjs` builds the paper's own shell markup against the real
 stylesheet and drives it at 390px: what the fixed bottom bar covers, and whether
 the page holds still behind the open question list.
 `node e2e/photoviewer.cjs` bundles `src/photoviewer.ts` with esbuild and drives
@@ -2887,6 +2887,30 @@ whole feedback.
 merge `hydrateMarks` makes on load — and **recomputes** `attempt.score` from
 the answers rather than adding the difference, so re-marking the same answer
 cannot double it.
+
+### A new question starts at the top; Assess with AI can be found
+
+Two things a teacher reported while marking on a phone, both proven by
+`node e2e/marking.cjs`, which bundles the real `showReview` and drives it at
+390px against a stubbed `fetch` (no session, no row written):
+
+- **Next, Previous or a pick from the list lands at the top.** Under
+  `.shell-scroll` the document is the scroller, so `main.scrollTop = 0` in
+  `mount` reaches nothing, and the next question was painted with the window
+  still at the bottom of the last one. `toTop()` in `src/shell.ts` scrolls the
+  window, `instant` rather than smooth. `review.ts` and `student.ts` call it
+  only when the question **changes** (`shown` holds the last one painted): a
+  repaint of the same question — the AI's proposal arriving, a mark saved, the
+  subject arriving late — keeps the place. The suite fails at 5904px with the
+  call removed.
+- **Assess with AI wears the sparkle and a turning gradient border**
+  (`ASSESS_LABEL`, `.mk-assess`). It is the one button on the paper that
+  spends a credit, and as a grey ghost button it was missed. The border is two
+  backgrounds — the surface clipped to the padding box over a conic gradient
+  clipped to the border box — turned by a registered `--mk-angle`. It stays
+  bright while reading (the turning is the "working" signal, so the disabled
+  fade would say the opposite), keeps its icon through the failure reset, and
+  holds still under `prefers-reduced-motion`.
 
 ### On a phone the bar covers nothing, and the drawer holds the page
 
