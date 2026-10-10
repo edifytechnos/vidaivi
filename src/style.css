@@ -1,28 +1,42 @@
 /* Vidai design system */
 
 :root {
-  --bg: #f8fafc;
+  /* The calm palette, shared with Seyali (seyali.app, Mesai): greys with no
+     colour in them, near-black text, and the one violet kept for what can be
+     pressed — a button, a link, the selected item. A screen is about 90%
+     quiet surface, 8% text, 2–3% colour. */
+  --bg: #f5f5f7;
   --surface: #ffffff;
-  --text: #0f172a;
-  --text-secondary: #475569;
-  --muted: #64748b;
-  --faint: #94a3b8;
-  --primary: #6d28d9;
-  --primary-hover: #5b21b6;
-  --primary-soft: #f5f3ff;
-  --primary-border: #ddd6fe;
+  /* A quiet neutral fill: chips, notes, banners, icon tiles, and the hover
+     wash on rows. Never violet — the violet tint is for a SELECTED thing. */
+  --fill: #f0f0f2;
+  --text: #1d1d1f;
+  --text-secondary: #424245;
+  --muted: #6e6e73;
+  /* The same as --muted on purpose. The calm palette's lighter grey (#86868b)
+     is 3.3:1 on --bg, and the slate it replaces (#94a3b8) was 2.4:1 — both
+     too faint for the labels Vidai sets in it ("AWARD MARKS", "2/3"). This is
+     4.7:1 on --bg and 5.1:1 on white; the hierarchy comes from size and
+     weight instead. */
+  --faint: #6e6e73;
+  --primary: #5420e8;
+  --primary-hover: #4318c9;
+  --primary-soft: #f1edfe;
+  --primary-border: #d9cffc;
+  /* Violet text on --primary-soft (9.8:1): the selected row, tab or option. */
+  --primary-deep: #3b17a6;
   --green: #047857;
   --green-bg: #d1fae5;
   --red: #b91c1c;
   --red-bg: #fee2e2;
   --amber: #92400e;
   --amber-bg: #fef3c7;
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
+  --border: #e8e8ed;
+  --border-strong: #d2d2d7;
   --radius: 12px;
   --radius-sm: 8px;
-  --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 10px 15px -3px rgba(15, 23, 42, 0.08);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.08);
   /* A font stack resolves PER GLYPH, not per element: the browser takes each
      character from the first family that has it. So Inter still renders every
      Latin character exactly as before, and Tamil - which Inter does not cover
@@ -79,13 +93,13 @@ body {
   width: 26px;
   height: 26px;
   border-radius: 7px;
-  background: linear-gradient(135deg, var(--primary), #8b5cf6);
+  background: var(--primary);
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   flex: none;
 }
 
@@ -105,22 +119,22 @@ body {
   letter-spacing: 0.02em;
   padding: 4px 10px;
   border-radius: 6px;
-  background: var(--primary-soft);
-  color: var(--primary);
-  border: 1px solid var(--primary-border);
+  background: var(--fill);
+  color: var(--text-secondary);
+  border: 1px solid transparent;
   white-space: nowrap;
 }
 
 .chip-topic {
-  background: #ecfdf5;
-  color: #065f46;
-  border-color: #a7f3d0;
+  background: var(--fill);
+  color: var(--text-secondary);
+  border-color: transparent;
 }
 
 .chip-marks {
-  background: var(--amber-bg);
-  color: var(--amber);
-  border-color: #fde68a;
+  background: var(--surface);
+  color: var(--text-secondary);
+  border-color: var(--border);
 }
 
 /* ---------- Cards ---------- */
@@ -231,11 +245,11 @@ body {
 
 .option:hover:not(:disabled) {
   border-color: var(--border-strong);
-  background: #fcfcfd;
+  background: var(--bg);
 }
 
 .option.selected {
-  border-color: var(--primary);
+  border-color: var(--primary-deep);
   background: var(--primary-soft);
   box-shadow: 0 0 0 1px var(--primary);
 }
@@ -298,7 +312,7 @@ body {
 
 .numeric-input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12);
+  box-shadow: 0 0 0 3px rgba(84, 32, 232, 0.12);
 }
 
 .numeric-input.correct {
@@ -389,8 +403,14 @@ body {
 }
 
 .btn-link:hover {
-  background: var(--primary-soft);
+  background: var(--fill);
 }
+
+/* Remove on an MCQ option: repeated on every row, so in violet it was more
+   colour than the selection itself. Quiet grey at rest; red under the pointer
+   or keyboard, because it takes something away. */
+.ed-option-del { color: var(--muted); font-weight: 500; }
+.ed-option-del:hover, .ed-option-del:focus-visible { color: var(--red); background: var(--red-bg); }
 
 /* ---------- Verdict / solution ---------- */
 
@@ -439,7 +459,7 @@ body {
 
 .score-big {
   font-size: 40px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text);
 }
@@ -564,7 +584,7 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: var(--primary-soft);
+  background: var(--fill);
   display: grid;
   place-items: center;
 }
@@ -589,7 +609,7 @@ body {
 }
 
 .status-new {
-  background: #f1f5f9;
+  background: var(--fill);
   color: var(--muted);
 }
 
@@ -780,13 +800,13 @@ body {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--primary), #8b5cf6);
+  background: var(--primary);
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 26px;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 14px;
   box-shadow: var(--shadow-lg);
 }
@@ -976,7 +996,7 @@ body {
 
 .report-stat-num {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
 }
@@ -1074,7 +1094,7 @@ body {
 }
 
 .data-table tbody tr:hover td {
-  background: #fafbfc;
+  background: var(--bg);
 }
 
 .cell-strong {
@@ -1361,7 +1381,7 @@ body {
   border-radius: var(--radius-sm);
 }
 
-.ed-node-head:hover { background: #f1f5f9; }
+.ed-node-head:hover { background: var(--fill); }
 .ed-node-head.active { background: var(--primary-soft); }
 .ed-node-head.active .ed-tree-test { color: var(--primary); }
 .ed-node-head.active .ed-tree-test .icon { color: var(--primary); }
@@ -1452,7 +1472,7 @@ body {
   border-radius: var(--radius-sm);
 }
 
-.ed-tree-row:hover { background: #f1f5f9; }
+.ed-tree-row:hover { background: var(--fill); }
 .ed-tree-row.dragging { opacity: 0.4; }
 .ed-tree-row.ed-drop { box-shadow: inset 0 2px 0 var(--primary); }
 
@@ -1485,7 +1505,7 @@ body {
   cursor: pointer;
 }
 
-.ed-tree-q.active { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+.ed-tree-q.active { background: var(--primary-soft); color: var(--primary-deep); font-weight: 600; }
 
 .ed-row-menu {
   display: inline-flex;
@@ -1534,7 +1554,7 @@ body {
   cursor: pointer;
 }
 
-.ed-row-actions button:hover:not(:disabled) { background: #f1f5f9; color: var(--text); }
+.ed-row-actions button:hover:not(:disabled) { background: var(--fill); color: var(--text); }
 .ed-row-actions button:disabled { opacity: 0.4; cursor: not-allowed; }
 .ed-row-actions button.danger { color: var(--red); }
 .ed-row-actions button.danger:hover { background: var(--red-bg); }
@@ -1599,7 +1619,7 @@ body {
 
 .ed-hint code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  background: #f1f5f9;
+  background: var(--fill);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 1px 5px;
@@ -1632,7 +1652,7 @@ body {
 .ed-select:focus,
 .ed-marks:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12);
+  box-shadow: 0 0 0 3px rgba(84, 32, 232, 0.12);
 }
 
 .ed-select { width: auto; padding: 6px 10px; font-size: 12.5px; font-weight: 600; }
@@ -1653,7 +1673,7 @@ body {
 .ed-preview {
   border: 1px dashed var(--border);
   border-radius: var(--radius-sm);
-  background: #f8fafc;
+  background: var(--bg);
   padding: 10px 12px;
   font-size: 14.5px;
   overflow-x: auto;
@@ -1692,7 +1712,7 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 6px;
-  background: #f1f5f9;
+  background: var(--fill);
   color: var(--text-secondary);
   font-size: 11.5px;
   font-weight: 700;
@@ -1720,7 +1740,7 @@ body {
 .ed-overview { display: flex; flex-direction: column; gap: 12px; }
 
 .ov-row { cursor: pointer; }
-.ov-row:hover { background: var(--primary-soft); }
+.ov-row:hover { background: var(--fill); }
 
 .ov-problem {
   font-size: 11.5px;
@@ -1802,7 +1822,7 @@ body {
   cursor: pointer;
 }
 
-.ed-tab.active { background: var(--primary-soft); color: var(--primary); }
+.ed-tab.active { background: var(--primary-soft); color: var(--primary-deep); }
 
 /* One surface at a time under 900px */
 
@@ -1951,16 +1971,17 @@ body {
   width: 46px;
   height: 46px;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary), #8b5cf6);
-  color: #fff;
+  background: var(--fill);
+  color: var(--text);
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
   flex: none;
 }
 
 .subject-card-builtin .subject-mark {
-  background: linear-gradient(135deg, #64748b, #94a3b8);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--border);
 }
 
 .subject-name {
@@ -2094,13 +2115,13 @@ body {
 }
 
 .rail-item:hover {
-  background: #f1f5f9;
+  background: var(--fill);
   color: var(--text);
 }
 
 .rail-item.active {
   background: var(--primary-soft);
-  color: var(--primary);
+  color: var(--primary-deep);
   font-weight: 600;
 }
 
@@ -2241,10 +2262,10 @@ body {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), #8b5cf6);
+  background: var(--primary);
   color: #fff;
   font-size: 10.5px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .tb-name {
@@ -2410,7 +2431,7 @@ a.pm-item {
 .sk {
   display: block;
   border-radius: 6px;
-  background: linear-gradient(90deg, #eef2f6 25%, #f5f7fa 50%, #eef2f6 75%);
+  background: linear-gradient(90deg, #ececef 25%, #f5f5f7 50%, #ececef 75%);
   background-size: 200% 100%;
   animation: sk-shimmer 1.2s ease-in-out infinite;
 }
@@ -2495,15 +2516,15 @@ a.pm-item {
   gap: 10px;
   margin: 18px 0;
   padding: 12px 14px;
-  border: 1px solid var(--primary-border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--primary-soft);
-  color: var(--primary-hover);
+  background: var(--fill);
+  color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.55;
 }
 /* The one-render confirmation after handing a paper in: green rather than the
-   note's usual purple, because it is reporting something finished. */
+   note's usual grey, because it is reporting something finished. */
 .note.st-handed {
   margin-top: 0;
   border-color: var(--green);
@@ -2517,7 +2538,7 @@ a.pm-item {
   width: 16px;
   height: 16px;
   margin-top: 2px;
-  color: var(--primary);
+  color: var(--muted);
 }
 
 .section-label {
@@ -2646,8 +2667,8 @@ a.pm-item {
 .review-comment {
   margin: 10px 0 0;
   padding: 10px 12px;
-  border-left: 3px solid var(--primary);
-  background: var(--primary-soft);
+  border-left: 3px solid var(--border-strong);
+  background: var(--fill);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-size: 13.5px;
   line-height: 1.6;
@@ -2746,10 +2767,10 @@ a.pm-item {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), #8b5cf6);
+  background: var(--primary);
   color: #fff;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
 }
 .detail-name {
   font-size: 15px;
@@ -2948,7 +2969,7 @@ a.pm-item {
   border-radius: 50%;
   color: #fff;
   font-size: 9.5px;
-  font-weight: 800;
+  font-weight: 700;
 }
 .rv-done {
   background: var(--green);
@@ -2992,10 +3013,10 @@ a.pm-item {
 .welcome-expired {
   margin: 0 0 16px;
   padding: 11px 14px;
-  border: 1px solid var(--primary-border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--primary-soft);
-  color: var(--primary-hover);
+  background: var(--fill);
+  color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.55;
   text-align: left;
@@ -3011,7 +3032,7 @@ a.pm-item {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(0, 0, 0, 0.45);
   overflow-y: auto;
 }
 body.modal-open {
@@ -3241,7 +3262,7 @@ body.drawer-open {
   cursor: pointer;
 }
 
-.st-test:hover:not(:disabled) { background: #f1f5f9; }
+.st-test:hover:not(:disabled) { background: var(--fill); }
 .st-test .icon { width: 15px; height: 15px; color: var(--faint); flex: none; }
 .ed-node.open > .ed-node-head > .st-test { color: var(--primary); }
 .ed-node.open > .ed-node-head > .st-test .icon { color: var(--primary); }
@@ -3263,7 +3284,7 @@ body.drawer-open {
   font-weight: 700;
 }
 
-.st-answered { background: var(--primary-soft); color: var(--primary); }
+.st-answered { background: var(--fill); color: var(--text); }
 .st-todo { border: 1.5px dashed var(--border-strong); }
 
 
@@ -3280,9 +3301,9 @@ body.drawer-open {
 .ed-note-todo {
   padding: 8px 10px;
   border: 1px solid var(--border);
-  border-left: 3px solid var(--primary);
+  border-left: 3px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  background: var(--primary-soft);
+  background: var(--fill);
   color: var(--text-secondary);
   font-weight: 500;
 }
@@ -3292,7 +3313,7 @@ body.drawer-open {
   padding: 2px 8px;
   border-radius: 999px;
   background: var(--primary-soft);
-  color: var(--primary);
+  color: var(--primary-deep);
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
@@ -3336,8 +3357,9 @@ body.drawer-open {
 /* Where a question came from — "CBSE 2025". Quieter than the topic chip: it is
    provenance, not the thing the student is being asked about. */
 .chip-source {
-  background: #eef2ff;
-  color: #4338ca;
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--border);
   font-variant-numeric: tabular-nums;
 }
 
@@ -3465,7 +3487,7 @@ body.drawer-open {
   position: fixed;
   z-index: 35;
   inset: var(--drawer-top, 57px) 0 0;
-  background: rgba(15, 23, 42, 0.32);
+  background: rgba(0, 0, 0, 0.32);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
@@ -4012,8 +4034,8 @@ body.drawer-open {
 }
 
 .fr-beat:first-child .fr-icon {
-  background: var(--primary-soft);
-  border-color: var(--primary-border);
+  background: var(--fill);
+  border-color: var(--border);
   color: var(--primary);
 }
 
@@ -4146,7 +4168,7 @@ body.drawer-open {
   cursor: pointer;
   border-radius: var(--radius-sm);
 }
-.score-breakdown .res-open:hover { background: var(--primary-soft); }
+.score-breakdown .res-open:hover { background: var(--fill); }
 .score-breakdown .res-open .icon {
   width: 14px;
   height: 14px;
@@ -4277,9 +4299,9 @@ body.drawer-open {
 /* What the student typed, when a short answer came here instead of being
    graded. Neutral on purpose: it is evidence, not a verdict. */
 .mk-typed {
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--surface-2, #f7f7f9);
+  background: var(--bg);
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
@@ -4350,7 +4372,7 @@ body.drawer-open {
   gap: 5px;
   height: 34px;
   padding: 0 13px 0 10px;
-  border: 1px solid #ddd6fe;
+  border: 1px solid var(--primary-border);
   border-radius: 999px;
   font: inherit;
   font-size: 13px;
@@ -4401,7 +4423,7 @@ body.drawer-open {
 .mk-ai-head .ai-take { margin-left: auto; }
 .mk-ai-badge {
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.06em;
   padding: 2px 7px;
   border-radius: 4px;
@@ -4435,7 +4457,7 @@ body.drawer-open {
 .br-by { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .br-badge {
   font-size: 0.68rem; font-weight: 700; letter-spacing: 0.03em;
-  padding: 2px 6px; border-radius: 4px; background: var(--primary-soft); color: var(--primary);
+  padding: 2px 6px; border-radius: 4px; background: var(--fill); color: var(--text-secondary);
 }
 .br-have { font-size: 0.78rem; color: var(--muted); }
 .br-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -4499,7 +4521,7 @@ body.drawer-open {
   cursor: pointer;
 }
 .pv-btn:hover { background: #22222a; }
-.pv-btn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 2px; }
+.pv-btn:focus-visible { outline: 2px solid #9d86f6; outline-offset: 2px; }
 .pv-zoom { font-size: 12px; font-variant-numeric: tabular-nums; }
 .pv-close { font-size: 15px; }
 
@@ -4636,8 +4658,8 @@ body.drawer-open {
   display: grid;
   gap: 10px;
   padding: 14px;
-  background: var(--primary-soft);
-  border: 1px solid var(--primary-border);
+  background: var(--fill);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   margin-bottom: 14px;
 }
@@ -4801,10 +4823,10 @@ body.drawer-open {
 }
 .ns-tile:hover {
   border-color: var(--primary);
-  background: var(--primary-soft);
+  background: var(--fill);
 }
 .ns-tile[aria-pressed="true"] {
-  border-color: var(--primary);
+  border-color: var(--primary-deep);
   background: var(--primary-soft);
   box-shadow: 0 0 0 3px var(--primary-border);
 }
@@ -4988,8 +5010,8 @@ body.drawer-open {
 
 .ns-alert {
   padding: 12px 14px;
-  background: var(--primary-soft);
-  border: 1px solid var(--primary-border);
+  background: var(--fill);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   font-size: 13.5px;
   line-height: 1.55;
@@ -5141,7 +5163,7 @@ body.drawer-open {
   flex-direction: column;
   background: var(--surface);
   border-left: 1px solid var(--border);
-  box-shadow: -8px 0 24px rgba(15, 23, 42, 0.08);
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.08);
   z-index: 60;
 }
 .sy-panel[hidden] { display: none; }
@@ -5215,7 +5237,7 @@ body.drawer-open {
   padding: 7px 12px;
   cursor: pointer;
 }
-.sy-starter:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-soft); }
+.sy-starter:hover { border-color: var(--border-strong); color: var(--text); background: var(--fill); }
 
 .sy-turn { display: flex; flex-direction: column; gap: 10px; }
 .sy-me { align-items: flex-end; }
@@ -5229,7 +5251,7 @@ body.drawer-open {
 }
 .sy-bubble p { margin: 0 0 8px; }
 .sy-bubble p:last-child { margin-bottom: 0; }
-.sy-me .sy-bubble { background: var(--primary-soft); color: var(--text); border-bottom-right-radius: 6px; }
+.sy-me .sy-bubble { background: var(--fill); color: var(--text); border-bottom-right-radius: 6px; }
 .sy-ai .sy-bubble { background: var(--bg); color: var(--text); border-bottom-left-radius: 6px; align-self: flex-start; }
 .sy-error { background: var(--red-bg); color: var(--red); }
 .sy-error .btn-link { margin-left: 8px; font-weight: 600; }
@@ -5265,7 +5287,7 @@ body.drawer-open {
 .sy-card-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; font-size: 11.5px; }
 .sy-type {
   font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 10.5px;
-  color: var(--primary); background: var(--primary-soft); border-radius: 999px; padding: 3px 8px;
+  color: var(--text-secondary); background: var(--fill); border-radius: 999px; padding: 3px 8px;
 }
 .sy-marks { font-weight: 600; color: var(--text-secondary); }
 .sy-topic { color: var(--muted); }
@@ -5401,7 +5423,7 @@ body.drawer-open {
     border-left: 0;
     border-top: 1px solid var(--border);
     border-radius: 18px 18px 0 0;
-    box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
   }
   .sy-composer { margin-bottom: calc(10px + env(safe-area-inset-bottom)); }
 }
@@ -5445,7 +5467,7 @@ body.drawer-open {
 .vs-open .vs-btn > .icon { transform: rotate(-90deg); }
 .vs-btn:hover:not(:disabled) { border-color: var(--muted); }
 .vs-btn:disabled { opacity: 0.6; cursor: default; }
-.vs-btn:focus-visible { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.12); }
+.vs-btn:focus-visible { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(84, 32, 232, 0.12); }
 
 .vs-list {
   position: absolute;
@@ -5607,7 +5629,7 @@ input[type="radio"]::before { width: 8px; height: 8px; border-radius: 50%; backg
 input[type="checkbox"]:checked, input[type="radio"]:checked { background: var(--primary); border-color: var(--primary); }
 input[type="checkbox"]:checked::before, input[type="radio"]:checked::before { transform: scale(1); }
 input[type="checkbox"]:hover:not(:disabled), input[type="radio"]:hover:not(:disabled) { border-color: var(--primary); }
-input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.18); }
+input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(84, 32, 232, 0.18); }
 input[type="checkbox"]:disabled, input[type="radio"]:disabled { opacity: 0.5; cursor: default; }
 
 /* ---------- Number fields without the browser's spinner ---------- */
