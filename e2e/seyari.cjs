@@ -184,6 +184,23 @@ const STUB = `
   check(/99 credits left/.test(await page.locator("#sy-credits").textContent()), "the balance on the reply is shown");
   check((await page.inputValue("#sy-input")) === "", "the composer is cleared");
 
+  // Taking what the AI wrote is the white button with the violet light; calling
+  // the AI is the filled one. Add and Add all take, so they are white.
+  const takes = await page.evaluate(() =>
+    [...document.querySelectorAll(".sy-add, [data-act=add-all]")].map((b) => ({
+      cls: b.className,
+      bg: getComputedStyle(b).backgroundColor,
+      light: !!b.querySelector(".ai-take-trace"),
+    }))
+  );
+  // White, or the barely-tinted white of its hover state if the pointer rests on one.
+  const nearWhite = (c) => (c.match(/\d+/g) || []).slice(0, 3).every((n) => Number(n) >= 245);
+  check(takes.length >= 2 && takes.every((t) => /ai-take/.test(t.cls) && nearWhite(t.bg) && t.light),
+    `Add and Add all are the white "take" button with the violet light (${JSON.stringify(takes)})`);
+  if (process.env.SHOT_DIR) {
+    await page.locator(".sy-card >> nth=0").screenshot({ path: require("node:path").join(process.env.SHOT_DIR, "seyari-card.png") });
+  }
+
   // Nothing is in the test until Add is pressed.
   check((await page.evaluate(() => window.accepted.length)) === 0, "nothing reaches the test on its own");
   await page.click(".sy-card >> nth=0 >> .sy-add");

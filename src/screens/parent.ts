@@ -30,6 +30,7 @@ import {
 import { openBuyCredits } from "./buy";
 import { paymentsAvailable } from "../payments";
 import { copyText, escapeHtml, setUrl } from "../dom";
+import { aiGoInner } from "../ailight";
 import { confirmDialog, notice } from "../dialog";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
@@ -275,8 +276,8 @@ export async function showChildResults(child: Child): Promise<void> {
       const todo = waiting.get(t.id) ?? 0;
       const mark =
         child.own && todo > 0
-          ? `<button class="btn btn-primary pa-mark" data-test="${escapeHtml(t.id)}"
-               data-todo="${todo}">Mark ${todo} &amp; release</button>`
+          ? `<button class="ai-go pa-mark" data-test="${escapeHtml(t.id)}"
+               data-todo="${todo}">${aiGoInner(`Mark ${todo} &amp; release`)}</button>`
           : "";
       return `
       <div class="pa-row">
@@ -350,13 +351,13 @@ async function markWholePaper(child: Child, btn: HTMLButtonElement): Promise<voi
   ) {
     return;
   }
-  const was = btn.textContent;
+  const was = btn.innerHTML;
   btn.disabled = true;
-  btn.textContent = "Marking…";
+  btn.innerHTML = aiGoInner("Marking…");
   const res = await assessWholePaper(child.username, btn.dataset.test!);
   if (!res.ok) {
     btn.disabled = false;
-    btn.textContent = was;
+    btn.innerHTML = was;
     // Out of credits is a decision, not a failure: it names the shortfall and
     // opens the way to fix it.
     if (res.short && paymentsAvailable()) {

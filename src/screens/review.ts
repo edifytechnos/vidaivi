@@ -30,6 +30,7 @@ import { clearAttempt, newAttempt } from "../attempts";
 import { totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
 import { bindTreeDrawer, drawerToggleMarkup, mount, toTop } from "../shell";
+import { aiGoInner, aiTakeInner, lightTrace } from "../ailight";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { hydrateMarks, startTest } from "./test";
 
@@ -326,58 +327,11 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
 let rows = new Map<string, GradedAnswer>();
 /** The one button that spends a credit, marked as the AI's by its icon and its
  *  border (`.mk-assess` in style.css), so a teacher can find it on the paper. */
-/**
- * The light that runs round an edge (`.mk-trace` in style.css): the Assess
- * with AI button's, and the card holding the AI's proposal.
- *
- * A stroke cannot carry a gradient along its own length, so the streak is
- * built from layers of the same outline, each with one faint dash placed by
- * its dasharray. Where many overlap the light is bright; where few do, it is
- * faint. The layers are sized so the result is shaped like a drawn gradient,
- * not stepped:
- *
- *   - behind the brightest point, the light eases away to nothing over
- *     `tail` (the brightness falls along `(1 - d/tail)^1.6`, so it lingers
- *     a moment and then dissolves);
- *   - ahead of it, it ramps up over `tip`, so the leading edge is soft too
- *     rather than a cut. The faintest layers reach furthest both ways.
- *
- * Positions are percentages of the outline (`pathLength="100"`). The peak
- * sits at 0 in the pattern; the animation's starting offset of -50 puts it at
- * the bottom right, half way round from where a rect's path begins. The
- * streak travels by animating `stroke-dashoffset` on the svg, which every
- * layer inherits: one animation, not one per layer.
- */
-function lightTrace(opts: { rx: number; tail: number; tip: number; cls?: string }): string {
-  const layers = 48;
-  const alpha = 0.1; // each layer's opacity — must match `.mk-trace` stroke-opacity
-  const { rx, tail, tip } = opts;
-  const top = 1 - (1 - alpha) ** (layers + 1);
-  const rects = Array.from({ length: layers }, (_, i) => {
-    const k = i + 1;
-    // How far behind the peak layer k reaches: the distance at which the
-    // target brightness has fallen to what k overlapping layers make.
-    const lit = 1 - (1 - alpha) ** k;
-    const back = Math.max(0.3, tail * (1 - (lit / top) ** (1 / 1.6)));
-    const ahead = tip * (1 - k / (layers + 1));
-    // The pattern is laid out with the peak at 0 and the dash wrapping round
-    // it — `ahead` dash, the gap, `back` dash, a zero gap that joins the two —
-    // so no layer ever has a zero-LENGTH dash: with round caps one of those
-    // draws a dot, and 48 of them stacked made a bright speck on the outline.
-    const dash = [ahead, 100 - ahead - back, back, 0].map((n) => n.toFixed(2)).join(" ");
-    return `<rect width="100%" height="100%" rx="${rx}" pathLength="100" stroke-dasharray="${dash}"/>`;
-  });
-  return `<svg class="mk-trace${opts.cls ? ` ${opts.cls}` : ""}" aria-hidden="true">${rects.join("")}</svg>`;
-}
-
-/** The button's: a 44px pill, so the radius is half that less the border it
- *  is centred on; a short perimeter, so the tail is a long share of it. */
-const TRACE = lightTrace({ rx: 21.25, tail: 28, tip: 3.5 });
-/** The AI card's: its corners are `--radius-sm` (8px) less half its 1px
- *  border, and its perimeter is several times the button's, so the tail and
+/** The card's light: its corners are `--radius-sm` (8px) less half its 1px
+ *  border, and its perimeter is several times a button's, so the tail and
  *  tip are a smaller share of it to come out about the same length on screen. */
 const CARD_TRACE = lightTrace({ rx: 7.5, tail: 12, tip: 1, cls: "mk-trace-card" });
-const assessInner = (label: string): string => `${TRACE}${ICONS.spark}<span>${label}</span>`;
+const assessInner = aiGoInner;
 const ASSESS_LABEL = assessInner("Assess with AI");
 /** Whether this site has AI marking switched on. Unknown until first asked. */
 let aiOff = false;
@@ -471,7 +425,7 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
                  <span class="mk-ai-badge">AI</span>
                  <span class="mk-ai-mark">suggests ${ai} / ${row.maxMarks}</span>
                  <span class="ed-spacer"></span>
-                 <button class="mk-use" id="mk-use"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Use this mark</span></button>
+                 <button class="ai-take mk-use" id="mk-use">${aiTakeInner("Use this mark")}</button>
                </div>
                ${row.aiReasoning ? `<p class="mk-ai-why">${escapeHtml(row.aiReasoning)}</p>` : ""}
                ${row.aiComment ? `<p class="mk-ai-say">For the student: “${escapeHtml(row.aiComment)}”</p>` : ""}
@@ -480,7 +434,7 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
              </div>`
           : aiOff || !(row.images.length || row.answerText)
             ? ""
-            : `<button class="btn btn-ghost mk-assess" id="mk-assess">${ASSESS_LABEL}</button>`
+            : `<button class="ai-go mk-assess" id="mk-assess">${ASSESS_LABEL}</button>`
       }
       <div class="mk-award">
         <div class="section-label">Award marks</div>

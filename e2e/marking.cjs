@@ -294,15 +294,20 @@ const onQuestion = (page, text) =>
   });
   check(!!card && /mk-card-lap/.test(card.anim), `the AI's proposal has the light running round it (${card && card.anim})`);
   check(!!card && card.layers >= 16, "with the same soft-ended streak as the button");
-  const use = await page.locator("#mk-use").evaluate((el) => ({
-    bg: getComputedStyle(el).backgroundImage,
-    color: getComputedStyle(el).color,
-    sheen: getComputedStyle(el, "::after").animationName,
-    tick: !!el.querySelector("svg"),
-    height: el.getBoundingClientRect().height,
-  }));
-  check(/linear-gradient/.test(use.bg) && use.color === "rgb(255, 255, 255)" && use.tick, "Use this mark is a filled violet button with a tick, not a link");
-  check(use.sheen === "mk-sheen", `and a sheen crosses it as the card's light finishes its lap (${use.sheen})`);
+  const use = await page.locator("#mk-use").evaluate((el) => {
+    const t = el.querySelector(".ai-take-trace");
+    return {
+      bg: getComputedStyle(el).backgroundColor,
+      color: getComputedStyle(el).color,
+      tick: !!el.querySelector("svg.icon"),
+      streak: t ? getComputedStyle(t).animationName : "",
+      streakColor: t ? getComputedStyle(t).stroke : "",
+      height: el.getBoundingClientRect().height,
+    };
+  });
+  check(use.bg === "rgb(255, 255, 255)" && use.color !== "rgb(255, 255, 255)" && use.tick, `Use this mark is a white button with violet text and a tick (${use.bg}, ${use.color})`);
+  check(/ai-take-lap/.test(use.streak), `the card's light hands off to a streak round it (${use.streak})`);
+  check(use.streakColor !== "rgb(255, 255, 255)", `and on white the streak is violet, not white (${use.streakColor})`);
   check(use.height >= 32, `big enough to tap (${use.height}px)`);
   const markLines = await page.locator(".mk-ai-mark").evaluate((el) => {
     const r = el.getBoundingClientRect();
@@ -312,8 +317,8 @@ const onQuestion = (page, text) =>
   check(markLines < 1.5, `"suggests 2 / 2" stays on one line beside the button (${markLines.toFixed(2)} lines)`);
   await page.emulateMedia({ reducedMotion: "reduce" });
   check(
-    (await page.locator("#mk-use").evaluate((el) => getComputedStyle(el, "::after").display)) === "none",
-    "with reduced motion Use this mark has no sheen"
+    (await page.locator("#mk-use .mk-trace").evaluate((el) => getComputedStyle(el).display)) === "none",
+    "with reduced motion Use this mark's streak is not drawn"
   );
   await page.emulateMedia({ reducedMotion: "no-preference" });
   if (process.env.SHOT_DIR) {

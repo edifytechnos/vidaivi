@@ -20,6 +20,7 @@ import {
 } from "../../api";
 import { isAdmin } from "../../auth";
 import { ICONS, escapeHtml, setUrl, testLabelMarkup } from "../../dom";
+import { aiGoInner } from "../../ailight";
 import { mount, setShellbar, skeleton } from "../../shell";
 import { openModal } from "../../modal";
 import { openAssign } from "../assign";
@@ -222,7 +223,7 @@ function renderEmptyShell(): void {
               Or ask <strong>Seyari AI</strong> to write one, or to read the questions off a paper you have.</p>
               <div class="actions">
                 <button class="btn btn-primary" id="ed-empty-create">Create the first test</button>
-                <button class="btn btn-ghost" id="ed-empty-seyari">${ICONS.spark} Ask Seyari AI</button>
+                <button class="ai-go" id="ed-empty-seyari">${aiGoInner("Ask Seyari AI")}</button>
               </div>
             </section>
           </div>

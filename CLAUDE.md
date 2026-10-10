@@ -1367,6 +1367,7 @@ every move passes through is the URL write, and that is where the history is.
 - `screens/student.ts` — the student's workspace: subject → tests tree → one question.
 - `screens/assign.ts` — "Who sees this test": the audience picker, shared by the editor and My tests.
 - `screens/review.ts` — read-only review, one question per page.
+- `ailight.ts` — the two AI buttons (`.ai-go` calls the AI, `.ai-take` takes its work) and the light round them.
 - `screens/marking.ts` — the marking queue (a list) and `openStudentPaper`, the one way into marking a paper.
 - `answerphotos.ts` — camera capture, browser-side downscale, photo strips.
 - `photoviewer.ts` — the full-screen zoomable viewer a photo strip opens into.
@@ -2949,11 +2950,11 @@ Two things a teacher reported while marking on a phone, both proven by
   button's and with a longer rest, because it runs round text somebody is
   reading: it should catch the eye, not keep pulling at it.
 - **Use this mark is a button, and the light hands off to it.** It was a text
-  link, and it is the action the whole card leads to: now a compact violet
-  pill with a white tick (`.mk-use`), from the same family as Assess with AI.
-  Its motion is a **handoff, not a third streak**: when the card's light
-  finishes its lap, one sheen glints across the button (`mk-sheen`), leading
-  the eye from the AI's reasoning to the action. Both run on the card's 7s
+  link, and it is the action the whole card leads to: now the white "take"
+  pill (`.ai-take`, see *Every AI button is one of two buttons*). Its motion
+  is a **handoff**: when the card's light finishes its lap, a violet streak
+  runs one lap round the button, leading the eye from the AI's reasoning to
+  the action. Both run on the card's 7s
   cycle from the same paint, so they stay in step — retime one and retime
   the other. The score (`suggests 2 / 2`) never wraps; on a narrow phone the
   button drops to its own line at the right instead of crushing it, and
@@ -2965,6 +2966,35 @@ Two things a teacher reported while marking on a phone, both proven by
   was done when two of its marks were not earned. Orange keeps the tick —
   something was earned — and stays apart from the brown "…" of an answer
   still waiting to be marked. `e2e/marking.cjs` asserts all three colours.
+
+### Every AI button is one of two buttons (`src/ailight.ts`)
+
+J's rule, and it holds everywhere: **a button that calls the AI is filled; a
+button that acts on what the AI produced is white.**
+
+| | Looks | Light | Where |
+|---|---|---|---|
+| **`.ai-go`** — calls the AI, usually spends a credit | violet pill, white label and sparkle, bevelled glass rim | white, round the edge | Assess with AI, Mark N & release (parent), Ask Seyari AI |
+| **`.ai-take`** — takes the AI's work | white pill, violet label and tick | violet (white would vanish on white) | Use this mark, Add to test / Create test with this, Add all N |
+
+- **`src/ailight.ts` is the one implementation**: `lightTrace()` (the
+  layered soft-ended streak), and `aiGoInner(label)` / `aiTakeInner(label)`,
+  the inside of each button. **Anything that relabels one while it works
+  ("Reading…", "Marking…") must go through these**, or the light and the icon
+  are wiped with the old text — `markWholePaper` used `textContent` and would
+  have done exactly that.
+- Each trace's radius is tied to its button's fixed height (44px go, 34px
+  take). Change one and change the other.
+- **`.ai-take`'s light runs on the AI card's 7s cycle** — a lap from 56% to
+  72%, just after the card's own light finishes (the handoff). Standalone,
+  as on a Seyari card, that is simply a lap every seven seconds.
+- **Seyari AI in the app bar is filled but carries no light.** It sits in the
+  chrome for the whole time a teacher writes; light that never stops circling
+  wears on somebody. The light is for moments, not fixtures. Seyari's send
+  arrow was already a filled violet circle and stays one.
+- Discard on a Seyari card is the same 34px pill shape as Add beside it, quieter.
+- `e2e/seyari.cjs` asserts Add and Add all are the white take button with
+  the light; `e2e/marking.cjs` covers Assess and Use this mark.
 
 ### On a phone the bar covers nothing, and the drawer holds the page
 

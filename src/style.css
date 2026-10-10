@@ -4192,9 +4192,12 @@ body.drawer-open {
    The rect sits on the centre of the 1.5px border with a fixed radius, which
    is why the button is a fixed 44px tall (also the touch-target size): change
    one and change the other. */
-.mk-assess {
+.ai-go {
   position: relative;
-  align-self: flex-start;
+  font: inherit;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
@@ -4236,19 +4239,21 @@ body.drawer-open {
     mk-lap 4.2s infinite,
     mk-fade 4.2s linear infinite;
 }
-.mk-assess .icon { width: 18px; height: 18px; color: #fff; }
-.mk-assess:hover:not(:disabled) {
+.ai-go .icon { width: 18px; height: 18px; color: #fff; }
+/* In the marking panel it sits at the start of a column. */
+.mk-assess { align-self: flex-start; }
+.ai-go:hover:not(:disabled) {
   color: #fff;
   background:
     radial-gradient(ellipse 75% 100% at 50% 125%, rgba(233, 213, 255, 1), transparent 72%),
     linear-gradient(180deg, #7442f7, #6230f0);
 }
-.mk-assess:focus-visible { outline: 2px solid var(--primary); outline-offset: 8px; }
+.ai-go:focus-visible { outline: 2px solid var(--primary); outline-offset: 8px; }
 /* While it reads, it stays bright and the light keeps running, faster and
    without the rest: that is the "working" signal, so the usual disabled fade
    would say the opposite. */
-.mk-assess:disabled { opacity: 1; cursor: progress; }
-.mk-assess:disabled .mk-trace { animation: mk-run 1.4s linear infinite; opacity: 1; }
+.ai-go:disabled { opacity: 1; cursor: progress; }
+.ai-go:disabled .mk-trace { animation: mk-run 1.4s linear infinite; opacity: 1; }
 /* One lap in the first 72% of the cycle, eased in and out like a hand
    drawing it, then a rest. The streak fades in as it sets off and out as it
    arrives, rather than appearing and vanishing. */
@@ -4328,67 +4333,72 @@ body.drawer-open {
   55%, 100% { opacity: 0; }
 }
 /* Use this mark: the action the card leads to, so it is a button and not a
-   link — a compact violet pill from the same family as Assess with AI, with a
-   white tick. Its motion is a handoff, not a third streak competing with the
-   card's: when the light finishes its lap round the card, one sheen glints
-   across this button, leading the eye from the AI's reasoning to the action.
-   Both run on the card's 7s cycle from the same paint, so they stay in step
-   (the card's lap ends at 55%; the sheen crosses from 56% to 68%). */
-.mk-use {
+   link. A white pill with violet text and tick — the reverse of Assess with
+   AI, which reads as "the AI's" where this reads as "yours to take" — and
+   the same light, in violet: a white streak would vanish on white.
+   Its motion is a handoff, not a third thing competing with the card: when
+   the card's light finishes its lap round the card, a violet streak runs one
+   lap round this button, leading the eye from the AI's reasoning to the
+   action. Both run on the card's 7s cycle from the same paint, so they stay
+   in step (the card's lap ends at 55%; this one runs from 56% to 72%).
+   The trace's radius assumes the fixed 34px height. */
+.ai-take {
   position: relative;
-  overflow: hidden;
   flex: none;
   display: inline-flex;
   align-items: center;
   gap: 5px;
   height: 34px;
   padding: 0 13px 0 10px;
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  border: 1px solid #ddd6fe;
   border-radius: 999px;
   font: inherit;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 650;
   letter-spacing: 0.01em;
-  color: #fff;
+  color: #5420e8;
   cursor: pointer;
-  background:
-    radial-gradient(ellipse 80% 100% at 50% 130%, rgba(216, 180, 254, 0.75), transparent 70%),
-    linear-gradient(180deg, #6d35f5, #5420e8);
+  background: #fff;
   box-shadow:
-    0 1px 0 rgba(59, 108, 246, 0.9),
-    0 4px 12px -2px rgba(84, 32, 232, 0.45);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+    0 1px 2px rgba(84, 32, 232, 0.1),
+    0 4px 12px -4px rgba(84, 32, 232, 0.3);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
-.mk-use .icon { width: 15px; height: 15px; color: #fff; }
-.mk-use::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.6) 50%, transparent 65%);
-  transform: translateX(-120%);
-  pointer-events: none;
-  animation: mk-sheen 7s infinite;
-}
-.mk-use:hover {
+.ai-take .icon { width: 15px; height: 15px; color: #5420e8; }
+.ai-take:hover {
+  background: #faf8ff;
   box-shadow:
-    0 1px 0 rgba(59, 108, 246, 0.9),
-    0 6px 16px -2px rgba(84, 32, 232, 0.55);
+    0 1px 2px rgba(84, 32, 232, 0.12),
+    0 6px 16px -4px rgba(84, 32, 232, 0.4);
   transform: translateY(-1px);
 }
-.mk-use:active { transform: translateY(0); }
-.mk-use:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
-@keyframes mk-sheen {
-  0%, 56% { transform: translateX(-120%); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
-  68%, 100% { transform: translateX(120%); }
+.ai-take:active { transform: translateY(0); }
+.ai-take:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+.ai-take-trace {
+  inset: -0.5px;
+  width: calc(100% + 1px);
+  height: calc(100% + 1px);
+  stroke: #6d35f5;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 1.5px rgba(109, 53, 245, 0.8)) drop-shadow(0 0 5px rgba(139, 92, 246, 0.45));
+  animation:
+    ai-take-lap 7s infinite,
+    ai-take-fade 7s linear infinite;
 }
-@media (prefers-reduced-motion: reduce) {
-  .mk-use::after { animation: none; display: none; }
+@keyframes ai-take-lap {
+  0%, 56% { stroke-dashoffset: -50; animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1); }
+  72%, 100% { stroke-dashoffset: -150; }
+}
+@keyframes ai-take-fade {
+  0%, 55% { opacity: 0; }
+  58%, 68% { opacity: 1; }
+  72%, 100% { opacity: 0; }
 }
 /* The score stays on one line; if the row is too narrow for it and the
    button, the button drops to its own line, still at the right, rather than
    squeezing "suggests 2 / 2" onto two. */
 .mk-ai-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; row-gap: 8px; }
-.mk-ai-head .mk-use { margin-left: auto; }
+.mk-ai-head .ai-take { margin-left: auto; }
 .mk-ai-badge {
   font-size: 0.68rem;
   font-weight: 800;
@@ -5085,25 +5095,40 @@ body.drawer-open {
    #app so an editor repaint cannot take the conversation with it. Every colour
    maps onto :root — one palette, not two. */
 
+/* Seyari AI in the app bar opens the AI, so it wears the filled AI look —
+   but no running light: it sits in the chrome for the whole time a teacher
+   writes, and light that never stops circling wears on somebody. The light
+   is for moments (a suggestion arriving, a paper to mark), not fixtures. */
 .sy-toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   height: 38px;
-  padding: 0 12px 0 10px;
+  padding: 0 13px 0 11px;
   flex: none;
   font: inherit;
   font-size: 13px;
   font-weight: 600;
-  color: var(--primary);
-  background: var(--primary-soft);
-  border: 1px solid var(--primary-border);
-  border-radius: var(--radius-sm);
+  color: #fff;
+  background:
+    radial-gradient(ellipse 70% 95% at 50% 130%, rgba(216, 180, 254, 0.8), transparent 70%),
+    linear-gradient(180deg, #6631f6, #5420e8);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 #3b6cf6,
+    0 1px 0 #3b6cf6,
+    0 4px 12px -3px rgba(84, 32, 232, 0.45);
   cursor: pointer;
   white-space: nowrap;
 }
-.sy-toggle .icon { width: 16px; height: 16px; }
-.sy-toggle:hover, .sy-toggle[aria-pressed="true"] { background: var(--primary); color: #fff; border-color: transparent; }
+.sy-toggle .icon { width: 16px; height: 16px; color: #fff; }
+.sy-toggle:hover { filter: brightness(1.08); }
+.sy-toggle[aria-pressed="true"] {
+  background: linear-gradient(180deg, #5420e8, #4318c4);
+  box-shadow: inset 0 2px 4px rgba(30, 10, 90, 0.35), 0 1px 0 #3b6cf6;
+}
+.sy-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 @media (max-width: 600px) { .sy-toggle span { display: none; } .sy-toggle { padding: 0 10px; } }
 
 .sy-panel {
@@ -5267,11 +5292,14 @@ body.drawer-open {
 .sy-needs { margin-top: 10px; font-size: 12.5px; color: var(--amber); background: var(--amber-bg); border-radius: var(--radius-sm); padding: 6px 9px; }
 .sy-card-actions { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
 .sy-card-actions .btn { flex: none; min-width: 0; padding: 7px 12px; font-size: 13px; }
+/* Discard sits beside the white Add pill, so it is the same height and shape,
+   quieter: the pair reads as one set rather than two kinds of button. */
+.sy-card-actions .sy-drop { height: 34px; padding: 0 14px; border-radius: 999px; }
 .sy-added { display: inline-flex; align-items: center; gap: 6px; color: var(--green); font-weight: 600; font-size: 13px; }
 .sy-added .icon { width: 16px; height: 16px; }
 .sy-dropped { color: var(--muted); font-size: 13px; }
 .sy-all { display: flex; justify-content: flex-end; }
-.sy-all .btn { flex: none; min-width: 0; }
+.sy-all .ai-take { flex: none; }
 
 /* The composer: one rounded card at the foot, textarea above a bar with "+"
    on the left, the credits line in the middle and send at the right. */
