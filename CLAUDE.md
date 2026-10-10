@@ -2903,25 +2903,38 @@ Two things a teacher reported while marking on a phone, both proven by
   repaint of the same question — the AI's proposal arriving, a mark saved, the
   subject arriving late — keeps the place. The suite fails at 5904px with the
   call removed.
-- **Assess with AI is the AI's own button**, after a reference video J sent:
-  a vivid violet pill with a pink-lilac glow rising from its foot, a thin pale
-  lavender line inside the edge (**not** pure white), a soft deep-violet band
-  outside it, the white sparkle (`ASSESS_LABEL` / `assessInner`,
-  `.mk-assess`), and **a short streak of light that runs round the line**,
-  clockwise from the bottom right, then rests. It is the one button on the
-  paper that spends a credit, and as a grey ghost button it was missed. App
-  purples only: a rainbow border was tried first and read as loud.
-  - **The streak is an SVG outline drawn as dashes** (`.mk-trace`, two rects
-    with `pathLength="100"`: a dim tail and a bright head), so it moves at
-    one even speed all the way round. A rotating conic gradient was tried and
-    does not: on a wide pill an angle crawls along the long edges and whips
-    round the ends.
-  - The rect sits on the centre of the 1.5px border, so its radius is fixed
-    (`rx="21.25"`), which is why the button is a fixed **44px** tall — also
-    the touch-target size. Change one and change the other.
-  - While it reads, the streak runs faster and without the rest (the disabled
+- **Assess with AI is the AI's own button**, built detail by detail to a
+  reference video J sent (`ASSESS_LABEL` / `assessInner` / `TRACE` in
+  `review.ts`, `.mk-assess` / `.mk-trace` in `style.css`). It is the one
+  button on the paper that spends a credit, and as a grey ghost button it was
+  missed. App purples only — a rainbow border was tried first and read loud.
+  - **The edge is two lines, like light on a bevelled glass rim**: a white
+    hairline (the border) one step above a blue line — the blue shows outside
+    the white along the bottom and inside it along the top (`0 1.5px 0` and
+    `inset 0 1.5px 0`). A plain white outline read flat.
+  - **A streak of light runs round it, and its ends are soft** — that is what
+    makes it look expensive rather than like a progress bar. A stroke cannot
+    carry a gradient along its length, so the streak is **48 faint layers**
+    of the same outline, each one dash, sized so their overlap is a drawn
+    gradient: eased away to nothing behind the peak (`(1 - d/tail)^1.6`),
+    ramped up over a few pixels ahead of it, round-capped so no step shows.
+    It eases along its lap, fades in and out at either end of it, rests, and
+    goes again; one animation on the svg's `stroke-dashoffset`, inherited by
+    every layer.
+  - **Never give a layer a zero-length dash.** With round caps it still draws
+    a dot, and 48 stacked made a bright speck on the outline away from the
+    streak. The pattern is laid out with the peak at 0 and the dash wrapping
+    round it; `e2e/marking.cjs` asserts no dash is zero.
+  - Dashes on `pathLength="100"`, not a rotating conic gradient: an angle
+    crawls along a wide pill's long edges and whips round the ends.
+  - The rect sits on the centre of the 1.5px border with a fixed radius
+    (`rx="21.25"`), so the button is a fixed **44px** tall — also the
+    touch-target size. Change one and change the other.
+  - While it reads, the light runs faster and without the rest (the disabled
     fade would say the opposite of "working"); it keeps its icon through the
     failure reset; under `prefers-reduced-motion` the streak is not drawn.
+  - `SHOT_DIR=… node e2e/marking.cjs` writes one whole cycle as frames, with
+    the animations paused and stepped by hand, for a design review clip.
 
 ### On a phone the bar covers nothing, and the drawer holds the page
 

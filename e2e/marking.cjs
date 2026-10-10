@@ -206,18 +206,29 @@ const onQuestion = (page, text) =>
       ring: cs.borderTopColor,
       ringWidth: cs.borderTopWidth,
       height: el.getBoundingClientRect().height,
-      anim: getComputedStyle(el.querySelector(".mk-head")).animationName,
+      anim: getComputedStyle(el.querySelector(".mk-trace")).animationName,
+      layers: el.querySelectorAll(".mk-trace rect").length,
+      shadow: cs.boxShadow,
       width: el.getBoundingClientRect().width,
       row: el.parentElement.getBoundingClientRect().width,
     };
   });
   check(/radial-gradient/.test(look.bg) && /linear-gradient/.test(look.bg), "it is a filled violet pill with a glow at its foot");
   check(look.color === "rgb(255, 255, 255)", `with a white label (${look.color})`);
-  check(look.ring !== "rgb(255, 255, 255)" && parseFloat(look.ringWidth) <= 2, `a thin pale line inside the edge, not pure white (${look.ringWidth} ${look.ring})`);
+  check(parseFloat(look.ringWidth) <= 2 && /inset/.test(look.shadow), `the edge is a thin white hairline over a blue line, like a glass rim (${look.ringWidth})`);
   check(Math.round(look.height) === 44, `the button is 44px tall, which the trace's radius assumes (${look.height})`);
-  check(look.anim === "mk-head", `and a streak of light runs round it (${look.anim})`);
+  check(/mk-lap/.test(look.anim) && /mk-fade/.test(look.anim), `a streak of light runs round it and fades in and out (${look.anim})`);
+  check(look.layers >= 16, `its tail is built of ${look.layers} layers, so it dissolves rather than stops`);
+  // With round caps a zero-LENGTH dash still draws a dot, and one per layer
+  // stacked into a bright speck on the outline away from the streak.
+  const zeroDash = await btn.evaluate((el) =>
+    [...el.querySelectorAll(".mk-trace rect")].some((r) =>
+      (r.getAttribute("stroke-dasharray") || "").split(/\s+/).some((n, i) => i % 2 === 0 && parseFloat(n) === 0)
+    )
+  );
+  check(!zeroDash, "no layer has a zero-length dash, so no stray dot appears on the outline");
   // The streak travels: two moments a second apart put the head in two places.
-  const headAt = () => page.evaluate(() => getComputedStyle(document.querySelector("#mk-assess .mk-head")).strokeDashoffset);
+  const headAt = () => page.evaluate(() => getComputedStyle(document.querySelector("#mk-assess .mk-trace")).strokeDashoffset);
   const a1 = await headAt();
   await page.waitForTimeout(700);
   check(a1 !== (await headAt()), `the streak moves (${a1} → ${await headAt()})`);
@@ -227,11 +238,22 @@ const onQuestion = (page, text) =>
     const b = await btn.boundingBox();
     const clip = { x: Math.max(0, b.x - 16), y: b.y - 16, width: b.width + 32, height: b.height + 32 };
     await page.screenshot({ path: path.join(process.env.SHOT_DIR, "assess-button.png"), clip });
-    // A filmstrip of the streak going round: one frame every 350ms.
-    for (let f = 0; f < 10; f++) {
-      await page.screenshot({ path: path.join(process.env.SHOT_DIR, `assess-frame-${f}.png`), clip });
-      await page.waitForTimeout(350);
+    // Frames of one whole cycle, every 50ms, with the animations paused and
+    // stepped by hand so each frame is exactly where it says it is. ffmpeg
+    // turns them into a clip: SHOT_DIR/assess-frame-%03d.png.
+    const cycle = 4200;
+    for (let t = 0, f = 0; t < cycle; t += 50, f++) {
+      await page.evaluate((ms) => {
+        for (const a of document.querySelector("#mk-assess .mk-trace").getAnimations()) {
+          a.pause();
+          a.currentTime = ms;
+        }
+      }, t);
+      await page.screenshot({ path: path.join(process.env.SHOT_DIR, `assess-frame-${String(f).padStart(3, "0")}.png`), clip });
     }
+    await page.evaluate(() => {
+      for (const a of document.querySelector("#mk-assess .mk-trace").getAnimations()) a.play();
+    });
   }
   check(look.width < look.row, `the button is its own size, not the row's (${Math.round(look.width)} of ${Math.round(look.row)})`);
 

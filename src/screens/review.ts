@@ -314,12 +314,50 @@ function bindMarking(test: Test, attempt: Attempt, q: Question, rerender: () => 
 let rows = new Map<string, GradedAnswer>();
 /** The one button that spends a credit, marked as the AI's by its icon and its
  *  border (`.mk-assess` in style.css), so a teacher can find it on the paper. */
-const assessInner = (label: string): string =>
-  // The light that runs round the edge (`.mk-trace` in style.css). The radius
-  // is half the button's fixed 44px, less the border it is centred on.
-  `<svg class="mk-trace" aria-hidden="true"><rect class="mk-tail" width="100%" height="100%" rx="21.25" pathLength="100"/>` +
-  `<rect class="mk-head" width="100%" height="100%" rx="21.25" pathLength="100"/></svg>` +
-  `${ICONS.spark}<span>${label}</span>`;
+/**
+ * The light that runs round the button's edge (`.mk-trace` in style.css).
+ *
+ * A stroke cannot carry a gradient along its own length, so the streak is
+ * built from layers of the same outline, each with one faint dash placed by
+ * its dasharray. Where many overlap the light is bright; where few do, it is
+ * faint. The layers are sized so the result is shaped like a drawn gradient,
+ * not stepped:
+ *
+ *   - behind the brightest point, the light eases away to nothing over
+ *     `tail` (the brightness falls along `(1 - d/tail)^1.6`, so it lingers
+ *     a moment and then dissolves);
+ *   - ahead of it, it ramps up over `tip`, so the leading edge is soft too
+ *     rather than a cut. The faintest layers reach furthest both ways.
+ *
+ * Positions are percentages of the outline (`pathLength="100"`). The peak
+ * sits at 0 in the pattern; the animation's starting offset of -50 puts it at
+ * the bottom right, half way round from where a rect's path begins. The
+ * streak travels by animating `stroke-dashoffset` on the svg, which every
+ * layer inherits: one animation, not one per layer.
+ */
+const TRACE = (() => {
+  const layers = 48;
+  const alpha = 0.1; // each layer's opacity — must match `.mk-trace` stroke-opacity
+  const tail = 28; // % of the outline the light dissolves over, behind the peak
+  const tip = 3.5; // % of the outline it ramps up over, ahead of the peak
+  const top = 1 - (1 - alpha) ** (layers + 1);
+  const rects = Array.from({ length: layers }, (_, i) => {
+    const k = i + 1;
+    // How far behind the peak layer k reaches: the distance at which the
+    // target brightness has fallen to what k overlapping layers make.
+    const lit = 1 - (1 - alpha) ** k;
+    const back = Math.max(0.3, tail * (1 - (lit / top) ** (1 / 1.6)));
+    const ahead = tip * (1 - k / (layers + 1));
+    // The pattern is laid out with the peak at 0 and the dash wrapping round
+    // it — `ahead` dash, the gap, `back` dash, a zero gap that joins the two —
+    // so no layer ever has a zero-LENGTH dash: with round caps one of those
+    // draws a dot, and 48 of them stacked made a bright speck on the outline.
+    const dash = [ahead, 100 - ahead - back, back, 0].map((n) => n.toFixed(2)).join(" ");
+    return `<rect width="100%" height="100%" rx="21.25" pathLength="100" stroke-dasharray="${dash}"/>`;
+  });
+  return `<svg class="mk-trace" aria-hidden="true">${rects.join("")}</svg>`;
+})();
+const assessInner = (label: string): string => `${TRACE}${ICONS.spark}<span>${label}</span>`;
 const ASSESS_LABEL = assessInner("Assess with AI");
 /** Whether this site has AI marking switched on. Unknown until first asked. */
 let aiOff = false;
