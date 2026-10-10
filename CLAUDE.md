@@ -2907,7 +2907,9 @@ Two things a teacher reported while marking on a phone, both proven by
   (`ASSESS_LABEL`, `.mk-assess`). It is the one button on the paper that
   spends a credit, and as a grey ghost button it was missed. The border is two
   backgrounds — the surface clipped to the padding box over a conic gradient
-  clipped to the border box — turned by a registered `--mk-angle`. It stays
+  clipped to the border box — turned by a registered `--mk-angle`, in the
+  app's own purples only (`--primary` → `#a78bfa` → `--primary-border`): a
+  rainbow was tried first and read as loud rather than as the product. It stays
   bright while reading (the turning is the "working" signal, so the disabled
   fade would say the opposite), keeps its icon through the failure reset, and
   holds still under `prefers-reduced-motion`.
