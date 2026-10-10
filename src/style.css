@@ -31,6 +31,13 @@
   --red-bg: #fee2e2;
   --amber: #92400e;
   --amber-bg: #fef3c7;
+  /* Partial marks. Apple's system yellow for the mark itself; text on it, or
+     beside it, is a dark gold, because white on #ffcc00 is 1.5:1. Yellow and
+     not orange: orange sits too close to the red of no marks. */
+  --yellow: #ffcc00;
+  --yellow-ink: #5c4400;
+  --yellow-bg: #ffeb99;
+  --yellow-text: #6b5000;
   --border: #e8e8ed;
   --border-strong: #d2d2d7;
   --radius: 12px;
@@ -629,8 +636,8 @@ body {
 }
 
 .status-partial {
-  background: #ffedd5;
-  color: #c2410c;
+  background: var(--yellow-bg);
+  color: var(--yellow-text);
 }
 
 /* ---------- Landing ---------- */
@@ -2980,11 +2987,15 @@ a.pm-item {
 .rv-pending {
   background: var(--amber);
 }
-/* Some marks, not all: orange, between the green of full marks and the red of
-   none. It keeps the tick — the answer earned something — and the brown "…"
+/* Some marks, not all: yellow, between the green of full marks and the red of
+   none — orange was tried first and read as nearly red. It keeps the tick (the
+   answer earned something), drawn dark because white on yellow cannot be read,
+   and a hairline ring gives a pale dot its edge on a white list. The brown "…"
    of an answer still waiting to be marked stays its own, darker colour. */
 .rv-partial {
-  background: #ea580c;
+  background: var(--yellow);
+  color: var(--yellow-ink);
+  box-shadow: inset 0 0 0 1px rgba(92, 68, 0, 0.28);
 }
 /* Before the teacher releases a paper there is no right and wrong to colour:
    a dot says the question was answered, an empty ring says it was not. */
@@ -3850,6 +3861,20 @@ body.drawer-open {
 
 @media (max-width: 600px) {
   .shellbar-select { width: 120px; }
+  /* The editor's bar on a phone: brand, subject, tree, Seyari, status and
+     profile. With the test's name as well it came to 470px and pushed the
+     status chip and the profile off a 390px screen, and the whole page with
+     them. The crumb row right under it names the test, so the bar lets the
+     title go and the subject takes the room, shrinking before anything else
+     does. The profile keeps its avatar and drops the chevron, as a phone's
+     own apps do. */
+  .shellbar:has(.shellbar-lead:not([hidden])) .shellbar-title { display: none; }
+  .shellbar-lead { flex: 1 1 auto; min-width: 0; }
+  .shellbar-lead .vs { min-width: 0; width: 100%; max-width: 220px; }
+  .shellbar-lead .shellbar-select { width: 100%; max-width: 220px; min-width: 0; }
+  .shellbar-actions { gap: 6px; }
+  .tb-profile { padding: 0 4px; }
+  .tb-profile > .icon { display: none; }
 }
 
 /* Below 1100px the bar cannot hold brand, subject, title, note, state and

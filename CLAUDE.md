@@ -817,6 +817,11 @@ so colour stopped saying anything.
   centre (`help/help.css`, plus a neutral dark scheme) and
   `public/offline.html` (which cannot load the stylesheet) carry the same
   values.
+- **On a phone the editor's app bar drops the test's title** (≤600px), which
+  the crumb row right under it already carries, and the subject picker takes
+  the room, shrinking first. The profile is its avatar alone. With the title
+  the bar came to 470px and pushed the status chip, the profile and the whole
+  page sideways on a 390px screen.
 - **A Remove that repeats on every row is grey**, red under the pointer
   (`.ed-option-del`): four violet Removes were more colour than the answer
   they sat beside.
@@ -2996,13 +3001,17 @@ Two things a teacher reported while marking on a phone, both proven by
   the other. The score (`suggests 2 / 2`) never wraps; on a narrow phone the
   button drops to its own line at the right instead of crushing it, and
   `e2e/marking.cjs` asserts the score stays on one line.
-- **Full marks are green; partial marks are orange; none are red**, in the
+- **Full marks are green; partial marks are yellow; none are red**, in the
   question list (`.rv-partial`) and the mark chip (`.status-partial`).
   `isPartial` is `correct && earned < marks`. A 1/3 used to wear the same
   green tick as a 3/3, which told a teacher scanning the list that a question
-  was done when two of its marks were not earned. Orange keeps the tick —
+  was done when two of its marks were not earned. Yellow keeps the tick —
   something was earned — and stays apart from the brown "…" of an answer
-  still waiting to be marked. `e2e/marking.cjs` asserts all three colours.
+  still waiting to be marked. It was orange for one release and read as
+  nearly red; it is Apple's system yellow now (`--yellow #ffcc00`), with the
+  tick and the chip's text in a dark gold (`--yellow-ink`, `--yellow-text`),
+  because white on that yellow is 1.5:1. `e2e/marking.cjs` asserts all three
+  colours, and that the tick on the yellow is readable.
 
 ### Every AI button is one of two buttons (`src/ailight.ts`)
 

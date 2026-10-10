@@ -196,11 +196,29 @@ const onQuestion = (page, text) =>
     [...document.querySelectorAll(".ed-tree [data-i] .rv-dot")].map((d) => ({
       cls: d.className,
       bg: getComputedStyle(d).backgroundColor,
+      fg: getComputedStyle(d).color,
     }))
   );
   check(/rv-done/.test(dots[0].cls), `full marks (2/2) are green (${dots[0].cls})`);
   check(/rv-partial/.test(dots[2].cls), `partial marks (1/3) are not green (${dots[2].cls})`);
   check(dots[2].bg !== dots[0].bg && dots[2].bg !== dots[1].bg, `and partial is its own colour (${dots[2].bg}), apart from full (${dots[0].bg}) and waiting (${dots[1].bg})`);
+  // Yellow, not orange: orange read as nearly the red of no marks. A hue
+  // between 45° and 60° is yellow; the orange it replaced sat at 21°.
+  const rgb = (c) => c.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number);
+  const hue = ([r, g, b]) => {
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+    if (!d) return 0;
+    const h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    return (h * 60 + 360) % 360;
+  };
+  const lum = (c) => {
+    const [r, g, b] = c.map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const ratio = (a, b) => { const [x, y] = [lum(rgb(a)), lum(rgb(b))].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  const h = hue(rgb(dots[2].bg));
+  check(h >= 45 && h <= 60, `partial marks are yellow, not orange (hue ${h.toFixed(0)}°)`);
+  check(ratio(dots[2].fg, dots[2].bg) >= 4.5, `and the tick on the yellow can be read (${ratio(dots[2].fg, dots[2].bg).toFixed(2)}:1)`);
 
   if (process.env.SHOT_DIR) {
     await page.click("[data-drawer-toggle]");
