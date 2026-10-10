@@ -471,7 +471,7 @@ function markingPanel(q: Question, row: GradedAnswer | undefined): string {
                  <span class="mk-ai-badge">AI</span>
                  <span class="mk-ai-mark">suggests ${ai} / ${row.maxMarks}</span>
                  <span class="ed-spacer"></span>
-                 <button class="btn-link" id="mk-use">Use this mark</button>
+                 <button class="mk-use" id="mk-use"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Use this mark</span></button>
                </div>
                ${row.aiReasoning ? `<p class="mk-ai-why">${escapeHtml(row.aiReasoning)}</p>` : ""}
                ${row.aiComment ? `<p class="mk-ai-say">For the student: “${escapeHtml(row.aiComment)}”</p>` : ""}

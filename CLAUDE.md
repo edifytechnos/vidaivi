@@ -2948,6 +2948,16 @@ Two things a teacher reported while marking on a phone, both proven by
   core inside a saturated orange glow (`.mk-trace-card`). Slower than the
   button's and with a longer rest, because it runs round text somebody is
   reading: it should catch the eye, not keep pulling at it.
+- **Use this mark is a button, and the light hands off to it.** It was a text
+  link, and it is the action the whole card leads to: now a compact violet
+  pill with a white tick (`.mk-use`), from the same family as Assess with AI.
+  Its motion is a **handoff, not a third streak**: when the card's light
+  finishes its lap, one sheen glints across the button (`mk-sheen`), leading
+  the eye from the AI's reasoning to the action. Both run on the card's 7s
+  cycle from the same paint, so they stay in step — retime one and retime
+  the other. The score (`suggests 2 / 2`) never wraps; on a narrow phone the
+  button drops to its own line at the right instead of crushing it, and
+  `e2e/marking.cjs` asserts the score stays on one line.
 - **Full marks are green; partial marks are orange; none are red**, in the
   question list (`.rv-partial`) and the mark chip (`.status-partial`).
   `isPartial` is `correct && earned < marks`. A 1/3 used to wear the same

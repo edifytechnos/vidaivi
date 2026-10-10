@@ -294,6 +294,28 @@ const onQuestion = (page, text) =>
   });
   check(!!card && /mk-card-lap/.test(card.anim), `the AI's proposal has the light running round it (${card && card.anim})`);
   check(!!card && card.layers >= 16, "with the same soft-ended streak as the button");
+  const use = await page.locator("#mk-use").evaluate((el) => ({
+    bg: getComputedStyle(el).backgroundImage,
+    color: getComputedStyle(el).color,
+    sheen: getComputedStyle(el, "::after").animationName,
+    tick: !!el.querySelector("svg"),
+    height: el.getBoundingClientRect().height,
+  }));
+  check(/linear-gradient/.test(use.bg) && use.color === "rgb(255, 255, 255)" && use.tick, "Use this mark is a filled violet button with a tick, not a link");
+  check(use.sheen === "mk-sheen", `and a sheen crosses it as the card's light finishes its lap (${use.sheen})`);
+  check(use.height >= 32, `big enough to tap (${use.height}px)`);
+  const markLines = await page.locator(".mk-ai-mark").evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    // "normal" line height is about 1.2× the font; two lines would be ~2.4×.
+    return r.height / (parseFloat(getComputedStyle(el).fontSize) * 1.25);
+  });
+  check(markLines < 1.5, `"suggests 2 / 2" stays on one line beside the button (${markLines.toFixed(2)} lines)`);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  check(
+    (await page.locator("#mk-use").evaluate((el) => getComputedStyle(el, "::after").display)) === "none",
+    "with reduced motion Use this mark has no sheen"
+  );
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   if (process.env.SHOT_DIR) {
     const c = await page.locator(".mk-ai").boundingBox();
     const clip = { x: Math.max(0, c.x - 10), y: c.y - 10, width: c.width + 20, height: c.height + 20 };
@@ -302,12 +324,12 @@ const onQuestion = (page, text) =>
     clip.y = c2.y - 10;
     for (let t = 0, f = 0; t < 7000; t += 100, f++) {
       await page.evaluate((ms) => {
-        for (const a of document.querySelector(".mk-trace-card").getAnimations()) { a.pause(); a.currentTime = ms; }
+        for (const a of document.querySelector(".mk-ai").getAnimations({ subtree: true })) { a.pause(); a.currentTime = ms; }
       }, t);
       await page.screenshot({ path: path.join(process.env.SHOT_DIR, `card-frame-${String(f).padStart(3, "0")}.png`), clip });
     }
     await page.evaluate(() => {
-      for (const a of document.querySelector(".mk-trace-card").getAnimations()) a.play();
+      for (const a of document.querySelector(".mk-ai").getAnimations({ subtree: true })) a.play();
     });
   }
   check((await scrollY(page)) === before, `the proposal repaints in place (scrollY ${await scrollY(page)}, was ${before})`);

@@ -4327,7 +4327,68 @@ body.drawer-open {
   6%, 47% { opacity: 1; }
   55%, 100% { opacity: 0; }
 }
-.mk-ai-head { display: flex; align-items: center; gap: 8px; }
+/* Use this mark: the action the card leads to, so it is a button and not a
+   link — a compact violet pill from the same family as Assess with AI, with a
+   white tick. Its motion is a handoff, not a third streak competing with the
+   card's: when the light finishes its lap round the card, one sheen glints
+   across this button, leading the eye from the AI's reasoning to the action.
+   Both run on the card's 7s cycle from the same paint, so they stay in step
+   (the card's lap ends at 55%; the sheen crosses from 56% to 68%). */
+.mk-use {
+  position: relative;
+  overflow: hidden;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 34px;
+  padding: 0 13px 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #fff;
+  cursor: pointer;
+  background:
+    radial-gradient(ellipse 80% 100% at 50% 130%, rgba(216, 180, 254, 0.75), transparent 70%),
+    linear-gradient(180deg, #6d35f5, #5420e8);
+  box-shadow:
+    0 1px 0 rgba(59, 108, 246, 0.9),
+    0 4px 12px -2px rgba(84, 32, 232, 0.45);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.mk-use .icon { width: 15px; height: 15px; color: #fff; }
+.mk-use::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.6) 50%, transparent 65%);
+  transform: translateX(-120%);
+  pointer-events: none;
+  animation: mk-sheen 7s infinite;
+}
+.mk-use:hover {
+  box-shadow:
+    0 1px 0 rgba(59, 108, 246, 0.9),
+    0 6px 16px -2px rgba(84, 32, 232, 0.55);
+  transform: translateY(-1px);
+}
+.mk-use:active { transform: translateY(0); }
+.mk-use:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+@keyframes mk-sheen {
+  0%, 56% { transform: translateX(-120%); animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  68%, 100% { transform: translateX(120%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-use::after { animation: none; display: none; }
+}
+/* The score stays on one line; if the row is too narrow for it and the
+   button, the button drops to its own line, still at the right, rather than
+   squeezing "suggests 2 / 2" onto two. */
+.mk-ai-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; row-gap: 8px; }
+.mk-ai-head .mk-use { margin-left: auto; }
 .mk-ai-badge {
   font-size: 0.68rem;
   font-weight: 800;
@@ -4337,7 +4398,7 @@ body.drawer-open {
   background: var(--amber);
   color: #fff;
 }
-.mk-ai-mark { font-size: 0.95rem; font-weight: 700; color: var(--amber); }
+.mk-ai-mark { font-size: 0.95rem; font-weight: 700; color: var(--amber); white-space: nowrap; }
 .mk-ai-why, .mk-ai-say { margin: 0; font-size: 0.88rem; line-height: 1.5; color: var(--amber); }
 .mk-ai-say { font-style: italic; }
 .mk-ai-foot { margin: 0; font-size: 0.78rem; color: var(--amber); opacity: 0.85; }
