@@ -787,6 +787,48 @@ test gets published.
   drives the handler with a stubbed model and asserts the gates, the mapping,
   the ledger and that nothing uploaded is written.
 
+## The calm palette, shared with Seyali (`:root` in `src/style.css`)
+
+Vidai and Seyali are one family, so they share one palette: neutral greys
+with no blue in them, near-black text, and **one violet, `#5420e8`, that means
+"you can press this"**. The old palette was Tailwind slate (`#0f172a`,
+`#64748b`, `#f1f5f9`) with violet tints on everything from chips to notes,
+so colour stopped saying anything.
+
+- **Violet is for pressables, the selected state and focus. Nothing else.**
+  A chip, a note, a badge, a hover on a row, an avatar: grey
+  (`--fill #f0f0f2`, `--border`, `--text-secondary`). `--primary-soft` is left
+  only where something is *selected* (the open question in the tree, the
+  picked MCQ option, the active rail item and tab) and there the text is
+  **`--primary-deep #3b17a6`**, 9.8:1 on the tint where `--primary` was 6.2:1.
+  Green, red and amber stay; they are state, not decoration.
+- **`--faint` is `#6e6e73`, the same as `--muted`, on purpose.** Seyali's
+  `#86868b` is 3.3:1 on the page background and fails AA for the small
+  labels it is used on; the old slate `#94a3b8` was worse (2.6:1). Nothing in
+  the app relies on there being two greys there.
+- Contrast, checked: white on `#5420e8` 7.6:1; `#5420e8` on `--bg` 7.0:1;
+  `--muted` on `--bg` 4.7:1 and on white 5.1:1.
+- **Shadows are `rgba(0,0,0,…)`**, never a slate or a violet; one weight
+  ladder stops at **700** (800/900 read shouty next to Seyali).
+- **A colour is a token.** The literals left outside `:root` are deliberate
+  and few: the AI buttons' gradient and bevel (`.ai-go`, `.ai-take`), the
+  photo viewer's own dark surface, the skeleton's shimmer, and darker shades
+  of the state colours. Anything else gets a token, not a hex. The help
+  centre (`help/help.css`, plus a neutral dark scheme) and
+  `public/offline.html` (which cannot load the stylesheet) carry the same
+  values.
+- **On a phone the editor's app bar drops the test's title** (≤600px), which
+  the crumb row right under it already carries, and the subject picker takes
+  the room, shrinking first. The profile is its avatar alone. With the title
+  the bar came to 470px and pushed the status chip, the profile and the whole
+  page sideways on a 390px screen.
+- **A Remove that repeats on every row is grey**, red under the pointer
+  (`.ed-option-del`): four violet Removes were more colour than the answer
+  they sat beside.
+- The AI buttons already carried Seyari's values and are unchanged — see
+  *Every AI button is one of two buttons*. The icons were re-rendered in the
+  new violet from `scripts/render-icons.cjs`.
+
 ## The app's own dropdown, and the other controls the OS still draws (`src/select.ts`)
 
 A native `<select>` can be styled, but **its options list is drawn by the
@@ -2959,13 +3001,17 @@ Two things a teacher reported while marking on a phone, both proven by
   the other. The score (`suggests 2 / 2`) never wraps; on a narrow phone the
   button drops to its own line at the right instead of crushing it, and
   `e2e/marking.cjs` asserts the score stays on one line.
-- **Full marks are green; partial marks are orange; none are red**, in the
+- **Full marks are green; partial marks are yellow; none are red**, in the
   question list (`.rv-partial`) and the mark chip (`.status-partial`).
   `isPartial` is `correct && earned < marks`. A 1/3 used to wear the same
   green tick as a 3/3, which told a teacher scanning the list that a question
-  was done when two of its marks were not earned. Orange keeps the tick —
+  was done when two of its marks were not earned. Yellow keeps the tick —
   something was earned — and stays apart from the brown "…" of an answer
-  still waiting to be marked. `e2e/marking.cjs` asserts all three colours.
+  still waiting to be marked. It was orange for one release and read as
+  nearly red; it is Apple's system yellow now (`--yellow #ffcc00`), with the
+  tick and the chip's text in a dark gold (`--yellow-ink`, `--yellow-text`),
+  because white on that yellow is 1.5:1. `e2e/marking.cjs` asserts all three
+  colours, and that the tick on the yellow is readable.
 
 ### Every AI button is one of two buttons (`src/ailight.ts`)
 
@@ -3364,8 +3410,10 @@ an iPhone. No dependency: a manifest, five icons, a fifty-line worker.
   status bar sits over it like a stripe). Icons in `public/icons/`: 192 and
   512 `any` (rounded square), 192 and 512 `maskable` (full bleed, the V inside
   the safe zone, or Android shrinks the icon onto a white disc), and a 180
-  `apple-touch-icon`. They were drawn as one SVG (`public/favicon.svg`) and
-  rendered by Chromium; redraw them the same way, never hand-edit one size.
+  `apple-touch-icon`. All six come from one SVG definition in
+  **`scripts/render-icons.cjs`**, rendered by Chromium
+  (`NODE_PATH=/opt/node-tools/node_modules node scripts/render-icons.cjs`);
+  change the colour or the V there and re-run it, never hand-edit one size.
 - **The worker does as little as possible, and that is the design.** It
   answers **navigations only**, network first, and falls back to
   `public/offline.html` — the one thing it caches — when there is no network
