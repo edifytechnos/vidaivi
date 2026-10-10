@@ -2936,6 +2936,26 @@ Two things a teacher reported while marking on a phone, both proven by
   - `SHOT_DIR=… node e2e/marking.cjs` writes one whole cycle as frames, with
     the animations paused and stepped by hand, for a design review clip.
 
+### The AI's proposal carries the same light, and a partial mark is not green
+
+- **The card holding the AI's proposal (`.mk-ai`) has the streak too** —
+  `lightTrace()` in `review.ts` is now one helper for both (`TRACE` for the
+  button, `CARD_TRACE` for the card), with the radius, tail and tip each
+  needs: the card's perimeter is several times the button's, so its tail is
+  a smaller share of it to come out about the same length on screen.
+  **On a pale card a white streak alone is a smudge** — light on a light
+  surface does not read — so the card's is drawn as a hot filament: a white
+  core inside a saturated orange glow (`.mk-trace-card`). Slower than the
+  button's and with a longer rest, because it runs round text somebody is
+  reading: it should catch the eye, not keep pulling at it.
+- **Full marks are green; partial marks are orange; none are red**, in the
+  question list (`.rv-partial`) and the mark chip (`.status-partial`).
+  `isPartial` is `correct && earned < marks`. A 1/3 used to wear the same
+  green tick as a 3/3, which told a teacher scanning the list that a question
+  was done when two of its marks were not earned. Orange keeps the tick —
+  something was earned — and stays apart from the brown "…" of an answer
+  still waiting to be marked. `e2e/marking.cjs` asserts all three colours.
+
 ### On a phone the bar covers nothing, and the drawer holds the page
 
 Two things the shell got wrong on a real phone, both on the result/marking

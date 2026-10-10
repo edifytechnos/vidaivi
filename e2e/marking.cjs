@@ -45,15 +45,16 @@ const test = {
   questions: [
     { id: "q1", chapter: "Polynomials", topic: "Zeros", type: "numeric", q: "How many zeros has $x^2 - 1$?", answer: 2, tolerance: 0, solution, marks: 2 },
     { id: "q2", chapter: "Polynomials", topic: "Division", type: "numeric", q: "Write the remainder as a surd.", answer: "√3", solution, marks: 2 },
-    { id: "q3", chapter: "Polynomials", topic: "Proof", type: "numeric", q: "Give the third.", answer: 7, tolerance: 0, solution, marks: 1 },
+    { id: "q3", chapter: "Polynomials", topic: "Proof", type: "long", q: "Give the third.", solution, marks: 3 },
   ],
 };
 const attempt = {
   testId: "t-mark", index: 3, score: 3, completedAt: "2026-10-01T10:00:00Z",
   answers: {
-    q1: { value: 2, correct: true, marks: 2 },
-    q2: { value: "root three", correct: false, marks: 0, review: true },
-    q3: { value: 7, correct: true, marks: 1 },
+    q1: { given: 2, correct: true, earned: 2 },
+    q2: { given: null, text: "root three", correct: false, earned: 0, review: "pending" },
+    // A long answer the teacher has marked 1 of 3: partial, not done.
+    q3: { given: 1, correct: true, earned: 1, review: "marked" },
   },
 };
 window.openPaper = () =>
@@ -190,6 +191,25 @@ const onQuestion = (page, text) =>
   check(!(await page.evaluate(() => document.body.classList.contains("drawer-open"))), "picking from the list lets the page go");
   check((await scrollY(page)) === 0, `and the question picked lands at the top (scrollY ${await scrollY(page)})`);
 
+  // ---------- the question list says full, partial and none apart ----------
+  const dots = await page.evaluate(() =>
+    [...document.querySelectorAll(".ed-tree [data-i] .rv-dot")].map((d) => ({
+      cls: d.className,
+      bg: getComputedStyle(d).backgroundColor,
+    }))
+  );
+  check(/rv-done/.test(dots[0].cls), `full marks (2/2) are green (${dots[0].cls})`);
+  check(/rv-partial/.test(dots[2].cls), `partial marks (1/3) are not green (${dots[2].cls})`);
+  check(dots[2].bg !== dots[0].bg && dots[2].bg !== dots[1].bg, `and partial is its own colour (${dots[2].bg}), apart from full (${dots[0].bg}) and waiting (${dots[1].bg})`);
+
+  if (process.env.SHOT_DIR) {
+    await page.click("[data-drawer-toggle]");
+    await page.waitForSelector(".editor.tree-open");
+    await page.waitForTimeout(400);
+    await page.locator(".ed-tree").screenshot({ path: path.join(process.env.SHOT_DIR, "tree-partial.png") });
+    await page.keyboard.press("Escape");
+  }
+
   // ---------- the Assess with AI button ----------
   await page.click('[data-drawer-toggle]');
   await page.click('.ed-tree [data-i="1"]');
@@ -266,6 +286,30 @@ const onQuestion = (page, text) =>
   check((await btn.locator("svg.icon").count()) === 1, "while it reads, the sparkle stays");
   check((await btn.evaluate((el) => getComputedStyle(el).opacity)) === "1", "and the button is not faded out");
   await page.waitForSelector(".mk-ai");
+
+  // ---------- the AI's proposal carries the same light ----------
+  const card = await page.locator(".mk-ai").evaluate((el) => {
+    const t = el.querySelector(".mk-trace-card");
+    return t ? { anim: getComputedStyle(t).animationName, layers: t.querySelectorAll("rect").length } : null;
+  });
+  check(!!card && /mk-card-lap/.test(card.anim), `the AI's proposal has the light running round it (${card && card.anim})`);
+  check(!!card && card.layers >= 16, "with the same soft-ended streak as the button");
+  if (process.env.SHOT_DIR) {
+    const c = await page.locator(".mk-ai").boundingBox();
+    const clip = { x: Math.max(0, c.x - 10), y: c.y - 10, width: c.width + 20, height: c.height + 20 };
+    await page.locator(".mk-ai").scrollIntoViewIfNeeded();
+    const c2 = await page.locator(".mk-ai").boundingBox();
+    clip.y = c2.y - 10;
+    for (let t = 0, f = 0; t < 7000; t += 100, f++) {
+      await page.evaluate((ms) => {
+        for (const a of document.querySelector(".mk-trace-card").getAnimations()) { a.pause(); a.currentTime = ms; }
+      }, t);
+      await page.screenshot({ path: path.join(process.env.SHOT_DIR, `card-frame-${String(f).padStart(3, "0")}.png`), clip });
+    }
+    await page.evaluate(() => {
+      for (const a of document.querySelector(".mk-trace-card").getAnimations()) a.play();
+    });
+  }
   check((await scrollY(page)) === before, `the proposal repaints in place (scrollY ${await scrollY(page)}, was ${before})`);
 
   // A failure puts the button back exactly as it was, icon included.
