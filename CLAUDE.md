@@ -2903,16 +2903,15 @@ Two things a teacher reported while marking on a phone, both proven by
   repaint of the same question — the AI's proposal arriving, a mark saved, the
   subject arriving late — keeps the place. The suite fails at 5904px with the
   call removed.
-- **Assess with AI wears the sparkle and a turning gradient border**
-  (`ASSESS_LABEL`, `.mk-assess`). It is the one button on the paper that
-  spends a credit, and as a grey ghost button it was missed. The border is two
-  backgrounds — the surface clipped to the padding box over a conic gradient
-  clipped to the border box — turned by a registered `--mk-angle`, in the
-  app's own purples only (`--primary` → `#a78bfa` → `--primary-border`): a
-  rainbow was tried first and read as loud rather than as the product. It stays
-  bright while reading (the turning is the "working" signal, so the disabled
-  fade would say the opposite), keeps its icon through the failure reset, and
-  holds still under `prefers-reduced-motion`.
+- **Assess with AI is the AI's own button**: a filled violet pill with a soft
+  pink glow rising from its foot, a thin white ring inside the edge, a purple
+  halo that breathes slowly, and the white sparkle (`ASSESS_LABEL`,
+  `.mk-assess`, `@keyframes mk-glow`). It is the one button on the paper that
+  spends a credit, and as a grey ghost button it was missed. The app's own
+  purples only: a rainbow border was tried first and read as loud rather than
+  as the product. It stays bright while reading (the breathing quickens; the
+  disabled fade would say the opposite), keeps its icon through the failure
+  reset, and holds still under `prefers-reduced-motion`.
 
 ### On a phone the bar covers nothing, and the drawer holds the page
 

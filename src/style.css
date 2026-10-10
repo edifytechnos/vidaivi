@@ -4159,47 +4159,45 @@ body.drawer-open {
 }
 .mk-none { margin: 14px 0 0; }
 /* Assess with AI: the one button on the paper that spends a credit, and it
-   was being missed — a grey ghost button among grey ghost buttons. It carries
-   the sparkle the AI wears everywhere and a gradient border that turns slowly,
-   in the app's own purples only — a rainbow read as loud, not as the product —
-   drawn as two backgrounds: the surface clipped to the padding box over a
-   conic gradient clipped to the border box, so the border IS the gradient and
-   the label stays on plain white. `--mk-angle` is registered so it animates;
-   a browser without @property shows the same gradient, still. */
-@property --mk-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
+   was being missed — a grey ghost button among grey ghost buttons. It is the
+   AI's own button now: a violet pill with a soft pink glow rising from its
+   foot, a thin white ring just inside the edge, a halo around it, and the
+   sparkle the AI wears everywhere, in white. The halo breathes slowly so the
+   eye finds it; it holds still under reduced motion. The app's own purples
+   only — a rainbow border was tried first and read as loud. */
 .mk-assess {
   align-self: flex-start;
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  border: 2px solid transparent;
+  gap: 10px;
+  padding: 11px 26px;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
   border-radius: 999px;
-  color: var(--primary);
+  color: #fff;
+  letter-spacing: 0.01em;
   background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    conic-gradient(from var(--mk-angle), var(--primary), #a78bfa, var(--primary-border), #a78bfa, var(--primary)) border-box;
-  box-shadow: 0 1px 6px rgba(109, 40, 217, 0.12);
-  animation: mk-turn 4s linear infinite;
+    radial-gradient(ellipse 70% 90% at 50% 125%, rgba(216, 180, 254, 0.95), transparent 70%),
+    linear-gradient(180deg, #7c3aed, var(--primary));
+  box-shadow: 0 0 0 3px #7c3aed, 0 4px 18px rgba(109, 40, 217, 0.35);
+  animation: mk-glow 2.8s ease-in-out infinite;
 }
-.mk-assess .icon { width: 18px; height: 18px; color: var(--primary); }
+.mk-assess .icon { width: 18px; height: 18px; color: #fff; }
 .mk-assess:hover:not(:disabled) {
-  color: var(--primary-hover);
+  color: #fff;
   background:
-    linear-gradient(var(--primary-soft), var(--primary-soft)) padding-box,
-    conic-gradient(from var(--mk-angle), var(--primary), #a78bfa, var(--primary-border), #a78bfa, var(--primary)) border-box;
-  box-shadow: 0 4px 16px rgba(109, 40, 217, 0.26);
+    radial-gradient(ellipse 75% 95% at 50% 120%, rgba(233, 213, 255, 1), transparent 72%),
+    linear-gradient(180deg, #8b5cf6, #7c3aed);
 }
-.mk-assess:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
-/* While it reads, it stays bright and keeps turning: the turning is the
+.mk-assess:focus-visible { outline: 2px solid var(--primary); outline-offset: 5px; }
+/* While it reads, it stays bright and breathes faster: the glow is the
    "working" signal, so the usual disabled fade would say the opposite. */
-.mk-assess:disabled { opacity: 1; cursor: progress; animation-duration: 1.2s; }
-@keyframes mk-turn { to { --mk-angle: 360deg; } }
+.mk-assess:disabled { opacity: 1; cursor: progress; animation-duration: 1.1s; }
+@keyframes mk-glow {
+  0%, 100% { box-shadow: 0 0 0 3px #7c3aed, 0 4px 14px rgba(109, 40, 217, 0.28); }
+  50% { box-shadow: 0 0 0 3px #7c3aed, 0 0 0 7px rgba(124, 58, 237, 0.18), 0 6px 24px rgba(109, 40, 217, 0.45); }
+}
 @media (prefers-reduced-motion: reduce) {
   .mk-assess, .mk-assess:disabled { animation: none; }
 }

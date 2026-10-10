@@ -202,18 +202,25 @@ const onQuestion = (page, text) =>
     const cs = getComputedStyle(el);
     return {
       bg: cs.backgroundImage,
-      border: cs.borderTopWidth,
+      color: cs.color,
+      ring: cs.borderTopColor,
       anim: cs.animationName,
       width: el.getBoundingClientRect().width,
       row: el.parentElement.getBoundingClientRect().width,
     };
   });
-  check(/conic-gradient/.test(look.bg), "its border is a gradient");
-  check(look.border === "2px", `two pixels of it (${look.border})`);
-  check(look.anim === "mk-turn", `and it turns (${look.anim})`);
+  check(/radial-gradient/.test(look.bg) && /linear-gradient/.test(look.bg), "it is a filled violet pill with a glow at its foot");
+  check(look.color === "rgb(255, 255, 255)", `with a white label (${look.color})`);
+  check(/^rgba\(255, 255, 255/.test(look.ring), `and a white ring inside the edge (${look.ring})`);
+  check(look.anim === "mk-glow", `and its halo breathes (${look.anim})`);
   if (process.env.SHOT_DIR) {
     await btn.scrollIntoViewIfNeeded();
-    await page.screenshot({ path: path.join(process.env.SHOT_DIR, "assess-button.png"), clip: await page.locator(".mk").boundingBox() });
+    // Wider than the button, so the halo and the ring are in the picture.
+    const b = await btn.boundingBox();
+    await page.screenshot({
+      path: path.join(process.env.SHOT_DIR, "assess-button.png"),
+      clip: { x: Math.max(0, b.x - 16), y: b.y - 16, width: b.width + 32, height: b.height + 32 },
+    });
   }
   check(look.width < look.row, `the button is its own size, not the row's (${Math.round(look.width)} of ${Math.round(look.row)})`);
 
@@ -245,11 +252,11 @@ const onQuestion = (page, text) =>
   await page.emulateMedia({ reducedMotion: "reduce" });
   check(
     (await page.locator("#mk-assess").evaluate((el) => getComputedStyle(el).animationName)) === "none",
-    "with reduced motion the border holds still"
+    "with reduced motion the halo holds still"
   );
   check(
-    /conic-gradient/.test(await page.locator("#mk-assess").evaluate((el) => getComputedStyle(el).backgroundImage)),
-    "and is still the gradient"
+    /radial-gradient/.test(await page.locator("#mk-assess").evaluate((el) => getComputedStyle(el).backgroundImage)),
+    "and the button is still the violet pill"
   );
 
   check(errors.length === 0, `no page errors${errors.length ? `: ${errors.join(" | ")}` : ""}`);
