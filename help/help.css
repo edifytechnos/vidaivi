@@ -5,13 +5,15 @@
    Mobile first, because the reader is on a cheap Android phone. */
 
 :root {
-  --ink: #1b1f2a;
-  --quiet: #5c6478;
-  --line: #e3e6ee;
+  /* The calm palette, the same values as the app's (src/style.css): neutral
+     greys, near-black text, the one violet for links. */
+  --ink: #1d1d1f;
+  --quiet: #6e6e73;
+  --line: #e8e8ed;
   --bg: #ffffff;
-  --panel: #f7f8fb;
-  --accent: #5b43d6;
-  --accent-soft: #efecfd;
+  --panel: #f5f5f7;
+  --accent: #5420e8;
+  --accent-soft: #f1edfe;
 }
 
 * { box-sizing: border-box; }
@@ -202,12 +204,14 @@ th { color: var(--quiet); font-size: 13px; text-transform: uppercase; letter-spa
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink: #e8eaf2;
-    --quiet: #9aa3b8;
-    --line: #2a2f3d;
-    --bg: #14171f;
-    --panel: #1b1f2a;
-    --accent: #a394ff;
-    --accent-soft: #232039;
+    /* Neutral dark greys, no blue in them; the violet lifted so a link
+       still reads (6.1:1 on --bg, 5.0:1 on --panel). */
+    --ink: #f5f5f7;
+    --quiet: #98989d;
+    --line: #38383a;
+    --bg: #1c1c1e;
+    --panel: #2c2c2e;
+    --accent: #a48af7;
+    --accent-soft: #2a2440;
   }
 }
