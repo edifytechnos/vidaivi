@@ -1017,6 +1017,116 @@ body {
   margin-top: 3px;
 }
 
+/* ---------- Student report: papers as cards, filed under their subject ---------- */
+/* A table gave every paper one row and three links squeezed in a cell; on a
+   phone the links wrapped and the row was taller than its score. A card holds
+   the title, the score, the date and the actions in their own places, and a
+   subject heads each group so a term's papers read in order. */
+
+.rep-subject { margin-top: 22px; }
+
+.rep-subject-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+
+.rep-subject-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.rep-subject-meta {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.rep-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .rep-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1100px) {
+  .rep-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.rep-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 16px 16px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.rep-card-inflight { background: var(--bg); box-shadow: none; }
+
+.rep-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.rep-card-head .tl-main { font-weight: 600; font-size: 14.5px; }
+
+.rep-card-score {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.rep-score {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+}
+
+.rep-score-total {
+  margin-left: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.rep-score-muted { color: var(--muted); }
+
+.rep-card-note,
+.rep-card-when {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* The actions are one row at the card's foot, on a hairline, in the card's
+   own colour. Each is a 40px target: a phone taps these, not a mouse. */
+.rep-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: auto -8px 0; /* auto on top: the row sits at the foot of every card in a grid row */
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.rep-actions .btn-link { min-height: 40px; }
+
 /* ---------- Review ---------- */
 
 .review-header {

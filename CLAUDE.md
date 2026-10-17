@@ -2549,6 +2549,24 @@ there too, reading as a paper they sat and never took.
   `e2e/regression.cjs` presses the button with the grant answered by a route
   stub (never a real grant on a real student) and drives the error branch with
   `/api/reports` refused.
+- **The attempts are cards, filed under their subject** (J, 17 Oct). The
+  table gave every paper one row with three links squeezed into a cell and
+  showed the test's *id*. Now the report fetches the teacher's tests and
+  subjects beside the attempts (one `Promise.all`, three requests), names each
+  paper by its title and subtitle (`testLabelMarkup`), and groups them under a
+  subject heading (`.rep-subject`, with "N papers · best X%") in a grid
+  (`.rep-grid`: one column on a phone, two from 640px, three from 1100px).
+  Each card (`.rep-card`) is the label and the Released/Locked chip, the score
+  large with its percentage, the date, and the actions on a hairline — Open &
+  mark, Release / Hide again, Give another attempt (40px targets). A paper in
+  progress is a quieter card with one action. A test the teacher no longer
+  holds lands under **Other tests**, never nowhere. The ghost loader is
+  `skeleton.report()`.
+- **The "Release answers to the whole class" section is gone** (J, 17 Oct):
+  it was the only door to a class-wide release, so there is none now; the
+  per-student Release on each card remains, and the server still accepts
+  `release` without `username` should a door be wanted again. A test released
+  class-wide from before still reads "Open to class" on the card.
 
 **"1 Jan, 5:30 am" is the Unix epoch in IST**, and it had two causes, both
 fixed:
@@ -2625,8 +2643,10 @@ sharing. `canHandIn()` is the one test for "is this a real student with a
 teacher".
 
 Release is per student *and* per class — see `/api/release` above. The teacher
-presses it from the marking queue (`src/screens/marking.ts`) or from a student's
-report (`showStudentReport` in `src/screens/console.ts`).
+presses it from the student's paper (`src/screens/review.ts`) or from the card
+on a student's report (`showStudentReport` in `src/screens/console.ts`), per
+student; the report's class-wide section was removed on 17 Oct, so the class
+route has no door at present.
 
 ## Where a question came from (`source`)
 
