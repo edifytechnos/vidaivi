@@ -1972,6 +1972,19 @@ async function reportStatusChecks() {
     partitionKey: "stu~priya", rowKey: "t2~q1", testId: "t2",
     status: "marked", awarded: 2, maxMarks: 2,
   });
+  // The tests this teacher owns, for the "tests attempted" denominator: two
+  // published for the class, one assigned to somebody else, one still a draft,
+  // and a master that reaches no student. Priya can see exactly two.
+  const testRow = (id, extra) => rows.set(key("tests", TEACHER, id), {
+    partitionKey: TEACHER, rowKey: id, ownerSub: TEACHER, status: "published", ...extra,
+  });
+  testRow("t1", {});
+  testRow("t2", { audience: "class" });
+  testRow("t3", { audience: "selected", assignedTo: JSON.stringify(["ravi"]) });
+  testRow("t4", { status: "draft" });
+  rows.set(key("tests", "~platform", "lib-1"), {
+    partitionKey: "~platform", rowKey: "lib-1", ownerSub: "adm~x", status: "published", platform: true,
+  });
 
   const c = { res: null };
   await t.handlers.reports(c, {
@@ -1992,6 +2005,14 @@ async function reportStatusChecks() {
     "the running subtotal is still sent — the client decides not to show it as a mark"
   );
   check(live && live.updatedAt === "2026-09-15T09:00:00.000Z", "with when they last worked on it");
+  // The tile read "4/1": attempts over the BUNDLED demo tests. The denominator
+  // is the tests that reach this student — published, the teacher's own,
+  // assigned to them — never a draft, a paper assigned to a classmate, or a
+  // master.
+  check(
+    got.testCount === 2,
+    `the report says how many tests reach the student (${got.testCount}, expected 2)`
+  );
   check(
     done && done.score === 25,
     `the report's score carries the teacher's marks, like the student's own list (got ${done && done.score}, expected 25)`
