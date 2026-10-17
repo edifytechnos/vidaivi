@@ -2125,6 +2125,32 @@ handlers.reports = async (context, req) => {
     return json(context, 404, { error: "Student not found" });
   }
 
+  // How many tests reach this student — the denominator of the report's
+  // "tests attempted" tile. The screen used to divide by the BUNDLED demo
+  // tests, which for a real teacher read "4/1". The rule is visible()'s
+  // student branch: published, not a master, owned by the caller (who is this
+  // student's teacher — the roster above is `teacherSub eq who.id`), and
+  // assigned to them. One walk of the caller's own partition, projected to the
+  // five properties that rule reads; only for a single student's report.
+  let testCount = null;
+  if (wanted) {
+    testCount = 0;
+    await walkPartitions(
+      tableClient("tests"),
+      {
+        partitions: [who.id],
+        select: REPORT_TEST_SELECT,
+        legacyPk: LEGACY_TEST_PK,
+        budget: { left: 0 },
+      },
+      (e) => {
+        if (e.status !== "published" || e.platform) return;
+        if (e.ownerSub !== who.id) return;
+        if (assignedTo(e, wanted)) testCount += 1;
+      }
+    );
+  }
+
   // Attach each student's attempts (newest first via inverted-time row keys).
   // One partition query per student, but run a few at a time: awaiting them one
   // after another made a class of 200 into 200 serial round trips.
@@ -2160,6 +2186,13 @@ handlers.reports = async (context, req) => {
       });
       if (s.attempts.length >= 100) break;
     }
+    // The row holds only the auto-graded subtotal; the teacher's own marks live
+    // in `grading`. The student's listing has merged them since the marks
+    // moved there, and this one did not — so a teacher read 21/31 inside the
+    // paper and 4/31 on the report of the same attempt. Same merge, same
+    // partition, one query per student.
+    await mergeAwarded(`stu~${s.username}`, s.attempts);
+    if (testCount !== null) s.testCount = testCount;
   });
   roster.sort((a, b) => String(a.name).localeCompare(String(b.name)));
   json(context, 200, { students: roster });
@@ -2365,6 +2398,12 @@ async function walkPartitions(table, opts, onRow) {
 // included — so a list of titles carried the full text of every paper it saw.
 // Anything visible(), testMeta() or testMetaForStaff() touches belongs here;
 // the question chunks deliberately do not.
+// What the report needs to count the tests a student can see: exactly the
+// properties visible()'s student branch reads, and nothing a title list needs.
+const REPORT_TEST_SELECT = [
+  "PartitionKey", "RowKey", "status", "platform", "ownerSub", "audience", "assignedTo",
+];
+
 const TEST_META_SELECT = [
   "PartitionKey", "RowKey", "title", "chapter", "teacher", "order", "access",
   "status", "platform", "sample", "subjectId", "ownerSub", "updatedAt",

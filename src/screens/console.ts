@@ -29,7 +29,7 @@ import {
   totpInit,
 } from "../auth";
 import { setGuest } from "../attempts";
-import { TESTS, testTitle } from "../data";
+import { testTitle } from "../data";
 import { copyText, escapeHtml, pct, setUrl, whenLabel } from "../dom";
 import { confirmDialog, notice } from "../dialog";
 import { openModal } from "../modal";
@@ -779,7 +779,7 @@ export function showStudentReport(username: string) {
         <h2 class="landing-title">${escapeHtml(s.name)}</h2>
         <p class="hint">${escapeHtml([s.username, s.grade, s.school].filter(Boolean).join(" · "))}${s.parentPhone ? ` · Parent: ${escapeHtml(s.parentPhone)}` : ""}</p>
         <div class="report-stats">
-          <div class="report-stat"><div class="report-stat-num">${attempted.size}/${TESTS.filter((t) => t.access === "login").length || TESTS.length}</div><div class="report-stat-label">tests attempted</div></div>
+          <div class="report-stat"><div class="report-stat-num">${attempted.size}${typeof s.testCount === "number" ? `/${s.testCount}` : ""}</div><div class="report-stat-label">tests attempted</div></div>
           <div class="report-stat"><div class="report-stat-num">${done.length}</div><div class="report-stat-label">handed in</div></div>
           <div class="report-stat"><div class="report-stat-num">${avgBest}%</div><div class="report-stat-label">avg best score</div></div>
         </div>

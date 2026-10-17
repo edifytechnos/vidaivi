@@ -1604,6 +1604,11 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   is adjusted — a grading row belongs to a question, not to an attempt, so an
   older retake keeps the score it was stored with. Doing it on the client would
   be one grading fetch per test row, an N+1 from a phone (rule 3).
+  **The teacher's report (`handlers.reports`) makes the same merge**, one
+  grading query per student in the walk it already makes. It did not for a
+  release, so the same attempt read 21/31 inside the paper and 4/31 on the
+  student's report; `e2e/helpers.cjs` now asserts the report's score carries
+  the marks and that an unmarked answer's AI draft adds nothing.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
 - **Removing a student removes the photographs.** `POST /api/students
@@ -2537,6 +2542,14 @@ there too, reading as a paper they sat and never took.
   action, *See what they have so far*. The stat tiles count **handed in**, and
   the average is over finished papers only, or one unfinished paper dragged the
   class average down with a mark nobody had finished earning.
+- **The "tests attempted" tile divides by the tests that reach the student**,
+  which the report sends as `testCount` for a single student's report: one
+  walk of the caller's own partition on `REPORT_TEST_SELECT`, counting what
+  `visible()`'s student branch would let through (published, not a master,
+  the caller's own, assigned to them). It divided by the **bundled demo
+  tests** — `TESTS` from `src/data.ts` — so a real teacher read **4/1**.
+  Without the number the tile shows the attempted count alone, never a
+  denominator from the wrong list.
 
 **"1 Jan, 5:30 am" is the Unix epoch in IST**, and it had two causes, both
 fixed:

@@ -1902,11 +1902,16 @@ async function reportStatusChecks() {
       // whole partition makes "somebody else's child is not in this list" pass
       // while proving nothing — the same vacuity the `testId eq` clause had.
       const wantTeacher = /teacherSub eq '((?:[^']|'')*)'/.exec(filter);
+      // The marks merge asks for marked grading rows only. Without this an
+      // answer still waiting to be marked would add its AI draft to the score
+      // and the "only the teacher's marks count" assertion would pass by accident.
+      const wantStatus = /status eq '((?:[^']|'')*)'/.exec(filter);
       const hits = [];
       for (const [k, row] of rows) {
         if (!k.startsWith(`${name}/`)) continue;
         if (row.partitionKey !== want) continue;
         if (wantTeacher && String(row.teacherSub || "") !== wantTeacher[1].replace(/''/g, "'")) continue;
+        if (wantStatus && String(row.status || "") !== wantStatus[1].replace(/''/g, "'")) continue;
         hits.push({ ...row });
       }
       return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
@@ -1951,6 +1956,30 @@ async function reportStatusChecks() {
   rows.set(key("attempts", "stu~priya", "grant~t1"), {
     partitionKey: "stu~priya", rowKey: "grant~t1", testId: "t1", extra: 1,
   });
+  // The teacher's marks live in `grading`, never on the attempt row. One long
+  // answer marked 5, one short answer still waiting with only the AI's draft
+  // on it — the report must count the first and not the second.
+  rows.set(key("grading", "stu~priya", "t1~q5"), {
+    partitionKey: "stu~priya", rowKey: "t1~q5", testId: "t1", questionId: "q5",
+    status: "marked", awarded: 5, maxMarks: 5,
+  });
+  rows.set(key("grading", "stu~priya", "t1~q6"), {
+    partitionKey: "stu~priya", rowKey: "t1~q6", testId: "t1", questionId: "q6",
+    status: "submitted", aiAwarded: 2, maxMarks: 2,
+  });
+  // The tests this teacher owns, for the "tests attempted" denominator: two
+  // published for the class, one assigned to somebody else, one still a draft,
+  // and a master that reaches no student. Priya can see exactly two.
+  const testRow = (id, extra) => rows.set(key("tests", TEACHER, id), {
+    partitionKey: TEACHER, rowKey: id, ownerSub: TEACHER, status: "published", ...extra,
+  });
+  testRow("t1", {});
+  testRow("t2", { audience: "class" });
+  testRow("t3", { audience: "selected", assignedTo: JSON.stringify(["ravi"]) });
+  testRow("t4", { status: "draft" });
+  rows.set(key("tests", "~platform", "lib-1"), {
+    partitionKey: "~platform", rowKey: "lib-1", ownerSub: "adm~x", status: "published", platform: true,
+  });
 
   const c = { res: null };
   await t.handlers.reports(c, {
@@ -1965,12 +1994,26 @@ async function reportStatusChecks() {
   const done = list.find((a) => a.testId === "t1");
   const live = list.find((a) => a.testId === "t2");
   check(done && done.status === "done", "a handed-in paper says so");
+  // The paper read 21/31 inside and 4/31 on the report: the row's subtotal was
+  // sent bare while the student's own listing had merged the marks for a release.
+  check(
+    done && done.score === 25,
+    `a handed-in paper's score carries the teacher's marks, as the student's own listing does (${done && done.score}, expected 25)`
+  );
   check(live && live.status === "progress", "and one still being written says THAT, rather than nothing");
   check(
     live && live.score === 4 && !live.completedAt,
     "the running subtotal is still sent — the client decides not to show it as a mark"
   );
   check(live && live.updatedAt === "2026-09-15T09:00:00.000Z", "with when they last worked on it");
+  // The tile read "4/1": attempts over the BUNDLED demo tests. The denominator
+  // is the tests that reach this student — published, the teacher's own,
+  // assigned to them — never a draft, a paper assigned to a classmate, or a
+  // master.
+  check(
+    got.testCount === 2,
+    `the report says how many tests reach the student (${got.testCount}, expected 2)`
+  );
 
   // --- the admin's reset puts an account back to its FIRST screen ----------
   // The phone number lives on the profile, not the account row, so clearing
