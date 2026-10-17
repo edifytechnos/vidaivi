@@ -3474,6 +3474,13 @@ an iPhone. No dependency: a manifest, five icons, a fifty-line worker.
 ## Working style
 
 - Concise, structured output. No padding.
+- **Every change goes to QA, and J gets the URL to test it** (J, 17 Oct). A
+  push to any branch but `main` already deploys QA
+  (https://ambitious-plant-03e9c0f00-qa.eastasia.5.azurestaticapps.net), so
+  once the "Build and deploy to QA" job is green, say so and hand over that
+  URL with what to look at — never report a change as done with only the PR
+  link. Admin and student logins work there; Google sign-in needs the QA host
+  on the OAuth client first (see *QA is one fixed URL*).
 - **Rework the ghost loader with the screen.** Any change to a screen's
   furniture — a column, a row of controls, the scroll model — is not finished
   until `skeleton` in `src/shell.ts` matches it and the suite has been run. The
