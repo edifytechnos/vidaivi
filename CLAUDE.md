@@ -2542,6 +2542,14 @@ there too, reading as a paper they sat and never took.
   action, *See what they have so far*. The stat tiles count **handed in**, and
   the average is over finished papers only, or one unfinished paper dragged the
   class average down with a mark nobody had finished earning.
+- **The "tests attempted" tile divides by the tests that reach the student**,
+  which the report sends as `testCount` for a single student's report: one
+  walk of the caller's own partition on `REPORT_TEST_SELECT`, counting what
+  `visible()`'s student branch would let through (published, not a master,
+  the caller's own, assigned to them). It divided by the **bundled demo
+  tests** — `TESTS` from `src/data.ts` — so a real teacher read **4/1**.
+  Without the number the tile shows the attempted count alone, never a
+  denominator from the wrong list.
 
 **"1 Jan, 5:30 am" is the Unix epoch in IST**, and it had two causes, both
 fixed:
