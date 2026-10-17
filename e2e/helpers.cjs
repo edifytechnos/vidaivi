@@ -1872,6 +1872,9 @@ async function roleChoiceChecks() {
 async function reportStatusChecks() {
   const rows = new Map();
   const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  // Every partition a listing named, in order — so a check can say how many
+  // walks a request took, not only what it answered.
+  const listed = [];
   const pkOf = (filter) => {
     const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
     return m ? m[1].replace(/''/g, "'") : null;
@@ -1898,6 +1901,7 @@ async function reportStatusChecks() {
       const filter = opts && opts.queryOptions && opts.queryOptions.filter;
       const want = pkOf(filter);
       if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      listed.push(`${name}/${want}`);
       // Property clauses are honoured, not ignored. A fake that hands back the
       // whole partition makes "somebody else's child is not in this list" pass
       // while proving nothing — the same vacuity the `testId eq` clause had.
@@ -1952,7 +1956,34 @@ async function reportStatusChecks() {
     partitionKey: "stu~priya", rowKey: "grant~t1", testId: "t1", extra: 1,
   });
 
+  // The tests this teacher has shared — what the report's "tests attempted"
+  // tile is out of. The client divided by the BUNDLED demo registry, which
+  // read "4/1" for a real teacher whose papers live in the table.
+  const shared = (rk, extra) => {
+    rows.set(key("tests", TEACHER, rk), {
+      partitionKey: TEACHER, rowKey: rk, ownerSub: TEACHER, title: rk, status: "published",
+      platform: false, audience: "class", ...extra,
+    });
+  };
+  shared("t1"); // sat
+  shared("t2"); // still being written
+  shared("t3", { audience: "selected", assignedTo: '["priya"]' }); // hers by name
+  shared("t4", { audience: "selected", assignedTo: '["ravi"]' }); // somebody else's
+  shared("t5", { status: "draft" }); // reaches nobody
+  shared("t6", { status: "archived" }); // withdrawn — after she sat it
+  rows.set(key("attempts", "stu~priya", "89998~t6"), {
+    partitionKey: "stu~priya", rowKey: "89998~t6", testId: "t6",
+    score: 10, total: 20, completedAt: "2026-09-13T10:00:00.000Z",
+  });
+  // A master lives in the library's partition: never walked here, and never
+  // a student's directly.
+  rows.set(key("tests", "~platform", "m1"), {
+    partitionKey: "~platform", rowKey: "m1", ownerSub: "adm~x", title: "m1",
+    status: "published", platform: true, audience: "class",
+  });
+
   const c = { res: null };
+  const listedBefore = listed.length;
   await t.handlers.reports(c, {
     method: "GET",
     headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
@@ -1961,7 +1992,18 @@ async function reportStatusChecks() {
   const got = (c.res.body.students || [])[0] || {};
   const list = got.attempts || [];
   check(c.res.status === 200, `a teacher reads their student's report (${c.res.status})`);
-  check(list.length === 2, `the grant row is not a paper (${list.length} rows, expected 2)`);
+  check(list.length === 3, `the grant row is not a paper (${list.length} rows, expected 3)`);
+  // The denominator: t1, t2 and t3 she can see; t6 she sat before it was
+  // withdrawn; t4 is somebody else's, t5 a draft, m1 the library's.
+  check(
+    got.testsShared === 4,
+    `the attempted tile is out of what she was given — three she can see and the archived one she sat (got ${got.testsShared})`
+  );
+  const testWalks = listed.slice(listedBefore).filter((p) => p.startsWith("tests/"));
+  check(
+    testWalks.length > 0 && testWalks.length <= 2 && testWalks.every((p) => p === `tests/${TEACHER}` || p === "tests/test"),
+    `one walk of the teacher's own partition for the whole report, never one per student (${testWalks.join(", ")})`
+  );
   const done = list.find((a) => a.testId === "t1");
   const live = list.find((a) => a.testId === "t2");
   check(done && done.status === "done", "a handed-in paper says so");
