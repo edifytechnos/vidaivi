@@ -2160,6 +2160,12 @@ handlers.reports = async (context, req) => {
       });
       if (s.attempts.length >= 100) break;
     }
+    // The row holds only the auto-graded subtotal; the teacher's own marks live
+    // in `grading`. The student's listing has merged them since the marks
+    // moved there, and this one did not — so a teacher read 21/31 inside the
+    // paper and 4/31 on the report of the same attempt. Same merge, same
+    // partition, one query per student.
+    await mergeAwarded(`stu~${s.username}`, s.attempts);
   });
   roster.sort((a, b) => String(a.name).localeCompare(String(b.name)));
   json(context, 200, { students: roster });
