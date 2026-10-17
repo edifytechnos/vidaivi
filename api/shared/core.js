@@ -2125,6 +2125,43 @@ handlers.reports = async (context, req) => {
     return json(context, 404, { error: "Student not found" });
   }
 
+  // What each student has been given, for the report's "tests attempted"
+  // tile. The client divided by the BUNDLED demo registry, so a real teacher
+  // whose papers live in this table read "4/1" — four attempted out of one.
+  // The denominator is what the student can see: this teacher's published,
+  // non-master tests, narrowed by assignment exactly as the student's own
+  // listing narrows them (`visible()` in handlers.tests, clause for clause).
+  //
+  // ONE walk of the caller's own partition for the whole roster — never one
+  // per student (rule 3), never a scan (rule 2) — projected to the audience
+  // fields alone (rule 1), and run alongside the attempt reads rather than
+  // after them. It is the caller's partition because every student in the
+  // roster has `teacherSub eq who.id`, so nobody else's test can reach them.
+  // A read that fails sends no denominator at all; the client then shows the
+  // bare count, which is at least true, rather than losing the report.
+  const tests = tableClient("tests");
+  const sharedP = (async () => {
+    await ensureTable(tests);
+    const shared = [];
+    await walkPartitions(
+      tests,
+      {
+        partitions: [who.id],
+        select: ["PartitionKey", "RowKey", "status", "platform", "ownerSub", "audience", "assignedTo"],
+        legacyPk: LEGACY_TEST_PK,
+        budget: { left: LEGACY_DRAIN_BUDGET },
+      },
+      (t) => {
+        // A master reaches no student directly, and a draft or an archived
+        // paper reaches nobody — the student's own rules, not the staff ones.
+        if (t.status !== "published" || t.platform) return;
+        if (t.ownerSub !== who.id) return;
+        shared.push(t);
+      }
+    );
+    return shared;
+  })().catch(() => null);
+
   // Attach each student's attempts (newest first via inverted-time row keys).
   // One partition query per student, but run a few at a time: awaiting them one
   // after another made a class of 200 into 200 serial round trips.
@@ -2161,6 +2198,17 @@ handlers.reports = async (context, req) => {
       if (s.attempts.length >= 100) break;
     }
   });
+  const shared = await sharedP;
+  if (shared) {
+    for (const s of roster) {
+      // The ones they can see now, plus any they handed in that have since
+      // been withdrawn (archived, unassigned) — so "attempted" can never
+      // outnumber it. A paper still being written counts on neither side.
+      const ids = new Set(shared.filter((t) => assignedTo(t, s.username)).map((t) => t.rowKey));
+      for (const a of s.attempts) if (a.status === "done") ids.add(a.testId);
+      s.testsShared = ids.size;
+    }
+  }
   roster.sort((a, b) => String(a.name).localeCompare(String(b.name)));
   json(context, 200, { students: roster });
 };

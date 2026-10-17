@@ -2616,6 +2616,19 @@ Release is per student *and* per class — see `/api/release` above. The teacher
 presses it from the marking queue (`src/screens/marking.ts`) or from a student's
 report (`showStudentReport` in `src/screens/console.ts`).
 
+**The report's "tests attempted" tile is out of what the student was given.**
+`/api/reports` answers `testsShared` per student: the teacher's published,
+non-master tests as assigned to them (`assignedTo`, the same clause as
+`visible()`), plus any they handed in that were since withdrawn, so attempted
+never outnumbers it. It is one projected walk of the teacher's own partition
+for the whole roster, run alongside the attempt reads — never one per student.
+It used to divide by the bundled demo registry (`TESTS` in `src/data.ts`), which
+read "4/1" for a real teacher whose papers live in the table. A server that
+does not answer it gets the bare count. `e2e/helpers.cjs` seeds the cases (a
+class test, one assigned by name, one assigned to somebody else, a draft, an
+archived paper the student sat, a master) and counts the walks;
+`e2e/regression.cjs` reads the tile.
+
 ## Where a question came from (`source`)
 
 A question may carry `source` — free text, ≤ 40 characters, e.g. `"CBSE 2025"` —

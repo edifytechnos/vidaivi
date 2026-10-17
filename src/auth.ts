@@ -782,6 +782,12 @@ export async function resetStudentPassword(
 
 export interface StudentReport extends StudentRecord {
   attempts: ServerAttempt[];
+  /**
+   * How many tests this student has been given: their teacher's published
+   * tests as assigned to them, plus any they handed in that were since
+   * withdrawn — so attempts never outnumber it. Absent from an older server.
+   */
+  testsShared?: number;
 }
 
 /** Teacher/admin: attempts for one student, or all students when username omitted. */

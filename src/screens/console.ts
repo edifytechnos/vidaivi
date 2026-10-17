@@ -29,7 +29,7 @@ import {
   totpInit,
 } from "../auth";
 import { setGuest } from "../attempts";
-import { TESTS, testTitle } from "../data";
+import { testTitle } from "../data";
 import { copyText, escapeHtml, pct, setUrl, whenLabel } from "../dom";
 import { confirmDialog, notice } from "../dialog";
 import { openModal } from "../modal";
@@ -773,13 +773,20 @@ export function showStudentReport(username: string) {
       ? Math.round([...best.values()].reduce((x, y) => x + y, 0) / best.size)
       : 0;
     const inFlight = attempts.length - done.length;
+    // Out of what the server says this student was given — their teacher's
+    // published tests as assigned to them — never the bundled demo registry,
+    // which read "4/1" for a real teacher whose tests live in the cloud. An
+    // older server that does not say gets the bare count, which is at least
+    // true.
+    const attemptedTile =
+      typeof s.testsShared === "number" ? `${attempted.size}/${s.testsShared}` : `${attempted.size}`;
 
     document.querySelector(".shell-main .page")!.innerHTML = `
       <div class="card">
         <h2 class="landing-title">${escapeHtml(s.name)}</h2>
         <p class="hint">${escapeHtml([s.username, s.grade, s.school].filter(Boolean).join(" · "))}${s.parentPhone ? ` · Parent: ${escapeHtml(s.parentPhone)}` : ""}</p>
         <div class="report-stats">
-          <div class="report-stat"><div class="report-stat-num">${attempted.size}/${TESTS.filter((t) => t.access === "login").length || TESTS.length}</div><div class="report-stat-label">tests attempted</div></div>
+          <div class="report-stat"><div class="report-stat-num">${attemptedTile}</div><div class="report-stat-label">tests attempted</div></div>
           <div class="report-stat"><div class="report-stat-num">${done.length}</div><div class="report-stat-label">handed in</div></div>
           <div class="report-stat"><div class="report-stat-num">${avgBest}%</div><div class="report-stat-label">avg best score</div></div>
         </div>

@@ -230,6 +230,17 @@ function check(ok, label) {
       await report.click();
       await page.waitForSelector(".report-stats", { timeout: 20000 });
       check(true, "student report shows stat tiles");
+      // "N/M tests attempted" is out of what the student was given, never the
+      // bundled demo registry — which read "4/1" for a real teacher. An API
+      // from before `testsShared` answers no denominator, and then the tile
+      // is the bare count.
+      const tile = ((await page.textContent(".report-stat-num")) || "").trim();
+      const frac = /^(\d+)(?:\/(\d+))?$/.exec(tile);
+      check(!!frac, `the attempted tile is a count or a fraction (${JSON.stringify(tile)})`);
+      check(
+        !frac || !frac[2] || Number(frac[1]) <= Number(frac[2]),
+        `and never says more attempted than given (${tile})`
+      );
       await shot("report");
     } else {
       console.log("SKIP  report (roster is empty)");
