@@ -23,18 +23,19 @@ import {
   resetStudentPassword,
   setReleased,
   signOut,
+  type ServerAttempt,
   fetchTotpState,
   totpDisable,
   totpEnable,
   totpInit,
 } from "../auth";
 import { setGuest } from "../attempts";
-import { TESTS, testTitle } from "../data";
-import { copyText, escapeHtml, pct, setUrl, whenLabel } from "../dom";
+import { testTitle } from "../data";
+import { copyText, escapeHtml, pct, setUrl, testLabelMarkup, whenLabel } from "../dom";
 import { confirmDialog, notice } from "../dialog";
 import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
-import { createParentInvite, fetchTestList, mutateTest, setTestStatus } from "../api";
+import { createParentInvite, fetchSubjects, fetchTestList, mutateTest, setTestStatus } from "../api";
 import { currentSubject } from "./home";
 import { showBuilder } from "./builder";
 import { newTestHere, showEditor } from "./editor";
@@ -728,11 +729,18 @@ export function showAdmin() {
 export function showStudentReport(username: string) {
   setUrl({ report: username });
   track("report_open", { student: username });
-  consoleShell("report", `${skeleton.card(2)}${skeleton.table(3, 4)}`);
+  consoleShell("report", skeleton.report());
   bindConsoleNav();
 
   void (async () => {
-    const students = await fetchReports(username);
+    // A paper is named by its title and filed under its subject, so the report
+    // needs the teacher's tests and subjects beside the attempts: one round of
+    // three requests in parallel, never a lookup per row (rule 3).
+    const [students, listed, subjects] = await Promise.all([
+      fetchReports(username),
+      fetchTestList(),
+      fetchSubjects(),
+    ]);
     const s = students?.[0];
     if (!s) {
       document.querySelector(".shell-main .page")!.innerHTML = `
@@ -741,6 +749,8 @@ export function showStudentReport(username: string) {
       document.getElementById("rep-back")!.addEventListener("click", showTeacher);
       return;
     }
+    const metaOf = new Map((listed?.tests ?? []).map((t) => [t.id, t]));
+    const subjectOf = new Map((subjects ?? []).map((x) => [x.id, x]));
 
     const attempts = s.attempts ?? [];
     // A paper still being written is not a result. It carries a running
@@ -757,80 +767,97 @@ export function showStudentReport(username: string) {
       ? Math.round([...best.values()].reduce((x, y) => x + y, 0) / best.size)
       : 0;
     const inFlight = attempts.length - done.length;
+    // "Tests attempted" out of the papers this teacher has published — not the
+    // bundled demo tests, which is what `TESTS` holds and why the tile once
+    // read 5/1. With no list to hand, the student's own count stands alone.
+    const published = (listed?.tests ?? []).filter((t) => t.status === "published" && !t.platform).length;
+    const ofTests = Math.max(published, attempted.size);
+
+    // Filed under the subject each test belongs to. A paper whose test is gone,
+    // or whose subject this teacher no longer holds, lands in "Other tests"
+    // rather than nowhere — the attempt is still the student's.
+    interface Group { key: string; title: string; items: ServerAttempt[] }
+    const groups = new Map<string, Group>();
+    for (const a of attempts) {
+      const meta = metaOf.get(a.testId);
+      const subj = meta ? subjectOf.get(meta.subjectId) : undefined;
+      const key = subj ? subj.id : "~other";
+      let g = groups.get(key);
+      if (!g) {
+        g = { key, title: subj ? subj.title : "Other tests", items: [] };
+        groups.set(key, g);
+      }
+      g.items.push(a); // the walk is newest first, and stays so inside a subject
+    }
+    const ordered = [...groups.values()].sort((x, y) => {
+      const xo = x.key === "~other" ? 1 : 0;
+      const yo = y.key === "~other" ? 1 : 0;
+      return xo - yo || x.title.localeCompare(y.title);
+    });
+
+    const who = `data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}"`;
+    const card = (a: ServerAttempt): string => {
+      const meta = metaOf.get(a.testId);
+      const label = testLabelMarkup(meta ? meta.title : testTitle(a.testId), meta?.chapter);
+      const id = escapeHtml(a.testId);
+      // Two different cards. A paper in progress has no mark, no result and
+      // nothing to release — it has a place in the grid, and one action.
+      if (a.status === "progress") {
+        return `<article class="rep-card rep-card-inflight" data-test="${id}">
+          <div class="rep-card-head">${label}<span class="status-chip status-new">In progress</span></div>
+          <div class="rep-card-score"><span class="rep-score rep-score-muted">—</span><span class="rep-card-note">not handed in</span></div>
+          <div class="rep-card-when">${escapeHtml(whenLabel(a.updatedAt))} · last worked on</div>
+          <div class="rep-actions">
+            <button class="btn-link rep-paper" data-test="${id}" ${who}>See what they have so far</button>
+          </div>
+        </article>`;
+      }
+      const p = pct(a.score, a.total);
+      return `<article class="rep-card" data-test="${id}">
+        <div class="rep-card-head">${label}<span class="rel-cell" data-test="${id}"><span class="status-chip status-new">…</span></span></div>
+        <div class="rep-card-score">
+          <span class="rep-score">${a.score}<span class="rep-score-total">/${a.total}</span></span>
+          <span class="status-chip ${p >= 50 ? "status-done" : "status-wrong"}">${p}%</span>
+        </div>
+        <div class="rep-card-when">${escapeHtml(whenLabel(a.completedAt))}</div>
+        <div class="rep-actions">
+          <button class="btn-link rep-paper" data-test="${id}" ${who}>Open &amp; mark</button>
+          <button class="btn-link rel-toggle" data-test="${id}" data-user="${escapeHtml(s.username)}">Release</button>
+          <button class="btn-link rep-grant" data-test="${id}" data-user="${escapeHtml(s.username)}">Give another attempt</button>
+        </div>
+      </article>`;
+    };
+    const section = (g: Group): string => {
+      const finished = g.items.filter((a) => a.status !== "progress");
+      const top = finished.length ? Math.max(...finished.map((a) => pct(a.score, a.total))) : null;
+      const meta = [
+        `${g.items.length} paper${g.items.length === 1 ? "" : "s"}`,
+        top === null ? "" : `best ${top}%`,
+      ].filter(Boolean).join(" · ");
+      return `<section class="rep-subject" data-subject="${escapeHtml(g.key)}">
+        <div class="rep-subject-head">
+          <h3 class="rep-subject-title">${escapeHtml(g.title)}</h3>
+          <span class="rep-subject-meta">${escapeHtml(meta)}</span>
+        </div>
+        <div class="rep-grid">${g.items.map(card).join("")}</div>
+      </section>`;
+    };
 
     document.querySelector(".shell-main .page")!.innerHTML = `
       <div class="card">
         <h2 class="landing-title">${escapeHtml(s.name)}</h2>
         <p class="hint">${escapeHtml([s.username, s.grade, s.school].filter(Boolean).join(" · "))}${s.parentPhone ? ` · Parent: ${escapeHtml(s.parentPhone)}` : ""}</p>
         <div class="report-stats">
-          <div class="report-stat"><div class="report-stat-num">${attempted.size}/${TESTS.filter((t) => t.access === "login").length || TESTS.length}</div><div class="report-stat-label">tests attempted</div></div>
+          <div class="report-stat"><div class="report-stat-num">${attempted.size}/${ofTests}</div><div class="report-stat-label">tests attempted</div></div>
           <div class="report-stat"><div class="report-stat-num">${done.length}</div><div class="report-stat-label">handed in</div></div>
           <div class="report-stat"><div class="report-stat-num">${avgBest}%</div><div class="report-stat-label">avg best score</div></div>
         </div>
-      </div>
-      <div class="card roster-card">
-        <div class="solution-title">Attempts (newest first)</div>
         ${inFlight ? `<p class="hint">${inFlight} paper${inFlight === 1 ? " is" : "s are"} still being written — no marks until ${inFlight === 1 ? "it is" : "they are"} handed in.</p>` : ""}
-        ${
-          attempts.length
-            ? `<div class="table-wrap"><table class="data-table">
-                <thead><tr><th>Test</th><th>When</th><th>Score</th><th>Status</th><th>Answers</th><th></th></tr></thead>
-                <tbody>${attempts
-                  .map((a) => {
-                    const p = pct(a.score, a.total);
-                    // Two different rows. A paper in progress has no mark, no
-                    // result and nothing to release — it has a place in it.
-                    if (a.status === "progress") {
-                      const seen = whenLabel(a.updatedAt);
-                      return `<tr class="row-inflight">
-                        <td class="cell-strong">${escapeHtml(testTitle(a.testId))}</td>
-                        <td>${escapeHtml(seen)}<div class="hint">last worked on</div></td>
-                        <td class="cell-mono">—</td>
-                        <td><span class="status-chip status-new">In progress</span></td>
-                        <td><span class="hint">Not handed in</span></td>
-                        <td class="cell-actions">
-                          <button class="btn-link rep-paper" data-test="${escapeHtml(a.testId)}"
-                                  data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">See what they have so far</button>
-                        </td>
-                      </tr>`;
-                    }
-                    return `<tr>
-                      <td class="cell-strong">${escapeHtml(testTitle(a.testId))}</td>
-                      <td>${escapeHtml(whenLabel(a.completedAt))}</td>
-                      <td class="cell-mono">${a.score}/${a.total}</td>
-                      <td><span class="status-chip ${p >= 50 ? "status-done" : "status-wrong"}">${p}%</span></td>
-                      <td class="rel-cell" data-test="${escapeHtml(a.testId)}"><span class="status-chip status-new">…</span></td>
-                      <td class="cell-actions">
-                        <button class="btn-link rep-paper" data-test="${escapeHtml(a.testId)}"
-                                data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Open &amp; mark</button>
-                        <button class="btn-link rel-toggle" data-test="${escapeHtml(a.testId)}" data-user="${escapeHtml(s.username)}">Release</button>
-                        <button class="btn-link rep-grant" data-test="${escapeHtml(a.testId)}"
-                                data-user="${escapeHtml(s.username)}">Give another attempt</button>
-                      </td>
-                    </tr>`;
-                  })
-                  .join("")}</tbody>
-              </table></div>`
-            : `<p class="hint">No attempts yet — share the login and the test link.</p>`
-        }
       </div>
       ${
         attempts.length
-          ? `<div class="card">
-        <div class="solution-title">Release answers to the whole class</div>
-        <p class="hint">Until you release a test, students see their marks but not the
-        answers or the worked solutions. This opens it for everyone who sat it.</p>
-        <div class="rel-rows" id="rel-class">${[...attempted]
-          .map(
-            (id) => `<div class="rel-row" data-test="${escapeHtml(id)}">
-              <span class="rel-name">${escapeHtml(testTitle(id))}</span>
-              <span class="rel-meta rel-state">Checking…</span>
-              <button class="btn btn-ghost rel-class-toggle" data-test="${escapeHtml(id)}">Release to class</button>
-            </div>`
-          )
-          .join("")}</div>
-      </div>`
-          : ""
+          ? ordered.map(section).join("")
+          : `<div class="card roster-card"><p class="hint">No attempts yet — share the login and the test link.</p></div>`
       }
       <div class="actions">
         <button id="rep-back" class="btn btn-ghost">Back to students</button>
@@ -848,9 +875,9 @@ export function showStudentReport(username: string) {
     );
     // Give another attempt. A child whose connection died mid-paper is the
     // real case this exists for; without it, every one of those is a message
-    // to whoever runs the platform. The buttons are in the attempts table
-    // above, so this must bind AFTER that markup is written — it once sat in
-    // the error branch, where there is no table, and did nothing.
+    // to whoever runs the platform. The buttons are in the cards above, so
+    // this must bind AFTER that markup is written — it once sat in the error
+    // branch, where there is no table, and did nothing.
     document.querySelectorAll<HTMLButtonElement>(".rep-grant").forEach((btn) =>
       btn.addEventListener("click", async () => {
         const was = btn.textContent;
@@ -869,9 +896,11 @@ export function showStudentReport(username: string) {
 }
 
 /**
- * Fill in who each test is open for, then wire the two Release controls.
+ * Fill in who each test is open for, then wire each card's Release control.
  * State is read per test rather than assumed, so a teacher opening the report
- * on a second device sees the truth.
+ * on a second device sees the truth. A test the whole class already has open
+ * (released from elsewhere) shows "Open to class" and cannot be hidden for
+ * one student here.
  */
 async function paintRelease(username: string, testIds: string[]): Promise<void> {
   const states = new Map<string, { classWide: boolean; mine: boolean }>();
@@ -895,15 +924,6 @@ async function paintRelease(username: string, testIds: string[]): Promise<void> 
         btn.textContent = state.mine ? "Hide again" : state.classWide ? "Open to class" : "Release";
         btn.toggleAttribute("disabled", state.classWide && !state.mine);
       });
-      const row = document.querySelector<HTMLElement>(`.rel-row[data-test="${CSS.escape(id)}"]`);
-      if (row) {
-        row.querySelector(".rel-state")!.textContent = state.classWide
-          ? "Open to the whole class"
-          : "Locked — students see marks only";
-        row.querySelector(".rel-class-toggle")!.textContent = state.classWide
-          ? "Hide again"
-          : "Release to class";
-      }
     }
   };
   paint();
@@ -911,25 +931,19 @@ async function paintRelease(username: string, testIds: string[]): Promise<void> 
   const container = document.querySelector(".shell-main .page");
   container?.addEventListener("click", async (e) => {
     const target = e.target as HTMLElement;
-    const one = target.closest<HTMLElement>(".rel-toggle");
-    const all = target.closest<HTMLElement>(".rel-class-toggle");
-    const btn = one ?? all;
+    const btn = target.closest<HTMLElement>(".rel-toggle");
     if (!btn || btn.hasAttribute("disabled")) return;
     const id = btn.dataset.test!;
     const state = states.get(id);
     if (!state) return;
 
     btn.setAttribute("disabled", "");
-    const wantOpen = all ? !state.classWide : !state.mine;
-    const ok = await setReleased(id, {
-      username: all ? undefined : username,
-      released: wantOpen,
-    });
+    const wantOpen = !state.mine;
+    const ok = await setReleased(id, { username, released: wantOpen });
     btn.removeAttribute("disabled");
     if (!ok) return;
-    track(wantOpen ? "answers_released" : "answers_hidden", { test: id, scope: all ? "class" : "student" });
-    if (all) state.classWide = wantOpen;
-    else state.mine = wantOpen;
+    track(wantOpen ? "answers_released" : "answers_hidden", { test: id, scope: "student" });
+    state.mine = wantOpen;
     paint();
   });
 }
