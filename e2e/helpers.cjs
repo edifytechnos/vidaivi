@@ -1902,11 +1902,16 @@ async function reportStatusChecks() {
       // whole partition makes "somebody else's child is not in this list" pass
       // while proving nothing — the same vacuity the `testId eq` clause had.
       const wantTeacher = /teacherSub eq '((?:[^']|'')*)'/.exec(filter);
+      // `status eq` too, or the report's marks merge would count a grading row
+      // still waiting to be marked — and the assertion below would pass on a
+      // fake that never filtered.
+      const wantStatus = /status eq '((?:[^']|'')*)'/.exec(filter);
       const hits = [];
       for (const [k, row] of rows) {
         if (!k.startsWith(`${name}/`)) continue;
         if (row.partitionKey !== want) continue;
         if (wantTeacher && String(row.teacherSub || "") !== wantTeacher[1].replace(/''/g, "'")) continue;
+        if (wantStatus && String(row.status || "") !== wantStatus[1].replace(/''/g, "'")) continue;
         hits.push({ ...row });
       }
       return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
@@ -1951,6 +1956,22 @@ async function reportStatusChecks() {
   rows.set(key("attempts", "stu~priya", "grant~t1"), {
     partitionKey: "stu~priya", rowKey: "grant~t1", testId: "t1", extra: 1,
   });
+  // The teacher's marks on the finished paper: one awarded, one still waiting.
+  // The report showed 20/26 with these in the table — the subtotal, the number
+  // the paper had before the teacher marked it.
+  rows.set(key("grading", "stu~priya", "t1~q9"), {
+    partitionKey: "stu~priya", rowKey: "t1~q9", testId: "t1",
+    status: "marked", awarded: 5, maxMarks: 5,
+  });
+  rows.set(key("grading", "stu~priya", "t1~q10"), {
+    partitionKey: "stu~priya", rowKey: "t1~q10", testId: "t1",
+    status: "submitted", awarded: 3, maxMarks: 5,
+  });
+  // A mark on the paper still being written must not touch its subtotal.
+  rows.set(key("grading", "stu~priya", "t2~q1"), {
+    partitionKey: "stu~priya", rowKey: "t2~q1", testId: "t2",
+    status: "marked", awarded: 2, maxMarks: 2,
+  });
 
   const c = { res: null };
   await t.handlers.reports(c, {
@@ -1971,6 +1992,11 @@ async function reportStatusChecks() {
     "the running subtotal is still sent — the client decides not to show it as a mark"
   );
   check(live && live.updatedAt === "2026-09-15T09:00:00.000Z", "with when they last worked on it");
+  check(
+    done && done.score === 25,
+    `the report's score carries the teacher's marks, like the student's own list (got ${done && done.score}, expected 25)`
+  );
+  check(live && live.score === 4, "and a paper still being written keeps its subtotal");
 
   // --- the admin's reset puts an account back to its FIRST screen ----------
   // The phone number lives on the profile, not the account row, so clearing

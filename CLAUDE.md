@@ -1604,6 +1604,10 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   is adjusted — a grading row belongs to a question, not to an attempt, so an
   older retake keeps the score it was stored with. Doing it on the client would
   be one grading fetch per test row, an N+1 from a phone (rule 3).
+  **The teacher's report does the same** (`handlers.reports`, 17 Oct): it
+  showed the subtotal for a release — 4/31 on a paper the teacher had fully
+  marked — because the listing fix never reached it. One `mergeAwarded` per
+  student, inside the batch that already walks that student.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
 - **Removing a student removes the photographs.** `POST /api/students
@@ -2537,6 +2541,14 @@ there too, reading as a paper they sat and never took.
   action, *See what they have so far*. The stat tiles count **handed in**, and
   the average is over finished papers only, or one unfinished paper dragged the
   class average down with a mark nobody had finished earning.
+- **Give another attempt is bound after the table is written.** The
+  `.rep-grant` binding once sat in `showStudentReport`'s `if (!s)` error
+  branch, which renders no table — so on a loaded report the button did
+  nothing, silently (17 Oct). It now binds beside `.rep-paper` and
+  `paintRelease`, after the markup; the error branch keeps only `#rep-back`.
+  `e2e/regression.cjs` presses the button with the grant answered by a route
+  stub (never a real grant on a real student) and drives the error branch with
+  `/api/reports` refused.
 
 **"1 Jan, 5:30 am" is the Unix epoch in IST**, and it had two causes, both
 fixed:
