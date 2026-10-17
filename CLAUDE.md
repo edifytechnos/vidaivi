@@ -1604,6 +1604,10 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   is adjusted — a grading row belongs to a question, not to an attempt, so an
   older retake keeps the score it was stored with. Doing it on the client would
   be one grading fetch per test row, an N+1 from a phone (rule 3).
+  **The teacher's report does the same** (`handlers.reports`, 17 Oct): it
+  showed the subtotal for a release — 4/31 on a paper the teacher had fully
+  marked — because the listing fix never reached it. One `mergeAwarded` per
+  student, inside the batch that already walks that student.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
 - **Removing a student removes the photographs.** `POST /api/students
