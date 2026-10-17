@@ -1902,9 +1902,9 @@ async function reportStatusChecks() {
       // whole partition makes "somebody else's child is not in this list" pass
       // while proving nothing — the same vacuity the `testId eq` clause had.
       const wantTeacher = /teacherSub eq '((?:[^']|'')*)'/.exec(filter);
-      // The marks merge asks for marked grading rows only. Without this an
-      // answer still waiting to be marked would add its AI draft to the score
-      // and the "only the teacher's marks count" assertion would pass by accident.
+      // `status eq` too, or the report's marks merge would count a grading row
+      // still waiting to be marked — and the assertion below would pass on a
+      // fake that never filtered.
       const wantStatus = /status eq '((?:[^']|'')*)'/.exec(filter);
       const hits = [];
       for (const [k, row] of rows) {
@@ -1956,16 +1956,21 @@ async function reportStatusChecks() {
   rows.set(key("attempts", "stu~priya", "grant~t1"), {
     partitionKey: "stu~priya", rowKey: "grant~t1", testId: "t1", extra: 1,
   });
-  // The teacher's marks live in `grading`, never on the attempt row. One long
-  // answer marked 5, one short answer still waiting with only the AI's draft
-  // on it — the report must count the first and not the second.
-  rows.set(key("grading", "stu~priya", "t1~q5"), {
-    partitionKey: "stu~priya", rowKey: "t1~q5", testId: "t1", questionId: "q5",
+  // The teacher's marks on the finished paper: one awarded, one still waiting.
+  // The report showed 20/26 with these in the table — the subtotal, the number
+  // the paper had before the teacher marked it.
+  rows.set(key("grading", "stu~priya", "t1~q9"), {
+    partitionKey: "stu~priya", rowKey: "t1~q9", testId: "t1",
     status: "marked", awarded: 5, maxMarks: 5,
   });
-  rows.set(key("grading", "stu~priya", "t1~q6"), {
-    partitionKey: "stu~priya", rowKey: "t1~q6", testId: "t1", questionId: "q6",
-    status: "submitted", aiAwarded: 2, maxMarks: 2,
+  rows.set(key("grading", "stu~priya", "t1~q10"), {
+    partitionKey: "stu~priya", rowKey: "t1~q10", testId: "t1",
+    status: "submitted", awarded: 3, maxMarks: 5,
+  });
+  // A mark on the paper still being written must not touch its subtotal.
+  rows.set(key("grading", "stu~priya", "t2~q1"), {
+    partitionKey: "stu~priya", rowKey: "t2~q1", testId: "t2",
+    status: "marked", awarded: 2, maxMarks: 2,
   });
   // The tests this teacher owns, for the "tests attempted" denominator: two
   // published for the class, one assigned to somebody else, one still a draft,
@@ -1994,12 +1999,6 @@ async function reportStatusChecks() {
   const done = list.find((a) => a.testId === "t1");
   const live = list.find((a) => a.testId === "t2");
   check(done && done.status === "done", "a handed-in paper says so");
-  // The paper read 21/31 inside and 4/31 on the report: the row's subtotal was
-  // sent bare while the student's own listing had merged the marks for a release.
-  check(
-    done && done.score === 25,
-    `a handed-in paper's score carries the teacher's marks, as the student's own listing does (${done && done.score}, expected 25)`
-  );
   check(live && live.status === "progress", "and one still being written says THAT, rather than nothing");
   check(
     live && live.score === 4 && !live.completedAt,
@@ -2014,6 +2013,11 @@ async function reportStatusChecks() {
     got.testCount === 2,
     `the report says how many tests reach the student (${got.testCount}, expected 2)`
   );
+  check(
+    done && done.score === 25,
+    `the report's score carries the teacher's marks, like the student's own list (got ${done && done.score}, expected 25)`
+  );
+  check(live && live.score === 4, "and a paper still being written keeps its subtotal");
 
   // --- the admin's reset puts an account back to its FIRST screen ----------
   // The phone number lives on the profile, not the account row, so clearing

@@ -1604,11 +1604,10 @@ their own test, keeps the old self-assessment — nobody would ever mark theirs.
   is adjusted — a grading row belongs to a question, not to an attempt, so an
   older retake keeps the score it was stored with. Doing it on the client would
   be one grading fetch per test row, an N+1 from a phone (rule 3).
-  **The teacher's report (`handlers.reports`) makes the same merge**, one
-  grading query per student in the walk it already makes. It did not for a
-  release, so the same attempt read 21/31 inside the paper and 4/31 on the
-  student's report; `e2e/helpers.cjs` now asserts the report's score carries
-  the marks and that an unmarked answer's AI draft adds nothing.
+  **The teacher's report does the same** (`handlers.reports`, 17 Oct): it
+  showed the subtotal for a release — 4/31 on a paper the teacher had fully
+  marked — because the listing fix never reached it. One `mergeAwarded` per
+  student, inside the batch that already walks that student.
 - Storage needs no new app setting — the blob client reuses
   `STORAGE_CONNECTION_STRING`. The container is created on first upload.
 - **Removing a student removes the photographs.** `POST /api/students
@@ -2550,6 +2549,14 @@ there too, reading as a paper they sat and never took.
   tests** — `TESTS` from `src/data.ts` — so a real teacher read **4/1**.
   Without the number the tile shows the attempted count alone, never a
   denominator from the wrong list.
+- **Give another attempt is bound after the table is written.** The
+  `.rep-grant` binding once sat in `showStudentReport`'s `if (!s)` error
+  branch, which renders no table — so on a loaded report the button did
+  nothing, silently (17 Oct). It now binds beside `.rep-paper` and
+  `paintRelease`, after the markup; the error branch keeps only `#rep-back`.
+  `e2e/regression.cjs` presses the button with the grant answered by a route
+  stub (never a real grant on a real student) and drives the error branch with
+  `/api/reports` refused.
 
 **"1 Jan, 5:30 am" is the Unix epoch in IST**, and it had two causes, both
 fixed:

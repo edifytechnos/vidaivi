@@ -227,10 +227,54 @@ function check(ok, label) {
 
     const report = await page.$(".roster-report");
     if (report) {
+      const reportUser = await report.getAttribute("data-user");
       await report.click();
       await page.waitForSelector(".report-stats", { timeout: 20000 });
       check(true, "student report shows stat tiles");
       await shot("report");
+
+      // Give another attempt must be wired. One button per handed-in row,
+      // bound after the attempts table is written — the binding once sat in
+      // the report's error branch, where there is no table, and the button
+      // did nothing in front of a teacher. The grant is answered here, not by
+      // the real API, so the check never parks an extra attempt on a real
+      // student.
+      const grant = await page.$(".rep-grant");
+      if (grant) {
+        let granted = null;
+        await page.route("**/api/attempts", async (route) => {
+          if (route.request().method() !== "POST") return route.continue();
+          try { granted = JSON.parse(route.request().postData() || "{}"); } catch { granted = {}; }
+          await route.fulfill({ status: 200, contentType: "application/json", body: "{}" });
+        });
+        const expected = await grant.evaluate((b) => ({ user: b.dataset.user, test: b.dataset.test }));
+        await grant.click();
+        await page.waitForFunction(
+          () => document.querySelector(".rep-grant")?.textContent === "Given",
+          null,
+          { timeout: 10000 }
+        );
+        check(
+          !!granted && granted.action === "grant" && granted.username === expected.user && granted.testId === expected.test,
+          "Give another attempt sends the grant for that student and test"
+        );
+        await page.unroute("**/api/attempts");
+      } else {
+        console.log("SKIP  give another attempt (no handed-in paper on the first report)");
+      }
+
+      // The error branch: with the report refused, the page says so and Back
+      // still returns to the roster.
+      await page.route("**/api/reports**", (route) =>
+        route.fulfill({ status: 500, contentType: "application/json", body: "{}" })
+      );
+      await page.goto(BASE + "/?report=" + encodeURIComponent(reportUser), { waitUntil: "domcontentloaded" });
+      await page.waitForSelector(".shell-main .login-error", { timeout: 20000 });
+      check(true, "a report that cannot load says so");
+      await page.unroute("**/api/reports**");
+      await page.click("#rep-back");
+      await page.waitForSelector("#st-list .data-table, #st-list .login-error", { timeout: 20000 });
+      check(await page.isVisible("#st-list .data-table"), "and Back returns to the roster");
     } else {
       console.log("SKIP  report (roster is empty)");
     }

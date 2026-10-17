@@ -2186,11 +2186,12 @@ handlers.reports = async (context, req) => {
       });
       if (s.attempts.length >= 100) break;
     }
-    // The row holds only the auto-graded subtotal; the teacher's own marks live
-    // in `grading`. The student's listing has merged them since the marks
-    // moved there, and this one did not — so a teacher read 21/31 inside the
-    // paper and 4/31 on the report of the same attempt. Same merge, same
-    // partition, one query per student.
+    // The attempt row holds only the auto-graded subtotal; the teacher's
+    // marks live in the grading rows. The student's own listing has added
+    // them since the listing fix, but this report never did — so a teacher
+    // who had marked every long answer still read 4/31 here, the number the
+    // paper had before they marked it. One projected query in the same
+    // partition, inside the batch that already walks this student.
     await mergeAwarded(`stu~${s.username}`, s.attempts);
     if (testCount !== null) s.testCount = testCount;
   });
@@ -4467,6 +4468,9 @@ handlers.attempts = async (context, req) => {
  * Only the newest finished attempt per test is adjusted: a grading row belongs
  * to a question, not to an attempt, so an older retake keeps the score it was
  * stored with rather than borrowing marks earned on a later paper.
+ *
+ * The teacher's report (`handlers.reports`) calls this per student too: it
+ * shows the same rows, and for a release it showed them unmarked.
  */
 async function mergeAwarded(readAs, list) {
   if (!String(readAs || "").startsWith("stu~")) return;
