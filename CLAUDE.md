@@ -2537,6 +2537,14 @@ there too, reading as a paper they sat and never took.
   action, *See what they have so far*. The stat tiles count **handed in**, and
   the average is over finished papers only, or one unfinished paper dragged the
   class average down with a mark nobody had finished earning.
+- **Give another attempt is bound after the table is written.** The
+  `.rep-grant` binding once sat in `showStudentReport`'s `if (!s)` error
+  branch, which renders no table — so on a loaded report the button did
+  nothing, silently (17 Oct). It now binds beside `.rep-paper` and
+  `paintRelease`, after the markup; the error branch keeps only `#rep-back`.
+  `e2e/regression.cjs` presses the button with the grant answered by a route
+  stub (never a real grant on a real student) and drives the error branch with
+  `/api/reports` refused.
 
 **"1 Jan, 5:30 am" is the Unix epoch in IST**, and it had two causes, both
 fixed:
