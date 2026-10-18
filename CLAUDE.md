@@ -49,6 +49,16 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   domain via CNAME on Hostinger, SSL managed by Azure). The pre-rename host
   https://vidaivi.seyali.app stays pointed at the same app, so test links
   already shared in the class WhatsApp group keep working.
+- **Every Vidai resource lives in `seyali-rg`**, beside the other Seyali apps.
+  That covers the SWA `vidaivi`, the storage account `vidaivistorage`,
+  `vidaivi-app-insights` with its dashboard and alert group, and `Vidai-AI`
+  (South India, AI marking). They were moved out of `vidaivi_group` on 18 Oct
+  2026 in one `moveResources` call, after a `validateMoveResources` dry run.
+  The move took about three minutes, and `/api/health` answered 200 throughout.
+  Domains, certificates, both environments, the deploy token and all ten app
+  settings came across unchanged. Names, endpoints and keys did not change,
+  so nothing in the repo or the app settings needed editing. `vidaivi_group`
+  is empty.
 - Changing the public hostname takes three steps, all three needed or sign-in breaks:
   CNAME `<host>` → `ambitious-plant-03e9c0f00.5.azurestaticapps.net` in Hostinger DNS,
   the same host added under **Custom domains** in the Azure Static Web App (Azure
