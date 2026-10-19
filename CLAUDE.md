@@ -244,7 +244,16 @@ unlike the `vidai.seyali.app` entry above which is done.
   4 Oct 2026 ~21:30–22:10 IST) can only be filtered out. A check that needs
   Clarity's **real** tag to load must say so on purpose — override
   `navigator.webdriver` to `false` in an init script — and accepts that the
-  session is then recorded. `node e2e/clarity.cjs` asserts the rule. The signed-in **role** is set as a custom tag
+  session is then recorded. `node e2e/clarity.cjs` asserts the rule. **No child is ever recorded** (J, 19 Oct):
+  not a signed-in student, and not a guest who opens a test link, who may well
+  be one (`recordsAudience`). Masking hides what is on the screen but not the
+  taps, scrolls and pauses, and recording those is the behavioural monitoring
+  the DPDP Act bars for anyone under 18 (s.9(3), in force from about May 2027;
+  the school exemption covers the school's own educational monitoring, not a
+  vendor's product analytics). Such a page never loads the tag, and a page that
+  was recording stops (`stopRecording`) when a student signs in or a guest opens
+  a test. Faculty, parents, admins and a guest on the home page stay recorded.
+  The signed-in **role** is set as a custom tag
   on sign-in (`tagRole`) and is the only thing sent about the person.
   Every session is also tagged **`display`** — `installed` when opened from
   the home-screen icon, `browser` in a tab (`tagDisplay`, from
