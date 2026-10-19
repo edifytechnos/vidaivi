@@ -229,6 +229,17 @@ unlike the `vidai.seyali.app` entry above which is done.
   review_open, test_retake, home_open, and for the installed app
   install_prompt (with its outcome), app_installed, app_open_installed, and
   for the version beacon update_armed and update_applied.
+  **Its logs are kept for 365 days**, set on 19 Oct 2026 for the DPDP Rules'
+  one year of logs (Rules 6 and 8(3), in force from about May 2027).
+  `vidaivi-app-insights` is workspace-based, so retention lives on the
+  workspace's tables, not on the App Insights resource. The workspace is
+  `DefaultWorkspace-<subscription>-EA` in `DefaultResourceGroup-EA`, and the
+  setting is on its twelve `App*` tables (AppEvents, AppPageViews,
+  AppRequests, AppExceptions and the rest). The retention box in the App
+  Insights portal did not change them, so set and check retention per table
+  (Tables → Manage table). The cost is under a cent a year at about 0.02 MB a
+  month. The automation service principal holds **Log Analytics Contributor** on
+  that workspace for this.
 - Heatmaps, recordings and user flows: Microsoft Clarity (`src/clarity.ts`).
   Its snippet is an inline `<script>` and this app ships none, so the same
   bootstrap is a module loaded at boot; the CSP names `www.clarity.ms` and
