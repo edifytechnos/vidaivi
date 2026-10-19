@@ -12,6 +12,7 @@ import {
   submitAttempt,
 } from "../auth";
 import { mountUploader } from "../answerphotos";
+import { stopRecording } from "../clarity";
 import {
   clearAttempt,
   loadAttempt,
@@ -62,6 +63,9 @@ function showLogin(test: Test) {
 }
 
 export function showLanding(test: Test) {
+  // A guest about to sit a test may be a child, and a child is never
+  // recorded: a page that was recording the home page stops here.
+  if (!getProfile()) stopRecording();
   // Read the address bar before touching it: setUrl below drops every
   // parameter but ?test=, and ?q= is what says where a student was.
   const onQuestion = new URLSearchParams(location.search).get("q");

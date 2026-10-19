@@ -41,7 +41,12 @@ migrateStorage();
 // instead of leaving a button that does nothing.
 installStaleBuildRecovery();
 initAnalytics();
-initClarity();
+// Never a student, and never a guest who opened a test link (they may be a
+// child): those pages do not load Clarity at all — see recordsAudience.
+initClarity({
+  role: getProfile()?.role,
+  sittingAsGuest: !isLoggedIn() && new URLSearchParams(location.search).has("test"),
+});
 // A returning visitor's session is tagged from the stored profile; a fresh
 // sign-in tags itself in saveAuth. Either way the role is all that is sent.
 tagRole(getProfile()?.role);
