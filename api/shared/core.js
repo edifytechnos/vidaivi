@@ -3252,8 +3252,14 @@ handlers.tests = async (context, req) => {
     );
     wantsMasters = !!(sub && sub.platform);
   }
-  // The caller's own partition is walked either way, so `ownedCount` — and the
-  // `needsSamples` that hangs off it — still counts what it always counted.
+  // The caller's own partition is walked either way, so this own-row count —
+  // and the `needsSamples` that hangs off it — still counts what it always
+  // counted. It is NOT named `ownedCount`: that is the module-level helper the
+  // create/adopt gates call, and a `let ownedCount` here put the name in the
+  // Temporal Dead Zone for the whole handler, so `await ownedCount(...)` up in
+  // the POST create gate threw `Cannot access 'ownedCount' before
+  // initialization` for every capped account — an uncaught 500 the client only
+  // ever saw as "Request failed".
   const listPartitions =
     isStaff && !asChild
       ? wantsMasters
@@ -3262,7 +3268,7 @@ handlers.tests = async (context, req) => {
       : readPartitions;
 
   const list = [];
-  let ownedCount = 0;
+  let ownRowCount = 0;
   const budget = { left: COUNT_BACKFILL_BUDGET };
   const drain = { left: LEGACY_DRAIN_BUDGET };
   await walkPartitions(
@@ -3274,7 +3280,7 @@ handlers.tests = async (context, req) => {
       budget: drain,
     },
     async (row) => {
-      if (isStaff && row.ownerSub === who.id) ownedCount++;
+      if (isStaff && row.ownerSub === who.id) ownRowCount++;
       // The partition list above already keeps the library out, but the legacy
       // partition is walked whatever it holds, so an undrained master could
       // still arrive here and visible() would admit it. Without this the
@@ -3327,7 +3333,7 @@ handlers.tests = async (context, req) => {
   // A teacher with nothing of their own gets the bundled tests copied in as
   // starting samples — but only the first time, so deleting them sticks.
   let needsSamples = false;
-  if (isStaff && ownedCount === 0) {
+  if (isStaff && ownRowCount === 0) {
     try {
       const seeded = await tableClient("teacherstate").getEntity("state", who.id);
       needsSamples = !seeded.samplesSeededAt;
