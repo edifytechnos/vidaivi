@@ -26,6 +26,8 @@ import { aiGoInner } from "../../ailight";
 import { mount, setShellbar, skeleton } from "../../shell";
 import { openModal } from "../../modal";
 import { openAssign } from "../assign";
+import { openShareLink } from "../share";
+import { showTestResults } from "../results";
 import type { Subject } from "../../api";
 import { notice } from "../../dialog";
 import { openSeyari, seyariOpen, toggleSeyari } from "./seyari";
@@ -36,6 +38,7 @@ import {
   currentSaveState,
   currentTest,
   edit,
+  flush,
   isComplete,
   loadTest,
   onSaveState,
@@ -615,6 +618,8 @@ function toolbarMarkup(test: Test): string {
   return `
     <div class="ed-toolbar">
       ${btn("ed-audience", ICONS.users, "Who sees this")}
+      ${btn("ed-share", ICONS.link, test.share?.on ? "Share by link (on)" : "Share by link", test.share?.on ? "ed-tool-on" : "")}
+      ${btn("ed-results", ICONS.chart, "Results — who took it")}
       ${btn("ov-preview", ICONS.eye, "Preview as student")}
       ${draft ? btn("ov-quick", ICONS.pencil, "Quick edit (card view)") : ""}
       ${
@@ -1220,15 +1225,41 @@ function bindChrome(): void {
   document.getElementById("ed-audience")?.addEventListener("click", () => {
     const test = currentTest();
     if (!test) return;
-    void openAssign(test, (result) => {
-      // The picker wrote to the server; mirror it on the working copy so the
-      // bar reads right without a reload. This is metadata, not question
-      // content, so it never needs to go back through autosave.
-      test.audience = result.audience;
-      test.assignedCount = result.assignedCount;
-      test.assignedTo = result.assignedTo;
-      render();
+    // Settled first, for the same reason as Share by link below: an autosave
+    // in flight would replace the row from a copy read before the picker wrote.
+    void flush().then(() => {
+      if (currentTest() !== test) return;
+      void openAssign(test, (result) => {
+        // The picker wrote to the server; mirror it on the working copy so the
+        // bar reads right without a reload. This is metadata, not question
+        // content, so it never needs to go back through autosave.
+        test.audience = result.audience;
+        test.assignedCount = result.assignedCount;
+        test.assignedTo = result.assignedTo;
+        render();
+      });
     });
+  });
+  document.getElementById("ed-share")?.addEventListener("click", () => {
+    const test = currentTest();
+    if (!test) return;
+    // Every save settled first: the server's update replaces the row from a
+    // copy it read, and a share switched on under an in-flight save would be
+    // written straight back off. Behind the dialog the page is locked, so no
+    // save can start while it is open.
+    void flush().then(() => {
+      if (currentTest() !== test) return;
+      openShareLink(test, (share) => {
+        // The same mirror as the audience: metadata the server already holds.
+        test.share = share;
+        render();
+      });
+    });
+  });
+  document.getElementById("ed-results")?.addEventListener("click", () => {
+    const test = currentTest();
+    if (!test) return;
+    void flush().then(() => showTestResults(test.id, () => void showEditor(test.id, null, onExit)));
   });
   document.getElementById("ed-preview")?.addEventListener("click", () => {
     const test = currentTest();

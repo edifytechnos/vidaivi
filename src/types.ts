@@ -50,6 +50,9 @@ export interface Test {
   assignedCount?: number;
   /** Staff only — the server never sends this to a student. */
   assignedTo?: string[];
+  /** Staff only: how the test is shared by link — the switch, the token in
+   *  the link, the access code. */
+  share?: { on: boolean; token: string; code: string };
   questions: Question[];
 }
 

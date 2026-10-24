@@ -46,6 +46,32 @@ export interface ServerTestMeta {
   locked?: boolean;
   /** What the whole paper costs to mark with AI. Never sent to a student. */
   assessCost?: number | null;
+  /** Staff only: how the test is shared by link. */
+  share?: ShareState;
+}
+
+/** A test's link sharing: the switch, the token in the link, the code read out. */
+export interface ShareState {
+  on: boolean;
+  token: string;
+  code: string;
+}
+
+/** What a join link opens on — the test's name and size, never a question. */
+export interface JoinInfo {
+  title: string;
+  chapter: string;
+  teacher: string;
+  questionCount: number;
+  totalMarks: number;
+  published: boolean;
+  on: boolean;
+  testId: string;
+  subjectId: string;
+  /** Signed in as this teacher's student already: no Google step needed. */
+  student: { username: string; joined: boolean } | null;
+  /** Signed in as somebody else — the kind — who must sign out to join. */
+  otherSession: string;
 }
 
 export interface TestProblem {
@@ -311,6 +337,73 @@ export async function fileTestUnder(
     return { ok: true, test: data.test };
   } catch {
     return { ok: false, message: "Network error" };
+  }
+}
+
+/**
+ * Share a test by link: switch it on or off, or make a new access code. The
+ * token and the code are minted once and kept across off and on, so a link
+ * already sent keeps working; `rotate` changes the code alone.
+ */
+export async function shareTest(
+  id: string,
+  opts: { on: boolean; rotate?: boolean }
+): Promise<{ ok: true; share: ShareState } | { ok: false; message: string }> {
+  try {
+    const res = await apiFetch("/api/tests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "share", id, on: opts.on, rotate: !!opts.rotate }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not change sharing" };
+    return { ok: true, share: data.share as ShareState };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
+/** The share link for a token — the one a teacher sends. */
+export function joinLink(token: string): string {
+  return `${location.origin}${location.pathname.replace(/[^/]*$/, "")}?join=${encodeURIComponent(token)}`;
+}
+
+/** What a join link opens on. Works signed in or not. */
+export async function fetchJoinInfo(token: string): Promise<JoinInfo | null> {
+  try {
+    const res = await apiFetch(`/api/join?token=${encodeURIComponent(token)}`, { headers: authHeader() });
+    if (!res.ok) return null;
+    return (await res.json()) as JoinInfo;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Join a shared test. With a Google credential this makes (or finds) the
+ * student under that teacher and sets a student session; a student of the
+ * same teacher already signed in joins as themselves with the code alone.
+ * The credential is handed over once and never stored.
+ */
+export async function joinTest(args: {
+  token: string;
+  code: string;
+  credential?: string;
+}): Promise<
+  | { ok: true; student: { username: string; name: string }; testId: string; subjectId: string; published: boolean }
+  | { ok: false; message: string; reason?: string; full?: boolean }
+> {
+  try {
+    const res = await apiFetch("/api/join", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ token: args.token, code: args.code, credential: args.credential || "" }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not join", reason: data.reason, full: !!data.full };
+    return { ok: true, student: data.student, testId: data.testId, subjectId: data.subjectId || "", published: !!data.published };
+  } catch {
+    return { ok: false, message: "Network error — check your connection." };
   }
 }
 

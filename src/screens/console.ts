@@ -39,6 +39,8 @@ import { currentSubject } from "./home";
 import { showBuilder } from "./builder";
 import { newTestHere, showEditor } from "./editor";
 import { audienceLabel, openAssign } from "./assign";
+import { openShareLink } from "./share";
+import { showTestResults } from "./results";
 import { showSubjects } from "./subjects";
 import { openStudentPaper } from "./marking";
 import {
@@ -194,14 +196,16 @@ export function showMyTests() {
                          <button class="btn-link mt-act" data-act="publish" data-id="${escapeHtml(t.id)}">Publish</button>
                          <button class="btn-link mt-act" data-act="delete" data-id="${escapeHtml(t.id)}">Delete</button>`
                       : `<button class="btn-link mt-act" data-act="unpublish" data-id="${escapeHtml(t.id)}">Back to draft</button>`;
+                const shared = t.share?.on ? ` · <span class="cell-quiet">by link</span>` : "";
                 return `<tr>
                   <td class="cell-strong">${escapeHtml(t.title)}${t.platform ? ` <span class="chip">platform</span>` : ""}${t.sample ? ` <span class="chip">sample</span>` : ""}</td>
                   <td>${escapeHtml(t.chapter || "—")}</td>
                   <td>${t.questionCount}</td>
                   <td class="cell-mono">${t.totalMarks}</td>
                   <td>${chip}</td>
-                  <td>${seenBy}<br><button class="btn-link mt-assign" data-id="${escapeHtml(t.id)}">Change</button></td>
-                  <td class="cell-actions">${actions}</td>
+                  <td>${seenBy}${shared}<br><button class="btn-link mt-assign" data-id="${escapeHtml(t.id)}">Change</button>
+                    ${t.platform ? "" : `<button class="btn-link mt-share" data-id="${escapeHtml(t.id)}">Share link</button>`}</td>
+                  <td class="cell-actions">${t.platform ? "" : `<button class="btn-link mt-results" data-id="${escapeHtml(t.id)}">Results</button>`} ${actions}</td>
                 </tr>`;
               })
               .join("")}
@@ -213,6 +217,15 @@ export function showMyTests() {
         const test = mine.find((t) => t.id === btn.dataset.id);
         if (test) void openAssign(test, () => void refresh());
       })
+    );
+    listEl.querySelectorAll<HTMLButtonElement>(".mt-share").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const test = mine.find((t) => t.id === btn.dataset.id);
+        if (test) openShareLink(test, () => void refresh());
+      })
+    );
+    listEl.querySelectorAll<HTMLButtonElement>(".mt-results").forEach((btn) =>
+      btn.addEventListener("click", () => showTestResults(btn.dataset.id!, showMyTests))
     );
     listEl.querySelectorAll<HTMLButtonElement>(".mt-edit").forEach((btn) =>
       btn.addEventListener("click", () => {
@@ -1048,13 +1061,24 @@ export function showTeacher() {
                 (s) => `
               <tr>
                 <td class="cell-strong">${escapeHtml(s.name)}</td>
-                <td class="cell-mono">${escapeHtml(s.username)}</td>
+                <td class="cell-mono">${
+                  // A student who joined by a test link signs in with Google:
+                  // the email is what tells them apart, and there is no
+                  // password to reset.
+                  s.via === "google"
+                    ? `${escapeHtml(s.email || s.username)}<div class="hint">joined by link</div>`
+                    : escapeHtml(s.username)
+                }</td>
                 <td>${escapeHtml(s.grade || "—")}</td>
                 <td>${escapeHtml(s.school || "—")}</td>
                 <td>${escapeHtml(s.parentPhone || "—")}</td>
                 <td class="cell-actions">
                   <button class="btn-link roster-report" data-user="${escapeHtml(s.username)}">Report</button>
-                  <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
+                  ${
+                    s.via === "google"
+                      ? ""
+                      : `<button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>`
+                  }
                   <button class="btn-link roster-invite" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Invite parent</button>
                   <button class="btn-link roster-remove" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Remove</button>
                 </td>

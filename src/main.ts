@@ -90,6 +90,14 @@ function route(): void {
   const clean = (v: string | null) => (v ?? "").replace(/[^A-Za-z0-9-]+$/g, "");
   const signedIn = authEnabled && isLoggedIn();
 
+  // A test shared by link: the join screen, signed in or not — it is the one
+  // address a student may arrive at with no account at all.
+  const joinToken = clean(params.get("join"));
+  if (joinToken) {
+    void import("./screens/join").then((m) => m.showJoin(joinToken));
+    return;
+  }
+
   // A teacher refreshing mid-edit lands back on the same question.
   const editId = clean(params.get("edit"));
   if (editId && signedIn) {
@@ -109,10 +117,11 @@ function route(): void {
   // A teacher refreshing the marking queue stays on it.
   const markMode = params.get("mark") === "1";
 
-  // The console screens, a student's report and a parent's child each name
-  // themselves, so Back can find its way back to them.
+  // The console screens, a student's report, a test's results and a parent's
+  // child each name themselves, so Back can find its way back to them.
   const view = params.get("view") ?? "";
   const report = clean(params.get("report"));
+  const results = clean(params.get("results"));
   const child = clean(params.get("child"));
 
   // Tolerate links mangled by messaging apps (trailing "?", "/", punctuation).
@@ -129,6 +138,8 @@ function route(): void {
     void showMarking();
   } else if (report && signedIn) {
     showStudentReport(report);
+  } else if (results && signedIn) {
+    void import("./screens/results").then((m) => m.showTestResults(results));
   } else if (child && signedIn) {
     void openChildResults(child);
   } else if (view && signedIn && openRail(view)) {

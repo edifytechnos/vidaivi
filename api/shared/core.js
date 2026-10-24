@@ -1263,6 +1263,9 @@ function generatePassword() {
 // that must not travel further than the login check.
 const ROSTER_SELECT = [
   "PartitionKey", "RowKey", "name", "school", "grade", "parentPhone", "teacherSub",
+  // A student who joined by a test link: the email is what the teacher tells
+  // them apart by, and `via` is why there is no password to reset.
+  "email", "via",
 ];
 
 const ATTEMPT_LIST_SELECT = [
@@ -1335,6 +1338,12 @@ async function identify(req, context) {
       id: `stu~${session.username}`,
       username: session.username,
       teacherSub: record.teacherSub || "",
+      // How the account came to be. A student who joined by a test link
+      // (`via: "google"`) sees only the tests they joined — `joined` is that
+      // list — where a login the teacher issued sees the class. Both ride on
+      // the row the session read anyway, so this costs nothing.
+      via: record.via === "google" ? "google" : "login",
+      joined: joinedList(record),
     };
   }
   if (bearer.startsWith("vad.")) {
@@ -1568,10 +1577,13 @@ handlers.studentlogin = async (context, req) => {
   }
   // An unknown username still pays for a comparison. Returning early made the
   // answer measurably quicker for a name that does not exist, which is a free
-  // oracle for "which of my classmates has an account".
-  const ok = entity
-    ? checkPassword(password, entity.passwordHash)
-    : (checkPassword(password, timingDecoyHash()), false);
+  // oracle for "which of my classmates has an account". A row with no
+  // password — a student who joined by a test link signs in with Google —
+  // pays the same, or the quick "no" would say which usernames those are.
+  const ok =
+    entity && entity.passwordHash
+      ? checkPassword(password, entity.passwordHash)
+      : (checkPassword(password, timingDecoyHash()), false);
   if (!ok) {
     await noteLoginFailure(gate);
     return json(context, 401, { error: "Wrong username or password" });
@@ -2037,18 +2049,7 @@ handlers.students = async (context, req) => {
     // before the name is even read, and fails closed.
     const seatEnt = await entitlements(who);
     if (seatEnt.students > 0) {
-      const safeSub = who.id.replace(/'/g, "''");
-      let seats = 0;
-      const seatIter = students.listEntities({
-        queryOptions: {
-          filter: `PartitionKey eq 'student' and teacherSub eq '${safeSub}'`,
-          select: ["RowKey"],
-        },
-      });
-      for await (const _ of seatIter) {
-        seats += 1;
-        if (seats > seatEnt.students) break;
-      }
+      const seats = await seatsTaken(students, who.id, seatEnt.students);
       if (seats >= seatEnt.students) {
         return overLimit(
           context,
@@ -2114,6 +2115,8 @@ handlers.students = async (context, req) => {
       grade: e.grade,
       parentPhone: e.parentPhone,
       createdAt: e.createdAt,
+      email: e.email || "",
+      via: e.via === "google" ? "google" : "login",
     });
     if (list.length >= 200) break;
   }
@@ -2135,6 +2138,11 @@ handlers.reports = async (context, req) => {
   await ensureTable(attempts);
 
   const wanted = String((req.query && req.query.username) || "").trim().toLowerCase();
+  // ?testId= keeps only that test's attempts on each student — the results
+  // screen for one test. The roster walk is the same; each student's attempts
+  // query carries the test in its filter, still inside their own partition,
+  // so what is read and what travels are both less.
+  const onlyTest = safeId((req.query && req.query.testId) || "", 60);
 
   // Collect this teacher's students (optionally just one).
   const roster = [];
@@ -2152,6 +2160,8 @@ handlers.reports = async (context, req) => {
       school: e.school,
       grade: e.grade,
       parentPhone: e.parentPhone,
+      email: e.email || "",
+      via: e.via === "google" ? "google" : "login",
     });
     if (roster.length >= 200) break;
   }
@@ -2166,7 +2176,9 @@ handlers.reports = async (context, req) => {
     s.attempts = [];
     const aIter = attempts.listEntities({
       queryOptions: {
-        filter: `PartitionKey eq 'stu~${s.username.replace(/'/g, "''")}'`,
+        filter:
+          `PartitionKey eq 'stu~${s.username.replace(/'/g, "''")}'` +
+          (onlyTest ? ` and testId eq '${onlyTest.replace(/'/g, "''")}'` : ""),
         select: ATTEMPT_LIST_SELECT,
       },
     });
@@ -2176,6 +2188,7 @@ handlers.reports = async (context, req) => {
       // reads as a test the student handed in and never sat — the same thing
       // the student's own listing already skips it for.
       if (rk.startsWith(GRANT_PREFIX)) continue;
+      if (onlyTest && String(a.testId || "") !== onlyTest) continue;
       // A paper still being written is NOT a result, and saying so is the whole
       // point of this field. The row carries a running auto-graded subtotal and
       // an empty `completedAt`, so without a status the report showed a student
@@ -2411,6 +2424,8 @@ const TEST_META_SELECT = [
   "status", "platform", "sample", "subjectId", "ownerSub", "updatedAt",
   "audience", "assignedTo", "copiedFrom", "questionCount", "totalMarks", "assessCost",
   "board", "klass", "subject",
+  // Sharing by link: three short strings, read by staff only (testMetaForStaff).
+  "shareOn", "shareToken", "accessCode",
 ];
 
 // How many legacy rows one request may heal. Beyond it the rest keep their
@@ -2666,6 +2681,40 @@ function assignedTo(e, username) {
   return assignedList(e).includes(String(username || "").toLowerCase());
 }
 
+/** The tests a link-joined student has joined, off their row. */
+function joinedList(record) {
+  try {
+    const list = JSON.parse((record && record.joined) || "[]");
+    return Array.isArray(list) ? list.map((x) => String(x || "")).filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Does this published, non-master test of the student's teacher reach THIS
+ * student? Two kinds of student, two rules, decided in one place so the tests
+ * listing and the subject listing cannot drift apart:
+ *
+ * - A login the teacher issued sees the class — everyone, or the named
+ *   students when the audience is narrowed (`assignedTo`).
+ * - A student who joined by a test link with an access code (`via: "google"`)
+ *   sees exactly the tests they joined, and nothing else the teacher
+ *   publishes — the code gates one test, and joining one is not enrolling in
+ *   the class. Once joined, a test stays theirs even if the link is switched
+ *   off afterwards: they sat it, and the result is theirs to read.
+ *
+ * `student` is the shape identify() returns — `username`, `via`, `joined` —
+ * or a student row read for a parent reading as their child.
+ */
+function reachesStudent(e, student) {
+  if (student.via === "google") {
+    const joined = Array.isArray(student.joined) ? student.joined : joinedList(student);
+    return joined.includes(e.rowKey);
+  }
+  return assignedTo(e, student.username || student.rowKey);
+}
+
 function testMeta(e) {
   // The counts are stamped on write, so a listing projects them off the row
   // instead of pulling every question body over the wire. A row written before
@@ -2702,9 +2751,22 @@ function testFull(e) {
   return { ...testMeta(e), questions: unchunkQuestions(e) };
 }
 
-/** The staff view: same metadata plus the usernames it is assigned to. */
+/** The staff view: same metadata plus the usernames it is assigned to, and
+ *  how it is shared by link — the token and the access code never reach a
+ *  student's copy, who has them already or is not meant to. */
 function testMetaForStaff(e) {
-  return { ...testMeta(e), assignedTo: assignedList(e) };
+  return { ...testMeta(e), assignedTo: assignedList(e), share: shareOf(e) };
+}
+
+/** How a test is shared by link, off its row. `on` is the switch; the token
+ *  and the code persist across it, so a link once given keeps working when
+ *  the teacher switches sharing back on. */
+function shareOf(e) {
+  return {
+    on: !!e.shareOn,
+    token: String(e.shareToken || ""),
+    code: String(e.accessCode || ""),
+  };
 }
 
 function canManageTest(who, entity) {
@@ -2857,6 +2919,54 @@ handlers.tests = async (context, req) => {
       entity.updatedAt = new Date().toISOString();
       await saveRow(tests, LEGACY_TEST_PK, entity, "Merge");
       return json(context, 200, { ok: true, audience, assignedCount: usernames.length });
+    }
+
+    // Share a test by link: anyone with the link AND the access code joins it
+    // by signing in with Google, and becomes a student of this teacher who
+    // sees this test (and any other they join the same way). The token names
+    // the test in the link; the code is what the teacher reads out in class.
+    //
+    // Both are minted once and kept: switching sharing off and on again keeps
+    // the link a teacher already sent working, and `rotate` makes a new code
+    // for the next batch without touching anyone who has joined. The `shares`
+    // index row is how a link is resolved — a test id is unique per owner, so
+    // the token has to name the owner's partition.
+    //
+    // Gated like issuing a login (`mayIssueLogins`): a link collects real
+    // people's names and emails under this teacher, and a self-declared
+    // teacher must not open a roster that way either.
+    if (action === "share") {
+      const id = String(body.id || "").trim();
+      const entity = await readByPartitions(tests, staffPartitions, id, LEGACY_TEST_PK);
+      if (!entity) return json(context, 404, { error: "Test not found" });
+      if (!canManageTest(who, entity) || entity.platform) return json(context, 403, { error: "Not your test" });
+      if (!(await mayIssueLogins(who))) {
+        return json(context, 403, {
+          error: "Your teacher account is waiting to be approved. Ask Vidai to approve it, and you can share tests by link straight after.",
+        });
+      }
+      const on = body.on !== false;
+      const rotate = body.rotate === true;
+      if (!entity.shareToken) entity.shareToken = newShareToken();
+      if (!entity.accessCode || rotate) entity.accessCode = newAccessCode();
+      entity.shareOn = on;
+      entity.updatedAt = new Date().toISOString();
+      // The index first: a link that resolves to nothing is worse than a row
+      // that says "on" a moment early.
+      const shares = tableClient("shares");
+      await ensureTable(shares);
+      await shares.upsertEntity(
+        {
+          partitionKey: "share",
+          rowKey: entity.shareToken,
+          ownerSub: entity.ownerSub,
+          testId: entity.rowKey,
+          createdAt: new Date().toISOString(),
+        },
+        "Merge"
+      );
+      await saveRow(tests, LEGACY_TEST_PK, entity, "Merge");
+      return json(context, 200, { ok: true, share: shareOf(entity) });
     }
 
     // Put a test that is filed nowhere its owner can open — under no subject,
@@ -3204,8 +3314,11 @@ handlers.tests = async (context, req) => {
   }
 
   // A parent reads as their child, so assignment is checked against the child's
-  // username, not the parent's.
+  // username, not the parent's — and against the child's own kind of account:
+  // a child who joined by a test link sees the tests they joined, which is on
+  // the child's row (memoised by studentRecord, so one read at most).
   const asUsername = asChild ? wantedChild : who.username || "";
+  const asStudent = asChild ? (await studentRecord(wantedChild)) || { rowKey: wantedChild } : who;
 
   // --- Marking somebody else's student's paper ---------------------------
   //
@@ -3252,8 +3365,9 @@ handlers.tests = async (context, req) => {
     // sees their own teacher's copy of it, made with the "adopt" action.
     if (e.platform) return false;
     if (!((who.kind === "student" || asChild) && !!teacherSub && e.ownerSub === teacherSub)) return false;
-    // Assigned to named students only: everyone else is not in this class.
-    return assignedTo(e, asUsername);
+    // Assigned to named students only: everyone else is not in this class —
+    // and a student who joined by link sees the tests they joined, no more.
+    return reachesStudent(e, asStudent);
   }
 
   // The partitions this caller could possibly hold a VISIBLE test in — the
@@ -3276,8 +3390,11 @@ handlers.tests = async (context, req) => {
     if (!entity) return json(context, 404, { error: "Test not found" });
     if (!visible(entity)) return json(context, 403, { error: "Not available" });
     const full = testFull(entity);
-    // The class list is the teacher's business — a student never receives it.
-    return json(context, 200, { test: isStaff && !asChild ? { ...full, assignedTo: assignedList(entity) } : full });
+    // The class list and the share link are the teacher's business — a student
+    // never receives either.
+    return json(context, 200, {
+      test: isStaff && !asChild ? { ...full, assignedTo: assignedList(entity), share: shareOf(entity) } : full,
+    });
   }
 
   // The library: every published master, for a teacher to take a copy of.
@@ -3769,7 +3886,7 @@ handlers.subjects = async (context, req) => {
       // A subject the student has no test in is not their subject — assignment
       // included, or a narrowed test would still light up its subject card.
       if (t.platform) return; // masters belong to the library, not to a class
-      if (t.ownerSub === teacherSub && assignedTo(t, who.username)) {
+      if (t.ownerSub === teacherSub && reachesStudent(t, who)) {
         wanted.add(t.subjectId);
       }
     }
@@ -3798,6 +3915,47 @@ function newInviteCode() {
   let out = "";
   for (let i = 0; i < 8; i++) out += CODE_ALPHABET[crypto.randomInt(CODE_ALPHABET.length)];
   return out;
+}
+
+// ---------- Sharing a test by link ----------
+
+/** The token in a share link: 16 hex characters, which survive the router's
+ *  trailing-punctuation clean-up and every messaging app's link mangling. */
+function newShareToken() {
+  return crypto.randomBytes(8).toString("hex");
+}
+
+/** The access code a teacher reads out: six characters from the alphabet
+ *  with no look-alikes, shown as ABC-DEF and compared without the dash. A
+ *  code is one of 31^6 ≈ 887 million, and `loginGate` throttles the guesses. */
+function newAccessCode() {
+  let out = "";
+  for (let i = 0; i < 6; i++) out += CODE_ALPHABET[crypto.randomInt(CODE_ALPHABET.length)];
+  return out;
+}
+
+/** A link-joined student's username: stable for one Google account under one
+ *  teacher, and nothing a person would recognise — not an email, not a name. */
+function linkUsername(sub, teacherSub) {
+  return `g-${digestKey(`${sub}|${teacherSub}`).slice(0, 12)}`;
+}
+
+/** How many of this teacher's seats are taken, counted only as far as the
+ *  limit — the students handler's own walk, shared with the join gate. */
+async function seatsTaken(students, teacherSub, limit) {
+  const safeSub = String(teacherSub || "").replace(/'/g, "''");
+  let seats = 0;
+  const iter = students.listEntities({
+    queryOptions: {
+      filter: `PartitionKey eq 'student' and teacherSub eq '${safeSub}'`,
+      select: ["RowKey"],
+    },
+  });
+  for await (const _ of iter) {
+    seats += 1;
+    if (seats > limit) break;
+  }
+  return seats;
 }
 
 /** Case and stray spaces/dashes only — never a lossy substitution, which
@@ -3919,6 +4077,229 @@ async function childLink(who, username) {
     return null;
   }
 }
+
+// ---------- Joining a test by link, with Google and an access code ----------
+//
+// A teacher shares a link (`?join=<token>`) and reads out a code. A student
+// opens the link, signs in with Google, types the code, and from then on is a
+// student of that teacher who sees that test — a `students` row like any
+// other, with a `vst` session like any other, so attempts, grading, release,
+// the report and the marking queue need nothing new. What differs is on the
+// row: `via: "google"`, the Google `sub` it came from, the email the teacher
+// tells them apart by, no password, and `joined`, the tests this student may
+// see (`reachesStudent`).
+//
+// One Google account, one teacher, one row: the username is a digest of the
+// two, so the same person joining a second test of the same teacher lands on
+// the same row and the second test is appended to `joined`. Another
+// teacher's link makes another row — their rosters are separate, as they
+// should be.
+//
+// It is NOT `/api/login`: no profile row, no role to choose, no phone number
+// to ask for. The Google ID token is verified here exactly as login does, and
+// exchanged for a student session on the spot.
+async function resolveShare(token) {
+  const key = String(token || "").trim().toLowerCase();
+  if (!/^[a-f0-9]{16}$/.test(key)) return null;
+  const shares = tableClient("shares");
+  await ensureTable(shares);
+  let row = null;
+  try {
+    row = await shares.getEntity("share", key);
+  } catch {}
+  if (!row || !row.ownerSub || !row.testId) return null;
+  const tests = tableClient("tests");
+  await ensureTable(tests);
+  const test = await readByPartitions(tests, [row.ownerSub], row.testId, LEGACY_TEST_PK);
+  if (!test || test.platform) return null;
+  return { token: key, test };
+}
+
+handlers.join = async (context, req) => {
+  if (misconfigured(context)) return;
+  if (!SESSION_SECRET) {
+    return json(context, 500, { error: "API not configured", reason: "no_session_secret" });
+  }
+
+  // The caller may be nobody (a link opened cold), a student already signed in
+  // (joining a second test of the same teacher needs only the code), or
+  // somebody signed in as something else, who is told to sign in as a student.
+  const who = await identify(req, context);
+
+  if (req.method === "GET") {
+    // What the link opens on: the test's name and size, whose it is, and
+    // whether it is open — never a question. A dead link says so once and
+    // nothing else about what the token might have named.
+    const found = await resolveShare(req.query && req.query.token);
+    if (!found) return json(context, 404, { error: "This link is not a test link, or the test is gone" });
+    const { test } = found;
+    let teacherName = "";
+    try {
+      const prof = await tableClient("profiles").getEntity("profile", test.ownerSub);
+      teacherName = String(prof.name || "");
+    } catch {}
+    const counts = storedCounts(test) || countsFromQuestions(unchunkQuestions(test));
+    const mine = who.kind === "student" && who.teacherSub === test.ownerSub;
+    return json(context, 200, {
+      title: test.title,
+      chapter: test.chapter || "",
+      teacher: teacherName || test.teacher || "",
+      questionCount: counts.questionCount,
+      totalMarks: counts.totalMarks,
+      published: test.status === "published",
+      on: !!test.shareOn,
+      testId: test.rowKey,
+      subjectId: test.subjectId || "",
+      // Signed in as this teacher's student already: no Google step, and no
+      // code either when this test is already theirs.
+      student: mine ? { username: who.username, joined: (who.joined || []).includes(test.rowKey) } : null,
+      // Signed in as somebody else — a teacher, a parent, another teacher's
+      // student — so the screen can say to sign out first rather than fail.
+      otherSession: who.kind && !mine ? who.kind : "",
+    });
+  }
+
+  if (req.method !== "POST") return json(context, 405, { error: "Method not allowed" });
+
+  const body = getBody(req) || {};
+  const found = await resolveShare(body.token);
+  if (!found) return json(context, 404, { error: "This link is not a test link, or the test is gone" });
+  const { test } = found;
+  if (!test.shareOn) {
+    return json(context, 403, { error: "This test is not open for joining right now — ask your teacher for a new link." });
+  }
+
+  // Who is joining. A Google credential makes (or finds) the student; a
+  // student session of this teacher joins as themselves.
+  const credential = String(body.credential || "");
+  let sub = "";
+  let name = "";
+  let email = "";
+  let picture = "";
+  let username = "";
+  if (credential) {
+    // A teacher trying their own link, a parent, another teacher's student:
+    // joining would replace their session with a student's, mid-sitting.
+    // Say so rather than do it.
+    if (who.kind && !(who.kind === "student" && who.teacherSub === test.ownerSub)) {
+      return json(context, 409, {
+        error: "You are signed in as somebody else. Sign out first, then open the link again to join as a student.",
+        reason: "other_session",
+      });
+    }
+    if (!(credential.split(".").length === 3 && credential.length > 40)) {
+      return json(context, 401, { error: "Invalid token", reason: "not_a_google_token" });
+    }
+    const verified = await verifyGoogleToken(credential);
+    if (!verified.token) {
+      return json(context, 401, { error: "Invalid token", reason: verified.reason });
+    }
+    sub = String(verified.token.sub || "");
+    name = String(verified.token.name || "").slice(0, 60);
+    email = String(verified.token.email || "").slice(0, 120);
+    picture = String(verified.token.picture || "").slice(0, 300);
+    username = linkUsername(sub, test.ownerSub);
+  } else if (who.kind === "student" && who.teacherSub === test.ownerSub) {
+    username = who.username;
+  } else {
+    return json(context, 401, { error: "Sign in with Google to join this test", reason: who.kind ? "other_session" : "no_session" });
+  }
+
+  // The code is guessed against like a password, so it is gated like one:
+  // the bucket is the CALLER (never the code — locking a code would let anyone
+  // shut a class out), checked before the code is compared.
+  const gate = await loginGate(req, username);
+  if (gate.lockMs > 0) return tooManyAttempts(context, gate.lockMs);
+  const typed = normaliseCode(body.code);
+  if (!typed || !safeEqual(typed, normaliseCode(test.accessCode))) {
+    await noteLoginFailure(gate);
+    return json(context, 401, { error: "That access code is not right. Check it with your teacher and try again." });
+  }
+  await clearFailures(gate.table, "user", gate.user);
+
+  const students = tableClient("students");
+  await ensureTable(students);
+  let record = null;
+  try {
+    record = await students.getEntity("student", username);
+  } catch {}
+
+  if (!record) {
+    // A new student of this teacher takes a seat, the same seat a login the
+    // teacher issues takes. The student is told only that the test is not
+    // taking more people — whose plan it is, and what it costs, is the
+    // teacher's business, and the seat count sits on the share dialog.
+    const owner = {
+      kind: "google",
+      id: test.ownerSub,
+      email: String(test.ownerEmail || ""),
+      role: await resolveRole(String(test.ownerEmail || ""), test.ownerSub),
+    };
+    const seatEnt = await entitlements(owner);
+    if (seatEnt.students > 0) {
+      const seats = await seatsTaken(students, test.ownerSub, seatEnt.students);
+      if (seats >= seatEnt.students) {
+        return json(context, 403, {
+          error: "This test is not taking more students right now. Ask your teacher to make room and try again.",
+          full: true,
+        });
+      }
+    }
+    record = {
+      partitionKey: "student",
+      rowKey: username,
+      name: name || email.split("@")[0] || "Student",
+      email,
+      picture,
+      school: "",
+      grade: "",
+      parentPhone: "",
+      via: "google",
+      googleSub: sub,
+      joined: JSON.stringify([test.rowKey]),
+      tokenEpoch: 0,
+      teacherSub: test.ownerSub,
+      teacherEmail: String(test.ownerEmail || ""),
+      createdAt: new Date().toISOString(),
+    };
+    await students.createEntity(record);
+  } else {
+    // The same person again — this test, or another of the same teacher's.
+    // Their own row, written only by their own joins, so a plain merge is
+    // enough; the name and picture follow Google in case they changed.
+    const joined = joinedList(record);
+    if (!joined.includes(test.rowKey)) joined.push(test.rowKey);
+    const patch = {
+      partitionKey: "student",
+      rowKey: username,
+      joined: JSON.stringify(joined.slice(0, 200)),
+      lastJoinedAt: new Date().toISOString(),
+    };
+    if (name) patch.name = name;
+    if (picture) patch.picture = picture;
+    await students.updateEntity(patch, "Merge");
+    record = { ...record, ...patch };
+  }
+  studentCache.drop(username);
+
+  const epoch = Number(record.tokenEpoch) || 0;
+  return json(
+    context,
+    200,
+    {
+      student: { username, name: record.name, via: "google" },
+      testId: test.rowKey,
+      subjectId: test.subjectId || "",
+      published: test.status === "published",
+    },
+    {
+      "Set-Cookie": sessionCookie(
+        signSession("vst", username, STUDENT_TOKEN_TTL_MS, { ep: epoch }),
+        STUDENT_TOKEN_TTL_MS
+      ),
+    }
+  );
+};
 
 handlers.parentlink = async (context, req) => {
   if (misconfigured(context)) return;
