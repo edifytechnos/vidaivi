@@ -1900,7 +1900,32 @@ handlers.teachers = async (context, req) => {
     if (list.length >= 200) break;
   }
   list.sort((a, b) => a.email.localeCompare(b.email));
-  json(context, 200, { teachers: list });
+
+  // Who is waiting. Anyone may choose "teacher" at sign-up, and until they are
+  // on the allowlist they are told their account is "waiting to be approved"
+  // — so the admin has to be able to SEE them, or the wait never ends. One
+  // partition query on `accounts`, projected, filtered to the choice.
+  const approved = new Set([...list.map((t) => t.email), ...TEACHER_EMAILS, ...ADMIN_EMAILS]);
+  const pending = [];
+  try {
+    const accounts = tableClient("accounts");
+    await ensureTable(accounts);
+    const aIter = accounts.listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq '${ACCOUNT_PK}' and chose eq 'teacher'`,
+        select: ["RowKey", "email", "name", "chose", "createdAt"],
+      },
+    });
+    for await (const a of aIter) {
+      const email = String(a.email || "").toLowerCase();
+      if (a.chose && a.chose !== "teacher") continue;
+      if (!email || approved.has(email)) continue;
+      pending.push({ email, name: String(a.name || ""), since: a.createdAt || "" });
+      if (pending.length >= 200) break;
+    }
+  } catch {}
+  pending.sort((a, b) => String(b.since).localeCompare(String(a.since)));
+  json(context, 200, { teachers: list, pending });
 };
 
 handlers.students = async (context, req) => {

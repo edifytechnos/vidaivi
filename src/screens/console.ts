@@ -593,6 +593,12 @@ export function showAdmin() {
           <button id="te-add" class="btn btn-primary">Add teacher</button>
         </div>
       </div>
+      <div class="card roster-card" id="te-pending-card" hidden>
+        <div class="solution-title">Waiting for approval</div>
+        <p class="hint">Chose "teacher" when they signed up. Until you approve them
+        they can write tests but cannot add students or share a test by link.</p>
+        <div id="te-pending"></div>
+      </div>
       <div class="card roster-card">
         <div class="solution-title">Allowed teachers</div>
         <div id="te-list">${skeleton.table(2, 3)}</div>
@@ -613,10 +619,42 @@ export function showAdmin() {
   void refreshTotp();
 
   async function refresh() {
-    const teachers = await listTeachers();
-    if (!teachers) {
+    const lists = await listTeachers();
+    if (!lists) {
       listEl.innerHTML = `<p class="login-error">Could not load — refresh to retry.</p>`;
       return;
+    }
+    const { teachers, pending } = lists;
+    const pendingCard = document.getElementById("te-pending-card");
+    const pendingEl = document.getElementById("te-pending");
+    if (pendingCard && pendingEl) {
+      pendingCard.hidden = !pending.length;
+      pendingEl.innerHTML = pending
+        .map(
+          (p) => `
+        <div class="roster-row">
+          <div class="roster-main">
+            <div class="roster-name">${escapeHtml(p.name || p.email)}</div>
+            ${p.name ? `<div class="roster-sub">${escapeHtml(p.email)}</div>` : ""}
+          </div>
+          <button class="btn btn-primary te-approve" data-email="${escapeHtml(p.email)}">Approve</button>
+        </div>`
+        )
+        .join("");
+      pendingEl.querySelectorAll<HTMLButtonElement>(".te-approve").forEach((btn) =>
+        btn.addEventListener("click", async () => {
+          btn.disabled = true;
+          btn.textContent = "Approving…";
+          const done = await modifyTeacher("add", btn.dataset.email!);
+          if (!done.ok) {
+            btn.disabled = false;
+            btn.textContent = "Approve";
+            notice(done.message || "Could not approve — try again.");
+            return;
+          }
+          void refresh();
+        })
+      );
     }
     if (!teachers.length) {
       listEl.innerHTML = `<p class="hint">No teachers added yet.</p>`;
