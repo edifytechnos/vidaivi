@@ -151,14 +151,23 @@ const STUB = `
         tests.push(made);
         return reply(201, { test: made });
       }
+      // The server's rule, shared by update and file: a row filed nowhere its
+      // owner can open — no subject, or a shelf's id — takes the subject named
+      // when that is the owner's; a row already under one of their own keeps
+      // it. (No backticks in here: this whole stub is a template literal.)
+      const own = (id) => subjects.some((s) => s.id === id && !s.platform);
       if (body.action === "update") {
         const t = tests.find((x) => x.id === body.test.id);
-        // The server's rule: a row filed nowhere its owner can open — no
-        // subject, or a shelf's id — takes the one named when that is the
-        // owner's; a row already under one of their own keeps it.
-        const own = (id) => subjects.some((s) => s.id === id && !s.platform);
         if (t && body.test.subjectId && !own(t.subjectId) && own(body.test.subjectId)) t.subjectId = body.test.subjectId;
         return reply(200, { test: t });
+      }
+      if (body.action === "file") {
+        const t = tests.find((x) => x.id === body.id);
+        if (!t) return reply(404, { error: "Test not found" });
+        if (own(t.subjectId)) return reply(409, { error: "This test is already in one of your subjects" });
+        if (!own(body.subjectId)) return reply(403, { error: "Not your subject" });
+        t.subjectId = body.subjectId;
+        return reply(200, { ok: true, test: t });
       }
       return reply(200, { ok: true });
     }
@@ -240,6 +249,33 @@ async function run(page, label) {
   await page.waitForSelector("#ed-empty-create", { timeout: 20000 });
   check((await page.evaluate(() => window.currentSubject())) === "sub-new", `${label}: opening a subject's shell makes it the working subject, whoever opened it`);
   check((await pickerValue(page)) === "sub-new", `${label}: and the shell's picker names it (${await pickerLabel(page)})`);
+
+  // The empty shell offers back the teacher's tests that are in no subject of
+  // theirs — the orphan and the sample under a shelf — and not the ones that
+  // are. Move here files one and opens it in the tree. A teacher has no My
+  // tests, so this is the only door such a row has.
+  const strays = await page.$$eval(".ed-stray .tl-main", (els) => els.map((e) => e.textContent.trim()));
+  check(
+    strays.length === 2 && strays.includes("Untitled test") && strays.includes("Matrices — Demo Test"),
+    `${label}: the empty shell lists the tests filed nowhere the teacher can open, and only those (${strays.join(" | ")})`
+  );
+  check(/2 tests of yours are filed under no subject of yours/.test(await page.textContent(".ed-strays")), `${label}: and says what they are`);
+  // SHOT_DIR=… writes the shell as it stands, for a look at the real thing.
+  if (process.env.SHOT_DIR) await page.screenshot({ path: path.join(process.env.SHOT_DIR, `strays-${label}.png`), fullPage: true });
+  await page.click('.ed-stray-move[data-test="t-orphan"]');
+  await page.waitForFunction(() => !document.querySelector("#ed-empty-create") && document.querySelectorAll(".ed-tree .ed-tree-test").length === 1, null, { timeout: 20000 });
+  const filed = await page.evaluate(() => window.__calls.find((c) => c.method === "POST" && c.body && c.body.action === "file"));
+  check(!!filed && filed.body.id === "t-orphan" && filed.body.subjectId === "sub-new", `${label}: Move here files it under THIS subject through the file action (${filed && filed.body.subjectId})`);
+  check((await page.evaluate(() => window.__tests.find((t) => t.id === "t-orphan").subjectId)) === "sub-new", `${label}: and the row carries the subject`);
+  titles = await treeTitles(page);
+  check(titles.length === 1 && titles[0] === "Untitled test", `${label}: and it opens in a tree of its new subject (${titles.join(" | ")})`);
+  check(/Filed under MBBS Year 2 Pathology/.test(await page.evaluate(() => document.body.textContent || "")), `${label}: saying so in one line`);
+  check((await page.evaluate(() => window.__calls.filter((c) => c.method === "POST" && c.body && c.body.action === "update").length)) === 0, `${label}: with no save of the questions`);
+  // Put it back for the walks below, and reopen the empty shell.
+  await page.evaluate(() => { window.__tests.find((t) => t.id === "t-orphan").subjectId = ""; });
+  await reset(page, null);
+  await page.evaluate(() => window.showEditorForSubject("sub-new"));
+  await page.waitForSelector("#ed-empty-create", { timeout: 20000 });
   await page.click("#ed-empty-create");
   await page.waitForFunction(() => document.querySelector("#ed-subject") && document.querySelectorAll(".ed-tree .ed-tree-test").length === 1 && !document.querySelector("#ed-empty-create"), null, { timeout: 20000 });
   const created = await page.evaluate(() => window.__calls.find((c) => c.method === "POST" && c.body && c.body.action === "create"));
@@ -251,9 +287,9 @@ async function run(page, label) {
   // ---------- An orphan opened inside a subject is filed there -------------
   await reset(page, "sub-mbbs");
   await page.evaluate(() => window.showEditor("t-orphan"));
-  await page.waitForFunction(() => window.__calls.some((c) => c.method === "POST" && c.body && c.body.action === "update"), null, { timeout: 20000 });
-  const refiled = await page.evaluate(() => window.__calls.find((c) => c.method === "POST" && c.body && c.body.action === "update"));
-  check(refiled.body.test.id === "t-orphan" && refiled.body.test.subjectId === "sub-mbbs", `${label}: a draft with no subject, opened in one, is saved under it (${refiled.body.test.subjectId})`);
+  await page.waitForFunction(() => window.__calls.some((c) => c.method === "POST" && c.body && c.body.action === "file"), null, { timeout: 20000 });
+  const refiled = await page.evaluate(() => window.__calls.find((c) => c.method === "POST" && c.body && c.body.action === "file"));
+  check(refiled.body.id === "t-orphan" && refiled.body.subjectId === "sub-mbbs", `${label}: a draft with no subject, opened in one, is filed under it (${refiled.body.subjectId})`);
   await page.waitForSelector(".notice, .toast, [role=status]", { timeout: 10000 }).catch(() => {});
   const said = await page.evaluate(() => document.body.textContent || "");
   check(/Filed under MBBS Year 1 Human Physiology/.test(said), `${label}: and says so in one line`);
@@ -267,9 +303,9 @@ async function run(page, label) {
   // ---------- A sample seeded under a shelf is healed the same way ---------
   await reset(page, "sub-maths");
   await page.evaluate(() => window.showEditor("t-shelved"));
-  await page.waitForFunction(() => window.__calls.some((c) => c.method === "POST" && c.body && c.body.action === "update"), null, { timeout: 20000 });
-  const healed = await page.evaluate(() => window.__calls.find((c) => c.method === "POST" && c.body && c.body.action === "update"));
-  check(healed.body.test.id === "t-shelved" && healed.body.test.subjectId === "sub-maths", `${label}: a sample filed under a shelf's id, opened in the Maths subject, is saved under it (${healed.body.test.subjectId})`);
+  await page.waitForFunction(() => window.__calls.some((c) => c.method === "POST" && c.body && c.body.action === "file"), null, { timeout: 20000 });
+  const healed = await page.evaluate(() => window.__calls.find((c) => c.method === "POST" && c.body && c.body.action === "file"));
+  check(healed.body.id === "t-shelved" && healed.body.subjectId === "sub-maths", `${label}: a sample filed under a shelf's id, opened in the Maths subject, is filed under it (${healed.body.subjectId})`);
   check((await pickerValue(page)) === "sub-maths", `${label}: the picker names the subject it is now in, not the shelf (${await pickerLabel(page)})`);
   await page.waitForFunction(() => document.querySelectorAll(".ed-tree .ed-tree-test").length === 3, null, { timeout: 20000 });
   titles = await treeTitles(page);

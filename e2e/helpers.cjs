@@ -3568,7 +3568,7 @@ async function subjectFilingChecks() {
   const mod = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, PLATFORM_PK };";
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, PLATFORM_PK, chunkQuestions };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod, mod.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -3668,6 +3668,38 @@ async function subjectFilingChecks() {
   // The common save: the subject the row already has. No read, no change.
   await call("POST", { body: refileBody("misfiled-2", "sub-mbbs") });
   check(rows.get(key("tests", ME, "misfiled-2")).subjectId === "sub-mbbs", "a save naming the subject the row has leaves it there");
+
+  // --- the `file` action: the same rule, with no questions over the wire ---
+  //
+  // It is what the empty shell's Move here and the editor's heal-on-open call:
+  // a point read of the test, the subject check, one write — and it moves a
+  // published row as readily as a draft, which the editor's save is not meant
+  // to touch.
+  const file = (id, subjectId) => call("POST", { body: { action: "file", id, subjectId } });
+  const stray = orphan("stray-1");
+  stray.status = "published";
+  t.chunkQuestions(stray, Q);
+  const movedIn = await file("stray-1", "sub-mbbs");
+  check(movedIn.status === 200 && movedIn.body.test && movedIn.body.test.subjectId === "sub-mbbs", `file puts a stray under the caller's own subject, published or not (got ${movedIn.status})`);
+  const strayRow = rows.get(key("tests", ME, "stray-1"));
+  check(strayRow.subjectId === "sub-mbbs" && strayRow.board === "MBBS" && strayRow.klass === "Year 1", "and stamps that subject's taxonomy on the row");
+  check(strayRow.qc0 === stray.qc0 && strayRow.chunkCount === 1 && strayRow.questionCount === 1, "the questions on the row ride along untouched, and the row is still published");
+  check(strayRow.status === "published", "with its status as it was");
+  const again = await file("stray-1", "sub-maths");
+  check(again.status === 409, `a row already in one of the caller's subjects is not moved (got ${again.status})`);
+  check(rows.get(key("tests", ME, "stray-1")).subjectId === "sub-mbbs", "and stays where it was");
+  orphan("stray-2");
+  check((await file("stray-2", "lib-c12-maths")).status === 403, "into a shelf is refused");
+  check((await file("stray-2", "sub-theirs")).status === 403, "into somebody else's subject is refused");
+  check((await file("stray-2", "no-such-subject")).status === 403, "into a subject that does not exist is refused");
+  check(rows.get(key("tests", ME, "stray-2")).subjectId === "", "and each refusal leaves the row as it was");
+  seed("tests", { partitionKey: OTHER, rowKey: "theirs-1", ownerSub: OTHER, title: "Theirs", status: "draft", platform: false, subjectId: "" });
+  check((await file("theirs-1", "sub-mbbs")).status === 404, "somebody else's test reads as missing, not as moved");
+  check((await file("", "sub-mbbs")).status === 400 && (await file("stray-2", "")).status === 400, "both the test and the subject are required");
+  const shelved = orphan("stray-3");
+  shelved.subjectId = "lib-c12-maths";
+  shelved.sample = true;
+  check((await file("stray-3", "sub-maths")).status === 200 && rows.get(key("tests", ME, "stray-3")).subjectId === "sub-maths", "a sample seeded under a shelf's id is moved into the caller's own subject");
 }
 
 // --- Bounded parallelism keeps input order ---

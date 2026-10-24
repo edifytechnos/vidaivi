@@ -775,31 +775,50 @@ to create the first test again.
   `subjectHere()` — the tree's subject, then the one in memory — so a blank
   test, a Seyari *Create test with this* and the + all land where the teacher
   can see they are.
-- **A draft filed nowhere the teacher can open is filed under the subject it
+- **A test filed nowhere the teacher can open is filed under the subject it
   is opened in**, once. "Nowhere" is no subject at all, a shelf's id on a row
   that is not a master (the starter samples, above), or a subject that is not
   theirs; a shelf counts as a home only for an admin, who works in them.
-  `showEditor` stamps `subjectId` on it, `save()` carries it on every update,
-  and the server's `update` honours it **only when the row's current subject
-  is not one of the caller's own**, and only for one that is (point reads in
-  their partition, owner checked on the row — the legacy partition is
-  anybody's). The common save names the subject the row already has and costs
-  no read; a row under one of their own subjects keeps it whatever the body
-  says, because where a test is filed is not otherwise editable. One line says
-  *Filed under …*. Opened with nothing in memory, such a row stays put and the
-  picker reads **All subjects** rather than the first subject listed.
+  `showEditor` calls **`POST /api/tests {action:"file", id, subjectId}`**: a
+  point read of the test, the subject check, one write — no questions over
+  the wire, and a published row moves as readily as a draft, which the
+  editor's save is not meant to touch. `ownSubjectRow(who, id)` decides the
+  rule in one place (point read in the caller's partition, owner checked on
+  the row — the legacy partition is anybody's — never a shelf): a row already
+  under one of the caller's own subjects is **409**, never moved, because
+  where a test is filed is not otherwise editable; into a shelf, somebody
+  else's subject or one that does not exist is 403. `save()` carries
+  `subjectId` too and `update` honours it by the same rule, so a save can
+  never contradict it; the common save names the subject the row has and
+  costs no read. One line says *Filed under …*. Opened with nothing in
+  memory, such a row stays put and the picker reads **All subjects** rather
+  than the first subject listed.
+- **The empty shell offers the strays back.** A teacher has no My tests (it
+  is an admin rail item), so a row filed nowhere had no door at all — and an
+  empty subject is exactly where a teacher looks for the test that vanished.
+  `showEditorForSubject` on an empty subject of the teacher's own asks one
+  unscoped listing (their partition alone), `findStrays` keeps the rows in no
+  subject of theirs, and `renderEmptyShell` lists them under **Not in any
+  subject**, each with **Move here**: the `file` action, then the editor
+  opens on the test with the tree scoped to the subject. Nothing is fetched
+  for a subject that has tests, or for a shelf.
 - `node e2e/editor-offline.cjs` drives the real editor at 1280px and 390px
   against a stubbed server: a reload scopes to the test's subject with one
-  listing, a stale subject loses to it, New subject's shell files the first
-  test under its subject, an orphan and a sample under a shelf's id are each
-  re-filed and announced, and nothing is written when there is nowhere to
-  file it. Against the old code its first assertion prints the screenshot:
-  *Human Physiology | Matrices — Demo Test | Test 1 — Relations and
-  Functions*. `e2e/helpers.cjs` holds the server half: the seed refused for
-  no subject, a shelf and somebody else's; the re-file taken for an orphan, a
-  row under a shelf and a row under somebody else's subject, and refused into
-  a shelf, somebody else's subject and one that does not exist, with a row
-  under the caller's own subject staying put.
+  listing, a stale subject loses to it, New subject's shell lists the strays
+  and **Move here** files one through the `file` action (no save of the
+  questions) and opens it in the tree, the shell files the first test under
+  its subject, an orphan and a sample under a shelf's id are each re-filed on
+  open and announced, and nothing is written when there is nowhere to file
+  it. `SHOT_DIR=…` writes the shell with its strays. Against the old code its
+  first assertion prints the screenshot: *Human Physiology | Matrices — Demo
+  Test | Test 1 — Relations and Functions*. `e2e/helpers.cjs` holds the
+  server half: the seed refused for no subject, a shelf and somebody else's;
+  `update`'s re-file taken for an orphan, a row under a shelf and a row under
+  somebody else's subject, refused into a shelf, somebody else's subject and
+  one that does not exist, a row under the caller's own subject staying put;
+  and `file` moving a published stray with its questions untouched, 409 on a
+  row already in one of the caller's subjects, 403 into a shelf, somebody
+  else's or a missing subject, 404 for somebody else's test.
 
 ## Seyari AI: questions written, or read off a paper, with the teacher (`/api/generate`)
 

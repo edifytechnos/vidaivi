@@ -291,6 +291,30 @@ export async function mutateTest(
 }
 
 /**
+ * File a test that is in no subject of yours — under none, under a shelf's id,
+ * or under somebody else's — into one of your own subjects. A test already in
+ * one of your subjects is refused: where a test is filed is not otherwise
+ * editable. Carries no questions; works on a published row too.
+ */
+export async function fileTestUnder(
+  id: string,
+  subjectId: string
+): Promise<{ ok: true; test: ServerTestMeta } | { ok: false; message: string }> {
+  try {
+    const res = await apiFetch("/api/tests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "file", id, subjectId }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not move the test" };
+    return { ok: true, test: data.test };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
+/**
  * Who sits this test. "class" is everyone the teacher created; "selected" is
  * the named students and nobody else. The server re-checks every username.
  */

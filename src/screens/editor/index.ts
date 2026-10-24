@@ -12,10 +12,12 @@ import {
   fetchServerTest,
   fetchSubjects,
   fetchTestList,
+  fileTestUnder,
   mutateTest,
   newQuestionId,
   setTestStatus,
   type InProgressHolder,
+  type ServerTestMeta,
   type TestProblem,
 } from "../../api";
 import { isAdmin } from "../../auth";
@@ -143,15 +145,15 @@ export async function showEditor(
       questionCount: t.questionCount,
     }));
   expanded.add(loaded.id);
-  // A draft filed nowhere this teacher can open — under no subject, because
+  // A test filed nowhere this teacher can open — under no subject, because
   // it was created from the empty shell of a subject the app had not made
   // current (New subject's Done step opened the shell without doing so, 25 Sep
   // to 24 Oct), or under a shelf's id, where the starter samples went — sat in
-  // no tree of theirs, reachable from My tests alone. Opened inside one of
-  // their own subjects, it is filed there: the save carries `subjectId`, and
-  // the server honours it only for a row whose subject is not already one of
-  // the caller's own.
-  const refile = !home && !!treeSubject && !shelf && loaded.status === "draft" && !loaded.platform;
+  // no tree of theirs. Opened inside one of their own subjects, it is filed
+  // there, through the `file` action: no questions over the wire, and a
+  // published row is moved as readily as a draft. A save carries `subjectId`
+  // too, and the server honours it by the same rule.
+  const refile = !home && !!treeSubject && !shelf && !loaded.platform;
   if (refile) loaded.subjectId = treeSubject!;
   loadTest(loaded);
   problems = [];
@@ -164,8 +166,8 @@ export async function showEditor(
   unsubscribe = onSaveState(renderSaveState);
   render();
   if (refile) {
-    void save().then((ok) => {
-      if (ok) notice(`Filed under ${subjectTitle()}.`);
+    void fileTestUnder(loaded.id, treeSubject!).then((r) => {
+      if (r.ok) notice(`Filed under ${subjectTitle()}.`);
     });
   }
 }
@@ -231,7 +233,14 @@ export async function showEditorForSubject(
     clearTest();
     unsubscribe?.();
     unsubscribe = null;
-    renderEmptyShell();
+    // An empty subject is where a teacher looks for the test that vanished.
+    // Their tests filed nowhere they can open — under no subject (the empty
+    // shell created them so, 25 Sep–24 Oct), under a shelf's id (the starter
+    // samples) or under a subject that is not theirs — are offered back here,
+    // each with Move here. One unscoped listing, only when the subject is
+    // empty and is the teacher's own: it walks their partition alone.
+    const strays = subjectId && !viewingShelf() ? await findStrays() : [];
+    renderEmptyShell(strays);
     return;
   }
   // A draft is the one you can actually edit, so prefer it over a published one.
@@ -240,12 +249,44 @@ export async function showEditorForSubject(
 }
 
 /**
+ * The teacher's tests that are in no subject of theirs: no `subjectId`, a
+ * shelf's id on a row that is not a master, or an id that is none of their
+ * own. A shelf is a home only for an admin, who works in them.
+ */
+async function findStrays(): Promise<ServerTestMeta[]> {
+  const all = (await fetchTestList())?.tests ?? [];
+  const home = (id: string) => ownSubjects.some((s) => s.id === id) || (isAdmin() && shelfIds.has(id));
+  return all.filter((t) => !t.platform && !home(t.subjectId || ""));
+}
+
+/** A stray offered back in the empty shell, with Move here. */
+function strayRowMarkup(t: ServerTestMeta): string {
+  const status = t.status === "published" ? "Live" : t.status === "archived" ? "Archived" : "Draft";
+  return `
+    <li class="ed-stray">
+      ${testLabelMarkup(t.title, t.chapter)}
+      <span class="status-chip ${statusClass(t.status)}">${status}</span>
+      <button class="btn btn-ghost btn-sm ed-stray-move" data-test="${escapeHtml(t.id)}">Move here</button>
+    </li>`;
+}
+
+/**
  * The shell with no test in it. A separate renderer rather than making the
  * whole shell tolerate a null test: render, appBar, the crumb row, treeMarkup,
  * renderBody, bindOverview and bindTree all read the document.
  */
-function renderEmptyShell(): void {
+function renderEmptyShell(strays: ServerTestMeta[] = []): void {
   setUrl();
+  const strayPanel = strays.length
+    ? `
+            <section class="ed-panel ed-strays">
+              <div class="ed-panel-head"><span class="ed-panel-label">Not in any subject</span></div>
+              <p class="ed-hint">${
+                strays.length === 1 ? "A test of yours is" : `${strays.length} tests of yours are`
+              } filed under no subject of yours. <strong>Move here</strong> puts one in ${escapeHtml(subjectTitle())}, and it opens in the tree.</p>
+              <ul class="ed-stray-list">${strays.map(strayRowMarkup).join("")}</ul>
+            </section>`
+    : "";
   mount(
     `
     <div class="editor" data-pane="question" data-authoring="1">
@@ -270,7 +311,7 @@ function renderEmptyShell(): void {
                 <button class="btn btn-primary" id="ed-empty-create">Create the first test</button>
                 <button class="ai-go" id="ed-empty-seyari">${aiGoInner("Ask Seyari AI")}</button>
               </div>
-            </section>
+            </section>${strayPanel}
           </div>
         </div>
       </div>
@@ -292,6 +333,23 @@ function renderEmptyShell(): void {
   bindSubjectPicker();
   bindSeyari();
   document.getElementById("ed-empty-seyari")?.addEventListener("click", () => openSeyari(seyariHost));
+  document.querySelectorAll<HTMLButtonElement>(".ed-stray-move").forEach((btn) =>
+    btn.addEventListener("click", async () => {
+      const into = treeSubject;
+      if (!into) return;
+      btn.disabled = true;
+      const result = await fileTestUnder(btn.dataset.test!, into);
+      if (!result.ok) {
+        btn.disabled = false;
+        notice(result.message);
+        return;
+      }
+      notice(`Filed under ${subjectTitle()}.`);
+      // It is this subject's now, so the editor opens on it with the tree
+      // scoped to the subject — the same screen the first test opens in.
+      void showEditor(result.test.id, null, onExit);
+    })
+  );
 }
 
 /**

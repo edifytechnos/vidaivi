@@ -2859,6 +2859,33 @@ handlers.tests = async (context, req) => {
       return json(context, 200, { ok: true, audience, assignedCount: usernames.length });
     }
 
+    // Put a test that is filed nowhere its owner can open — under no subject,
+    // under a shelf's id, or under a subject that is not theirs — into one of
+    // the caller's own subjects. A row already in one of their subjects is not
+    // moved: where a test is filed is not otherwise editable, and this is the
+    // heal for rows the empty shell created without a subject (25 Sep–24 Oct)
+    // and the starter samples seeded under a shelf. It carries no questions
+    // over the wire and works on a published row too, which `update` — the
+    // editor's save — is not meant to touch. One point read of the test, two
+    // of subjects, one write.
+    if (action === "file") {
+      const id = String(body.id || "").trim();
+      const into = String(body.subjectId || "").slice(0, 80);
+      if (!id || !into) return json(context, 400, { error: "id and subjectId are required" });
+      const entity = await readByPartitions(tests, staffPartitions, id, LEGACY_TEST_PK);
+      if (!entity) return json(context, 404, { error: "Test not found" });
+      if (!canManageTest(who, entity) || entity.platform) return json(context, 403, { error: "Not your test" });
+      if (await ownSubjectRow(who, entity.subjectId)) {
+        return json(context, 409, { error: "This test is already in one of your subjects" });
+      }
+      const sub = await ownSubjectRow(who, into);
+      if (!sub) return json(context, 403, { error: "Not your subject" });
+      fileTestUnder(entity, sub);
+      entity.updatedAt = new Date().toISOString();
+      await saveRow(tests, LEGACY_TEST_PK, entity);
+      return json(context, 200, { ok: true, test: testMeta(entity) });
+    }
+
     // A teacher takes their own copy of a published master ("built-in") test.
     // The master itself is never edited by them — this is a fork, not a share.
     if (action === "adopt") {
@@ -2994,12 +3021,8 @@ handlers.tests = async (context, req) => {
       // the shelves mean everyone holds eleven.) Refusing leaves the once-only
       // flag unset, so the offer stands until there is a subject they fit.
       const seedSubject = String(body.subjectId || "").slice(0, 80);
-      const subjects = tableClient("subjects");
-      await ensureTable(subjects);
-      const home = seedSubject
-        ? await readByPartitions(subjects, [who.id], seedSubject, LEGACY_SUBJECT_PK)
-        : null;
-      if (!home || home.platform || !canUseSubject(who, home)) {
+      const home = await ownSubjectRow(who, seedSubject);
+      if (!home) {
         return json(context, 400, { error: "Samples are filed under one of your own subjects" });
       }
       const created = [];
@@ -3153,22 +3176,9 @@ handlers.tests = async (context, req) => {
     // nothing, and a mismatch is two point reads in the caller's partition.
     const fileUnder = String(t.subjectId || "").slice(0, 80);
     if (fileUnder && fileUnder !== (entity.subjectId || "") && !entity.platform) {
-      const subjects = tableClient("subjects");
-      await ensureTable(subjects);
-      // The legacy partition is anybody's, so the owner is checked on the row.
-      const ownSubject = async (id) => {
-        if (!id) return null;
-        const s = await readByPartitions(subjects, [who.id], id, LEGACY_SUBJECT_PK);
-        return s && !s.platform && canUseSubject(who, s) ? s : null;
-      };
-      if (!(await ownSubject(entity.subjectId))) {
-        const sub = await ownSubject(fileUnder);
-        if (sub) {
-          entity.subjectId = fileUnder;
-          entity.board = sub.board || entity.board;
-          entity.klass = sub.klass || entity.klass;
-          entity.subject = sub.subject || entity.subject;
-        }
+      if (!(await ownSubjectRow(who, entity.subjectId))) {
+        const sub = await ownSubjectRow(who, fileUnder);
+        if (sub) fileTestUnder(entity, sub);
       }
     }
     entity.updatedAt = new Date().toISOString();
@@ -3485,6 +3495,30 @@ function canUseSubject(who, e) {
   } catch {}
   const email = String(who.email || "").toLowerCase();
   return !!email && collaborators.includes(email);
+}
+
+/**
+ * One of the caller's own subjects, or null: a point read in their partition
+ * (the legacy partition is anybody's, so the owner is checked on the row), and
+ * never a shelf. Used wherever a test is filed under a subject by the caller's
+ * say-so — `update`'s subjectId, the `file` action — so the rule that a test
+ * goes only into a subject of theirs is decided in one place.
+ */
+async function ownSubjectRow(who, id) {
+  const sid = String(id || "");
+  if (!sid) return null;
+  const subjects = tableClient("subjects");
+  await ensureTable(subjects);
+  const s = await readByPartitions(subjects, [who.id], sid, LEGACY_SUBJECT_PK);
+  return s && !s.platform && canUseSubject(who, s) ? s : null;
+}
+
+/** File a test row under a subject row: the id, and the subject's taxonomy as `create` stamps it. */
+function fileTestUnder(entity, sub) {
+  entity.subjectId = sub.rowKey;
+  entity.board = sub.board || entity.board;
+  entity.klass = sub.klass || entity.klass;
+  entity.subject = sub.subject || entity.subject;
 }
 
 /** Every subject this teacher owns or collaborates on. */
