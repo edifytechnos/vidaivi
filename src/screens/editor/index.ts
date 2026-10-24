@@ -82,15 +82,25 @@ export async function showEditor(
   subjects?: Subject[] | null
 ) {
   onExit = back;
-  treeSubject = currentSubject();
+  // The tree is the subject the test LIVES IN. The subject in memory is only a
+  // guess at it: right when the teacher came through a card or the picker,
+  // stale from My tests, and absent on a reload. So the test's own `subjectId`
+  // decides once it is loaded, and the listing is asked again only when the
+  // guess was wrong. Without this a reload, or a test opened from My tests,
+  // drew EVERY test the teacher owned under whichever subject the picker
+  // listed first — which is how two Class 12 Maths samples turned up in an
+  // MBBS subject's tree.
+  const guess = currentSubject();
+  treeSubject = guess;
   track("editor_open", { test: testId });
   // The shell and the editor's shape paint at once; the document fills it in.
   mount(skeleton.editor({ add: true }), { title: "Loading…", active: "subjects", full: true });
 
-  // The tree shows the subject you came in through, not every test you own.
-  const [loaded, list, subjectList] = await Promise.all([
+  const [loaded, guessed, subjectList] = await Promise.all([
     fetchServerTest(testId),
-    fetchTestList(treeSubject ?? undefined),
+    // With no subject in memory there is nothing to scope by yet; the test
+    // will say, and asking unscoped now would be a listing to throw away.
+    guess ? fetchTestList(guess) : Promise.resolve(null),
     subjects === undefined ? fetchSubjects() : Promise.resolve(subjects),
   ]);
   if (!loaded) {
@@ -104,6 +114,22 @@ export async function showEditor(
     return;
   }
   takeSubjects(subjectList);
+  // Where the test is filed — if that is somewhere this teacher can open: one
+  // of their own subjects, or a shelf for an admin, who works in them. A row
+  // under a shelf's id that is NOT a master (the starter samples were seeded
+  // so for a month) or under a subject that is not theirs is filed nowhere a
+  // teacher can open, and is treated exactly like one filed under nothing.
+  const stored = loaded.subjectId || "";
+  const home =
+    stored && (ownSubjects.some((s) => s.id === stored) || (isAdmin() && shelfIds.has(stored)))
+      ? stored
+      : null;
+  if (home && home !== treeSubject) treeSubject = home;
+  const list =
+    guessed && treeSubject === guess ? guessed : await fetchTestList(treeSubject ?? undefined);
+  // The subject on screen is the working subject from here on: a blank test
+  // or a Seyari card made from this screen is filed under it.
+  setSubject(treeSubject);
   // A shelf's tree holds its masters; an ordinary subject's holds the teacher's
   // own tests. Never both, or a teacher's tree fills up with library copies.
   const shelf = viewingShelf();
@@ -117,6 +143,16 @@ export async function showEditor(
       questionCount: t.questionCount,
     }));
   expanded.add(loaded.id);
+  // A draft filed nowhere this teacher can open — under no subject, because
+  // it was created from the empty shell of a subject the app had not made
+  // current (New subject's Done step opened the shell without doing so, 25 Sep
+  // to 24 Oct), or under a shelf's id, where the starter samples went — sat in
+  // no tree of theirs, reachable from My tests alone. Opened inside one of
+  // their own subjects, it is filed there: the save carries `subjectId`, and
+  // the server honours it only for a row whose subject is not already one of
+  // the caller's own.
+  const refile = !home && !!treeSubject && !shelf && loaded.status === "draft" && !loaded.platform;
+  if (refile) loaded.subjectId = treeSubject!;
   loadTest(loaded);
   problems = [];
   publishError = "";
@@ -127,6 +163,11 @@ export async function showEditor(
   unsubscribe?.();
   unsubscribe = onSaveState(renderSaveState);
   render();
+  if (refile) {
+    void save().then((ok) => {
+      if (ok) notice(`Filed under ${subjectTitle()}.`);
+    });
+  }
 }
 
 /**
@@ -164,6 +205,10 @@ export async function showEditorForSubject(
 ): Promise<void> {
   onExit = back;
   treeSubject = subjectId;
+  // Made current here, not left to the caller: New subject's Done step opened
+  // this shell without doing so, and the first test created from it went
+  // under no subject at all.
+  setSubject(subjectId);
   takeCopiedNote();
   track("editor_subject_open", { subject: subjectId ?? "" });
   mount(skeleton.editor({ add: true }), { title: "Loading…", active: "subjects", full: true });
@@ -304,7 +349,7 @@ const seyariHost: SeyariHost = {
       teacher: "",
       access: "login",
       questions,
-      subjectId: currentSubject() ?? undefined,
+      subjectId: subjectHere(),
     } as never);
     if (!result.ok) {
       // A plan limit names a price; open the door to it rather than only
@@ -325,6 +370,16 @@ const seyariHost: SeyariHost = {
 /** Only an admin may add to the built-in library. */
 function canAddHere(): boolean {
   return !viewingShelf() || isAdmin();
+}
+
+/**
+ * The subject a test made from this screen is filed under: the tree's, which
+ * is where the teacher can see they are. The subject in memory is the fallback
+ * — it is the same one whenever a shell is open, since both showEditor and
+ * showEditorForSubject set it, but the tree is the thing on screen.
+ */
+function subjectHere(): string | undefined {
+  return treeSubject ?? currentSubject() ?? undefined;
 }
 
 /**
@@ -446,7 +501,11 @@ function subjectLead(): string {
     ? [{ id: here, title: shelfTitle(here), platform: true }, ...ownSubjects]
     : ownSubjects;
   if (list.length < 1) return "";
-  const options = list
+  // No subject means the tree holds every test the teacher owns. A select with
+  // nothing selected shows its first option, which named a subject the tree
+  // was not in; say what is actually open instead.
+  const all = here ? "" : `<option value="" selected>All subjects</option>`;
+  const options = all + list
     .map(
       (x) =>
         `<option value="${escapeHtml(x.id)}"${x.id === here ? " selected" : ""}>${escapeHtml(
@@ -1257,7 +1316,7 @@ export async function createTestAndEdit(back: () => void): Promise<void> {
     teacher: "",
     access: "login",
     questions: [],
-    subjectId: currentSubject() ?? undefined,
+    subjectId: subjectHere(),
   } as never);
   if (!result.ok) {
     // The same door as New subject's: on top of the editor, the test is

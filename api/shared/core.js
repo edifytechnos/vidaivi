@@ -2984,9 +2984,24 @@ handlers.tests = async (context, req) => {
         return json(context, 200, { ok: true, seeded: 0, alreadySeeded: true });
       }
       const samples = Array.isArray(body.tests) ? body.tests.slice(0, 5) : [];
-      // Optional: file the samples under a subject the teacher already owns.
-      // Without it they are written orphaned and the subjects GET adopts them.
+      // The samples go under ONE of the caller's own subjects, or nowhere. A
+      // row filed under a shelf's id, or under none, is in no tree a teacher
+      // can open — and under a shelf is where every new teacher's samples went
+      // for a month: the client handed this the first row of a subject list
+      // that had the library's shelves sorted in front of their own. (The
+      // orphan path this used to allow is dead for the same reason: the
+      // subjects GET adopts orphans only when the caller holds NO subject, and
+      // the shelves mean everyone holds eleven.) Refusing leaves the once-only
+      // flag unset, so the offer stands until there is a subject they fit.
       const seedSubject = String(body.subjectId || "").slice(0, 80);
+      const subjects = tableClient("subjects");
+      await ensureTable(subjects);
+      const home = seedSubject
+        ? await readByPartitions(subjects, [who.id], seedSubject, LEGACY_SUBJECT_PK)
+        : null;
+      if (!home || home.platform || !canUseSubject(who, home)) {
+        return json(context, 400, { error: "Samples are filed under one of your own subjects" });
+      }
       const created = [];
       for (const sample of samples) {
         const checked = validateQuestions(sample.questions);
@@ -3005,11 +3020,13 @@ handlers.tests = async (context, req) => {
           sample: true,
           ownerSub: who.id,
           ownerEmail: who.email || "",
-          board: "CBSE",
-          klass: "12",
-          subject: "Maths",
+          // The subject's own taxonomy, as `create` stamps it, so a sample
+          // always knows the context it was filed in.
+          board: home.board || "CBSE",
+          klass: home.klass || "12",
+          subject: home.subject || "Maths",
           subjectId: seedSubject,
-        forkedFromId: String(sample.id || "").slice(0, 60),
+          forkedFromId: String(sample.id || "").slice(0, 60),
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -3124,6 +3141,36 @@ handlers.tests = async (context, req) => {
     entity.teacher = String(t.teacher || "").slice(0, 60);
     if (Number.isFinite(Number(t.order))) entity.order = Number(t.order);
     if (t.access) entity.access = t.access === "open" ? "open" : "login";
+    // A row filed nowhere its owner can open may be given a subject: one of
+    // the caller's own, never a shelf and never somebody else's. "Nowhere" is
+    // no subject at all (a test created from the empty shell of a subject the
+    // client had not made current), a shelf's id on a row that is not a master
+    // (where the starter samples were seeded for a month), or a subject that
+    // is not theirs. A row already under one of the caller's own subjects
+    // keeps it whatever the body says — where a test is filed is not otherwise
+    // editable here. The editor sends the subject the row was opened in on
+    // every save; the common case is the subject it already has, which costs
+    // nothing, and a mismatch is two point reads in the caller's partition.
+    const fileUnder = String(t.subjectId || "").slice(0, 80);
+    if (fileUnder && fileUnder !== (entity.subjectId || "") && !entity.platform) {
+      const subjects = tableClient("subjects");
+      await ensureTable(subjects);
+      // The legacy partition is anybody's, so the owner is checked on the row.
+      const ownSubject = async (id) => {
+        if (!id) return null;
+        const s = await readByPartitions(subjects, [who.id], id, LEGACY_SUBJECT_PK);
+        return s && !s.platform && canUseSubject(who, s) ? s : null;
+      };
+      if (!(await ownSubject(entity.subjectId))) {
+        const sub = await ownSubject(fileUnder);
+        if (sub) {
+          entity.subjectId = fileUnder;
+          entity.board = sub.board || entity.board;
+          entity.klass = sub.klass || entity.klass;
+          entity.subject = sub.subject || entity.subject;
+        }
+      }
+    }
     entity.updatedAt = new Date().toISOString();
     chunkQuestions(entity, checked.questions);
     await saveRow(tests, LEGACY_TEST_PK, entity);

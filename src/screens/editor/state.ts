@@ -94,6 +94,10 @@ export async function save(): Promise<boolean> {
     teacher: test.teacher ?? "",
     access: test.access,
     questions: test.questions,
+    // Where the test is filed. The server takes it only for a row that has no
+    // subject yet — a draft orphaned by the empty shell, which showEditor
+    // files under the subject it was opened in — and ignores it otherwise.
+    subjectId: test.subjectId,
   });
   inFlight = false;
 
