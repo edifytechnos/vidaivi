@@ -118,15 +118,127 @@ const STUB = `
     { id: "lib-c10-01", title: "Real Numbers", chapter: "Chapter 1", order: 1, status: "published", platform: true, subjectId: "lib-c10-maths", questionCount: 15, totalMarks: 31 },
     { id: "lib-c10-02", title: "Polynomials", chapter: "Chapter 2", order: 2, status: "published", platform: true, subjectId: "lib-c10-maths", questionCount: 15, totalMarks: 30 },
   ];
+  // The plan-limit refusal and the purchase seam, for the door walk below.
+  // "cap": every subject create is refused 402 with the plan door; "ok": it
+  // is created. Nothing here writes anything — it is what the server WOULD
+  // say, so the dialog's reaction to it can be proved.
+  window.__mode = "cap";
+  const plan = { kind: "plan", planDays: 30, shelfId: "", shelfTitle: "Teacher plan — 30 days", listPaise: 9900 };
+  const quoteFor = (code) => {
+    const free = String(code || "").toUpperCase() === "FRIEND100";
+    return { ...plan, discountPaise: free ? 9900 : 0, payablePaise: free ? 0 : 9900, coupon: free ? "FRIEND100" : "", couponMessage: "" };
+  };
   window.fetch = async (url, init) => {
     const method = (init && init.method) || "GET";
-    window.__calls.push({ url: String(url), method, body: init && init.body ? JSON.parse(init.body) : null });
+    const body = init && init.body ? JSON.parse(init.body) : null;
+    window.__calls.push({ url: String(url), method, body });
     const reply = (status, data) => ({ ok: status < 400, status, json: async () => data, text: async () => JSON.stringify(data) });
     if (method === "GET" && String(url).startsWith("/api/subjects")) return reply(200, { subjects: shelves });
     if (method === "GET" && String(url).startsWith("/api/tests?library=1")) return reply(200, { tests: masters });
+    if (method === "POST" && String(url).startsWith("/api/subjects")) {
+      if (window.__mode === "cap") {
+        return reply(402, {
+          error: "You have used 1 of 1 subjects on your current plan. The ₹99/month plan lifts this.",
+          limit: 1, used: 1, payment: { kind: "plan", planPaise: 9900, planDays: 30 },
+        });
+      }
+      return reply(201, { subject: { id: "sub-" + Math.random().toString(36).slice(2, 8), board: body.board, klass: body.klass, subject: body.subject, title: [body.board, body.klass, body.subject].filter(Boolean).join(" "), ownerSub: "t1", collaborators: [] } });
+    }
+    if (method === "POST" && String(url).startsWith("/api/purchase")) {
+      if (body.action === "quote") return reply(200, quoteFor(body.code));
+      if (body.action === "start") {
+        const q = quoteFor(body.code);
+        if (q.payablePaise === 0) return reply(200, { ...q, ref: "ord-free", settled: true });
+        return reply(200, { ...q, ref: "ord-1", upi: { vpa: "vidai@upi", payee: "Vidai", link: "upi://pay?pa=vidai%40upi&am=99.00", note: "Vidai ord-1" } });
+      }
+      if (body.action === "claim" || body.action === "cancel") return reply(200, { ok: true });
+    }
     return reply(404, { error: "not stubbed" });
   };
 `;
+
+/**
+ * The door on the refusal. A capped account presses Create, is told the plan
+ * lifts it, and — this is the whole point — is handed a button that does
+ * that, ON TOP of this dialog, so closing it lands back on the same step with
+ * everything typed still there. Then both ways out: paying by UPI (the plan
+ * switches on when the admin confirms; Create is one press away), and a 100%
+ * code, which settles on the spot and presses Create again by itself.
+ */
+async function doorWalk(page, label) {
+  const text = async () => (await page.textContent(".ns")) || "";
+  await page.evaluate(() => { window.__mode = "cap"; window.__calls = []; });
+  await page.evaluate(() => window.openNewSubject());
+  await page.waitForSelector('[data-group="college"]', { timeout: 20000 });
+  await page.click('[data-group="college"]');
+  await page.fill("#ns-course", "MBBS");
+  await page.click("#ns-next");
+  await page.click('[data-klass="Year 1"]');
+  await page.click("#ns-next");
+  await page.fill("#ns-extra", "Physiology");
+  await page.click("#ns-next"); // Create 1 subject → the stub refuses 402
+  await page.waitForSelector("#ns-upgrade", { timeout: 10000 });
+
+  check(/You have used 1 of 1 subjects/.test(await text()), `${label}: the refusal is shown in its own words`);
+  check(
+    (await page.textContent("#ns-upgrade")).trim() === "Get the ₹99/month plan",
+    `${label}: and beneath it a button that does what the sentence names (${(await page.textContent("#ns-upgrade")).trim()})`
+  );
+  check(/press Create again/.test(await text()), `${label}: with one line saying what happens after`);
+  check((await page.inputValue("#ns-extra")) === "Physiology", `${label}: the subjects typed are still there`);
+
+  // --- The dialog opens on top; closing it lands back here ---------------
+  await page.click("#ns-upgrade");
+  await page.waitForSelector(".modal.buy", { timeout: 10000 });
+  check((await page.locator(".ns").count()) === 1, `${label}: the plan dialog opens ON TOP of New subject, not instead of it`);
+  check(/You have used 1 of 1 subjects/.test(await page.textContent(".buy-reason")), `${label}: and carries the refusal as its reason`);
+  await page.waitForSelector("#buy-go", { timeout: 10000 });
+  check(/30 days of unlimited subjects and tests/.test(await page.textContent(".modal.buy")), `${label}: it says what the money buys`);
+  check(/Pay ₹99/.test(await page.textContent("#buy-go")), `${label}: at the quoted price (${(await page.textContent("#buy-go")).trim()})`);
+  // Closed with its own ✕ — on a phone there is no Escape, and both dialogs
+  // listen for one on the document.
+  await page.click(".modal.buy .modal-x");
+  await page.waitForSelector(".modal.buy", { state: "detached", timeout: 5000 });
+  check((await page.locator(".ns").count()) === 1 && /Step 3 of 3/.test(await text()), `${label}: closing it lands back on the same step`);
+  check((await page.inputValue("#ns-extra")) === "Physiology", `${label}: with the subjects still typed`);
+  check((await page.locator("#ns-upgrade").count()) === 1, `${label}: and the door still open`);
+
+  // --- Paying by UPI: claimed, waiting on the admin ----------------------
+  await page.click("#ns-upgrade");
+  await page.waitForSelector("#buy-go", { timeout: 10000 });
+  await page.click("#buy-go");
+  await page.waitForSelector("#buy-done", { timeout: 10000 });
+  check(/upi:\/\/pay/.test(await page.getAttribute(".buy-upi", "href")), `${label}: a priced order hands over a UPI link`);
+  await page.click("#buy-done");
+  await page.waitForSelector(".buy-done", { timeout: 10000 });
+  check(/come back and press Create again/.test(await page.textContent(".modal.buy")), `${label}: after "I have paid" it says the plan switches on when confirmed, and what to do then`);
+  await page.click(".modal.buy .modal-x");
+  await page.waitForSelector(".modal.buy", { state: "detached", timeout: 5000 });
+  check((await page.inputValue("#ns-extra")) === "Physiology", `${label}: and New subject is still where it was`);
+
+  // --- A 100% code: settled on the spot, and Create pressed by itself ----
+  await page.evaluate(() => { window.__mode = "ok"; }); // the plan is on now
+  await page.click("#ns-upgrade");
+  await page.waitForSelector("#buy-code", { timeout: 10000 });
+  await page.fill("#buy-code", "friend100");
+  await page.click("#buy-apply");
+  await page.waitForFunction(() => /Pay ₹0/.test(document.querySelector("#buy-go")?.textContent || ""), null, { timeout: 10000 });
+  check(/₹99.*off/.test(await page.textContent(".buy-price")), `${label}: the code takes the whole price off`);
+  await page.click("#buy-go");
+  await page.waitForSelector(".buy-done", { timeout: 10000 });
+  check(/nothing to pay/i.test(await page.textContent(".modal.buy")), `${label}: a free order needs no UPI step and no confirmation`);
+  // Create was pressed again by the dialog itself: the Done step is on screen
+  // behind the plan dialog, with the subject made.
+  await page.waitForFunction(() => /subject created/.test(document.querySelector(".ns")?.textContent || ""), null, { timeout: 10000 });
+  check(/1 subject created/.test(await text()), `${label}: and the subject was created without another press (${(await text()).match(/\d+ subjects? created/)?.[0]})`);
+  check(/MBBS Year 1 Physiology/.test(await text()), `${label}: titled "MBBS Year 1 Physiology"`);
+  const creates = await page.evaluate(() => window.__calls.filter((c) => c.method === "POST" && c.url.startsWith("/api/subjects")).length);
+  check(creates === 2, `${label}: exactly two creates were sent — the refused one and the retry (${creates})`);
+  await page.click(".modal.buy .modal-x");
+  await page.waitForSelector(".modal.buy", { state: "detached", timeout: 5000 });
+  await page.click(".ns .modal-x");
+  await page.waitForSelector(".ns", { state: "detached", timeout: 5000 });
+}
 
 async function walk(page, label) {
   const text = async () => (await page.textContent(".ns")) || "";
@@ -293,6 +405,7 @@ async function walk(page, label) {
   check(titles.word === "Class 9", `classWord trims and says Class for a number: "${titles.word}"`);
 
   await walk(page, "desktop");
+  await doorWalk(page, "desktop");
   await page.close();
 
   // ---------- phone ----------
@@ -301,6 +414,7 @@ async function walk(page, label) {
   await phone.addInitScript(STUB);
   await phone.goto(`http://localhost:${PORT}/`);
   await walk(phone, "phone");
+  await doorWalk(phone, "phone");
   // On a phone the dialog is a card with a gutter, and nothing overflows.
   await phone.evaluate(() => window.openNewSubject());
   await phone.waitForSelector('[data-group="college"]');

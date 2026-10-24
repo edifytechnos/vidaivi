@@ -478,6 +478,8 @@ export interface Entitlements {
   plan: "new" | "trial" | "teacher" | "parent" | "lapsed" | "exempt" | "admin";
   chose: "" | "teacher" | "parent";
   trialEndsAt: string;
+  /** When the bought teacher plan runs out; empty when never bought. */
+  paidUntil?: string;
   limits: { subjects: number; tests: number; students: number; shelfTests: number };
   rules: Record<string, number>;
 }
@@ -555,6 +557,8 @@ export interface AccountRow {
   email: string;
   chose: string;
   trialEndsAt: string;
+  /** When the bought teacher plan runs out; empty when never bought. */
+  paidUntil?: string;
   paidSeats: number;
   exempt: boolean;
   createdAt: string;

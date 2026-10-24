@@ -819,7 +819,11 @@ async function assessCapChecks() {
   ent = await t.entitlements(admin);
   check(ent.exempt === true, "an admin is never gated by the plan they set");
 
-  // Chose teacher, trial expired yesterday → the paid plan's shape.
+  // Chose teacher, trial expired yesterday, nothing paid → STILL the trial's
+  // limits. The plan used to be granted free to any teacher whose trial had
+  // ended ("counted but never billed"), which made the ₹99/month named in
+  // every refusal a price for something that turned free by itself. J, 24 Oct:
+  // make it real. Only `paidUntil` in the future grants the plan now.
   await accounts.upsertEntity(
     {
       partitionKey: t.ACCOUNT_PK,
@@ -832,9 +836,35 @@ async function assessCapChecks() {
     "Merge"
   );
   ent = await t.entitlements(teacher);
-  check(ent.plan === "teacher", `a lapsed trial with a choice becomes the paid plan (${ent.plan})`);
+  check(ent.plan === "lapsed", `a lapsed trial that has not paid is lapsed, not the plan (${ent.plan})`);
+  check(ent.subjects === 1 && ent.tests === 3, "and keeps the trial's limits");
+
+  // A plan paid for → the plan's shape, even while the trial is still running.
+  await accounts.upsertEntity(
+    {
+      partitionKey: t.ACCOUNT_PK,
+      rowKey: teacher.id,
+      paidUntil: new Date(Date.now() + 10 * 86400000).toISOString(),
+    },
+    "Merge"
+  );
+  ent = await t.entitlements(teacher);
+  check(ent.plan === "teacher", `a paid account is on the plan (${ent.plan})`);
   check(ent.subjects === 0 && ent.tests === 0, "which lifts subjects and tests (0 means no limit)");
   check(ent.students === 2, `but keeps the free seats (${ent.students})`);
+  check(!!ent.paidUntil, "and says until when");
+
+  // A plan that ran out yesterday is no plan.
+  await accounts.upsertEntity(
+    { partitionKey: t.ACCOUNT_PK, rowKey: teacher.id, paidUntil: new Date(Date.now() - 86400000).toISOString() },
+    "Merge"
+  );
+  ent = await t.entitlements(teacher);
+  check(ent.plan === "lapsed" && ent.subjects === 1, `an expired plan falls back to the trial's limits (${ent.plan})`);
+  await accounts.upsertEntity(
+    { partitionKey: t.ACCOUNT_PK, rowKey: teacher.id, paidUntil: new Date(Date.now() + 10 * 86400000).toISOString() },
+    "Merge"
+  );
 
   // Paid seats add to the free ones.
   await accounts.upsertEntity(
@@ -2433,7 +2463,7 @@ async function purchaseChecks() {
     const mod = { exports: {} };
     const src = fs.readFileSync(CORE, "utf8")
       .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-      + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS };";
+      + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, entitlements, ACCOUNT_PK, planCache };";
     new Function("module", "exports", "require", "__fakeTable", src)(
       mod, mod.exports,
       (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -2661,6 +2691,101 @@ async function purchaseChecks() {
     theirs.data.orders.length === 0,
     `and nobody else's — the listing is their own partition (${theirs.data.orders.length})`
   );
+
+  // --- The teacher plan, bought from the refusal that names it -------------
+  //
+  // "The ₹99/month plan lifts this" was a price with no door: nothing sold the
+  // plan, and the plan was granted free to any teacher whose trial had ended.
+  // Now it is a third kind on the same seam, and the ONLY thing that grants
+  // it is a confirmed payment moving `paidUntil` forward.
+  const PLANNER = "teach-plan";
+  const pCookie = t.signSession("vgo", PLANNER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "p@example.com", n: "Planner" });
+  const planner = { kind: "google", id: PLANNER, role: "teacher", email: "p@example.com", name: "Planner" };
+  // A teacher whose trial ended last week: lapsed, on the trial's limits.
+  rows.set(key("accounts", t.ACCOUNT_PK, PLANNER), {
+    partitionKey: t.ACCOUNT_PK, rowKey: PLANNER, chose: "teacher",
+    trialEndsAt: new Date(Date.now() - 7 * 86400000).toISOString(), paidSeats: 0, exempt: false,
+  });
+  // Not the default price either, for the same reason as the shelf above.
+  rows.set(key("platform", "plan", "current"), {
+    partitionKey: "plan", rowKey: "current", subjectPaise: 55000, teacherMonthlyPaise: 12900, teacherPlanDays: 30,
+  });
+  // The rules are memoised (PLAN_TTL_MS); an admin's save drops the cache,
+  // and so must a test that writes the row behind its back.
+  t.planCache.drop("current");
+  let pe = await t.entitlements(planner);
+  check(pe.plan === "lapsed" && pe.subjects === 1, `before paying, a lapsed teacher is on the trial's limits (${pe.plan})`);
+
+  const planQuote = await call(pCookie, { action: "quote", kind: "plan" });
+  check(
+    planQuote.status === 200 && planQuote.data.kind === "plan" && planQuote.data.payablePaise === 12900,
+    `the plan is quoted at the admin's price, not the default (${planQuote.data.payablePaise})`
+  );
+  check(planQuote.data.planDays === 30 && /Teacher plan/.test(planQuote.data.shelfTitle), `and says what it is (${planQuote.data.shelfTitle})`);
+
+  const planOrder = await call(pCookie, { action: "start", kind: "plan" });
+  const planRef = planOrder.data.ref;
+  check(planOrder.status === 200 && !!planRef && !!planOrder.data.upi, "starting it opens an order with a UPI link");
+  check(planOrder.data.settled !== true, "a priced order is not settled on the spot");
+  pe = await t.entitlements(planner);
+  check(pe.plan === "lapsed", "an order that is merely started grants nothing");
+
+  await call(pCookie, { action: "claim", ref: planRef });
+  const pq = await call(aCookie, {}, "GET", { pending: "1" });
+  const planRow = pq.data.rows.find((r) => r.ref === planRef);
+  check(planRow && planRow.kind === "plan", `the claim reaches the admin's queue as a plan (${planRow && planRow.kind})`);
+
+  const before = Date.now();
+  const planPaid = await call(aCookie, { action: "confirm", sub: PLANNER, ref: planRef });
+  check(planPaid.status === 200, `the admin confirms it (${planPaid.status})`);
+  pe = await t.entitlements(planner);
+  check(pe.plan === "teacher" && pe.subjects === 0 && pe.tests === 0, `and the plan is on: unlimited subjects and tests (${pe.plan})`);
+  const until1 = Date.parse(pe.paidUntil);
+  const days1 = (until1 - before) / 86400000;
+  check(days1 > 29.9 && days1 < 30.1, `paidUntil is thirty days out (${days1.toFixed(2)} days)`);
+
+  // Paying again a week early ADDS thirty days to what is left, never from today.
+  const renew = await call(pCookie, { action: "start", kind: "plan" });
+  await call(pCookie, { action: "claim", ref: renew.data.ref });
+  await call(aCookie, { action: "confirm", sub: PLANNER, ref: renew.data.ref });
+  pe = await t.entitlements(planner);
+  const days2 = (Date.parse(pe.paidUntil) - until1) / 86400000;
+  check(days2 > 29.9 && days2 < 30.1, `a renewal extends from the current paidUntil, not from today (+${days2.toFixed(2)} days)`);
+  const twice = await call(aCookie, { action: "confirm", sub: PLANNER, ref: renew.data.ref });
+  check(twice.status === 409, `confirming the same plan payment twice is refused (${twice.status})`);
+
+  // --- A 100% code settles on the spot, with nothing to confirm ------------
+  //
+  // The quote already clamped at the price, so a code could make an order
+  // free — and then walked the buyer through a ₹0 UPI link and an admin's
+  // queue for it. A free order is settled the moment it starts: the code is
+  // redeemed, the plan is granted, nothing reaches the queue.
+  rows.set(key("coupons", "coupon", "FRIEND100"), {
+    partitionKey: "coupon", rowKey: "FRIEND100", percentOff: 100, active: true, maxRedemptions: 1, redeemed: 0,
+  });
+  const FREE = "teach-free";
+  const fCookie = t.signSession("vgo", FREE, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "f@example.com", n: "Free" });
+  const freeQuote = await call(fCookie, { action: "quote", kind: "plan", code: "friend100" });
+  check(freeQuote.data.payablePaise === 0 && freeQuote.data.discountPaise === 12900, `a 100% code quotes ₹0 (${freeQuote.data.payablePaise})`);
+  const freeOrder = await call(fCookie, { action: "start", kind: "plan", code: "friend100" });
+  check(freeOrder.status === 200 && freeOrder.data.settled === true, `starting a free order settles it at once (settled=${freeOrder.data.settled})`);
+  check(!freeOrder.data.upi, "and hands back no UPI link — there is nothing to pay");
+  const fe = await t.entitlements({ kind: "google", id: FREE, role: "teacher", email: "f@example.com", name: "Free" });
+  check(fe.plan === "teacher", `the plan is on without anybody confirming anything (${fe.plan})`);
+  const fq = await call(aCookie, {}, "GET", { pending: "1" });
+  check(!fq.data.rows.some((r) => r.ref === freeOrder.data.ref), "and nothing about it reaches the admin's queue");
+  const coupon = rows.get(key("coupons", "coupon", "FRIEND100"));
+  check(coupon.redeemed === 1, `the single-use code is spent (${coupon.redeemed} of 1)`);
+  const usedUp = await call(fCookie, { action: "quote", kind: "plan", code: "friend100" });
+  check(usedUp.data.payablePaise === 12900 && !!usedUp.data.couponMessage, "and a second use is the list price with a sentence");
+  const freeMine = await call(fCookie, {}, "GET", {});
+  check(
+    freeMine.data.orders.length === 1 && freeMine.data.orders[0].status === "paid",
+    `the free order is recorded as paid, method coupon (${freeMine.data.orders[0] && freeMine.data.orders[0].status})`
+  );
+  // An account that never chose a role and buys the teacher plan is a teacher.
+  const freeRow = rows.get(key("accounts", t.ACCOUNT_PK, FREE));
+  check(freeRow && freeRow.chose === "teacher", `buying the teacher plan with no role chosen stamps teacher (${freeRow && freeRow.chose})`);
 }
 
 /**

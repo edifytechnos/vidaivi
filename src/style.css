@@ -5049,6 +5049,27 @@ body.drawer-open {
   margin-bottom: 12px;
 }
 
+/* The door under a plan-limit refusal: the button that does what the sentence
+   names, with one line saying what happens after. Sits where the error sits,
+   above the step's own fields, so it reads as part of the refusal. */
+.ns-door {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0 0 14px;
+}
+
+.ns-door .hint {
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .ns-door .btn {
+    width: 100%;
+  }
+}
+
 .ns-made {
   margin-top: 14px;
   display: flex;

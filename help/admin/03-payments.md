@@ -25,14 +25,23 @@ the buyer's account.
 
 ## Discount codes
 
-Also on the Payments screen. A code carries a percentage off, a flat amount off,
-or both; the two **add**, and the total is clamped at the price, so a code can
-make something free and can never make money owed.
+Also on the Payments screen. **New code** comes with a code already made for
+you — share it as it is, or type your own; it is not case-sensitive. A code
+carries a percentage off (up to 100), a flat amount off, or both; the two
+**add**, and the total is clamped at the price, so a code can make something
+free and can never make money owed.
 
-Give each code a **maximum redemptions** — that is the real bound. A wrong code
-is answered exactly like no code, with the list price and a sentence, so guessing
-learns nothing beyond "not that one" and the worst case is a sale at a price you
-had already decided to give somebody.
+**A code for the whole price settles the purchase on the spot**: the buyer
+types it, the order is paid with nothing to confirm, and the subject, credits
+or plan are theirs at once. Nothing reaches your queue. That is how to give a
+teacher the plan for free.
+
+Set **Limit uses to** — that is the real bound. **1** is a code one person uses
+once; **0** means no limit. A code works for a ready-made subject, a credit
+pack and the teacher plan alike. A wrong code is answered exactly like no
+code, with the list price and a sentence, so guessing learns nothing beyond
+"not that one" and the worst case is a sale at a price you had already decided
+to give somebody.
 
 ## What is recorded
 

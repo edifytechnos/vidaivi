@@ -457,13 +457,21 @@ export function showPlans() {
     listEl.innerHTML = data.accounts
       .map((a) => {
         const left = a.trialEndsAt ? Math.ceil((Date.parse(a.trialEndsAt) - Date.now()) / 86400000) : 0;
+        // A bought plan is the one state that is not a trial: it says until
+        // when, because "paid" without a date is the question the next
+        // renewal asks.
+        const paidLeft = a.paidUntil ? Math.ceil((Date.parse(a.paidUntil) - Date.now()) / 86400000) : 0;
         const state = a.exempt
           ? `<span class="credit-low">Free forever</span>`
-          : a.trialEndsAt && left > 0
-            ? `on trial · ${left} day${left === 1 ? "" : "s"} left`
-            : a.chose
-              ? "trial ended"
-              : "not chosen yet";
+          : paidLeft > 0
+            ? `plan paid · ${paidLeft} day${paidLeft === 1 ? "" : "s"} left`
+            : a.trialEndsAt && left > 0
+              ? `on trial · ${left} day${left === 1 ? "" : "s"} left`
+              : a.chose
+                ? a.paidUntil
+                  ? "plan ended"
+                  : "trial ended"
+                : "not chosen yet";
         return `
         <div class="roster-row">
           <div class="roster-main">
@@ -1310,21 +1318,43 @@ export function showPayments(): void {
   void refresh();
 }
 
+/**
+ * A fresh code to hand out: VIDAI- and five characters from an alphabet with
+ * no 0/O or 1/I, because it is read off a WhatsApp message and typed on a
+ * phone. 32^5 is thirty-three million, so a guess learns nothing and the real
+ * bound stays "limit uses to", as the server's own note says. Pre-filled on
+ * a new code so creating one is one tap; anything typed over it wins.
+ */
+function newCouponCode(): string {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes = new Uint8Array(5);
+  crypto.getRandomValues(bytes);
+  return `VIDAI-${Array.from(bytes, (b) => alphabet[b % alphabet.length]).join("")}`;
+}
+
 /** One code, created or changed. Percentage and flat amount are both offered
- *  because Indian pricing uses both, and they add rather than compete. */
+ *  because Indian pricing uses both, and they add rather than compete. A
+ *  100% code makes the order free, and a free order settles on the spot. */
 function openCoupon(existing: Coupon | undefined, done: () => void): void {
   openModal({
     title: existing ? `Code ${existing.code}` : "New discount code",
-    description: "A code is typed on a phone, so it is not case-sensitive.",
+    description: existing
+      ? "A code is typed on a phone, so it is not case-sensitive."
+      : "A code is made for you — share it as it is, or type your own. It is not case-sensitive. 100% off makes the purchase free, with nothing to confirm.",
     fields: [
       {
         name: "code",
         label: "Code",
         required: true,
-        value: existing?.code ?? "",
-        hint: existing ? "Changing this makes a second code, it does not rename this one." : "",
+        value: existing?.code ?? newCouponCode(),
+        hint: existing ? "Changing this makes a second code, it does not rename this one." : "Generated — change it if you like.",
       },
-      { name: "percentOff", label: "Per cent off", value: String(existing?.percentOff ?? 0) },
+      {
+        name: "percentOff",
+        label: "Per cent off",
+        value: String(existing?.percentOff ?? 0),
+        hint: "Up to 100. At 100 the purchase is free.",
+      },
       {
         name: "amountOff",
         label: "Or a flat amount off (₹)",
@@ -1333,8 +1363,8 @@ function openCoupon(existing: Coupon | undefined, done: () => void): void {
       {
         name: "maxRedemptions",
         label: "Limit uses to",
-        value: String(existing?.maxRedemptions ?? 0),
-        hint: "0 means no limit.",
+        value: String(existing?.maxRedemptions ?? 1),
+        hint: "1 for a code one person uses once; 0 means no limit.",
       },
       { name: "expiresAt", label: "Expires on", value: existing?.expiresAt ?? "", hint: "YYYY-MM-DD, or leave empty." },
       { name: "note", label: "What it is for", value: existing?.note ?? "" },

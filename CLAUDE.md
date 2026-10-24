@@ -2060,6 +2060,10 @@ roster of real children between two kinds of account. A failed entitlements
 call **carries on rather than stranding** somebody on a chooser they cannot
 complete.
 
+**The teacher plan is granted by `paidUntil` alone** — see *The teacher plan
+is bought from the refusal* under Payments. A trial that ends is a lapsed
+account on the trial's limits, not a free plan.
+
 **The choice decides the app; the allowlist decides approval.** These are two
 questions and conflating them is what made picking "I teach a class" land
 somebody in the parent's app. `chose` was written to the accounts row and
@@ -2230,11 +2234,12 @@ accounts list with **Free forever**, **paid seats** and **extend trial** as
 manual levers. Those levers are what make the payment stub honest — a real
 teacher can be run end to end today, with money arriving later.
 
-**The one-off ₹499 subject can now be bought** (below). The teacher's monthly
-fee and the per-seat price are still counted, priced and shown but never
-billed: a subscription is renewal, expiry and what happens to a roster when it
-lapses, which is materially more than a one-off unlock and does not belong in
-the same slice.
+**The one-off ₹499 subject can now be bought** (below), **and so can the
+teacher plan** — a month at a time, from the refusal that names it (*The
+teacher plan is bought from the refusal*, below). The per-seat price is still
+counted, priced and shown but never billed. Automatic renewal is not built: a
+teacher buys the next month themselves, and a payment made early adds to what
+is left rather than starting over.
 
 ## Paying for a ready-made subject (`/api/purchase`, UPI)
 
@@ -2335,13 +2340,80 @@ is a price nobody can explain six months later.
 - **Admin → Payments** (`showPayments`, rail item beside Plans & pricing):
   the waiting queue with Confirm / Not received, and the discount codes.
 
+### The teacher plan is bought from the refusal (`kind: "plan"`)
+
+*"You have used 1 of 1 subjects on your current plan. The ₹99/month plan lifts
+this."* — and nothing sold the plan. Worse, nothing needed to: `entitlements`
+granted the teacher plan to any teacher whose trial had ended, "counted but
+never billed", so the price in every refusal was for something that turned
+free by itself in thirty days. **J, 24 Oct: make it real, and put a door on
+it.** Both, in one slice:
+
+- **The plan is granted by `paidUntil` and nothing else.** `entitlements`
+  returns the teacher plan while the account row's `paidUntil` is in the
+  future; before it, after it, and for a trial that has ended, a teacher is on
+  the trial's limits (`plan: "lapsed"`). Pre-existing accounts were stamped
+  exempt by `exemptLegacyAccounts`, so the pilot teacher and everyone promised
+  free are untouched. `e2e/helpers.cjs` asserts a lapsed unpaid teacher stays
+  capped, a paid one is not, and an expired plan falls back.
+- **A third kind on the same seam.** `POST /api/purchase {kind:"plan"}` quotes
+  `teacherMonthlyPaise` for `teacherPlanDays` (both Plans & pricing rows, so
+  the price and the length change without a deploy), opens the same order
+  row, joins the same claimed queue, and `settlePurchase` branches to
+  **`grantPlanTo`**: `paidUntil` moves forward by the days on the order
+  **from the later of now and the current `paidUntil`** — a renewal paid a
+  week early keeps the week — ETag'd with a bounded retry like every write
+  that is money. An account that never chose a role is stamped a teacher by
+  buying the teacher plan, or the plan would be bought and never granted. The
+  admin's accounts list reads *plan paid · N days left* / *plan ended*.
+- **The 402 carries the door.** `overLimit` takes a `payment` and the two
+  create gates pass `planDoor(ent)` — `{kind:"plan", planPaise, planDays}` —
+  for a teacher's limit and never for a parent's, whose sentence says the plan
+  does not lift it. `planDoorOf` in `src/api.ts` reads it off `mutateSubject`
+  and `mutateTest`, exactly as `adoptTests` reads the shelf.
+- **The screen offers what the sentence names.** New subject renders the
+  refusal and, beneath it, **Get the ₹99/month plan** (`#ns-upgrade`,
+  `.ns-door`) with one line saying what happens after; the editor's blank
+  test and Seyari's *Create test with this* open the dialog straight away with
+  the refusal as its `reason` line. `openBuyPlan` in `src/screens/buy.ts` is
+  the same dialog as the shelf and the credits with a `kind`. **It opens on
+  top of the dialog that refused, not instead of it**, so closing it lands
+  back on the same step with the course, the year and the subjects still
+  typed — Create is one press away once the payment is confirmed. The
+  "Thank you" screen says so for a plan.
+- **A 100% code settles on the spot.** The quote already clamped at the price,
+  so a code could make an order free — and then walked the buyer through a ₹0
+  UPI link and the admin's queue for it. `startOrSettle` in the purchase
+  handler settles a free order as it starts (`settlePurchase` with method
+  `coupon`: the code is redeemed, the order is recorded as paid, nothing
+  reaches the queue), the dialog says *Done — nothing to pay*, and
+  `onSettled` presses Create again by itself, so the subject is simply made.
+  This is how a teacher is given the plan for free, and it holds for the
+  shelf and the credit pack too.
+- **New code comes with a code made** (`newCouponCode`: `VIDAI-` and five
+  characters from an alphabet with no 0/O or 1/I, because it is read off
+  WhatsApp and typed on a phone), *Limit uses to* defaults to **1**, and the
+  form says 100 makes the purchase free. The server side of codes is
+  unchanged.
+- `node e2e/newsubject-offline.cjs` walks the door against a stubbed server:
+  the refusal with the button beneath it, the dialog on top with the reason,
+  closing it back to the same step with the subjects still typed, the UPI
+  path to *I have paid*, and a 100% code that settles and creates the subject
+  without another press. `e2e/helpers.cjs` drives the plan through the real
+  purchase handler — quote at the admin's price, start, claim, confirm,
+  thirty days, a renewal extending from `paidUntil`, confirming twice refused,
+  a free order settled with no UPI link and nothing in the queue, the
+  single-use code spent, the role stamped.
+
 ### Not done
 
 Razorpay itself — the order-create endpoint, Checkout on the client and the
-signature-verified webhook — plus the subscription side (the teacher's monthly
-fee and per-seat price). Checkout also needs its script added to a
-`script-src 'self'` that currently has no external script at all, which is a
-CSP change to make deliberately and test, not to discover in front of a class.
+signature-verified webhook — plus automatic renewal of the plan and the
+per-seat price. Checkout also needs its script added to a `script-src
+'self'` that currently has no external script at all, which is a CSP change
+to make deliberately and test, not to discover in front of a class. The plan
+today is a month bought by hand from the refusal, confirmed by the admin;
+instant and automatic is the Razorpay slice.
 
 ## A parent marks their child's paper in one click, and pays in credits
 

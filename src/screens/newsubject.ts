@@ -39,8 +39,8 @@ import {
   type Subject,
 } from "../api";
 import { escapeHtml, formatText, renderMath } from "../dom";
-import { paymentsAvailable } from "../payments";
-import { openBuyShelf } from "./buy";
+import { money, paymentsAvailable, type PlanDoor } from "../payments";
+import { openBuyPlan, openBuyShelf } from "./buy";
 import { noteCopied } from "./subjects";
 import {
   BOARD_GROUPS,
@@ -134,6 +134,13 @@ export function openNewSubject(onDone?: () => void): void {
   let peekId = "";
   let busy = false;
   let error = "";
+  /**
+   * The door on a plan-limit refusal. "You have used 1 of 1 subjects … the
+   * ₹99/month plan lifts this" was a price with no way to pay it; the server
+   * now carries the plan structurally on that 402, and this holds it so the
+   * sentence can be followed by the button that does the thing it names.
+   */
+  let door: PlanDoor | null = null;
   let made: Made[] = [];
   let firstSubjectId = "";
 
@@ -564,6 +571,12 @@ export function openNewSubject(onDone?: () => void): void {
 
     body.innerHTML =
       (error ? `<p class="login-error ns-error">${escapeHtml(error)}</p>` : "") +
+      (error && door && paymentsAvailable()
+        ? `<div class="ns-door">
+             <button type="button" class="btn btn-primary" id="ns-upgrade">Get the ${escapeHtml(money(door.planPaise))}/month plan</button>
+             <span class="hint">Pay by UPI; once it is confirmed, press Create again — everything you typed stays.</span>
+           </div>`
+        : "") +
       (step === "board"
         ? boardStep()
         : step === "class"
@@ -631,6 +644,7 @@ export function openNewSubject(onDone?: () => void): void {
   async function create(): Promise<void> {
     busy = true;
     error = "";
+    door = null;
     render();
 
     const all = papers();
@@ -648,6 +662,7 @@ export function openNewSubject(onDone?: () => void): void {
       const res = await mutateSubject("create", { board: b, klass: k, subject: p.name });
       if (!res.ok) {
         error = `${p.name}: ${res.message}`;
+        door = res.payment ?? null;
         break;
       }
       const into = res.subject?.id ?? "";
@@ -701,6 +716,7 @@ export function openNewSubject(onDone?: () => void): void {
 
   function next(): void {
     error = "";
+    door = null;
     if (step === "board") {
       step = "class";
       return render();
@@ -728,6 +744,7 @@ export function openNewSubject(onDone?: () => void): void {
 
   function back(): void {
     error = "";
+    door = null;
     step = step === "class" ? "board" : step === "subjects" ? "class" : "subjects";
     render();
   }
@@ -736,6 +753,21 @@ export function openNewSubject(onDone?: () => void): void {
 
   body.addEventListener("click", (e) => {
     const t = e.target as HTMLElement;
+    if (t.closest("#ns-upgrade")) {
+      // On top of this dialog, not instead of it: closing the plan dialog
+      // lands back here with the course, the year and the subjects intact,
+      // and Create is one press away once the payment is confirmed. A 100%
+      // code settles on the spot, so that case simply presses it again.
+      openBuyPlan({
+        reason: error,
+        onSettled: () => {
+          error = "";
+          door = null;
+          void create();
+        },
+      });
+      return;
+    }
     const g = t.closest<HTMLElement>("[data-group]");
     if (g) {
       const found = BOARD_GROUPS.find((x) => x.id === g.dataset.group);
