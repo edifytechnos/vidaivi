@@ -1478,7 +1478,9 @@ controls; `node e2e/dialog.cjs` the app's own confirm and notice. `node e2e/tour
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the
 live database, so the one real create is left to `regression.cjs` and its
-probe subject.
+probe subject. `node e2e/newsubject-offline.cjs` walks the same flow — the
+College & other path in full, the school path beside it — against a stubbed
+`fetch`, with no session and no network, so it runs anywhere.
 `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
 in-process cache, `inBatches`) **and drives the second factor through the real
@@ -3204,18 +3206,71 @@ What it replaced was one flat column of **eleven shelf tiles** — CBSE 10, CBSE
 12, IGCSE, A Level and NEET in one ungrouped, unsearchable list — that asked
 "what do you teach?" and could only be answered by scrolling.
 
-1. **Which board?** Four groups — National, International, **Entrance exam**,
-   State Board. Picking a group reveals its boards as pills *beneath it*, so
-   the board resolves in **one** step rather than two.
+1. **Which board?** Five groups — National, International, **Entrance exam**,
+   State Board, **College & other**. Picking a group reveals its boards as
+   pills *beneath it*, so the board resolves in **one** step rather than two.
 2. **Which class?** Tiles for 10 and 12, each saying whether anything
    ready-made exists, plus **Another class** which reveals a text box.
 3. **Which subjects?** **Multi-select** — each ticked subject becomes its own
-   subject card — plus "Not listed? Add your own".
+   subject card — plus "Not listed? Add your own", which takes **several,
+   comma-separated**: "Hindi, Sanskrit" is two subjects, not one with a comma
+   in its name (`extraNames`; deduplicated, never a name already ticked).
 4. **Which ready-made tests?** A collapsible section per subject, everything
    ticked, a live total across subjects, and **Peek** at the first question.
 
 Then a **Done** step listing what was made, all Draft, before the editor opens
 on the first.
+
+### College & other is a `board` the teacher types, and the class is optional
+
+A medical or engineering course had nowhere to live either. The only way in
+was a school board plus "Another class", which named one **"Tamil Nadu Class
+MBBS I Anatomy"** — the wrong board and the wrong word. The fifth group
+(`free: true` in `src/taxonomy.ts`) has **no board pills on purpose**: there is
+no list of every course in every college, and a list of a few would be a
+promise about the rest. The teacher **types the course** and it is stored as
+the `board` — "MBBS", "B.E. Mechanical", "B.Sc Physics", or just a name for a
+freeform test bank — with `COURSES` as suggestions beneath the box through the
+app's own combobox, never a closed set. The same three fields; **no storage
+change**, so it is safe to exercise on QA before it merges.
+
+- **Step 2 asks "Which year or semester?"** — tiles **Year 1–4**
+  (`COLLEGE_YEARS`), **Semester or something else** (typed), and **No year or
+  semester**. That last one is an answer, not an absence: a freeform test bank
+  has no year, and the subjects stand on their own. It is a separate `noClass`
+  flag rather than an empty `klass`, because an empty class is also what
+  "nothing picked yet" looks like and Continue must stay disabled for that.
+- **Step 3 is the box.** A course has no ready-made list to tick, so the
+  school-subject tiles and the "nothing ready-made" alert are gone and the
+  comma-separated box carries the step's label: *Anatomy, Physiology,
+  Biochemistry* is three subjects in one go.
+- **Three steps, not four** (`labelFor`): nothing ready-made exists for a
+  course today, so the ready-made step never comes. If a college shelf is ever
+  seeded, `papers()` finds it by board and class exactly as for a school board
+  and step 4 returns — make the count 4 then.
+- **Changing the course forgets the year and the subjects** typed under the
+  old name, the same rule as picking a different board pill: a different
+  course is a different subject. A click inside the course box is the caret
+  being placed and falls through to nothing.
+- **The title rule changed, on the value.** `subjectTitle` (server; `classWord`
+  in `src/taxonomy.ts` is the mirror — change both or neither) now says
+  "Class" **only before a plain number**: "CBSE Class 12 Maths" as before,
+  "JEE Main 2027 Physics" as before, and "MBBS Year 1 Anatomy", "B.E.
+  Mechanical Semester 3 Thermodynamics", "General Aptitude" as typed. It used
+  to prepend "Class" to everything that was not a four-digit year. Titles are
+  stamped on write, so existing rows keep theirs; `update` recomputes.
+- **`POST /api/subjects` create requires a board and a subject; the class is
+  optional** (it was "all three required"). The client still insists on a
+  class for a school board and a year for an exam — a matter of a sensible
+  name, not of anything that gate protects.
+- `node e2e/newsubject-offline.cjs` walks the whole college path in a real
+  browser at 1280px and 390px against a stubbed `fetch` — no network, no
+  session, and it asserts that **no POST ever leaves the page** — plus the
+  school path beside it (four steps, pills, "Class 10" in the crumb) and the
+  title rule on the client mirror. The flow's import chain reaches `data.ts`,
+  whose `import.meta.glob` is Vite's, so the harness defines it as an empty
+  function. `e2e/helpers.cjs` holds the same title cases against the server
+  and drives subjects create with an empty class through the real handler.
 
 ### An entrance exam is a `board`, and it asks for a year
 

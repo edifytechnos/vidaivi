@@ -3352,20 +3352,27 @@ handlers.tests = async (context, req) => {
 // on the tests table above for why the constant partition key had to go.
 
 // An entrance exam stores its attempt YEAR where a school board stores its
-// class, because the year is what an exam's batches are told apart by. So the
-// middle of the title is rendered from the VALUE, not from a list of exam
-// boards: a four-digit year reads bare ("JEE Main 2027 Physics") and anything
-// else reads as a class ("CBSE Class 12 Maths").
+// class, and a college course (College & other) stores a year or semester
+// there, or nothing at all. So the middle of the title is rendered from the
+// VALUE, not from a list: "Class" is said only before a PLAIN NUMBER
+// ("CBSE Class 12 Maths"), and anything else reads as it was typed
+// ("JEE Main 2027 Physics", "MBBS Year 1 Anatomy", "B.E. Semester 3
+// Thermodynamics"). It used to prepend "Class" to everything that was not a
+// four-digit year, which named a medical course "Tamil Nadu Class MBBS I".
 //
 // Deciding it on the value is what keeps this honest. A list of exam boards
-// here would be a second copy of the one in src/taxonomy.ts, and the first
-// time somebody added an exam to one and not the other a real subject would
-// come out titled "JEE Advanced Class 2027 Physics".
-const isYearLike = (k) => /^(19|20)\d{2}$/.test(String(k || "").trim());
+// or courses here would be a second copy of the one in src/taxonomy.ts, and
+// the first time somebody added one and not the other a real subject would
+// come out titled "JEE Advanced Class 2027 Physics". `classWord` in
+// src/taxonomy.ts is the client mirror; change both or neither.
+const classWord = (k) => {
+  const v = String(k || "").trim();
+  if (!v) return "";
+  return /^\d{1,2}$/.test(v) ? `Class ${v}` : v;
+};
 
 function subjectTitle(board, klass, subject) {
-  const middle = !klass ? "" : isYearLike(klass) ? klass : `Class ${klass}`;
-  return [board, middle, subject].filter(Boolean).join(" ");
+  return [board, classWord(klass), subject].filter(Boolean).join(" ");
 }
 
 function subjectOut(e) {
@@ -3448,8 +3455,14 @@ handlers.subjects = async (context, req) => {
     const subject = String(body.subject || "").trim().slice(0, 40);
 
     if (action === "create") {
-      if (!board || !klass || !subject) {
-        return json(context, 400, { error: "Board, class and subject are all required" });
+      // The class is optional: a college course under College & other may be
+      // a freeform test bank with no year or semester, and its title reads
+      // perfectly well without one ("General Aptitude"). The client still
+      // insists on a class for a school board and a year for an exam, which
+      // is a matter of a sensible name rather than of anything this gate
+      // protects.
+      if (!board || !subject) {
+        return json(context, 400, { error: "Board and subject are required" });
       }
       // The gate runs before the row is built, and fails closed: a limit that
       // cannot be read must not become an unlimited one.

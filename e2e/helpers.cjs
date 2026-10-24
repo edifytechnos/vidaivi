@@ -34,7 +34,7 @@ new Function(
     " renewIfStale, csrfRefused, SESSION_COOKIE, STUDENT_TOKEN_TTL_MS," +
     " totpCode, totpMatchStep, base32Encode, base32Decode, newTotpSecret," +
     " newRecoveryCodes, currentStep, TOTP_STEP_S, handlers, hashPassword," +
-    " validateQuestions };"
+    " validateQuestions, subjectTitle, classWord };"
 )(mod, mod.exports, (id) =>
   id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)
 );
@@ -73,6 +73,27 @@ check(
   "storedCounts reads the stamped counts back"
 );
 check(h.storedCounts({ title: "row written before this" }) === null, "storedCounts is null for a legacy row");
+
+// --- A subject's title says "Class" only before a plain number ---
+//
+// The middle of the title is decided on the VALUE, never on a list: a school
+// class is a number, an exam's attempt year is four digits, and a college
+// course (College & other) stores a year, a semester or nothing at all in the
+// same field. It used to prepend "Class" to everything that was not a year,
+// which named a medical course "Tamil Nadu Class MBBS I". `classWord` in
+// src/taxonomy.ts is the client mirror; e2e/newsubject-offline.cjs holds the
+// same cases against it, so the two cannot drift apart unnoticed.
+check(h.subjectTitle("CBSE", "12", "Maths") === "CBSE Class 12 Maths", "a plain number is a class");
+check(h.subjectTitle("CBSE", " 9 ", "Maths") === "CBSE Class 9 Maths", "trimmed, and still a class");
+check(h.subjectTitle("JEE Main", "2027", "Physics") === "JEE Main 2027 Physics", "a four-digit year is bare");
+check(h.subjectTitle("MBBS", "Year 1", "Anatomy") === "MBBS Year 1 Anatomy", "a college year reads as typed");
+check(
+  h.subjectTitle("B.E. Mechanical", "Semester 3", "Thermodynamics") === "B.E. Mechanical Semester 3 Thermodynamics",
+  "so does a semester"
+);
+check(h.subjectTitle("General", "", "Aptitude") === "General Aptitude", "no class at all is board and subject");
+check(h.subjectTitle("Tamil Nadu", "MBBS I", "Anatomy") === "Tamil Nadu MBBS I Anatomy", 'and "Class MBBS I" is gone');
+check(h.classWord(undefined) === "" && h.classWord(null) === "", "classWord is empty for nothing");
 
 // --- A short answer may be a symbol, and must survive the round trip ---
 // The type is still `numeric`, so the 573 library questions written before
@@ -3334,6 +3355,33 @@ async function cappedCreateChecks() {
   const over = await create();
   check(over.status === 402, `and it is refused with a clean 402 at the cap (got ${over.status})`);
   check(/tests on your current plan/.test(over.body.error || ""), "the refusal names the limit rather than failing opaquely");
+
+  // --- A subject needs a board and a name; the class is optional ---
+  //
+  // College & other may be a freeform test bank with no year or semester,
+  // and its title reads perfectly well without one. The client still insists
+  // on a class for a school board. Driven through the real subjects handler
+  // as the same capped account, which also exercises ITS entitlement gate —
+  // the one place besides tests create that calls the module `ownedCount`.
+  const subject = async (body) => {
+    const c = { res: null };
+    await t.handlers.subjects(c, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+      body: { action: "create", ...body },
+    });
+    return { status: c.res && c.res.status, body: (c.res && c.res.body) || {} };
+  };
+  const bank = await subject({ board: "General", klass: "", subject: "Aptitude" });
+  check(bank.status === 201, `a subject with no class is created (got ${bank.status} ${bank.body.error || ""})`);
+  check(
+    bank.body.subject && bank.body.subject.title === "General Aptitude",
+    `and is titled from board and subject alone ("${bank.body.subject && bank.body.subject.title}")`
+  );
+  const nameless = await subject({ board: "General", klass: "Year 1", subject: "" });
+  check(nameless.status === 400, `but no subject name is still refused (got ${nameless.status})`);
+  const boardless = await subject({ board: "", klass: "Year 1", subject: "Anatomy" });
+  check(boardless.status === 400, `and so is no board (got ${boardless.status})`);
 }
 
 // --- Bounded parallelism keeps input order ---

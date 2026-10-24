@@ -19,6 +19,14 @@
 // asks for a class it asks for the attempt year, so a 2027 batch and a 2028
 // batch are two subjects with two rosters rather than one that quietly
 // accumulates both.
+//
+// **College & other is the fifth group, and the first with no boards.** A
+// medical or engineering course had nowhere to live either: the only way in
+// was a school board plus "Another class", which named one "Tamil Nadu Class
+// MBBS I". Here the teacher TYPES the course and it is stored as the board,
+// the class step asks for a year or semester (or nothing — a freeform test
+// bank has no year), and the subjects are typed, comma-separated. Three steps,
+// since nothing ready-made exists for a course; the same three fields.
 
 import { track } from "../analytics";
 import {
@@ -37,6 +45,9 @@ import { noteCopied } from "./subjects";
 import {
   BOARD_GROUPS,
   CLASSES,
+  COLLEGE_YEARS,
+  COURSES,
+  classWord,
   examFor,
   examYears,
   isExamBoard,
@@ -107,6 +118,13 @@ export function openNewSubject(onDone?: () => void): void {
   let board = "";
   let klass = "";
   let otherClass = false;
+  /**
+   * College & other only: the teacher said the course has no year or
+   * semester. A separate flag rather than an empty `klass`, because an
+   * empty class is also what "nothing chosen yet" looks like, and Continue
+   * must stay disabled for that and enabled for this.
+   */
+  let noClass = false;
   /** Subjects ticked on step 3, by name. Null until the teacher touches it. */
   let picked: Set<string> | null = null;
   let extra = "";
@@ -168,8 +186,10 @@ export function openNewSubject(onDone?: () => void): void {
     return out;
   }
 
-  const klassValue = () => (otherClass ? klass.trim() : klass);
+  const klassValue = () => (noClass ? "" : otherClass ? klass.trim() : klass);
   const isExam = () => !!group?.exam;
+  /** College & other: the course is typed, the class is a year or nothing. */
+  const isFree = () => !!group?.free;
 
   /**
    * Everything answered ABOUT a board and class, forgotten when either moves.
@@ -202,14 +222,35 @@ export function openNewSubject(onDone?: () => void): void {
     return withTests().flatMap((p) => p.tests.filter((t) => !dropped.has(t.id)).map((t) => t.id));
   }
 
-  function extraName(): string {
-    return extra.trim();
+  /**
+   * The subjects typed into "Add your own", one per comma.
+   *
+   * A college teacher setting up a year types "Anatomy, Physiology,
+   * Biochemistry" and expects three subjects, not one subject with a comma in
+   * its name — which is exactly what the single box used to make. The split
+   * applies under every board, so "Hindi, Sanskrit" under CBSE is two as well.
+   * Deduplicated case-insensitively, and never a name already ticked above.
+   */
+  function extraNames(): string[] {
+    const seen = new Set(chosen().map((n) => n.toLowerCase()));
+    const out: string[] = [];
+    for (const raw of extra.split(",")) {
+      const name = raw.trim().slice(0, 40);
+      const key = name.toLowerCase();
+      if (!name || seen.has(key)) continue;
+      seen.add(key);
+      out.push(name);
+    }
+    return out;
   }
 
   // ------------------------------------------------------------ the chrome
 
   function labelFor(): string {
-    const total = isExam() ? 4 : 4;
+    // College & other has three steps: nothing ready-made exists for a
+    // course today, so the ready-made step never comes. If a college shelf is
+    // ever seeded, `papers()` will find it and step 4 returns — make this 4.
+    const total = isFree() ? 3 : 4;
     const n = { board: 1, class: 2, subjects: 3, tests: 4, done: 0 }[step];
     return n ? `Step ${n} of ${total}` : "";
   }
@@ -217,8 +258,7 @@ export function openNewSubject(onDone?: () => void): void {
   function crumbs(): string {
     const parts: string[] = [];
     if (board) parts.push(board);
-    if (klassValue() && step !== "class")
-      parts.push(isExam() ? klassValue() : `Class ${klassValue()}`);
+    if (klassValue() && step !== "class") parts.push(classWord(klassValue()));
     return step === "board" ? "" : parts.join("  ›  ");
   }
 
@@ -231,7 +271,7 @@ export function openNewSubject(onDone?: () => void): void {
   };
 
   const BLURBS: Record<Step, string> = {
-    board: "A subject is what you teach. Start with the board — the class and the subjects follow from it.",
+    board: "A subject is what you teach. Start with the board — or the course, for a college — and the class and the subjects follow from it.",
     class: "Class 10 and Class 12 have ready-made tests today. Any other class is yours to write.",
     subjects: "Each subject you pick becomes its own subject card, with its own tests and its own students.",
     tests: "These arrive as your own drafts. Edit anything, delete what you do not need, and add your own later.",
@@ -242,12 +282,17 @@ export function openNewSubject(onDone?: () => void): void {
     if (step === "done")
       return `${made.length} subject${made.length === 1 ? "" : "s"} created`;
     if (step === "class" && isExam()) return "Which attempt?";
+    if (step === "class" && isFree()) return "Which year or semester?";
     return HEADINGS[step];
   }
 
   function blurb(): string {
     if (step === "class" && isExam())
       return "An exam is not a class. The year you are preparing them for keeps each batch separate — a 2027 group and a 2028 group are two subjects, with their own tests and their own results.";
+    if (step === "class" && isFree())
+      return "A year or semester keeps each batch separate — Year 1 and Year 2 are two subjects, with their own students and their own results. A test bank with no year can skip it.";
+    if (step === "subjects" && isFree())
+      return "Name the subjects you teach, separated by commas. Each becomes its own subject card, created empty — write tests in it, or ask Seyari AI to.";
     return BLURBS[step];
   }
 
@@ -265,14 +310,24 @@ export function openNewSubject(onDone?: () => void): void {
               <span class="ns-tile-hint">${escapeHtml(g.hint)}</span>
             </button>
             ${
-              on
-                ? `<div class="ns-pills">${g.boards
-                    .map(
-                      (b) =>
-                        `<button class="ns-pill" type="button" data-board="${escapeHtml(b)}" aria-pressed="${board === b}">${escapeHtml(b)}</button>`
-                    )
-                    .join("")}</div>`
-                : ""
+              on && g.free
+                ? // No pills: the course is typed, and the suggestions beneath
+                  // the box are the app's own combobox over a datalist — a
+                  // tap for the common ones, never a closed set.
+                  `<div class="field ns-field">
+                     <label class="label" for="ns-course">What course or programme? <span class="label-req" aria-hidden="true">*</span></label>
+                     <input class="modal-input" id="ns-course" list="ns-courses" placeholder="e.g. MBBS, B.E. Mechanical, B.Sc Physics" value="${escapeHtml(board)}" aria-describedby="ns-course-h" />
+                     <datalist id="ns-courses">${COURSES.map((c) => `<option value="${escapeHtml(c)}"></option>`).join("")}</datalist>
+                     <span class="hint" id="ns-course-h">Any course, department or institute — or just a name for a freeform test bank.</span>
+                   </div>`
+                : on
+                  ? `<div class="ns-pills">${g.boards
+                      .map(
+                        (b) =>
+                          `<button class="ns-pill" type="button" data-board="${escapeHtml(b)}" aria-pressed="${board === b}">${escapeHtml(b)}</button>`
+                      )
+                      .join("")}</div>`
+                  : ""
             }
           </div>`;
         }).join("")}
@@ -280,6 +335,35 @@ export function openNewSubject(onDone?: () => void): void {
   }
 
   function classStep(): string {
+    if (isFree()) {
+      return `
+        <div class="ns-tiles">
+          ${COLLEGE_YEARS.map(
+            (y, i) => `
+            <button class="ns-tile" type="button" data-klass="${escapeHtml(y)}" aria-pressed="${!otherClass && !noClass && klass === y}">
+              <span class="ns-tile-name">${escapeHtml(y)}</span>
+              <span class="ns-tile-hint">${["First", "Second", "Third", "Fourth"][i]} year of ${escapeHtml(board.trim() || "the course")}</span>
+            </button>`
+          ).join("")}
+          <button class="ns-tile ns-tile-wide" type="button" data-other="1" aria-pressed="${otherClass}">
+            <span class="ns-tile-name">Semester or something else</span>
+            <span class="ns-tile-hint">Type it — Semester 3, Final year, Batch A</span>
+          </button>
+          <button class="ns-tile ns-tile-wide" type="button" data-noclass="1" aria-pressed="${noClass}">
+            <span class="ns-tile-name">No year or semester</span>
+            <span class="ns-tile-hint">A freeform test bank — the subjects stand on their own</span>
+          </button>
+        </div>
+        ${
+          otherClass
+            ? `<div class="field ns-field">
+                 <label class="label" for="ns-kc">Which year or semester? <span class="label-req" aria-hidden="true">*</span></label>
+                 <input class="modal-input" id="ns-kc" placeholder="e.g. Semester 3" value="${escapeHtml(klass)}" />
+               </div>`
+            : ""
+        }`;
+    }
+
     if (isExam()) {
       const years = examYears();
       return `
@@ -355,19 +439,26 @@ export function openNewSubject(onDone?: () => void): void {
       })
       .join("");
 
+    // A course has no ready-made list to tick, so the box IS the step: it
+    // carries the label, and the "nothing ready-made" notice would only say
+    // what the blurb already has.
+    const free = isFree();
+    const where = [board || "this board", classWord(klassValue())].filter(Boolean).join(" ");
     return `
       ${
         all.length
           ? `<p class="ns-grp">Pick every subject you teach — each becomes its own subject</p>
              <div class="ns-scroll ns-scroll-tight">${rows}</div>`
-          : `<div class="ns-alert" role="status"><b>Nothing ready-made here yet.</b>
-               No ready-made tests exist for ${escapeHtml(board || "this board")} ${escapeHtml(klassValue() ? (isExam() ? klassValue() : `Class ${klassValue()}`) : "")} yet.
+          : free
+            ? ""
+            : `<div class="ns-alert" role="status"><b>Nothing ready-made here yet.</b>
+               No ready-made tests exist for ${escapeHtml(where)} yet.
                Name the subject and it is created empty — you can write tests in it straight away.</div>`
       }
       <div class="field ns-field">
-        <label class="label" for="ns-extra">Not listed? Add your own</label>
-        <input class="modal-input" id="ns-extra" placeholder="e.g. Computer Science" value="${escapeHtml(extra)}" aria-describedby="ns-extra-h" />
-        <span class="hint" id="ns-extra-h">Created empty, with no ready-made tests.</span>
+        <label class="label" for="ns-extra">${free ? `Which subjects? <span class="label-req" aria-hidden="true">*</span>` : "Not listed? Add your own"}</label>
+        <input class="modal-input" id="ns-extra" placeholder="${free ? "e.g. Anatomy, Physiology, Biochemistry" : "e.g. Computer Science"}" value="${escapeHtml(extra)}" aria-describedby="ns-extra-h" />
+        <span class="hint" id="ns-extra-h">Separate several with commas — each becomes its own subject, created empty.</span>
       </div>`;
   }
 
@@ -494,9 +585,10 @@ export function openNewSubject(onDone?: () => void): void {
   }
 
   function blocked(): boolean {
-    if (step === "board") return !board;
-    if (step === "class") return !klassValue();
-    if (step === "subjects") return !chosen().length && !extraName();
+    if (step === "board") return !board.trim();
+    // "No year or semester" is an answer; an empty class otherwise is not.
+    if (step === "class") return !klassValue() && !noClass;
+    if (step === "subjects") return !chosen().length && !extraNames().length;
     return false;
   }
 
@@ -505,7 +597,7 @@ export function openNewSubject(onDone?: () => void): void {
     if (step === "board" || step === "class") return "Continue";
     if (step === "subjects") {
       if (withTests().length) return "Choose tests";
-      const n = chosen().length + (extraName() ? 1 : 0);
+      const n = chosen().length + extraNames().length;
       return `Create ${n} subject${n === 1 ? "" : "s"}`;
     }
     if (step === "tests") {
@@ -544,15 +636,16 @@ export function openNewSubject(onDone?: () => void): void {
     const all = papers();
     const wanted = [
       ...all.filter((p) => chosen().includes(p.name)),
-      ...(extraName() ? [{ name: extraName(), shelfId: "", tests: [] as ServerTestMeta[] }] : []),
+      ...extraNames().map((name) => ({ name, shelfId: "", tests: [] as ServerTestMeta[] })),
     ];
 
     made = [];
     firstSubjectId = "";
     const k = klassValue();
+    const b = board.trim();
 
     for (const p of wanted) {
-      const res = await mutateSubject("create", { board, klass: k, subject: p.name });
+      const res = await mutateSubject("create", { board: b, klass: k, subject: p.name });
       if (!res.ok) {
         error = `${p.name}: ${res.message}`;
         break;
@@ -562,7 +655,7 @@ export function openNewSubject(onDone?: () => void): void {
 
       const ids = p.tests.filter((t) => !dropped.has(t.id)).map((t) => t.id);
       if (!ids.length) {
-        made.push({ title: subjectTitle(board, k, p.name), sub: "Empty — write your own tests" });
+        made.push({ title: subjectTitle(b, k, p.name), sub: "Empty — write your own tests" });
         continue;
       }
       const copied = await adoptTests(ids, into);
@@ -570,7 +663,7 @@ export function openNewSubject(onDone?: () => void): void {
         // The subject exists. Say what happened to the tests rather than
         // implying nothing did — and if it is the free allowance that ran out,
         // the price has a door on it.
-        made.push({ title: subjectTitle(board, k, p.name), sub: "Created — tests could not be copied" });
+        made.push({ title: subjectTitle(b, k, p.name), sub: "Created — tests could not be copied" });
         if (copied.payment && paymentsAvailable()) {
           const pay = copied.payment;
           const shelf = shelves.find((s) => s.id === pay.shelfId);
@@ -582,7 +675,7 @@ export function openNewSubject(onDone?: () => void): void {
       }
       const n = copied.tests?.length ?? ids.length;
       made.push({
-        title: subjectTitle(board, k, p.name),
+        title: subjectTitle(b, k, p.name),
         sub: `${n} test${n === 1 ? "" : "s"} copied in`,
       });
     }
@@ -598,6 +691,7 @@ export function openNewSubject(onDone?: () => void): void {
         klass: k,
         subjects: String(made.length),
         exam: isExam() ? "1" : "",
+        free: isFree() ? "1" : "",
       });
       step = "done";
       onDone?.();
@@ -649,13 +743,22 @@ export function openNewSubject(onDone?: () => void): void {
       board = "";
       klass = "";
       otherClass = false;
-      return render();
+      noClass = false;
+      reset();
+      render();
+      // A course is typed, not picked, so the box is the next thing to touch.
+      if (group?.free) body.querySelector<HTMLInputElement>("#ns-course")?.focus();
+      return;
     }
+    // Inside the course box: a click there is the teacher placing the caret,
+    // not a tile, and must not fall through to anything below.
+    if (t.closest("#ns-course")) return;
     const b = t.closest<HTMLElement>("[data-board]");
     if (b) {
       board = b.dataset.board ?? "";
       klass = "";
       otherClass = false;
+      noClass = false;
       reset();
       return render();
     }
@@ -663,16 +766,25 @@ export function openNewSubject(onDone?: () => void): void {
     if (k) {
       klass = k.dataset.klass ?? "";
       otherClass = false;
+      noClass = false;
       reset();
       return render();
     }
     if (t.closest("[data-other]")) {
       otherClass = true;
+      noClass = false;
       klass = "";
       reset();
       render();
       body.querySelector<HTMLInputElement>("#ns-kc")?.focus();
       return;
+    }
+    if (t.closest("[data-noclass]")) {
+      noClass = true;
+      otherClass = false;
+      klass = "";
+      reset();
+      return render();
     }
     const sec = t.closest<HTMLElement>("[data-sec]");
     if (sec) {
@@ -714,6 +826,18 @@ export function openNewSubject(onDone?: () => void): void {
 
   body.addEventListener("input", (e) => {
     const t = e.target as HTMLInputElement;
+    if (t.id === "ns-course") {
+      // The course IS the board. Changing it forgets the class and the
+      // subjects answered under the old name, exactly as picking a different
+      // board pill does — a different course is a different subject.
+      board = t.value;
+      klass = "";
+      otherClass = false;
+      noClass = false;
+      reset();
+      // Not a re-render: that would tear the box out from under the caret.
+      nextBtn.disabled = blocked();
+    }
     if (t.id === "ns-kc") {
       klass = t.value;
       nextBtn.disabled = blocked();
