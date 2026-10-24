@@ -3,7 +3,7 @@
 // bottom tabs and the tree opens as a drawer.
 
 import { track } from "../../analytics";
-import { openBuyShelf } from "../buy";
+import { openBuyPlan, openBuyShelf } from "../buy";
 import { paymentsAvailable } from "../../payments";
 import {
   adoptTests,
@@ -307,6 +307,13 @@ const seyariHost: SeyariHost = {
       subjectId: currentSubject() ?? undefined,
     } as never);
     if (!result.ok) {
+      // A plan limit names a price; open the door to it rather than only
+      // the sentence. The panel keeps the cards, so once the plan is on the
+      // teacher presses Create test with this again.
+      if (result.payment && paymentsAvailable()) {
+        openBuyPlan({ reason: result.message, onSettled: () => void seyariHost.create(questions, title, chapter) });
+        return;
+      }
       notice(result.message);
       return;
     }
@@ -1253,6 +1260,13 @@ export async function createTestAndEdit(back: () => void): Promise<void> {
     subjectId: currentSubject() ?? undefined,
   } as never);
   if (!result.ok) {
+    // The same door as New subject's: on top of the editor, the test is
+    // created again by itself if a 100% code settled the plan on the spot,
+    // and otherwise one press of Create once the payment is confirmed.
+    if (result.payment && paymentsAvailable()) {
+      openBuyPlan({ reason: result.message, onSettled: () => void createTestAndEdit(back) });
+      return;
+    }
     notice(result.message);
     return;
   }

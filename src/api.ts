@@ -3,6 +3,7 @@
 // merge in alongside them for logged-in users.
 
 import { authHeader, isLoggedIn, apiFetch } from "./auth";
+import type { PlanDoor } from "./payments";
 import type { Question, Test } from "./types";
 
 /** New question ids carry a random suffix: positional ids collide when a
@@ -194,10 +195,21 @@ export async function fetchSubjects(): Promise<Subject[] | null> {
   }
 }
 
+/**
+ * The door a plan-limit refusal carries beside its sentence, read off a 402.
+ * `planDoor` on the server sends it for a teacher's limit and never for a
+ * parent's, whose sentence says the plan does not lift it.
+ */
+export function planDoorOf(status: number, data: { payment?: { kind?: string; planPaise?: number; planDays?: number } }): PlanDoor | undefined {
+  const p = data && data.payment;
+  if (status !== 402 || !p || p.kind !== "plan") return undefined;
+  return { kind: "plan", planPaise: Number(p.planPaise) || 0, planDays: Number(p.planDays) || 30 };
+}
+
 export async function mutateSubject(
   action: "create" | "update" | "delete",
   input: { id?: string; board?: string; klass?: string; subject?: string }
-): Promise<{ ok: true; subject?: Subject } | { ok: false; message: string }> {
+): Promise<{ ok: true; subject?: Subject } | { ok: false; message: string; payment?: PlanDoor }> {
   try {
     const res = await apiFetch("/api/subjects", {
       method: "POST",
@@ -205,7 +217,7 @@ export async function mutateSubject(
       body: JSON.stringify({ action, ...input }),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { ok: false, message: data.error || "Request failed" };
+    if (!res.ok) return { ok: false, message: data.error || "Request failed", payment: planDoorOf(res.status, data) };
     return { ok: true, subject: data.subject };
   } catch {
     return { ok: false, message: "Network error" };
@@ -255,7 +267,7 @@ export async function mutateTest(
   test: Partial<Test> & { platform?: boolean }
 ): Promise<
   | { ok: true; test: ServerTestMeta }
-  | { ok: false; message: string; problems?: TestProblem[] }
+  | { ok: false; message: string; problems?: TestProblem[]; payment?: PlanDoor }
 > {
   try {
     const res = await apiFetch("/api/tests", {
@@ -265,7 +277,12 @@ export async function mutateTest(
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
-      return { ok: false, message: data.error || "Request failed", problems: data.problems };
+      return {
+        ok: false,
+        message: data.error || "Request failed",
+        problems: data.problems,
+        payment: planDoorOf(res.status, data),
+      };
     }
     return { ok: true, test: data.test };
   } catch {

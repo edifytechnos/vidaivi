@@ -16,7 +16,8 @@ price is that it changes.
 |---|---|---|
 | Trial days | {{rules.trialDays}} | How long a new account's trial runs |
 | Trial subjects / tests / students | {{rules.trialSubjects}} / {{rules.trialTests}} / {{rules.trialStudents}} | What a trial may create |
-| Teacher monthly | {{rules.teacherMonthlyPaise.rupees}} | A teacher's platform fee (counted, not yet billed) |
+| Teacher monthly | {{rules.teacherMonthlyPaise.rupees}} | The teacher plan: unlimited subjects and tests of their own, bought from the limit message by UPI |
+| Teacher plan days | {{rules.teacherPlanDays}} | What one payment buys; a renewal adds to what is left |
 | Free students | {{rules.teacherFreeStudents}} | Seats included with a teacher |
 | Per student monthly | {{rules.perStudentMonthlyPaise.rupees}} | Each seat beyond those |
 | Ready-made subject | {{rules.subjectPaise.rupees}} | One-off, every chapter in it |

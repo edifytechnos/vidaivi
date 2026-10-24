@@ -1,4 +1,5 @@
-// Paying for a ready-made subject.
+// Paying — for a ready-made subject, a pack of AI credits, or the teacher
+// plan. One dialog, three kinds; only what is quoted differs.
 //
 // This is not `openModal`. That dialog is a form you fill in and submit once;
 // this one talks to the server while it is open — a code is applied and the
@@ -18,9 +19,11 @@ import {
   claimOrder,
   money,
   quoteCredits,
+  quotePlan,
   quoteShelf,
   startCreditOrder,
   startOrder,
+  startPlanOrder,
   type Quote,
   type StartedOrder,
 } from "../payments";
@@ -28,13 +31,25 @@ import { track } from "../analytics";
 
 let open = false;
 
+type BuyKind = "shelf" | "credits" | "plan";
+
 interface BuyOpts {
-  /** Empty when buying credits rather than a subject. */
+  /** What is for sale. A shelf names itself with `shelfId`. */
+  kind?: BuyKind;
+  /** Empty when buying credits or the plan rather than a subject. */
   shelfId: string;
   /** Shown while the server's own title is still in flight. */
   title?: string;
+  /**
+   * Why the dialog opened, in the words of the refusal that opened it — so a
+   * teacher who was told "You have used 1 of 1 subjects" sees that sentence
+   * above the price rather than a dialog that appeared from nowhere.
+   */
+  reason?: string;
   /** Run after the payment is claimed, so the caller can refresh. */
   onClaimed?: () => void;
+  /** Run when a free order settled on the spot: the thing is theirs already. */
+  onSettled?: () => void;
 }
 
 /**
@@ -43,7 +58,17 @@ interface BuyOpts {
  * putting both behind one `settlePurchase`.
  */
 export function openBuyCredits(onClaimed?: () => void): void {
-  openBuyShelf({ shelfId: "", title: "AI credits", onClaimed });
+  openBuyShelf({ kind: "credits", shelfId: "", title: "AI credits", onClaimed });
+}
+
+/**
+ * Buy the teacher plan — the door on "The ₹99/month plan lifts this". Opened
+ * from the refusal itself, on top of whatever the teacher was doing, so
+ * closing it lands them back where they were with their work intact: they
+ * press Create again once the payment is confirmed.
+ */
+export function openBuyPlan(opts: Omit<BuyOpts, "kind" | "shelfId"> = {}): void {
+  openBuyShelf({ ...opts, kind: "plan", shelfId: "", title: opts.title || "Teacher plan" });
 }
 
 /** The ₹499 subject, bought. Resolves when the dialog closes. */
@@ -51,6 +76,7 @@ export function openBuyShelf(opts: BuyOpts): void {
   if (open) return;
   open = true;
   const restoreFocusTo = document.activeElement as HTMLElement | null;
+  const kind: BuyKind = opts.kind ?? (opts.shelfId ? "shelf" : "credits");
 
   const host = document.createElement("div");
   host.className = "modal-scrim";
@@ -60,6 +86,7 @@ export function openBuyShelf(opts: BuyOpts): void {
         <h2 class="modal-title" id="buy-title">${escapeHtml(opts.title || "This subject")}</h2>
         <button class="modal-x" data-close aria-label="Close">✕</button>
       </div>
+      ${opts.reason ? `<p class="hint modal-desc buy-reason">${escapeHtml(opts.reason)}</p>` : ""}
       <div class="modal-body" id="buy-body">
         <p class="hint">Loading the price…</p>
       </div>
@@ -128,14 +155,25 @@ export function openBuyShelf(opts: BuyOpts): void {
                ${escapeHtml(money(q.discountPaise))} off${
                  q.coupon ? ` with ${escapeHtml(q.coupon)}` : ""
                }</div>`
-            : `<div class="hint">${
-                q.credits
-                  ? `${q.credits} AI credits, added to your balance.`
-                  : "Every test in the subject, yours to edit."
-              }</div>`
+            : `<div class="hint">${blurbFor(q)}</div>`
         }
       </div>`;
   }
+
+  /** What the money buys, in one line. */
+  function blurbFor(q: Quote): string {
+    if (kind === "plan" || q.kind === "plan") {
+      return `${q.planDays || 30} days of unlimited subjects and tests of your own, added to whatever is left of your plan.`;
+    }
+    if (q.credits) return `${q.credits} AI credits, added to your balance.`;
+    return "Every test in the subject, yours to edit.";
+  }
+
+  /** The quote for whatever is being bought, with a code against it. */
+  const quoteFor = (c?: string) =>
+    kind === "plan" ? quotePlan(c) : kind === "credits" ? quoteCredits(c) : quoteShelf(opts.shelfId, c);
+  const startFor = (c?: string) =>
+    kind === "plan" ? startPlanOrder(c) : kind === "credits" ? startCreditOrder(c) : startOrder(opts.shelfId, c);
 
   function showQuote(q: Quote): void {
     titleEl.textContent = q.shelfTitle || opts.title || "This subject";
@@ -164,7 +202,7 @@ export function openBuyShelf(opts: BuyOpts): void {
     const codeEl = body.querySelector<HTMLInputElement>("#buy-code")!;
     const apply = async (): Promise<void> => {
       code = codeEl.value.trim().toUpperCase();
-      const next = opts.shelfId ? await quoteShelf(opts.shelfId, code) : await quoteCredits(code);
+      const next = await quoteFor(code);
       if (!next.ok) return fail(next.message);
       showQuote(next.data);
     };
@@ -188,25 +226,55 @@ export function openBuyShelf(opts: BuyOpts): void {
   // ---- Paying -----------------------------------------------------------
 
   async function begin(): Promise<void> {
-    const started = opts.shelfId ? await startOrder(opts.shelfId, code) : await startCreditOrder(code);
+    const started = await startFor(code);
     if (!started.ok) return fail(started.message);
     order = started.data;
-    track("purchase_started", { shelf: opts.shelfId || "credits" });
+    track("purchase_started", { shelf: opts.shelfId || kind });
+    // A 100% code: the server settled it as it started. There is no payment
+    // to make and nothing for anybody to confirm — say so, and tell the
+    // caller it is theirs already.
+    if (order.settled || !order.upi) {
+      claimed = true;
+      track("purchase_settled_free", { shelf: opts.shelfId || kind });
+      showFree();
+      opts.onSettled?.();
+      return;
+    }
     showPay(order);
   }
 
+  function showFree(): void {
+    const what =
+      kind === "plan"
+        ? "Your plan is on. Go back and press Create again — it will go through now."
+        : kind === "credits"
+          ? "The credits are in your balance."
+          : "The subject is yours.";
+    body.innerHTML = `
+      <div class="buy-done">
+        <div class="buy-amount">Done — nothing to pay</div>
+        <p>Your code covered the whole price. ${escapeHtml(what)}</p>
+      </div>
+      <div class="modal-actions">
+        <span class="modal-actions-gap"></span>
+        <button type="button" class="btn btn-primary" data-close>Close</button>
+      </div>`;
+    body.querySelector<HTMLElement>("[data-close]")?.focus();
+  }
+
   function showPay(o: StartedOrder): void {
+    const upi = o.upi!;
     body.innerHTML = `
       ${priceMarkup(o)}
       <p class="hint">Pay with any UPI app. The reference is already filled in —
       please leave it as it is, it is how your payment is matched to your account.</p>
       <div class="buy-pay">
-        <a class="btn btn-primary buy-upi" href="${escapeHtml(o.upi.link)}">Open my UPI app</a>
+        <a class="btn btn-primary buy-upi" href="${escapeHtml(upi.link)}">Open my UPI app</a>
         <div class="buy-vpa">
-          <span class="buy-vpa-label">or pay <strong>${escapeHtml(o.upi.vpa)}</strong></span>
+          <span class="buy-vpa-label">or pay <strong>${escapeHtml(upi.vpa)}</strong></span>
           <button type="button" class="btn-link" id="buy-copy">Copy</button>
         </div>
-        <div class="hint">Reference: <code>${escapeHtml(o.upi.note)}</code></div>
+        <div class="hint">Reference: <code>${escapeHtml(upi.note)}</code></div>
       </div>
       <div class="modal-field">
         <label class="modal-label" for="buy-utr">UPI reference number</label>
@@ -222,7 +290,7 @@ export function openBuyShelf(opts: BuyOpts): void {
 
     body.querySelector("#buy-copy")!.addEventListener("click", async (e) => {
       const btn = e.currentTarget as HTMLElement;
-      btn.textContent = (await copyText(o.upi.vpa)) ? "Copied" : "Copy failed";
+      btn.textContent = (await copyText(upi.vpa)) ? "Copied" : "Copy failed";
       setTimeout(() => (btn.textContent = "Copy"), 1500);
     });
     body.querySelector("#buy-done")!.addEventListener("click", async () => {
@@ -230,20 +298,23 @@ export function openBuyShelf(opts: BuyOpts): void {
       const res = await claimOrder(o.ref, utr);
       if (!res.ok) return fail(res.message);
       claimed = true;
-      track("purchase_claimed", { shelf: opts.shelfId || "credits" });
+      track("purchase_claimed", { shelf: opts.shelfId || kind });
       showWaiting();
       opts.onClaimed?.();
     });
   }
 
   function showWaiting(): void {
+    const after =
+      kind === "plan"
+        ? "Once it is confirmed your plan is on — come back and press Create again."
+        : "Nothing is lost if you close this — it appears as soon as the payment is confirmed.";
     body.innerHTML = `
       <div class="buy-done">
         <div class="buy-amount">Thank you</div>
         <p>We will check the payment and add it to your account for you. It is
         usually the same day.</p>
-        <p class="hint">Nothing is lost if you close this — it appears as soon
-        as the payment is confirmed.</p>
+        <p class="hint">${escapeHtml(after)}</p>
       </div>
       <div class="modal-actions">
         <span class="modal-actions-gap"></span>
@@ -253,7 +324,7 @@ export function openBuyShelf(opts: BuyOpts): void {
   }
 
   void (async () => {
-    const first = opts.shelfId ? await quoteShelf(opts.shelfId) : await quoteCredits();
+    const first = await quoteFor();
     if (!open) return;
     if (!first.ok) {
       body.innerHTML = `<p class="login-error">${escapeHtml(

@@ -87,6 +87,16 @@ const DLG = ".modal-scrim .ns";
   );
   check(await page.isDisabled("#ns-next"), "cannot continue without a board");
 
+  // College & other: the fifth group, and the first with no board pills — the
+  // course is typed. Its full walk, desktop and phone, is the offline suite
+  // (e2e/newsubject-offline.cjs); this only proves it is wired in live.
+  await page.click('[data-group="college"]');
+  check(/Step 1 of 3/.test(await text()), "College & other has three steps, not four");
+  check(await page.isVisible("#ns-course"), "and asks for the course in a box");
+  check((await page.locator(".ns-pill").count()) === 0, "with no board pills");
+  await page.click('[data-group="college"]'); // toggles it back off
+  check(/Step 1 of 4/.test(await text()), "leaving it restores the four-step count");
+
   await page.click('[data-group="exam"]');
   for (const b of ["JEE Main", "JEE Advanced", "NEET", "CUET"]) {
     check(await page.isVisible(`[data-board="${b}"]`), `picking the group reveals ${b}`);

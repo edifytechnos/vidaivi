@@ -395,8 +395,10 @@ const PLAN_DEFAULTS = {
   trialTests: 3,
   trialStudents: 3,
   // A teacher paying the platform fee: their own subjects and tests are
-  // unlimited (0 means no limit); seats are not.
+  // unlimited (0 means no limit); seats are not. One payment buys
+  // `teacherPlanDays` of it, added to whatever is left — see grantPlanTo.
   teacherMonthlyPaise: 9900,
+  teacherPlanDays: 30,
   teacherSubjects: 0,
   teacherTests: 0,
   teacherFreeStudents: 2,
@@ -456,6 +458,7 @@ const ACCOUNT_SELECT = [
   "name",
   "trialStartedAt",
   "trialEndsAt",
+  "paidUntil",
   "paidSeats",
   "exempt",
   "createdAt",
@@ -575,8 +578,17 @@ async function entitlements(who) {
   const trialEndsAt = String((row && row.trialEndsAt) || "");
   const onTrial = !!trialEndsAt && Date.parse(trialEndsAt) > Date.now();
   const paidSeats = typeof row?.paidSeats === "number" ? row.paidSeats : 0;
+  // The teacher plan, bought: `grantPlanTo` stamps this when a payment is
+  // confirmed, and it is the ONLY thing that grants the plan now. It used to
+  // be granted to any teacher whose trial had ended — "counted but never
+  // billed" — which made the ₹99/month in every refusal a price for something
+  // that turned free by itself in thirty days. A teacher who has not paid
+  // stays on the trial's limits, before the trial and after it alike.
+  // Pre-existing accounts are exempt above, so nobody promised free is caught.
+  const paidUntil = String((row && row.paidUntil) || "");
+  const paid = !!paidUntil && Date.parse(paidUntil) > Date.now();
 
-  if (chose === "teacher" && !onTrial) {
+  if (chose === "teacher" && paid) {
     // The platform fee buys unlimited subjects and tests of their own; seats
     // and ready-made content are still bought separately.
     return {
@@ -585,6 +597,7 @@ async function entitlements(who) {
       rules,
       chose,
       trialEndsAt,
+      paidUntil,
       subjects: rules.teacherSubjects,
       tests: rules.teacherTests,
       students: rules.teacherFreeStudents + paidSeats,
@@ -606,14 +619,17 @@ async function entitlements(who) {
       shelfTests: rules.freeShelfTests,
     };
   }
-  // On trial, or has not chosen yet — the trial's limits either way, which is
-  // the safe direction to be wrong in.
+  // On trial, lapsed, or has not chosen yet — the trial's limits either way,
+  // which is the safe direction to be wrong in. A lapsed teacher is one whose
+  // trial has ended and who has not bought the plan; the door is on the
+  // refusal.
   return {
     plan: onTrial ? "trial" : chose ? "lapsed" : "new",
     exempt: false,
     rules,
     chose,
     trialEndsAt,
+    paidUntil,
     subjects: rules.trialSubjects,
     tests: rules.trialTests,
     students: rules.trialStudents,
@@ -660,12 +676,30 @@ async function ownedCount(table, ownerSub, legacyPk, stopAt) {
  * it. A bare "no" makes a person think the product is broken; a number and a
  * price makes it a decision they can act on.
  */
-function overLimit(context, what, used, limit, priceNote) {
+function overLimit(context, what, used, limit, priceNote, payment) {
   return json(context, 402, {
     error: `You have used ${used} of ${limit} ${what} on your current plan.${priceNote ? ` ${priceNote}` : ""}`,
     limit,
     used,
+    // The door, carried structurally — exactly as the adopt refusal carries
+    // the shelf — so the screen can offer the thing the sentence names
+    // rather than leaving a price with no way to pay it.
+    ...(payment ? { payment } : {}),
   });
+}
+
+/**
+ * The refusal's door for a plan limit: the teacher plan, at the live price.
+ * A parent's limit is not lifted by the teacher plan, so a parent gets no
+ * door here — their sentence says so instead.
+ */
+function planDoor(ent) {
+  if (!ent || ent.plan === "parent" || ent.plan === "admin" || ent.exempt) return null;
+  return {
+    kind: "plan",
+    planPaise: ent.rules.teacherMonthlyPaise,
+    planDays: ent.rules.teacherPlanDays,
+  };
 }
 
 // ---------- What they have bought ----------
@@ -3013,7 +3047,10 @@ handlers.tests = async (context, req) => {
             "tests",
             have,
             ent.tests,
-            `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`
+            ent.plan === "parent"
+              ? `A parent account holds ${ent.tests} test${ent.tests === 1 ? "" : "s"}.`
+              : `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`,
+            planDoor(ent)
           );
         }
       }
@@ -3352,20 +3389,27 @@ handlers.tests = async (context, req) => {
 // on the tests table above for why the constant partition key had to go.
 
 // An entrance exam stores its attempt YEAR where a school board stores its
-// class, because the year is what an exam's batches are told apart by. So the
-// middle of the title is rendered from the VALUE, not from a list of exam
-// boards: a four-digit year reads bare ("JEE Main 2027 Physics") and anything
-// else reads as a class ("CBSE Class 12 Maths").
+// class, and a college course (College & other) stores a year or semester
+// there, or nothing at all. So the middle of the title is rendered from the
+// VALUE, not from a list: "Class" is said only before a PLAIN NUMBER
+// ("CBSE Class 12 Maths"), and anything else reads as it was typed
+// ("JEE Main 2027 Physics", "MBBS Year 1 Anatomy", "B.E. Semester 3
+// Thermodynamics"). It used to prepend "Class" to everything that was not a
+// four-digit year, which named a medical course "Tamil Nadu Class MBBS I".
 //
 // Deciding it on the value is what keeps this honest. A list of exam boards
-// here would be a second copy of the one in src/taxonomy.ts, and the first
-// time somebody added an exam to one and not the other a real subject would
-// come out titled "JEE Advanced Class 2027 Physics".
-const isYearLike = (k) => /^(19|20)\d{2}$/.test(String(k || "").trim());
+// or courses here would be a second copy of the one in src/taxonomy.ts, and
+// the first time somebody added one and not the other a real subject would
+// come out titled "JEE Advanced Class 2027 Physics". `classWord` in
+// src/taxonomy.ts is the client mirror; change both or neither.
+const classWord = (k) => {
+  const v = String(k || "").trim();
+  if (!v) return "";
+  return /^\d{1,2}$/.test(v) ? `Class ${v}` : v;
+};
 
 function subjectTitle(board, klass, subject) {
-  const middle = !klass ? "" : isYearLike(klass) ? klass : `Class ${klass}`;
-  return [board, middle, subject].filter(Boolean).join(" ");
+  return [board, classWord(klass), subject].filter(Boolean).join(" ");
 }
 
 function subjectOut(e) {
@@ -3448,8 +3492,14 @@ handlers.subjects = async (context, req) => {
     const subject = String(body.subject || "").trim().slice(0, 40);
 
     if (action === "create") {
-      if (!board || !klass || !subject) {
-        return json(context, 400, { error: "Board, class and subject are all required" });
+      // The class is optional: a college course under College & other may be
+      // a freeform test bank with no year or semester, and its title reads
+      // perfectly well without one ("General Aptitude"). The client still
+      // insists on a class for a school board and a year for an exam, which
+      // is a matter of a sensible name rather than of anything this gate
+      // protects.
+      if (!board || !subject) {
+        return json(context, 400, { error: "Board and subject are required" });
       }
       // The gate runs before the row is built, and fails closed: a limit that
       // cannot be read must not become an unlimited one.
@@ -3464,7 +3514,8 @@ handlers.subjects = async (context, req) => {
             ent.subjects,
             ent.plan === "parent"
               ? "A parent account holds one subject."
-              : `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`
+              : `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`,
+            planDoor(ent)
           );
         }
       }
@@ -6287,6 +6338,7 @@ handlers.accounts = async (context, req) => {
           email: e.email || "",
           chose: e.chose || "",
           trialEndsAt: e.trialEndsAt || "",
+          paidUntil: e.paidUntil || "",
           paidSeats: typeof e.paidSeats === "number" ? e.paidSeats : 0,
           exempt: !!e.exempt,
           createdAt: e.createdAt || "",
@@ -6830,6 +6882,30 @@ async function settlePurchase(order, by, method, payerRef) {
   // the whole reason this lives inside the one seam rather than beside it. A
   // Razorpay webhook granting credits is the same call with a different
   // `method`.
+  // The teacher plan is TIME rather than a thing: a confirmed payment moves
+  // the account's `paidUntil` forward by the days on the order, from whatever
+  // is left of the current plan rather than from today, so paying early never
+  // loses the days already paid for. Same seam, same order row, same queue.
+  if (order.kind === "plan") {
+    const days = Math.max(1, Math.round(Number(order.planDays) || 30));
+    await grantPlanTo(sub, days, by);
+    await orders.updateEntity(
+      {
+        partitionKey: sub,
+        rowKey: ref,
+        status: "paid",
+        settledAt: new Date().toISOString(),
+        settledBy: by,
+        method,
+        payerRef: payerRef || order.payerRef || "",
+      },
+      "Merge"
+    );
+    await dropPending(orders, sub, ref);
+    await noteRedemption(order.coupon || "");
+    return;
+  }
+
   if (order.kind === "credits") {
     const credits = Math.max(0, Math.round(Number(order.credits) || 0));
     if (credits > 0) await grantCreditsTo(sub, credits, by);
@@ -6880,6 +6956,50 @@ async function settlePurchase(order, by, method, payerRef) {
   );
   await dropPending(orders, sub, ref);
   await noteRedemption(order.coupon || "");
+}
+
+/**
+ * Switch the teacher plan on for `days`, on the account row `entitlements`
+ * reads. Extends from the later of now and the current `paidUntil`, so a
+ * renewal paid a week early keeps that week. An account that never chose a
+ * role is stamped a teacher: buying the teacher plan is choosing it, and
+ * without `chose` the plan would be bought and never granted.
+ *
+ * ETag'd with a bounded retry, like every write that is money: two
+ * confirmations landing together must add up, not overwrite. The role cache
+ * is dropped so the next request sees the role the stamp implies.
+ */
+async function grantPlanTo(sub, days, by) {
+  const table = await accountsTable();
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    let row = null;
+    try {
+      row = await table.getEntity(ACCOUNT_PK, sub);
+    } catch {
+      row = null;
+    }
+    const now = Date.now();
+    const current = row && row.paidUntil ? Date.parse(row.paidUntil) : NaN;
+    const from = Number.isFinite(current) && current > now ? current : now;
+    const next = {
+      partitionKey: ACCOUNT_PK,
+      rowKey: sub,
+      paidUntil: new Date(from + days * 24 * 60 * 60 * 1000).toISOString(),
+      planGrantedAt: new Date().toISOString(),
+      planGrantedBy: by,
+      ...(row && row.chose ? {} : { chose: "teacher" }),
+    };
+    try {
+      if (row) await table.updateEntity(next, "Merge", { etag: row.etag });
+      else await table.createEntity({ ...next, createdAt: new Date().toISOString(), paidSeats: 0, exempt: false });
+      roleCache.drop(`sub~${sub}`);
+      return true;
+    } catch (e) {
+      const status = e && e.statusCode;
+      if (status !== 412 && status !== 409) throw e;
+    }
+  }
+  return false;
 }
 
 /**
@@ -7139,9 +7259,85 @@ handlers.purchase = async (context, req) => {
   // ---- The buyer ----
 
   const shelfId = safeId(body.shelfId, 80);
-  // Two things are for sale and they settle differently, so the kind travels
+  // Three things are for sale and they settle differently, so the kind travels
   // on the order rather than being guessed from what else is on it.
-  const kind = String(body.kind || "") === "credits" ? "credits" : "shelf";
+  const wantKind = String(body.kind || "");
+  const kind = wantKind === "credits" ? "credits" : wantKind === "plan" ? "plan" : "shelf";
+
+  /**
+   * An order that costs nothing — a 100% code — is settled on the spot. There
+   * is no payment to confirm, and walking the buyer through a ₹0 UPI link and
+   * an admin's queue for it is friction with nothing behind it. The same
+   * `settlePurchase`, with "coupon" as the method, so the code is redeemed and
+   * the order is recorded exactly as a paid one is.
+   */
+  async function startOrSettle(entity, shape) {
+    await orders.createEntity(entity);
+    if (entity.payablePaise <= 0) {
+      const order = await readOrder(orders, who.id, entity.rowKey);
+      await settlePurchase(order, who.id, "coupon", "");
+      return json(context, 200, { ...shape, ref: entity.rowKey, settled: true });
+    }
+    return json(context, 200, {
+      ...shape,
+      ref: entity.rowKey,
+      upi: {
+        vpa: UPI_VPA,
+        payee: UPI_PAYEE_NAME,
+        link: upiLink(entity.rowKey, entity.payablePaise),
+        note: `Vidai ${entity.rowKey}`,
+      },
+    });
+  }
+
+  // ---- The teacher plan, a month at a time ----
+  //
+  // Bought from the refusal that names it ("The ₹99/month plan lifts this"),
+  // which until now was a price with no door. One payment adds
+  // `teacherPlanDays` to the account's `paidUntil`; `entitlements` grants the
+  // plan while that date is in the future and nothing else grants it.
+  if (kind === "plan" && (action === "quote" || action === "start")) {
+    const rules = await platformRules();
+    const listPaise = Math.max(0, Math.round(Number(rules.teacherMonthlyPaise) || 0));
+    const days = Math.max(1, Math.round(Number(rules.teacherPlanDays) || 30));
+    if (listPaise <= 0) {
+      return json(context, 501, { error: "The teacher plan is not on sale yet", reason: "no_plan" });
+    }
+    const quote = await couponQuote(couponCode(body.code), listPaise);
+    const shape = {
+      kind: "plan",
+      planDays: days,
+      shelfId: "",
+      shelfTitle: `Teacher plan — ${days} days`,
+      listPaise,
+      discountPaise: quote.discountPaise,
+      payablePaise: quote.payablePaise,
+      coupon: quote.code,
+      couponLabel: quote.label || "",
+      couponMessage: quote.message,
+    };
+    if (action === "quote") return json(context, 200, shape);
+
+    return startOrSettle(
+      {
+        partitionKey: who.id,
+        rowKey: newOrderRef(),
+        kind: "plan",
+        planDays: days,
+        shelfId: "",
+        shelfTitle: shape.shelfTitle,
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        status: "open",
+        createdAt: new Date().toISOString(),
+        buyerName: who.name || "",
+        buyerEmail: who.email || "",
+      },
+      shape
+    );
+  }
 
   // ---- A pack of AI credits ----
   if (kind === "credits" && (action === "quote" || action === "start")) {
@@ -7166,33 +7362,25 @@ handlers.purchase = async (context, req) => {
     };
     if (action === "quote") return json(context, 200, shape);
 
-    const ref = newOrderRef();
-    await orders.createEntity({
-      partitionKey: who.id,
-      rowKey: ref,
-      kind: "credits",
-      credits,
-      shelfId: "",
-      shelfTitle: shape.shelfTitle,
-      listPaise,
-      discountPaise: quote.discountPaise,
-      payablePaise: quote.payablePaise,
-      coupon: quote.code,
-      status: "open",
-      createdAt: new Date().toISOString(),
-      buyerName: who.name || "",
-      buyerEmail: who.email || "",
-    });
-    return json(context, 200, {
-      ...shape,
-      ref,
-      upi: {
-        vpa: UPI_VPA,
-        payee: UPI_PAYEE_NAME,
-        link: upiLink(ref, quote.payablePaise),
-        note: `Vidai ${ref}`,
+    return startOrSettle(
+      {
+        partitionKey: who.id,
+        rowKey: newOrderRef(),
+        kind: "credits",
+        credits,
+        shelfId: "",
+        shelfTitle: shape.shelfTitle,
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        status: "open",
+        createdAt: new Date().toISOString(),
+        buyerName: who.name || "",
+        buyerEmail: who.email || "",
       },
-    });
+      shape
+    );
   }
 
   if (action === "quote" || action === "start") {
@@ -7247,37 +7435,31 @@ handlers.purchase = async (context, req) => {
       return json(context, 429, { error: "Too many unfinished payments. Finish or cancel one first." });
     }
 
-    const ref = newOrderRef();
-    await orders.createEntity({
-      partitionKey: who.id,
-      rowKey: ref,
-      shelfId,
-      shelfTitle: String(shelf.title || shelfId).slice(0, 120),
-      listPaise,
-      discountPaise: quote.discountPaise,
-      payablePaise: quote.payablePaise,
-      coupon: quote.code,
-      status: "open",
-      createdAt: new Date().toISOString(),
-      buyerName: who.name || "",
-      buyerEmail: who.email || "",
-    });
-    return json(context, 200, {
-      ref,
-      shelfId,
-      shelfTitle: shelf.title || shelfId,
-      listPaise,
-      discountPaise: quote.discountPaise,
-      payablePaise: quote.payablePaise,
-      coupon: quote.code,
-      couponMessage: quote.message,
-      upi: {
-        vpa: UPI_VPA,
-        payee: UPI_PAYEE_NAME,
-        link: upiLink(ref, quote.payablePaise),
-        note: `Vidai ${ref}`,
+    return startOrSettle(
+      {
+        partitionKey: who.id,
+        rowKey: newOrderRef(),
+        shelfId,
+        shelfTitle: String(shelf.title || shelfId).slice(0, 120),
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        status: "open",
+        createdAt: new Date().toISOString(),
+        buyerName: who.name || "",
+        buyerEmail: who.email || "",
       },
-    });
+      {
+        shelfId,
+        shelfTitle: shelf.title || shelfId,
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        couponMessage: quote.message,
+      }
+    );
   }
 
   if (action === "claim" || action === "cancel") {

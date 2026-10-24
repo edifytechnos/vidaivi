@@ -1478,7 +1478,9 @@ controls; `node e2e/dialog.cjs` the app's own confirm and notice. `node e2e/tour
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the
 live database, so the one real create is left to `regression.cjs` and its
-probe subject.
+probe subject. `node e2e/newsubject-offline.cjs` walks the same flow — the
+College & other path in full, the school path beside it — against a stubbed
+`fetch`, with no session and no network, so it runs anywhere.
 `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
 in-process cache, `inBatches`) **and drives the second factor through the real
@@ -2058,6 +2060,10 @@ roster of real children between two kinds of account. A failed entitlements
 call **carries on rather than stranding** somebody on a chooser they cannot
 complete.
 
+**The teacher plan is granted by `paidUntil` alone** — see *The teacher plan
+is bought from the refusal* under Payments. A trial that ends is a lapsed
+account on the trial's limits, not a free plan.
+
 **The choice decides the app; the allowlist decides approval.** These are two
 questions and conflating them is what made picking "I teach a class" land
 somebody in the parent's app. `chose` was written to the accounts row and
@@ -2228,11 +2234,12 @@ accounts list with **Free forever**, **paid seats** and **extend trial** as
 manual levers. Those levers are what make the payment stub honest — a real
 teacher can be run end to end today, with money arriving later.
 
-**The one-off ₹499 subject can now be bought** (below). The teacher's monthly
-fee and the per-seat price are still counted, priced and shown but never
-billed: a subscription is renewal, expiry and what happens to a roster when it
-lapses, which is materially more than a one-off unlock and does not belong in
-the same slice.
+**The one-off ₹499 subject can now be bought** (below), **and so can the
+teacher plan** — a month at a time, from the refusal that names it (*The
+teacher plan is bought from the refusal*, below). The per-seat price is still
+counted, priced and shown but never billed. Automatic renewal is not built: a
+teacher buys the next month themselves, and a payment made early adds to what
+is left rather than starting over.
 
 ## Paying for a ready-made subject (`/api/purchase`, UPI)
 
@@ -2333,13 +2340,80 @@ is a price nobody can explain six months later.
 - **Admin → Payments** (`showPayments`, rail item beside Plans & pricing):
   the waiting queue with Confirm / Not received, and the discount codes.
 
+### The teacher plan is bought from the refusal (`kind: "plan"`)
+
+*"You have used 1 of 1 subjects on your current plan. The ₹99/month plan lifts
+this."* — and nothing sold the plan. Worse, nothing needed to: `entitlements`
+granted the teacher plan to any teacher whose trial had ended, "counted but
+never billed", so the price in every refusal was for something that turned
+free by itself in thirty days. **J, 24 Oct: make it real, and put a door on
+it.** Both, in one slice:
+
+- **The plan is granted by `paidUntil` and nothing else.** `entitlements`
+  returns the teacher plan while the account row's `paidUntil` is in the
+  future; before it, after it, and for a trial that has ended, a teacher is on
+  the trial's limits (`plan: "lapsed"`). Pre-existing accounts were stamped
+  exempt by `exemptLegacyAccounts`, so the pilot teacher and everyone promised
+  free are untouched. `e2e/helpers.cjs` asserts a lapsed unpaid teacher stays
+  capped, a paid one is not, and an expired plan falls back.
+- **A third kind on the same seam.** `POST /api/purchase {kind:"plan"}` quotes
+  `teacherMonthlyPaise` for `teacherPlanDays` (both Plans & pricing rows, so
+  the price and the length change without a deploy), opens the same order
+  row, joins the same claimed queue, and `settlePurchase` branches to
+  **`grantPlanTo`**: `paidUntil` moves forward by the days on the order
+  **from the later of now and the current `paidUntil`** — a renewal paid a
+  week early keeps the week — ETag'd with a bounded retry like every write
+  that is money. An account that never chose a role is stamped a teacher by
+  buying the teacher plan, or the plan would be bought and never granted. The
+  admin's accounts list reads *plan paid · N days left* / *plan ended*.
+- **The 402 carries the door.** `overLimit` takes a `payment` and the two
+  create gates pass `planDoor(ent)` — `{kind:"plan", planPaise, planDays}` —
+  for a teacher's limit and never for a parent's, whose sentence says the plan
+  does not lift it. `planDoorOf` in `src/api.ts` reads it off `mutateSubject`
+  and `mutateTest`, exactly as `adoptTests` reads the shelf.
+- **The screen offers what the sentence names.** New subject renders the
+  refusal and, beneath it, **Get the ₹99/month plan** (`#ns-upgrade`,
+  `.ns-door`) with one line saying what happens after; the editor's blank
+  test and Seyari's *Create test with this* open the dialog straight away with
+  the refusal as its `reason` line. `openBuyPlan` in `src/screens/buy.ts` is
+  the same dialog as the shelf and the credits with a `kind`. **It opens on
+  top of the dialog that refused, not instead of it**, so closing it lands
+  back on the same step with the course, the year and the subjects still
+  typed — Create is one press away once the payment is confirmed. The
+  "Thank you" screen says so for a plan.
+- **A 100% code settles on the spot.** The quote already clamped at the price,
+  so a code could make an order free — and then walked the buyer through a ₹0
+  UPI link and the admin's queue for it. `startOrSettle` in the purchase
+  handler settles a free order as it starts (`settlePurchase` with method
+  `coupon`: the code is redeemed, the order is recorded as paid, nothing
+  reaches the queue), the dialog says *Done — nothing to pay*, and
+  `onSettled` presses Create again by itself, so the subject is simply made.
+  This is how a teacher is given the plan for free, and it holds for the
+  shelf and the credit pack too.
+- **New code comes with a code made** (`newCouponCode`: `VIDAI-` and five
+  characters from an alphabet with no 0/O or 1/I, because it is read off
+  WhatsApp and typed on a phone), *Limit uses to* defaults to **1**, and the
+  form says 100 makes the purchase free. The server side of codes is
+  unchanged.
+- `node e2e/newsubject-offline.cjs` walks the door against a stubbed server:
+  the refusal with the button beneath it, the dialog on top with the reason,
+  closing it back to the same step with the subjects still typed, the UPI
+  path to *I have paid*, and a 100% code that settles and creates the subject
+  without another press. `e2e/helpers.cjs` drives the plan through the real
+  purchase handler — quote at the admin's price, start, claim, confirm,
+  thirty days, a renewal extending from `paidUntil`, confirming twice refused,
+  a free order settled with no UPI link and nothing in the queue, the
+  single-use code spent, the role stamped.
+
 ### Not done
 
 Razorpay itself — the order-create endpoint, Checkout on the client and the
-signature-verified webhook — plus the subscription side (the teacher's monthly
-fee and per-seat price). Checkout also needs its script added to a
-`script-src 'self'` that currently has no external script at all, which is a
-CSP change to make deliberately and test, not to discover in front of a class.
+signature-verified webhook — plus automatic renewal of the plan and the
+per-seat price. Checkout also needs its script added to a `script-src
+'self'` that currently has no external script at all, which is a CSP change
+to make deliberately and test, not to discover in front of a class. The plan
+today is a month bought by hand from the refusal, confirmed by the admin;
+instant and automatic is the Razorpay slice.
 
 ## A parent marks their child's paper in one click, and pays in credits
 
@@ -3204,18 +3278,71 @@ What it replaced was one flat column of **eleven shelf tiles** — CBSE 10, CBSE
 12, IGCSE, A Level and NEET in one ungrouped, unsearchable list — that asked
 "what do you teach?" and could only be answered by scrolling.
 
-1. **Which board?** Four groups — National, International, **Entrance exam**,
-   State Board. Picking a group reveals its boards as pills *beneath it*, so
-   the board resolves in **one** step rather than two.
+1. **Which board?** Five groups — National, International, **Entrance exam**,
+   State Board, **College & other**. Picking a group reveals its boards as
+   pills *beneath it*, so the board resolves in **one** step rather than two.
 2. **Which class?** Tiles for 10 and 12, each saying whether anything
    ready-made exists, plus **Another class** which reveals a text box.
 3. **Which subjects?** **Multi-select** — each ticked subject becomes its own
-   subject card — plus "Not listed? Add your own".
+   subject card — plus "Not listed? Add your own", which takes **several,
+   comma-separated**: "Hindi, Sanskrit" is two subjects, not one with a comma
+   in its name (`extraNames`; deduplicated, never a name already ticked).
 4. **Which ready-made tests?** A collapsible section per subject, everything
    ticked, a live total across subjects, and **Peek** at the first question.
 
 Then a **Done** step listing what was made, all Draft, before the editor opens
 on the first.
+
+### College & other is a `board` the teacher types, and the class is optional
+
+A medical or engineering course had nowhere to live either. The only way in
+was a school board plus "Another class", which named one **"Tamil Nadu Class
+MBBS I Anatomy"** — the wrong board and the wrong word. The fifth group
+(`free: true` in `src/taxonomy.ts`) has **no board pills on purpose**: there is
+no list of every course in every college, and a list of a few would be a
+promise about the rest. The teacher **types the course** and it is stored as
+the `board` — "MBBS", "B.E. Mechanical", "B.Sc Physics", or just a name for a
+freeform test bank — with `COURSES` as suggestions beneath the box through the
+app's own combobox, never a closed set. The same three fields; **no storage
+change**, so it is safe to exercise on QA before it merges.
+
+- **Step 2 asks "Which year or semester?"** — tiles **Year 1–4**
+  (`COLLEGE_YEARS`), **Semester or something else** (typed), and **No year or
+  semester**. That last one is an answer, not an absence: a freeform test bank
+  has no year, and the subjects stand on their own. It is a separate `noClass`
+  flag rather than an empty `klass`, because an empty class is also what
+  "nothing picked yet" looks like and Continue must stay disabled for that.
+- **Step 3 is the box.** A course has no ready-made list to tick, so the
+  school-subject tiles and the "nothing ready-made" alert are gone and the
+  comma-separated box carries the step's label: *Anatomy, Physiology,
+  Biochemistry* is three subjects in one go.
+- **Three steps, not four** (`labelFor`): nothing ready-made exists for a
+  course today, so the ready-made step never comes. If a college shelf is ever
+  seeded, `papers()` finds it by board and class exactly as for a school board
+  and step 4 returns — make the count 4 then.
+- **Changing the course forgets the year and the subjects** typed under the
+  old name, the same rule as picking a different board pill: a different
+  course is a different subject. A click inside the course box is the caret
+  being placed and falls through to nothing.
+- **The title rule changed, on the value.** `subjectTitle` (server; `classWord`
+  in `src/taxonomy.ts` is the mirror — change both or neither) now says
+  "Class" **only before a plain number**: "CBSE Class 12 Maths" as before,
+  "JEE Main 2027 Physics" as before, and "MBBS Year 1 Anatomy", "B.E.
+  Mechanical Semester 3 Thermodynamics", "General Aptitude" as typed. It used
+  to prepend "Class" to everything that was not a four-digit year. Titles are
+  stamped on write, so existing rows keep theirs; `update` recomputes.
+- **`POST /api/subjects` create requires a board and a subject; the class is
+  optional** (it was "all three required"). The client still insists on a
+  class for a school board and a year for an exam — a matter of a sensible
+  name, not of anything that gate protects.
+- `node e2e/newsubject-offline.cjs` walks the whole college path in a real
+  browser at 1280px and 390px against a stubbed `fetch` — no network, no
+  session, and it asserts that **no POST ever leaves the page** — plus the
+  school path beside it (four steps, pills, "Class 10" in the crumb) and the
+  title rule on the client mirror. The flow's import chain reaches `data.ts`,
+  whose `import.meta.glob` is Vite's, so the harness defines it as an empty
+  function. `e2e/helpers.cjs` holds the same title cases against the server
+  and drives subjects create with an empty class through the real handler.
 
 ### An entrance exam is a `board`, and it asks for a year
 
