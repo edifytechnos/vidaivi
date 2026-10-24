@@ -3229,6 +3229,113 @@ async function generateChecks() {
   global.fetch = realFetch;
 }
 
+// --- A capped account can create a test (the entitlement gate runs) ---
+//
+// `handlers.tests` create checks the plan's test limit with
+// `await ownedCount(tests, ...)` — but ONLY when `ent.tests > 0`. An admin and
+// an exempt (legacy pilot) account both report no limit, so that gate is
+// skipped for them, and `partitionChecks` above only ever created tests as an
+// admin. That blind spot hid a real 500 for months: a `let ownedCount` further
+// down the same handler put the name in the Temporal Dead Zone for the whole
+// function, so the gate's `await ownedCount(...)` threw "Cannot access
+// 'ownedCount' before initialization" — an uncaught exception the client only
+// ever saw as "Request failed" — for every trial, new or parent account, on
+// their very first test. This drives create as a CAPPED account on purpose, so
+// the gate actually runs; it fails if the module helper is shadowed again.
+async function cappedCreateChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e });
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = opts && opts.queryOptions && opts.queryOptions.filter;
+      const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+      const want = m ? m[1].replace(/''/g, "'") : null;
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (want !== null && row.partitionKey !== want) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  // Read at module load (see roleChoiceChecks): an account must NOT be a
+  // teacher by env here, or it would get the unlimited teacher plan and skip
+  // the gate — the very thing this test needs to run.
+  process.env.TEACHER_EMAILS = "";
+  process.env.ADMIN_EMAILS = "";
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  const SUB = "capped-parent-sub-1";
+  // A real, non-exempt account on the parent plan: trialTests (3) applies, so
+  // `ent.tests > 0` and the create gate runs. Mark the legacy-exempt migration
+  // done so it is not silently stamped exempt.
+  rows.set(key("authstate", "migration", "exempt-legacy"), { partitionKey: "migration", rowKey: "exempt-legacy", at: "x" });
+  rows.set(key("accounts", "account", SUB), {
+    partitionKey: "account", rowKey: SUB, chose: "parent",
+    email: "parent@example.com", name: "P", exempt: false, paidSeats: 0,
+  });
+
+  const session = t.signSession("vgo", SUB, t.GOOGLE_SESSION_TTL_MS, { e: "parent@example.com", n: "P", ep: 0 });
+  const create = async () => {
+    const c = { res: null };
+    await t.handlers.tests(c, {
+      method: "POST",
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+      body: { action: "create", test: { title: "First test", chapter: "", teacher: "", access: "login", questions: [] } },
+    });
+    return { status: c.res && c.res.status, body: (c.res && c.res.body) || {} };
+  };
+
+  // The regression: a capped account's FIRST test. This THREW a 500 before the
+  // rename — the gate's `ownedCount` resolved to the shadowing `let`, not the
+  // module helper. (It threw on the reference, before counting anything, so
+  // zero existing tests was enough.)
+  const first = await create();
+  check(first.status === 201, `a capped account can create its first test (got ${first.status} ${first.body.error || ""})`);
+
+  // And the gate still refuses cleanly at the cap — a 402 with a reason, never
+  // a 500. Three drafts fill the parent plan's trialTests=3.
+  for (let i = 0; i < 2; i++) {
+    rows.set(key("tests", SUB, `pre${i}`), { partitionKey: SUB, rowKey: `pre${i}`, ownerSub: SUB, title: `pre${i}`, status: "draft" });
+  }
+  const over = await create();
+  check(over.status === 402, `and it is refused with a clean 402 at the cap (got ${over.status})`);
+  check(/tests on your current plan/.test(over.body.error || ""), "the refusal names the limit rather than failing opaquely");
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
@@ -3239,6 +3346,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => studentRemoveCascadeChecks())
   .then(() => lowQualityFlagChecks())
   .then(() => partitionChecks())
+  .then(() => cappedCreateChecks())
   .then(() => roleChoiceChecks())
   .then(() => reportStatusChecks())
   .then(() => purchaseChecks())
