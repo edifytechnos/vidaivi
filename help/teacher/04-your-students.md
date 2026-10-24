@@ -16,6 +16,14 @@ exactly what you want if somebody else has the old one.
 Passwords are three ordinary words and a two-digit number, all lowercase,
 because a student reads it off a phone and types it on a phone.
 
+## Or no login at all: a link
+
+For a batch you meet once or a college class that all have Gmail, [share the
+test by link](07-sharing-by-link.html) instead. A student who joins that way
+signs in with Google, shows in this list by their **email** with *joined by
+link* under it, has no password to reset, and sees only the tests they joined
+with a code. They take a seat like anyone else.
+
 ## Approval
 
 Creating a student needs you on the teacher allowlist. Before that you get

@@ -10,6 +10,10 @@ You do not sign up. Whoever set you up — your teacher, or a parent — creates
 login and hands it to you, usually on WhatsApp. It looks like a name and a short
 password made of two or three ordinary words and a number.
 
+Some teachers send a **link and an access code** instead. Then there is no
+password: you sign in with Google — see [joining a test by
+link](05-joining-by-link.html).
+
 ## Signing in
 
 1. Open [vidai.seyali.app](/).

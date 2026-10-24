@@ -803,6 +803,60 @@ body {
   }
 }
 
+/* Joining a test by link (`?join=`): the test named at the top, then one or
+   two numbered steps — Google, then the code. The same card as the sign-in
+   steps; the code box is wide type with letter-spacing, read off a board. */
+.join-head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+.join-icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--fill);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.join-icon .icon { width: 22px; height: 22px; }
+.join-title { margin: 2px 0 2px; }
+.join-sub { margin: 0 0 4px; color: var(--text-secondary); font-size: 14px; }
+.join-note {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--amber-bg);
+  color: var(--amber);
+  font-size: 13px;
+}
+.join-step { margin-top: 18px; }
+.join-step-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.join-step .google-btn-slot { margin: 4px 0 0; }
+.join-step-off { opacity: 0.7; }
+.join-code {
+  width: 100%;
+  max-width: 220px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.join-code:disabled { opacity: 0.55; }
+.join .actions .btn-ghost { text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+
 .welcome-logo {
   width: 52px;
   height: 52px;
@@ -1016,6 +1070,25 @@ body {
   color: var(--faint);
   margin-top: 3px;
 }
+
+/* A release row — the test (on the student report, which lists several),
+   its state, the switch — one line that wraps rather than runs together.
+   Shared by the student report and the per-test Results screen. */
+.rel-rows { margin-top: 12px; }
+
+.rel-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.rel-row:first-child { border-top: 0; padding-top: 0; }
+.rel-name { flex: 1 1 200px; font-weight: 600; }
+.rel-meta { color: var(--muted); font-size: 13px; }
+.rel-row .btn { margin-left: auto; }
 
 /* ---------- Review ---------- */
 
@@ -1630,6 +1703,23 @@ body {
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 1px 5px;
+}
+
+/* The empty shell's "Not in any subject": the teacher's strays, one per row,
+   each with Move here. Grey like every list; the button is the pressable. */
+.ed-stray-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.ed-stray {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+.ed-stray .tl { flex: 1; min-width: 0; }
+.ed-stray .btn { flex: none; min-width: 0; padding: 7px 12px; font-size: 13px; }
+@media (max-width: 520px) {
+  .ed-stray { flex-wrap: wrap; }
+  .ed-stray .btn { width: 100%; }
 }
 
 .ed-text,
@@ -3187,6 +3277,39 @@ body.drawer-open {
   margin: 0;
 }
 
+/* Share by link: a switch row, then the link and the code each with its Copy
+   beside it. The code is set large and spaced, as it is read off a board. */
+.share-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  margin-bottom: 14px;
+}
+.share-switch .hint { margin: 2px 0 0; }
+.share-state { font-weight: 600; }
+.share-switch .btn { flex: none; min-width: 0; }
+.share-field { margin-top: 12px; }
+.share-field .modal-label { display: block; margin-bottom: 6px; }
+.share-row { display: flex; gap: 8px; align-items: center; }
+.share-row .modal-input { flex: 1; min-width: 0; }
+.share-row .btn { flex: none; min-width: 0; padding: 9px 12px; }
+.share-code {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  max-width: 160px;
+}
+@media (max-width: 520px) {
+  .share-switch { flex-direction: column; align-items: stretch; }
+  .share-row { flex-wrap: wrap; }
+  .share-row .modal-input { flex-basis: 100%; }
+}
+
 /* The footer is a bar, not a row of buttons floating in the body: a hairline
    above it separates deciding from doing, and the actions sit hard right with
    the primary last. Back is pushed to the left by .modal-actions-gap, which is
@@ -3848,6 +3971,17 @@ body.drawer-open {
 
 .ed-tool.primary:hover { background: var(--primary-hover); color: #fff; }
 .ed-tool:disabled { opacity: 0.55; cursor: default; }
+
+/* A share link that is switched on is a selected state — the one place a
+   tool wears the tint — so a teacher can see from the row that the test is
+   open by link without opening the dialog. */
+.ed-tool.ed-tool-on {
+  color: var(--primary-deep);
+  background: var(--primary-soft);
+  border-color: transparent;
+}
+
+.ed-tool.ed-tool-on:hover { color: var(--primary-deep); border-color: var(--primary); }
 
 /* The action that changes what students see is a word, not a glyph. */
 .ed-tool-text {

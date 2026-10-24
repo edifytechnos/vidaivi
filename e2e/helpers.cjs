@@ -3568,7 +3568,7 @@ async function subjectFilingChecks() {
   const mod = { exports: {} };
   const src = fs.readFileSync(CORE, "utf8")
     .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
-    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, PLATFORM_PK };";
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, PLATFORM_PK, chunkQuestions };";
   new Function("module", "exports", "require", "__fakeTable", src)(
     mod, mod.exports,
     (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
@@ -3668,6 +3668,288 @@ async function subjectFilingChecks() {
   // The common save: the subject the row already has. No read, no change.
   await call("POST", { body: refileBody("misfiled-2", "sub-mbbs") });
   check(rows.get(key("tests", ME, "misfiled-2")).subjectId === "sub-mbbs", "a save naming the subject the row has leaves it there");
+
+  // --- the `file` action: the same rule, with no questions over the wire ---
+  //
+  // It is what the empty shell's Move here and the editor's heal-on-open call:
+  // a point read of the test, the subject check, one write — and it moves a
+  // published row as readily as a draft, which the editor's save is not meant
+  // to touch.
+  const file = (id, subjectId) => call("POST", { body: { action: "file", id, subjectId } });
+  const stray = orphan("stray-1");
+  stray.status = "published";
+  t.chunkQuestions(stray, Q);
+  const movedIn = await file("stray-1", "sub-mbbs");
+  check(movedIn.status === 200 && movedIn.body.test && movedIn.body.test.subjectId === "sub-mbbs", `file puts a stray under the caller's own subject, published or not (got ${movedIn.status})`);
+  const strayRow = rows.get(key("tests", ME, "stray-1"));
+  check(strayRow.subjectId === "sub-mbbs" && strayRow.board === "MBBS" && strayRow.klass === "Year 1", "and stamps that subject's taxonomy on the row");
+  check(strayRow.qc0 === stray.qc0 && strayRow.chunkCount === 1 && strayRow.questionCount === 1, "the questions on the row ride along untouched, and the row is still published");
+  check(strayRow.status === "published", "with its status as it was");
+  const again = await file("stray-1", "sub-maths");
+  check(again.status === 409, `a row already in one of the caller's subjects is not moved (got ${again.status})`);
+  check(rows.get(key("tests", ME, "stray-1")).subjectId === "sub-mbbs", "and stays where it was");
+  orphan("stray-2");
+  check((await file("stray-2", "lib-c12-maths")).status === 403, "into a shelf is refused");
+  check((await file("stray-2", "sub-theirs")).status === 403, "into somebody else's subject is refused");
+  check((await file("stray-2", "no-such-subject")).status === 403, "into a subject that does not exist is refused");
+  check(rows.get(key("tests", ME, "stray-2")).subjectId === "", "and each refusal leaves the row as it was");
+  seed("tests", { partitionKey: OTHER, rowKey: "theirs-1", ownerSub: OTHER, title: "Theirs", status: "draft", platform: false, subjectId: "" });
+  check((await file("theirs-1", "sub-mbbs")).status === 404, "somebody else's test reads as missing, not as moved");
+  check((await file("", "sub-mbbs")).status === 400 && (await file("stray-2", "")).status === 400, "both the test and the subject are required");
+  const shelved = orphan("stray-3");
+  shelved.subjectId = "lib-c12-maths";
+  shelved.sample = true;
+  check((await file("stray-3", "sub-maths")).status === 200 && rows.get(key("tests", ME, "stray-3")).subjectId === "sub-maths", "a sample seeded under a shelf's id is moved into the caller's own subject");
+}
+
+/**
+ * Sharing a test by link and joining it with Google + an access code, through
+ * the real handlers against a fake table and a fake Google.
+ *
+ * The teacher's `share` action mints a token and a code once and keeps them;
+ * `/api/join` turns a Google sign-in plus the code into a student of that
+ * teacher — a `students` row with `via: "google"` and `joined` — and a
+ * student session. What that student then sees is the tests they joined and
+ * nothing else the teacher publishes; a wrong code is throttled like a wrong
+ * password; a seat is taken like any other; a passwordless row costs a login
+ * attempt the same as an unknown name.
+ */
+async function joinChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e });
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = String((opts && opts.queryOptions && opts.queryOptions.filter) || "");
+      const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(filter);
+      const want = m ? m[1].replace(/''/g, "'") : null;
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      // The roster filters on teacherSub inside the one partition; a report
+      // for one test filters that student's attempts on testId inside theirs.
+      const t = /teacherSub eq '((?:[^']|'')*)'/.exec(filter);
+      const teacher = t ? t[1].replace(/''/g, "'") : null;
+      const tt = /testId eq '((?:[^']|'')*)'/.exec(filter);
+      const testId = tt ? tt[1].replace(/''/g, "'") : null;
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        if (teacher !== null && row.teacherSub !== teacher) continue;
+        if (testId !== null && row.testId !== testId) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  process.env.TEACHER_EMAILS = "share@example.com";
+  process.env.ADMIN_EMAILS = "";
+  process.env.GOOGLE_CLIENT_ID = "test-client-id";
+
+  // A fake Google: a "credential" is three dot-separated parts, the middle one
+  // naming who it is. tokeninfo answers with that person.
+  const realFetch = global.fetch;
+  const people = {
+    asha: { sub: "g-sub-asha", email: "asha@example.com", name: "Asha K" },
+    ravi: { sub: "g-sub-ravi", email: "ravi@example.com", name: "Ravi M" },
+    meena: { sub: "g-sub-meena", email: "meena@example.com", name: "Meena S" },
+    kumar: { sub: "g-sub-kumar", email: "kumar@example.com", name: "Kumar V" },
+  };
+  const credentialFor = (who) => `hdr${"x".repeat(20)}.${who}.sig${"y".repeat(20)}`;
+  global.fetch = async (url) => {
+    const m = /id_token=([^&]+)/.exec(String(url));
+    const who = m ? decodeURIComponent(m[1]).split(".")[1] : "";
+    const p = people[who];
+    if (!p) return { ok: false, status: 400, json: async () => ({}) };
+    return { ok: true, status: 200, json: async () => ({ aud: "test-client-id", exp: Math.floor(Date.now() / 1000) + 3600, ...p }) };
+  };
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, PLATFORM_PK, chunkQuestions };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  const TEACHER = "share-teacher-sub";
+  const teacherCookie = t.signSession("vgo", TEACHER, t.GOOGLE_SESSION_TTL_MS, { e: "share@example.com", n: "Share T", ep: 0 });
+  const call = async (handler, method, opts = {}) => {
+    const c = { res: null };
+    await t.handlers[handler](c, {
+      method,
+      headers: { "x-vidai-auth": "1", ...(opts.cookie ? { cookie: `vidai_session=${opts.cookie}` } : {}) },
+      query: opts.query || {},
+      body: opts.body,
+    });
+    return { status: c.res.status, body: c.res.body || {}, headers: c.res.headers || {} };
+  };
+  const cookieOf = (res) => {
+    const m = /vidai_session=([^;]+)/.exec(String(res.headers["Set-Cookie"] || ""));
+    return m ? m[1] : "";
+  };
+  const seed = (table, row) => rows.set(key(table, row.partitionKey, row.rowKey), row);
+  const Q = [{ id: "q1", chapter: "C", topic: "T", type: "mcq", q: "Which?", options: ["a", "b", "c", "d"], answer: 0, solution: "a", marks: 1 }];
+  const testRow = (id, over) => {
+    const row = {
+      partitionKey: TEACHER, rowKey: id, ownerSub: TEACHER, ownerEmail: "share@example.com",
+      title: `Test ${id}`, chapter: "Ch", teacher: "", order: 1, access: "login", status: "published",
+      platform: false, audience: "class", assignedTo: "[]", subjectId: "sub-phys",
+      board: "MBBS", klass: "Year 1", subject: "Physiology", createdAt: "2026-10-01", updatedAt: "2026-10-01", ...over,
+    };
+    t.chunkQuestions(row, Q);
+    return row;
+  };
+  seed("subjects", { partitionKey: TEACHER, rowKey: "sub-phys", board: "MBBS", klass: "Year 1", subject: "Physiology", title: "MBBS Year 1 Physiology", ownerSub: TEACHER, collaborators: "[]", createdAt: "2026-10-01" });
+  seed("tests", testRow("t-shared"));
+  seed("tests", testRow("t-class")); // published to everyone the teacher teaches — never to a link-joiner
+  seed("tests", testRow("t-second"));
+  seed("profiles", { partitionKey: "profile", rowKey: TEACHER, name: "Share T", email: "share@example.com", tokenEpoch: 0 });
+  // The legacy-exempt migration is done, so the teacher is on the trial's limits (3 students).
+  seed("authstate", { partitionKey: "migration", rowKey: "exempt-legacy", at: "x" });
+
+  // --- share: minted once, kept across off/on, the code rotates alone ------
+  const on = await call("tests", "POST", { cookie: teacherCookie, body: { action: "share", id: "t-shared", on: true } });
+  check(on.status === 200 && on.body.share && on.body.share.on === true, `share switches a test on (got ${on.status} ${on.body.error || ""})`);
+  const token = on.body.share.token;
+  const code = on.body.share.code;
+  check(/^[a-f0-9]{16}$/.test(token), `and mints a 16-hex token (${token})`);
+  check(/^[A-Z2-9]{6}$/.test(code) && !/[IO01]/.test(code), `and a six-character code with no look-alikes (${code})`);
+  const index = rows.get(key("shares", "share", token));
+  check(!!index && index.ownerSub === TEACHER && index.testId === "t-shared", "the shares index row names the owner and the test");
+  const rotated = await call("tests", "POST", { cookie: teacherCookie, body: { action: "share", id: "t-shared", on: true, rotate: true } });
+  check(rotated.body.share.token === token && rotated.body.share.code !== code, "rotate makes a new code and keeps the token");
+  const code2 = rotated.body.share.code;
+  const off = await call("tests", "POST", { cookie: teacherCookie, body: { action: "share", id: "t-shared", on: false } });
+  check(off.body.share.on === false && off.body.share.token === token && off.body.share.code === code2, "off keeps the token and the code for next time");
+  const listed = await call("tests", "GET", { cookie: teacherCookie, query: { subjectId: "sub-phys" } });
+  const metaShared = (listed.body.tests || []).find((x) => x.id === "t-shared");
+  check(!!metaShared && metaShared.share && metaShared.share.token === token && metaShared.share.code === code2 && metaShared.share.on === false, "the staff listing carries the share state");
+
+  // --- the link, opened cold --------------------------------------------
+  const cold = await call("join", "GET", { query: { token } });
+  check(cold.status === 200 && cold.body.title === "Test t-shared" && cold.body.questionCount === 1 && cold.body.teacher === "Share T", `the link opens on the test's name, size and teacher (got ${cold.status})`);
+  check(cold.body.on === false && cold.body.published === true && cold.body.student === null && cold.body.otherSession === "", "and says it is switched off, published, with nobody signed in");
+  check(!("questions" in cold.body) && !("code" in cold.body) && !("accessCode" in cold.body), "and carries neither questions nor the code");
+  const dead = await call("join", "GET", { query: { token: "0000000000000000" } });
+  check(dead.status === 404, `a token that names nothing is 404 (got ${dead.status})`);
+
+  // --- joining while off is refused; on, a wrong code is refused ----------
+  const joinAs = (who, c, extra = {}) => call("join", "POST", { ...extra, body: { token, code: c, credential: who ? credentialFor(who) : "", ...(extra.body || {}) } });
+  const whileOff = await joinAs("asha", code2);
+  check(whileOff.status === 403, `joining while sharing is off is refused (got ${whileOff.status})`);
+  await call("tests", "POST", { cookie: teacherCookie, body: { action: "share", id: "t-shared", on: true } });
+  const wrong = await joinAs("asha", "ZZZZZZ");
+  check(wrong.status === 401 && /access code/.test(wrong.body.error || ""), `a wrong code is refused and named (got ${wrong.status})`);
+  check(!rows.has(key("students", "student", `g-${require("node:crypto").createHash("sha256").update("g-sub-asha|" + TEACHER).digest("hex").slice(0, 12)}`)), "and no student is made for a wrong code");
+
+  // --- the right code: a student of this teacher, with a session ----------
+  const joined = await joinAs("asha", code2.toLowerCase().slice(0, 3) + "-" + code2.slice(3));
+  check(joined.status === 200 && joined.body.student && /^g-[a-f0-9]{12}$/.test(joined.body.student.username), `the right code — typed lower-case with a dash — joins (got ${joined.status} ${joined.body.error || ""})`);
+  const asha = joined.body.student.username;
+  const ashaCookie = cookieOf(joined);
+  check(ashaCookie.startsWith("vst."), "and the response sets a student session cookie");
+  check(joined.body.testId === "t-shared" && joined.body.subjectId === "sub-phys", "naming the test and its subject to open");
+  const ashaRow = rows.get(key("students", "student", asha));
+  check(ashaRow && ashaRow.via === "google" && ashaRow.teacherSub === TEACHER && ashaRow.email === "asha@example.com" && ashaRow.name === "Asha K", "the student row is this teacher's, from Google, with the email");
+  check(!ashaRow.passwordHash && JSON.parse(ashaRow.joined).includes("t-shared"), "with no password and the test in `joined`");
+  check(!rows.has(key("profiles", "profile", "g-sub-asha")) && !rows.has(key("accounts", "account", "g-sub-asha")), "and no profile or account row: a student is not a teacher or a parent");
+
+  // --- what the student sees: the joined test, and nothing else -----------
+  const mine = await call("tests", "GET", { cookie: ashaCookie });
+  const ids = (mine.body.tests || []).map((x) => x.id);
+  check(ids.includes("t-shared") && !ids.includes("t-class") && !ids.includes("t-second"), `a link-joined student sees the test they joined and not the class's other tests (${ids.join(", ")})`);
+  const one = await call("tests", "GET", { cookie: ashaCookie, query: { id: "t-shared" } });
+  check(one.status === 200 && Array.isArray(one.body.test.questions), "and can open it");
+  const other = await call("tests", "GET", { cookie: ashaCookie, query: { id: "t-class" } });
+  check(other.status === 403 || other.status === 404, `but not a class test they did not join (got ${other.status})`);
+  const subs = await call("subjects", "GET", { cookie: ashaCookie });
+  check((subs.body.subjects || []).some((s) => s.id === "sub-phys"), "their subject list carries the joined test's subject");
+
+  // --- the same person, a second test of the same teacher -----------------
+  await call("tests", "POST", { cookie: teacherCookie, body: { action: "share", id: "t-second", on: true } });
+  const second = rows.get(key("tests", TEACHER, "t-second"));
+  const again = await call("join", "POST", { cookie: ashaCookie, body: { token: second.shareToken, code: second.accessCode } });
+  check(again.status === 200 && again.body.student.username === asha, `a signed-in student joins a second test with the code alone, as themselves (got ${again.status} ${again.body.error || ""})`);
+  check(JSON.parse(rows.get(key("students", "student", asha)).joined).length === 2, "and the row now lists both");
+  const twoNow = (await call("tests", "GET", { cookie: ashaCookie })).body.tests.map((x) => x.id);
+  check(twoNow.includes("t-shared") && twoNow.includes("t-second") && !twoNow.includes("t-class"), "so both are listed, the class test still not");
+  const viaGoogleAgain = await joinAs("asha", second.accessCode, { body: { token: second.shareToken } });
+  check(viaGoogleAgain.status === 200 && viaGoogleAgain.body.student.username === asha, `the same Google account joining again lands on the same row (got ${viaGoogleAgain.status} ${viaGoogleAgain.body.error || ""} ${viaGoogleAgain.body.reason || ""})`);
+  check([...rows.keys()].filter((k) => k.startsWith("students/")).length === 1, "and makes no second student");
+
+  // --- the link, opened by that student -----------------------------------
+  const warm = await call("join", "GET", { cookie: ashaCookie, query: { token } });
+  check(warm.body.student && warm.body.student.joined === true && warm.body.otherSession === "", "the link opened by a student who joined says so, so no code is asked again");
+
+  // --- a teacher trying their own link is told to sign out ---------------
+  const asTeacher = await call("join", "GET", { cookie: teacherCookie, query: { token } });
+  check(asTeacher.body.otherSession === "google", "a signed-in teacher opening the link is told they are somebody else");
+  const teacherJoins = await joinAs("ravi", code2, { cookie: teacherCookie });
+  check(teacherJoins.status === 409, `and joining from that session is refused rather than replacing it (got ${teacherJoins.status})`);
+
+  // --- seats: the trial's three, then full --------------------------------
+  check((await joinAs("ravi", code2)).status === 200, "a second student joins");
+  check((await joinAs("meena", code2)).status === 200, "a third student joins");
+  const full = await joinAs("kumar", code2);
+  check(full.status === 403 && full.body.full === true && !/₹|plan|paise/i.test(full.body.error || ""), `a fourth is refused as full, with no mention of money (got ${full.status}: ${full.body.error})`);
+  check((await joinAs("asha", code2)).status === 200, "while a student who already has a seat still gets in");
+
+  // --- guesses are throttled like passwords -------------------------------
+  let locked = 0;
+  for (let i = 0; i < 8; i++) {
+    const r = await joinAs("kumar", "WRONGX");
+    if (r.status === 429) { locked = i + 1; break; }
+  }
+  check(locked > 0 && locked <= 6, `wrong codes lock the caller out after a few tries (locked on try ${locked})`);
+
+  // --- a passwordless row costs a login attempt like an unknown name -------
+  const pw = await call("studentlogin", "POST", { body: { username: asha, password: "anything42" } });
+  check(pw.status === 401 && /Wrong username or password/.test(pw.body.error || ""), `the link username cannot sign in with a password (got ${pw.status})`);
+
+  // --- the roster and the report say who joined and how -------------------
+  const roster = await call("students", "GET", { cookie: teacherCookie });
+  const ashaInRoster = (roster.body.students || []).find((s) => s.username === asha);
+  check(ashaInRoster && ashaInRoster.via === "google" && ashaInRoster.email === "asha@example.com", "the roster carries how they joined and their email");
+  seed("attempts", { partitionKey: `stu~${asha}`, rowKey: "a-1", testId: "t-shared", score: 1, total: 1, completedAt: "2026-10-24T10:00:00Z" });
+  seed("attempts", { partitionKey: `stu~${asha}`, rowKey: "a-2", testId: "t-second", score: 0, total: 1, completedAt: "2026-10-24T11:00:00Z" });
+  const report = await call("reports", "GET", { cookie: teacherCookie, query: { testId: "t-shared" } });
+  const ashaReport = (report.body.students || []).find((s) => s.username === asha);
+  check(ashaReport && ashaReport.attempts.length === 1 && ashaReport.attempts[0].testId === "t-shared", "the report filtered to one test keeps that test's attempts only");
+  check(ashaReport.via === "google" && ashaReport.email === "asha@example.com", "and names how each student joined");
+
+  // --- an unapproved teacher cannot share ---------------------------------
+  const STRANGER = "unapproved-sub";
+  seed("accounts", { partitionKey: "account", rowKey: STRANGER, chose: "teacher", email: "stranger@example.com", exempt: false });
+  seed("tests", { ...testRow("t-theirs"), partitionKey: STRANGER, ownerSub: STRANGER, ownerEmail: "stranger@example.com" });
+  const strangerCookie = t.signSession("vgo", STRANGER, t.GOOGLE_SESSION_TTL_MS, { e: "stranger@example.com", n: "S", ep: 0 });
+  const refused = await call("tests", "POST", { cookie: strangerCookie, body: { action: "share", id: "t-theirs", on: true } });
+  check(refused.status === 403 && /approved/.test(refused.body.error || ""), `a teacher not yet approved cannot share by link (got ${refused.status})`);
+
+  global.fetch = realFetch;
 }
 
 // --- Bounded parallelism keeps input order ---
@@ -3682,6 +3964,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => partitionChecks())
   .then(() => cappedCreateChecks())
   .then(() => subjectFilingChecks())
+  .then(() => joinChecks())
   .then(() => roleChoiceChecks())
   .then(() => reportStatusChecks())
   .then(() => purchaseChecks())
