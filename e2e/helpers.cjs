@@ -3509,6 +3509,167 @@ async function cappedCreateChecks() {
   check(boardless.status === 400, `and so is no board (got ${boardless.status})`);
 }
 
+/**
+ * Where a test is filed, through the real tests handler against a fake table.
+ *
+ * Two holes with one cause — a `subjectId` nobody checked — put tests where no
+ * tree could show them: the starter samples were filed under whichever subject
+ * the client's list put first (a library shelf, once shelves were in it), and a
+ * test created from the empty shell of a subject the app had not made current
+ * was filed under none. The server side of the fix is here: `seedSamples`
+ * takes only one of the caller's own subjects, and `update` gives a subject to
+ * a row that has none — and only to one that has none.
+ */
+async function subjectFilingChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e });
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = opts && opts.queryOptions && opts.queryOptions.filter;
+      const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+      const want = m ? m[1].replace(/''/g, "'") : null;
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (row.partitionKey !== want) continue;
+        hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  // Read at module load: an approved teacher, so the plan gates stay out of
+  // the way and the question here is only where a row lands.
+  process.env.TEACHER_EMAILS = "filing@example.com";
+  process.env.ADMIN_EMAILS = "";
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, PLATFORM_PK };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  const ME = "filing-teacher-sub-1";
+  const OTHER = "filing-teacher-sub-2";
+  const session = t.signSession("vgo", ME, t.GOOGLE_SESSION_TTL_MS, { e: "filing@example.com", n: "F", ep: 0 });
+  const call = async (method, opts = {}) => {
+    const c = { res: null };
+    await t.handlers.tests(c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+      query: opts.query || {},
+      body: opts.body,
+    });
+    return { status: c.res.status, body: c.res.body || {} };
+  };
+  const seed = (table, row) => rows.set(key(table, row.partitionKey, row.rowKey), row);
+  const subjectRow = (pk, id, over) => ({
+    partitionKey: pk, rowKey: id, board: "CBSE", klass: "12", subject: "Maths",
+    title: "CBSE Class 12 Maths", ownerSub: pk, collaborators: "[]", createdAt: "2026-01-01", ...over,
+  });
+  seed("subjects", subjectRow(ME, "sub-mbbs", { board: "MBBS", klass: "Year 1", subject: "Anatomy", title: "MBBS Year 1 Anatomy" }));
+  seed("subjects", subjectRow(ME, "sub-maths", {}));
+  seed("subjects", subjectRow(OTHER, "sub-theirs", {}));
+  seed("subjects", subjectRow(t.PLATFORM_PK, "lib-c12-maths", { platform: true, ownerSub: t.PLATFORM_PK }));
+  const Q = [{ id: "q1", chapter: "C", topic: "T", type: "numeric", q: "2+2?", answer: 4, tolerance: 0, solution: "four", marks: 2 }];
+  const samples = [{ id: "mat-demo", title: "Matrices — Demo Test", chapter: "Matrices", questions: Q }];
+  const seedCall = (subjectId) => call("POST", { body: { action: "seedSamples", tests: samples, subjectId } });
+  const seeded = () => [...rows.entries()].filter(([k, r]) => k.startsWith("tests/") && r.sample);
+  const flag = () => rows.get(key("teacherstate", "state", ME));
+
+  // --- the samples go under one of the caller's own subjects, or nowhere ---
+  const none = await seedCall(undefined);
+  check(none.status === 400, `samples with no subject are refused (got ${none.status})`);
+  const shelf = await seedCall("lib-c12-maths");
+  check(shelf.status === 400, `and never filed under a library shelf (got ${shelf.status})`);
+  const theirs = await seedCall("sub-theirs");
+  check(theirs.status === 400, `nor under somebody else's subject (got ${theirs.status})`);
+  check(seeded().length === 0 && !flag(), "a refusal writes nothing and leaves the once-only flag unset, so the offer stands");
+  const ok = await seedCall("sub-maths");
+  check(ok.status === 201 && ok.body.seeded === 1, `under the caller's own subject they are seeded (got ${ok.status}, ${ok.body.seeded})`);
+  const [, sample] = seeded()[0] || [];
+  check(sample && sample.subjectId === "sub-maths", "and each sample carries that subject");
+  check(sample && sample.board === "CBSE" && sample.klass === "12" && sample.subject === "Maths", "with the subject's own taxonomy stamped on it");
+  check(!!(flag() && flag().samplesSeededAt), "and the flag is set only once something was written");
+
+  // --- a row with no subject may be given one; a row with one keeps it -----
+  const refileBody = (id, subjectId) => ({
+    action: "update",
+    test: { id, title: "Human Physiology", chapter: "", teacher: "", access: "login", questions: Q, subjectId },
+  });
+  const orphan = (id) => {
+    const row = { partitionKey: ME, rowKey: id, ownerSub: ME, title: "Untitled test", chapter: "", teacher: "",
+      order: 99, access: "login", status: "draft", platform: false, board: "CBSE", klass: "12", subject: "Maths",
+      subjectId: "", createdAt: "2026-10-01", updatedAt: "2026-10-01" };
+    seed("tests", row);
+    return row;
+  };
+  orphan("orphan-1");
+  const before = await call("GET", { query: { subjectId: "sub-mbbs" } });
+  check(!(before.body.tests || []).some((x) => x.id === "orphan-1"), "an orphan is in no subject's listing");
+  const moved = await call("POST", { body: refileBody("orphan-1", "sub-mbbs") });
+  check(moved.status === 200, `an update naming the caller's own subject files an orphan under it (got ${moved.status})`);
+  const after = rows.get(key("tests", ME, "orphan-1"));
+  check(after.subjectId === "sub-mbbs", `and the row now carries it (${after.subjectId})`);
+  check(after.board === "MBBS" && after.klass === "Year 1" && after.subject === "Anatomy", "with that subject's taxonomy");
+  const listed = await call("GET", { query: { subjectId: "sub-mbbs" } });
+  check((listed.body.tests || []).some((x) => x.id === "orphan-1"), "so the subject's own listing shows it from then on");
+
+  const stay = await call("POST", { body: refileBody("orphan-1", "sub-maths") });
+  check(stay.status === 200 && rows.get(key("tests", ME, "orphan-1")).subjectId === "sub-mbbs", "a row that has a subject keeps it whatever the body says");
+
+  orphan("orphan-2");
+  await call("POST", { body: refileBody("orphan-2", "lib-c12-maths") });
+  check(rows.get(key("tests", ME, "orphan-2")).subjectId === "", "an orphan is never filed under a library shelf");
+  await call("POST", { body: refileBody("orphan-2", "sub-theirs") });
+  check(rows.get(key("tests", ME, "orphan-2")).subjectId === "", "nor under somebody else's subject");
+  await call("POST", { body: refileBody("orphan-2", "no-such-subject") });
+  check(rows.get(key("tests", ME, "orphan-2")).subjectId === "", "nor under a subject that does not exist");
+  check(rows.get(key("tests", ME, "orphan-2")).title === "Human Physiology", "while the rest of the update still lands");
+
+  // A sample seeded under a shelf's id, or a row under a subject that is not
+  // the caller's, is filed nowhere they can open — the same case as no
+  // subject, and healed the same way.
+  const misfiled = orphan("misfiled-1");
+  misfiled.subjectId = "lib-c12-maths";
+  await call("POST", { body: refileBody("misfiled-1", "sub-maths") });
+  check(rows.get(key("tests", ME, "misfiled-1")).subjectId === "sub-maths", "a row under a shelf's id is moved into the caller's own subject");
+  const strayed = orphan("misfiled-2");
+  strayed.subjectId = "sub-theirs";
+  await call("POST", { body: refileBody("misfiled-2", "sub-mbbs") });
+  check(rows.get(key("tests", ME, "misfiled-2")).subjectId === "sub-mbbs", "and so is a row under a subject that is not theirs");
+  // The common save: the subject the row already has. No read, no change.
+  await call("POST", { body: refileBody("misfiled-2", "sub-mbbs") });
+  check(rows.get(key("tests", ME, "misfiled-2")).subjectId === "sub-mbbs", "a save naming the subject the row has leaves it there");
+}
+
 // --- Bounded parallelism keeps input order ---
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
@@ -3520,6 +3681,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => lowQualityFlagChecks())
   .then(() => partitionChecks())
   .then(() => cappedCreateChecks())
+  .then(() => subjectFilingChecks())
   .then(() => roleChoiceChecks())
   .then(() => reportStatusChecks())
   .then(() => purchaseChecks())

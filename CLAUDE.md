@@ -737,8 +737,69 @@ and the explanation, each with a live "Student sees" preview.
   to edit", because `update` overwrites the row students are reading. Versioning
   (next slice) replaces this.
 - **Starter samples**: a teacher with no tests gets the bundled tests copied in
-  as their own editable drafts, once ever (`teacherstate` table, `seedSamples`).
+  as their own editable drafts, once ever (`teacherstate` table, `seedSamples`)
+  — **into a subject of theirs the samples fit, and otherwise not at all.** The
+  samples are CBSE Class 12 Maths papers; `samplesFit` in
+  `src/screens/subjects.ts` looks for that subject among the teacher's own and
+  seeds only when it finds one, and the server refuses any `subjectId` that is
+  not one of the caller's own (never a shelf, never somebody else's). A refusal
+  leaves the once-only flag unset, so the offer stands until there is such a
+  subject. It used to hand the seed `owned[0]` of the subject list — which has
+  had the library's shelves in it since Sep 2026, sorted by title in front of
+  anything a teacher owns — so every new teacher's samples went under the
+  first shelf, where no tree of theirs could show them.
 - `?edit=<testId>&q=<questionId>` restores a teacher's place across a refresh.
+
+### The tree is the subject the open test lives in
+
+`showEditor` scoped the tree by **the subject in memory** (`currentSubject()`),
+which is right when the teacher came through a card or the picker, stale from
+My tests, and **absent on a reload** — and New subject's Done step opened the
+editor without ever setting it (25 Sep–24 Oct). With nothing to scope by the
+listing went out unscoped, the tree drew every test the teacher owned, and the
+picker — a select with no option selected — showed its first entry as if the
+tree were in it. One teacher's MBBS subject held two Class 12 Maths samples.
+Worse, "Create the first test" from that shell filed the test under
+`currentSubject()` — **no subject at all** — so their first test sat in no tree
+they could open, the subject card still read *0 tests*, and the shell offered
+to create the first test again.
+
+- **The test's own `subjectId` decides.** `showEditor` keeps the in-memory
+  subject as a guess, fetches the listing scoped to it in the same
+  `Promise.all` as the test (and not at all when there is no guess — an
+  unscoped listing would be a listing to throw away), and asks once more only
+  when the test says otherwise. A right guess costs one listing, as before.
+  `Test.subjectId` is declared for it; the API always sent it.
+- **Both shells make their subject current** (`setSubject` in `showEditor` and
+  `showEditorForSubject`), and everything created from the screen files under
+  `subjectHere()` — the tree's subject, then the one in memory — so a blank
+  test, a Seyari *Create test with this* and the + all land where the teacher
+  can see they are.
+- **A draft filed nowhere the teacher can open is filed under the subject it
+  is opened in**, once. "Nowhere" is no subject at all, a shelf's id on a row
+  that is not a master (the starter samples, above), or a subject that is not
+  theirs; a shelf counts as a home only for an admin, who works in them.
+  `showEditor` stamps `subjectId` on it, `save()` carries it on every update,
+  and the server's `update` honours it **only when the row's current subject
+  is not one of the caller's own**, and only for one that is (point reads in
+  their partition, owner checked on the row — the legacy partition is
+  anybody's). The common save names the subject the row already has and costs
+  no read; a row under one of their own subjects keeps it whatever the body
+  says, because where a test is filed is not otherwise editable. One line says
+  *Filed under …*. Opened with nothing in memory, such a row stays put and the
+  picker reads **All subjects** rather than the first subject listed.
+- `node e2e/editor-offline.cjs` drives the real editor at 1280px and 390px
+  against a stubbed server: a reload scopes to the test's subject with one
+  listing, a stale subject loses to it, New subject's shell files the first
+  test under its subject, an orphan and a sample under a shelf's id are each
+  re-filed and announced, and nothing is written when there is nowhere to
+  file it. Against the old code its first assertion prints the screenshot:
+  *Human Physiology | Matrices — Demo Test | Test 1 — Relations and
+  Functions*. `e2e/helpers.cjs` holds the server half: the seed refused for
+  no subject, a shelf and somebody else's; the re-file taken for an orphan, a
+  row under a shelf and a row under somebody else's subject, and refused into
+  a shelf, somebody else's subject and one that does not exist, with a row
+  under the caller's own subject staying put.
 
 ## Seyari AI: questions written, or read off a paper, with the teacher (`/api/generate`)
 
@@ -1473,7 +1534,10 @@ move, a re-render, Back, Forward and Back over an open dialog. It fails four
 ways against a replace-only `setUrl`. `node e2e/seyari.cjs` drives the Seyari
 AI panel the same way, against a stubbed `fetch` and a host object that records
 what it is handed, and `node e2e/select.cjs` the app's own dropdown and combobox over native
-controls; `node e2e/dialog.cjs` the app's own confirm and notice. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+controls; `node e2e/dialog.cjs` the app's own confirm and notice.
+`node e2e/editor-offline.cjs` drives the real authoring editor against a
+stubbed server — which subject the tree is scoped to, and under which subject a
+test made from the screen is filed. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the
