@@ -3949,6 +3949,20 @@ async function joinChecks() {
   const refused = await call("tests", "POST", { cookie: strangerCookie, body: { action: "share", id: "t-theirs", on: true } });
   check(refused.status === 403 && /approved/.test(refused.body.error || ""), `a teacher not yet approved cannot share by link (got ${refused.status})`);
 
+  // --- and the admin can see them waiting, and approve them -----------------
+  seed("accounts", { partitionKey: "account", rowKey: "a-parent", chose: "parent", email: "mum@example.com", exempt: false });
+  const adminCookie = t.signSession("vad", "admin", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+  const waiting = await call("teachers", "GET", { cookie: adminCookie });
+  const pend = (waiting.body.pending || []).map((p) => p.email);
+  check(waiting.status === 200 && pend.includes("stranger@example.com"), `the admin's teacher list shows the unapproved teacher as waiting (got ${waiting.status}: ${pend.join(", ")})`);
+  check(!pend.includes("mum@example.com") && !pend.includes("share@example.com"), "and not a parent, nor a teacher already approved");
+  const approve = await call("teachers", "POST", { cookie: adminCookie, body: { action: "add", email: "stranger@example.com" } });
+  check(approve.status === 200, `approving adds them (got ${approve.status})`);
+  const after = await call("teachers", "GET", { cookie: adminCookie });
+  check(!(after.body.pending || []).some((p) => p.email === "stranger@example.com") && (after.body.teachers || []).some((x) => x.email === "stranger@example.com"), "after which they leave the waiting list and join the allowed list");
+  const nowShares = await call("tests", "POST", { cookie: strangerCookie, body: { action: "share", id: "t-theirs", on: true } });
+  check(nowShares.status === 200, `and can share by link straight away (got ${nowShares.status} ${nowShares.body.error || ""})`);
+
   global.fetch = realFetch;
 }
 

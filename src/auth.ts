@@ -489,11 +489,18 @@ export const totpInit = () => totpAction({ action: "init" });
 export const totpEnable = (code: string) => totpAction({ action: "enable", code });
 export const totpDisable = (code: string) => totpAction({ action: "disable", code });
 
-export async function listTeachers(): Promise<{ email: string; addedAt?: string }[] | null> {
+export interface TeacherLists {
+  teachers: { email: string; addedAt?: string }[];
+  /** Chose "teacher" at sign-up and not yet approved — told they are waiting. */
+  pending: { email: string; name: string; since?: string }[];
+}
+
+export async function listTeachers(): Promise<TeacherLists | null> {
   try {
     const res = await apiFetch("/api/teachers", { headers: authHeader() });
     if (!res.ok) return null;
-    return (await res.json()).teachers;
+    const data = await res.json();
+    return { teachers: data.teachers || [], pending: data.pending || [] };
   } catch {
     return null;
   }
