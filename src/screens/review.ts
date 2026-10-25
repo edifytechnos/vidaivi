@@ -17,7 +17,7 @@ import {
   attemptCounts,
   fetchGrading,
   fetchReleased,
-  fetchReleaseState,
+  fetchStudentRelease,
   getProfile,
   isLoggedIn,
   isParent,
@@ -31,6 +31,7 @@ import { totalMarks } from "../data";
 import { app, escapeHtml, formatText, ICONS, renderMath, setUrl, testLabelMarkup } from "../dom";
 import { bindTreeDrawer, drawerToggleMarkup, mount, toTop } from "../shell";
 import { aiGoInner, aiTakeInner, lightTrace } from "../ailight";
+import { notice } from "../dialog";
 import type { Attempt, Question, StoredAnswer, Test } from "../types";
 import { hydrateMarks, startTest } from "./test";
 
@@ -169,9 +170,18 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolea
 async function bindRelease(testId: string, username: string): Promise<void> {
   const btn = document.getElementById("mk-release") as HTMLButtonElement | null;
   if (!btn || !username) return;
-  const state = await fetchReleaseState(testId);
-  let classWide = !!state?.classWide;
-  let mine = !!state?.students.some((x) => x.username === username);
+  // A parent marking their child's paper asks about that one child. The
+  // whole-test state is a teacher's question, and for a teacher's test it
+  // would list the child's classmates.
+  if (isParent()) {
+    await bindParentRelease(btn, testId, username);
+    return;
+  }
+  // Per student, not the whole test: an admin marking a teacher's student may
+  // not read the test's whole release list, and would be told it was shut.
+  const state = await fetchStudentRelease(testId, username);
+  let classWide = state.classWide;
+  let mine = state.mine;
 
   const paint = (): void => {
     btn.disabled = classWide && !mine;
@@ -196,6 +206,38 @@ async function bindRelease(testId: string, username: string): Promise<void> {
       mine = want;
       track("answers_released", { test: testId, scope: "student", open: want });
     }
+    paint();
+  });
+}
+
+/** Release for a parent: one child's state, read again after every change. */
+async function bindParentRelease(
+  btn: HTMLButtonElement,
+  testId: string,
+  username: string
+): Promise<void> {
+  let open = await fetchReleased(testId, username);
+  // Closing a paper the teacher opened to the whole class does nothing for
+  // one child, so after "Hide again" the state is read, never assumed.
+  let classWide = false;
+  const paint = (): void => {
+    btn.disabled = classWide;
+    btn.textContent = classWide ? "Open to the class" : open ? "Hide again" : "Release to this student";
+    btn.title = classWide
+      ? "Their teacher has opened this paper to everyone who sat it"
+      : open
+        ? "Your child can see their marks and the solutions"
+        : "Let your child see their marks, the answers and the worked solutions";
+  };
+  paint();
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    const want = !open;
+    const ok = await setReleased(testId, { username, released: want });
+    if (ok) track("answers_released", { test: testId, scope: "student", open: want, by: "parent" });
+    open = await fetchReleased(testId, username);
+    classWide = !want && open;
+    if (!ok) notice("That did not save — try again.");
     paint();
   });
 }
@@ -358,6 +400,14 @@ function setCreditNote(c?: { left: number; low: boolean }): void {
     return;
   }
   creditLow = c.low;
+  // A parent's credits are a balance they top up, not a month that refills —
+  // so neither "this month" nor "ask your admin" is true for them.
+  if (isParent()) {
+    creditNote = c.low
+      ? `${c.left} AI credits left — mark by hand, or top up from your child's results`
+      : `${c.left} AI credits left`;
+    return;
+  }
   creditNote = c.low
     ? `${c.left} AI credits left this month — mark by hand, or ask your admin to top you up`
     : `${c.left} AI credits left this month`;

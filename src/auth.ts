@@ -75,6 +75,12 @@ export interface StudentRecord {
   via?: "login" | "google";
   /** The Google account's address, for a student who joined by link. */
   email?: string;
+  /**
+   * The teacher's switch: a parent linked to this student may mark their
+   * papers (by hand or with AI, from the parent's own credits) and release
+   * them. Off unless the teacher turned it on.
+   */
+  parentMarks?: boolean;
 }
 
 const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
@@ -670,8 +676,9 @@ export async function fetchAiUsage(month?: string): Promise<AiUsageReport | null
 /**
  * Mark a whole paper with AI and open it to the child, in one call.
  *
- * Only for a parent's own child: the server refuses a linked one, because that
- * paper belongs to the teacher who issued the login.
+ * For a parent's own child, or a linked child whose teacher has switched
+ * parent marking on; the server refuses any other. The parent's own credits
+ * pay for it either way.
  */
 export async function assessWholePaper(
   username: string,
@@ -835,6 +842,28 @@ export async function resetStudentPassword(
     return await res.json();
   } catch {
     return null;
+  }
+}
+
+/**
+ * Teacher: let a parent linked to this student mark and release their papers,
+ * or stop them. Only the account that issued the login may set it.
+ */
+export async function setParentMarking(
+  username: string,
+  on: boolean
+): Promise<{ ok: boolean; message?: string }> {
+  try {
+    const res = await apiFetch("/api/students", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "parentMarking", username, on }),
+    });
+    if (res.ok) return { ok: true };
+    const data = await res.json().catch(() => ({}));
+    return { ok: false, message: data.error || "That did not save" };
+  } catch {
+    return { ok: false, message: "That did not save — check the connection" };
   }
 }
 
@@ -1129,6 +1158,36 @@ export async function fetchReleaseState(testId: string): Promise<ReleaseState | 
     return (await res.json()) as ReleaseState;
   } catch {
     return null;
+  }
+}
+
+/**
+ * One student's paper, as the marking screen and the student's report need it:
+ * open to the class, open to them, and whether this caller may open it to the
+ * class at all. The whole-test state is the owner's only, so an admin marking a
+ * teacher's student, or a parent, falls back to the per-student answer and gets
+ * `manage: false` — the class-wide control is not theirs to offer.
+ */
+export async function fetchStudentRelease(
+  testId: string,
+  student: string
+): Promise<{ classWide: boolean; mine: boolean; manage: boolean }> {
+  const state = await fetchReleaseState(testId);
+  if (state) {
+    return {
+      classWide: !!state.classWide,
+      mine: state.students.some((x) => x.username === student),
+      manage: true,
+    };
+  }
+  try {
+    const q = new URLSearchParams({ testId, student });
+    const res = await apiFetch(`/api/release?${q}`, { headers: authHeader() });
+    if (!res.ok) return { classWide: false, mine: false, manage: false };
+    const body = await res.json();
+    return { classWide: !!body.classWide, mine: !!body.mine, manage: false };
+  } catch {
+    return { classWide: false, mine: false, manage: false };
   }
 }
 

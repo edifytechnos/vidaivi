@@ -23,9 +23,10 @@ child out of their devices.
 Your child's teacher gives you a one-time code. Redeeming it links that child to
 your account so you can **watch** — their papers, their marks, their progress.
 
-You cannot mark a linked child's paper, and you cannot mark it with AI either.
-That paper belongs to the teacher who issued the login, and two people marking
-the same answer is worse than one.
+A linked child's papers are marked by their teacher. If the teacher lets you,
+you can mark them too — by hand or with AI, using your own credits — and release
+them to your child. See [Marking and releasing a paper](04-marking-and-releasing.html#a-child-linked-from-a-teacher).
+Until the teacher switches that on, you watch.
 
 ## How many
 
@@ -35,7 +36,8 @@ against that; children linked from a teacher do not use your practice.
 ## Telling them apart
 
 On the Children screen, a child you created is **yours to mark**. A linked child
-is marked *linked* — you only watch.
+is marked *linked*. You only watch, unless their teacher has let you mark — then
+their papers open for marking exactly as your own child's do.
 
 ## Resetting a password
 
