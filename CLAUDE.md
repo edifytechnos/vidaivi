@@ -1564,7 +1564,9 @@ what it is handed, and `node e2e/select.cjs` the app's own dropdown and combobox
 controls; `node e2e/dialog.cjs` the app's own confirm and notice.
 `node e2e/editor-offline.cjs` drives the real authoring editor against a
 stubbed server — which subject the tree is scoped to, and under which subject a
-test made from the screen is filed. `node e2e/join.cjs` drives the join
+test made from the screen is filed. `node e2e/parentmarking.cjs` drives the
+teacher's **Parent can mark and release** switch and a parent opening a paper
+as its marker, the same way. `node e2e/join.cjs` drives the join
 screen, the Share by link dialog and the per-test Results screen the same way,
 with Google's sign-in script stubbed. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
@@ -2248,8 +2250,10 @@ returned `null` for everything. That mattered the moment parents and unapproved
 teachers could reach it: a 402 **names the price** and "waiting to be approved"
 is not a failure, and both were being shown as "something went wrong".
 
-A linked child is still read-only — a parent never marks somebody else's
-student. What changed is that their **own** child is theirs.
+A linked child is read-only — a parent never marks somebody else's student —
+**unless that student's teacher switches parent marking on** (see *A linked
+parent marks only while the teacher allows it*, below). Their **own** child is
+always theirs.
 
 **`childLink` had the same blind spot `linkedChildren` did.** It walked
 `parentlinks` only, so a child this account *issued* — a `students` row with
@@ -2527,9 +2531,12 @@ button acts on their behalf: `aiAwarded` is kept beside `awarded` so they can
 see where the number came from, and every mark is theirs to change on the paper
 afterwards. It is scoped hard:
 
-- **Their own child only.** The student's `teacherSub` must be the caller
-  (admins may stand in). A **linked** child — one redeemed from a teacher's
-  invite code — is refused 403: that paper belongs to whoever issued the login.
+- **Their own child, or a linked one their teacher lets them mark.** The gate
+  is `markRefusal` (below): the student's `teacherSub` is the caller, or the
+  caller is an admin, or the caller is a linked parent and the student row
+  carries `parentMarks: true`. Anyone else is refused 403. The paper is read
+  from the partition of whoever issued the login, so a linked child's
+  teacher's test is found.
 - **The whole paper is reserved before anything is spent.** Four of seven
   answers marked is worse to read than none, so a balance that cannot cover the
   lot is a 402 that names both numbers and the model is never called.
@@ -2642,6 +2649,59 @@ one request per paper is an N+1 from a phone (rule 3). Each paper with answers
 waiting gets **Mark N & release**; the balance sits above the list and turns
 amber when low, with **Top up** beside it. A balance that fails to load says
 **nothing** — the server's gate is the real limit.
+
+### A linked parent marks only while the teacher allows it (`parentMarks`)
+
+A parent who redeemed a teacher's invite code can **see** their child's work.
+**Seeing a paper and marking it are two powers**, and every write path used to
+ask only the first: `grading {action:"mark"}`, the single-answer
+`/api/assess` and the per-student `release` all gated on `canSeeStudent`, so a
+linked parent could award marks, spend on AI drafts and release a teacher's
+paper at the API, with nothing but a missing button in the way. The teacher now
+decides, per student.
+
+- **`markRefusal(who, username)` is the one gate every write path asks**: the
+  manual mark, the single AI draft, the whole-paper AI action, the per-student
+  release, and `GET /api/tests?id=&forStudent=` for a parent. It returns `""`
+  for whoever issued the login and for an admin; for a linked parent only while
+  the student row says `parentMarks: true`; a student never marks. It calls
+  `canSeeStudent` first, so nothing the read gate refuses becomes writable.
+- **The switch is `POST /api/students {action:"parentMarking", username, on}`**,
+  taken only from the account that issued the login (403 for another teacher
+  and for the parent). It writes `parentMarks` on the `students` row — the one
+  row that knows, since finding every parent linked to a student would be a
+  scan of `parentlinks`. Off is the default and a row written before the
+  switch existed reads as off. `ROSTER_SELECT` carries it, so the roster and
+  `/api/reports` answer it.
+- **It is read through `studentRecord`**, the 30-second cache every student
+  request already reads, and the toggle `drop()`s this instance's entry. So
+  switching it off takes effect at once there and within `STUDENT_TTL_MS` on
+  another warm instance — the same window as removing a student.
+- **The parent pays.** The AI paths spend `walletOf(who)` — the caller's — so a
+  parent marking a teacher's student uses their own lifetime balance, never the
+  teacher's month. The daily cap is keyed on the caller too.
+- **`linkedChildren` answers `canMark`** per child: true for one the parent
+  issued, and for a linked one the student row's flag, one cached point read
+  per child (≤ 20, `inBatches`). The parent's **To mark** queue adds those
+  children's waiting rows with one query per child, in that child's own
+  partition — their rows carry the teacher's id, so the queue's `teacherId`
+  read cannot find them.
+- **Both can mark.** The teacher keeps every power over their own student;
+  whoever saves a mark last wins, and `markedBy` records who. Switching the
+  flag off leaves the parent's marks as they are.
+- Client: the switch is **Parent can mark and release** on the teacher's
+  student report (`showStudentReport` in `src/screens/console.ts`); it saves on
+  the tick and puts itself back if the save is refused. On the parent's side
+  `showChildResults` reads `child.canMark` (falling back to `own` for an older
+  server): the credits line, **Mark N & release**, and a test card that opens
+  the paper through `openStudentPaper` — the marking paper with the marks row,
+  Assess with AI and Release. **A parent's Release asks about that one child**
+  (`bindParentRelease` in `src/screens/review.ts`), never the whole test's
+  release list, which for a teacher's test would name the child's classmates.
+- `e2e/helpers.cjs` (`parentMarkingChecks`) drives every write path through
+  the real handlers with the switch off, on and off again, and was verified to
+  fail sixteen ways with the flag check removed. `node e2e/parentmarking.cjs`
+  drives the two screens at 1280px and 390px against a stubbed `fetch`.
 
 ### Two attempts at a ready-made test
 
@@ -2778,7 +2838,9 @@ useful as a demo.)
   every paper a student has handed in and one request per paper is an N+1 from
   a phone. Still only point reads (`isReleased` twice per id, `inBatches`).
 - `POST {action:"release"|"unrelease", testId, username?}` — teachers/admins,
-  gated by `canSeeStudent`. Omit `username` to open it for everyone.
+  and a parent for their child. One student is gated by `markRefusal`, the
+  marking gate, not `canSeeStudent`: opening a paper is part of marking it.
+  Omit `username` to open it for everyone.
 - Client: `fetchReleased` / `fetchReleaseState` / `setReleased` in `src/auth.ts`.
   `fetchReleased` **fails closed** — a network error keeps the paper shut.
 

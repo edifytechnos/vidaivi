@@ -48,6 +48,23 @@ paper held shut by one timeout is the dead end this exists to remove.
 
 Pressing the button again costs nothing for answers already marked.
 
+## A child linked from a teacher
+
+A child you linked with a teacher's code is marked by that teacher. The teacher
+can let you mark too, from the child's report on their side. Once they have:
+
+- **Mark N & release** appears on your child's papers, as it does for a child
+  you created.
+- Opening a paper gives you the marks row under each written answer,
+  **Assess with AI**, and **Release** — the same screen the teacher marks on.
+- Any AI marking comes out of **your own credits**, never the teacher's.
+- The teacher can still mark and release the paper themselves. Whoever saves a
+  mark last is the mark your child sees, and each mark records who gave it.
+
+If the teacher switches it off again, your marks stay as they are and you are
+back to watching. Until it is on, opening a paper only shows it to you once it
+has been released.
+
 ## Releasing without marking
 
 You can release a paper at any time from inside it. Your child then sees the
