@@ -398,6 +398,14 @@ function setCreditNote(c?: { left: number; low: boolean }): void {
     return;
   }
   creditLow = c.low;
+  // A parent's credits are a balance they top up, not a month that refills —
+  // so neither "this month" nor "ask your admin" is true for them.
+  if (isParent()) {
+    creditNote = c.low
+      ? `${c.left} AI credits left — mark by hand, or top up from your child's results`
+      : `${c.left} AI credits left`;
+    return;
+  }
   creditNote = c.low
     ? `${c.left} AI credits left this month — mark by hand, or ask your admin to top you up`
     : `${c.left} AI credits left this month`;

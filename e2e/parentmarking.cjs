@@ -221,6 +221,8 @@ async function parentMarker(page, label) {
   check(true, `${label}: the card opens the paper as its marker, with Release`);
   check((await page.$("#mk-buttons")) !== null, `${label}: with the marks row under the answer to mark`);
   check((await page.$("#mk-assess")) !== null, `${label}: and Assess with AI`);
+  const body = (await page.textContent("body")) || "";
+  check(/96 AI credits left/.test(body) && !/this month/.test(body), `${label}: the parent's balance is not called a monthly allowance`);
   const got = await calls(page);
   const testRead = got.find((c) => c.url.startsWith("/api/tests?") && c.url.includes("id=tp-1"));
   check(testRead && testRead.url.includes("forStudent=kid"), `${label}: the paper is read as its marker (${testRead && testRead.url})`);
@@ -231,6 +233,39 @@ async function parentMarker(page, label) {
   );
   check(/Release to this student/.test(await page.textContent("#mk-release")), `${label}: and offers to release it`);
   await shot(page, `paper-${label}`);
+
+  // On a phone, Previous and Next are a bar fixed to the floor of the SCREEN,
+  // not of the page. A full-page screenshot paints it where the first screen
+  // ended, which reads as "in the middle" — so this is asserted against the
+  // window instead, at the top of the paper and scrolled to its end, where
+  // the last of the worked solution must clear the bar rather than sit under it.
+  if (label === "phone") {
+    const where = () =>
+      page.evaluate(() => {
+        const bar = document.querySelector(".st-navrow").getBoundingClientRect();
+        const panels = document.querySelectorAll(".ed-explain .ed-panel");
+        const last = panels[panels.length - 1].getBoundingClientRect();
+        return {
+          fixed: getComputedStyle(document.querySelector(".st-navrow")).position === "fixed",
+          floor: Math.abs(bar.bottom - window.innerHeight) <= 1,
+          barTop: bar.top,
+          lastBottom: last.bottom,
+        };
+      });
+    const top = await where();
+    check(top.fixed && top.floor, `${label}: Previous and Next sit on the floor of the screen at the top of the paper`);
+    if (SHOT_DIR) await page.screenshot({ path: path.join(SHOT_DIR, `paper-${label}-screen-top.png`) });
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await page.waitForTimeout(150);
+    const end = await where();
+    check(end.floor, `${label}: and still on the floor scrolled to the end`);
+    check(
+      end.lastBottom <= end.barTop + 1,
+      `${label}: with the worked solution ending above the bar, not under it (${Math.round(end.lastBottom)} ≤ ${Math.round(end.barTop)})`
+    );
+    if (SHOT_DIR) await page.screenshot({ path: path.join(SHOT_DIR, `paper-${label}-screen-end.png`) });
+    await page.evaluate(() => window.scrollTo(0, 0));
+  }
 
   await page.evaluate(() => { window.__calls = []; });
   await page.click("#mk-release");
