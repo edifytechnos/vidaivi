@@ -17,7 +17,7 @@ import {
   attemptCounts,
   fetchGrading,
   fetchReleased,
-  fetchReleaseState,
+  fetchStudentRelease,
   getProfile,
   isLoggedIn,
   isParent,
@@ -169,9 +169,11 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolea
 async function bindRelease(testId: string, username: string): Promise<void> {
   const btn = document.getElementById("mk-release") as HTMLButtonElement | null;
   if (!btn || !username) return;
-  const state = await fetchReleaseState(testId);
-  let classWide = !!state?.classWide;
-  let mine = !!state?.students.some((x) => x.username === username);
+  // Per student, not the whole test: an admin marking a teacher's student may
+  // not read the test's whole release list, and would be told it was shut.
+  const state = await fetchStudentRelease(testId, username);
+  let classWide = state.classWide;
+  let mine = state.mine;
 
   const paint = (): void => {
     btn.disabled = classWide && !mine;

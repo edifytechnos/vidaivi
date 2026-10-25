@@ -2771,16 +2771,42 @@ useful as a demo.)
   whole class. Row holds `releasedAt`, `releasedBy`. "Can this student see the
   paper" is two point reads — `isReleased(testId, username)` — never a scan.
 - `GET /api/release?testId=` → `{released}` for a student; add `&student=` for a
-  teacher, admin or linked parent asking about one student; a teacher asking
-  without `student` gets `{classWide, students[]}` for the whole test.
+  teacher, admin or linked parent asking about one student (gated by
+  `canSeeStudent`), which also answers `classWide` and `mine` — which row
+  opened it. Without `student` it is `{classWide, students[]}` for the whole
+  test, **the test's owner's only** (below).
 - `GET /api/release?testIds=a,b,c` → `{released: {id: bool}}` — the same
   question for up to 50 papers at once, because the results list asks about
   every paper a student has handed in and one request per paper is an N+1 from
   a phone. Still only point reads (`isReleased` twice per id, `inBatches`).
-- `POST {action:"release"|"unrelease", testId, username?}` — teachers/admins,
-  gated by `canSeeStudent`. Omit `username` to open it for everyone.
-- Client: `fetchReleased` / `fetchReleaseState` / `setReleased` in `src/auth.ts`.
-  `fetchReleased` **fails closed** — a network error keeps the paper shut.
+- `POST {action:"release"|"unrelease", testId, username?}` — with `username`,
+  gated by `canSeeStudent`. Omit `username` to open it for everyone, which is
+  the owner's only.
+- **The class-wide row and the whole-test list belong to the test's owner**
+  (25 Oct). Both were gated on `isAuthor` alone, so any teacher **or parent**
+  who knew a test id — it is in the address bar as `?test=` — could open
+  another teacher's answers and worked solutions to that teacher's whole
+  class, shut them again, or list who a paper was opened for.
+  `releaseOwnerRefusal` reads the test with `readByPartitions(tests, [who.id,
+  PLATFORM_PK], testId, LEGACY_TEST_PK)` — point reads naming partitions,
+  never a scan — and requires `canManageTest`. Another teacher's test is
+  therefore **404**, as it is on `/api/tests`; a master is 403 to anyone but
+  an admin. **An admin may not open a teacher's test to the class**,
+  deliberately: when a class sees the answers is its teacher's call. An admin
+  keeps masters and their own rows, and still opens one student's paper from
+  the marking queue through the per-student path.
+- Client: `fetchReleased` / `fetchReleaseState` / `fetchStudentRelease` /
+  `setReleased` in `src/auth.ts`. `fetchReleased` **fails closed** — a network
+  error keeps the paper shut. The marking screen (`bindRelease`) and a
+  student's report (`paintRelease` in `console.ts`) read one student's state
+  with `fetchStudentRelease`: the whole test when the caller owns it, else the
+  per-student answer with `manage: false`, and then the report's class-wide
+  row says where it stands and offers no button. The Results screen is the
+  owner's own test and reads the whole test as before.
+- `e2e/helpers.cjs` (`releaseOwnerChecks`) drives the real handler: another
+  teacher and a parent are refused class-wide release, unrelease and the list;
+  the owner and an admin (on a master) are not; an admin is refused a
+  teacher's test; the per-student paths still work.
 
 ## The test is silent until the teacher releases it — marks included
 
