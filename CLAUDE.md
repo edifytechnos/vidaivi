@@ -49,6 +49,16 @@ Keep scope brutally small. This is a food cart, not a restaurant.
   domain via CNAME on Hostinger, SSL managed by Azure). The pre-rename host
   https://vidaivi.seyali.app stays pointed at the same app, so test links
   already shared in the class WhatsApp group keep working.
+- **Every Vidai resource lives in `seyali-rg`**, beside the other Seyali apps.
+  That covers the SWA `vidaivi`, the storage account `vidaivistorage`,
+  `vidaivi-app-insights` with its dashboard and alert group, and `Vidai-AI`
+  (South India, AI marking). They were moved out of `vidaivi_group` on 18 Oct
+  2026 in one `moveResources` call, after a `validateMoveResources` dry run.
+  The move took about three minutes, and `/api/health` answered 200 throughout.
+  Domains, certificates, both environments, the deploy token and all ten app
+  settings came across unchanged. Names, endpoints and keys did not change,
+  so nothing in the repo or the app settings needed editing. `vidaivi_group`
+  is empty.
 - Changing the public hostname takes three steps, all three needed or sign-in breaks:
   CNAME `<host>` → `ambitious-plant-03e9c0f00.5.azurestaticapps.net` in Hostinger DNS,
   the same host added under **Custom domains** in the Azure Static Web App (Azure
@@ -218,7 +228,21 @@ unlike the `vidai.seyali.app` entry above which is done.
   Events: test_open, test_start, test_resume, question_answered, test_complete,
   review_open, test_retake, home_open, and for the installed app
   install_prompt (with its outcome), app_installed, app_open_installed, and
-  for the version beacon update_armed and update_applied.
+  for the version beacon update_armed and update_applied; for a test shared
+  by link join_open, join_google, join_refused (with its reason),
+  join_success, share_on, share_off, share_code_rotated, share_copied,
+  results_open, answers_released and answers_hidden.
+  **Its logs are kept for 365 days**, set on 19 Oct 2026 for the DPDP Rules'
+  one year of logs (Rules 6 and 8(3), in force from about May 2027).
+  `vidaivi-app-insights` is workspace-based, so retention lives on the
+  workspace's tables, not on the App Insights resource. The workspace is
+  `DefaultWorkspace-<subscription>-EA` in `DefaultResourceGroup-EA`, and the
+  setting is on its twelve `App*` tables (AppEvents, AppPageViews,
+  AppRequests, AppExceptions and the rest). The retention box in the App
+  Insights portal did not change them, so set and check retention per table
+  (Tables → Manage table). The cost is under a cent a year at about 0.02 MB a
+  month. The automation service principal holds **Log Analytics Contributor** on
+  that workspace for this.
 - Heatmaps, recordings and user flows: Microsoft Clarity (`src/clarity.ts`).
   Its snippet is an inline `<script>` and this app ships none, so the same
   bootstrap is a module loaded at boot; the CSP names `www.clarity.ms` and
@@ -234,7 +258,16 @@ unlike the `vidai.seyali.app` entry above which is done.
   4 Oct 2026 ~21:30–22:10 IST) can only be filtered out. A check that needs
   Clarity's **real** tag to load must say so on purpose — override
   `navigator.webdriver` to `false` in an init script — and accepts that the
-  session is then recorded. `node e2e/clarity.cjs` asserts the rule. The signed-in **role** is set as a custom tag
+  session is then recorded. `node e2e/clarity.cjs` asserts the rule. **No child is ever recorded** (J, 19 Oct):
+  not a signed-in student, and not a guest who opens a test link, who may well
+  be one (`recordsAudience`). Masking hides what is on the screen but not the
+  taps, scrolls and pauses, and recording those is the behavioural monitoring
+  the DPDP Act bars for anyone under 18 (s.9(3), in force from about May 2027;
+  the school exemption covers the school's own educational monitoring, not a
+  vendor's product analytics). Such a page never loads the tag, and a page that
+  was recording stops (`stopRecording`) when a student signs in or a guest opens
+  a test. Faculty, parents, admins and a guest on the home page stay recorded.
+  The signed-in **role** is set as a custom tag
   on sign-in (`tagRole`) and is the only thing sent about the person.
   Every session is also tagged **`display`** — `installed` when opened from
   the home-screen icon, `browser` in a tab (`tagDisplay`, from
@@ -279,7 +312,9 @@ unlike the `vidai.seyali.app` entry above which is done.
 - Roles: Google login is for **teachers and parents** (role decided by
   `TEACHER_EMAILS`); **students** log in with a teacher-issued
   username/password (`POST /api/student-login` → 30-day HMAC session token,
-  prefix `vst.`). Teachers manage students via `GET/POST /api/students`
+  prefix `vst.`), or **join a shared test with Google and an access code**
+  (`POST /api/join`, the same `vst.` session — see *A test shared by link*
+  below). Teachers manage students via `GET/POST /api/students`
   (create with auto-generated username + password, reset password); passwords
   are stored as salted scrypt hashes and returned in plain text only at
   create/reset time. `/api/attempts` accepts both identity kinds.
@@ -707,8 +742,88 @@ and the explanation, each with a live "Student sees" preview.
   to edit", because `update` overwrites the row students are reading. Versioning
   (next slice) replaces this.
 - **Starter samples**: a teacher with no tests gets the bundled tests copied in
-  as their own editable drafts, once ever (`teacherstate` table, `seedSamples`).
+  as their own editable drafts, once ever (`teacherstate` table, `seedSamples`)
+  — **into a subject of theirs the samples fit, and otherwise not at all.** The
+  samples are CBSE Class 12 Maths papers; `samplesFit` in
+  `src/screens/subjects.ts` looks for that subject among the teacher's own and
+  seeds only when it finds one, and the server refuses any `subjectId` that is
+  not one of the caller's own (never a shelf, never somebody else's). A refusal
+  leaves the once-only flag unset, so the offer stands until there is such a
+  subject. It used to hand the seed `owned[0]` of the subject list — which has
+  had the library's shelves in it since Sep 2026, sorted by title in front of
+  anything a teacher owns — so every new teacher's samples went under the
+  first shelf, where no tree of theirs could show them.
 - `?edit=<testId>&q=<questionId>` restores a teacher's place across a refresh.
+
+### The tree is the subject the open test lives in
+
+`showEditor` scoped the tree by **the subject in memory** (`currentSubject()`),
+which is right when the teacher came through a card or the picker, stale from
+My tests, and **absent on a reload** — and New subject's Done step opened the
+editor without ever setting it (25 Sep–24 Oct). With nothing to scope by the
+listing went out unscoped, the tree drew every test the teacher owned, and the
+picker — a select with no option selected — showed its first entry as if the
+tree were in it. One teacher's MBBS subject held two Class 12 Maths samples.
+Worse, "Create the first test" from that shell filed the test under
+`currentSubject()` — **no subject at all** — so their first test sat in no tree
+they could open, the subject card still read *0 tests*, and the shell offered
+to create the first test again.
+
+- **The test's own `subjectId` decides.** `showEditor` keeps the in-memory
+  subject as a guess, fetches the listing scoped to it in the same
+  `Promise.all` as the test (and not at all when there is no guess — an
+  unscoped listing would be a listing to throw away), and asks once more only
+  when the test says otherwise. A right guess costs one listing, as before.
+  `Test.subjectId` is declared for it; the API always sent it.
+- **Both shells make their subject current** (`setSubject` in `showEditor` and
+  `showEditorForSubject`), and everything created from the screen files under
+  `subjectHere()` — the tree's subject, then the one in memory — so a blank
+  test, a Seyari *Create test with this* and the + all land where the teacher
+  can see they are.
+- **A test filed nowhere the teacher can open is filed under the subject it
+  is opened in**, once. "Nowhere" is no subject at all, a shelf's id on a row
+  that is not a master (the starter samples, above), or a subject that is not
+  theirs; a shelf counts as a home only for an admin, who works in them.
+  `showEditor` calls **`POST /api/tests {action:"file", id, subjectId}`**: a
+  point read of the test, the subject check, one write — no questions over
+  the wire, and a published row moves as readily as a draft, which the
+  editor's save is not meant to touch. `ownSubjectRow(who, id)` decides the
+  rule in one place (point read in the caller's partition, owner checked on
+  the row — the legacy partition is anybody's — never a shelf): a row already
+  under one of the caller's own subjects is **409**, never moved, because
+  where a test is filed is not otherwise editable; into a shelf, somebody
+  else's subject or one that does not exist is 403. `save()` carries
+  `subjectId` too and `update` honours it by the same rule, so a save can
+  never contradict it; the common save names the subject the row has and
+  costs no read. One line says *Filed under …*. Opened with nothing in
+  memory, such a row stays put and the picker reads **All subjects** rather
+  than the first subject listed.
+- **The empty shell offers the strays back.** A teacher has no My tests (it
+  is an admin rail item), so a row filed nowhere had no door at all — and an
+  empty subject is exactly where a teacher looks for the test that vanished.
+  `showEditorForSubject` on an empty subject of the teacher's own asks one
+  unscoped listing (their partition alone), `findStrays` keeps the rows in no
+  subject of theirs, and `renderEmptyShell` lists them under **Not in any
+  subject**, each with **Move here**: the `file` action, then the editor
+  opens on the test with the tree scoped to the subject. Nothing is fetched
+  for a subject that has tests, or for a shelf.
+- `node e2e/editor-offline.cjs` drives the real editor at 1280px and 390px
+  against a stubbed server: a reload scopes to the test's subject with one
+  listing, a stale subject loses to it, New subject's shell lists the strays
+  and **Move here** files one through the `file` action (no save of the
+  questions) and opens it in the tree, the shell files the first test under
+  its subject, an orphan and a sample under a shelf's id are each re-filed on
+  open and announced, and nothing is written when there is nowhere to file
+  it. `SHOT_DIR=…` writes the shell with its strays. Against the old code its
+  first assertion prints the screenshot: *Human Physiology | Matrices — Demo
+  Test | Test 1 — Relations and Functions*. `e2e/helpers.cjs` holds the
+  server half: the seed refused for no subject, a shelf and somebody else's;
+  `update`'s re-file taken for an orphan, a row under a shelf and a row under
+  somebody else's subject, refused into a shelf, somebody else's subject and
+  one that does not exist, a row under the caller's own subject staying put;
+  and `file` moving a published stray with its questions untouched, 409 on a
+  row already in one of the caller's subjects, 403 into a shelf, somebody
+  else's or a missing subject, 404 for somebody else's test.
 
 ## Seyari AI: questions written, or read off a paper, with the teacher (`/api/generate`)
 
@@ -1408,6 +1523,9 @@ every move passes through is the URL write, and that is where the history is.
 - `screens/test.ts` — test player (landing → questions → score); guests only, past the landing.
 - `screens/student.ts` — the student's workspace: subject → tests tree → one question.
 - `screens/assign.ts` — "Who sees this test": the audience picker, shared by the editor and My tests.
+- `screens/share.ts` — "Share by link": the link, the access code, on/off — the editor and My tests.
+- `screens/join.ts` — `?join=<token>`: a student signs in with Google, types the code, and the test opens.
+- `screens/results.ts` — one test's results: who took it, and Release to everyone.
 - `screens/review.ts` — read-only review, one question per page.
 - `ailight.ts` — the two AI buttons (`.ai-go` calls the AI, `.ai-take` takes its work) and the light round them.
 - `screens/marking.ts` — the marking queue (a list) and `openStudentPaper`, the one way into marking a paper.
@@ -1443,12 +1561,19 @@ move, a re-render, Back, Forward and Back over an open dialog. It fails four
 ways against a replace-only `setUrl`. `node e2e/seyari.cjs` drives the Seyari
 AI panel the same way, against a stubbed `fetch` and a host object that records
 what it is handed, and `node e2e/select.cjs` the app's own dropdown and combobox over native
-controls; `node e2e/dialog.cjs` the app's own confirm and notice. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
+controls; `node e2e/dialog.cjs` the app's own confirm and notice.
+`node e2e/editor-offline.cjs` drives the real authoring editor against a
+stubbed server — which subject the tree is scoped to, and under which subject a
+test made from the screen is filed. `node e2e/join.cjs` drives the join
+screen, the Share by link dialog and the per-test Results screen the same way,
+with Google's sign-in script stubbed. `node e2e/tour.cjs` drives the first-run tour and its handover to `/help` at
 390px (admin creds from the environment; it skips without them).
 `node e2e/newsubject.cjs` walks the four-step New subject flow, desktop and
 phone, and deliberately **never presses Create** — the suite proxies to the
 live database, so the one real create is left to `regression.cjs` and its
-probe subject.
+probe subject. `node e2e/newsubject-offline.cjs` walks the same flow — the
+College & other path in full, the school path beside it — against a stubbed
+`fetch`, with no session and no network, so it runs anywhere.
 `node e2e/helpers.cjs` needs no browser and no network: it
 covers the pure helpers in `api/shared/core.js` (the counts stamped on write, the
 in-process cache, `inBatches`) **and drives the second factor through the real
@@ -2028,6 +2153,10 @@ roster of real children between two kinds of account. A failed entitlements
 call **carries on rather than stranding** somebody on a chooser they cannot
 complete.
 
+**The teacher plan is granted by `paidUntil` alone** — see *The teacher plan
+is bought from the refusal* under Payments. A trial that ends is a lapsed
+account on the trial's limits, not a free plan.
+
 **The choice decides the app; the allowlist decides approval.** These are two
 questions and conflating them is what made picking "I teach a class" land
 somebody in the parent's app. `chose` was written to the accounts row and
@@ -2198,11 +2327,12 @@ accounts list with **Free forever**, **paid seats** and **extend trial** as
 manual levers. Those levers are what make the payment stub honest — a real
 teacher can be run end to end today, with money arriving later.
 
-**The one-off ₹499 subject can now be bought** (below). The teacher's monthly
-fee and the per-seat price are still counted, priced and shown but never
-billed: a subscription is renewal, expiry and what happens to a roster when it
-lapses, which is materially more than a one-off unlock and does not belong in
-the same slice.
+**The one-off ₹499 subject can now be bought** (below), **and so can the
+teacher plan** — a month at a time, from the refusal that names it (*The
+teacher plan is bought from the refusal*, below). The per-seat price is still
+counted, priced and shown but never billed. Automatic renewal is not built: a
+teacher buys the next month themselves, and a payment made early adds to what
+is left rather than starting over.
 
 ## Paying for a ready-made subject (`/api/purchase`, UPI)
 
@@ -2303,13 +2433,80 @@ is a price nobody can explain six months later.
 - **Admin → Payments** (`showPayments`, rail item beside Plans & pricing):
   the waiting queue with Confirm / Not received, and the discount codes.
 
+### The teacher plan is bought from the refusal (`kind: "plan"`)
+
+*"You have used 1 of 1 subjects on your current plan. The ₹99/month plan lifts
+this."* — and nothing sold the plan. Worse, nothing needed to: `entitlements`
+granted the teacher plan to any teacher whose trial had ended, "counted but
+never billed", so the price in every refusal was for something that turned
+free by itself in thirty days. **J, 24 Oct: make it real, and put a door on
+it.** Both, in one slice:
+
+- **The plan is granted by `paidUntil` and nothing else.** `entitlements`
+  returns the teacher plan while the account row's `paidUntil` is in the
+  future; before it, after it, and for a trial that has ended, a teacher is on
+  the trial's limits (`plan: "lapsed"`). Pre-existing accounts were stamped
+  exempt by `exemptLegacyAccounts`, so the pilot teacher and everyone promised
+  free are untouched. `e2e/helpers.cjs` asserts a lapsed unpaid teacher stays
+  capped, a paid one is not, and an expired plan falls back.
+- **A third kind on the same seam.** `POST /api/purchase {kind:"plan"}` quotes
+  `teacherMonthlyPaise` for `teacherPlanDays` (both Plans & pricing rows, so
+  the price and the length change without a deploy), opens the same order
+  row, joins the same claimed queue, and `settlePurchase` branches to
+  **`grantPlanTo`**: `paidUntil` moves forward by the days on the order
+  **from the later of now and the current `paidUntil`** — a renewal paid a
+  week early keeps the week — ETag'd with a bounded retry like every write
+  that is money. An account that never chose a role is stamped a teacher by
+  buying the teacher plan, or the plan would be bought and never granted. The
+  admin's accounts list reads *plan paid · N days left* / *plan ended*.
+- **The 402 carries the door.** `overLimit` takes a `payment` and the two
+  create gates pass `planDoor(ent)` — `{kind:"plan", planPaise, planDays}` —
+  for a teacher's limit and never for a parent's, whose sentence says the plan
+  does not lift it. `planDoorOf` in `src/api.ts` reads it off `mutateSubject`
+  and `mutateTest`, exactly as `adoptTests` reads the shelf.
+- **The screen offers what the sentence names.** New subject renders the
+  refusal and, beneath it, **Get the ₹99/month plan** (`#ns-upgrade`,
+  `.ns-door`) with one line saying what happens after; the editor's blank
+  test and Seyari's *Create test with this* open the dialog straight away with
+  the refusal as its `reason` line. `openBuyPlan` in `src/screens/buy.ts` is
+  the same dialog as the shelf and the credits with a `kind`. **It opens on
+  top of the dialog that refused, not instead of it**, so closing it lands
+  back on the same step with the course, the year and the subjects still
+  typed — Create is one press away once the payment is confirmed. The
+  "Thank you" screen says so for a plan.
+- **A 100% code settles on the spot.** The quote already clamped at the price,
+  so a code could make an order free — and then walked the buyer through a ₹0
+  UPI link and the admin's queue for it. `startOrSettle` in the purchase
+  handler settles a free order as it starts (`settlePurchase` with method
+  `coupon`: the code is redeemed, the order is recorded as paid, nothing
+  reaches the queue), the dialog says *Done — nothing to pay*, and
+  `onSettled` presses Create again by itself, so the subject is simply made.
+  This is how a teacher is given the plan for free, and it holds for the
+  shelf and the credit pack too.
+- **New code comes with a code made** (`newCouponCode`: `VIDAI-` and five
+  characters from an alphabet with no 0/O or 1/I, because it is read off
+  WhatsApp and typed on a phone), *Limit uses to* defaults to **1**, and the
+  form says 100 makes the purchase free. The server side of codes is
+  unchanged.
+- `node e2e/newsubject-offline.cjs` walks the door against a stubbed server:
+  the refusal with the button beneath it, the dialog on top with the reason,
+  closing it back to the same step with the subjects still typed, the UPI
+  path to *I have paid*, and a 100% code that settles and creates the subject
+  without another press. `e2e/helpers.cjs` drives the plan through the real
+  purchase handler — quote at the admin's price, start, claim, confirm,
+  thirty days, a renewal extending from `paidUntil`, confirming twice refused,
+  a free order settled with no UPI link and nothing in the queue, the
+  single-use code spent, the role stamped.
+
 ### Not done
 
 Razorpay itself — the order-create endpoint, Checkout on the client and the
-signature-verified webhook — plus the subscription side (the teacher's monthly
-fee and per-seat price). Checkout also needs its script added to a
-`script-src 'self'` that currently has no external script at all, which is a
-CSP change to make deliberately and test, not to discover in front of a class.
+signature-verified webhook — plus automatic renewal of the plan and the
+per-seat price. Checkout also needs its script added to a `script-src
+'self'` that currently has no external script at all, which is a CSP change
+to make deliberately and test, not to discover in front of a class. The plan
+today is a month bought by hand from the refusal, confirmed by the admin;
+instant and automatic is the Razorpay slice.
 
 ## A parent marks their child's paper in one click, and pays in credits
 
@@ -2693,6 +2890,140 @@ on the test row.
   so ("Students cannot see this yet — publish it to share it", `audienceNote`),
   and My tests reads "nobody yet". That sentence is the one that was missing
   when a teacher wondered where their test had gone.
+
+## A test shared by link: Google sign-in and an access code (`/api/join`, table `shares`)
+
+**J, 24 Oct:** with college students on the platform, a teacher should be able
+to make a shareable link to a test and read out an access code; a student opens
+the link, signs in with Gmail, types the code, and sits the test; the teacher
+sees who took it and releases the results to all of them. Two choices J made
+up front shape it: **a link-joined student sees only the tests they joined
+with a code**, and **they take a seat like any other student**.
+
+### The student it makes is an ordinary student
+
+A link-joined student is a **`students` row like any other**, with a `vst`
+session like any other — so attempts, grading, release, the report, the
+marking queue, `canSeeStudent` and the removal cascade needed **nothing new**.
+What differs is on the row: `via: "google"`, `googleSub`, the `email` the
+teacher tells them apart by, **no `passwordHash`**, and `joined` — a JSON list
+of the test ids this student may see. It is deliberately **not `/api/login`**:
+no `profiles` row, no `accounts` row, no role to choose, no phone number to ask
+for. A student is not a teacher or a parent, and `e2e/helpers.cjs` asserts
+neither row is written.
+
+- **One Google account, one teacher, one row.** `linkUsername(sub, teacherSub)`
+  is `g-` + 12 hex of a digest of the two, so the same person joining a second
+  test of the same teacher lands on the same row and the test is appended to
+  `joined`; another teacher's link makes another row, because their rosters are
+  separate. The username carries no name or email, so a roster, a report row
+  and an attempts partition name nobody.
+- **`reachesStudent(e, student)` is the one visibility rule**, replacing the
+  bare `assignedTo` call in `visible()` and in the student subject list: a
+  `via: "google"` student reaches a test iff its id is in their `joined`;
+  everyone else is `assignedTo` as before. `identify()` puts `via` and
+  `joined` on a student's `who` so no handler re-reads the row for it. A
+  class-wide published test is therefore **not** shown to a link-joiner — the
+  suite checks `t-class` stays out of their listing and 404s on a point read.
+- **A passwordless row costs a login attempt like an unknown name.**
+  `studentlogin` runs the decoy hash for a row with no `passwordHash`, so the
+  link username cannot be told apart from a nonexistent one by timing.
+- The roster (`ROSTER_SELECT` now carries `email` and `via`), the report and
+  the Results screen say how each student joined; the teacher's roster shows a
+  link-joiner by **email** with *joined by link* under it and **no Reset
+  password**. Remove works as for anyone.
+
+### Sharing is a state on the test row
+
+`POST /api/tests {action:"share", id, on, rotate?}` — `canManageTest`, never a
+master, and **`mayIssueLogins`**: an unapproved teacher cannot open a door to
+real children by link any more than by a username (403 *waiting to be
+approved*).
+
+- `shareToken` (16 hex) and `accessCode` (6 characters from `CODE_ALPHABET`,
+  no 0/O/1/I — it is read out in class) are **minted once** and kept across
+  off and on, so a link already sent keeps working next term; `rotate` remakes
+  the code alone. `shareOn` is the switch. The staff listing and the staff
+  `?id=` read carry `share: {on, token, code}` (`shareOf`,
+  `TEST_META_SELECT`); a student is never sent any of the three.
+- **Table `shares`: PK `"share"`, RK = the token → `{ownerSub, testId}`.** A
+  link names a token and nothing else, and a point read has to name a
+  partition: this row is how `resolveShare` finds whose partition the test is
+  in. It is an index, like `~pending` in `orders`, and exists for rule 2.
+- **The code is guessed against like a password, so it is gated like one.**
+  `handlers.join` runs `loginGate` on the **caller's** username — never on the
+  code; locking a code would let anyone shut a class out — before `safeEqual`
+  on the normalised code, and counts a wrong one with `noteLoginFailure`. The
+  seat gate (`entitlements(owner)` + `seatsTaken`) runs only for a **new**
+  row; the refusal is `403 {full: true}` and names **no price and no plan**,
+  because the person reading it is a student and the money is the teacher's
+  business. The share dialog carries that sentence instead.
+- `GET /api/join?token=` is what the link opens on, signed in or not: the
+  test's title, chapter, teacher's name, question and mark counts, `published`,
+  `on`, and either `student: {username, joined}` for a student of that teacher
+  already signed in, or `otherSession: <kind>` for anybody else signed in —
+  **never a question and never the code**. A dead token is a plain 404.
+- `POST /api/join {token, code, credential?}`: with a Google credential it
+  verifies the token exactly as login does and makes or finds the student;
+  from a student session of the same teacher it joins **as themselves** with
+  the code alone; from any other session it is **409 `other_session`** rather
+  than a replaced session mid-sitting. Success sets the `vst` cookie and
+  returns `{student, testId, subjectId, published}`. It is **not** in
+  `SIGN_IN_HANDLERS`: the CSRF wrapper covers it like every other POST, which
+  costs nothing cold (no cookie, nothing to abuse) and matters warm (a signed-in
+  student joining a second test), and the client sends the marker either way.
+  It **is** in the client's `SIGN_IN_ENDPOINTS`, because a wrong code is a 401
+  and must not end whatever session the device holds.
+
+### The screens
+
+- **`src/screens/join.ts`** — `?join=<token>`, routed first in `route()`
+  because it is the one address a person with no account arrives at. A card,
+  not a shell: the test's name and size, **1 · Sign in with Google**
+  (`renderGoogleCredentialButton` in `src/auth.ts`, the GIS button that hands
+  the credential to the caller instead of to `/api/login`), **2 · the code**
+  (`ABC-DEF` as it is typed, upper-cased, dash dropped on send; shut until
+  Google has answered), **Join and open the test**. Success calls
+  `saveStudentSession` and does a **full page load** onto `?test=<id>`, so the
+  student workspace boots clean. A student of the same teacher already signed
+  in gets the code box alone; a test already joined simply opens; somebody
+  else's session gets **Sign out and continue**. An unpublished test can be
+  joined and says *not open yet*.
+- **`src/screens/share.ts`** — `openShareLink(test, onChange)`, the dialog
+  behind the **link icon** in the editor's action row (`#ed-share`, wearing
+  `.ed-tool-on` while sharing is on) and on a My tests row. Turn on / Turn
+  off, the link, the code, **New code**, Copy on each, and **Copy message with
+  link and code** (`shareMessage`) for WhatsApp. Like `buy.ts`, it is not
+  `openModal` — it talks to the server while open — and borrows the modal's
+  manners. **The editor opens it only after `flush()` in `editor/state.ts`
+  has settled every save**, and the same now holds for Who sees this: the
+  server's `update` replaces the whole row from a copy it read a moment
+  earlier, so a share (or an audience) written between that read and that
+  write would be written straight back off. The page is locked behind the
+  dialog, so no save starts while it is open.
+- **`src/screens/results.ts`** — `showTestResults(testId, back?)`,
+  `?results=<id>`, the **chart icon** beside Share (`#ed-results`) and on a My
+  tests row. One listing — `GET /api/reports?testId=` — the roster walked once
+  with each student's attempts query filtered to this test inside their own
+  partition — plus the release state, in one `Promise.all`. Who took it (a
+  link-joiner by email), the newest finished attempt per student, a paper in
+  progress with no score and *See what they have so far*, counts and the
+  average over **handed-in** papers only, `.res-paper` → `openStudentPaper`,
+  and **Release to everyone / Hide again** — the existing class-wide release
+  (`*`), because "everyone who sat it" is what `*` has always meant.
+- `.rel-row` finally has a rule. The student report's release rows had none
+  and ran together on a phone; one rule now serves both screens.
+
+`node e2e/join.cjs` drives all three in a real browser at 1280px and 390px
+against a stubbed `fetch` and a stub of Google's sign-in script that draws a
+real button and answers with a planted credential; `joinChecks()` in
+`e2e/helpers.cjs` drives the server half through the real handlers against a
+fake table: mint/rotate/off, the cold link, off refused, a wrong code refused
+with no row made, the right code typed lower-case with a dash, the cookie, the
+row's shape, what the student sees and does not, the second test on the same
+row, the teacher's own session told to sign out, the trial's three seats then
+full with no mention of money, the lockout, the passwordless login, the
+roster and the filtered report, and an unapproved teacher refused.
 
 ## The correct MCQ option says it is the correct option
 
@@ -3194,18 +3525,71 @@ What it replaced was one flat column of **eleven shelf tiles** — CBSE 10, CBSE
 12, IGCSE, A Level and NEET in one ungrouped, unsearchable list — that asked
 "what do you teach?" and could only be answered by scrolling.
 
-1. **Which board?** Four groups — National, International, **Entrance exam**,
-   State Board. Picking a group reveals its boards as pills *beneath it*, so
-   the board resolves in **one** step rather than two.
+1. **Which board?** Five groups — National, International, **Entrance exam**,
+   State Board, **College & other**. Picking a group reveals its boards as
+   pills *beneath it*, so the board resolves in **one** step rather than two.
 2. **Which class?** Tiles for 10 and 12, each saying whether anything
    ready-made exists, plus **Another class** which reveals a text box.
 3. **Which subjects?** **Multi-select** — each ticked subject becomes its own
-   subject card — plus "Not listed? Add your own".
+   subject card — plus "Not listed? Add your own", which takes **several,
+   comma-separated**: "Hindi, Sanskrit" is two subjects, not one with a comma
+   in its name (`extraNames`; deduplicated, never a name already ticked).
 4. **Which ready-made tests?** A collapsible section per subject, everything
    ticked, a live total across subjects, and **Peek** at the first question.
 
 Then a **Done** step listing what was made, all Draft, before the editor opens
 on the first.
+
+### College & other is a `board` the teacher types, and the class is optional
+
+A medical or engineering course had nowhere to live either. The only way in
+was a school board plus "Another class", which named one **"Tamil Nadu Class
+MBBS I Anatomy"** — the wrong board and the wrong word. The fifth group
+(`free: true` in `src/taxonomy.ts`) has **no board pills on purpose**: there is
+no list of every course in every college, and a list of a few would be a
+promise about the rest. The teacher **types the course** and it is stored as
+the `board` — "MBBS", "B.E. Mechanical", "B.Sc Physics", or just a name for a
+freeform test bank — with `COURSES` as suggestions beneath the box through the
+app's own combobox, never a closed set. The same three fields; **no storage
+change**, so it is safe to exercise on QA before it merges.
+
+- **Step 2 asks "Which year or semester?"** — tiles **Year 1–4**
+  (`COLLEGE_YEARS`), **Semester or something else** (typed), and **No year or
+  semester**. That last one is an answer, not an absence: a freeform test bank
+  has no year, and the subjects stand on their own. It is a separate `noClass`
+  flag rather than an empty `klass`, because an empty class is also what
+  "nothing picked yet" looks like and Continue must stay disabled for that.
+- **Step 3 is the box.** A course has no ready-made list to tick, so the
+  school-subject tiles and the "nothing ready-made" alert are gone and the
+  comma-separated box carries the step's label: *Anatomy, Physiology,
+  Biochemistry* is three subjects in one go.
+- **Three steps, not four** (`labelFor`): nothing ready-made exists for a
+  course today, so the ready-made step never comes. If a college shelf is ever
+  seeded, `papers()` finds it by board and class exactly as for a school board
+  and step 4 returns — make the count 4 then.
+- **Changing the course forgets the year and the subjects** typed under the
+  old name, the same rule as picking a different board pill: a different
+  course is a different subject. A click inside the course box is the caret
+  being placed and falls through to nothing.
+- **The title rule changed, on the value.** `subjectTitle` (server; `classWord`
+  in `src/taxonomy.ts` is the mirror — change both or neither) now says
+  "Class" **only before a plain number**: "CBSE Class 12 Maths" as before,
+  "JEE Main 2027 Physics" as before, and "MBBS Year 1 Anatomy", "B.E.
+  Mechanical Semester 3 Thermodynamics", "General Aptitude" as typed. It used
+  to prepend "Class" to everything that was not a four-digit year. Titles are
+  stamped on write, so existing rows keep theirs; `update` recomputes.
+- **`POST /api/subjects` create requires a board and a subject; the class is
+  optional** (it was "all three required"). The client still insists on a
+  class for a school board and a year for an exam — a matter of a sensible
+  name, not of anything that gate protects.
+- `node e2e/newsubject-offline.cjs` walks the whole college path in a real
+  browser at 1280px and 390px against a stubbed `fetch` — no network, no
+  session, and it asserts that **no POST ever leaves the page** — plus the
+  school path beside it (four steps, pills, "Class 10" in the crumb) and the
+  title rule on the client mirror. The flow's import chain reaches `data.ts`,
+  whose `import.meta.glob` is Vite's, so the harness defines it as an empty
+  function. `e2e/helpers.cjs` holds the same title cases against the server
+  and drives subjects create with an empty class through the real handler.
 
 ### An entrance exam is a `board`, and it asks for a year
 

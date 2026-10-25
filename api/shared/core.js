@@ -395,8 +395,10 @@ const PLAN_DEFAULTS = {
   trialTests: 3,
   trialStudents: 3,
   // A teacher paying the platform fee: their own subjects and tests are
-  // unlimited (0 means no limit); seats are not.
+  // unlimited (0 means no limit); seats are not. One payment buys
+  // `teacherPlanDays` of it, added to whatever is left — see grantPlanTo.
   teacherMonthlyPaise: 9900,
+  teacherPlanDays: 30,
   teacherSubjects: 0,
   teacherTests: 0,
   teacherFreeStudents: 2,
@@ -456,6 +458,7 @@ const ACCOUNT_SELECT = [
   "name",
   "trialStartedAt",
   "trialEndsAt",
+  "paidUntil",
   "paidSeats",
   "exempt",
   "createdAt",
@@ -575,8 +578,17 @@ async function entitlements(who) {
   const trialEndsAt = String((row && row.trialEndsAt) || "");
   const onTrial = !!trialEndsAt && Date.parse(trialEndsAt) > Date.now();
   const paidSeats = typeof row?.paidSeats === "number" ? row.paidSeats : 0;
+  // The teacher plan, bought: `grantPlanTo` stamps this when a payment is
+  // confirmed, and it is the ONLY thing that grants the plan now. It used to
+  // be granted to any teacher whose trial had ended — "counted but never
+  // billed" — which made the ₹99/month in every refusal a price for something
+  // that turned free by itself in thirty days. A teacher who has not paid
+  // stays on the trial's limits, before the trial and after it alike.
+  // Pre-existing accounts are exempt above, so nobody promised free is caught.
+  const paidUntil = String((row && row.paidUntil) || "");
+  const paid = !!paidUntil && Date.parse(paidUntil) > Date.now();
 
-  if (chose === "teacher" && !onTrial) {
+  if (chose === "teacher" && paid) {
     // The platform fee buys unlimited subjects and tests of their own; seats
     // and ready-made content are still bought separately.
     return {
@@ -585,6 +597,7 @@ async function entitlements(who) {
       rules,
       chose,
       trialEndsAt,
+      paidUntil,
       subjects: rules.teacherSubjects,
       tests: rules.teacherTests,
       students: rules.teacherFreeStudents + paidSeats,
@@ -606,14 +619,17 @@ async function entitlements(who) {
       shelfTests: rules.freeShelfTests,
     };
   }
-  // On trial, or has not chosen yet — the trial's limits either way, which is
-  // the safe direction to be wrong in.
+  // On trial, lapsed, or has not chosen yet — the trial's limits either way,
+  // which is the safe direction to be wrong in. A lapsed teacher is one whose
+  // trial has ended and who has not bought the plan; the door is on the
+  // refusal.
   return {
     plan: onTrial ? "trial" : chose ? "lapsed" : "new",
     exempt: false,
     rules,
     chose,
     trialEndsAt,
+    paidUntil,
     subjects: rules.trialSubjects,
     tests: rules.trialTests,
     students: rules.trialStudents,
@@ -660,12 +676,30 @@ async function ownedCount(table, ownerSub, legacyPk, stopAt) {
  * it. A bare "no" makes a person think the product is broken; a number and a
  * price makes it a decision they can act on.
  */
-function overLimit(context, what, used, limit, priceNote) {
+function overLimit(context, what, used, limit, priceNote, payment) {
   return json(context, 402, {
     error: `You have used ${used} of ${limit} ${what} on your current plan.${priceNote ? ` ${priceNote}` : ""}`,
     limit,
     used,
+    // The door, carried structurally — exactly as the adopt refusal carries
+    // the shelf — so the screen can offer the thing the sentence names
+    // rather than leaving a price with no way to pay it.
+    ...(payment ? { payment } : {}),
   });
+}
+
+/**
+ * The refusal's door for a plan limit: the teacher plan, at the live price.
+ * A parent's limit is not lifted by the teacher plan, so a parent gets no
+ * door here — their sentence says so instead.
+ */
+function planDoor(ent) {
+  if (!ent || ent.plan === "parent" || ent.plan === "admin" || ent.exempt) return null;
+  return {
+    kind: "plan",
+    planPaise: ent.rules.teacherMonthlyPaise,
+    planDays: ent.rules.teacherPlanDays,
+  };
 }
 
 // ---------- What they have bought ----------
@@ -1229,6 +1263,9 @@ function generatePassword() {
 // that must not travel further than the login check.
 const ROSTER_SELECT = [
   "PartitionKey", "RowKey", "name", "school", "grade", "parentPhone", "teacherSub",
+  // A student who joined by a test link: the email is what the teacher tells
+  // them apart by, and `via` is why there is no password to reset.
+  "email", "via",
 ];
 
 const ATTEMPT_LIST_SELECT = [
@@ -1301,6 +1338,12 @@ async function identify(req, context) {
       id: `stu~${session.username}`,
       username: session.username,
       teacherSub: record.teacherSub || "",
+      // How the account came to be. A student who joined by a test link
+      // (`via: "google"`) sees only the tests they joined — `joined` is that
+      // list — where a login the teacher issued sees the class. Both ride on
+      // the row the session read anyway, so this costs nothing.
+      via: record.via === "google" ? "google" : "login",
+      joined: joinedList(record),
     };
   }
   if (bearer.startsWith("vad.")) {
@@ -1534,10 +1577,13 @@ handlers.studentlogin = async (context, req) => {
   }
   // An unknown username still pays for a comparison. Returning early made the
   // answer measurably quicker for a name that does not exist, which is a free
-  // oracle for "which of my classmates has an account".
-  const ok = entity
-    ? checkPassword(password, entity.passwordHash)
-    : (checkPassword(password, timingDecoyHash()), false);
+  // oracle for "which of my classmates has an account". A row with no
+  // password — a student who joined by a test link signs in with Google —
+  // pays the same, or the quick "no" would say which usernames those are.
+  const ok =
+    entity && entity.passwordHash
+      ? checkPassword(password, entity.passwordHash)
+      : (checkPassword(password, timingDecoyHash()), false);
   if (!ok) {
     await noteLoginFailure(gate);
     return json(context, 401, { error: "Wrong username or password" });
@@ -1854,7 +1900,32 @@ handlers.teachers = async (context, req) => {
     if (list.length >= 200) break;
   }
   list.sort((a, b) => a.email.localeCompare(b.email));
-  json(context, 200, { teachers: list });
+
+  // Who is waiting. Anyone may choose "teacher" at sign-up, and until they are
+  // on the allowlist they are told their account is "waiting to be approved"
+  // — so the admin has to be able to SEE them, or the wait never ends. One
+  // partition query on `accounts`, projected, filtered to the choice.
+  const approved = new Set([...list.map((t) => t.email), ...TEACHER_EMAILS, ...ADMIN_EMAILS]);
+  const pending = [];
+  try {
+    const accounts = tableClient("accounts");
+    await ensureTable(accounts);
+    const aIter = accounts.listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq '${ACCOUNT_PK}' and chose eq 'teacher'`,
+        select: ["RowKey", "email", "name", "chose", "createdAt"],
+      },
+    });
+    for await (const a of aIter) {
+      const email = String(a.email || "").toLowerCase();
+      if (a.chose && a.chose !== "teacher") continue;
+      if (!email || approved.has(email)) continue;
+      pending.push({ email, name: String(a.name || ""), since: a.createdAt || "" });
+      if (pending.length >= 200) break;
+    }
+  } catch {}
+  pending.sort((a, b) => String(b.since).localeCompare(String(a.since)));
+  json(context, 200, { teachers: list, pending });
 };
 
 handlers.students = async (context, req) => {
@@ -2003,18 +2074,7 @@ handlers.students = async (context, req) => {
     // before the name is even read, and fails closed.
     const seatEnt = await entitlements(who);
     if (seatEnt.students > 0) {
-      const safeSub = who.id.replace(/'/g, "''");
-      let seats = 0;
-      const seatIter = students.listEntities({
-        queryOptions: {
-          filter: `PartitionKey eq 'student' and teacherSub eq '${safeSub}'`,
-          select: ["RowKey"],
-        },
-      });
-      for await (const _ of seatIter) {
-        seats += 1;
-        if (seats > seatEnt.students) break;
-      }
+      const seats = await seatsTaken(students, who.id, seatEnt.students);
       if (seats >= seatEnt.students) {
         return overLimit(
           context,
@@ -2080,6 +2140,8 @@ handlers.students = async (context, req) => {
       grade: e.grade,
       parentPhone: e.parentPhone,
       createdAt: e.createdAt,
+      email: e.email || "",
+      via: e.via === "google" ? "google" : "login",
     });
     if (list.length >= 200) break;
   }
@@ -2101,6 +2163,11 @@ handlers.reports = async (context, req) => {
   await ensureTable(attempts);
 
   const wanted = String((req.query && req.query.username) || "").trim().toLowerCase();
+  // ?testId= keeps only that test's attempts on each student — the results
+  // screen for one test. The roster walk is the same; each student's attempts
+  // query carries the test in its filter, still inside their own partition,
+  // so what is read and what travels are both less.
+  const onlyTest = safeId((req.query && req.query.testId) || "", 60);
 
   // Collect this teacher's students (optionally just one).
   const roster = [];
@@ -2118,6 +2185,8 @@ handlers.reports = async (context, req) => {
       school: e.school,
       grade: e.grade,
       parentPhone: e.parentPhone,
+      email: e.email || "",
+      via: e.via === "google" ? "google" : "login",
     });
     if (roster.length >= 200) break;
   }
@@ -2132,7 +2201,9 @@ handlers.reports = async (context, req) => {
     s.attempts = [];
     const aIter = attempts.listEntities({
       queryOptions: {
-        filter: `PartitionKey eq 'stu~${s.username.replace(/'/g, "''")}'`,
+        filter:
+          `PartitionKey eq 'stu~${s.username.replace(/'/g, "''")}'` +
+          (onlyTest ? ` and testId eq '${onlyTest.replace(/'/g, "''")}'` : ""),
         select: ATTEMPT_LIST_SELECT,
       },
     });
@@ -2142,6 +2213,7 @@ handlers.reports = async (context, req) => {
       // reads as a test the student handed in and never sat — the same thing
       // the student's own listing already skips it for.
       if (rk.startsWith(GRANT_PREFIX)) continue;
+      if (onlyTest && String(a.testId || "") !== onlyTest) continue;
       // A paper still being written is NOT a result, and saying so is the whole
       // point of this field. The row carries a running auto-graded subtotal and
       // an empty `completedAt`, so without a status the report showed a student
@@ -2377,6 +2449,8 @@ const TEST_META_SELECT = [
   "status", "platform", "sample", "subjectId", "ownerSub", "updatedAt",
   "audience", "assignedTo", "copiedFrom", "questionCount", "totalMarks", "assessCost",
   "board", "klass", "subject",
+  // Sharing by link: three short strings, read by staff only (testMetaForStaff).
+  "shareOn", "shareToken", "accessCode",
 ];
 
 // How many legacy rows one request may heal. Beyond it the rest keep their
@@ -2632,6 +2706,40 @@ function assignedTo(e, username) {
   return assignedList(e).includes(String(username || "").toLowerCase());
 }
 
+/** The tests a link-joined student has joined, off their row. */
+function joinedList(record) {
+  try {
+    const list = JSON.parse((record && record.joined) || "[]");
+    return Array.isArray(list) ? list.map((x) => String(x || "")).filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Does this published, non-master test of the student's teacher reach THIS
+ * student? Two kinds of student, two rules, decided in one place so the tests
+ * listing and the subject listing cannot drift apart:
+ *
+ * - A login the teacher issued sees the class — everyone, or the named
+ *   students when the audience is narrowed (`assignedTo`).
+ * - A student who joined by a test link with an access code (`via: "google"`)
+ *   sees exactly the tests they joined, and nothing else the teacher
+ *   publishes — the code gates one test, and joining one is not enrolling in
+ *   the class. Once joined, a test stays theirs even if the link is switched
+ *   off afterwards: they sat it, and the result is theirs to read.
+ *
+ * `student` is the shape identify() returns — `username`, `via`, `joined` —
+ * or a student row read for a parent reading as their child.
+ */
+function reachesStudent(e, student) {
+  if (student.via === "google") {
+    const joined = Array.isArray(student.joined) ? student.joined : joinedList(student);
+    return joined.includes(e.rowKey);
+  }
+  return assignedTo(e, student.username || student.rowKey);
+}
+
 function testMeta(e) {
   // The counts are stamped on write, so a listing projects them off the row
   // instead of pulling every question body over the wire. A row written before
@@ -2668,9 +2776,22 @@ function testFull(e) {
   return { ...testMeta(e), questions: unchunkQuestions(e) };
 }
 
-/** The staff view: same metadata plus the usernames it is assigned to. */
+/** The staff view: same metadata plus the usernames it is assigned to, and
+ *  how it is shared by link — the token and the access code never reach a
+ *  student's copy, who has them already or is not meant to. */
 function testMetaForStaff(e) {
-  return { ...testMeta(e), assignedTo: assignedList(e) };
+  return { ...testMeta(e), assignedTo: assignedList(e), share: shareOf(e) };
+}
+
+/** How a test is shared by link, off its row. `on` is the switch; the token
+ *  and the code persist across it, so a link once given keeps working when
+ *  the teacher switches sharing back on. */
+function shareOf(e) {
+  return {
+    on: !!e.shareOn,
+    token: String(e.shareToken || ""),
+    code: String(e.accessCode || ""),
+  };
 }
 
 function canManageTest(who, entity) {
@@ -2825,6 +2946,81 @@ handlers.tests = async (context, req) => {
       return json(context, 200, { ok: true, audience, assignedCount: usernames.length });
     }
 
+    // Share a test by link: anyone with the link AND the access code joins it
+    // by signing in with Google, and becomes a student of this teacher who
+    // sees this test (and any other they join the same way). The token names
+    // the test in the link; the code is what the teacher reads out in class.
+    //
+    // Both are minted once and kept: switching sharing off and on again keeps
+    // the link a teacher already sent working, and `rotate` makes a new code
+    // for the next batch without touching anyone who has joined. The `shares`
+    // index row is how a link is resolved — a test id is unique per owner, so
+    // the token has to name the owner's partition.
+    //
+    // Gated like issuing a login (`mayIssueLogins`): a link collects real
+    // people's names and emails under this teacher, and a self-declared
+    // teacher must not open a roster that way either.
+    if (action === "share") {
+      const id = String(body.id || "").trim();
+      const entity = await readByPartitions(tests, staffPartitions, id, LEGACY_TEST_PK);
+      if (!entity) return json(context, 404, { error: "Test not found" });
+      if (!canManageTest(who, entity) || entity.platform) return json(context, 403, { error: "Not your test" });
+      if (!(await mayIssueLogins(who))) {
+        return json(context, 403, {
+          error: "Your teacher account is waiting to be approved. Ask Vidai to approve it, and you can share tests by link straight after.",
+        });
+      }
+      const on = body.on !== false;
+      const rotate = body.rotate === true;
+      if (!entity.shareToken) entity.shareToken = newShareToken();
+      if (!entity.accessCode || rotate) entity.accessCode = newAccessCode();
+      entity.shareOn = on;
+      entity.updatedAt = new Date().toISOString();
+      // The index first: a link that resolves to nothing is worse than a row
+      // that says "on" a moment early.
+      const shares = tableClient("shares");
+      await ensureTable(shares);
+      await shares.upsertEntity(
+        {
+          partitionKey: "share",
+          rowKey: entity.shareToken,
+          ownerSub: entity.ownerSub,
+          testId: entity.rowKey,
+          createdAt: new Date().toISOString(),
+        },
+        "Merge"
+      );
+      await saveRow(tests, LEGACY_TEST_PK, entity, "Merge");
+      return json(context, 200, { ok: true, share: shareOf(entity) });
+    }
+
+    // Put a test that is filed nowhere its owner can open — under no subject,
+    // under a shelf's id, or under a subject that is not theirs — into one of
+    // the caller's own subjects. A row already in one of their subjects is not
+    // moved: where a test is filed is not otherwise editable, and this is the
+    // heal for rows the empty shell created without a subject (25 Sep–24 Oct)
+    // and the starter samples seeded under a shelf. It carries no questions
+    // over the wire and works on a published row too, which `update` — the
+    // editor's save — is not meant to touch. One point read of the test, two
+    // of subjects, one write.
+    if (action === "file") {
+      const id = String(body.id || "").trim();
+      const into = String(body.subjectId || "").slice(0, 80);
+      if (!id || !into) return json(context, 400, { error: "id and subjectId are required" });
+      const entity = await readByPartitions(tests, staffPartitions, id, LEGACY_TEST_PK);
+      if (!entity) return json(context, 404, { error: "Test not found" });
+      if (!canManageTest(who, entity) || entity.platform) return json(context, 403, { error: "Not your test" });
+      if (await ownSubjectRow(who, entity.subjectId)) {
+        return json(context, 409, { error: "This test is already in one of your subjects" });
+      }
+      const sub = await ownSubjectRow(who, into);
+      if (!sub) return json(context, 403, { error: "Not your subject" });
+      fileTestUnder(entity, sub);
+      entity.updatedAt = new Date().toISOString();
+      await saveRow(tests, LEGACY_TEST_PK, entity);
+      return json(context, 200, { ok: true, test: testMeta(entity) });
+    }
+
     // A teacher takes their own copy of a published master ("built-in") test.
     // The master itself is never edited by them — this is a fork, not a share.
     if (action === "adopt") {
@@ -2950,9 +3146,20 @@ handlers.tests = async (context, req) => {
         return json(context, 200, { ok: true, seeded: 0, alreadySeeded: true });
       }
       const samples = Array.isArray(body.tests) ? body.tests.slice(0, 5) : [];
-      // Optional: file the samples under a subject the teacher already owns.
-      // Without it they are written orphaned and the subjects GET adopts them.
+      // The samples go under ONE of the caller's own subjects, or nowhere. A
+      // row filed under a shelf's id, or under none, is in no tree a teacher
+      // can open — and under a shelf is where every new teacher's samples went
+      // for a month: the client handed this the first row of a subject list
+      // that had the library's shelves sorted in front of their own. (The
+      // orphan path this used to allow is dead for the same reason: the
+      // subjects GET adopts orphans only when the caller holds NO subject, and
+      // the shelves mean everyone holds eleven.) Refusing leaves the once-only
+      // flag unset, so the offer stands until there is a subject they fit.
       const seedSubject = String(body.subjectId || "").slice(0, 80);
+      const home = await ownSubjectRow(who, seedSubject);
+      if (!home) {
+        return json(context, 400, { error: "Samples are filed under one of your own subjects" });
+      }
       const created = [];
       for (const sample of samples) {
         const checked = validateQuestions(sample.questions);
@@ -2971,11 +3178,13 @@ handlers.tests = async (context, req) => {
           sample: true,
           ownerSub: who.id,
           ownerEmail: who.email || "",
-          board: "CBSE",
-          klass: "12",
-          subject: "Maths",
+          // The subject's own taxonomy, as `create` stamps it, so a sample
+          // always knows the context it was filed in.
+          board: home.board || "CBSE",
+          klass: home.klass || "12",
+          subject: home.subject || "Maths",
           subjectId: seedSubject,
-        forkedFromId: String(sample.id || "").slice(0, 60),
+          forkedFromId: String(sample.id || "").slice(0, 60),
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -3013,7 +3222,10 @@ handlers.tests = async (context, req) => {
             "tests",
             have,
             ent.tests,
-            `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`
+            ent.plan === "parent"
+              ? `A parent account holds ${ent.tests} test${ent.tests === 1 ? "" : "s"}.`
+              : `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`,
+            planDoor(ent)
           );
         }
       }
@@ -3087,6 +3299,23 @@ handlers.tests = async (context, req) => {
     entity.teacher = String(t.teacher || "").slice(0, 60);
     if (Number.isFinite(Number(t.order))) entity.order = Number(t.order);
     if (t.access) entity.access = t.access === "open" ? "open" : "login";
+    // A row filed nowhere its owner can open may be given a subject: one of
+    // the caller's own, never a shelf and never somebody else's. "Nowhere" is
+    // no subject at all (a test created from the empty shell of a subject the
+    // client had not made current), a shelf's id on a row that is not a master
+    // (where the starter samples were seeded for a month), or a subject that
+    // is not theirs. A row already under one of the caller's own subjects
+    // keeps it whatever the body says — where a test is filed is not otherwise
+    // editable here. The editor sends the subject the row was opened in on
+    // every save; the common case is the subject it already has, which costs
+    // nothing, and a mismatch is two point reads in the caller's partition.
+    const fileUnder = String(t.subjectId || "").slice(0, 80);
+    if (fileUnder && fileUnder !== (entity.subjectId || "") && !entity.platform) {
+      if (!(await ownSubjectRow(who, entity.subjectId))) {
+        const sub = await ownSubjectRow(who, fileUnder);
+        if (sub) fileTestUnder(entity, sub);
+      }
+    }
     entity.updatedAt = new Date().toISOString();
     chunkQuestions(entity, checked.questions);
     await saveRow(tests, LEGACY_TEST_PK, entity);
@@ -3110,8 +3339,11 @@ handlers.tests = async (context, req) => {
   }
 
   // A parent reads as their child, so assignment is checked against the child's
-  // username, not the parent's.
+  // username, not the parent's — and against the child's own kind of account:
+  // a child who joined by a test link sees the tests they joined, which is on
+  // the child's row (memoised by studentRecord, so one read at most).
   const asUsername = asChild ? wantedChild : who.username || "";
+  const asStudent = asChild ? (await studentRecord(wantedChild)) || { rowKey: wantedChild } : who;
 
   // --- Marking somebody else's student's paper ---------------------------
   //
@@ -3158,8 +3390,9 @@ handlers.tests = async (context, req) => {
     // sees their own teacher's copy of it, made with the "adopt" action.
     if (e.platform) return false;
     if (!((who.kind === "student" || asChild) && !!teacherSub && e.ownerSub === teacherSub)) return false;
-    // Assigned to named students only: everyone else is not in this class.
-    return assignedTo(e, asUsername);
+    // Assigned to named students only: everyone else is not in this class —
+    // and a student who joined by link sees the tests they joined, no more.
+    return reachesStudent(e, asStudent);
   }
 
   // The partitions this caller could possibly hold a VISIBLE test in — the
@@ -3182,8 +3415,11 @@ handlers.tests = async (context, req) => {
     if (!entity) return json(context, 404, { error: "Test not found" });
     if (!visible(entity)) return json(context, 403, { error: "Not available" });
     const full = testFull(entity);
-    // The class list is the teacher's business — a student never receives it.
-    return json(context, 200, { test: isStaff && !asChild ? { ...full, assignedTo: assignedList(entity) } : full });
+    // The class list and the share link are the teacher's business — a student
+    // never receives either.
+    return json(context, 200, {
+      test: isStaff && !asChild ? { ...full, assignedTo: assignedList(entity), share: shareOf(entity) } : full,
+    });
   }
 
   // The library: every published master, for a teacher to take a copy of.
@@ -3252,8 +3488,14 @@ handlers.tests = async (context, req) => {
     );
     wantsMasters = !!(sub && sub.platform);
   }
-  // The caller's own partition is walked either way, so `ownedCount` — and the
-  // `needsSamples` that hangs off it — still counts what it always counted.
+  // The caller's own partition is walked either way, so this own-row count —
+  // and the `needsSamples` that hangs off it — still counts what it always
+  // counted. It is NOT named `ownedCount`: that is the module-level helper the
+  // create/adopt gates call, and a `let ownedCount` here put the name in the
+  // Temporal Dead Zone for the whole handler, so `await ownedCount(...)` up in
+  // the POST create gate threw `Cannot access 'ownedCount' before
+  // initialization` for every capped account — an uncaught 500 the client only
+  // ever saw as "Request failed".
   const listPartitions =
     isStaff && !asChild
       ? wantsMasters
@@ -3262,7 +3504,7 @@ handlers.tests = async (context, req) => {
       : readPartitions;
 
   const list = [];
-  let ownedCount = 0;
+  let ownRowCount = 0;
   const budget = { left: COUNT_BACKFILL_BUDGET };
   const drain = { left: LEGACY_DRAIN_BUDGET };
   await walkPartitions(
@@ -3274,7 +3516,7 @@ handlers.tests = async (context, req) => {
       budget: drain,
     },
     async (row) => {
-      if (isStaff && row.ownerSub === who.id) ownedCount++;
+      if (isStaff && row.ownerSub === who.id) ownRowCount++;
       // The partition list above already keeps the library out, but the legacy
       // partition is walked whatever it holds, so an undrained master could
       // still arrive here and visible() would admit it. Without this the
@@ -3327,7 +3569,7 @@ handlers.tests = async (context, req) => {
   // A teacher with nothing of their own gets the bundled tests copied in as
   // starting samples — but only the first time, so deleting them sticks.
   let needsSamples = false;
-  if (isStaff && ownedCount === 0) {
+  if (isStaff && ownRowCount === 0) {
     try {
       const seeded = await tableClient("teacherstate").getEntity("state", who.id);
       needsSamples = !seeded.samplesSeededAt;
@@ -3346,20 +3588,27 @@ handlers.tests = async (context, req) => {
 // on the tests table above for why the constant partition key had to go.
 
 // An entrance exam stores its attempt YEAR where a school board stores its
-// class, because the year is what an exam's batches are told apart by. So the
-// middle of the title is rendered from the VALUE, not from a list of exam
-// boards: a four-digit year reads bare ("JEE Main 2027 Physics") and anything
-// else reads as a class ("CBSE Class 12 Maths").
+// class, and a college course (College & other) stores a year or semester
+// there, or nothing at all. So the middle of the title is rendered from the
+// VALUE, not from a list: "Class" is said only before a PLAIN NUMBER
+// ("CBSE Class 12 Maths"), and anything else reads as it was typed
+// ("JEE Main 2027 Physics", "MBBS Year 1 Anatomy", "B.E. Semester 3
+// Thermodynamics"). It used to prepend "Class" to everything that was not a
+// four-digit year, which named a medical course "Tamil Nadu Class MBBS I".
 //
 // Deciding it on the value is what keeps this honest. A list of exam boards
-// here would be a second copy of the one in src/taxonomy.ts, and the first
-// time somebody added an exam to one and not the other a real subject would
-// come out titled "JEE Advanced Class 2027 Physics".
-const isYearLike = (k) => /^(19|20)\d{2}$/.test(String(k || "").trim());
+// or courses here would be a second copy of the one in src/taxonomy.ts, and
+// the first time somebody added one and not the other a real subject would
+// come out titled "JEE Advanced Class 2027 Physics". `classWord` in
+// src/taxonomy.ts is the client mirror; change both or neither.
+const classWord = (k) => {
+  const v = String(k || "").trim();
+  if (!v) return "";
+  return /^\d{1,2}$/.test(v) ? `Class ${v}` : v;
+};
 
 function subjectTitle(board, klass, subject) {
-  const middle = !klass ? "" : isYearLike(klass) ? klass : `Class ${klass}`;
-  return [board, middle, subject].filter(Boolean).join(" ");
+  return [board, classWord(klass), subject].filter(Boolean).join(" ");
 }
 
 function subjectOut(e) {
@@ -3388,6 +3637,30 @@ function canUseSubject(who, e) {
   } catch {}
   const email = String(who.email || "").toLowerCase();
   return !!email && collaborators.includes(email);
+}
+
+/**
+ * One of the caller's own subjects, or null: a point read in their partition
+ * (the legacy partition is anybody's, so the owner is checked on the row), and
+ * never a shelf. Used wherever a test is filed under a subject by the caller's
+ * say-so — `update`'s subjectId, the `file` action — so the rule that a test
+ * goes only into a subject of theirs is decided in one place.
+ */
+async function ownSubjectRow(who, id) {
+  const sid = String(id || "");
+  if (!sid) return null;
+  const subjects = tableClient("subjects");
+  await ensureTable(subjects);
+  const s = await readByPartitions(subjects, [who.id], sid, LEGACY_SUBJECT_PK);
+  return s && !s.platform && canUseSubject(who, s) ? s : null;
+}
+
+/** File a test row under a subject row: the id, and the subject's taxonomy as `create` stamps it. */
+function fileTestUnder(entity, sub) {
+  entity.subjectId = sub.rowKey;
+  entity.board = sub.board || entity.board;
+  entity.klass = sub.klass || entity.klass;
+  entity.subject = sub.subject || entity.subject;
 }
 
 /** Every subject this teacher owns or collaborates on. */
@@ -3442,8 +3715,14 @@ handlers.subjects = async (context, req) => {
     const subject = String(body.subject || "").trim().slice(0, 40);
 
     if (action === "create") {
-      if (!board || !klass || !subject) {
-        return json(context, 400, { error: "Board, class and subject are all required" });
+      // The class is optional: a college course under College & other may be
+      // a freeform test bank with no year or semester, and its title reads
+      // perfectly well without one ("General Aptitude"). The client still
+      // insists on a class for a school board and a year for an exam, which
+      // is a matter of a sensible name rather than of anything this gate
+      // protects.
+      if (!board || !subject) {
+        return json(context, 400, { error: "Board and subject are required" });
       }
       // The gate runs before the row is built, and fails closed: a limit that
       // cannot be read must not become an unlimited one.
@@ -3458,7 +3737,8 @@ handlers.subjects = async (context, req) => {
             ent.subjects,
             ent.plan === "parent"
               ? "A parent account holds one subject."
-              : `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`
+              : `The ${rupees(ent.rules.teacherMonthlyPaise)}/month plan lifts this.`,
+            planDoor(ent)
           );
         }
       }
@@ -3631,7 +3911,7 @@ handlers.subjects = async (context, req) => {
       // A subject the student has no test in is not their subject — assignment
       // included, or a narrowed test would still light up its subject card.
       if (t.platform) return; // masters belong to the library, not to a class
-      if (t.ownerSub === teacherSub && assignedTo(t, who.username)) {
+      if (t.ownerSub === teacherSub && reachesStudent(t, who)) {
         wanted.add(t.subjectId);
       }
     }
@@ -3660,6 +3940,47 @@ function newInviteCode() {
   let out = "";
   for (let i = 0; i < 8; i++) out += CODE_ALPHABET[crypto.randomInt(CODE_ALPHABET.length)];
   return out;
+}
+
+// ---------- Sharing a test by link ----------
+
+/** The token in a share link: 16 hex characters, which survive the router's
+ *  trailing-punctuation clean-up and every messaging app's link mangling. */
+function newShareToken() {
+  return crypto.randomBytes(8).toString("hex");
+}
+
+/** The access code a teacher reads out: six characters from the alphabet
+ *  with no look-alikes, shown as ABC-DEF and compared without the dash. A
+ *  code is one of 31^6 ≈ 887 million, and `loginGate` throttles the guesses. */
+function newAccessCode() {
+  let out = "";
+  for (let i = 0; i < 6; i++) out += CODE_ALPHABET[crypto.randomInt(CODE_ALPHABET.length)];
+  return out;
+}
+
+/** A link-joined student's username: stable for one Google account under one
+ *  teacher, and nothing a person would recognise — not an email, not a name. */
+function linkUsername(sub, teacherSub) {
+  return `g-${digestKey(`${sub}|${teacherSub}`).slice(0, 12)}`;
+}
+
+/** How many of this teacher's seats are taken, counted only as far as the
+ *  limit — the students handler's own walk, shared with the join gate. */
+async function seatsTaken(students, teacherSub, limit) {
+  const safeSub = String(teacherSub || "").replace(/'/g, "''");
+  let seats = 0;
+  const iter = students.listEntities({
+    queryOptions: {
+      filter: `PartitionKey eq 'student' and teacherSub eq '${safeSub}'`,
+      select: ["RowKey"],
+    },
+  });
+  for await (const _ of iter) {
+    seats += 1;
+    if (seats > limit) break;
+  }
+  return seats;
 }
 
 /** Case and stray spaces/dashes only — never a lossy substitution, which
@@ -3781,6 +4102,229 @@ async function childLink(who, username) {
     return null;
   }
 }
+
+// ---------- Joining a test by link, with Google and an access code ----------
+//
+// A teacher shares a link (`?join=<token>`) and reads out a code. A student
+// opens the link, signs in with Google, types the code, and from then on is a
+// student of that teacher who sees that test — a `students` row like any
+// other, with a `vst` session like any other, so attempts, grading, release,
+// the report and the marking queue need nothing new. What differs is on the
+// row: `via: "google"`, the Google `sub` it came from, the email the teacher
+// tells them apart by, no password, and `joined`, the tests this student may
+// see (`reachesStudent`).
+//
+// One Google account, one teacher, one row: the username is a digest of the
+// two, so the same person joining a second test of the same teacher lands on
+// the same row and the second test is appended to `joined`. Another
+// teacher's link makes another row — their rosters are separate, as they
+// should be.
+//
+// It is NOT `/api/login`: no profile row, no role to choose, no phone number
+// to ask for. The Google ID token is verified here exactly as login does, and
+// exchanged for a student session on the spot.
+async function resolveShare(token) {
+  const key = String(token || "").trim().toLowerCase();
+  if (!/^[a-f0-9]{16}$/.test(key)) return null;
+  const shares = tableClient("shares");
+  await ensureTable(shares);
+  let row = null;
+  try {
+    row = await shares.getEntity("share", key);
+  } catch {}
+  if (!row || !row.ownerSub || !row.testId) return null;
+  const tests = tableClient("tests");
+  await ensureTable(tests);
+  const test = await readByPartitions(tests, [row.ownerSub], row.testId, LEGACY_TEST_PK);
+  if (!test || test.platform) return null;
+  return { token: key, test };
+}
+
+handlers.join = async (context, req) => {
+  if (misconfigured(context)) return;
+  if (!SESSION_SECRET) {
+    return json(context, 500, { error: "API not configured", reason: "no_session_secret" });
+  }
+
+  // The caller may be nobody (a link opened cold), a student already signed in
+  // (joining a second test of the same teacher needs only the code), or
+  // somebody signed in as something else, who is told to sign in as a student.
+  const who = await identify(req, context);
+
+  if (req.method === "GET") {
+    // What the link opens on: the test's name and size, whose it is, and
+    // whether it is open — never a question. A dead link says so once and
+    // nothing else about what the token might have named.
+    const found = await resolveShare(req.query && req.query.token);
+    if (!found) return json(context, 404, { error: "This link is not a test link, or the test is gone" });
+    const { test } = found;
+    let teacherName = "";
+    try {
+      const prof = await tableClient("profiles").getEntity("profile", test.ownerSub);
+      teacherName = String(prof.name || "");
+    } catch {}
+    const counts = storedCounts(test) || countsFromQuestions(unchunkQuestions(test));
+    const mine = who.kind === "student" && who.teacherSub === test.ownerSub;
+    return json(context, 200, {
+      title: test.title,
+      chapter: test.chapter || "",
+      teacher: teacherName || test.teacher || "",
+      questionCount: counts.questionCount,
+      totalMarks: counts.totalMarks,
+      published: test.status === "published",
+      on: !!test.shareOn,
+      testId: test.rowKey,
+      subjectId: test.subjectId || "",
+      // Signed in as this teacher's student already: no Google step, and no
+      // code either when this test is already theirs.
+      student: mine ? { username: who.username, joined: (who.joined || []).includes(test.rowKey) } : null,
+      // Signed in as somebody else — a teacher, a parent, another teacher's
+      // student — so the screen can say to sign out first rather than fail.
+      otherSession: who.kind && !mine ? who.kind : "",
+    });
+  }
+
+  if (req.method !== "POST") return json(context, 405, { error: "Method not allowed" });
+
+  const body = getBody(req) || {};
+  const found = await resolveShare(body.token);
+  if (!found) return json(context, 404, { error: "This link is not a test link, or the test is gone" });
+  const { test } = found;
+  if (!test.shareOn) {
+    return json(context, 403, { error: "This test is not open for joining right now — ask your teacher for a new link." });
+  }
+
+  // Who is joining. A Google credential makes (or finds) the student; a
+  // student session of this teacher joins as themselves.
+  const credential = String(body.credential || "");
+  let sub = "";
+  let name = "";
+  let email = "";
+  let picture = "";
+  let username = "";
+  if (credential) {
+    // A teacher trying their own link, a parent, another teacher's student:
+    // joining would replace their session with a student's, mid-sitting.
+    // Say so rather than do it.
+    if (who.kind && !(who.kind === "student" && who.teacherSub === test.ownerSub)) {
+      return json(context, 409, {
+        error: "You are signed in as somebody else. Sign out first, then open the link again to join as a student.",
+        reason: "other_session",
+      });
+    }
+    if (!(credential.split(".").length === 3 && credential.length > 40)) {
+      return json(context, 401, { error: "Invalid token", reason: "not_a_google_token" });
+    }
+    const verified = await verifyGoogleToken(credential);
+    if (!verified.token) {
+      return json(context, 401, { error: "Invalid token", reason: verified.reason });
+    }
+    sub = String(verified.token.sub || "");
+    name = String(verified.token.name || "").slice(0, 60);
+    email = String(verified.token.email || "").slice(0, 120);
+    picture = String(verified.token.picture || "").slice(0, 300);
+    username = linkUsername(sub, test.ownerSub);
+  } else if (who.kind === "student" && who.teacherSub === test.ownerSub) {
+    username = who.username;
+  } else {
+    return json(context, 401, { error: "Sign in with Google to join this test", reason: who.kind ? "other_session" : "no_session" });
+  }
+
+  // The code is guessed against like a password, so it is gated like one:
+  // the bucket is the CALLER (never the code — locking a code would let anyone
+  // shut a class out), checked before the code is compared.
+  const gate = await loginGate(req, username);
+  if (gate.lockMs > 0) return tooManyAttempts(context, gate.lockMs);
+  const typed = normaliseCode(body.code);
+  if (!typed || !safeEqual(typed, normaliseCode(test.accessCode))) {
+    await noteLoginFailure(gate);
+    return json(context, 401, { error: "That access code is not right. Check it with your teacher and try again." });
+  }
+  await clearFailures(gate.table, "user", gate.user);
+
+  const students = tableClient("students");
+  await ensureTable(students);
+  let record = null;
+  try {
+    record = await students.getEntity("student", username);
+  } catch {}
+
+  if (!record) {
+    // A new student of this teacher takes a seat, the same seat a login the
+    // teacher issues takes. The student is told only that the test is not
+    // taking more people — whose plan it is, and what it costs, is the
+    // teacher's business, and the seat count sits on the share dialog.
+    const owner = {
+      kind: "google",
+      id: test.ownerSub,
+      email: String(test.ownerEmail || ""),
+      role: await resolveRole(String(test.ownerEmail || ""), test.ownerSub),
+    };
+    const seatEnt = await entitlements(owner);
+    if (seatEnt.students > 0) {
+      const seats = await seatsTaken(students, test.ownerSub, seatEnt.students);
+      if (seats >= seatEnt.students) {
+        return json(context, 403, {
+          error: "This test is not taking more students right now. Ask your teacher to make room and try again.",
+          full: true,
+        });
+      }
+    }
+    record = {
+      partitionKey: "student",
+      rowKey: username,
+      name: name || email.split("@")[0] || "Student",
+      email,
+      picture,
+      school: "",
+      grade: "",
+      parentPhone: "",
+      via: "google",
+      googleSub: sub,
+      joined: JSON.stringify([test.rowKey]),
+      tokenEpoch: 0,
+      teacherSub: test.ownerSub,
+      teacherEmail: String(test.ownerEmail || ""),
+      createdAt: new Date().toISOString(),
+    };
+    await students.createEntity(record);
+  } else {
+    // The same person again — this test, or another of the same teacher's.
+    // Their own row, written only by their own joins, so a plain merge is
+    // enough; the name and picture follow Google in case they changed.
+    const joined = joinedList(record);
+    if (!joined.includes(test.rowKey)) joined.push(test.rowKey);
+    const patch = {
+      partitionKey: "student",
+      rowKey: username,
+      joined: JSON.stringify(joined.slice(0, 200)),
+      lastJoinedAt: new Date().toISOString(),
+    };
+    if (name) patch.name = name;
+    if (picture) patch.picture = picture;
+    await students.updateEntity(patch, "Merge");
+    record = { ...record, ...patch };
+  }
+  studentCache.drop(username);
+
+  const epoch = Number(record.tokenEpoch) || 0;
+  return json(
+    context,
+    200,
+    {
+      student: { username, name: record.name, via: "google" },
+      testId: test.rowKey,
+      subjectId: test.subjectId || "",
+      published: test.status === "published",
+    },
+    {
+      "Set-Cookie": sessionCookie(
+        signSession("vst", username, STUDENT_TOKEN_TTL_MS, { ep: epoch }),
+        STUDENT_TOKEN_TTL_MS
+      ),
+    }
+  );
+};
 
 handlers.parentlink = async (context, req) => {
   if (misconfigured(context)) return;
@@ -6281,6 +6825,7 @@ handlers.accounts = async (context, req) => {
           email: e.email || "",
           chose: e.chose || "",
           trialEndsAt: e.trialEndsAt || "",
+          paidUntil: e.paidUntil || "",
           paidSeats: typeof e.paidSeats === "number" ? e.paidSeats : 0,
           exempt: !!e.exempt,
           createdAt: e.createdAt || "",
@@ -6824,6 +7369,30 @@ async function settlePurchase(order, by, method, payerRef) {
   // the whole reason this lives inside the one seam rather than beside it. A
   // Razorpay webhook granting credits is the same call with a different
   // `method`.
+  // The teacher plan is TIME rather than a thing: a confirmed payment moves
+  // the account's `paidUntil` forward by the days on the order, from whatever
+  // is left of the current plan rather than from today, so paying early never
+  // loses the days already paid for. Same seam, same order row, same queue.
+  if (order.kind === "plan") {
+    const days = Math.max(1, Math.round(Number(order.planDays) || 30));
+    await grantPlanTo(sub, days, by);
+    await orders.updateEntity(
+      {
+        partitionKey: sub,
+        rowKey: ref,
+        status: "paid",
+        settledAt: new Date().toISOString(),
+        settledBy: by,
+        method,
+        payerRef: payerRef || order.payerRef || "",
+      },
+      "Merge"
+    );
+    await dropPending(orders, sub, ref);
+    await noteRedemption(order.coupon || "");
+    return;
+  }
+
   if (order.kind === "credits") {
     const credits = Math.max(0, Math.round(Number(order.credits) || 0));
     if (credits > 0) await grantCreditsTo(sub, credits, by);
@@ -6874,6 +7443,50 @@ async function settlePurchase(order, by, method, payerRef) {
   );
   await dropPending(orders, sub, ref);
   await noteRedemption(order.coupon || "");
+}
+
+/**
+ * Switch the teacher plan on for `days`, on the account row `entitlements`
+ * reads. Extends from the later of now and the current `paidUntil`, so a
+ * renewal paid a week early keeps that week. An account that never chose a
+ * role is stamped a teacher: buying the teacher plan is choosing it, and
+ * without `chose` the plan would be bought and never granted.
+ *
+ * ETag'd with a bounded retry, like every write that is money: two
+ * confirmations landing together must add up, not overwrite. The role cache
+ * is dropped so the next request sees the role the stamp implies.
+ */
+async function grantPlanTo(sub, days, by) {
+  const table = await accountsTable();
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    let row = null;
+    try {
+      row = await table.getEntity(ACCOUNT_PK, sub);
+    } catch {
+      row = null;
+    }
+    const now = Date.now();
+    const current = row && row.paidUntil ? Date.parse(row.paidUntil) : NaN;
+    const from = Number.isFinite(current) && current > now ? current : now;
+    const next = {
+      partitionKey: ACCOUNT_PK,
+      rowKey: sub,
+      paidUntil: new Date(from + days * 24 * 60 * 60 * 1000).toISOString(),
+      planGrantedAt: new Date().toISOString(),
+      planGrantedBy: by,
+      ...(row && row.chose ? {} : { chose: "teacher" }),
+    };
+    try {
+      if (row) await table.updateEntity(next, "Merge", { etag: row.etag });
+      else await table.createEntity({ ...next, createdAt: new Date().toISOString(), paidSeats: 0, exempt: false });
+      roleCache.drop(`sub~${sub}`);
+      return true;
+    } catch (e) {
+      const status = e && e.statusCode;
+      if (status !== 412 && status !== 409) throw e;
+    }
+  }
+  return false;
 }
 
 /**
@@ -7133,9 +7746,85 @@ handlers.purchase = async (context, req) => {
   // ---- The buyer ----
 
   const shelfId = safeId(body.shelfId, 80);
-  // Two things are for sale and they settle differently, so the kind travels
+  // Three things are for sale and they settle differently, so the kind travels
   // on the order rather than being guessed from what else is on it.
-  const kind = String(body.kind || "") === "credits" ? "credits" : "shelf";
+  const wantKind = String(body.kind || "");
+  const kind = wantKind === "credits" ? "credits" : wantKind === "plan" ? "plan" : "shelf";
+
+  /**
+   * An order that costs nothing — a 100% code — is settled on the spot. There
+   * is no payment to confirm, and walking the buyer through a ₹0 UPI link and
+   * an admin's queue for it is friction with nothing behind it. The same
+   * `settlePurchase`, with "coupon" as the method, so the code is redeemed and
+   * the order is recorded exactly as a paid one is.
+   */
+  async function startOrSettle(entity, shape) {
+    await orders.createEntity(entity);
+    if (entity.payablePaise <= 0) {
+      const order = await readOrder(orders, who.id, entity.rowKey);
+      await settlePurchase(order, who.id, "coupon", "");
+      return json(context, 200, { ...shape, ref: entity.rowKey, settled: true });
+    }
+    return json(context, 200, {
+      ...shape,
+      ref: entity.rowKey,
+      upi: {
+        vpa: UPI_VPA,
+        payee: UPI_PAYEE_NAME,
+        link: upiLink(entity.rowKey, entity.payablePaise),
+        note: `Vidai ${entity.rowKey}`,
+      },
+    });
+  }
+
+  // ---- The teacher plan, a month at a time ----
+  //
+  // Bought from the refusal that names it ("The ₹99/month plan lifts this"),
+  // which until now was a price with no door. One payment adds
+  // `teacherPlanDays` to the account's `paidUntil`; `entitlements` grants the
+  // plan while that date is in the future and nothing else grants it.
+  if (kind === "plan" && (action === "quote" || action === "start")) {
+    const rules = await platformRules();
+    const listPaise = Math.max(0, Math.round(Number(rules.teacherMonthlyPaise) || 0));
+    const days = Math.max(1, Math.round(Number(rules.teacherPlanDays) || 30));
+    if (listPaise <= 0) {
+      return json(context, 501, { error: "The teacher plan is not on sale yet", reason: "no_plan" });
+    }
+    const quote = await couponQuote(couponCode(body.code), listPaise);
+    const shape = {
+      kind: "plan",
+      planDays: days,
+      shelfId: "",
+      shelfTitle: `Teacher plan — ${days} days`,
+      listPaise,
+      discountPaise: quote.discountPaise,
+      payablePaise: quote.payablePaise,
+      coupon: quote.code,
+      couponLabel: quote.label || "",
+      couponMessage: quote.message,
+    };
+    if (action === "quote") return json(context, 200, shape);
+
+    return startOrSettle(
+      {
+        partitionKey: who.id,
+        rowKey: newOrderRef(),
+        kind: "plan",
+        planDays: days,
+        shelfId: "",
+        shelfTitle: shape.shelfTitle,
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        status: "open",
+        createdAt: new Date().toISOString(),
+        buyerName: who.name || "",
+        buyerEmail: who.email || "",
+      },
+      shape
+    );
+  }
 
   // ---- A pack of AI credits ----
   if (kind === "credits" && (action === "quote" || action === "start")) {
@@ -7160,33 +7849,25 @@ handlers.purchase = async (context, req) => {
     };
     if (action === "quote") return json(context, 200, shape);
 
-    const ref = newOrderRef();
-    await orders.createEntity({
-      partitionKey: who.id,
-      rowKey: ref,
-      kind: "credits",
-      credits,
-      shelfId: "",
-      shelfTitle: shape.shelfTitle,
-      listPaise,
-      discountPaise: quote.discountPaise,
-      payablePaise: quote.payablePaise,
-      coupon: quote.code,
-      status: "open",
-      createdAt: new Date().toISOString(),
-      buyerName: who.name || "",
-      buyerEmail: who.email || "",
-    });
-    return json(context, 200, {
-      ...shape,
-      ref,
-      upi: {
-        vpa: UPI_VPA,
-        payee: UPI_PAYEE_NAME,
-        link: upiLink(ref, quote.payablePaise),
-        note: `Vidai ${ref}`,
+    return startOrSettle(
+      {
+        partitionKey: who.id,
+        rowKey: newOrderRef(),
+        kind: "credits",
+        credits,
+        shelfId: "",
+        shelfTitle: shape.shelfTitle,
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        status: "open",
+        createdAt: new Date().toISOString(),
+        buyerName: who.name || "",
+        buyerEmail: who.email || "",
       },
-    });
+      shape
+    );
   }
 
   if (action === "quote" || action === "start") {
@@ -7241,37 +7922,31 @@ handlers.purchase = async (context, req) => {
       return json(context, 429, { error: "Too many unfinished payments. Finish or cancel one first." });
     }
 
-    const ref = newOrderRef();
-    await orders.createEntity({
-      partitionKey: who.id,
-      rowKey: ref,
-      shelfId,
-      shelfTitle: String(shelf.title || shelfId).slice(0, 120),
-      listPaise,
-      discountPaise: quote.discountPaise,
-      payablePaise: quote.payablePaise,
-      coupon: quote.code,
-      status: "open",
-      createdAt: new Date().toISOString(),
-      buyerName: who.name || "",
-      buyerEmail: who.email || "",
-    });
-    return json(context, 200, {
-      ref,
-      shelfId,
-      shelfTitle: shelf.title || shelfId,
-      listPaise,
-      discountPaise: quote.discountPaise,
-      payablePaise: quote.payablePaise,
-      coupon: quote.code,
-      couponMessage: quote.message,
-      upi: {
-        vpa: UPI_VPA,
-        payee: UPI_PAYEE_NAME,
-        link: upiLink(ref, quote.payablePaise),
-        note: `Vidai ${ref}`,
+    return startOrSettle(
+      {
+        partitionKey: who.id,
+        rowKey: newOrderRef(),
+        shelfId,
+        shelfTitle: String(shelf.title || shelfId).slice(0, 120),
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        status: "open",
+        createdAt: new Date().toISOString(),
+        buyerName: who.name || "",
+        buyerEmail: who.email || "",
       },
-    });
+      {
+        shelfId,
+        shelfTitle: shelf.title || shelfId,
+        listPaise,
+        discountPaise: quote.discountPaise,
+        payablePaise: quote.payablePaise,
+        coupon: quote.code,
+        couponMessage: quote.message,
+      }
+    );
   }
 
   if (action === "claim" || action === "cancel") {

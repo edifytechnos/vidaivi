@@ -23,12 +23,20 @@ on the teacher allowlist. Until they do, creating a student says *waiting for
 approval* — that is not a failure, it is the approval step. Everything else keeps
 working while you wait.
 
-## Your trial
+## Your trial, and the plan after it
 
 {{rules.trialDays}} days, {{rules.trialSubjects}} subject,
 {{rules.trialTests}} tests of your own and {{rules.trialStudents}} students.
 Plus **{{rules.freeShelfTests}} tests** out of the ready-made library free,
 before a whole subject costs {{rules.subjectPaise.rupees}}.
+
+When you reach a limit, the message says so and offers the **teacher plan** —
+{{rules.teacherMonthlyPaise.rupees}} for {{rules.teacherPlanDays}} days of
+unlimited subjects and tests of your own. Pay by UPI from that message, press
+**I have paid**, and the plan switches on once the payment is confirmed —
+usually the same day. Everything you had typed is still there; press Create
+again. A discount code from the admin goes in the same dialog, and a code for
+the whole price switches the plan on at once with nothing to confirm.
 
 ## The shape of the app
 

@@ -71,6 +71,10 @@ export interface StudentRecord {
   parentPhone: string;
   createdAt?: string;
   password?: string; // only present right after create/reset
+  /** How the student signs in: a teacher-issued password, or Google through a test link. */
+  via?: "login" | "google";
+  /** The Google account's address, for a student who joined by link. */
+  email?: string;
 }
 
 const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
@@ -134,8 +138,10 @@ function saveAuth(state: AuthState): void {
 const EXPIRED_KEY = "vidai:sessionExpired";
 
 // Signing in is the one place a 401 means "wrong credentials" rather than
-// "your session is over" — there is no session yet to end.
-const SIGN_IN_ENDPOINTS = ["/api/login", "/api/studentauth", "/api/manageauth"];
+// "your session is over" — there is no session yet to end. Joining a test by
+// link is a sign-in too: a wrong access code is a 401 that must not sign
+// out whoever is reading the screen.
+const SIGN_IN_ENDPOINTS = ["/api/login", "/api/studentauth", "/api/manageauth", "/api/join"];
 
 let expiring = false;
 let onExpired: (() => void) | null = null;
@@ -324,6 +330,47 @@ export async function renderGoogleButton(
   });
 }
 
+/**
+ * The Google button that hands the credential to the caller instead of
+ * signing in: the join screen exchanges it for a student session through
+ * `/api/join`, where `/api/login` would mint a teacher-or-parent one and ask
+ * for a role and a phone number. The credential is used once and not kept.
+ */
+export async function renderGoogleCredentialButton(
+  container: HTMLElement,
+  onCredential: (credential: string) => void,
+  onError: (message: string) => void,
+  text: "continue_with" | "signin_with" = "continue_with"
+): Promise<void> {
+  try {
+    await loadGis();
+  } catch {
+    onError("Could not load Google sign-in. Check your connection and reload.");
+    return;
+  }
+  const google = (window as any).google;
+  google.accounts.id.initialize({
+    client_id: CLIENT_ID,
+    callback: (response: { credential: string }) => onCredential(response.credential),
+  });
+  google.accounts.id.renderButton(container, { theme: "outline", size: "large", text, width: 280 });
+}
+
+/**
+ * A student who joined by a test link: the session is the cookie `/api/join`
+ * set, and the profile kept here is the same shape a password login keeps.
+ * Any other session on this device is replaced — the server refused to join
+ * from one, so there is none to keep.
+ */
+export function saveStudentSession(student: { username: string; name: string }): void {
+  saveAuth({
+    kind: "student",
+    profile: { kind: "student", sub: student.username, name: student.name, role: "student" },
+    savedAt: Date.now(),
+  });
+  void flushPendingAttempts();
+}
+
 export async function savePhone(phone: string): Promise<boolean> {
   const auth = getAuth();
   if (!auth || auth.kind !== "google") return false;
@@ -442,11 +489,18 @@ export const totpInit = () => totpAction({ action: "init" });
 export const totpEnable = (code: string) => totpAction({ action: "enable", code });
 export const totpDisable = (code: string) => totpAction({ action: "disable", code });
 
-export async function listTeachers(): Promise<{ email: string; addedAt?: string }[] | null> {
+export interface TeacherLists {
+  teachers: { email: string; addedAt?: string }[];
+  /** Chose "teacher" at sign-up and not yet approved — told they are waiting. */
+  pending: { email: string; name: string; since?: string }[];
+}
+
+export async function listTeachers(): Promise<TeacherLists | null> {
   try {
     const res = await apiFetch("/api/teachers", { headers: authHeader() });
     if (!res.ok) return null;
-    return (await res.json()).teachers;
+    const data = await res.json();
+    return { teachers: data.teachers || [], pending: data.pending || [] };
   } catch {
     return null;
   }
@@ -478,6 +532,8 @@ export interface Entitlements {
   plan: "new" | "trial" | "teacher" | "parent" | "lapsed" | "exempt" | "admin";
   chose: "" | "teacher" | "parent";
   trialEndsAt: string;
+  /** When the bought teacher plan runs out; empty when never bought. */
+  paidUntil?: string;
   limits: { subjects: number; tests: number; students: number; shelfTests: number };
   rules: Record<string, number>;
 }
@@ -555,6 +611,8 @@ export interface AccountRow {
   email: string;
   chose: string;
   trialEndsAt: string;
+  /** When the bought teacher plan runs out; empty when never bought. */
+  paidUntil?: string;
   paidSeats: number;
   exempt: boolean;
   createdAt: string;
@@ -782,12 +840,21 @@ export async function resetStudentPassword(
 
 export interface StudentReport extends StudentRecord {
   attempts: ServerAttempt[];
+  /** The email a link-joined student signed in with; empty for a login the teacher issued. */
+  email?: string;
+  /** "google" for a student who joined by a test link, "login" otherwise. */
+  via?: "google" | "login";
 }
 
-/** Teacher/admin: attempts for one student, or all students when username omitted. */
-export async function fetchReports(username?: string): Promise<StudentReport[] | null> {
+/** Teacher/admin: attempts for one student, or all students when username
+ *  omitted; `testId` keeps only that test's attempts on each — the results
+ *  screen for one test. */
+export async function fetchReports(username?: string, testId?: string): Promise<StudentReport[] | null> {
   try {
-    const q = username ? `?username=${encodeURIComponent(username)}` : "";
+    const params = new URLSearchParams();
+    if (username) params.set("username", username);
+    if (testId) params.set("testId", testId);
+    const q = params.toString() ? `?${params}` : "";
     const res = await apiFetch(`/api/reports${q}`, { headers: authHeader() });
     if (!res.ok) return null;
     return (await res.json()).students as StudentReport[];

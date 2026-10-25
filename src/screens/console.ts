@@ -40,6 +40,8 @@ import { currentSubject } from "./home";
 import { showBuilder } from "./builder";
 import { newTestHere, showEditor } from "./editor";
 import { audienceLabel, openAssign } from "./assign";
+import { openShareLink } from "./share";
+import { showTestResults } from "./results";
 import { showSubjects } from "./subjects";
 import { openStudentPaper } from "./marking";
 import {
@@ -195,14 +197,16 @@ export function showMyTests() {
                          <button class="btn-link mt-act" data-act="publish" data-id="${escapeHtml(t.id)}">Publish</button>
                          <button class="btn-link mt-act" data-act="delete" data-id="${escapeHtml(t.id)}">Delete</button>`
                       : `<button class="btn-link mt-act" data-act="unpublish" data-id="${escapeHtml(t.id)}">Back to draft</button>`;
+                const shared = t.share?.on ? ` · <span class="cell-quiet">by link</span>` : "";
                 return `<tr>
                   <td class="cell-strong">${escapeHtml(t.title)}${t.platform ? ` <span class="chip">platform</span>` : ""}${t.sample ? ` <span class="chip">sample</span>` : ""}</td>
                   <td>${escapeHtml(t.chapter || "—")}</td>
                   <td>${t.questionCount}</td>
                   <td class="cell-mono">${t.totalMarks}</td>
                   <td>${chip}</td>
-                  <td>${seenBy}<br><button class="btn-link mt-assign" data-id="${escapeHtml(t.id)}">Change</button></td>
-                  <td class="cell-actions">${actions}</td>
+                  <td>${seenBy}${shared}<br><button class="btn-link mt-assign" data-id="${escapeHtml(t.id)}">Change</button>
+                    ${t.platform ? "" : `<button class="btn-link mt-share" data-id="${escapeHtml(t.id)}">Share link</button>`}</td>
+                  <td class="cell-actions">${t.platform ? "" : `<button class="btn-link mt-results" data-id="${escapeHtml(t.id)}">Results</button>`} ${actions}</td>
                 </tr>`;
               })
               .join("")}
@@ -214,6 +218,15 @@ export function showMyTests() {
         const test = mine.find((t) => t.id === btn.dataset.id);
         if (test) void openAssign(test, () => void refresh());
       })
+    );
+    listEl.querySelectorAll<HTMLButtonElement>(".mt-share").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const test = mine.find((t) => t.id === btn.dataset.id);
+        if (test) openShareLink(test, () => void refresh());
+      })
+    );
+    listEl.querySelectorAll<HTMLButtonElement>(".mt-results").forEach((btn) =>
+      btn.addEventListener("click", () => showTestResults(btn.dataset.id!, showMyTests))
     );
     listEl.querySelectorAll<HTMLButtonElement>(".mt-edit").forEach((btn) =>
       btn.addEventListener("click", () => {
@@ -458,13 +471,21 @@ export function showPlans() {
     listEl.innerHTML = data.accounts
       .map((a) => {
         const left = a.trialEndsAt ? Math.ceil((Date.parse(a.trialEndsAt) - Date.now()) / 86400000) : 0;
+        // A bought plan is the one state that is not a trial: it says until
+        // when, because "paid" without a date is the question the next
+        // renewal asks.
+        const paidLeft = a.paidUntil ? Math.ceil((Date.parse(a.paidUntil) - Date.now()) / 86400000) : 0;
         const state = a.exempt
           ? `<span class="credit-low">Free forever</span>`
-          : a.trialEndsAt && left > 0
-            ? `on trial · ${left} day${left === 1 ? "" : "s"} left`
-            : a.chose
-              ? "trial ended"
-              : "not chosen yet";
+          : paidLeft > 0
+            ? `plan paid · ${paidLeft} day${paidLeft === 1 ? "" : "s"} left`
+            : a.trialEndsAt && left > 0
+              ? `on trial · ${left} day${left === 1 ? "" : "s"} left`
+              : a.chose
+                ? a.paidUntil
+                  ? "plan ended"
+                  : "trial ended"
+                : "not chosen yet";
         return `
         <div class="roster-row">
           <div class="roster-main">
@@ -573,6 +594,12 @@ export function showAdmin() {
           <button id="te-add" class="btn btn-primary">Add teacher</button>
         </div>
       </div>
+      <div class="card roster-card" id="te-pending-card" hidden>
+        <div class="solution-title">Waiting for approval</div>
+        <p class="hint">Chose "teacher" when they signed up. Until you approve them
+        they can write tests but cannot add students or share a test by link.</p>
+        <div id="te-pending"></div>
+      </div>
       <div class="card roster-card">
         <div class="solution-title">Allowed teachers</div>
         <div id="te-list">${skeleton.table(2, 3)}</div>
@@ -593,10 +620,42 @@ export function showAdmin() {
   void refreshTotp();
 
   async function refresh() {
-    const teachers = await listTeachers();
-    if (!teachers) {
+    const lists = await listTeachers();
+    if (!lists) {
       listEl.innerHTML = `<p class="login-error">Could not load — refresh to retry.</p>`;
       return;
+    }
+    const { teachers, pending } = lists;
+    const pendingCard = document.getElementById("te-pending-card");
+    const pendingEl = document.getElementById("te-pending");
+    if (pendingCard && pendingEl) {
+      pendingCard.hidden = !pending.length;
+      pendingEl.innerHTML = pending
+        .map(
+          (p) => `
+        <div class="roster-row">
+          <div class="roster-main">
+            <div class="roster-name">${escapeHtml(p.name || p.email)}</div>
+            ${p.name ? `<div class="roster-sub">${escapeHtml(p.email)}</div>` : ""}
+          </div>
+          <button class="btn btn-primary te-approve" data-email="${escapeHtml(p.email)}">Approve</button>
+        </div>`
+        )
+        .join("");
+      pendingEl.querySelectorAll<HTMLButtonElement>(".te-approve").forEach((btn) =>
+        btn.addEventListener("click", async () => {
+          btn.disabled = true;
+          btn.textContent = "Approving…";
+          const done = await modifyTeacher("add", btn.dataset.email!);
+          if (!done.ok) {
+            btn.disabled = false;
+            btn.textContent = "Approve";
+            notice(done.message || "Could not approve — try again.");
+            return;
+          }
+          void refresh();
+        })
+      );
     }
     if (!teachers.length) {
       listEl.innerHTML = `<p class="hint">No teachers added yet.</p>`;
@@ -767,10 +826,19 @@ export function showStudentReport(username: string) {
       ? Math.round([...best.values()].reduce((x, y) => x + y, 0) / best.size)
       : 0;
     const inFlight = attempts.length - done.length;
-    // "Tests attempted" out of the papers this teacher has published — not the
+    // "Tests attempted" out of the papers that reach this student — not the
     // bundled demo tests, which is what `TESTS` holds and why the tile once
-    // read 5/1. With no list to hand, the student's own count stands alone.
-    const published = (listed?.tests ?? []).filter((t) => t.status === "published" && !t.platform).length;
+    // read 5/1. The rule is the server's `visible()` for a student: published,
+    // not a master, and assigned to them when the teacher narrowed the
+    // audience (a "selected" test with no list reaches nobody, as there).
+    // With no list to hand, the student's own count stands alone.
+    const me = s.username.toLowerCase();
+    const published = (listed?.tests ?? []).filter(
+      (t) =>
+        t.status === "published" &&
+        !t.platform &&
+        (t.audience !== "selected" || (t.assignedTo ?? []).map((u) => u.toLowerCase()).includes(me))
+    ).length;
     const ofTests = Math.max(published, attempted.size);
 
     // Filed under the subject each test belongs to. A paper whose test is gone,
@@ -1054,13 +1122,24 @@ export function showTeacher() {
                 (s) => `
               <tr>
                 <td class="cell-strong">${escapeHtml(s.name)}</td>
-                <td class="cell-mono">${escapeHtml(s.username)}</td>
+                <td class="cell-mono">${
+                  // A student who joined by a test link signs in with Google:
+                  // the email is what tells them apart, and there is no
+                  // password to reset.
+                  s.via === "google"
+                    ? `${escapeHtml(s.email || s.username)}<div class="hint">joined by link</div>`
+                    : escapeHtml(s.username)
+                }</td>
                 <td>${escapeHtml(s.grade || "—")}</td>
                 <td>${escapeHtml(s.school || "—")}</td>
                 <td>${escapeHtml(s.parentPhone || "—")}</td>
                 <td class="cell-actions">
                   <button class="btn-link roster-report" data-user="${escapeHtml(s.username)}">Report</button>
-                  <button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>
+                  ${
+                    s.via === "google"
+                      ? ""
+                      : `<button class="btn-link roster-reset" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Reset password</button>`
+                  }
                   <button class="btn-link roster-invite" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Invite parent</button>
                   <button class="btn-link roster-remove" data-user="${escapeHtml(s.username)}" data-name="${escapeHtml(s.name)}">Remove</button>
                 </td>
@@ -1324,21 +1403,43 @@ export function showPayments(): void {
   void refresh();
 }
 
+/**
+ * A fresh code to hand out: VIDAI- and five characters from an alphabet with
+ * no 0/O or 1/I, because it is read off a WhatsApp message and typed on a
+ * phone. 32^5 is thirty-three million, so a guess learns nothing and the real
+ * bound stays "limit uses to", as the server's own note says. Pre-filled on
+ * a new code so creating one is one tap; anything typed over it wins.
+ */
+function newCouponCode(): string {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes = new Uint8Array(5);
+  crypto.getRandomValues(bytes);
+  return `VIDAI-${Array.from(bytes, (b) => alphabet[b % alphabet.length]).join("")}`;
+}
+
 /** One code, created or changed. Percentage and flat amount are both offered
- *  because Indian pricing uses both, and they add rather than compete. */
+ *  because Indian pricing uses both, and they add rather than compete. A
+ *  100% code makes the order free, and a free order settles on the spot. */
 function openCoupon(existing: Coupon | undefined, done: () => void): void {
   openModal({
     title: existing ? `Code ${existing.code}` : "New discount code",
-    description: "A code is typed on a phone, so it is not case-sensitive.",
+    description: existing
+      ? "A code is typed on a phone, so it is not case-sensitive."
+      : "A code is made for you — share it as it is, or type your own. It is not case-sensitive. 100% off makes the purchase free, with nothing to confirm.",
     fields: [
       {
         name: "code",
         label: "Code",
         required: true,
-        value: existing?.code ?? "",
-        hint: existing ? "Changing this makes a second code, it does not rename this one." : "",
+        value: existing?.code ?? newCouponCode(),
+        hint: existing ? "Changing this makes a second code, it does not rename this one." : "Generated — change it if you like.",
       },
-      { name: "percentOff", label: "Per cent off", value: String(existing?.percentOff ?? 0) },
+      {
+        name: "percentOff",
+        label: "Per cent off",
+        value: String(existing?.percentOff ?? 0),
+        hint: "Up to 100. At 100 the purchase is free.",
+      },
       {
         name: "amountOff",
         label: "Or a flat amount off (₹)",
@@ -1347,8 +1448,8 @@ function openCoupon(existing: Coupon | undefined, done: () => void): void {
       {
         name: "maxRedemptions",
         label: "Limit uses to",
-        value: String(existing?.maxRedemptions ?? 0),
-        hint: "0 means no limit.",
+        value: String(existing?.maxRedemptions ?? 1),
+        hint: "1 for a code one person uses once; 0 means no limit.",
       },
       { name: "expiresAt", label: "Expires on", value: existing?.expiresAt ?? "", hint: "YYYY-MM-DD, or leave empty." },
       { name: "note", label: "What it is for", value: existing?.note ?? "" },

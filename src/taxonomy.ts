@@ -1,4 +1,5 @@
-// What a subject can be: a school board, or an entrance exam.
+// What a subject can be: a school board, an entrance exam, or a college
+// course the teacher names themselves (College & other, below).
 //
 // **An entrance exam is a `board` value.** "JEE Main Physics" is
 // `{board: "JEE Main", klass: "2027", subject: "Physics"}` — the same three
@@ -20,9 +21,10 @@
 // attempts, instead of one subject that quietly accumulates both. `klass` is
 // already a free string — "Another class" has always taken whatever a teacher
 // types — so this needs no new field and no migration. `subjectTitle` on the
-// server renders a four-digit year bare ("JEE Main 2027 Physics") and anything
-// else as a class ("CBSE Class 12 Maths"), which is a rule about the value and
-// so has no list to keep in step with this file.
+// server says "Class" only before a plain number ("CBSE Class 12 Maths") and
+// renders anything else as typed ("JEE Main 2027 Physics", "MBBS Year 1
+// Anatomy"), which is a rule about the value and so has no list to keep in
+// step with this file. See `classWord`.
 //
 // This module is the ONE place that knows the shape of that taxonomy, because
 // the New subject flow, the board suggestions and anything that groups
@@ -100,10 +102,25 @@ export function isYear(klass: string | undefined | null): boolean {
   return /^(19|20)\d{2}$/.test(String(klass ?? "").trim());
 }
 
+/**
+ * The word for a class, as it is spoken.
+ *
+ * "Class" is prepended to a PLAIN NUMBER and nothing else — "12" reads "Class
+ * 12", while "2027", "Year 1", "Semester 3" and "MBBS I" all read as they were
+ * typed. A rule about the value, so it has no list of exams, courses or
+ * boards to keep in step with: a college course that lives in the same three
+ * fields as a school board gets a sensible name without being named here.
+ * Mirrors `classWord` on the server, which is what actually stamps the title.
+ */
+export function classWord(klass: string | undefined | null): string {
+  const k = String(klass ?? "").trim();
+  if (!k) return "";
+  return /^\d{1,2}$/.test(k) ? `Class ${k}` : k;
+}
+
 /** How a subject is named, mirroring `subjectTitle` on the server. */
 export function subjectTitle(board: string, klass: string, subject: string): string {
-  const middle = !klass ? "" : isYear(klass) ? klass : `Class ${klass}`;
-  return [board, middle, subject].filter(Boolean).join(" ");
+  return [board, classWord(klass), subject].filter(Boolean).join(" ");
 }
 
 // ---------------------------------------------------------------- the groups
@@ -120,6 +137,13 @@ export interface BoardGroup {
   boards: string[];
   /** An exam group asks for an attempt year where a board asks for a class. */
   exam?: boolean;
+  /**
+   * A free group has no boards to pick from: the teacher NAMES the course,
+   * and that name is stored as the `board`. It asks for a year or semester
+   * where a school board asks for a class, and lets that be skipped — a
+   * freeform test bank has no year. Still the same three fields.
+   */
+  free?: boolean;
 }
 
 export const BOARD_GROUPS: BoardGroup[] = [
@@ -151,7 +175,45 @@ export const BOARD_GROUPS: BoardGroup[] = [
     // nothing behind it reads as a promise the library cannot keep.
     boards: ["Tamil Nadu", "Kerala"],
   },
+  {
+    id: "college",
+    name: "College & other",
+    hint: "Medical, engineering, arts & science — or anything freeform",
+    // No boards on purpose: there is no list of every course in every
+    // college, and a list of a few would be a promise about the rest. The
+    // teacher names the course and it is stored as the board — "MBBS Year 1
+    // Anatomy" — in the same three fields a school subject uses. Before this
+    // the only way in was a school board plus "Another class", which named a
+    // medical course "Tamil Nadu Class MBBS I".
+    boards: [],
+    free: true,
+  },
 ];
+
+/**
+ * Courses offered under College & other, as SUGGESTIONS beneath the box —
+ * never a closed set. Short and common, so a tap beats typing on a phone;
+ * anything else is typed as it is.
+ */
+export const COURSES = [
+  "MBBS",
+  "BDS",
+  "B.Sc Nursing",
+  "B.E.",
+  "B.Tech",
+  "Diploma",
+  "B.Sc",
+  "B.A.",
+  "B.Com",
+  "BCA",
+  "BBA",
+  "M.Sc",
+  "MBA",
+  "General",
+];
+
+/** The years a college course is offered as tiles; a semester is typed. */
+export const COLLEGE_YEARS = ["Year 1", "Year 2", "Year 3", "Year 4"];
 
 export function groupFor(board: string): BoardGroup | undefined {
   const key = board.trim().toLowerCase();

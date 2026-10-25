@@ -41,6 +41,8 @@ export interface Test {
   // Present only on tests fetched from the API; bundled JSON tests have neither.
   status?: "draft" | "published" | "archived";
   sample?: boolean;
+  /** The subject the test is filed under. Empty on a row that has none. */
+  subjectId?: string;
   /** A master in the Vidai library. Only an admin may change one. */
   platform?: boolean;
   /** Who sits it: "class" is everyone the owner teaches; "selected" is `assignedTo`. */
@@ -48,6 +50,9 @@ export interface Test {
   assignedCount?: number;
   /** Staff only — the server never sends this to a student. */
   assignedTo?: string[];
+  /** Staff only: how the test is shared by link — the switch, the token in
+   *  the link, the access code. */
+  share?: { on: boolean; token: string; code: string };
   questions: Question[];
 }
 

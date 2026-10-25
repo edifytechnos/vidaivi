@@ -46,9 +46,23 @@ function wanted(): boolean {
   return shouldRecord(location.hostname, navigator.webdriver === true);
 }
 
+/**
+ * Whose session may be recorded at all. Never a student's, and never a test
+ * sat as a guest, who may well be a child: a recording is behavioural
+ * monitoring whatever it masks (every tap, scroll and pause, timed), and
+ * the DPDP Act bars that for anyone under 18 (s.9(3), in force from about
+ * May 2027; J, 19 Oct: stop now). Masking hides what is on the screen; it
+ * does not stop the following. Faculty, parents and admins are adults and
+ * stay recorded, and so does a guest browsing the home page.
+ */
+export function recordsAudience(role: string | undefined, sittingAsGuest: boolean): boolean {
+  if (role === "student") return false;
+  return !(!role && sittingAsGuest);
+}
+
 /** Load the tag. Call once at boot; a no-op anywhere Clarity is not wanted. */
-export function initClarity(): void {
-  if (!wanted() || clarity()) return;
+export function initClarity(who: { role?: string; sittingAsGuest: boolean }): void {
+  if (!wanted() || clarity() || !recordsAudience(who.role, who.sittingAsGuest)) return;
   const w = window as any;
   // The queue the tag drains once it has loaded — the snippet's first line.
   w.clarity = function (...args: unknown[]) {
@@ -68,7 +82,19 @@ export function initClarity(): void {
 export function tagRole(role: string | undefined): void {
   const c = clarity();
   if (!c || !role) return;
+  // A student who signs in on a page that was recording stops it there and
+  // then: their session is not one we record (see recordsAudience).
+  if (role === "student") { stopRecording(); return; }
   c("set", "role", role);
+}
+
+/**
+ * End this page's recording, for the rest of its life. Used when the person
+ * turns out to be someone we do not record — a student signing in, a guest
+ * opening a test. Nothing is sent after it; a reload decides afresh.
+ */
+export function stopRecording(): void {
+  clarity()?.("stop");
 }
 
 /**

@@ -3,6 +3,7 @@
 // merge in alongside them for logged-in users.
 
 import { authHeader, isLoggedIn, apiFetch } from "./auth";
+import type { PlanDoor } from "./payments";
 import type { Question, Test } from "./types";
 
 /** New question ids carry a random suffix: positional ids collide when a
@@ -45,6 +46,32 @@ export interface ServerTestMeta {
   locked?: boolean;
   /** What the whole paper costs to mark with AI. Never sent to a student. */
   assessCost?: number | null;
+  /** Staff only: how the test is shared by link. */
+  share?: ShareState;
+}
+
+/** A test's link sharing: the switch, the token in the link, the code read out. */
+export interface ShareState {
+  on: boolean;
+  token: string;
+  code: string;
+}
+
+/** What a join link opens on — the test's name and size, never a question. */
+export interface JoinInfo {
+  title: string;
+  chapter: string;
+  teacher: string;
+  questionCount: number;
+  totalMarks: number;
+  published: boolean;
+  on: boolean;
+  testId: string;
+  subjectId: string;
+  /** Signed in as this teacher's student already: no Google step needed. */
+  student: { username: string; joined: boolean } | null;
+  /** Signed in as somebody else — the kind — who must sign out to join. */
+  otherSession: string;
 }
 
 export interface TestProblem {
@@ -194,10 +221,21 @@ export async function fetchSubjects(): Promise<Subject[] | null> {
   }
 }
 
+/**
+ * The door a plan-limit refusal carries beside its sentence, read off a 402.
+ * `planDoor` on the server sends it for a teacher's limit and never for a
+ * parent's, whose sentence says the plan does not lift it.
+ */
+export function planDoorOf(status: number, data: { payment?: { kind?: string; planPaise?: number; planDays?: number } }): PlanDoor | undefined {
+  const p = data && data.payment;
+  if (status !== 402 || !p || p.kind !== "plan") return undefined;
+  return { kind: "plan", planPaise: Number(p.planPaise) || 0, planDays: Number(p.planDays) || 30 };
+}
+
 export async function mutateSubject(
   action: "create" | "update" | "delete",
   input: { id?: string; board?: string; klass?: string; subject?: string }
-): Promise<{ ok: true; subject?: Subject } | { ok: false; message: string }> {
+): Promise<{ ok: true; subject?: Subject } | { ok: false; message: string; payment?: PlanDoor }> {
   try {
     const res = await apiFetch("/api/subjects", {
       method: "POST",
@@ -205,7 +243,7 @@ export async function mutateSubject(
       body: JSON.stringify({ action, ...input }),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { ok: false, message: data.error || "Request failed" };
+    if (!res.ok) return { ok: false, message: data.error || "Request failed", payment: planDoorOf(res.status, data) };
     return { ok: true, subject: data.subject };
   } catch {
     return { ok: false, message: "Network error" };
@@ -255,7 +293,7 @@ export async function mutateTest(
   test: Partial<Test> & { platform?: boolean }
 ): Promise<
   | { ok: true; test: ServerTestMeta }
-  | { ok: false; message: string; problems?: TestProblem[] }
+  | { ok: false; message: string; problems?: TestProblem[]; payment?: PlanDoor }
 > {
   try {
     const res = await apiFetch("/api/tests", {
@@ -265,11 +303,107 @@ export async function mutateTest(
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
-      return { ok: false, message: data.error || "Request failed", problems: data.problems };
+      return {
+        ok: false,
+        message: data.error || "Request failed",
+        problems: data.problems,
+        payment: planDoorOf(res.status, data),
+      };
     }
     return { ok: true, test: data.test };
   } catch {
     return { ok: false, message: "Network error" };
+  }
+}
+
+/**
+ * File a test that is in no subject of yours — under none, under a shelf's id,
+ * or under somebody else's — into one of your own subjects. A test already in
+ * one of your subjects is refused: where a test is filed is not otherwise
+ * editable. Carries no questions; works on a published row too.
+ */
+export async function fileTestUnder(
+  id: string,
+  subjectId: string
+): Promise<{ ok: true; test: ServerTestMeta } | { ok: false; message: string }> {
+  try {
+    const res = await apiFetch("/api/tests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "file", id, subjectId }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not move the test" };
+    return { ok: true, test: data.test };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
+/**
+ * Share a test by link: switch it on or off, or make a new access code. The
+ * token and the code are minted once and kept across off and on, so a link
+ * already sent keeps working; `rotate` changes the code alone.
+ */
+export async function shareTest(
+  id: string,
+  opts: { on: boolean; rotate?: boolean }
+): Promise<{ ok: true; share: ShareState } | { ok: false; message: string }> {
+  try {
+    const res = await apiFetch("/api/tests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "share", id, on: opts.on, rotate: !!opts.rotate }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not change sharing" };
+    return { ok: true, share: data.share as ShareState };
+  } catch {
+    return { ok: false, message: "Network error" };
+  }
+}
+
+/** The share link for a token — the one a teacher sends. */
+export function joinLink(token: string): string {
+  return `${location.origin}${location.pathname.replace(/[^/]*$/, "")}?join=${encodeURIComponent(token)}`;
+}
+
+/** What a join link opens on. Works signed in or not. */
+export async function fetchJoinInfo(token: string): Promise<JoinInfo | null> {
+  try {
+    const res = await apiFetch(`/api/join?token=${encodeURIComponent(token)}`, { headers: authHeader() });
+    if (!res.ok) return null;
+    return (await res.json()) as JoinInfo;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Join a shared test. With a Google credential this makes (or finds) the
+ * student under that teacher and sets a student session; a student of the
+ * same teacher already signed in joins as themselves with the code alone.
+ * The credential is handed over once and never stored.
+ */
+export async function joinTest(args: {
+  token: string;
+  code: string;
+  credential?: string;
+}): Promise<
+  | { ok: true; student: { username: string; name: string }; testId: string; subjectId: string; published: boolean }
+  | { ok: false; message: string; reason?: string; full?: boolean }
+> {
+  try {
+    const res = await apiFetch("/api/join", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ token: args.token, code: args.code, credential: args.credential || "" }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, message: data.error || "Could not join", reason: data.reason, full: !!data.full };
+    return { ok: true, student: data.student, testId: data.testId, subjectId: data.subjectId || "", published: !!data.published };
+  } catch {
+    return { ok: false, message: "Network error — check your connection." };
   }
 }
 

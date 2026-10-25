@@ -28,6 +28,10 @@ Two reasons, and both matter in front of a class:
   or from their report.
 - **For the whole class** — release without naming a student, from the marking
   queue or the test's own row.
+- **For everyone who sat one test** — **Results** on that test (the chart icon
+  in the editor's action row, or on its row in My tests) lists them all, and
+  **Release to everyone** opens the paper to every one of them, and to anyone
+  who takes it later. See [sharing a test by link](07-sharing-by-link.html).
 
 **Unrelease** shuts it again if you released early.
 

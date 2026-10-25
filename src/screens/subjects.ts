@@ -46,8 +46,9 @@ export async function showSubjects() {
 async function refresh(): Promise<void> {
   const grid = document.getElementById("sub-grid");
   if (!grid) return;
-  await seedSamplesOnce(grid);
-  const all = (await fetchSubjects()) ?? [];
+  let all = (await fetchSubjects()) ?? [];
+  // Seeding files tests under one of these, so its counts are read again.
+  if (await seedSamplesOnce(grid, all)) all = (await fetchSubjects()) ?? all;
   // **Your subjects means subjects you own**, for every role — an admin
   // included. Built-in shelves are served to every teacher by /api/subjects,
   // but they are nobody's own work and they crowd out the one subject a teacher
@@ -102,22 +103,33 @@ async function refresh(): Promise<void> {
 }
 
 /**
- * A teacher's first visit copies the bundled tests in as their own editable
- * drafts, so they always have a worked example to learn from. Once ever — the
- * server holds the flag.
+ * A teacher with no tests of their own gets the bundled tests copied in as
+ * their own editable drafts, so they have a worked example to learn from. Once
+ * ever — the server holds the flag.
  *
- * Runs before the subjects are fetched: seeded tests are written without a
- * subject, and the subjects endpoint adopts orphans into the default subject
- * it creates. A teacher who already made a subject skips that adoption, so we
- * hand the seed their first subject instead.
+ * The samples are CBSE Class 12 Maths papers, and they are filed under a
+ * subject of the teacher's that IS that — never under whichever subject
+ * happens to come first. This used to hand the seed `owned[0]` of the subject
+ * list, which has had the library's shelves in it since Sep 2026 and is sorted
+ * by title, so every new teacher's samples went under the first shelf, where
+ * no tree of theirs could show them; and a teacher whose first subject is MBBS
+ * would otherwise find two Maths tests in it. With no subject they fit there
+ * is nothing to seed, and the server keeps the offer open (`needsSamples`)
+ * until there is one. Returns whether anything was written.
  */
-async function seedSamplesOnce(grid: HTMLElement): Promise<void> {
-  if (!canAuthor()) return;
+async function seedSamplesOnce(grid: HTMLElement, owned: Subject[]): Promise<boolean> {
+  if (!canAuthor()) return false;
+  const home = owned.find(samplesFit);
+  if (!home) return false;
   const list = await fetchTestList();
-  if (!list?.needsSamples) return;
+  if (!list?.needsSamples) return false;
   grid.innerHTML = skeleton.cards(3);
-  const owned = (await fetchSubjects()) ?? [];
-  await seedSampleTests(TESTS, owned[0]?.id);
+  return (await seedSampleTests(TESTS, home.id)) > 0;
+}
+
+/** A subject the bundled samples belong in: the teacher's own CBSE Class 12 Maths. */
+function samplesFit(s: Subject): boolean {
+  return !s.platform && s.board === "CBSE" && s.klass === "12" && /^math/i.test(s.subject.trim());
 }
 
 function cardFor(s: Subject): string {

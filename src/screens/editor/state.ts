@@ -94,6 +94,10 @@ export async function save(): Promise<boolean> {
     teacher: test.teacher ?? "",
     access: test.access,
     questions: test.questions,
+    // Where the test is filed. The server takes it only for a row that has no
+    // subject yet — a draft orphaned by the empty shell, which showEditor
+    // files under the subject it was opened in — and ignores it otherwise.
+    subjectId: test.subjectId,
   });
   inFlight = false;
 
@@ -108,6 +112,26 @@ export async function save(): Promise<boolean> {
   }
   emit("saved");
   return true;
+}
+
+/**
+ * Settle every save — the one in flight, the one it queued, the one the
+ * autosave timer is holding — before something else writes to the same row.
+ *
+ * `update` on the server replaces the whole row from a copy it read a moment
+ * earlier, so a share switched on between that read and that write would be
+ * written straight back off. The share dialog is therefore opened only once
+ * nothing is in flight, and the page is locked behind it, so nothing starts
+ * while it is open. A save that fails stays failed: the editor already says
+ * so, and waiting here forever would not make it succeed.
+ */
+export async function flush(): Promise<void> {
+  for (let i = 0; i < 200 && test; i++) {
+    if (inFlight) await new Promise((r) => setTimeout(r, 50));
+    else if (pending || timer || saveState === "dirty") {
+      if (!(await save())) return;
+    } else return;
+  }
 }
 
 export function questionAt(index: number): Question | null {

@@ -10,10 +10,12 @@
 import { apiFetch, authHeader } from "./auth";
 
 export interface Quote {
-  /** "shelf" or "credits" — what this order is for. */
+  /** "shelf", "credits" or "plan" — what this order is for. */
   kind?: string;
   /** Credits in the pack, when kind is "credits". */
   credits?: number;
+  /** Days of the teacher plan, when kind is "plan". */
+  planDays?: number;
   shelfId: string;
   shelfTitle: string;
   listPaise: number;
@@ -26,7 +28,20 @@ export interface Quote {
 
 export interface StartedOrder extends Quote {
   ref: string;
-  upi: { vpa: string; payee: string; link: string; note: string };
+  /** Absent when the order cost nothing and was settled on the spot. */
+  upi?: { vpa: string; payee: string; link: string; note: string };
+  /** A 100% code: paid, granted, nothing left to confirm. */
+  settled?: boolean;
+}
+
+/**
+ * What a limit refusal carries beside its sentence, so a screen can offer the
+ * thing the sentence names. Mirrors `planDoor` on the server.
+ */
+export interface PlanDoor {
+  kind: "plan";
+  planPaise: number;
+  planDays: number;
 }
 
 export interface MyOrder {
@@ -118,6 +133,14 @@ export const quoteCredits = (code?: string) =>
 
 export const startCreditOrder = (code?: string) =>
   post<StartedOrder & { credits: number }>({ action: "start", kind: "credits", code: code || "" });
+
+/** The teacher plan, a month at a time — the door on "the ₹99/month plan
+ *  lifts this". Same dialog, same seam; what is bought is time. */
+export const quotePlan = (code?: string) =>
+  post<Quote & { planDays: number }>({ action: "quote", kind: "plan", code: code || "" });
+
+export const startPlanOrder = (code?: string) =>
+  post<StartedOrder & { planDays: number }>({ action: "start", kind: "plan", code: code || "" });
 
 /** Opens an order and hands back the UPI link to pay it with. */
 export const startOrder = (shelfId: string, code?: string) =>
