@@ -51,6 +51,24 @@ the answer. Nothing else.
 
 If the button is missing, AI marking is not switched on for this platform.
 
+## Letting a parent mark
+
+A parent who linked to one of your students with your code can watch that
+student's papers. You can also let them **mark** them. Open the student's report
+and tick **Parent can mark and release**.
+
+While it is ticked, that parent can award marks by hand, use **Assess with AI**
+and **Mark N & release**, and release the student's papers to the student. Their
+AI marking comes out of the parent's own credits, never yours. You can still
+mark and release the same papers yourself; whoever saves a mark last is the one
+the student sees, and each mark records who gave it.
+
+Untick it and the parent is back to watching straight away. Marks they already
+gave stay as they are, for you to change if you want to.
+
+It is off for every student until you tick it, and it is per student — one
+family can mark while the rest of the class is yours.
+
 ## Credits
 
 Your balance appears beside the marks row and is seeded when the paper opens, so

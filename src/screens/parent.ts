@@ -7,8 +7,11 @@
 // children of their own) had no button anywhere and the screen was a dead end
 // for anyone without a teacher.
 //
-// A parent still never marks or edits somebody else's student: a linked child is
-// read-only exactly as before. What changed is that their OWN child is theirs.
+// Their OWN child is theirs to mark. A linked child is read-only — unless the
+// child's teacher has switched parent marking on for that student, and then the
+// parent marks the papers (by hand or with AI, from their own credits) and
+// releases them exactly as they would their own child's. `child.canMark` is the
+// server's answer to that, and the server's marking gate is the real one.
 
 import { track } from "../analytics";
 import {
@@ -36,6 +39,7 @@ import { openModal } from "../modal";
 import { mount, skeleton } from "../shell";
 import { showHome } from "./home";
 import { showReviewFor } from "./test";
+import { openStudentPaper } from "./marking";
 import type { Attempt } from "../types";
 
 /** The children screen. One child goes straight through to their results. */
@@ -231,11 +235,14 @@ export async function showChildResults(child: Child): Promise<void> {
   // One render, four calls, in parallel. The grading rows come back for the
   // whole child rather than per test: one request per row would be an N+1 from
   // a phone, which is the same rule the results list already follows.
+  // May this parent mark? Their own child always; a linked one only while the
+  // teacher allows it. An older server sends no `canMark`, and then it is `own`.
+  const marker = child.canMark ?? !!child.own;
   const [list, attempts, graded, credits] = await Promise.all([
     fetchTestList(undefined, child.username),
     fetchMyAttempts(child.username),
-    child.own ? fetchGrading({ student: child.username }) : Promise.resolve([]),
-    child.own ? fetchMyCredits() : Promise.resolve(null),
+    marker ? fetchGrading({ student: child.username }) : Promise.resolve([]),
+    marker ? fetchMyCredits() : Promise.resolve(null),
   ]);
   const host = document.getElementById("pa-tests")!;
   const tests = list?.tests ?? [];
@@ -269,19 +276,18 @@ export async function showChildResults(child: Child): Promise<void> {
         : at > 0
           ? `<span class="status-chip status-progress">In progress · Q${at + 1} of ${t.questionCount}</span>`
           : `<span class="status-chip status-new">Not started</span>`;
-      // The one click. It appears only on a paper with answers still waiting
-      // and only for this parent's OWN child — a linked child's paper belongs
-      // to the teacher who issued their login, and this parent marks nothing
-      // on it.
+      // The one click. It appears only on a paper with answers still waiting,
+      // and only where this parent may mark: their own child, or a linked one
+      // whose teacher has switched parent marking on.
       const todo = waiting.get(t.id) ?? 0;
       const mark =
-        child.own && todo > 0
+        marker && todo > 0
           ? `<button class="ai-go pa-mark" data-test="${escapeHtml(t.id)}"
                data-todo="${todo}">${aiGoInner(`Mark ${todo} &amp; release`)}</button>`
           : "";
       return `
       <div class="pa-row">
-        <button class="test-card" data-test="${escapeHtml(t.id)}" ${done ? "" : "disabled"}>
+        <button class="test-card" data-test="${escapeHtml(t.id)}" ${done || (marker && todo > 0) ? "" : "disabled"}>
           <div class="test-card-main">
             <div class="test-card-title">${escapeHtml(t.title)}</div>
             <div class="test-card-sub">${t.questionCount} questions · ${t.totalMarks} marks</div>
@@ -293,8 +299,21 @@ export async function showChildResults(child: Child): Promise<void> {
     })
     .join("")}</div>`;
 
+  // A parent who may mark opens the paper as its marker: the marks row under
+  // every answer to mark, Assess with AI beside it, and Release in the crumb —
+  // the screen a teacher marks on. One who only watches reads it, once it is
+  // released.
   host.querySelectorAll<HTMLButtonElement>(".test-card[data-test]:not([disabled])").forEach((card) =>
-    card.addEventListener("click", () => void openChildReview(child, card.dataset.test!))
+    card.addEventListener("click", () =>
+      marker
+        ? void openStudentPaper({
+            testId: card.dataset.test!,
+            username: child.username,
+            name: child.name,
+            back: () => void showChildResults(child),
+          })
+        : void openChildReview(child, card.dataset.test!)
+    )
   );
   host.querySelectorAll<HTMLButtonElement>(".pa-mark").forEach((btn) =>
     btn.addEventListener("click", () => void markWholePaper(child, btn))
@@ -311,7 +330,7 @@ function renderCredits(
   // A balance that could not be read says NOTHING. The server's gate is the
   // real limit, and a network blip must neither claim a parent is out nor
   // reassure them that they are not — the same rule the teacher's note keeps.
-  if (!credits || !child.own) {
+  if (!credits || !(child.canMark ?? child.own)) {
     host.innerHTML = "";
     return;
   }

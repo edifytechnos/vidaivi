@@ -4115,6 +4115,239 @@ async function releaseOwnerChecks() {
 }
 
 // --- Bounded parallelism keeps input order ---
+/**
+ * A parent marks a teacher's student only while the teacher allows it.
+ *
+ * Seeing a paper and marking it are two powers. Every write path used to ask
+ * only `canSeeStudent`, which lets a parent who redeemed an invite code READ
+ * their child's work — so the manual mark, the single AI draft and the
+ * per-student release were all open to a linked parent at the API. Now they
+ * ask `markRefusal`, and a linked parent passes it only while the student's
+ * teacher has switched `parentMarks` on. Each refusal below is checked BEFORE
+ * the switch, so the "allowed" half cannot pass on a gate that was never shut.
+ */
+async function parentMarkingChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  // Every `X eq 'v'` clause is honoured, not just the PartitionKey: a fake
+  // that ignores `status eq 'submitted'` would hand the queue a marked row and
+  // the "nothing waiting" assertions would prove nothing.
+  const clauses = (filter) => {
+    const out = [];
+    const re = /(\w+) eq '((?:[^']|'')*)'/g;
+    let m;
+    while ((m = re.exec(String(filter || "")))) out.push([m[1], m[2].replace(/''/g, "'")]);
+    return out;
+  };
+  const field = (row, name) =>
+    name === "PartitionKey" ? row.partitionKey : name === "RowKey" ? row.rowKey : row[name];
+  const listed = [];
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("exists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e });
+    },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (!rows.has(k)) { const err = new Error("not found"); err.statusCode = 404; throw err; }
+      rows.set(k, { ...rows.get(k), ...e });
+    },
+    deleteEntity: async (pk, rk) => { rows.delete(key(name, pk, rk)); },
+    listEntities: (opts) => {
+      const filter = (opts && opts.queryOptions && opts.queryOptions.filter) || "";
+      const want = clauses(filter);
+      listed.push(`${name}: ${filter}`);
+      // The teacher's own queue reads by `teacherId` across the table, which
+      // predates this change. Every query this change ADDS names a partition,
+      // and anything else that does not is refused here.
+      const hasPk = want.some(([f]) => f === "PartitionKey");
+      const isTeacherQueue = name === "grading" && want.some(([f]) => f === "teacherId");
+      if (!hasPk && !isTeacherQueue) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (!k.startsWith(`${name}/`)) continue;
+        if (want.every(([f, v]) => String(field(row, f) ?? "") === v)) hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  process.env.TEACHER_EMAILS = "t@example.com,o@example.com";
+  process.env.ADMIN_EMAILS = "a@example.com";
+  process.env.AZURE_AI_ENDPOINT = "https://fake.openai.azure.com";
+  process.env.AZURE_AI_KEY = "fake-key";
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS, chunkQuestions, usageMonth };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  const TEACHER = "teacher-pm-1";
+  const OTHER = "teacher-pm-2";
+  const PARENT = "parent-pm-1";
+  const tCookie = t.signSession("vgo", TEACHER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "t@example.com", n: "Teacher" });
+  const oCookie = t.signSession("vgo", OTHER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "o@example.com", n: "Other" });
+  const pCookie = t.signSession("vgo", PARENT, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "p@example.com", n: "Parent" });
+  const call = async (name, cookie, body, method = "POST", query = {}) => {
+    const c = { res: null };
+    await t.handlers[name](c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      body,
+      query,
+    });
+    return { status: c.res.status, data: c.res.body || {} };
+  };
+
+  rows.set(key("accounts", "account", PARENT), {
+    partitionKey: "account", rowKey: PARENT, chose: "parent", email: "p@example.com",
+  });
+  rows.set(key("platform", "plan", "current"), {
+    partitionKey: "plan", rowKey: "current", parentTrialCredits: 100,
+  });
+  // The teacher's student, the parent's link to them, and the teacher's paper.
+  rows.set(key("students", "student", "kid"), {
+    partitionKey: "student", rowKey: "kid", name: "Kid", teacherSub: TEACHER, tokenEpoch: 0,
+  });
+  rows.set(key("parentlinks", `parent~${PARENT}`, "kid"), {
+    partitionKey: `parent~${PARENT}`, rowKey: "kid", studentName: "Kid", teacherSub: TEACHER,
+  });
+  const paperRow = { partitionKey: TEACHER, rowKey: "tp-1", ownerSub: TEACHER, status: "published", title: "Paper" };
+  t.chunkQuestions(paperRow, [
+    { id: "q0", type: "long", marks: 5, q: "Prove it.", solution: "Because." },
+    { id: "q1", type: "long", marks: 5, q: "Prove that.", solution: "Because." },
+    { id: "q2", type: "mcq", marks: 1, q: "Pick", options: ["a", "b"], answer: 0, solution: "a" },
+  ]);
+  rows.set(key("tests", TEACHER, "tp-1"), paperRow);
+  const answer = (q) =>
+    rows.set(key("grading", "stu~kid", `tp-1~${q}`), {
+      partitionKey: "stu~kid", rowKey: `tp-1~${q}`, testId: "tp-1", questionId: q,
+      testTitle: "Paper", questionIndex: 0, maxMarks: 5, answerText: "my working",
+      status: "submitted", teacherId: TEACHER, studentName: "kid",
+    });
+  answer("q0");
+  answer("q1");
+
+  let modelCalls = 0;
+  const realFetch = global.fetch;
+  global.fetch = async () => {
+    modelCalls += 1;
+    const payload = {
+      choices: [{ message: { content: JSON.stringify({ awarded: 3, comment: "Good", reasoning: "r" }) } }],
+      usage: { prompt_tokens: 10, completion_tokens: 5 },
+    };
+    return { ok: true, status: 200, text: async () => JSON.stringify(payload), json: async () => payload };
+  };
+
+  const markBody = { action: "mark", username: "kid", testId: "tp-1", questionId: "q0", awarded: 4, comment: "Nice" };
+  const status = (q) => (rows.get(key("grading", "stu~kid", `tp-1~${q}`)) || {}).status;
+  const released = () => rows.has(key("releases", "tp-1", "kid"));
+  const children = async () => ((await call("parentlink", pCookie, {}, "GET")).data.children || []);
+  const queueHas = async () =>
+    ((await call("grading", pCookie, {}, "GET", { queue: "1" })).data.answers || []).some((a) => a.username === "kid");
+
+  // --- Off: the default, and every write path is shut ----------------------
+  const seen = await call("attempts", pCookie, {}, "GET", { student: "kid", testId: "tp-1" });
+  check(seen.status === 200, `the linked parent may still WATCH their child (${seen.status})`);
+  const kid0 = (await children()).find((c) => c.username === "kid");
+  check(kid0 && kid0.canMark === false, "the child list says the parent may not mark, before the teacher allows it");
+  const mark0 = await call("grading", pCookie, markBody);
+  check(mark0.status === 403, `a linked parent cannot award a mark by hand (${mark0.status})`);
+  check(/teacher/i.test(String(mark0.data.error || "")), `and is told to ask the teacher ("${mark0.data.error}")`);
+  check(status("q0") === "submitted", "and nothing was marked");
+  const ai0 = await call("assess", pCookie, { username: "kid", testId: "tp-1", questionId: "q0", question: "x", solution: "y" });
+  check(ai0.status === 403, `nor ask the AI for one answer's draft (${ai0.status})`);
+  const paper0 = await call("assess", pCookie, { action: "test", username: "kid", testId: "tp-1" });
+  check(paper0.status === 403, `nor mark the whole paper with AI (${paper0.status})`);
+  check(modelCalls === 0, `and the model was never called (${modelCalls})`);
+  const rel0 = await call("release", pCookie, { action: "release", testId: "tp-1", username: "kid" });
+  check(rel0.status === 403 && !released(), `nor release the paper to the child (${rel0.status})`);
+  const read0 = await call("tests", pCookie, {}, "GET", { id: "tp-1", forStudent: "kid" });
+  check(read0.status === 403, `nor open the paper as its marker (${read0.status})`);
+  check(!(await queueHas()), "and the child's answers are not in the parent's queue");
+
+  // --- Only the teacher who issued the login sets the switch ---------------
+  const other = await call("students", oCookie, { action: "parentMarking", username: "kid", on: true });
+  check(other.status === 403, `another teacher cannot switch it on (${other.status})`);
+  const self = await call("students", pCookie, { action: "parentMarking", username: "kid", on: true });
+  check(self.status === 403, `nor can the parent switch it on for themselves (${self.status})`);
+  check(rows.get(key("students", "student", "kid")).parentMarks !== true, "and the student row is unchanged");
+
+  const on = await call("students", tCookie, { action: "parentMarking", username: "kid", on: true });
+  check(on.status === 200 && on.data.parentMarks === true, `the child's own teacher switches it on (${on.status})`);
+  const report = await call("reports", tCookie, {}, "GET", { username: "kid" });
+  check(
+    ((report.data.students || [])[0] || {}).parentMarks === true,
+    "and the teacher's report says so"
+  );
+
+  // --- On: the parent marks, by hand and with AI, and releases -------------
+  const kid1 = (await children()).find((c) => c.username === "kid");
+  check(kid1 && kid1.canMark === true, "the child list now says the parent may mark");
+  check(await queueHas(), "the child's waiting answers reach the parent's queue");
+  const kidQueries = listed.filter((l) => l.startsWith("grading:") && l.includes("stu~kid"));
+  check(
+    kidQueries.length > 0 && kidQueries.every((l) => l.includes("PartitionKey eq 'stu~kid'")),
+    "and the queue reads the child's own partition, never a scan"
+  );
+  const read1 = await call("tests", pCookie, {}, "GET", { id: "tp-1", forStudent: "kid" });
+  check(read1.status === 200 && (read1.data.test.questions || []).length === 3, `the parent opens the teacher's paper to mark it (${read1.status})`);
+
+  const month = t.usageMonth();
+  const ai1 = await call("assess", pCookie, { username: "kid", testId: "tp-1", questionId: "q0", question: "x", solution: "y" });
+  check(ai1.status === 200 && modelCalls === 1, `the parent asks the AI for a draft (${ai1.status})`);
+  check(status("q0") === "submitted", "which is still only a draft — the parent awards the mark");
+  const parentWallet = rows.get(key("aiusage", "~wallet", PARENT)) || {};
+  check(parentWallet.used === 1, `the credit comes out of the PARENT's own wallet (${parentWallet.used})`);
+  check(!rows.has(key("aiusage", month, TEACHER)), "and never out of the teacher's");
+
+  const mark1 = await call("grading", pCookie, markBody);
+  const marked = rows.get(key("grading", "stu~kid", "tp-1~q0")) || {};
+  check(mark1.status === 200 && marked.status === "marked" && marked.awarded === 4, `the parent awards the mark by hand (${mark1.status})`);
+  check(marked.markedBy === "Parent", `and the row says who marked it (${marked.markedBy})`);
+
+  const paper1 = await call("assess", pCookie, { action: "test", username: "kid", testId: "tp-1" });
+  check(paper1.status === 200 && paper1.data.assessed === 1, `the whole-paper AI marks what is left (${paper1.status}, ${paper1.data.assessed})`);
+  check(status("q1") === "marked", "the last answer is marked");
+  check(released(), "and the paper is open to the child");
+
+  const hide = await call("release", pCookie, { action: "unrelease", testId: "tp-1", username: "kid" });
+  check(hide.status === 200 && !released(), `the parent can hide it again (${hide.status})`);
+  const rel1 = await call("release", pCookie, { action: "release", testId: "tp-1", username: "kid" });
+  check(rel1.status === 200 && released(), `and release it once more (${rel1.status})`);
+
+  // --- Off again: the gate shuts at once on this instance -------------------
+  const off = await call("students", tCookie, { action: "parentMarking", username: "kid", on: false });
+  check(off.status === 200, `the teacher switches it off (${off.status})`);
+  const mark2 = await call("grading", pCookie, { ...markBody, awarded: 1 });
+  check(mark2.status === 403, `and the parent's next mark is refused straight away (${mark2.status})`);
+  check(rows.get(key("grading", "stu~kid", "tp-1~q0")).awarded === 4, "with the mark left as it was");
+  const teacherMark = await call("grading", tCookie, { ...markBody, awarded: 5 });
+  check(teacherMark.status === 200, `the teacher marks their own student whatever the switch says (${teacherMark.status})`);
+
+  global.fetch = realFetch;
+  delete process.env.AZURE_AI_ENDPOINT;
+  delete process.env.AZURE_AI_KEY;
+}
+
 h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then((out) => {
     check(JSON.stringify(out) === "[2,4,6,8,10]", "inBatches keeps the input order");
@@ -4132,6 +4365,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => purchaseChecks())
   .then(() => parentCreditChecks())
   .then(() => generateChecks())
+  .then(() => parentMarkingChecks())
   .then(() => releaseOwnerChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");

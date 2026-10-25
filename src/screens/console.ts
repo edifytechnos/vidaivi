@@ -21,6 +21,7 @@ import {
   modifyTeacher,
   removeStudent,
   resetStudentPassword,
+  setParentMarking,
   setReleased,
   signOut,
   fetchTotpState,
@@ -821,6 +822,15 @@ export function showStudentReport(username: string) {
       <div class="card">
         <h2 class="landing-title">${escapeHtml(s.name)}</h2>
         <p class="hint">${escapeHtml([s.username, s.grade, s.school].filter(Boolean).join(" · "))}${s.parentPhone ? ` · Parent: ${escapeHtml(s.parentPhone)}` : ""}</p>
+        <label class="rep-parent">
+          <input type="checkbox" id="rep-parent-marks"${s.parentMarks ? " checked" : ""} />
+          <span class="rep-parent-text">
+            <span class="rep-parent-title">Parent can mark and release</span>
+            <span class="hint" id="rep-parent-hint">A parent linked to ${escapeHtml(s.name)} can mark
+            their papers, by hand or with AI from the parent's own credits, and release them
+            to ${escapeHtml(s.name)}. You can still mark and release them yourself.</span>
+          </span>
+        </label>
         <div class="report-stats">
           <div class="report-stat"><div class="report-stat-num">${attempted.size}/${TESTS.filter((t) => t.access === "login").length || TESTS.length}</div><div class="report-stat-label">tests attempted</div></div>
           <div class="report-stat"><div class="report-stat-num">${done.length}</div><div class="report-stat-label">handed in</div></div>
@@ -895,6 +905,28 @@ export function showStudentReport(username: string) {
         <button id="rep-back" class="btn btn-ghost">Back to students</button>
       </div>`;
     document.getElementById("rep-back")!.addEventListener("click", showTeacher);
+    // The teacher's switch for this student's parent. It saves on the tick and
+    // puts itself back if the save fails, so the box never shows a state the
+    // server does not hold.
+    const parentBox = document.getElementById("rep-parent-marks") as HTMLInputElement | null;
+    parentBox?.addEventListener("change", async () => {
+      const want = parentBox.checked;
+      parentBox.disabled = true;
+      const res = await setParentMarking(s.username, want);
+      parentBox.disabled = false;
+      if (!res.ok) {
+        parentBox.checked = !want;
+        notice(res.message || "That did not save");
+        return;
+      }
+      track("parent_marking_set", { on: want });
+      notice(
+        want
+          ? `A parent linked to ${s.name} can now mark and release their papers.`
+          : `Only you can mark ${s.name}'s papers now.`,
+        "info"
+      );
+    });
     document.querySelectorAll<HTMLButtonElement>(".rep-paper").forEach((btn) =>
       btn.addEventListener("click", () =>
         void openStudentPaper({

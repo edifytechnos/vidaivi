@@ -1040,6 +1040,43 @@ body {
 
 /* ---------- Report ---------- */
 
+/* The teacher's switch for this student's parent: a checkbox with its title
+   and one line on what it lets the parent do. A whole row is the target, so
+   it stays 44px tall on a phone. */
+.rep-parent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  min-height: 44px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.rep-parent input {
+  flex: none;
+  margin-top: 2px;
+}
+
+.rep-parent-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.rep-parent-title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.rep-parent .hint {
+  margin: 0;
+}
+
 .report-stats {
   display: flex;
   gap: 10px;
