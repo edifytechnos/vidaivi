@@ -1266,6 +1266,9 @@ const ROSTER_SELECT = [
   // A student who joined by a test link: the email is what the teacher tells
   // them apart by, and `via` is why there is no password to reset.
   "email", "via",
+  // The teacher's switch: may a parent linked to this student mark their
+  // papers and release them? See `markRefusal`.
+  "parentMarks",
 ];
 
 const ATTEMPT_LIST_SELECT = [
@@ -2049,6 +2052,32 @@ handlers.students = async (context, req) => {
       });
     }
 
+    // The teacher's switch: may a parent linked to this student mark their
+    // papers — by hand or with AI — and release them? Only the account that
+    // issued the login may set it: it is that account's class.
+    if (action === "parentMarking") {
+      const username = String(body.username || "").trim().toLowerCase();
+      let entity;
+      try {
+        entity = await students.getEntity("student", username);
+      } catch {
+        return json(context, 404, { error: "Student not found" });
+      }
+      if (entity.teacherSub !== who.id) {
+        return json(context, 403, { error: "Not your student" });
+      }
+      const on = body.on === true;
+      await students.upsertEntity(
+        { partitionKey: "student", rowKey: username, parentMarks: on },
+        "Merge"
+      );
+      // The gate reads this through the student cache. Dropping it makes the
+      // change take effect at once on this instance; another catches up within
+      // STUDENT_TTL_MS, the same window as removing a student.
+      studentCache.drop(username);
+      return json(context, 200, { ok: true, username, parentMarks: on });
+    }
+
     if (action === "reset") {
       const username = String(body.username || "").trim().toLowerCase();
       let entity;
@@ -2142,6 +2171,7 @@ handlers.students = async (context, req) => {
       createdAt: e.createdAt,
       email: e.email || "",
       via: e.via === "google" ? "google" : "login",
+      parentMarks: e.parentMarks === true,
     });
     if (list.length >= 200) break;
   }
@@ -2187,6 +2217,7 @@ handlers.reports = async (context, req) => {
       parentPhone: e.parentPhone,
       email: e.email || "",
       via: e.via === "google" ? "google" : "login",
+      parentMarks: e.parentMarks === true,
     });
     if (roster.length >= 200) break;
   }
@@ -3366,11 +3397,13 @@ handlers.tests = async (context, req) => {
   // unpublished or narrowly-assigned test — the paper being marked is often
   // exactly that.
   const markFor = String((req.query && req.query.forStudent) || "").trim().toLowerCase();
-  // Teachers and admins only. A parent marks nobody else's student, and their
-  // own child's test is already in their own partition.
+  // Teachers, admins, and a parent who may mark this child: their own, or a
+  // linked one whose teacher has switched parent marking on. The gate is the
+  // marking gate, not the seeing one — this read exists to mark the paper.
   let markTeacher = "";
-  if (markFor && (who.role === "teacher" || who.role === "admin")) {
-    const refusal = await canSeeStudent(who, markFor);
+  if (markFor && (who.role === "teacher" || who.role === "admin" || who.role === "parent")) {
+    const refusal =
+      who.role === "parent" ? await markRefusal(who, markFor) : await canSeeStudent(who, markFor);
     if (refusal) return refuse(context, refusal);
     // Already read and memoised by the gate above, so this costs nothing.
     const rec = await studentRecord(markFor);
@@ -4034,6 +4067,7 @@ async function linkedChildren(who) {
         // Which of the two they are. A child you issued is yours to mark and
         // to reset; one you were linked to belongs to their teacher.
         own: true,
+        canMark: true,
       });
       if (out.length >= 20) break;
     }
@@ -4057,10 +4091,21 @@ async function linkedChildren(who) {
         teacherSub: e.teacherSub || "",
         linkedAt: e.linkedAt || "",
         own: false,
+        canMark: false,
       });
       if (out.length >= 20) break;
     }
   } catch {}
+
+  // A linked child is marked by their teacher unless the teacher has let this
+  // parent do it. The switch lives on the student row — the one row that
+  // knows — so it is one point read per linked child, through the same cache
+  // every student request reads, a few at a time and never more than 20.
+  const linked = out.filter((c) => !c.own);
+  await inBatches(linked, 10, async (c) => {
+    const rec = await studentRecord(c.username);
+    c.canMark = !!rec && rec.parentMarks === true;
+  });
 
   out.sort((a, b) => a.name.localeCompare(b.name));
   return out;
@@ -5184,6 +5229,48 @@ async function canSeeStudent(who, username) {
   return link ? "" : "Not your child";
 }
 
+/**
+ * May this caller MARK `username`'s work — award marks, ask the AI for them,
+ * and release the paper? Returns a reason or "".
+ *
+ * Seeing a paper and marking it are two different powers. `canSeeStudent`
+ * lets a parent who redeemed a teacher's invite code READ their child's work,
+ * and every write path used to ask only that — so the manual mark, the
+ * single-answer AI draft and the per-student release were all open to a
+ * linked parent at the API, with nothing but the missing button between them
+ * and a teacher's class. This is the one gate every write path asks instead:
+ *
+ * - whoever issued the login (a teacher's own student, a parent's own child);
+ * - an admin, who may stand in for anyone;
+ * - **a linked parent, only while the student's teacher has switched it on**
+ *   (`parentMarks` on the student row, `POST /api/students
+ *   {action:"parentMarking"}`). Off is the default, and a row written before
+ *   the switch existed reads as off.
+ *
+ * The flag is read through `studentRecord`, the same 30-second cache every
+ * student request already reads, and the toggle drops this instance's entry.
+ * So switching it OFF takes effect at once here and within 30 seconds on
+ * another warm instance — the same window as removing a student.
+ */
+const PARENT_MARK_OFF =
+  "Their teacher marks this paper. Ask the teacher to let you mark and release it.";
+
+async function markRefusal(who, username) {
+  const user = String(username || "").trim().toLowerCase();
+  const seen = await canSeeStudent(who, user);
+  if (seen) return seen;
+  // A student sees their own work and marks none of it.
+  if (who.kind === "student") return "Not your work";
+  if (who.role === "admin") return "";
+  const rec = await studentRecord(user);
+  if (!rec) return "Student not found";
+  if (String(rec.teacherSub || "") === who.id) return "";
+  // canSeeStudent has already proved the link, so all that is left to ask of
+  // a parent here is whether the teacher lets them mark.
+  if (who.role === "parent") return rec.parentMarks === true ? "" : PARENT_MARK_OFF;
+  return "Not your student";
+}
+
 /** Turn a canSeeStudent reason into a response. Missing is 404, not 403. */
 function refuse(context, reason) {
   return json(context, reason === "Student not found" ? 404 : 403, { error: reason });
@@ -5377,6 +5464,25 @@ handlers.grading = async (context, req) => {
         out.push(gradingOut(e));
         if (out.length >= 200) break;
       }
+      // A parent's queue also holds the linked children their teacher lets
+      // them mark. Those rows carry the TEACHER's id, so the query above
+      // cannot find them: each child is one query in their own partition
+      // (rules 1–3), never more than the 20 children a parent can hold.
+      if (who.role === "parent" && out.length < 200) {
+        const markable = (await linkedChildren(who)).filter((c) => !c.own && c.canMark);
+        await inBatches(markable, 10, async (c) => {
+          const childIter = grading.listEntities({
+            queryOptions: {
+              filter: `PartitionKey eq 'stu~${c.username.replace(/'/g, "''")}' and status eq 'submitted'`,
+              select: GRADING_SELECT,
+            },
+          });
+          for await (const e of childIter) {
+            if (out.length >= 200) break;
+            out.push(gradingOut(e));
+          }
+        });
+      }
       out.sort(
         (a, b) =>
           (a.testTitle || "").localeCompare(b.testTitle || "") ||
@@ -5474,7 +5580,9 @@ handlers.grading = async (context, req) => {
   }
 
   const username = String(body.username || "").trim().toLowerCase();
-  const refusal = await canSeeStudent(who, username);
+  // Marking, not merely seeing: a linked parent reads this paper, and marks
+  // it only while the teacher has switched that on.
+  const refusal = await markRefusal(who, username);
   if (refusal) return refuse(context, refusal);
 
   const testId = safeId(body.testId, 60);
@@ -6059,18 +6167,13 @@ handlers.assess = async (context, req) => {
     const testId = safeId(body.testId, 60);
     if (!username || !testId) return json(context, 400, { error: "Which paper?" });
 
-    const refusal = await canSeeStudent(who, username);
+    // Whoever issued the login, an admin, or a linked parent whose child's
+    // teacher has switched parent marking on — the one rule every write path
+    // asks (`markRefusal`). The credits are the CALLER's either way: a parent
+    // marking a teacher's student spends their own wallet, never the
+    // teacher's.
+    const refusal = await markRefusal(who, username);
     if (refusal) return refuse(context, refusal);
-
-    // Own child only — or an admin, who may stand in for anyone.
-    if (who.role !== "admin") {
-      const rec = await studentRecord(username);
-      if (!rec || String(rec.teacherSub || "") !== who.id) {
-        return json(context, 403, {
-          error: "That child's paper belongs to whoever issued their login.",
-        });
-      }
-    }
 
     // Everything still waiting on a marker, in the student's own partition and
     // projected (rules 1 and 2). `status eq 'submitted'` keeps the ones already
@@ -6125,8 +6228,10 @@ handlers.assess = async (context, req) => {
     try {
       const testsTbl = tableClient("tests");
       await ensureTable(testsTbl);
-      const rec = who.role === "admin" ? await studentRecord(username) : null;
-      const owner = who.role === "admin" ? String((rec && rec.teacherSub) || "") : who.id;
+      // The paper lives in the partition of whoever issued the child's login:
+      // the caller's own for their own child, the teacher's for a linked one.
+      const rec = await studentRecord(username);
+      const owner = String((rec && rec.teacherSub) || "") || who.id;
       const full = await readByPartitions(
         testsTbl,
         [owner, PLATFORM_PK].filter(Boolean),
@@ -6223,7 +6328,7 @@ handlers.assess = async (context, req) => {
 
   const body = getBody(req) || {};
   const username = String(body.username || "").trim().toLowerCase();
-  const refusal = await canSeeStudent(who, username);
+  const refusal = await markRefusal(who, username);
   if (refusal) return refuse(context, refusal);
 
   const testId = safeId(body.testId, 60);
@@ -7145,7 +7250,10 @@ handlers.release = async (context, req) => {
   // No username means the whole class.
   const username = String(body.username || "").trim().toLowerCase();
   if (username) {
-    const refusal = await canSeeStudent(who, username);
+    // Opening a paper to a student is part of marking it, so it asks the same
+    // question the marks do — a linked parent may, only while their child's
+    // teacher allows it.
+    const refusal = await markRefusal(who, username);
     if (refusal) return refuse(context, refusal);
   }
   const rowKey = username || CLASS_WIDE;

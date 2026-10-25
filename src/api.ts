@@ -146,6 +146,12 @@ export interface Child {
    * to their teacher and you only watch.
    */
   own?: boolean;
+  /**
+   * May this parent mark the child's papers and release them? Always for
+   * their own child; for a linked one only while the child's teacher has
+   * switched parent marking on. Absent from an older server — read it as `own`.
+   */
+  canMark?: boolean;
 }
 
 /** The children linked to the signed-in parent. */
