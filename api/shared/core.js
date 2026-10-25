@@ -7149,14 +7149,50 @@ async function openPaperFor(testId, username, who) {
   }
 }
 
-async function isReleased(testId, username) {
+/** The two rows behind isReleased, kept apart: open to the class, to this student. */
+async function releaseRows(testId, username) {
   const t = await releasesTable();
   const user = String(username || "").trim().toLowerCase();
-  const [cls, mine] = await Promise.all([
+  const [classWide, mine] = await Promise.all([
     t.getEntity(testId, CLASS_WIDE).then(() => true).catch(() => false),
     user ? t.getEntity(testId, user).then(() => true).catch(() => false) : Promise.resolve(false),
   ]);
-  return cls || mine;
+  return { classWide, mine };
+}
+
+async function isReleased(testId, username) {
+  const { classWide, mine } = await releaseRows(testId, username);
+  return classWide || mine;
+}
+
+/**
+ * The class-wide row and the whole-test list are the test owner's, not anyone's
+ * who can sign in as staff. Both were gated on `isAuthor` alone, so any teacher
+ * or parent who knew a test id — it is in the address bar as `?test=` — could
+ * open another teacher's answers and worked solutions to that teacher's whole
+ * class, shut them again, or list which students a paper was opened for.
+ *
+ * The row is read from the partitions this caller could hold it in, exactly as
+ * `/api/tests` does, so another teacher's test is missing (404) rather than
+ * refused. That also settles the admin: `canManageTest` gives an admin the
+ * library and their own rows, and **deliberately not a teacher's test**. When
+ * a teacher's class sees the answers is the teacher's call; an admin marking
+ * one of that teacher's students still opens that one paper, through the
+ * per-student path and `canSeeStudent`, as the marking queue does.
+ *
+ * Returns a reason to refuse, or "".
+ */
+async function releaseOwnerRefusal(who, testId) {
+  if (!isAuthor(who)) return "Not available for this account";
+  const tests = tableClient("tests");
+  await ensureTable(tests);
+  const entity = await readByPartitions(tests, [who.id, PLATFORM_PK], testId, LEGACY_TEST_PK);
+  if (!entity) return "Test not found";
+  return canManageTest(who, entity) ? "" : "Not your test";
+}
+
+function refuseRelease(context, reason) {
+  return json(context, reason === "Test not found" ? 404 : 403, { error: reason });
 }
 
 handlers.release = async (context, req) => {
@@ -7207,13 +7243,17 @@ handlers.release = async (context, req) => {
     if (student) {
       const refusal = await canSeeStudent(who, student);
       if (refusal) return refuse(context, refusal);
-      return json(context, 200, { released: await isReleased(testId, student) });
+      // Which row opened it, too: the marking screen and a student's report
+      // label their buttons from it, and a caller who may not read the whole
+      // test (an admin marking a teacher's student, a parent) still needs it.
+      const { classWide, mine } = await releaseRows(testId, student);
+      return json(context, 200, { released: classWide || mine, classWide, mine });
     }
 
-    // A teacher wants the state of the whole test.
-    if (!isAuthor(who)) {
-      return json(context, 403, { error: "Not available for this account" });
-    }
+    // The state of the whole test names every student it was opened for: the
+    // owner's to read, nobody else's.
+    const refusal = await releaseOwnerRefusal(who, testId);
+    if (refusal) return refuseRelease(context, refusal);
     const students = [];
     let classWide = null;
     const iter = releases.listEntities({
@@ -7247,7 +7287,7 @@ handlers.release = async (context, req) => {
   const testId = safeId(body.testId, 60);
   if (!testId) return json(context, 400, { error: "testId is required" });
 
-  // No username means the whole class.
+  // No username means the whole class, which only the test's owner may open.
   const username = String(body.username || "").trim().toLowerCase();
   if (username) {
     // Opening a paper to a student is part of marking it, so it asks the same
@@ -7255,6 +7295,9 @@ handlers.release = async (context, req) => {
     // teacher allows it.
     const refusal = await markRefusal(who, username);
     if (refusal) return refuse(context, refusal);
+  } else {
+    const refusal = await releaseOwnerRefusal(who, testId);
+    if (refusal) return refuseRelease(context, refusal);
   }
   const rowKey = username || CLASS_WIDE;
 

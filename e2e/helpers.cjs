@@ -3966,6 +3966,154 @@ async function joinChecks() {
   global.fetch = realFetch;
 }
 
+// --- Only a test's owner opens it to the whole class ---
+//
+// `POST /api/release` with no username wrote the class-wide row for whatever
+// testId it was sent, and `GET ?testId=` with no student listed every student a
+// paper was opened for — both gated on `isAuthor` alone, so any teacher or
+// parent who knew a test id could open another teacher's answers to that
+// teacher's class. Driven through the real handler against a fake table.
+async function releaseOwnerChecks() {
+  const rows = new Map();
+  const key = (t, pk, rk) => `${t}/${pk}/${rk}`;
+  const pkOf = (filter) => {
+    const m = /PartitionKey eq '((?:[^']|'')*)'/.exec(String(filter || ""));
+    return m ? m[1].replace(/''/g, "'") : null;
+  };
+  const fakeTable = (name) => ({
+    tableName: name,
+    createTable: async () => {},
+    getEntity: async (pk, rk) => {
+      const row = rows.get(key(name, pk, rk));
+      if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      return { ...row };
+    },
+    createEntity: async (e) => { rows.set(key(name, e.partitionKey, e.rowKey), { ...e }); },
+    upsertEntity: async (e, mode) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
+    },
+    updateEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      rows.set(k, { ...(rows.get(k) || {}), ...e });
+    },
+    deleteEntity: async (pk, rk) => {
+      const k = key(name, pk, rk);
+      if (!rows.has(k)) { const e = new Error("not found"); e.statusCode = 404; throw e; }
+      rows.delete(k);
+    },
+    listEntities: (opts) => {
+      const filter = opts && opts.queryOptions && opts.queryOptions.filter;
+      const want = pkOf(filter);
+      if (want === null) throw new Error(`unpartitioned query on ${name}: ${filter}`);
+      const hits = [];
+      for (const [k, row] of rows) {
+        if (k.startsWith(`${name}/`) && row.partitionKey === want) hits.push({ ...row });
+      }
+      return { [Symbol.asyncIterator]: async function* () { for (const r of hits) yield r; } };
+    },
+  });
+
+  // Read at module load, so set before the module is built.
+  process.env.TEACHER_EMAILS = "t@example.com,o@example.com";
+  process.env.ADMIN_EMAILS = "a@example.com";
+
+  const mod = { exports: {} };
+  const src = fs.readFileSync(CORE, "utf8")
+    .replace("function tableClient(name) {", "function tableClient(name) { return __fakeTable(name); // eslint-disable-line\n  //")
+    + "\nmodule.exports.__t = { handlers, signSession, GOOGLE_SESSION_TTL_MS };";
+  new Function("module", "exports", "require", "__fakeTable", src)(
+    mod, mod.exports,
+    (id) => (id.startsWith("@azure/") ? require(path.join(API, "node_modules", id)) : require(id)),
+    fakeTable
+  );
+  const t = mod.exports.__t;
+
+  const OWNER = "owner-sub-8101";
+  const OTHER = "other-sub-8102";
+  const PARENT = "parent-sub-8103";
+  const owner = t.signSession("vgo", OWNER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "t@example.com", n: "Owner" });
+  const other = t.signSession("vgo", OTHER, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "o@example.com", n: "Other" });
+  const parent = t.signSession("vgo", PARENT, t.GOOGLE_SESSION_TTL_MS, { ep: 0, e: "p@example.com", n: "Parent" });
+  const admin = t.signSession("vad", "admin", t.GOOGLE_SESSION_TTL_MS, { ep: 0 });
+
+  // The owner's test, in the owner's partition; a master in the library's.
+  rows.set(key("tests", OWNER, "t-owned"), {
+    partitionKey: OWNER, rowKey: "t-owned", ownerSub: OWNER, status: "published", title: "Owned",
+  });
+  rows.set(key("tests", "~platform", "m-lib"), {
+    partitionKey: "~platform", rowKey: "m-lib", ownerSub: "adm~admin", platform: true, status: "published",
+  });
+  rows.set(key("students", "student", "kavi"), {
+    partitionKey: "student", rowKey: "kavi", name: "Kavi", teacherSub: OWNER, tokenEpoch: 0,
+  });
+  // One student's paper already open, so the list has a name in it to leak.
+  rows.set(key("releases", "t-owned", "kavi"), {
+    partitionKey: "t-owned", rowKey: "kavi", releasedAt: "2026-10-20T10:00:00.000Z", releasedBy: "Owner",
+  });
+
+  const call = async (cookie, method, payload) => {
+    const c = { res: null };
+    await t.handlers.release(c, {
+      method,
+      headers: { "x-vidai-auth": "1", cookie: `vidai_session=${cookie}` },
+      ...(method === "GET" ? { query: payload } : { body: payload, query: {} }),
+    });
+    return c.res;
+  };
+  const classRow = (id) => rows.has(key("releases", id, "*"));
+
+  for (const [who, cookie] of [["another teacher", other], ["a parent", parent]]) {
+    const rel = await call(cookie, "POST", { action: "release", testId: "t-owned" });
+    check(rel.status === 404 && !classRow("t-owned"),
+      `${who} cannot open somebody else's test to the class (${rel.status}, row ${classRow("t-owned") ? "written" : "absent"})`);
+    const list = await call(cookie, "GET", { testId: "t-owned" });
+    check(list.status === 404 && !(list.body.students || []).length,
+      `${who} cannot list who somebody else's test was opened for (${list.status})`);
+  }
+
+  const opened = await call(owner, "POST", { action: "release", testId: "t-owned" });
+  check(opened.status === 200 && classRow("t-owned"), `the owner opens their own test to the class (${opened.status})`);
+  for (const [who, cookie] of [["another teacher", other], ["a parent", parent]]) {
+    const shut = await call(cookie, "POST", { action: "unrelease", testId: "t-owned" });
+    check(shut.status === 404 && classRow("t-owned"),
+      `${who} cannot shut it again (${shut.status}, row ${classRow("t-owned") ? "kept" : "deleted"})`);
+  }
+  const state = await call(owner, "GET", { testId: "t-owned" });
+  check(state.status === 200 && state.body.classWide && (state.body.students || []).some((x) => x.username === "kavi"),
+    `the owner reads the whole test's state (${state.status})`);
+  const closed = await call(owner, "POST", { action: "unrelease", testId: "t-owned" });
+  check(closed.status === 200 && !classRow("t-owned"), `and the owner shuts it (${closed.status})`);
+
+  // A master: an admin keeps the power they had; a teacher or parent never had it.
+  const libOpen = await call(admin, "POST", { action: "release", testId: "m-lib" });
+  check(libOpen.status === 200 && classRow("m-lib"), `an admin opens a library master to the class (${libOpen.status})`);
+  const libList = await call(admin, "GET", { testId: "m-lib" });
+  check(libList.status === 200 && libList.body.classWide, `and reads its state (${libList.status})`);
+  const libShutByTeacher = await call(other, "POST", { action: "unrelease", testId: "m-lib" });
+  check(libShutByTeacher.status === 403 && classRow("m-lib"),
+    `a teacher cannot shut a master the admin opened (${libShutByTeacher.status})`);
+  const libShut = await call(admin, "POST", { action: "unrelease", testId: "m-lib" });
+  check(libShut.status === 200 && !classRow("m-lib"), `the admin can (${libShut.status})`);
+
+  // Deliberately: an admin does not open a teacher's test to that teacher's class.
+  const adminOnTeacher = await call(admin, "POST", { action: "release", testId: "t-owned" });
+  check(adminOnTeacher.status === 404 && !classRow("t-owned"),
+    `an admin cannot open a teacher's test to the class — the teacher's call (${adminOnTeacher.status})`);
+  const missing = await call(owner, "POST", { action: "release", testId: "t-nowhere" });
+  check(missing.status === 404 && !classRow("t-nowhere"), `a test that does not exist is 404 and writes nothing (${missing.status})`);
+
+  // The per-student paths keep working for those who may see the student, and
+  // say which row opened it, which the marking screen now reads instead.
+  const one = await call(admin, "POST", { action: "release", testId: "t-owned", username: "kavi" });
+  check(one.status === 200, `an admin still opens one student's paper from the marking queue (${one.status})`);
+  const detail = await call(admin, "GET", { testId: "t-owned", student: "kavi" });
+  check(detail.status === 200 && detail.body.released && detail.body.mine && !detail.body.classWide,
+    `the per-student read says it is open to them, not the class (${JSON.stringify(detail.body)})`);
+  const stranger = await call(other, "GET", { testId: "t-owned", student: "kavi" });
+  check(stranger.status === 403, `another teacher still cannot ask about that student (${stranger.status})`);
+}
+
 // --- Bounded parallelism keeps input order ---
 /**
  * A parent marks a teacher's student only while the teacher allows it.
@@ -4218,6 +4366,7 @@ h.inBatches([1, 2, 3, 4, 5], 2, async (n) => n * 2)
   .then(() => parentCreditChecks())
   .then(() => generateChecks())
   .then(() => parentMarkingChecks())
+  .then(() => releaseOwnerChecks())
   .then(() => {
     console.log(failures ? `\n${failures} FAILED` : "\nALL PASS");
     process.exit(failures ? 1 : 0);

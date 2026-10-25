@@ -1161,6 +1161,36 @@ export async function fetchReleaseState(testId: string): Promise<ReleaseState | 
   }
 }
 
+/**
+ * One student's paper, as the marking screen and the student's report need it:
+ * open to the class, open to them, and whether this caller may open it to the
+ * class at all. The whole-test state is the owner's only, so an admin marking a
+ * teacher's student, or a parent, falls back to the per-student answer and gets
+ * `manage: false` — the class-wide control is not theirs to offer.
+ */
+export async function fetchStudentRelease(
+  testId: string,
+  student: string
+): Promise<{ classWide: boolean; mine: boolean; manage: boolean }> {
+  const state = await fetchReleaseState(testId);
+  if (state) {
+    return {
+      classWide: !!state.classWide,
+      mine: state.students.some((x) => x.username === student),
+      manage: true,
+    };
+  }
+  try {
+    const q = new URLSearchParams({ testId, student });
+    const res = await apiFetch(`/api/release?${q}`, { headers: authHeader() });
+    if (!res.ok) return { classWide: false, mine: false, manage: false };
+    const body = await res.json();
+    return { classWide: !!body.classWide, mine: !!body.mine, manage: false };
+  } catch {
+    return { classWide: false, mine: false, manage: false };
+  }
+}
+
 /** Open or close a paper — for one student, or for the whole class. */
 export async function setReleased(
   testId: string,

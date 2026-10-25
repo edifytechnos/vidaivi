@@ -4,7 +4,7 @@
 import { track } from "../analytics";
 import {
   createStudent,
-  fetchReleaseState,
+  fetchStudentRelease,
   fetchReports,
   isAdmin,
   listStudents,
@@ -965,14 +965,13 @@ export function showStudentReport(username: string) {
  * on a second device sees the truth.
  */
 async function paintRelease(username: string, testIds: string[]): Promise<void> {
-  const states = new Map<string, { classWide: boolean; mine: boolean }>();
+  const states = new Map<string, { classWide: boolean; mine: boolean; manage: boolean }>();
 
+  // `manage` is whether this caller owns the test: only the owner may open it
+  // to the class, so for anyone else (an admin reading a teacher's student, a
+  // parent) the class-wide row says where it stands and offers no button.
   const load = async (id: string) => {
-    const state = await fetchReleaseState(id);
-    states.set(id, {
-      classWide: !!state?.classWide,
-      mine: !!state?.students.some((x) => x.username === username),
-    });
+    states.set(id, await fetchStudentRelease(id, username));
   };
   await Promise.all(testIds.map(load));
 
@@ -990,10 +989,12 @@ async function paintRelease(username: string, testIds: string[]): Promise<void> 
       if (row) {
         row.querySelector(".rel-state")!.textContent = state.classWide
           ? "Open to the whole class"
-          : "Locked — students see marks only";
-        row.querySelector(".rel-class-toggle")!.textContent = state.classWide
-          ? "Hide again"
-          : "Release to class";
+          : state.manage
+            ? "Locked — students see marks only"
+            : "Only the test's owner can open it to the class";
+        const toggle = row.querySelector<HTMLElement>(".rel-class-toggle")!;
+        toggle.hidden = !state.manage;
+        toggle.textContent = state.classWide ? "Hide again" : "Release to class";
       }
     }
   };
