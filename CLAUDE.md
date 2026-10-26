@@ -164,10 +164,14 @@ one, which makes them useless for testing anything behind a login.
 
 **Only Google sign-in needs that origin entry.** Admin and student logins go
 through `/api/manageauth` and `/api/studentauth`, which are not origin-bound, so
-QA is fully testable as an admin or a student today. Signing in **with Google**
-on QA additionally requires this host under **Authorised JavaScript origins** on
-the OAuth client — *this is a pending step, not a record of one already taken*,
-unlike the `vidai.seyali.app` entry above which is done.
+QA is testable as an admin or a student without it. Signing in **with Google**
+on QA needs this host under **Authorised JavaScript origins** on the OAuth
+client — **done, and verified on 26 Oct**: a parent signed in with Google on
+QA. The client is `722814845567-paa2htbs…` in the Google Cloud project
+**Vidaivi**, the same one `GOOGLE_CLIENT_ID` names for production. It is
+**not** the Seyali project's client (`620734133015-…`, used by seyali.app,
+Mesai and Kadai): an origin added there does nothing for Vidai, and was the
+first thing tried.
 
 - **QA carries every open pull request at once** — it is built as `main` with
   every open PR merged on top, not as whichever branch pushed last. Any push to
