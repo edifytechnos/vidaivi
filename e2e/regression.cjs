@@ -232,6 +232,24 @@ function check(ok, label) {
       await page.waitForSelector(".report-stats", { timeout: 20000 });
       check(true, "student report shows stat tiles");
       await shot("report");
+      // The attempts are cards under a subject heading, not a table — and the
+      // class-wide release section is gone.
+      const repShape = await page.evaluate(() => ({
+        cards: document.querySelectorAll(".rep-card").length,
+        subjects: document.querySelectorAll(".rep-subject").length,
+        tables: document.querySelectorAll(".page .data-table").length,
+        classRelease: document.querySelectorAll(".rel-class-toggle").length,
+        overflow: document.documentElement.scrollWidth > window.innerWidth,
+      }));
+      check(
+        repShape.tables === 0 && repShape.classRelease === 0,
+        "the report has no attempts table and no class-wide release section"
+      );
+      check(
+        repShape.cards === 0 || repShape.subjects > 0,
+        `every paper card sits under a subject heading (${repShape.cards} cards, ${repShape.subjects} subjects)`
+      );
+      check(!repShape.overflow, "and nothing overflows the window");
 
       // Give another attempt must be wired. One button per handed-in row,
       // bound after the attempts table is written — the binding once sat in

@@ -357,6 +357,12 @@ export const skeleton = {
       .map(() => bone("90%", "13px", "margin-top:10px"))
       .join("")}</div>`;
   },
+  /** The student report: the stats card, then one subject's grid of papers. */
+  report(): string {
+    const paper = () =>
+      `<div class="rep-card sk-card">${bone("65%", "15px")}${bone("40%", "12px", "margin-top:6px")}${bone("90px", "26px", "margin-top:14px")}${bone("55%", "12px", "margin-top:10px")}${bone("100%", "30px", "margin-top:12px;border-radius:6px")}</div>`;
+    return `${skeleton.card(2)}<section class="rep-subject sk-wrap" aria-busy="true"><div class="rep-subject-head">${bone("30%", "16px")}</div><div class="rep-grid">${paper()}${paper()}${paper()}</div></section>`;
+  },
 };
 
 // ---------- The questions tree as a drawer ----------
