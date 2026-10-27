@@ -32,6 +32,7 @@ import { installPwa } from "./install";
 import { installBeacon } from "./beacon";
 import { mount, skeleton } from "./shell";
 import { showTourOnFirstRun } from "./tour";
+import { installReporting } from "./report";
 
 // Before anything reads storage: carry this device across the Vidaivi → Vidai
 // rename, or every signed-in student is silently signed out.
@@ -47,6 +48,10 @@ initClarity({
   role: getProfile()?.role,
   sittingAsGuest: !isLoggedIn() && new URLSearchParams(location.search).has("test"),
 });
+// Report a problem / Suggest an idea, kept from the first moment so a report
+// carries what happened before it — never recording a student or a guest
+// on a test (src/report.ts).
+installReporting(!isLoggedIn() && new URLSearchParams(location.search).has("test"));
 // A returning visitor's session is tagged from the stored profile; a fresh
 // sign-in tags itself in saveAuth. Either way the role is all that is sent.
 tagRole(getProfile()?.role);

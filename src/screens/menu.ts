@@ -12,6 +12,7 @@ import { showMarking } from "./marking";
 import { showChildren } from "./parent";
 import { showSubjects } from "./subjects";
 import { showTour } from "../tour";
+import { openReport } from "../report";
 
 /** Bind the rail once, at boot. */
 export function installShell(): void {
@@ -56,6 +57,11 @@ export function installShell(): void {
     if (!item) return;
     const to = item.dataset.rail ?? "";
     track("rail_nav", { to });
+    // Report a problem · Suggest an idea · My tickets (src/report.ts).
+    if (to.startsWith("report-")) {
+      void openReport(to === "report-feature" ? "feature" : to === "report-mine" ? "mine" : "issue");
+      return;
+    }
     if (to === "signout" || to === "signout-all") {
       const everywhere = to === "signout-all";
       // "Everywhere" ends the session on every device by moving the account's

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "katex": "^0.16.47",
-    "pdfjs-dist": "^5.7.284"
+    "pdfjs-dist": "^5.7.284",
+    "rrweb": "2.1.7"
   }
 }
