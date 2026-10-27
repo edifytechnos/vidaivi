@@ -17,6 +17,7 @@ import { setGuest } from "../attempts";
 import { openModal } from "../modal";
 import { paintPlain, app, escapeHtml, ICONS, setUrl, topbar } from "../dom";
 import { installButtonAttrs } from "../install";
+import { REPORT_ENTRIES } from "../report";
 import { showHome } from "./home";
 import { showSubjects } from "./subjects";
 import { showChildren } from "./parent";
@@ -62,6 +63,7 @@ export function showWelcome(next?: () => void) {
       <p class="hint welcome-note">Guests can take the free demo test. Scores
       stay on this device only.</p>
       <button class="btn-link welcome-install" ${installButtonAttrs()}>${ICONS.download}Install the app</button>
+      <nav class="welcome-feedback" aria-label="Feedback">${REPORT_ENTRIES.map((e) => `<button class="btn-link" data-rail="report-${e.key}">${e.label}</button>`).join("")}</nav>
       <p class="admin-link-row"><button id="admin-link" class="btn-link">Admin</button></p>
     </main>`);
   document.getElementById("admin-link")!.addEventListener("click", () => {

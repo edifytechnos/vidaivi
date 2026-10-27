@@ -148,6 +148,29 @@ export function openFeedback(start: View = "issue", ticket?: string): void {
   paint();
 }
 
+/**
+ * The five ways in, one list, so every app's menus offer the same set in the
+ * same order and words: the four views of the dialog and the public board.
+ */
+export type EntryKey = View | "board";
+export const FEEDBACK_ENTRIES: { key: EntryKey; label: string; hint: string }[] = [
+  { key: "issue", label: "Report a problem", hint: "Something broke or looks wrong" },
+  { key: "feature", label: "Suggest an idea", hint: "What would help you most" },
+  { key: "review", label: "Write a review", hint: "How it is going for you" },
+  { key: "mine", label: "My tickets", hint: "What you sent, and where it has got to" },
+  { key: "board", label: "Ideas board", hint: "Vote for what others have asked" },
+];
+/** The public ideas board, filtered to this app. */
+export function ideasBoardUrl(): string {
+  if (!installed) setBase(opts.api ?? platformFor(location.hostname));
+  return `${siteUrl()}/feedback?app=${opts.app}`;
+}
+/** Open one of FEEDBACK_ENTRIES: the dialog on that view, or the board in a new tab. */
+export function openFeedbackEntry(key: EntryKey): void {
+  if (key === "board") window.open(ideasBoardUrl(), "_blank", "noopener");
+  else openFeedback(key);
+}
+
 export function closeFeedback(): void {
   if (!root) return;
   root.remove(); root = null; card = null;

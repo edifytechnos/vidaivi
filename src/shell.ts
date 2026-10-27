@@ -12,6 +12,9 @@ import type { Profile } from "./auth";
 import { app, escapeHtml, ICONS } from "./dom";
 import { helpUrl, tourRole } from "./tour";
 import { installButtonAttrs } from "./install";
+import { REPORT_ENTRIES } from "./report";
+
+const REPORT_ICON: Record<string, string> = { issue: ICONS.mark, feature: ICONS.spark, review: ICONS.check, mine: ICONS.file, board: ICONS.link };
 
 export type RailKey =
   | "subjects"
@@ -130,9 +133,7 @@ function profileMarkup(): string {
         <button class="pm-item" data-rail="tour" role="menuitem">${ICONS.eye}Take the tour</button>
         <button class="pm-item" ${installButtonAttrs()} role="menuitem">${ICONS.download}Install the app</button>
         <div class="pm-rule"></div>
-        <button class="pm-item" data-rail="report-issue" role="menuitem">${ICONS.mark}Report a problem</button>
-        <button class="pm-item" data-rail="report-feature" role="menuitem">${ICONS.spark}Suggest an idea</button>
-        <button class="pm-item" data-rail="report-mine" role="menuitem">${ICONS.file}My tickets</button>
+        ${REPORT_ENTRIES.map((e) => `<button class="pm-item" data-rail="report-${e.key}" role="menuitem">${REPORT_ICON[e.key]}${e.label}</button>`).join("")}
         <div class="pm-rule"></div>
         <button class="pm-item" data-rail="signout" role="menuitem">${ICONS.logout}Sign out</button>
         <button class="pm-item pm-quiet" data-rail="signout-all" role="menuitem">${ICONS.logout}Sign out everywhere</button>

@@ -17,7 +17,7 @@
 // and rrweb its own again, fetched only for an adult.
 import { installCapture } from "./feedback/capture";
 import * as replay from "./feedback/replay";
-import type { FeedbackOptions, View } from "./feedback/widget";
+import type { FeedbackOptions, EntryKey } from "./feedback/widget";
 import { recordsAudience } from "./clarity";
 import { getProfile } from "./auth";
 import { BUILD } from "./beacon";
@@ -46,7 +46,8 @@ export function reportingFor(role: string | undefined, sittingAsGuest = false): 
 }
 
 let widget: typeof import("./feedback/widget") | null = null;
-export async function openReport(view: View = "issue"): Promise<void> {
+/** One of the five entries: the dialog on a view, or the ideas board in a new tab. */
+export async function openReport(entry: EntryKey = "issue"): Promise<void> {
   widget ??= await import("./feedback/widget");
   const opts: FeedbackOptions = {
     app: "vidai",
@@ -64,5 +65,19 @@ export async function openReport(view: View = "issue"): Promise<void> {
   };
   widget.installFeedback(opts);
   widget.setFeedback(current);
-  widget.openFeedback(view);
+  widget.openFeedbackEntry(entry);
 }
+
+/**
+ * The five entries as markup, for the profile menu and the welcome screen —
+ * the same words and order as every other Seyali app (FEEDBACK_ENTRIES in
+ * the widget, written out here so the menu does not load the dialog's chunk).
+ * The shell's one click listener opens them (data-rail="report-<key>").
+ */
+export const REPORT_ENTRIES: { key: EntryKey; label: string }[] = [
+  { key: "issue", label: "Report a problem" },
+  { key: "feature", label: "Suggest an idea" },
+  { key: "review", label: "Write a review" },
+  { key: "mine", label: "My tickets" },
+  { key: "board", label: "Ideas board" },
+];

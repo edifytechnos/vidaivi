@@ -13,6 +13,7 @@ import { showChildren } from "./parent";
 import { showSubjects } from "./subjects";
 import { showTour } from "../tour";
 import { openReport } from "../report";
+import type { EntryKey } from "../feedback/widget";
 
 /** Bind the rail once, at boot. */
 export function installShell(): void {
@@ -59,7 +60,7 @@ export function installShell(): void {
     track("rail_nav", { to });
     // Report a problem · Suggest an idea · My tickets (src/report.ts).
     if (to.startsWith("report-")) {
-      void openReport(to === "report-feature" ? "feature" : to === "report-mine" ? "mine" : "issue");
+      void openReport(to.slice("report-".length) as EntryKey);
       return;
     }
     if (to === "signout" || to === "signout-all") {

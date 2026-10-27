@@ -942,6 +942,21 @@ body {
   display: none !important;
 }
 
+/* Report a problem · Suggest an idea · … on the welcome screen: quiet links,
+   reachable before anyone has signed in (src/report.ts). */
+.welcome-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 16px;
+  margin-top: 18px;
+  font-size: 13px;
+}
+.welcome-feedback .btn-link {
+  min-height: 32px;
+  color: var(--muted);
+  font-weight: 600;
+}
 .admin-link-row {
   margin: 20px 0 0;
 }

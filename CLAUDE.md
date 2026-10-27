@@ -3967,8 +3967,12 @@ an iPhone. No dependency: a manifest, five icons, a fifty-line worker.
 
 ## Report a problem · Suggest an idea · My tickets (`src/report.ts`, `src/feedback/`)
 
-The Seyali family's one feedback widget, in the profile menu (**Report a
-problem**, **Suggest an idea**, **My tickets**). Everything goes to
+The Seyali family's one feedback widget. Its five entries — **Report a
+problem · Suggest an idea · Write a review · My tickets · Ideas board**, the
+same words and order as every Seyali app (`REPORT_ENTRIES` in `report.ts`) —
+are in the profile menu and on the welcome screen (`.welcome-feedback`), so
+they can be reached before signing in; `data-rail="report-<key>"` is opened by
+the shell's one click listener. Everything goes to
 **seyali.app's `/api/feedback`**, which files a problem or an idea as a
 **GitHub issue on this repo** for the Claude routine, puts ideas on the public
 board at `seyali.app/feedback`, and keeps the reporter's progress. The server,
