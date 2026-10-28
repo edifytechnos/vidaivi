@@ -5,12 +5,14 @@
 // A report shows the person exactly what goes with it — a page snapshot, the
 // console and network log, a recording if they made one, screenshots and
 // files — each a box they can untick, before anything leaves the device.
-import { CSS } from "./style";
+import { ensureStyle } from "./style";
 import { installCapture, traces, digestOf, deviceContext } from "./capture";
 import * as replay from "./replay";
+import { mountPlayer, type PlayerHandle, type Highlight } from "./player";
+import { pickElement, type PickedElement } from "./pick";
 import {
-  fb, sendReport, jsonAttachment, setBase, platformFor, siteUrl, keysFragment, votedSet, STATUS_LABEL,
-  type Attachment, type Ticket, type BoardItem, type Comment, type Kind, type Status,
+  fb, sendReport, jsonAttachment, setBase, platformFor, siteUrl, keysFragment, votedSet, STATUS_LABEL, fileEvents, fileUrl,
+  type Attachment, type Ticket, type BoardItem, type Comment, type Kind, type Status, type Triage, type TicketFile,
 } from "./client";
 
 export type AppId = "seyali" | "mesai" | "kadai" | "karkai" | "vidai" | "thunai" | "parai" | "medai";
@@ -50,9 +52,7 @@ export function installFeedback(o: FeedbackOptions): void {
   installed = true;
   setBase(o.api ?? platformFor(location.hostname));
   installCapture((u) => u.includes("/api/feedback"));
-  if (!document.getElementById("fb-style")) {
-    const s = document.createElement("style"); s.id = "fb-style"; s.textContent = CSS; document.head.appendChild(s);
-  }
+  ensureStyle();
   if (opts.replay === "buffer") whenIdle(() => void replay.startBuffer().catch(() => {}));
 }
 
@@ -102,6 +102,9 @@ const I = {
   check: '<path d="M20 6 9 17l-5-5"/>',
   back: '<path d="m15 18-6-6 6-6"/>',
   out: '<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4"/>',
+  play: '<path d="M7 5v14l11-7z" fill="currentColor"/>',
+  spark: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
 };
 
 // --- what this visit has typed and gathered (kept while the page lives) ----------
@@ -126,12 +129,19 @@ let error = "";
 let busy = "";
 let returnFocus: HTMLElement | null = null;
 let pill: HTMLDivElement | null = null;
+// The part of the screen the person pointed at ("Point at it").
+let picked: PickedElement | null = null;
+// A recording or snapshot being watched inside the dialog, and its player.
+let preview: { title: string; load: () => Promise<unknown[] | null>; at?: "start" | "end"; highlight?: Highlight | null } | null = null;
+let player: PlayerHandle | null = null;
+// Seyari writing up the report just sent.
+let triageState: { id: string; status: "working" | "done" | "off"; triage?: Triage } | null = null;
 
 /** Open the dialog. `ticket` opens one ticket (a feature from the board, or one of mine). */
 export function openFeedback(start: View = "issue", ticket?: string): void {
   if (!installed) installFeedback(opts);
   if (pill) return; // a recording is running: its pill is the way back
-  view = start; detail = ticket || null; doneTicket = null; error = ""; busy = "";
+  view = start; detail = ticket || null; doneTicket = null; error = ""; busy = ""; preview = null;
   if (!draft.issue.contact) draft.issue.contact = opts.reporter?.()?.contact || "";
   // The snapshot is of the page as it is now, the dialog blocked out of it.
   if (start === "issue" && opts.snapshot) takeSnapshot();
@@ -173,6 +183,7 @@ export function openFeedbackEntry(key: EntryKey): void {
 
 export function closeFeedback(): void {
   if (!root) return;
+  player?.destroy(); player = null; preview = null;
   root.remove(); root = null; card = null;
   document.removeEventListener("keydown", onKey, true);
   lockPage(false);
@@ -206,20 +217,22 @@ function paint(focusSel?: string) {
   if (!root) return;
   const appName = NAMES[opts.app];
   const tabs: [View, string][] = [["issue", "Problem"], ["feature", "Idea"], ["review", "Review"], ["mine", "My tickets"]];
-  const heading = doneTicket ? "Sent" : detail ? "Ticket" : { issue: "Report a problem", feature: "Suggest an idea", review: `Review ${appName}`, mine: "My tickets" }[view];
+  player?.destroy(); player = null;
+  const heading = preview ? preview.title : doneTicket ? "Sent" : detail ? "Ticket" : { issue: "Report a problem", feature: "Suggest an idea", review: `Review ${appName}`, mine: "My tickets" }[view];
   const body = h("div", { class: "fb-body" });
   const foot = h("div", { class: "fb-foot" });
   card = h("div", { class: "fb-card", role: "dialog", "aria-modal": "true", "aria-labelledby": "fb-h" },
     h("div", { class: "fb-head" },
       h("h2", { class: "fb-title", id: "fb-h", text: heading }),
       h("button", { class: "fb-x", type: "button", "aria-label": "Close", onclick: () => !busy && closeFeedback() }, svg(I.x))),
-    !doneTicket && !detail && h("div", { class: "fb-tabs", role: "tablist", "aria-label": "What is it about?" },
+    !doneTicket && !detail && !preview && h("div", { class: "fb-tabs", role: "tablist", "aria-label": "What is it about?" },
       ...tabs.map(([v, label]) => h("button", { class: "fb-tab", type: "button", role: "tab", "aria-selected": String(view === v), onclick: () => { if (busy) return; view = v; error = ""; if (v === "issue" && opts.snapshot && !snapEvents) takeSnapshot(); paint(); } }, label))),
     body, foot);
   const scrim = h("div", { class: "fb-scrim", onclick: (e: Event) => { if (e.target === scrim && !busy) closeFeedback(); } }, card);
   root.replaceChildren(scrim);
   if (error) body.append(h("p", { class: "fb-error", role: "alert", text: error }));
-  if (doneTicket) paintDone(body, foot, doneTicket);
+  if (preview) paintPreview(body, foot);
+  else if (doneTicket) paintDone(body, foot, doneTicket);
   else if (detail) paintDetail(body, foot, detail);
   else ({ issue: paintIssue, feature: paintFeature, review: paintReview, mine: paintMine }[view])(body, foot);
   const target = (focusSel && card.querySelector<HTMLElement>(focusSel)) || card.querySelector<HTMLElement>(".fb-body input, .fb-body textarea, .fb-body button") || card.querySelector<HTMLElement>(".fb-x");
@@ -240,21 +253,36 @@ function paintIssue(body: HTMLElement, foot: HTMLElement) {
   const buffered = replay.buffered();
   body.append(
     field("What went wrong?", h("input", { class: "fb-input", id: "fb-title", maxlength: "120", placeholder: "e.g. Hand in does nothing", value: draft.issue.title, oninput: (e: Event) => { draft.issue.title = (e.target as HTMLInputElement).value; } })),
-    field("What were you doing, and what did you expect?", h("textarea", { class: "fb-area", maxlength: "4000", placeholder: "The steps, in your own words", oninput: (e: Event) => { draft.issue.body = (e.target as HTMLTextAreaElement).value; } }, draft.issue.body)),
+    field("What did you expect instead?", h("textarea", { class: "fb-area", maxlength: "4000", placeholder: "A few words are enough", oninput: (e: Event) => { draft.issue.body = (e.target as HTMLTextAreaElement).value; } }, draft.issue.body),
+      opts.replay !== "off" || opts.snapshot ? "Seyari writes up the steps and details from what you send with it." : undefined),
   );
   const sec = h("div", { class: "fb-sec" }, h("p", { class: "fb-sec-h", text: "Sent with it, to help us fix it" }));
-  if (opts.snapshot) sec.append(check("Page snapshot", "This screen as page elements. Anything typed is hidden.", draft.withSnapshot, (v) => { draft.withSnapshot = v; }));
+  const watch = (label: string, open: () => void) => h("button", { class: "fb-link", type: "button", style: "margin-right:12px", onclick: (e: Event) => { e.preventDefault(); open(); } }, svg(I.play, 12), ` ${label}`);
+  if (opts.snapshot) sec.append(check("Page snapshot", "This screen as page elements. Anything typed is hidden.", draft.withSnapshot, (v) => { draft.withSnapshot = v; },
+    watch("View", () => openPreview({ title: "Page snapshot", load: () => snapEvents || Promise.resolve(null), at: "end", highlight: picked?.rect || null }))));
+  if (picked) {
+    const p = picked;
+    sec.append(h("div", { class: "fb-check" }, h("span", { class: "fb-kind", style: "width:20px;height:20px;background:none;color:var(--fb-primary)" }, svg(I.target, 18)),
+      h("span", { class: "fb-check-main" }, h("span", { class: "fb-check-t", text: "The part you pointed at" }),
+        h("span", { class: "fb-check-s", text: `${p.tag}${p.text ? ` "${p.text.slice(0, 40)}"` : p.label ? ` "${p.label.slice(0, 40)}"` : ""} · ${p.rect.w}×${p.rect.h}, font ${p.styles["font-size"] || "?"}` }),
+        h("span", {}, h("button", { class: "fb-link", type: "button", style: "margin-right:12px", onclick: (e: Event) => { e.preventDefault(); pointAt(); } }, "Point again"),
+          h("button", { class: "fb-link", type: "button", onclick: (e: Event) => { e.preventDefault(); picked = null; paint(); } }, "Remove")))));
+  }
   const logLine = `${d.errors.length} error${d.errors.length === 1 ? "" : "s"} · ${t.network.length} request${t.network.length === 1 ? "" : "s"} · ${t.trail.length} page${t.trail.length === 1 ? "" : "s"}`;
   sec.append(check("Console and network log", logLine, draft.withTraces, (v) => { draft.withTraces = v; },
     h("button", { class: "fb-link", type: "button", onclick: (e: Event) => { e.preventDefault(); showLog = !showLog; paint(); } }, showLog ? "Hide" : "See what is in it")));
   if (showLog) sec.append(h("pre", { class: "fb-pre", text: [...d.errors, ...d.failed, ...d.trail].join("\n") || "Nothing went wrong in the log — only ordinary requests." }));
   if (manual) {
+    const rec = manual;
     sec.append(check(`Your recording · ${secs(manual.ms)}`, "What you showed us. Typed text is hidden.", draft.withReplay, (v) => { draft.withReplay = v; },
-      h("button", { class: "fb-link", type: "button", onclick: (e: Event) => { e.preventDefault(); manual = null; paint(); } }, "Remove")));
+      h("span", {}, watch("Play", () => openPreview({ title: "Your recording", load: async () => rec.events })),
+        h("button", { class: "fb-link", type: "button", onclick: (e: Event) => { e.preventDefault(); manual = null; paint(); } }, "Remove"))));
   } else if (buffered && opts.replay === "buffer") {
-    sec.append(check(`The last ${secs(buffered.ms)} on screen`, "What happened before you opened this. Typed text is hidden.", draft.withReplay, (v) => { draft.withReplay = v; }));
+    sec.append(check(`The last ${secs(buffered.ms)} on screen`, "What happened before you opened this. Typed text is hidden.", draft.withReplay, (v) => { draft.withReplay = v; },
+      watch("Play", () => openPreview({ title: "The last moments on screen", load: async () => buffered.events }))));
   }
   const tools = h("div", { class: "fb-tools" });
+  tools.append(h("button", { class: "fb-btn fb-btn-sm", type: "button", onclick: pointAt }, svg(I.target, 16), picked ? "Point again" : "Point at it"));
   if (opts.replay !== "off" && !manual) tools.append(h("button", { class: "fb-btn fb-btn-sm", type: "button", onclick: startRecording }, h("span", { class: "fb-rec-dot" }), "Record the problem"));
   if (navigator.mediaDevices && "getDisplayMedia" in navigator.mediaDevices && opts.snapshot) tools.append(h("button", { class: "fb-btn fb-btn-sm", type: "button", onclick: captureScreen }, svg(I.screen, 16), "Capture screen"));
   const picker = h("input", { type: "file", multiple: true, accept: "image/*,video/*,application/pdf,text/plain,.log,.txt,.json", class: "fb-sr", tabindex: "-1", "aria-hidden": "true", onchange: (e: Event) => addFiles((e.target as HTMLInputElement).files) });
@@ -365,6 +393,18 @@ function paintDetail(body: HTMLElement, foot: HTMLElement, id: string) {
       h("div", { style: "display:flex;flex-wrap:wrap;gap:6px;align-items:center" }, statusChip(t.status), h("span", { class: "fb-chip", text: t.appName }), h("span", { class: "fb-chip", text: KIND_LABEL[t.kind] }), mine ? h("span", { class: "fb-mono", style: "color:var(--fb-muted)", text: t.id }) : null),
     ];
     if (t.body) kids.push(h("p", { class: "fb-quote", text: t.body }));
+    if (mine && t.kind === "issue") {
+      if (t.triage) kids.push(triageBlock(t.triage));
+      else if (t.status !== "uploading") {
+        if (triageState?.id === t.id && triageState.status === "working") kids.push(triageWaiting());
+        else {
+          const ask = h("button", { class: "fb-btn fb-btn-sm", type: "button", style: "margin-top:12px" }, svg(I.spark, 15), "Ask Seyari to write up the steps");
+          ask.addEventListener("click", () => { void startTriage(t.id); paint(); });
+          kids.push(ask);
+        }
+      }
+      kids.push(...evidenceRows(t));
+    }
     if (t.kind === "feature") kids.push(h("div", { class: "fb-item", style: "border:0;padding:12px 0 0" }, voteButton(t.id, t.votes, voted ?? votedSet().has(t.id)), h("span", { class: "fb-item-s", text: "Vote if you need it too — the most wanted are built first." })));
     const updates = t.updates.filter((u) => u.status || u.note);
     if (updates.length) kids.push(h("p", { class: "fb-sec-h", style: "margin-top:16px", text: "Progress" }), h("ul", { class: "fb-tl" }, ...updates.map((u, i) => h("li", { class: i === updates.length - 1 ? "fb-tl-on" : "" },
@@ -392,6 +432,62 @@ function paintDetail(body: HTMLElement, foot: HTMLElement, id: string) {
     h("a", { class: "fb-btn", href: `${siteUrl()}/feedback/${encodeURIComponent(id)}`, target: "_blank", rel: "noopener" }, "Open on seyali.app", svg(I.out, 15)));
 }
 
+// What a ticket was sent with, to watch again: the recording, the snapshot
+// (with the part they pointed at outlined), and their screenshots.
+function evidenceRows(t: Ticket): Node[] {
+  const files = (t.files || []).filter((f): f is TicketFile => !!f.id);
+  if (!files.length && !t.element) return [];
+  const rows: Node[] = [h("p", { class: "fb-sec-h", style: "margin-top:16px", text: "What you sent" })];
+  const hl = t.element?.rect || null;
+  for (const f of files) {
+    if (f.kind === "replay" || f.kind === "snapshot") {
+      const label = f.kind === "replay" ? `Your recording${f.ms ? ` · ${secs(f.ms)}` : ""}` : "Page snapshot";
+      rows.push(h("button", { class: "fb-row", type: "button", onclick: () => openPreview({ title: label, load: () => fileEvents(t.id, f), at: f.kind === "snapshot" ? "end" : "start", highlight: f.kind === "snapshot" ? hl : null }) },
+        h("span", { class: "fb-kind" }, svg(I.play, 16)), h("span", { class: "fb-item-main" }, h("span", { class: "fb-item-t", text: label }), h("span", { class: "fb-item-s", text: f.kind === "replay" ? "Play it back" : "See the screen as it was" }))));
+    } else if (f.type.startsWith("image/")) {
+      const img = h("img", { alt: f.name, style: "width:100%;max-height:220px;object-fit:contain;border-radius:10px;background:var(--fb-fill)" });
+      fileUrl(t.id, f).then((u) => { img.src = u; }).catch(() => img.remove());
+      rows.push(img);
+    }
+  }
+  if (t.element) rows.push(h("p", { class: "fb-item-s", style: "margin:6px 0 0", text: `You pointed at: ${t.element.tag}${t.element.text ? ` "${t.element.text.slice(0, 40)}"` : ""} · ${t.element.rect.w}×${t.element.rect.h}` }));
+  return rows;
+}
+
+function triageBlock(t: Triage): HTMLElement {
+  return h("div", { class: "fb-tri" },
+    h("p", { class: "fb-tri-h" }, svg(I.spark, 14), "Written up by Seyari AI from your report"),
+    t.summary ? h("p", { text: t.summary }) : null,
+    t.steps.length ? h("ol", {}, ...t.steps.map((x) => h("li", { text: x }))) : null,
+    h("dl", {}, h("dt", { text: "Expected" }), h("dd", { style: "margin:0", text: t.expected || "—" }), h("dt", { text: "Actual" }), h("dd", { style: "margin:0", text: t.actual || "—" })));
+}
+
+// Seyari reads what was sent and writes the steps; the team checks them.
+// Started once per ticket; whatever screen is showing that ticket repaints
+// when it lands. Off (no key on this platform) or failed, it says nothing.
+const triageWaiting = () => h("div", { class: "fb-tri" }, h("span", { class: "fb-tri-wait" }, h("span", { class: "fb-spin" }), "Seyari is reading what you sent and writing up the steps…"));
+async function startTriage(id: string) {
+  if (triageState?.id === id && triageState.status === "working") return;
+  triageState = { id, status: "working" };
+  try { triageState = { id, status: "done", triage: (await fb.triage(id)).triage }; }
+  catch { triageState = { id, status: "off" }; }
+  if (root && !preview && (doneTicket?.id === id || detail === id)) paint();
+}
+
+function openPreview(p: NonNullable<typeof preview>) { preview = p; paint(); }
+function paintPreview(body: HTMLElement, foot: HTMLElement) {
+  const p = preview!;
+  body.append(h("button", { class: "fb-link fb-back", type: "button", onclick: () => { preview = null; paint(); } }, svg(I.back, 15), "Back"));
+  const host = h("div", {});
+  body.append(host, h("p", { class: "fb-hint", text: "Typed text was hidden on your device before anything was kept." }));
+  p.load().then(async (events) => {
+    if (preview !== p || !host.isConnected) return;
+    const handle = await mountPlayer(host, (events || []) as { type: number; timestamp: number }[], { at: p.at, highlight: p.highlight, maxHeight: Math.round(window.innerHeight * 0.55) });
+    if (preview === p && host.isConnected) player = handle; else handle.destroy();
+  }).catch((e) => { host.replaceChildren(h("p", { class: "fb-error", text: (e as Error).message })); });
+  foot.append(h("span", { class: "fb-foot-note" }), h("button", { class: "fb-btn", type: "button", onclick: () => { preview = null; paint(); } }, "Done"));
+}
+
 function paintDone(body: HTMLElement, foot: HTMLElement, t: Ticket) {
   const said = { issue: "We have your report and everything you attached. You can follow it in My tickets.", feature: "Your idea is on the board. Others can vote for it, and you can follow it in My tickets.", review: "Thank you for the review. It goes straight to the team." }[t.kind];
   body.append(h("div", { class: "fb-done" },
@@ -399,12 +495,28 @@ function paintDone(body: HTMLElement, foot: HTMLElement, t: Ticket) {
     h("h3", { text: "Thank you — it is with us" }),
     h("p", { text: said }),
     h("p", { class: "fb-mono", style: "margin-top:10px", text: t.id })));
+  if (t.kind === "issue" && triageState?.id === t.id) {
+    if (triageState.status === "done" && triageState.triage) body.append(triageBlock(triageState.triage));
+    else if (triageState.status === "working") body.append(triageWaiting());
+  }
   foot.append(h("span", { class: "fb-foot-note" }),
     h("button", { class: "fb-btn", type: "button", onclick: () => { doneTicket = null; view = "mine"; paint(); } }, "My tickets"),
     h("button", { class: "fb-btn fb-primary", type: "button", onclick: closeFeedback }, "Close"));
 }
 
 // --- gathering -----------------------------------------------------------------
+// "Point at it": the dialog steps aside, the person taps the part that is
+// wrong, and the dialog comes back with it named (and a fresh snapshot of
+// the screen without the dialog over it, the part outlined when viewed).
+function pointAt() {
+  if (!root) return;
+  closeFeedback();
+  pickElement((p) => {
+    if (p) picked = p.info;
+    openFeedback("issue");
+  });
+}
+
 function startRecording() {
   if (!root) return;
   const back = () => { manual = replay.stopManual(); pill?.remove(); pill = null; if (opts.replay === "buffer") void replay.startBuffer(); openFeedback("issue"); };
@@ -486,11 +598,15 @@ async function sendIssue() {
     const ticket = await sendReport({
       app: opts.app, kind: "issue", title: draft.issue.title, body: draft.issue.body,
       reporter: { name: me.name, role: me.role, contact: draft.issue.contact }, context: reportContext(), digest: draft.withTraces ? digestOf(t) : {},
+      element: picked || undefined,
     }, files, (done, of) => { busy = `Sending ${done} of ${of}…`; const note = card?.querySelector(".fb-foot-note"); if (note) note.textContent = busy; });
     draft.issue = { title: "", body: "", contact: draft.issue.contact };
     for (const s of shots) if (s.url) URL.revokeObjectURL(s.url);
-    shots = []; manual = null; snapEvents = null;
-    busy = ""; doneTicket = ticket; paint();
+    shots = []; manual = null; snapEvents = null; picked = null;
+    // Seyari writes up the steps while the thank-you is on screen.
+    busy = ""; doneTicket = ticket;
+    void startTriage(ticket.id);
+    paint();
   } catch (e) { busy = ""; error = (e as Error).message; paint(); }
 }
 

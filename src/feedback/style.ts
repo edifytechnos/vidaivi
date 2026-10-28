@@ -91,10 +91,49 @@ export const CSS = `
 .fb-pill .fb-btn{min-height:36px;background:#fff;color:#1d1d1f;border-color:#fff}
 @keyframes fb-blink{to{visibility:hidden}}
 .fb-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.fb-player{display:flex;flex-direction:column;gap:8px}
+.fb-stage{position:relative;width:100%;min-height:120px;overflow:hidden;border:1px solid var(--fb-line);border-radius:12px;background:var(--fb-fill)}
+.fb-stage-note{margin:0;padding:40px 12px;text-align:center;color:var(--fb-muted);font-size:13px}
+.fb-stage .replayer-wrapper{position:absolute;top:0;left:0}
+.fb-stage .replayer-wrapper>iframe{border:0;display:block;background:#fff;pointer-events:none}
+.fb-stage .replayer-mouse{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:999px;background:rgba(84,32,232,.35);border:2px solid #5420e8;transition:left .05s linear,top .05s linear;pointer-events:none;z-index:2}
+.fb-stage .replayer-mouse.active{animation:fb-click .3s ease-in-out 1}
+.fb-stage .replayer-mouse-tail{display:none}
+@keyframes fb-click{50%{transform:scale(1.8);opacity:.6}}
+.fb-highlight{position:absolute;z-index:3;border:3px solid #5420e8;border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.18);pointer-events:none}
+.fb-controls{display:flex;align-items:center;gap:10px}
+.fb-play{display:grid;place-content:center;flex:none;width:40px;height:40px;border-radius:999px;border:1px solid var(--fb-input);background:#fff;color:var(--fb-ink);cursor:pointer}
+.fb-play:focus-visible{outline:2px solid var(--fb-primary);outline-offset:2px}
+.fb-scrub{flex:1;min-width:0;accent-color:var(--fb-primary)}
+.fb-time{flex:none;font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--fb-muted)}
+.fb-tri{margin:12px 0 0;padding:12px;border-radius:12px;background:var(--fb-tint);color:#2b1a6b;text-align:left}
+.fb-tri-h{display:flex;align-items:center;gap:6px;margin:0 0 6px;font-size:12.5px;font-weight:700;color:var(--fb-deep)}
+.fb-tri p{margin:0 0 8px;font-size:13.5px;color:var(--fb-ink)}
+.fb-tri ol{margin:0 0 8px;padding-left:20px;font-size:13.5px;color:var(--fb-ink)}
+.fb-tri dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:0;font-size:13px;color:var(--fb-ink)}
+.fb-tri dt{color:var(--fb-muted)}
+.fb-tri-wait{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fb-deep)}
+.fb-spin{width:14px;height:14px;border-radius:999px;border:2px solid rgba(84,32,232,.25);border-top-color:#5420e8;animation:fb-spin .8s linear infinite}
+@keyframes fb-spin{to{transform:rotate(360deg)}}
+.fb-pick-box{position:fixed;z-index:2147483001;border:3px solid #5420e8;border-radius:6px;background:rgba(84,32,232,.08);pointer-events:none;transition:all .06s ease-out}
+.fb-pick-layer{position:fixed;inset:0;z-index:2147483000;cursor:crosshair;touch-action:none}
+.fb-pick-bar{position:fixed;z-index:2147483002;left:50%;top:calc(10px + env(safe-area-inset-top));transform:translateX(-50%);display:flex;align-items:center;gap:8px;max-width:calc(100vw - 20px);padding:6px 6px 6px 14px;border-radius:999px;background:#1d1d1f;color:#fff;box-shadow:0 8px 28px rgba(0,0,0,.3);font-size:14px;font-weight:600}
+.fb-pick-bar .fb-btn{min-height:36px;padding:0 12px;font-size:13px}
+.fb-pick-bar .fb-btn.fb-primary{background:#fff;color:#1d1d1f;border-color:#fff}
+.fb-pick-bar .fb-btn.fb-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
 @media (max-width:520px){
   .fb-foot{flex-direction:column-reverse;align-items:stretch}
   .fb-foot .fb-btn{width:100%}
   .fb-foot-note{text-align:center}
 }
-@media (prefers-reduced-motion:reduce){.fb-pill .fb-rec-dot{animation:none}}
+@media (prefers-reduced-motion:reduce){.fb-pill .fb-rec-dot,.fb-spin,.fb-stage .replayer-mouse.active{animation:none}.fb-pick-box{transition:none}}
 `;
+
+/** Put the styles on the page once — the dialog, the player and the picker all ask. */
+export function ensureStyle(): void {
+  if (typeof document === "undefined" || document.getElementById("fb-style")) return;
+  const s = document.createElement("style");
+  s.id = "fb-style";
+  s.textContent = CSS;
+  document.head.appendChild(s);
+}

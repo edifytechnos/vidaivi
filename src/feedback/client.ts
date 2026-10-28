@@ -5,10 +5,17 @@
 export type Kind = "issue" | "feature" | "review";
 export type Status = "uploading" | "received" | "planned" | "in_progress" | "done" | "wont_do" | "duplicate";
 export type Update = { at: string; status?: Status; note?: string; by?: string };
+export type Triage = {
+  title: string; summary: string; steps: string[]; expected: string; actual: string; area: string; suspect: string;
+  evidence: string[]; questions: string[]; severity: "low" | "medium" | "high" | "blocker"; category: string; confidence: "low" | "medium" | "high"; at?: string;
+};
+export type TicketFile = { id: string; kind: string; name: string; type: string; size: number; encoding?: string; events?: number; ms?: number };
 export type Ticket = {
   id: string; app: string; appName: string; kind: Kind; title: string; body: string; rating?: number;
   status: Status; updates: Update[]; votes: number; comments: number; createdAt: string; updatedAt?: string;
-  files?: { kind: string; name: string; size: number }[];
+  files?: TicketFile[];
+  triage?: Triage | null;
+  element?: { tag: string; text: string; label: string; selector: string; rect: { x: number; y: number; w: number; h: number }; styles: Record<string, string> } | null;
 };
 export type BoardItem = { id: string; app: string; appName: string; title: string; summary: string; status: Status; votes: number; comments: number; createdAt: string; score?: number };
 export type Comment = { id: string; name: string; text: string; at: string; team: boolean };
@@ -106,6 +113,12 @@ export const fb = {
   board: (app?: string) => call<{ open: BoardItem[]; shipped: BoardItem[] }>("GET", `?board=1${app ? `&app=${app}` : ""}`),
   similar: (text: string, body: string, app?: string) => call<{ similar: BoardItem[] }>("GET", `?similar=${encodeURIComponent(text)}&body=${encodeURIComponent(body.slice(0, 600))}${app ? `&app=${app}` : ""}`),
   vote: async (id: string, on: boolean) => { const out = await call<{ votes: number; voted: boolean }>("POST", "", { action: "vote", id, on, voter: deviceId() }); noteVoted(id, on); return out; },
+  // Seyari reads the report's evidence and writes the steps into the ticket.
+  triage: (id: string) => {
+    const key = heldTickets().find((t) => t.id === id)?.key;
+    return call<{ triage: Triage }>("POST", "", { action: "triage", id, key });
+  },
+  file: (id: string, fileId: string) => call<{ file: TicketFile & { data: string } }>("GET", `?id=${encodeURIComponent(id)}&file=${encodeURIComponent(fileId)}`),
   comment: (id: string, text: string, name?: string) => {
     const key = heldTickets().find((t) => t.id === id)?.key;
     return call<{ comment: Comment; comments: number }>("POST", "", { action: "comment", id, text, name, key, voter: deviceId() });
@@ -154,4 +167,16 @@ export async function sendReport(body: Record<string, unknown>, files: Attachmen
     }
   }
   return (await fb.send(id, key)).ticket;
+}
+
+/** A recording or snapshot from a ticket, decoded back to rrweb's events. */
+export async function fileEvents(ticketId: string, f: TicketFile): Promise<{ type: number; timestamp: number }[]> {
+  const { file } = await fb.file(ticketId, f.id);
+  const bytes = Uint8Array.from(atob(file.data), (c) => c.charCodeAt(0));
+  return JSON.parse(f.encoding === "gzip" ? await gunzip(bytes) : new TextDecoder().decode(bytes));
+}
+/** An image from a ticket, as an object URL (revoke it when done). */
+export async function fileUrl(ticketId: string, f: TicketFile): Promise<string> {
+  const { file } = await fb.file(ticketId, f.id);
+  return URL.createObjectURL(new Blob([Uint8Array.from(atob(file.data), (c) => c.charCodeAt(0))], { type: f.type }));
 }

@@ -3997,6 +3997,13 @@ from every app* in its CLAUDE.md.
   text, not pictures. The dialog itself is blocked out of the snapshot. A
   student's contact is never sent; the reporter's name reaches the team page,
   never the GitHub issue or the public board.
+- **Play before sending, Point at it, and Seyari's write-up** come with the
+  copy (see *Feedback from every app* in seyali's CLAUDE.md). For a student
+  they change nothing about the child rule: there is no recording or
+  snapshot to play, and *Point at it* sends the tapped element's tag, a CSS
+  path, its box and styles — never a field's value, never `data-clarity-mask`
+  text. Seyari's triage is sent the words, that element, the log and any
+  screenshot the person attached, and never who sent it.
 - **Only the log loads at boot** (`capture.ts`, `replay.ts` — small); the
   dialog is its own chunk on first open, rrweb its own again, for adults only.
 - `onOpen`/`onClose` put `modal-open` on the body, so the version beacon holds
