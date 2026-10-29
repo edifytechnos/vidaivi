@@ -84,21 +84,57 @@ export function noteVoted(id: string, on: boolean): void {
   const s = votedSet(); if (on) s.add(id); else s.delete(id);
   write(K_VOTED, [...s].slice(-500));
 }
+/** Signed out: what this device remembered of somebody's tickets and votes goes. */
+export function forgetDevice(): void {
+  try { localStorage.removeItem(K_TICKETS); localStorage.removeItem(K_VOTED); } catch { /* nothing kept */ }
+}
+
+// --- who is signed in --------------------------------------------------------
+// Every Seyali app asks for a sign-in before feedback (J, 29 Oct). On
+// seyali.app the owner cookie is enough; Mesai and Kadai hand over a
+// 30-minute feedback token from their own /api/auth, sent as x-seyali-fb.
+export type Account = { token?: string };
+let token = "";
+let accountSource: (() => Promise<Account | null>) | null = null;
+export const setAccountSource = (fn: (() => Promise<Account | null>) | null) => { accountSource = fn; };
+export const setToken = (t: string) => { token = t; };
+/** This host's /api/auth: signed in → the token (if any), signed out → null. */
+export async function hostAccount(): Promise<Account | null> {
+  const res = await fetch("/api/auth", { credentials: "same-origin", headers: { accept: "application/json" } });
+  if (!res.ok) return null;
+  const me = await res.json().catch(() => null) as { owner?: unknown; feedbackToken?: string } | null;
+  return me?.owner ? { token: me.feedbackToken || "" } : null;
+}
 
 // --- the calls ----------------------------------------------------------------
 const headers = (extra: Record<string, string> = {}) => ({
   "content-type": "application/json", "x-seyali-csrf": "1",
   "x-seyali-tickets": heldTickets().slice(0, 60).map((t) => `${t.id}:${t.key}`).join(","),
-  "x-seyali-voter": deviceId(), ...extra,
+  "x-seyali-voter": deviceId(), ...(token ? { "x-seyali-fb": token } : {}), ...extra,
 });
 // Same-origin (seyali.app's own pages) sends the owner cookie so a signed-in
 // owner's tickets are theirs; from any other app it is never sent.
 const creds = (): RequestCredentials => (base ? "omit" : "same-origin");
-async function call<T>(method: "GET" | "POST", query: string, body?: unknown): Promise<T> {
+// From another app's page the call is a *simple* request — a text/plain POST
+// with the method, query and our headers inside — because Azure answers a
+// CORS preflight itself, with no CORS headers, and the browser would then send
+// nothing (QA, 29 Oct). The platform opens the envelope (feedback.js#unwrap).
+function request(method: "GET" | "POST", query: string, body?: unknown): [string, RequestInit] {
+  if (!base) return [`${apiUrl()}${query}`, { method, headers: headers(), credentials: creds(), body: body ? JSON.stringify(body) : undefined }];
+  const q = Object.fromEntries(new URLSearchParams(query.replace(/^\?/, "")));
+  return [apiUrl(), { method: "POST", credentials: "omit", headers: { "content-type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ envelope: 1, method, query: q, headers: headers(), body: body ?? null }) }];
+}
+async function call<T>(method: "GET" | "POST", query: string, body?: unknown, again = true): Promise<T> {
   let res: Response;
   try {
-    res = await fetch(`${apiUrl()}${query}`, { method, headers: headers(), credentials: creds(), body: body ? JSON.stringify(body) : undefined });
+    const [url, init] = request(method, query, body);
+    res = await fetch(url, init);
   } catch { throw new Error("Could not reach Seyali — check the connection and try again"); }
+  // A token past its 30 minutes: ask the app for a fresh one, once.
+  if (res.status === 401 && again && accountSource) {
+    const who = await accountSource().catch(() => null);
+    if (who) { token = who.token || ""; return call<T>(method, query, body, false); }
+  }
   const out = await res.json().catch(() => ({}));
   if (!res.ok) throw Object.assign(new Error(out.error || "Something went wrong — try again"), { status: res.status });
   return out as T;

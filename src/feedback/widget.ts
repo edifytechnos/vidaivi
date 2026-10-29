@@ -12,6 +12,7 @@ import { mountPlayer, type PlayerHandle, type Highlight } from "./player";
 import { pickElement, type PickedElement } from "./pick";
 import {
   fb, sendReport, jsonAttachment, setBase, platformFor, siteUrl, keysFragment, votedSet, STATUS_LABEL, fileEvents, fileUrl,
+  setAccountSource, setToken, forgetDevice, type Account,
   type Attachment, type Ticket, type BoardItem, type Comment, type Kind, type Status, type Triage, type TicketFile,
 } from "./client";
 
@@ -36,6 +37,15 @@ export type FeedbackOptions = {
   reporter?: () => { name?: string; contact?: string; role?: string } | null | undefined;
   onOpen?: () => void;
   onClose?: () => void;
+  /**
+   * Who is signed in on this app — null when nobody is. Given, every entry
+   * asks for a sign-in first (J, 29 Oct): the dialog opens only for an
+   * account, and a ticket is that account's. `hostAccount` in client.ts asks
+   * this host's /api/auth (seyali.app, Mesai, Kadai). Vidai gives none yet.
+   */
+  account?: () => Promise<Account | null>;
+  /** The app's own sign-in dialog: true once signed in, false if closed. */
+  signIn?: () => Promise<boolean>;
 };
 
 const NAMES: Record<AppId, string> = { seyali: "Seyali", mesai: "Mesai", kadai: "Kadai", karkai: "Karkai", vidai: "Vidai", thunai: "Thunai", parai: "Parai", medai: "Medai" };
@@ -51,6 +61,7 @@ export function installFeedback(o: FeedbackOptions): void {
   if (installed) return;
   installed = true;
   setBase(o.api ?? platformFor(location.hostname));
+  setAccountSource(opts.account ?? null);
   installCapture((u) => u.includes("/api/feedback"));
   ensureStyle();
   if (opts.replay === "buffer") whenIdle(() => void replay.startBuffer().catch(() => {}));
@@ -141,6 +152,31 @@ let triageState: { id: string; status: "working" | "done" | "off"; triage?: Tria
 export function openFeedback(start: View = "issue", ticket?: string): void {
   if (!installed) installFeedback(opts);
   if (pill) return; // a recording is running: its pill is the way back
+  if (root) { showDialog(start, ticket); return; } // already open: signed in
+  void signedInThen(() => showDialog(start, ticket));
+}
+
+// Sign in first, then go (J, 29 Oct). Signed out, this device forgets the
+// tickets and votes it remembered, so the next person to use it sees none.
+let gating = false;
+async function signedInThen(go: () => void): Promise<void> {
+  if (!opts.account) { go(); return; }
+  if (gating) return; // a second click while the sign-in is up
+  gating = true;
+  try {
+    let who = await opts.account().catch(() => null);
+    if (!who) {
+      forgetDevice();
+      if (!opts.signIn || !(await opts.signIn().catch(() => false))) return;
+      who = await opts.account().catch(() => null);
+      if (!who) return;
+    }
+    setToken(who.token || "");
+    go();
+  } finally { gating = false; }
+}
+
+function showDialog(start: View, ticket?: string): void {
   view = start; detail = ticket || null; doneTicket = null; error = ""; busy = ""; preview = null;
   if (!draft.issue.contact) draft.issue.contact = opts.reporter?.()?.contact || "";
   // The snapshot is of the page as it is now, the dialog blocked out of it.
@@ -177,8 +213,14 @@ export function ideasBoardUrl(): string {
 }
 /** Open one of FEEDBACK_ENTRIES: the dialog on that view, or the board in a new tab. */
 export function openFeedbackEntry(key: EntryKey): void {
-  if (key === "board") window.open(ideasBoardUrl(), "_blank", "noopener");
-  else openFeedback(key);
+  if (key !== "board") { openFeedback(key); return; }
+  void signedInThen(() => {
+    // After a sign-in the browser may count the new tab as a pop-up: then
+    // the board opens here instead. (With "noopener" open() always answers
+    // null, so the opener is cut by hand to tell the two apart.)
+    const tab = window.open(ideasBoardUrl(), "_blank");
+    if (tab) tab.opener = null; else location.assign(ideasBoardUrl());
+  });
 }
 
 export function closeFeedback(): void {
@@ -379,7 +421,7 @@ function paintMine(body: HTMLElement, foot: HTMLElement) {
       statusChip(t.status))));
   }).catch((e) => list.replaceChildren(h("p", { class: "fb-error", text: (e as Error).message })));
   foot.append(
-    h("span", { class: "fb-foot-note", text: "Kept on this device." }),
+    h("span", { class: "fb-foot-note", text: opts.account ? "On your account." : "Kept on this device." }),
     h("a", { class: "fb-btn", href: `${siteUrl()}/my-tickets${keysFragment()}`, target: "_blank", rel: "noopener" }, "Open on seyali.app", svg(I.out, 15)));
 }
 
