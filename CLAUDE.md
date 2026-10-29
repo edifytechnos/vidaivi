@@ -1533,6 +1533,8 @@ every move passes through is the URL write, and that is where the history is.
 - `photoviewer.ts` — the full-screen zoomable viewer a photo strip opens into.
 - `install.ts` — the service worker registration and the "Install the app" button.
 - `beacon.ts` — the version beacon: learns a new build is live, reloads onto it at the next move.
+- `report.ts` — Report a problem / Suggest an idea / My tickets: who may be recorded, and opening the widget.
+- `feedback/` — the Seyali family's feedback widget, a copy of seyali's `platform/web/src/feedback/` (never edit here).
 
 Convention: each screen is a `show*()` function that replaces `app.innerHTML` and binds
 its listeners; cross-screen imports are function-only (safe with ES-module cycles).
@@ -3962,6 +3964,59 @@ an iPhone. No dependency: a manifest, five icons, a fifty-line worker.
   browser and replays its prompt once, explains itself on an iPhone, stays
   away when installed, and nothing trips the CSP. Verified to fail with the
   manifest link removed and with the worker caching `/`.
+
+## Report a problem · Suggest an idea · My tickets (`src/report.ts`, `src/feedback/`)
+
+The Seyali family's one feedback widget. Its five entries — **Report a
+problem · Suggest an idea · Write a review · My tickets · Ideas board**, the
+same words and order as every Seyali app (`REPORT_ENTRIES` in `report.ts`) —
+are in the profile menu and on the welcome screen (`.welcome-feedback`), so
+they can be reached before signing in; `data-rail="report-<key>"` is opened by
+the shell's one click listener. Everything goes to
+**seyali.app's `/api/feedback`**, which files a problem or an idea as a
+**GitHub issue on this repo** for the Claude routine, puts ideas on the public
+board at `seyali.app/feedback`, and keeps the reporter's progress. The server,
+the board and the routine's script live in seyali-org/seyali — read *Feedback
+from every app* in its CLAUDE.md.
+
+- **`src/feedback/` is a copy; never edit it here.** The source is seyali's
+  `platform/web/src/feedback/`; `scripts/sync-feedback.sh ../seyali` copies it
+  over. It is plain DOM, no framework.
+- **The child rule holds, and is stricter than for adults.** What may be
+  captured is `recordsAudience` — the Clarity rule. A teacher, parent or admin
+  keeps the last minute or two of the page (the dashcam, rrweb) and a page
+  snapshot for a report. **A student, or a guest who opened a test, gets no
+  recording and no snapshot — not even one they press for**: replay `off`,
+  snapshot `false`, and rrweb is never downloaded. They can still describe the
+  problem, attach their own screenshot and send the console and network log,
+  which they read before it goes. `reportingFor` follows sign-in, sign-out
+  (`saveAuth`, `signOut`) and a guest opening a test (`showLanding`), exactly
+  where Clarity is stopped.
+- **Even an adult's recording masks**: every input, `[data-clarity-mask]`
+  text, and masked images (answer photos) are blocked outright — masking hides
+  text, not pictures. The dialog itself is blocked out of the snapshot. A
+  student's contact is never sent; the reporter's name reaches the team page,
+  never the GitHub issue or the public board.
+- **Play before sending, Point at it, and Seyari's write-up** come with the
+  copy (see *Feedback from every app* in seyali's CLAUDE.md). For a student
+  they change nothing about the child rule: there is no recording or
+  snapshot to play, and *Point at it* sends the tapped element's tag, a CSS
+  path, its box and styles — never a field's value, never `data-clarity-mask`
+  text. Seyari's triage is sent the words, that element, the log and any
+  screenshot the person attached, and never who sent it.
+- **Only the log loads at boot** (`capture.ts`, `replay.ts` — small); the
+  dialog is its own chunk on first open, rrweb its own again, for adults only.
+- `onOpen`/`onClose` put `modal-open` on the body, so the version beacon holds
+  its reload while the dialog is up.
+- **CSP**: `connect-src` names `https://seyali.app` and the platform's QA host
+  (`black-pebble-0a1118300-qa…`). A widget on localhost or a QA host talks to
+  the platform's QA; production's to seyali.app.
+- `node e2e/feedback.cjs` drives it at 390px and 1280px against a stand-in
+  server: a student is offered no recording, snapshot or screen capture,
+  sends the log alone, and never fetches rrweb; an adult's report carries
+  replay, snapshot and log with **nothing typed and no masked name in them**
+  (verified to fail with the masks removed); the similar-idea list, its vote,
+  My tickets by key, Escape and the body class.
 
 ## Working style
 

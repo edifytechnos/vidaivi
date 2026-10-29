@@ -14,6 +14,7 @@
 // expires an hour later.
 
 import { tagRole } from "./clarity";
+import { reportingFor } from "./report";
 import { trackWrite } from "./beacon";
 import type { StoredAnswer } from "./types";
 
@@ -139,6 +140,7 @@ function saveAuth(state: AuthState): void {
   // The role, and only the role, reaches Clarity — so a flow can be read per
   // audience without a name or an id ever leaving the page.
   tagRole(state.profile?.role);
+  reportingFor(state.profile?.role);
 }
 
 const EXPIRED_KEY = "vidai:sessionExpired";
@@ -222,6 +224,7 @@ export function signOut(): void {
   try {
     localStorage.removeItem(AUTH_KEY);
   } catch {}
+  reportingFor(undefined);
 }
 
 /**
