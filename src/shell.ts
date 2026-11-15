@@ -470,8 +470,8 @@ export function bindTreeDrawer(editor: HTMLElement): void {
 }
 
 /** The button that opens it — only rendered where the tree is not a column. */
-export function drawerToggleMarkup(label = "Questions"): string {
-  return `<button class="st-drawer-btn" data-drawer-toggle aria-label="Show ${escapeHtml(label.toLowerCase())}">
-      ${ICONS.menu}<span>${escapeHtml(label)}</span>
+export function drawerToggleMarkup(label = "Questions", iconOnly = false): string {
+  return `<button class="st-drawer-btn${iconOnly ? " st-drawer-icon" : ""}" data-drawer-toggle aria-label="Show ${escapeHtml(label.toLowerCase())}">
+      ${ICONS.menu}${iconOnly ? "" : `<span>${escapeHtml(label)}</span>`}
     </button>`;
 }

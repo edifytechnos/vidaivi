@@ -1935,7 +1935,13 @@ async function reportStatusChecks() {
       if (!row) { const e = new Error("not found"); e.statusCode = 404; throw e; }
       return { ...row };
     },
-    createEntity: async (e) => { rows.set(key(name, e.partitionKey, e.rowKey), { ...e }); },
+    // Table Storage refuses to create over an existing row; so does the fake,
+    // or a test that relies on "never overwrite" would pass vacuously.
+    createEntity: async (e) => {
+      const k = key(name, e.partitionKey, e.rowKey);
+      if (rows.has(k)) { const err = new Error("EntityAlreadyExists"); err.statusCode = 409; throw err; }
+      rows.set(k, { ...e });
+    },
     upsertEntity: async (e, mode) => {
       const k = key(name, e.partitionKey, e.rowKey);
       rows.set(k, mode === "Merge" ? { ...(rows.get(k) || {}), ...e } : { ...e });
@@ -2288,6 +2294,51 @@ async function reportStatusChecks() {
       (rows.get(key("grading", "stu~priya", "t1~q3")) || {}).awarded === 2,
       "and the mark the teacher gave is untouched"
     );
+  }
+
+  // --- a short answer whose hand-off was dropped is rebuilt for the marker --
+  // The paper said "Awaiting review" with no grading row behind it, so the
+  // marking panel — Assess with AI included — never rendered. The marker asks
+  // the server to rebuild the row FROM THE STUDENT'S OWN ATTEMPT.
+  {
+    rows.set(key("attempts", "stu~priya", "89990~t8"), {
+      partitionKey: "stu~priya", rowKey: "89990~t8", testId: "t8",
+      score: 4, total: 10, completedAt: "2026-11-14T10:00:00.000Z",
+      answers: JSON.stringify({
+        q8: { given: 17, text: "17/13", correct: false, earned: 0, review: "pending" },
+        q9: { given: 2, text: "2", correct: true, earned: 2 },
+      }),
+    });
+    rows.set(key("grading", "stu~priya", "t8~q7"), {
+      partitionKey: "stu~priya", rowKey: "t8~q7", testId: "t8", questionId: "q7",
+      status: "marked", awarded: 1, maxMarks: 2, answerText: "kept",
+    });
+    const recover = async (session, body) => {
+      const c = { res: null };
+      await t.handlers.grading(c, {
+        method: "POST",
+        headers: { "x-vidai-auth": "1", cookie: `vidai_session=${session}` },
+        query: {},
+        body: { action: "recover", username: "priya", testId: "t8", testTitle: "Trig", ...body },
+      });
+      return c.res;
+    };
+    const r1 = await recover(cookie, {
+      items: [
+        { questionId: "q8", questionIndex: 7, maxMarks: 2 },
+        { questionId: "q9", questionIndex: 8, maxMarks: 2 },
+        { questionId: "q7", questionIndex: 6, maxMarks: 2 },
+      ],
+    });
+    const row = rows.get(key("grading", "stu~priya", "t8~q8")) || {};
+    check(r1.status === 200 && r1.body.recovered === 1, `the teacher rebuilds one missing row (${r1.status}, ${r1.body && r1.body.recovered})`);
+    check(row.answerText === "17/13" && row.status === "submitted", "from what the student's attempt says they wrote");
+    check(row.teacherId === TEACHER, "and it lands in their teacher's queue");
+    check(!rows.get(key("grading", "stu~priya", "t8~q9")), "an answer the grader settled gets no row");
+    check((rows.get(key("grading", "stu~priya", "t8~q7")) || {}).awarded === 1, "and a row already marked is never overwritten");
+
+    const r2 = await recover(scookie, { items: [{ questionId: "q8", questionIndex: 7, maxMarks: 2 }] });
+    check(r2.status === 403, `a student cannot ask for it (${r2.status})`);
   }
 
   // --- a parent reads the child THEY created ------------------------------

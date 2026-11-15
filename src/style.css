@@ -5981,3 +5981,70 @@ details[open] > summary::before { transform: rotate(45deg) translate(-2px, -2px)
 /* ---------- Combobox (the dropdown's list under a text field) ---------- */
 .vs-combo { display: block; width: 100%; }
 .vs-combo > input { width: 100%; }
+
+/* The review's numbered strip: every question as a button in the sticky crumb
+   row, coloured by its state with the same tokens as the list's dots. Only
+   where the list is a drawer — on a wide screen the list is already beside
+   the paper, and the strip would say everything twice. */
+.rv-qnums {
+  display: none;
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px;
+  scroll-behavior: smooth;
+}
+.rv-qnums::-webkit-scrollbar { display: none; }
+
+.rv-qn {
+  flex: none;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+}
+.rv-qn-done { background: var(--green); }
+.rv-qn-wrong { background: var(--red); }
+.rv-qn-pending { background: var(--amber); }
+.rv-qn-partial {
+  background: var(--yellow);
+  color: var(--yellow-ink);
+  border-color: rgba(92, 68, 0, 0.28);
+}
+.rv-qn-given { background: var(--primary); }
+.rv-qn-blank {
+  background: var(--surface);
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border-strong);
+}
+/* The open question: a ring outside the fill, so its state colour survives. */
+.rv-qn.active {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--text);
+}
+.rv-qn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.st-drawer-icon { padding: 6px 8px; }
+.st-drawer-icon .icon { width: 17px; height: 17px; }
+
+.rv-tree-foot {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+.rv-tree-foot .btn { width: 100%; }
+
+@media (max-width: 899px) {
+  .rv-qnums { display: flex; }
+  /* The strip needs the row's width; the spacer after it gives none back. */
+  .ed-readonly .ed-crumbrow:has(.rv-qnums) .ed-spacer { display: none; }
+  /* Room for the active ring top and bottom. */
+  .ed-readonly .ed-crumbrow:has(.rv-qnums) { min-height: 44px; }
+}

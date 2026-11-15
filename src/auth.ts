@@ -967,23 +967,102 @@ export async function uploadAnswerImage(payload: {
  * It creates the same grading row a photograph does, so it appears in the same
  * queue and is marked with the same action.
  */
-export async function submitShortAnswer(payload: {
+type ShortAnswerPayload = {
   testId: string;
   testTitle: string;
   questionId: string;
   questionIndex: number;
   maxMarks: number;
   text: string;
-}): Promise<boolean> {
+};
+
+/**
+ * Short answers that never reached the queue. The attempt has had a retry
+ * queue from day one; this write had none, so a dropped request left the
+ * paper saying "Awaiting review" with no row for the teacher to mark — and no
+ * Assess with AI. Keyed by test and question so only the latest text is kept.
+ */
+const PENDING_SHORT_KEY = "vidai:pendingShort";
+
+function readPendingShort(): Record<string, ShortAnswerPayload> {
+  try {
+    return JSON.parse(localStorage.getItem(PENDING_SHORT_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function writePendingShort(map: Record<string, ShortAnswerPayload>): void {
+  try {
+    const keys = Object.keys(map);
+    if (!keys.length) localStorage.removeItem(PENDING_SHORT_KEY);
+    else localStorage.setItem(PENDING_SHORT_KEY, JSON.stringify(map));
+  } catch {}
+}
+
+async function postShortAnswer(payload: ShortAnswerPayload): Promise<boolean> {
   try {
     const res = await apiFetch("/api/grading", {
       method: "POST",
       headers: { "Content-Type": "application/json", ...authHeader() },
       body: JSON.stringify({ action: "answer", ...payload }),
     });
-    return res.ok;
+    // 409 is "already marked": retrying would never change that answer.
+    return res.ok || res.status === 409;
   } catch {
     return false;
+  }
+}
+
+export async function submitShortAnswer(payload: ShortAnswerPayload): Promise<boolean> {
+  const key = `${payload.testId}~${payload.questionId}`;
+  // Queued first, cleared on success: a tab closed mid-request still retries.
+  const map = readPendingShort();
+  map[key] = payload;
+  writePendingShort(map);
+  const ok = await postShortAnswer(payload);
+  if (ok) {
+    const now = readPendingShort();
+    // Only if nothing newer was queued for the same question meanwhile.
+    if (now[key]?.text === payload.text) delete now[key];
+    writePendingShort(now);
+  }
+  return ok;
+}
+
+/** Resend short answers a dropped request left behind. Best effort. */
+export async function flushPendingShortAnswers(): Promise<void> {
+  const map = readPendingShort();
+  for (const [key, payload] of Object.entries(map)) {
+    if (await postShortAnswer(payload)) {
+      const now = readPendingShort();
+      if (now[key]?.text === payload.text) delete now[key];
+      writePendingShort(now);
+    }
+  }
+}
+
+/**
+ * Marker: rebuild the grading rows for short answers the student's paper says
+ * are awaiting review but that never reached the queue. The server reads the
+ * text from the student's own attempt; nothing here is trusted as their answer.
+ */
+export async function recoverShortAnswers(payload: {
+  username: string;
+  testId: string;
+  testTitle: string;
+  items: { questionId: string; questionIndex: number; maxMarks: number }[];
+}): Promise<number> {
+  try {
+    const res = await apiFetch("/api/grading", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeader() },
+      body: JSON.stringify({ action: "recover", ...payload }),
+    });
+    if (!res.ok) return 0;
+    return Number((await res.json()).recovered) || 0;
+  } catch {
+    return 0;
   }
 }
 
@@ -1296,6 +1375,9 @@ export function submitAttempt(a: PendingAttempt): void {
 }
 
 export async function flushPendingAttempts(): Promise<void> {
+  // Rides along on every flush: the same moments (sign-in, boot, back online)
+  // are when a dropped short answer can finally reach the teacher's queue.
+  if (getProfile()?.kind === "student") void flushPendingShortAnswers();
   const pending = readPending();
   if (!pending.length) return;
   const still: PendingAttempt[] = [];
