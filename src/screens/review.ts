@@ -16,6 +16,7 @@ import {
   assessAnswer,
   attemptCounts,
   fetchGrading,
+  recoverShortAnswers,
   fetchReleased,
   fetchStudentRelease,
   getProfile,
@@ -122,15 +123,49 @@ function isPartial(q: Question, a: StoredAnswer | undefined): boolean {
   return !!a?.correct && a.earned < q.marks;
 }
 
-function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolean): string {
+/** One question's state, in the colours the list's dots already use. */
+function questionState(q: Question, a: StoredAnswer | undefined, open: boolean): string {
+  if (!open) return a ? "given" : "blank";
+  if (a?.review === "pending") return "pending";
+  const ok = a?.correct ?? false;
+  return ok ? (isPartial(q, a) ? "partial" : "done") : "wrong";
+}
+
+const STATE_WORDS: Record<string, string> = {
+  given: "answered",
+  blank: "not answered",
+  pending: "awaiting review",
+  partial: "some marks",
+  done: "full marks",
+  wrong: "no marks",
+};
+
+/**
+ * Every question as a numbered button in the sticky crumb row, coloured by its
+ * state, so a teacher on a phone jumps straight to "the amber ones" without
+ * opening the list. Shown only where the list is a drawer; on a wide screen
+ * the list is already a column beside the paper.
+ */
+function qnumsMarkup(test: Test, attempt: Attempt, selected: number, open: boolean): string {
+  const buttons = test.questions
+    .map((q, i) => {
+      const state = questionState(q, attempt.answers[q.id], open);
+      const current = i === selected;
+      return `<button type="button" class="rv-qn rv-qn-${state}${current ? " active" : ""}" data-i="${i}"
+        ${current ? 'aria-current="true"' : ""}
+        aria-label="Question ${i + 1}, ${STATE_WORDS[state]}">${i + 1}</button>`;
+    })
+    .join("");
+  return `<nav class="rv-qnums" id="rv-qnums" aria-label="Questions">${buttons}</nav>`;
+}
+
+function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolean, marking = false): string {
   const rows = test.questions
     .map((q, i) => {
       const a = attempt.answers[q.id];
       const pending = a?.review === "pending";
       const ok = a?.correct ?? false;
-      const state = !open
-        ? a ? "given" : "blank"
-        : pending ? "pending" : ok ? (isPartial(q, a) ? "partial" : "done") : "wrong";
+      const state = questionState(q, a, open);
       const dot = !open ? (a ? "•" : "") : pending ? "…" : ok ? "✓" : "✗";
       return `
         <div class="ed-tree-row">
@@ -159,6 +194,14 @@ function treeMarkup(test: Test, attempt: Attempt, selected: number, open: boolea
         }
       </div>
       <div class="ed-tree-body">${rows}</div>
+      ${
+        // Release left the crumb row for the numbered strip. It is a decision
+        // about the whole paper, so it sits at the foot of the paper's list —
+        // a column on a wide screen, behind the ☰ on a phone.
+        marking
+          ? `<div class="rv-tree-foot"><button id="mk-release" class="btn btn-ghost" disabled>Release…</button></div>`
+          : ""
+      }
     </aside>`;
 }
 
@@ -564,8 +607,32 @@ export async function showReview(
   // One fetch, before the first paint.
   rows = new Map();
   if (opts.marking && opts.student) {
-    for (const row of await fetchGrading({ testId: test.id, student: opts.student })) {
-      rows.set(row.questionId, row);
+    const load = async (): Promise<void> => {
+      rows = new Map();
+      for (const row of await fetchGrading({ testId: test.id, student: opts.student })) {
+        rows.set(row.questionId, row);
+      }
+    };
+    await load();
+    // A short answer the paper says is awaiting review, with no row behind it,
+    // is one whose hand-off to the queue was dropped. Without the row there is
+    // no marks row and no Assess with AI — the panel simply did not render.
+    // The server rebuilds it from the student's own attempt, then we read again.
+    const missing = test.questions
+      .map((q, i) => ({ q, i }))
+      .filter(({ q }) => {
+        const a = attempt.answers[q.id];
+        return q.type === "numeric" && a?.review === "pending" && !!a.text && !rows.has(q.id);
+      })
+      .map(({ q, i }) => ({ questionId: q.id, questionIndex: i, maxMarks: q.marks }));
+    if (missing.length) {
+      const recovered = await recoverShortAnswers({
+        username: opts.student,
+        testId: test.id,
+        testTitle: test.title,
+        items: missing,
+      });
+      if (recovered) await load();
     }
   }
 
@@ -585,7 +652,7 @@ export async function showReview(
       `
       <div class="editor ed-readonly ed-paper">
         <div class="ed-cols review-item${open ? "" : " overview"}">
-          ${treeMarkup(test, attempt, index, open)}
+          ${treeMarkup(test, attempt, index, open, !!opts.marking)}
           <div class="ed-center">
             <div class="ed-crumbrow">
               ${
@@ -593,13 +660,9 @@ export async function showReview(
                   ? `<button class="ed-crumb-back" id="review-back" aria-label="Back" data-tip="Back">${ICONS.back}</button>`
                   : ""
               }
-              ${drawerToggleMarkup()}
+              ${drawerToggleMarkup("Questions", true)}
+              ${qnumsMarkup(test, attempt, index, open)}
               <span class="ed-spacer"></span>
-              ${
-                opts.marking
-                  ? `<button id="mk-release" class="btn btn-ghost st-handin" disabled>Release…</button>`
-                  : ""
-              }
               ${
                 open && !opts.marking && !opts.student
                   ? retakesLeft(test) === 0
@@ -679,6 +742,17 @@ export async function showReview(
       index = Number(btn.dataset.i);
       render();
     });
+    const strip = document.getElementById("rv-qnums");
+    strip?.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>("[data-i]");
+      if (!btn) return;
+      index = Number(btn.dataset.i);
+      render();
+    });
+    // Keep the open question in view when the strip is wider than the screen.
+    // Not scrollIntoView: that also moves the page, which toTop() just set.
+    const cur = strip?.querySelector<HTMLElement>(".rv-qn.active");
+    if (strip && cur) strip.scrollLeft = cur.offsetLeft - (strip.clientWidth - cur.offsetWidth) / 2;
     document.getElementById("rv-prev")!.addEventListener("click", () => {
       if (index > 0) { index -= 1; render(); }
     });

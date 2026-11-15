@@ -216,8 +216,30 @@ async function parentMarker(page, label) {
 
   await page.evaluate(() => { window.__calls = []; });
   await page.click(".test-card[data-test='tp-1']");
-  await page.waitForSelector("#mk-release", { timeout: 10000 });
+  await page.waitForSelector("#mk-release", { state: "attached", timeout: 10000 });
   await page.waitForFunction(() => !document.getElementById("mk-release").disabled);
+  // Release lives at the foot of the question list: a column on a wide screen,
+  // behind the ☰ on a phone. The crumb row there is the numbered strip.
+  if (label === "phone") {
+    const strip = await page.evaluate(() => {
+      const nav = document.getElementById("rv-qnums");
+      const qn = nav ? [...nav.querySelectorAll(".rv-qn")] : [];
+      const crumb = document.querySelector(".ed-crumbrow");
+      return {
+        shown: !!nav && getComputedStyle(nav).display !== "none",
+        count: qn.length,
+        active: qn.findIndex((b) => b.classList.contains("active")),
+        coloured: qn.every((b) => /rv-qn-(done|wrong|pending|partial|given|blank)/.test(b.className)),
+        noLabel: !/Questions/.test(crumb.textContent || ""),
+        noRelease: !crumb.querySelector("#mk-release"),
+        sticky: getComputedStyle(crumb).position === "sticky",
+      };
+    });
+    check(strip.shown && strip.count > 0, `${label}: the crumb row carries a numbered button per question (${strip.count})`);
+    check(strip.active >= 0 && strip.coloured, `${label}: each coloured by its state, the open one marked`);
+    check(strip.noLabel && strip.noRelease, `${label}: the ☰ is an icon alone, and Release has left the row`);
+    check(strip.sticky, `${label}: and the row stays stuck to the top`);
+  }
   check(true, `${label}: the card opens the paper as its marker, with Release`);
   check((await page.$("#mk-buttons")) !== null, `${label}: with the marks row under the answer to mark`);
   check((await page.$("#mk-assess")) !== null, `${label}: and Assess with AI`);
@@ -268,6 +290,10 @@ async function parentMarker(page, label) {
   }
 
   await page.evaluate(() => { window.__calls = []; });
+  if (label === "phone") {
+    await page.click("[data-drawer-toggle]");
+    await page.waitForSelector("#mk-release", { state: "visible", timeout: 5000 });
+  }
   await page.click("#mk-release");
   await page.waitForFunction(() => window.__calls.some((c) => c.method === "POST" && c.url.includes("/api/release")));
   const posted = (await calls(page)).find((c) => c.method === "POST" && c.url.includes("/api/release"));

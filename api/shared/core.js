@@ -5572,6 +5572,76 @@ handlers.grading = async (context, req) => {
     return json(context, 201, { ok: true });
   }
 
+  // A short answer the student's paper says is with the teacher, but whose
+  // grading row never landed. The student's `answer` write is fire-and-forget
+  // from a phone, and the attempt has a retry queue where that write had none,
+  // so the two could disagree: the paper read "Awaiting review" and the
+  // marking panel — Assess with AI, the marks row — had nothing to stand on.
+  // The marker rebuilds the row from the student's OWN attempt, never from
+  // anything the marker sends: what the student wrote is read, not trusted.
+  // One partition query in the student's attempts, then a create per missing
+  // row — `createEntity` refuses to overwrite, so a row that exists (or was
+  // marked meanwhile) is never touched.
+  if (action === "recover") {
+    if (!isAuthor(who)) {
+      return json(context, 403, { error: "Not available for this account" });
+    }
+    const username = String(body.username || "").trim().toLowerCase();
+    const refusal = await markRefusal(who, username);
+    if (refusal) return refuse(context, refusal);
+    const rawTest = String(body.testId || "").slice(0, 80);
+    const testId = safeId(rawTest, 60);
+    if (!testId) return json(context, 400, { error: "Bad test id" });
+    const items = (Array.isArray(body.items) ? body.items : []).slice(0, 50);
+    if (!items.length) return json(context, 200, { ok: true, recovered: 0 });
+
+    const attempts = tableClient("attempts");
+    await ensureTable(attempts);
+    const pk = `stu~${username}`;
+    let done = null;
+    let progress = null;
+    const iter = attempts.listEntities({
+      queryOptions: {
+        filter: `PartitionKey eq '${pk.replace(/'/g, "''")}' and testId eq '${rawTest.replace(/'/g, "''")}'`,
+        select: ["RowKey", "answers"],
+      },
+    });
+    for await (const e of iter) {
+      if (isProgressRow(e)) progress = parseAnswers(e.answers);
+      else if (!done) done = parseAnswers(e.answers);
+    }
+    // The same rule the attempts read uses: a finished attempt wins.
+    const answers = done || progress || {};
+    const rec = await studentRecord(username);
+    let recovered = 0;
+    await inBatches(items, 10, async (it) => {
+      const questionId = safeId(it && it.questionId, 40);
+      const a = questionId ? answers[it.questionId] : null;
+      const text = a && a.review === "pending" && typeof a.text === "string" ? a.text.trim() : "";
+      if (!text) return;
+      try {
+        await grading.createEntity({
+          partitionKey: pk,
+          rowKey: gradingKey(testId, questionId),
+          testId,
+          questionId,
+          testTitle: String(body.testTitle || "").slice(0, 120),
+          questionIndex: Math.max(0, Math.min(200, Number(it.questionIndex) || 0)),
+          maxMarks: Math.max(0, Math.min(100, Number(it.maxMarks) || 0)),
+          answerText: text.slice(0, 500),
+          status: "submitted",
+          submittedAt: new Date().toISOString(),
+          teacherId: (rec && rec.teacherSub) || "",
+          studentName: username,
+        });
+        recovered++;
+      } catch {
+        // Already there: the outcome the caller wanted.
+      }
+    });
+    return json(context, 200, { ok: true, recovered });
+  }
+
   if (action !== "mark") {
     return json(context, 400, { error: `Unknown action: ${action}` });
   }

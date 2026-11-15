@@ -1688,6 +1688,16 @@ may **type**, and what happens when the grader cannot read it. It is labelled
   the row**, because Clear answer must take the answer out of the queue too.
 - **Assess with AI is hidden when there are no photographs** — it reads
   handwriting, and a typed answer has none to read.
+- **The hand-off to the queue is durable, and a dropped one is rebuilt.**
+  `submitShortAnswer` was fire-and-forget with no retry, while the attempt has
+  always had one — so a paper could read *Awaiting review* with no grading row
+  behind it, and the marking panel (Assess with AI, the marks row) simply did
+  not render (Sam, Trigonometry Q8, 15 Nov 2026). It now queues in
+  `vidai:pendingShort` until the server says yes, flushed with the attempts.
+  And opening a paper to mark asks `POST /api/grading {action:"recover"}` for
+  any pending short answer with no row: the server rebuilds it **from the
+  student's own attempt** (never from what the marker sends), with
+  `createEntity`, so an existing or marked row is never overwritten.
 - **The guest player has no third outcome**: a guest has no teacher, so there
   `review` reads as not-right, the same trade the instant-feedback demo makes
   everywhere else.
@@ -1900,6 +1910,10 @@ marks; that was the point of putting them on the same screen.
   `openStudentPaper` falls back to the in-progress row, then to an empty paper,
   and says plainly when the test itself has been deleted.
 - `showReview({marking: true})` is the whole switch; the layout does not change.
+- **Below 900px the crumb row is a numbered strip** (`qnumsMarkup`): one button
+  per question in the list's dot colours, the open one ringed, sticky with the
+  row. The ☰ is an icon alone. **Release** sits at the foot of the question
+  list (`.rv-tree-foot`) — a column on a wide screen, behind the ☰ on a phone.
 
 ### The AI proposes; the teacher awards (`POST /api/assess`)
 
